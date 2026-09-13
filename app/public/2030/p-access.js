@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Access page — three strata and the comparison matrix. Prices are
+   Pricing page — three tiers and the comparison matrix. Prices are
    invented; the toggle simply recomputes the same invented number.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
@@ -9,39 +9,39 @@
 
   var STRATA = [
     {
-      name: 'Bay', forWho: 'One workshop', price: 1900, feature: false,
-      note: 'Up to 4 bays on one node · 12 standings',
-      has: ['All thirteen subsystems', 'All fourteen roles, 12 seats',
-            'Customer and technician doors', 'One grid node, no mobile cell',
-            'Core queries: 2,000 per cycle', 'Ledger held with us'],
-      off: ['Printing licences', 'Sovereign ledger custody']
+      name: 'Workshop', forWho: 'One site', price: 1450, feature: false,
+      note: 'Up to 6 bays · 15 seats',
+      has: ['All thirteen subsystems', 'All fourteen roles, 15 seats',
+            'Customer and technician portals', 'ZATCA Phase 2 e-invoicing',
+            'OBD reads at check-in', 'Stock with minimums and reorder points'],
+      off: ['Group stock visibility', 'Service vans on the diary', 'Data inside your own boundary']
     },
     {
-      name: 'Lattice', forWho: 'A group of branches', price: 6400, feature: true,
-      note: 'Up to 9 bays per node, 5 nodes · 60 standings',
-      has: ['All thirteen subsystems', 'All fourteen roles, 60 seats',
-            'All three doors, including supplier', 'Five grid nodes and two mobile cells',
-            'Core queries: unmetered', 'Printing licences at cost',
-            'Bay negotiation across nodes'],
-      off: ['Sovereign ledger custody']
+      name: 'Group', forWho: 'Several branches', price: 4900, feature: true,
+      note: 'Up to 9 bays per site, 6 sites · 70 seats',
+      has: ['Everything in Workshop', 'All fourteen roles, 70 seats',
+            'Supplier portal as well', 'One stock view across every branch',
+            'Service vans scheduled off the same diary', 'Forecast-led ordering',
+            'Group reporting across sites'],
+      off: ['Data inside your own boundary']
     },
     {
-      name: 'Sovereign', forWho: 'An operator with its own grid', price: null, feature: false,
-      note: 'Unlimited nodes · custody held alone',
-      has: ['Everything in Lattice', 'Unlimited nodes, cells and standings',
-            'Ledger custody held by you alone', 'Your own print cores and libraries',
-            'Core runs inside your boundary', 'Franchise and multi-operator layer'],
+      name: 'Enterprise', forWho: 'An operator with its own rules', price: null, feature: false,
+      note: 'Unlimited sites · your boundary, your agreements',
+      has: ['Everything in Group', 'Unlimited sites, vans and seats',
+            'Data inside your own boundary', 'Your own supplier agreements',
+            'Franchise and multi-operator layer', 'Named support and an SLA'],
       off: []
     }
   ];
 
   var MATRIX = [
-    ['— The fiction —', null, null, null],
-    ['Bay negotiation', 'Single node', 'Across 5 nodes', 'Unlimited'],
-    ['Mobile service cells', '—', '2', 'Unlimited'],
-    ['In-bay printing', '—', 'At cost', 'Own cores'],
-    ['Diagnostic core queries', '2,000 / cycle', 'Unmetered', 'Runs inside your boundary'],
-    ['Ledger custody', 'With us', 'With us', 'Yours alone'],
+    ['— What 2030 adds —', null, null, null],
+    ['Board proposes the schedule', 'Single site', 'Across sites', 'Unlimited'],
+    ['Service vans on the diary', '—', '4', 'Unlimited'],
+    ['One stock view across branches', '—', 'Yes', 'Yes'],
+    ['&ldquo;What breaks next&rdquo; predictions', 'Yes', 'Yes', 'Yes'],
+    ['Where the data lives', 'With us', 'With us', 'Your boundary'],
     ['— What ships today —', null, null, null],
     ['Thirteen subsystems, 28 modules', 'All', 'All', 'All'],
     ['Fourteen roles, enforced per write', 'All', 'All', 'All'],
@@ -49,18 +49,18 @@
     ['Arabic and English, RTL throughout', 'Yes', 'Yes', 'Yes'],
     ['Audit row per change', 'Yes', 'Yes', 'Yes'],
     ['Full export, any time', 'Yes', 'Yes', 'Yes'],
-    ['Customer / technician / supplier portals', '2 doors', '3 doors', '3 doors']
+    ['Customer / technician / supplier portals', '2 portals', '3 portals', '3 portals']
   ];
 
   var mode = 'cycle';
 
   function priceOf(s) {
-    if (s.price === null) return { big: 'By treaty', em: '', per: 'Negotiated per grid' };
+    if (s.price === null) return { big: 'Let&rsquo;s talk', em: '', per: 'Priced against your sites' };
     if (mode === 'year') {
       return { big: (Math.round(s.price * 12 * 0.85 / 100) * 100).toLocaleString('en-US'),
-               em: 'SAR', per: 'per solar year · 15% held back' };
+               em: 'SAR', per: 'per branch, per year · 15% off' };
     }
-    return { big: s.price.toLocaleString('en-US'), em: 'SAR', per: 'per 30-day cycle' };
+    return { big: s.price.toLocaleString('en-US'), em: 'SAR', per: 'per branch, per month' };
   }
 
   function render() {
@@ -76,8 +76,8 @@
           s.has.map(function (h) { return '<li>' + h + '</li>'; }).join('') +
           s.off.map(function (o) { return '<li class="off">' + o + '</li>'; }).join('') +
         '</ul>' +
-        '<a class="btn' + (s.feature ? '' : ' ghost') + '" href="channel.html">Open a channel</a>' +
-        '<div class="foot-note">' + s.note + '<br/>Invented figure — see the real pricing</div>' +
+        '<a class="btn' + (s.feature ? '' : ' ghost') + '" href="channel.html">Ask for a real number</a>' +
+        '<div class="foot-note">' + s.note + '<br/>Illustrative figure — ask us for a real one</div>' +
       '</article>';
     }).join('');
   }

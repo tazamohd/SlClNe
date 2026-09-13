@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Network — SALIS AUTO 2030</title>
+<meta name="description" content="Parts sourced in an hour, eleven branches, nine vans and three portals across the kingdom." />
+<meta name="theme-color" content="#05070E" />
+<link rel="icon" href="../assets/logo-blue-orange.png" />
+<link rel="stylesheet" href="os.css" />
+</head>
+<body>
+
+<main>
+
+<section id="top" data-label="THE NETWORK" class="masthead">
+  <div class="masthead-grid">
+    <div>
+      <span class="tag rise">02 — Where the parts are</span>
+      <h1 class="rise"><span class="thin">The</span> Network</h1>
+      <p class="lede rise">
+        The part that holds a job up is almost never rare. It is usually <b>sitting in another
+        branch</b>, forty minutes away, invisible. Eleven branches on one stock view fixes more
+        delays than any amount of ordering does — and for the jobs that never needed a lift, a
+        van goes to the car instead.
+      </p>
+    </div>
+    <div class="rise">
+      <div class="stats two">
+        <div><div class="k">Branches</div><div class="v">11</div></div>
+        <div><div class="k">Service vans</div><div class="v">9</div></div>
+        <div><div class="k">Part on site</div><div class="v">90<em>min</em></div></div>
+        <div><div class="k">Portals</div><div class="v">3</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="mesh" data-label="SOURCING">
+  <div class="sec-head rise">
+    <span class="tag">01 — Order to fitted</span>
+    <h2>Where a part comes from</h2>
+    <p>
+      Left: suppliers, with live pricing and live availability rather than a PDF from last year.
+      Centre: the branch store, which also sees the other ten. Right: the bays waiting. The only
+      thing that changed since 2026 is that every arrow is visible before someone promises a time.
+    </p>
+  </div>
+  <div class="panel mesh-stage rise">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <canvas id="meshCanvas" role="img"
+            aria-label="Animated flow: suppliers feed a central branch store, which feeds nine bays."></canvas>
+    <div class="mesh-cap"><b>◆</b> SUPPLIER &nbsp;·&nbsp; <b>⬡</b> BRANCH STORE &nbsp;·&nbsp; <b>◈</b> BAY</div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="matter" data-label="PARTS">
+  <div class="sec-head rise">
+    <span class="tag">02 — How a part reaches the bay</span>
+    <h2>Four steps, no lorry from abroad</h2>
+    <p>The same four steps a storekeeper does today, with the waiting taken out of three of them.</p>
+  </div>
+
+  <div class="steps rise">
+    <div>
+      <div class="n">P/01</div><h4>Identify</h4>
+      <p>The part is named off the VIN rather than off a memory, so the wrong one does not arrive
+         two days later. Still a purchase order, still needing an approval before it spends.</p>
+    </div>
+    <div>
+      <div class="n">P/02</div><h4>Find</h4>
+      <p>Eleven branches are checked before any supplier is. Most &ldquo;we have to order that&rdquo; parts
+         are already in the group — ninety minutes away, not eleven days.</p>
+    </div>
+    <div>
+      <div class="n">P/03</div><h4>Receive</h4>
+      <p>Booked in against the job, not just into stock, so the car it is for is the thing that
+         moves. Someone signs for it — that has not changed and should not.</p>
+    </div>
+    <div>
+      <div class="n">P/04</div><h4>Fit and cost</h4>
+      <p>It leaves stock as it is fitted, and the invoice has it costed before the car is off the
+         lift. One write, one journal, no re-keying.</p>
+    </div>
+  </div>
+
+  <div class="cards wide rise" style="margin-top:22px">
+    <article class="panel card">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <div class="idx"><span>TODAY</span><b>SHIPPING</b></div>
+      <h3>What this is in 2026</h3>
+      <div class="then">Parts and inventory</div>
+      <p>Stock levels with minimums, purchase orders with approvals, supplier catalogues and goods
+         received against the order. The 2030 version changes what the storekeeper can see — not who
+         is allowed to order, or what has to be true before it is paid for.</p>
+      <ul>
+        <li>Stock, minimums and reorder points</li>
+        <li>Purchase orders, with approval routing</li>
+        <li>Supplier catalogues and price lists</li>
+        <li>Goods received, costed into the job</li>
+      </ul>
+    </article>
+    <article class="panel card">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <div class="idx"><span>THE HONEST PART</span><b>NOT YET</b></div>
+      <h3>What is not built</h3>
+      <div class="then">Live supplier feeds, group stock, vans</div>
+      <p>Group-wide stock visibility needs every branch on one tenancy and counting honestly — a
+         discipline problem more than a software one. Live supplier availability needs each supplier
+         to expose it, which is a commercial negotiation, not a sprint. The vans need vans.</p>
+      <ul>
+        <li>Live availability and pricing from suppliers</li>
+        <li>One stock view across eleven branches</li>
+        <li>Nine vans, staffed and scheduled</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="portals" data-label="THREE DOORS">
+  <div class="sec-head rise">
+    <span class="tag">03 — Three ways in</span>
+    <h2>Three doors</h2>
+    <p>
+      Each door sees its own slice and nothing next to it. That is not a 2030 invention — all
+      three portals ship today. What 2030 widens is what sits behind them.
+    </p>
+  </div>
+  <div class="cards" id="portalCards"></div>
+</section>
+
+<div class="rule"></div>
+
+<section id="stream" data-label="ORDERS">
+  <div class="sec-head rise">
+    <span class="tag">04 — What the store is doing</span>
+    <h2>Orders, right now</h2>
+    <p>Generated on this page. No network, no supplier, no order — the shape is real, the rows are not.</p>
+  </div>
+  <div class="fleet-wrap">
+    <div class="matrix-wrap rise">
+      <table class="matrix">
+        <thead>
+          <tr><th>Part</th><th>Source</th><th>Destination</th><th>State</th><th>ETA</th></tr>
+        </thead>
+        <tbody id="orderRows"></tbody>
+      </table>
+    </div>
+    <div class="panel log rise">
+      <i class="corner tl"></i><i class="corner br"></i>
+      <h4>Store floor</h4>
+      <ul id="storeLog"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section id="reach" data-label="BRANCHES">
+  <div class="sec-head rise">
+    <span class="tag">05 — How far it reaches</span>
+    <h2>Eleven branches, nine vans</h2>
+    <p>
+      Every branch, with what it can take. A full branch has lifts and bays; an express site does
+      services and diagnostics without them; a van does what can be done in a car park. Knowing
+      which is which before you promise a time is most of the job.
+    </p>
+  </div>
+  <div class="matrix-wrap rise">
+    <table class="matrix">
+      <thead><tr><th>Branch</th><th>Class</th><th>Bays</th><th>Jobs today</th><th>Status</th></tr></thead>
+      <tbody id="nodeRows"></tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<script src="os.js"></script>
+<script src="p-grid.js"></script>
+</body>
+</html>

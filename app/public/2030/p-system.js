@@ -8,57 +8,57 @@
   var OS = window.SalisOS;
   var $ = OS.$, $$ = OS.$$, esc = OS.esc, between = OS.between, reduced = OS.reduced;
 
-  /* name    — what it is called in 2060
+  /* name    — what it is called in 2030
      then    — the module that ships today, verbatim from the product
-     blurb   — the fiction
-     mods    — real capabilities, with the 2060 gloss on the right */
+     blurb   — what 2030 adds to it
+     mods    — real capabilities, with the 2030 change on the right */
   var SUB = [
-    { key: 'lattice', name: 'Bay Lattice', then: 'Workshop', ring: 0,
-      blurb: 'Nine bays that bid for work against each other with tool availability, technician fatigue and the hour the customer said they would return. Nobody assigns anything; the floor settles it and writes the audit row afterwards.',
-      mods: [['Job cards', 'bid tickets'], ['Bay board', 'the negotiation'], ['Inspection, multi-point with severity', 'continuous']] },
-    { key: 'memory', name: 'Vehicle Memory', then: 'Registry', ring: 0,
-      blurb: 'Every vehicle carries its own history and hands it over at the gate. The workshop stops being the archive and becomes a reader of one.',
-      mods: [['Vehicles, VIN decoding', 'identity'], ['Customers', 'the other half'], ['Service history', 'the whole life']] },
-    { key: 'ledger', name: 'Chrono-Ledger', then: 'Finance', ring: 0,
-      blurb: 'The invoice notarises itself at the moment of issue and is held by the customer, not by us. Disputes are resolved by reading, not by arguing.',
-      mods: [['ZATCA Phase 2 e-invoicing', 'Phase &infin;'], ['VAT 15%', 'unchanged'], ['Payments, Mada', 'instant settle']] },
-    { key: 'books', name: 'Self-Closing Books', then: 'Accounting', ring: 1,
-      blurb: 'The journal entry is the invoice, written once. The month closes itself and a human reviews rather than reassembles.',
-      mods: [['Chart of accounts', 'fixed spine'], ['Journals from invoices', 'no re-keying'], ['Statements', 'continuous']] },
+    { key: 'board', name: 'The Board', then: 'Workshop', ring: 0,
+      blurb: 'Nine bays on one screen. The schedule proposes a plan from certifications, parts that actually landed and what the customer was promised — and a human approves it. Every move writes an audit row, so &ldquo;why is that car in bay 6&rdquo; has an answer.',
+      mods: [['Job cards', 'unchanged'], ['Bay board', 'now proposes'], ['Inspection, multi-point with severity', 'unchanged']] },
+    { key: 'record', name: 'Vehicle Record', then: 'Registry', ring: 0,
+      blurb: 'Eleven years of what this car has had done, what it was doing when it went wrong, and who signed for it. The single thing every other subsystem hangs off.',
+      mods: [['Vehicles, VIN decoding', 'unchanged'], ['Customers', 'unchanged'], ['Service history', 'now machine-read']] },
+    { key: 'invoice', name: 'The Invoice', then: 'Finance', ring: 0,
+      blurb: 'ZATCA Phase 2 today, ZATCA Phase 2 in 2030 — this one does not need to change. What changes is that nobody types it twice and the customer keeps a copy that outlives the car.',
+      mods: [['ZATCA Phase 2 e-invoicing', 'unchanged'], ['VAT 15%', 'unchanged'], ['Payments, Mada', 'unchanged']] },
+    { key: 'closing', name: 'Closing', then: 'Accounting', ring: 1,
+      blurb: 'The journal entry comes from the invoice, which comes from the job card. The month closes because it was never open in the first place; a human reviews rather than reassembles.',
+      mods: [['Chart of accounts', 'unchanged'], ['Journals from invoices', 'no re-keying'], ['Statements', 'continuous']] },
     { key: 'signal', name: 'Signal', then: 'CRM and marketing', ring: 1,
-      blurb: 'The service reminder arrives when the vehicle says it should, in the language the customer reads, on the channel they answer.',
-      mods: [['Service reminders', 'vehicle-triggered'], ['Campaigns: SMS, email, WhatsApp', 'one voice'], ['Loyalty', 'earned in bay time']] },
-    { key: 'sov', name: 'Sovereignty', then: 'Administration', ring: 1,
-      blurb: 'Organisation, branch, user. The boundaries a workshop draws around itself, enforced by the substrate rather than by a policy document nobody has read.',
-      mods: [['Organisation, branch, user', 'territory'], ['14 roles, 28 modules', 'standing'], ['Branch settings', 'local law']] },
-    { key: 'identity', name: 'Identity Mesh', then: 'Authentication', ring: 1,
-      blurb: 'You are recognised before you speak, and the lattice can prove afterwards that it was you. Sessions end themselves when the person walks away from the bay.',
-      mods: [['Password policy', 'legacy path'], ['SMS OTP', 'still the fallback'], ['Session control', 'presence-bound']] },
+      blurb: 'The reminder goes out when the car is due rather than when the calendar says — because by 2030 the car&rsquo;s own data is what decides &ldquo;due&rdquo;.',
+      mods: [['Service reminders', 'condition-based'], ['Campaigns: SMS, email, WhatsApp', 'unchanged'], ['Loyalty', 'unchanged']] },
+    { key: 'bounds', name: 'Boundaries', then: 'Administration', ring: 1,
+      blurb: 'Organisation, branch, user. Eleven branches on one tenancy, each seeing its own floor, with the group able to see all of it and nobody able to see across.',
+      mods: [['Organisation, branch, user', 'unchanged'], ['14 roles, 28 modules', 'unchanged'], ['Branch settings', 'unchanged']] },
+    { key: 'identity', name: 'Identity', then: 'Authentication', ring: 1,
+      blurb: 'Who signed in, on what, and what they were allowed to do. The least glamorous subsystem on this page and the one a regulator asks about first.',
+      mods: [['Password policy', 'unchanged'], ['SMS OTP', 'unchanged'], ['Session control', 'unchanged']] },
     { key: 'core', name: 'The Core', then: 'AI platform', ring: 0,
-      blurb: 'Collapses a vehicle&rsquo;s whole operating history into one signature and answers questions in the workshop&rsquo;s own words, over the workshop&rsquo;s own data.',
-      mods: [['Assistant', 'natural language'], ['Knowledge base', 'institutional memory'], ['Agents', 'audited autonomy']] },
-    { key: 'matter', name: 'Matter', then: 'Parts and inventory', ring: 1,
-      blurb: 'The supplier catalogue became a geometry library. A housing is licensed, printed in the bay in forty minutes, and booked out of stock as it cools.',
-      mods: [['Stock, minimums', 'forecast, not floor'], ['Purchase orders', 'licences'], ['Supplier catalogues', 'geometry']] },
-    { key: 'voice', name: 'The Voice', then: 'Call centre', ring: 2,
-      blurb: 'Every conversation with a customer, wherever it happened, lands in one thread against one vehicle — and the follow-up is scheduled before the call ends.',
-      mods: [['Call logging', 'one thread'], ['Appointments', 'grid-aware'], ['Follow-ups', 'never dropped']] },
-    { key: 'oracle', name: 'Oracle', then: 'Reports and analytics', ring: 2,
-      blurb: 'Dashboards that answer the question the role actually has. The owner sees money, the advisor sees today, the technician sees the next hour.',
-      mods: [['Role dashboards', 'per standing'], ['Custom reports', 'ask in words'], ['KPIs, alerts', 'pushed, not pulled']] },
+      blurb: 'Reads the diagnostic port and the history and says what fails next, with the confidence it earned. Answers questions in plain language over the workshop&rsquo;s own data — and cites the rows it used.',
+      mods: [['Assistant', 'now cites its sources'], ['Knowledge base', 'unchanged'], ['Agents', 'proposes, never commits']] },
+    { key: 'stock', name: 'Stock', then: 'Parts and inventory', ring: 1,
+      blurb: 'Ordered against next month&rsquo;s bookings instead of a reorder level, visible across all eleven branches, and sourced same-day from whichever one already has it.',
+      mods: [['Stock, minimums', 'forecast-led'], ['Purchase orders', 'unchanged'], ['Supplier catalogues', 'live pricing']] },
+    { key: 'line', name: 'The Line', then: 'Call centre', ring: 2,
+      blurb: 'Every conversation about a car — call, WhatsApp, walk-in — on one thread against one vehicle, with the follow-up booked before the call ends.',
+      mods: [['Call logging', 'one thread'], ['Appointments', 'network-wide'], ['Follow-ups', 'never dropped']] },
+    { key: 'readouts', name: 'Readouts', then: 'Reports and analytics', ring: 2,
+      blurb: 'One number per role, and permission to stop worrying about it until it moves. The owner sees money; the advisor sees today; the technician sees the next hour.',
+      mods: [['Role dashboards', 'unchanged'], ['Custom reports', 'ask in words'], ['KPIs, alerts', 'pushed, not pulled']] },
     { key: 'crew', name: 'The Crew', then: 'Team and HR', ring: 2,
-      blurb: 'Records, attendance and performance for people whose work is now half physical and half supervisory — and a fatigue signal the lattice is required to respect.',
-      mods: [['Employee records, Iqama', 'unchanged'], ['Attendance', 'presence-derived'], ['Performance', 'measured in outcomes']] },
+      blurb: 'Records, Iqama dates, attendance and certifications — the last of which the board reads before it puts anyone on a job.',
+      mods: [['Employee records, Iqama', 'unchanged'], ['Attendance', 'unchanged'], ['Performance', 'outcome-based']] },
     { key: 'doors', name: 'Three Doors', then: 'Portals', ring: 2,
-      blurb: 'Customer, technician, supplier. Three ways in, each seeing exactly its own slice and nothing adjacent to it.',
-      mods: [['Customer app', 'the vehicle&rsquo;s own view'], ['Technician portal', 'one hand, in Arabic'], ['Supplier portal', 'geometry and orders']] }
+      blurb: 'Customer, technician, supplier. Three ways in, each seeing its own slice and nothing next to it. All three exist today; 2030 only widens what is behind them.',
+      mods: [['Customer app', 'unchanged'], ['Technician portal', 'unchanged'], ['Supplier portal', 'live stock']] }
   ];
 
-  /* Every role the product actually defines. The 2060 line is the gloss. */
+  /* Every role the product actually defines. None of these change by 2030. */
   var ROLES = [
     ['Owner / CEO', 'all', 'Sees money, and the shape of every branch at once'],
     ['Super Admin', 'platform', 'Holds the platform itself, and is audited hardest'],
-    ['Branch Manager', 'branch', 'Owns one lattice and everything that happens in it'],
+    ['Branch Manager', 'branch', 'Owns one branch and everything that happens in it'],
     ['Service Advisor', 'branch', 'Stands where the customer stands; signs nothing alone'],
     ['Technician', 'own', 'Sees the next hour, in Arabic, with one hand free'],
     ['QC Inspector', 'branch', 'The second signature. Cannot be the first'],
@@ -72,14 +72,17 @@
     ['Customer', 'self', 'Sees one life — the vehicle&rsquo;s — and owns the record of it']
   ];
 
+  /* The honest column. Four years out, the gap is small enough to name
+     precisely — which is a better argument than any adjective. */
   var TRUTH = [
-    ['Nine bays negotiate their own queue', 'A bay board a human moves work across', 'A scheduler'],
-    ['The core reads a vehicle&rsquo;s life as one signature', 'Multi-point inspection with severity, recorded per visit', 'A model'],
-    ['The invoice notarises itself and the customer holds it', 'ZATCA Phase 2 e-invoicing with a QR and a hash', 'Custody'],
-    ['Mobile cells dock beside the vehicle overnight', 'Appointments, check-in and a physical workshop', 'A fleet'],
-    ['Parts are printed in the bay in forty minutes', 'Purchase orders against supplier catalogues', 'A printer'],
-    ['The lattice recognises you before you speak', 'Password policy, SMS OTP, session control', 'Sensors'],
-    ['Fourteen standings enforced at the substrate', 'Fourteen roles enforced on every screen and write', 'None &mdash; this one is real']
+    ['The board proposes the day&rsquo;s schedule', 'A bay board a human moves work across', 'Scheduling logic'],
+    ['The car&rsquo;s port is read at every check-in', 'An OBD integration that already exists', 'Make it routine'],
+    ['&ldquo;What breaks next&rdquo;, with a confidence', 'Inspection with severity, and full history', 'A model + 2 years of data'],
+    ['Stock ordered against next month&rsquo;s diary', 'Stock with minimums and reorder points', 'A forecast'],
+    ['Nine vans running off the branch diary', 'Appointments, check-in, branches', 'Vehicles and people'],
+    ['One thread per car across every channel', 'Call logging and appointments', 'Channel integrations'],
+    ['ZATCA Phase 2, VAT, journals from invoices', 'ZATCA Phase 2, VAT, journals from invoices', 'None — this ships'],
+    ['Fourteen roles enforced on every write', 'Fourteen roles enforced on every write', 'None — this ships']
   ];
 
   /* ── Constellation ───────────────────────────────────────────────── */
@@ -115,9 +118,9 @@
     parts.push('<circle cx="' + CX + '" cy="' + CY + '" r="118" fill="url(#coreGlow)"/>');
     parts.push('<circle cx="' + CX + '" cy="' + CY + '" r="52" fill="rgba(5,7,14,.9)" stroke="rgba(11,179,255,.6)"/>');
     parts.push('<text x="' + CX + '" y="' + (CY - 2) + '" text-anchor="middle" fill="#fff" ' +
-               'font-family="ui-monospace, monospace" font-size="17" letter-spacing="3">LATTICE</text>');
+               'font-family="ui-monospace, monospace" font-size="17" letter-spacing="3">AL-MALAZ</text>');
     parts.push('<text x="' + CX + '" y="' + (CY + 14) + '" text-anchor="middle" fill="#0BB3FF" ' +
-               'font-family="ui-monospace, monospace" font-size="13" letter-spacing="3">09</text>');
+               'font-family="ui-monospace, monospace" font-size="13" letter-spacing="3">RIYADH</text>');
 
     SUB.forEach(function (s, i) {
       var p = nodePos(i), right = p[0] >= CX;
@@ -156,7 +159,7 @@
         '<ul>' + s.mods.map(function (m) {
           return '<li><span>' + m[0] + '</span><b>' + m[1] + '</b></li>';
         }).join('') + '</ul>' +
-        '<div class="hint">Left column ships today &middot; right column is the fiction</div>';
+        '<div class="hint">Left column ships today &middot; right column is what 2030 adds</div>';
     }
 
     $$('.node-hit', svg).forEach(function (g) {
@@ -203,7 +206,7 @@
 
   function truth() {
     $('#truthRows').innerHTML = TRUTH.map(function (t) {
-      var real = t[2].indexOf('real') !== -1;
+      var real = t[2].indexOf('None') === 0;
       return '<tr><th>' + t[0] + '</th><td style="text-align:start;color:var(--mist)">' + t[1] + '</td>' +
              '<td class="' + (real ? '' : 'em') + '">' + t[2] + '</td></tr>';
     }).join('');

@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Channel page — a carrier-signal canvas and a form that deliberately
-   goes nowhere. The submit handler reads the values back and drops them;
-   there is no fetch on this page, and there never should be.
+   Contact page — a decorative waveform and a form that deliberately goes
+   nowhere. The submit handler reads the values back and drops them; there
+   is no fetch on this page, and there never should be.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -74,14 +74,14 @@
       var d = new Date();
 
       $('#receipt').innerHTML =
-        '▸ CHANNEL <b>' + id + '</b> OPENED ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + '<br/>' +
-        '  caller ....... <b>' + esc(name) + '</b><br/>' +
-        '  standing ..... <b>' + esc(role) + '</b>, ' + esc(bays) + '<br/>' +
-        (mail ? '  return path .. <b>' + esc(mail) + '</b><br/>' : '') +
-        (msg ? '  payload ...... ' + esc(msg.slice(0, 220)) + (msg.length > 220 ? '…' : '') + '<br/>' : '') +
-        '<br/>▸ TRANSMITTED TO: <b>nowhere</b>. This page has no network. Your text was read back ' +
-        'from the form and has not been stored, sent or logged. To reach a person about the real ' +
-        'product, use the live contact page linked beside this form.';
+        '▸ READ BACK <b>' + id + '</b> AT ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + '<br/>' +
+        '  name ......... <b>' + esc(name) + '</b><br/>' +
+        '  role ......... <b>' + esc(role) + '</b>, ' + esc(bays) + '<br/>' +
+        (mail ? '  email ........ <b>' + esc(mail) + '</b><br/>' : '') +
+        (msg ? '  message ...... ' + esc(msg.slice(0, 220)) + (msg.length > 220 ? '…' : '') + '<br/>' : '') +
+        '<br/>▸ SENT TO: <b>nowhere</b>. This page has no network. Your text was read back from the ' +
+        'form and has not been stored, sent or logged — not to us, not to anyone. Close the tab and ' +
+        'it is gone.';
       $('#receipt').classList.add('on');
       $('#receipt').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
     });

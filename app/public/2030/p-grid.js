@@ -1,14 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   The Grid page — the supply mesh canvas, the three portals, and two
-   synthetic feeds (orders and the print floor).
+   The Network page — the sourcing canvas, the three portals, and two
+   generated feeds (orders and the store floor).
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
   var OS = window.SalisOS;
   var $ = OS.$, rand = OS.rand, pick = OS.pick, between = OS.between, pad = OS.pad, reduced = OS.reduced;
 
-  /* ── The mesh: libraries → print core → bays ─────────────────────── */
-  var LIBS = ['ALPHA GEOMETRY', 'GULF STRUCTURAL', 'OEM VAULT 7', 'DESERT DRIVETRAIN', 'OPEN LATTICE'];
+  /* ── The flow: suppliers → branch store → bays ───────────────────── */
+  var LIBS = ['TOYOTA OEM', 'GULF PARTS CO', 'BOSCH DIST.', 'AL-JAZIRA TYRES', 'DENSO GULF'];
 
   function mesh() {
     var cv = $('#meshCanvas'), ctx = cv && cv.getContext('2d');
@@ -92,7 +92,7 @@
         }
       }
 
-      /* Print core — a hexagon with a rotating inner ring */
+      /* Branch store — a hexagon with a rotating inner ring */
       var r = Math.min(w, h) * 0.075;
       ctx.strokeStyle = 'rgba(11,179,255,.75)'; ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -116,7 +116,7 @@
       ctx.beginPath(); ctx.arc(core[0], core[1], r * 2.4, 0, Math.PI * 2); ctx.fill();
       if (w > 620) {
         ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.textAlign = 'center';
-        ctx.fillText('PRINT CORE', core[0], core[1] + r + 20);
+        ctx.fillText('BRANCH STORE', core[0], core[1] + r + 20);
       }
 
       /* Bays */
@@ -146,19 +146,19 @@
   /* ── Three doors ─────────────────────────────────────────────────── */
   var PORTALS = [
     { name: 'The customer door', then: 'Customer app',
-      body: 'One life — the vehicle&rsquo;s. Bookings, the estimate waiting for a signature, the ' +
-            'service history the customer owns outright, and the invoice they keep after we forget it.',
+      body: 'One car&rsquo;s life. Bookings, the estimate waiting for a signature, the service history ' +
+            'they own outright, and the invoice they keep long after they have sold the car.',
       sees: ['Their own vehicles and no one else&rsquo;s', 'Estimates, to sign or decline',
-             'Appointments and reminders', 'Invoices, held for the vehicle&rsquo;s life'] },
+             'Appointments and reminders', 'Invoices, kept for the car&rsquo;s life'] },
     { name: 'The technician door', then: 'Technician portal',
       body: 'Short, unambiguous instructions on a phone, in Arabic, operable with one hand — because ' +
             'the other one is holding the part. Time clock, the next hour, and nothing about money.',
       sees: ['Only jobs assigned to them', 'Parts request against the job', 'Time clock and attendance',
              'Guides and documentation'] },
     { name: 'The supplier door', then: 'Supplier portal',
-      body: 'Geometry in, orders out. A supplier sees the licences drawn against its own library and ' +
-            'the orders placed with it — and nothing at all about the workshop beside it.',
-      sees: ['Its own orders only', 'Its own catalogue and prices', 'Delivery and licence state',
+      body: 'Stock in, orders out. A supplier sees the orders placed with it and the availability it ' +
+            'publishes back — and nothing at all about the supplier beside it.',
+      sees: ['Its own orders only', 'Its own catalogue and prices', 'Delivery state',
              'No customer data, ever'] }
   ];
 
@@ -176,18 +176,20 @@
 
   /* ── Synthetic feeds ─────────────────────────────────────────────── */
   var PARTS = [
-    ['Drive-unit housing 41-B', 'OEM VAULT 7'], ['Canopy seal, long', 'GULF STRUCTURAL'],
-    ['Suspension bush set', 'DESERT DRIVETRAIN'], ['Cell module clamp', 'ALPHA GEOMETRY'],
-    ['Sensor mast, survey', 'OPEN LATTICE'], ['Thermal loop coupler', 'GULF STRUCTURAL'],
-    ['Lift-pod vane ×4', 'ALPHA GEOMETRY'], ['Brake caliper shell', 'OEM VAULT 7']
+    ['Front brake discs ×2', 'TOYOTA OEM'], ['Cabin filter', 'DENSO GULF'],
+    ['Suspension bush set', 'GULF PARTS CO'], ['Battery — 12 V AGM', 'BOSCH DIST.'],
+    ['Tyres 225/45 R18 ×4', 'AL-JAZIRA TYRES'], ['Coolant, 5 L', 'GULF PARTS CO'],
+    ['Wiper blades, pair', 'DENSO GULF'], ['A/C compressor', 'TOYOTA OEM']
   ];
-  var STATES = [['Printing', ''], ['Curing', ''], ['Certifying', ''], ['Awaiting approval', 'em'], ['Booked out', '']];
+  var STATES = [['In transit', ''], ['At the counter', ''], ['Booked to job', ''],
+                ['Awaiting approval', 'em'], ['Fitted', '']];
   var NODES = [
-    ['Riyadh · Lattice 09', 'Lattice', 9], ['Jeddah · Cell 04', 'Cell', 4], ['Dammam · Cell 11', 'Cell', 3],
-    ['NEOM · Cell 01', 'Cell', 6], ['Madinah · Relay', 'Relay', 0], ['Abha · Cell 07', 'Cell', 2],
-    ['Tabuk · Relay', 'Relay', 0], ['Hail · Relay', 'Relay', 0], ['Al-Ula · Cell 06', 'Cell', 2],
-    ['Empty Quarter · Beacon', 'Beacon', 0], ['Orbital Ring 7 · Uplink', 'Uplink', 1],
-    ['Khobar · Cell 12', 'Cell', 3]
+    ['Riyadh · Al-Malaz', 'Full branch', 9], ['Riyadh · Exit 9', 'Full branch', 6],
+    ['Jeddah · Al-Ruwais', 'Full branch', 7], ['Dammam · Al-Adamah', 'Full branch', 5],
+    ['Khobar · Corniche', 'Express', 3], ['Makkah · Al-Aziziyah', 'Express', 3],
+    ['Madinah · Qurban', 'Full branch', 4], ['Buraidah · Al-Khaleej', 'Express', 2],
+    ['Abha · Al-Manhal', 'Express', 2], ['Tabuk · Al-Faisaliyah', 'Express', 2],
+    ['Hail · Al-Nuqrah', 'Express', 2], ['Yanbu · Al-Sinaiyah', 'Van base', 0]
   ];
 
   function orders() {
@@ -204,14 +206,14 @@
     $('#orderRows').innerHTML = rows;
   }
 
-  function printLog() {
-    var ul = $('#printLog');
+  function storeLog() {
+    var ul = $('#storeLog');
     var LINES = [
-      ['Geometry licensed', 'housing 41-B', 0], ['Print started', 'bay 07', 0],
-      ['Tolerance check passed', '±0.04 mm', 0], ['PRIORITY — material batch low', 'polymer 9', 1],
-      ['Certificate written', 'part 41-B', 0], ['Booked out of stock', 'SAR 1,905.00', 0],
-      ['Second signature', 'QC inspector', 0], ['PRIORITY — approval waiting', 'PO 4471', 1],
-      ['Library synced', 'ALPHA GEOMETRY', 0], ['Cure complete', 'bay 03', 0]
+      ['Part found at', 'Exit 9 branch', 0], ['Collection booked', 'arrives 11:20', 0],
+      ['Received against job', 'JC-4F2A', 0], ['LOW — one left in the group', 'cabin filter', 1],
+      ['Booked out to bay 07', 'SAR 1,430.00', 0], ['Second signature', 'QC inspector', 0],
+      ['WAITING — approval over limit', 'PO 4471', 1], ['Supplier price updated', 'TOYOTA OEM', 0],
+      ['Reorder raised from forecast', '18 lines', 0], ['Fitted and costed', 'RUH 4821', 0]
     ];
     var last = -1;
     function push() {
@@ -231,14 +233,14 @@
 
   function nodeTable() {
     $('#nodeRows').innerHTML = NODES.map(function (n) {
-      var standing = n[1] === 'Relay' || n[1] === 'Beacon' ? 'Holding' : 'Serving';
+      var standing = n[1] === 'Van base' ? 'Vans only' : 'Open';
       return '<tr><th>' + n[0] + '</th>' +
         '<td style="text-align:start">' + n[1] + '</td>' +
         '<td>' + (n[2] || '—') + '</td>' +
-        '<td>' + Math.round(between(2, 44)) + '</td>' +
-        '<td class="' + (standing === 'Holding' ? 'no' : '') + '">' + standing + '</td></tr>';
+        '<td>' + Math.round(between(3, 26)) + '</td>' +
+        '<td class="' + (standing === 'Vans only' ? 'no' : '') + '">' + standing + '</td></tr>';
     }).join('');
   }
 
-  OS.start(function () { mesh(); portals(); orders(); printLog(); nodeTable(); });
+  OS.start(function () { mesh(); portals(); orders(); storeLog(); nodeTable(); });
 })();

@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Arrival page — the scenes that belong to it alone: the hero vehicle,
-   the bay lattice, the diagnostic core, the service grid, the chrono rail,
-   the ledger hologram and the command deck. Shared chrome lives in os.js.
+   The floor — the scenes that belong to this page alone: the hero vehicle,
+   the bay board, the prediction readout, the branch map, the four-year rail,
+   the invoice card and the console. Shared chrome lives in os.js.
    ═══════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -11,10 +11,10 @@
 
   /* ── Substrate telemetry ─────────────────────────────────────────── */
   var METERS = [
-    { v: '#rv1', b: '#rb1', lo: 58, hi: 92, unit: '%' },
-    { v: '#rv2', b: '#rb2', lo: 41, hi: 78, unit: '%' },
-    { v: '#rv3', b: '#rb3', lo: 66, hi: 97, unit: '%' },
-    { v: '#rv4', b: '#rb4', lo: 22, hi: 61, unit: '%' }
+    { v: '#rv1', b: '#rb1', lo: 62, hi: 94, unit: '%' },   /* bay utilisation */
+    { v: '#rv2', b: '#rb2', lo: 74, hi: 98, unit: '%' },   /* parts in stock for today */
+    { v: '#rv3', b: '#rb3', lo: 80, hi: 99, unit: '%' },   /* estimates signed on time */
+    { v: '#rv4', b: '#rb4', lo: 3,  hi: 17, unit: '%' }    /* jobs waiting on a part */
   ];
   function telemetry() {
     METERS.forEach(function (m) {
@@ -22,10 +22,12 @@
       $(m.v).textContent = n + m.unit;
       $(m.b).style.width = n + '%';
     });
+    /* A prediction is not a fact, and the figure says so: a model four years
+       from now is confident, not certain. */
     var coreN = $('#coreN');
-    if (coreN) coreN.textContent = between(96.2, 99.4).toFixed(1) + '%';
-    $('#mFlow').textContent = Math.round(between(198, 302));
-    $('#mTime').innerHTML = Math.round(between(8, 15)) + '<em>min</em>';
+    if (coreN) coreN.textContent = Math.round(between(78, 94)) + '%';
+    $('#mFlow').textContent = Math.round(between(24, 38));
+    $('#mTime').innerHTML = Math.round(between(18, 52)) + '<em>min</em>';
   }
 
   function spectrum() {
@@ -39,19 +41,19 @@
     });
   }
 
-  /* ── Bay lattice ─────────────────────────────────────────────────── */
+  /* ── The board ───────────────────────────────────────────────────── */
   var BAY_JOBS = [
-    ['Drive-unit reseat', 'RUH 4821 · Sedan, printed chassis'],
-    ['Cell balance + reflash', 'RUH 1157 · Fleet compact'],
+    ['Front brakes — discs and pads', 'RUH 4821 · Toyota Camry, 2027'],
+    ['40,000 km service', 'RUH 1157 · Fleet Hilux'],
     ['Suspension geometry', 'JED 9930 · Long-haul hauler'],
-    ['Canopy seal renewal', 'DMM 2204 · Coastal duty'],
-    ['Autonomy stack audit', 'NEO 0071 · Grid shuttle'],
-    ['Thermal loop flush', 'RUH 6612 · Desert package'],
-    ['Structural print · wing', 'ULA 3390 · Tourism unit'],
-    ['Sensor array recalibration', 'TBK 8115 · Survey vehicle'],
-    ['Full lifecycle intake', 'RUH 5540 · Walk-in, unidentified']
+    ['A/C compressor — under warranty', 'DMM 2204 · Coastal duty'],
+    ['Battery pack health check', 'RUH 0071 · EV, 2029'],
+    ['Coolant service', 'RUH 6612 · Desert package'],
+    ['Body panel — insurance claim', 'JED 3390 · Awaiting assessor'],
+    ['Diagnostic read — intermittent fault', 'TBK 8115 · Customer waiting'],
+    ['Walk-in — no booking', 'RUH 5540 · Being identified']
   ];
-  var STATES = ['IN REPAIR', 'QUALITY CONTROL', 'PRINTING PART', 'DIAGNOSING', 'AWAITING SIGNATURE', 'DELIVERING'];
+  var STATES = ['IN REPAIR', 'QUALITY CONTROL', 'ROAD TEST', 'DIAGNOSING', 'AWAITING APPROVAL', 'READY FOR PICKUP'];
 
   function bays() {
     var host = $('#bays');
@@ -59,16 +61,16 @@
     for (var i = 0; i < 9; i++) {
       var job = BAY_JOBS[i];
       var alert = (i === 3 || i === 8);
-      var state = alert ? (i === 3 ? 'THERMAL DRIFT' : 'IDENTIFYING') : pick(STATES);
+      var state = alert ? (i === 3 ? 'WAITING ON PART' : 'NO BOOKING') : pick(STATES);
       html +=
         '<article class="panel bay rise' + (alert ? ' alert' : '') + '">' +
           '<i class="corner tl"></i><i class="corner br"></i>' +
-          '<div class="id"><b>BAY ' + pad(i + 1) + '</b><span>LATTICE 09</span></div>' +
+          '<div class="id"><b>BAY ' + pad(i + 1) + '</b><span>AL-MALAZ</span></div>' +
           '<h4>' + job[0] + '</h4>' +
           '<div class="sub">' + job[1] + '</div>' +
           '<div class="state"><i class="dot"></i>' + state + '</div>' +
           '<div class="foot"><span>ETA <b>' + Math.round(between(3, 26)) + ' min</b></span>' +
-          '<span>CONF <b>' + between(91, 99.6).toFixed(1) + '%</b></span></div>' +
+          '<span>TECH <b>' + pick(['A. Rashid', 'M. Idris', 'S. Haddad', 'K. Nour']) + '</b></span></div>' +
         '</article>';
     }
     host.innerHTML = html;
@@ -76,11 +78,11 @@
 
   /* ── Diagnostic readout ──────────────────────────────────────────── */
   var DIAG = [
-    ['Drive-unit bearing', 'Harmonic drift matched against 1.2 M km of the same unit.', '31 d', false],
-    ['Cell pack asymmetry', 'Module 7 charges 40 s behind the pack. Not yet a fault.', 'Watch', false],
-    ['Coolant loop', 'Two summers of Riyadh heat. Replace before June.', '92 d', false],
-    ['Suspension bush, rear left', 'Road-surface history says the eastern route did this.', 'Now', true],
-    ['Autonomy stack', 'Firmware two generations behind the fleet baseline.', 'Now', true]
+    ['Front brake pads', 'Wear rate against this driver&rsquo;s own last three services.', '~2,400 km', false],
+    ['Battery — module 7', 'Charges 40 s behind the pack. Not a fault yet; worth watching.', 'Watch', false],
+    ['Coolant', 'Two Riyadh summers on this fill. Before June.', '~90 d', false],
+    ['Rear left bush', 'Knock on rough surfaces; matches 61 of the same model.', 'This visit', true],
+    ['A/C compressor', 'Pressure drifting. Under warranty until November — claim now.', 'This visit', true]
   ];
   function diag() {
     $('#diagList').innerHTML = DIAG.map(function (d) {
@@ -91,19 +93,18 @@
 
   /* ── Chrono rail ─────────────────────────────────────────────────── */
   var ERAS = [
-    ['2025', 'Shipping today', 'The job card goes digital',
-     'Check-in, multi-point inspection, an estimate signed on the customer’s phone, ZATCA Phase 2 e-invoicing, and an audit row for every change. Six stages, in order, each one gating the next.'],
-    ['2031', 'Predicted', 'The workshop stops guessing at parts',
-     'Stock ordering moves from a minimum level to a forecast: the shelf knows what next month’s bookings will consume before the bookings exist.'],
-    ['2038', 'Predicted', 'The vehicle files its own job card',
-     'Telemetry arrives ahead of the car. The advisor greets a customer whose estimate is already drafted, priced and waiting for a signature.'],
-    ['2044', 'Predicted', 'Parts are printed in the bay',
-     'The supplier catalogue becomes a geometry library. Lead time for a housing falls from eleven days to forty minutes, and the purchase order becomes a licence.'],
-    ['2051', 'Predicted', 'The bay leaves the building',
-     'Mobile service cells dock beside the vehicle overnight. The workshop’s footprint becomes a dispatch radius and the bay board becomes a map.'],
-    ['2060', 'You are here', 'The lattice',
-     'Nine bays negotiate their own queue. The diagnostic core reads a vehicle’s whole life as one signature. The invoice notarises itself and the customer keeps it. Nobody assigns work; the floor settles it.']
+    ['2026', 'Shipping now', 'The job card, and everything hanging off it',
+     'Check-in, multi-point inspection with severity, an estimate signed on the customer&rsquo;s phone, ZATCA Phase 2 e-invoicing, parts, CRM, HR and three portals. Fourteen roles, twenty-eight modules, and an audit row for every change.'],
+    ['2027', 'Next', 'The port, read on every visit',
+     'The OBD integration stops being optional. Every car that comes in has its codes and live values pulled at check-in and written to the vehicle record — so the history stops being what somebody remembered to type.'],
+    ['2028', 'Then', 'Stock ordered against the diary, not a minimum',
+     'Two years of job data is enough to forecast. The shelf starts ordering against next month&rsquo;s bookings rather than a reorder level, and the money sitting on it stops being a hedge against being wrong.'],
+    ['2029', 'Then', 'The estimate drafted before the counter',
+     'Booking, history and the last diagnostic read produce a draft estimate the advisor edits rather than writes. The job changes from typing to judgement, which was always the point.'],
+    ['2030', 'You are here', 'The workshop stops guessing',
+     'The board schedules itself and a human approves. The car&rsquo;s own data says what fails next and roughly when. Eleven branches and nine vans run off one diary. Nothing here needs an invention — only the four years above it.']
   ];
+
   function chrono() {
     $('#chronoRail').innerHTML = ERAS.map(function (e, i) {
       return '<article class="era' + (i === ERAS.length - 1 ? ' now' : '') + '">' +
@@ -118,34 +119,30 @@
     if (!ctx) return;
     var w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    /* Side profile of a low hovercar, extruded across the width. */
+    /* Side profile of an ordinary car, extruded across the width. Nothing
+       here is futuristic on purpose: in 2030 the vehicle on the lift is the
+       one on the road today, which is the entire point of the page. */
     var PROFILE = [
-      [-2.60, 0.05], [-2.20, 0.44], [-0.90, 0.60], [0.20, 0.94], [1.10, 0.97],
-      [2.00, 0.58], [2.62, 0.34], [2.72, 0.00], [2.20, -0.34], [0.60, -0.50],
-      [-1.40, -0.50], [-2.40, -0.26]
+      [-2.55, -0.08], [-2.62, 0.24], [-2.28, 0.54], [-1.30, 0.64], [-0.72, 1.02],
+      [0.38, 1.06], [1.28, 0.72], [1.98, 0.58], [2.52, 0.42], [2.66, 0.08],
+      [2.46, -0.20], [1.55, -0.34], [-1.55, -0.34], [-2.32, -0.24]
     ];
     var verts = [], edges = [], n = PROFILE.length;
-    [-0.95, 0.95].forEach(function (z, side) {
+    [-0.92, 0.92].forEach(function (z, side) {
       PROFILE.forEach(function (p) { verts.push([p[0], p[1], z]); });
       for (var i = 0; i < n; i++) edges.push([side * n + i, side * n + ((i + 1) % n)]);
     });
-    for (var i = 0; i < n; i += 2) edges.push([i, n + i]);            // rungs
+    for (var i = 0; i < n; i += 2) edges.push([i, n + i]);            // rungs across
 
-    /* Cockpit ring, then four thruster hoops. */
-    var ringStart = verts.length;
-    for (var a = 0; a < 14; a++) {
-      var th = (a / 14) * Math.PI * 2;
-      verts.push([0.55 + Math.cos(th) * 0.62, 0.62 + Math.sin(th) * 0.30, 0]);
-    }
-    for (var a2 = 0; a2 < 14; a2++) edges.push([ringStart + a2, ringStart + ((a2 + 1) % 14)]);
-
-    [[-1.70, -0.86], [-1.70, 0.86], [1.60, -0.86], [1.60, 0.86]].forEach(function (pod) {
-      var s = verts.length;
-      for (var k = 0; k < 10; k++) {
-        var t = (k / 10) * Math.PI * 2;
-        verts.push([pod[0] + Math.cos(t) * 0.40, -0.54, pod[1] + Math.sin(t) * 0.40]);
+    /* Four wheels — circles standing in the x/y plane at each flank, which is
+       what separates this silhouette from the hovercar it used to be. */
+    [[1.58, -0.92], [1.58, 0.92], [-1.58, -0.92], [-1.58, 0.92]].forEach(function (wheel) {
+      var start = verts.length;
+      for (var k = 0; k < 12; k++) {
+        var t = (k / 12) * Math.PI * 2;
+        verts.push([wheel[0] + Math.cos(t) * 0.42, -0.30 + Math.sin(t) * 0.42, wheel[1]]);
       }
-      for (var k2 = 0; k2 < 10; k2++) edges.push([s + k2, s + ((k2 + 1) % 10)]);
+      for (var k2 = 0; k2 < 12; k2++) edges.push([start + k2, start + ((k2 + 1) % 12)]);
     });
 
     var stars = [];
@@ -256,18 +253,18 @@
 
   /* ── Fleet canvas: nodes and dispatch arcs ───────────────────────── */
   var NODES = [
-    ['RIYADH · LATTICE 09', 0.52, 0.46, 1],
-    ['JEDDAH · CELL 04', 0.24, 0.60, 0],
-    ['DAMMAM · CELL 11', 0.78, 0.36, 0],
-    ['NEOM · CELL 01', 0.14, 0.16, 1],
-    ['MADINAH · RELAY', 0.28, 0.42, 0],
-    ['ABHA · CELL 07', 0.30, 0.84, 0],
-    ['TABUK · RELAY', 0.18, 0.22, 0],
-    ['HAIL · RELAY', 0.38, 0.28, 0],
-    ['AL-ULA · CELL 06', 0.25, 0.30, 0],
-    ['EMPTY QUARTER · BEACON', 0.66, 0.78, 0],
-    ['ORBITAL RING 7 · UPLINK', 0.86, 0.12, 1],
-    ['KHOBAR · CELL 12', 0.80, 0.44, 0]
+    ['RIYADH · AL-MALAZ', 0.52, 0.46, 1],
+    ['RIYADH · EXIT 9', 0.56, 0.52, 0],
+    ['JEDDAH · AL-RUWAIS', 0.24, 0.60, 1],
+    ['DAMMAM · AL-ADAMAH', 0.78, 0.36, 0],
+    ['KHOBAR · CORNICHE', 0.80, 0.44, 0],
+    ['MAKKAH · AL-AZIZIYAH', 0.26, 0.66, 0],
+    ['MADINAH · QURBAN', 0.28, 0.42, 0],
+    ['BURAIDAH · AL-KHALEEJ', 0.44, 0.34, 0],
+    ['ABHA · AL-MANHAL', 0.30, 0.84, 0],
+    ['TABUK · AL-FAISALIYAH', 0.18, 0.22, 0],
+    ['HAIL · AL-NUQRAH', 0.38, 0.28, 0],
+    ['YANBU · AL-SINAIYAH', 0.20, 0.50, 0]
   ];
 
   function fleetScene() {
@@ -377,12 +374,12 @@
 
   /* ── Dispatch log ────────────────────────────────────────────────── */
   var EVENTS = [
-    ['Cell dispatched to', 'RUH 4821', 0], ['Overnight dock confirmed', 'JED 9930', 0],
-    ['Signature captured en route', 'DMM 2204', 0], ['Part printed in transit', 'housing 41-B', 0],
-    ['PRIORITY — thermal drift', 'bay 04', 1], ['Bay negotiation settled', 'bay 07 wins', 0],
-    ['Ledger notarised', 'SAR 4,182.00', 0], ['Walk-in identified', 'RUH 5540', 0],
-    ['PRIORITY — autonomy stack behind', 'NEO 0071', 1], ['Node handshake', 'ORBITAL RING 7', 0],
-    ['Customer took delivery', 'RUH 1157', 0], ['Forecast reorder placed', '18 SKUs', 0]
+    ['Van en route to', 'RUH 4821', 0], ['Estimate approved from phone', 'JED 9930', 0],
+    ['Diagnostic read uploaded', 'DMM 2204', 0], ['Part collected from Exit 9', 'brake discs', 0],
+    ['WAITING — part not in yet', 'bay 04', 1], ['Job moved to bay 07', 'advisor approved', 0],
+    ['Invoice issued', 'SAR 2,640.00', 0], ['Walk-in matched to record', 'RUH 5540', 0],
+    ['WAITING — customer not reached', 'RUH 0071', 1], ['Van finished in car park', 'battery check', 0],
+    ['Customer collected', 'RUH 1157', 0], ['Reorder raised from forecast', '18 lines', 0]
   ];
   function logStream() {
     var ul = $('#logList'), last = -1;
@@ -439,23 +436,24 @@
   var COMMANDS = {
     help: function () {
       say('<u>Known commands</u>');
-      say('  <b>status</b>    lattice health, one line per subsystem');
+      say('  <b>status</b>    the branch right now, one line per area');
       say('  <b>bays</b>      what all nine bays are doing right now');
-      say('  <b>fleet</b>     node roll-call across the service grid');
-      say('  <b>diag</b>      run the diagnostic core against a vehicle');
-      say('  <b>ledger</b>    open the last notarised invoice');
-      say('  <b>warp</b>      travel the chrono rail — try <b>warp 2038</b>');
-      say('  <b>whoami</b>    your standing in the lattice');
+      say('  <b>branches</b>  the branch and van network, kingdom-wide');
+      say('  <b>diag</b>      what breaks next on a given plate');
+      say('  <b>invoice</b>   open the last invoice issued');
+      say('  <b>year</b>      jump the four-year rail — try <b>year 2028</b>');
+      say('  <b>whoami</b>    who the system thinks you are');
       say('  <b>salis</b>     what this actually is');
       say('  <b>clear</b>     wipe the console');
     },
     status: function () {
-      say('<u>LATTICE 09 — RIYADH</u>');
-      say('  neural bays .......... <b>9/9 online</b>');
-      say('  diagnostic core ...... <b>' + between(96.2, 99.4).toFixed(1) + '% confidence</b>');
-      say('  service grid ......... <b>' + (28 + Math.floor(rand() * 6)) + ' nodes reachable</b>');
-      say('  chrono-ledger ........ <b>notary chain intact</b>');
-      say('  thermal envelope ..... <s>bay 04 drifting, within tolerance</s>');
+      say('<u>AL-MALAZ BRANCH — RIYADH</u>');
+      say('  bays ................. <b>7 of 9 in use</b>');
+      say('  jobs booked today .... <b>' + Math.round(between(24, 38)) + '</b>');
+      say('  prediction model ..... <b>' + Math.round(between(78, 94)) + '% confidence</b>');
+      say('  branches reachable ... <b>11 branches, 9 vans</b>');
+      say('  e-invoicing .......... <b>ZATCA Phase 2, credentials valid</b>');
+      say('  needs attention ...... <s>bay 04 waiting on a part since 09:40</s>');
     },
     bays: function () {
       $$('#bays .bay').forEach(function (b, i) {
@@ -464,54 +462,61 @@
         say('  BAY ' + pad(i + 1) + '  ' + (alert ? '<s>' + state + '</s>' : '<b>' + state + '</b>') + '  —  ' + name);
       });
     },
-    fleet: function () {
+    branches: function () {
       NODES.forEach(function (nd) {
         say('  ' + (nd[3] ? '<s>◆</s>' : '<b>◆</b>') + '  ' + nd[0] +
-            '  <b>' + Math.round(between(2, 40)) + '</b> units in flow');
+            '  <b>' + Math.round(between(4, 34)) + '</b> jobs today');
       });
     },
     diag: function (arg) {
       var plate = (arg || 'RUH 4821').toUpperCase();
-      say('▸ collapsing lifetime telemetry for <u>' + plate + '</u> …');
+      say('▸ reading the port and the history for <u>' + plate + '</u> …');
       DIAG.forEach(function (d) {
         say('  ' + (d[3] ? '<s>' : '<b>') + d[2] + (d[3] ? '</s>' : '</b>') + '  ' + d[0] + ' — ' + d[1]);
       });
-      say('  signature confidence <b>' + between(96.2, 99.4).toFixed(1) + '%</b>');
+      say('  model confidence <b>' + Math.round(between(78, 94)) + '%</b> — a prediction, not a promise');
     },
-    ledger: function () {
-      say('<u>INVOICE · ZATCA PHASE ∞ · NOTARISED 2060-03-14</u>');
-      say('  bay 07, 11 min ....................... <b>SAR 1,240.00</b>');
-      say('  printed cell · drive unit housing .... <b>SAR 1,905.00</b>');
-      say('  core diagnosis ....................... <b>SAR   402.00</b>');
-      say('  VAT 15% .............................. <b>SAR   635.00</b>');
-      say('  total ................................ <b>SAR 4,182.00</b>');
-      say('  notary chain <b>' + $('#holoHash').textContent + '</b> — held by the customer, not by us');
+    invoice: function () {
+      say('<u>INVOICE · ZATCA PHASE 2 · ISSUED 2030-03-12</u>');
+      say('  diagnostic read &amp; inspection ........ <b>SAR   180.00</b>');
+      say('  labour — bay 07, 2.4 h ............... <b>SAR   720.00</b>');
+      say('  front brake discs &amp; pads ............. <b>SAR 1,430.00</b>');
+      say('  coolant service — approved ........... <b>SAR   310.00</b>');
+      say('  VAT 15% .............................. <b>SAR   396.00</b>');
+      say('  total ................................ <b>SAR 3,036.00</b>');
+      say('  hash <b>' + $('#holoHash').textContent + '</b> — the customer keeps a copy of this');
     },
-    warp: function (arg) {
+    year: function (arg) {
       var y = parseInt(arg, 10);
       var era = null;
       ERAS.forEach(function (e) { if (parseInt(e[0], 10) === y) era = e; });
       if (!era) {
-        say('<s>no waypoint at ' + (arg || '—') + '.</s> the rail stops at: ' +
+        say('<s>nothing on the rail at ' + (arg || '—') + '.</s> it runs: ' +
             ERAS.map(function (e) { return '<b>' + e[0] + '</b>'; }).join(', '));
         return;
       }
-      say('▸ warping to <u>' + era[0] + '</u> — ' + era[1].toLowerCase());
+      say('▸ <u>' + era[0] + '</u> — ' + era[1].toLowerCase());
       say('  <b>' + era[2] + '</b>');
       say('  ' + era[3]);
       document.getElementById('chrono').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
     },
     whoami: function () {
-      say('  visitor · <b>unauthenticated</b> · read-only');
-      say('  the lattice has no record of you, which in 2060 is a compliment.');
+      say('  visitor · <b>not signed in</b> · read-only');
+      say('  no account, no session, no record of you. This page never had one to lose.');
     },
     salis: function () {
       say('<u>What this page actually is</u>');
-      say('  A speculative design study for SALIS AUTO — an integrated automotive');
-      say('  workshop system: scheduling, job cards, inspections, estimates, parts,');
-      say('  ZATCA e-invoicing, CRM, HR and portals. That product is real and ships today.');
-      say('  <s>Everything dated after 2025 on this page is invented.</s>');
+      say('  A design study for SALIS AUTO — an integrated automotive workshop');
+      say('  system: scheduling, job cards, inspections, estimates, parts, ZATCA');
+      say('  e-invoicing, CRM, HR and portals. That product is real and ships today.');
+      say('  <s>Every workshop, plate and figure on this page is invented.</s>');
+      say('  What is not invented is the capability: each claim here is four years');
+      say('  from what already works. See <b>system</b> for the line-by-line version.');
       say('  The real site: <b>../../public-portal/landing</b>');
+    },
+    system: function () {
+      say('▸ the full breakdown lives on its own page: <b>system.html</b>');
+      say('  thirteen subsystems, the 2030 name and the 2026 one side by side.');
     },
     clear: function () { out.innerHTML = ''; }
   };
@@ -526,12 +531,12 @@
     var cmd = parts.shift().toLowerCase();
     var arg = parts.join(' ');
     if (COMMANDS[cmd]) COMMANDS[cmd](arg);
-    else say('<s>' + cmd + ': not a command in this lattice.</s> try <b>help</b>.');
+    else say('<s>' + cmd + ': not a command here.</s> try <b>help</b>.');
     say('');
   }
 
   function deck() {
-    say('SALIS GARAGE OS v20.60.3 — local shell.');
+    say('SALIS AUTO v2030.3 — local shell, Al-Malaz branch.');
     say('No network, no backend, no vehicle data. Type <b>help</b>.');
     say('');
     $('#deckForm').addEventListener('submit', function (e) {
@@ -540,7 +545,7 @@
       runCommand(el.value);
       el.value = '';
     });
-    var chips = ['help', 'status', 'bays', 'fleet', 'diag RUH 4821', 'warp 2038', 'salis'];
+    var chips = ['help', 'status', 'bays', 'branches', 'diag RUH 4821', 'year 2028', 'salis'];
     $('#chips').innerHTML = chips.map(function (c) {
       return '<button class="chip" type="button" data-cmd="' + c + '">' + c + '</button>';
     }).join('');

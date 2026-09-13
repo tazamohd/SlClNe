@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SALIS AUTO // GARAGE OS 2060
-   A speculative fiction. Everything below is a design study — the numbers
-   are synthetic, the physics is invented, the brand palette is real.
+   SALIS AUTO // 2030
+   A design study. The numbers are illustrative, the workshops are invented,
+   the brand palette is real.
    Palette is locked to the SALIS design tokens: navy ground, blue,
    bright-blue and ember orange. No other hue is permitted on this page.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -241,7 +241,7 @@ h1.title .glow{background:linear-gradient(96deg,#fff 8%,var(--cyan) 46%,var(--bl
   box-shadow:0 0 12px rgba(11,179,255,.7);transition:width .8s var(--ease)}
 .meter.warn i{background:linear-gradient(90deg,var(--amber),var(--ember));box-shadow:0 0 12px rgba(249,115,22,.7)}
 
-/* ── Bay lattice ────────────────────────────────────────────────────── */
+/* ── The board ──────────────────────────────────────────────────────── */
 .bays{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
 .bay{padding:18px;cursor:default;transition:transform var(--med) var(--ease),border-color var(--med)}
 .bay:hover{transform:translateY(-4px);border-color:var(--hair-strong)}

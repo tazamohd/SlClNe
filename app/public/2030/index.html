@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SALIS AUTO — GARAGE OS 2060</title>
-<meta name="description" content="SALIS AUTO 2060 — a speculative build of the workshop operating system thirty-five years from now. Neural bays, quantum diagnostics, an autonomous service lattice." />
+<title>SALIS AUTO — The Floor in 2030</title>
+<meta name="description" content="SALIS AUTO in 2030 — a workshop that stops guessing. Predictive diagnostics, a board that schedules itself, and an invoice nobody re-types." />
 <meta name="theme-color" content="#05070E" />
 <link rel="icon" href="../assets/logo-blue-orange.png" />
 <link rel="stylesheet" href="os.css" />
@@ -14,61 +14,61 @@
 <main>
 
 <!-- ── HERO ────────────────────────────────────────────────────────── -->
-<section id="hero" data-label="ARRIVAL">
+<section id="hero" data-label="THE FLOOR">
   <canvas id="heroCanvas" aria-hidden="true"></canvas>
   <div class="hero-grid">
     <div>
-      <div class="hero-kicker rise"><span>&#9672; Riyadh &middot; Bay Lattice 09 &middot; Cycle 2060.3</span></div>
+      <div class="hero-kicker rise"><span>&#9672; Riyadh &middot; Al-Malaz branch &middot; Tuesday, 12 March 2030</span></div>
       <h1 class="title rise">
         <span class="thin">SALIS AUTO</span>
-        <span class="glow">2060</span>
+        <span class="glow">2030</span>
       </h1>
       <p class="hero-lede rise">
-        Thirty-five years on from the job card, the workshop is no longer a building &mdash; it is a
-        <b>lattice</b>. Vehicles arrive already diagnosed. Estimates are signed before the customer
-        reaches the gate. The invoice notarises itself on the way out.
-        <b>This page is a fiction</b> built on a real system: every figure below is synthetic.
+        Four years out. No new physics, no flying cars, nothing on this page that needs an invention
+        &mdash; just a workshop that has stopped guessing. The board schedules itself and a human
+        approves it. The car tells you what will fail before it fails. The invoice is written once.
+        <b>Every figure here is invented</b>; every capability behind one is four years from shipping.
       </p>
       <div class="hero-actions rise">
-        <button class="btn" id="ctaEnter" type="button">&#9672; Enter the lattice</button>
-        <a class="btn ghost" href="#chrono">Replay 2025 &rarr; 2060</a>
+        <button class="btn" id="ctaEnter" type="button">&#9672; Walk the floor</button>
+        <a class="btn ghost" href="#chrono">How we get there</a>
       </div>
     </div>
 
     <div class="hero-stage rise" aria-hidden="true">
-      <p class="cap">Service unit <b>SA-09</b> &middot; printed chassis, four lift pods,
-        cockpit ring &mdash; rendered live, no model file</p>
+      <p class="cap">Customer vehicle <b>RUH 4821</b> &middot; drawn live from forty lines of
+        geometry &mdash; no model file, no image</p>
     </div>
   </div>
 
   <div class="panel hero-rail rise">
     <div>
-      <span class="tag">Lattice at a glance</span>
+      <span class="tag">The branch, right now</span>
       <div class="kpis">
-        <div><div class="k">Bays online</div><div class="v" id="mBays">9<em>/9</em></div></div>
-        <div><div class="k">Vehicles in flow</div><div class="v" id="mFlow">247</div></div>
-        <div><div class="k">Median service</div><div class="v" id="mTime">11<em>min</em></div></div>
-        <div><div class="k">Lattice trust</div><div class="v" id="mTrust">99.<em>994%</em></div></div>
+        <div><div class="k">Bays in use</div><div class="v" id="mBays">7<em>/9</em></div></div>
+        <div><div class="k">Jobs today</div><div class="v" id="mFlow">31</div></div>
+        <div><div class="k">Estimate signed in</div><div class="v" id="mTime">34<em>min</em></div></div>
+        <div><div class="k">First-time fix</div><div class="v" id="mTrust">91<em>%</em></div></div>
       </div>
     </div>
     <div>
-      <span class="tag">Live substrate telemetry</span>
+      <span class="tag">Live from the floor</span>
       <div class="readout" id="substrate">
-        <div class="row"><span>Neural bay load</span><span id="rv1">0%</span></div>
+        <div class="row"><span>Bay utilisation</span><span id="rv1">0%</span></div>
         <div class="meter"><i id="rb1" style="width:0%"></i></div>
-        <div class="row"><span>Predictive parts flux</span><span id="rv2">0%</span></div>
+        <div class="row"><span>Parts in stock for today</span><span id="rv2">0%</span></div>
         <div class="meter"><i id="rb2" style="width:0%"></i></div>
-        <div class="row"><span>Autonomous intake</span><span id="rv3">0%</span></div>
+        <div class="row"><span>Estimates signed on time</span><span id="rv3">0%</span></div>
         <div class="meter"><i id="rb3" style="width:0%"></i></div>
-        <div class="row"><span>Thermal envelope</span><span id="rv4">0%</span></div>
+        <div class="row"><span>Jobs waiting on a part</span><span id="rv4">0%</span></div>
         <div class="meter warn"><i id="rb4" style="width:0%"></i></div>
       </div>
     </div>
     <div>
-      <span class="tag">Spectral signature</span>
+      <span class="tag">Bookings, by hour</span>
       <div class="spectrum" id="spectrum" aria-hidden="true"></div>
       <p class="mono" style="font-size:10px;color:var(--dim);margin-top:14px;letter-spacing:.06em;line-height:1.8">
-        SYNTHETIC FEED<br/>seeded pseudo-random<br/>no vehicle data leaves this page
+        ILLUSTRATIVE FIGURES<br/>generated on this page<br/>no vehicle data, no network
       </p>
     </div>
   </div>
@@ -76,15 +76,16 @@
 
 <div class="rule"></div>
 
-<!-- ── BAY LATTICE ─────────────────────────────────────────────────── -->
-<section id="lattice" data-label="BAY LATTICE">
+<!-- ── THE BOARD ───────────────────────────────────────────────────── -->
+<section id="lattice" data-label="THE BOARD">
   <div class="sec-head rise">
-    <span class="tag">01 — The floor that thinks</span>
-    <h2>Neural bay lattice</h2>
+    <span class="tag">01 — Nobody keeps the plan in their head</span>
+    <h2>The board</h2>
     <p>
-      Nine bays, one mind. Each bay negotiates for the next vehicle against the others, bidding with
-      tool availability, technician fatigue and the customer's stated hour of return. Nobody assigns
-      work here; the floor settles it and writes the audit row afterwards.
+      Nine bays on one screen. The schedule proposes: it knows which technician is certified for the
+      job, which parts landed this morning, and what the customer was told about collection time. A
+      human still approves every move &mdash; and every move it makes writes an audit row, so at five
+      o&rsquo;clock you can ask why a car went to bay 6 and get an answer instead of a shrug.
     </p>
   </div>
   <div class="bays" id="bays"></div>
@@ -93,14 +94,15 @@
 <div class="rule"></div>
 
 <!-- ── DIAGNOSTIC CORE ─────────────────────────────────────────────── -->
-<section id="core" data-label="DIAGNOSTIC CORE">
+<section id="core" data-label="WHAT BREAKS NEXT">
   <div class="sec-head rise">
-    <span class="tag">02 — Diagnosis before arrival</span>
-    <h2>Quantum diagnostic core</h2>
+    <span class="tag">02 — The car speaks first</span>
+    <h2>What breaks next</h2>
     <p>
-      The core takes a vehicle's whole operating history — every torque event, every thermal minute,
-      every road it ever complained about — and collapses it into a single signature. The technician
-      does not read a fault code. They read a story with a confidence attached to it.
+      Fault codes tell you what already broke. By 2030 the interesting question is the other one.
+      The car&rsquo;s own diagnostic port, plus eleven years of what went wrong on the same model in the
+      same heat, produces a ranked list of what fails next and roughly when &mdash; each line carrying
+      the confidence it earned, so an advisor can say &ldquo;not yet&rdquo; out loud and mean it.
     </p>
   </div>
 
@@ -142,16 +144,16 @@
       </svg>
       <div class="orb-centre">
         <div class="n" id="coreN">98.6%</div>
-        <div class="l">Signature confidence</div>
+        <div class="l">Model confidence</div>
       </div>
     </div>
 
     <div class="rise">
       <div class="dlist" id="diagList"></div>
       <p class="mono" style="font-size:11px;color:var(--dim);margin-top:18px;line-height:1.9">
-        READ THIS AS FICTION: the core is a narrative device. What ships today is a multi-point
-        inspection with severity, a signed estimate and an audit row per change — the same shape,
-        thirty-five years less imagination.
+        WHAT EXISTS TODAY: an OBD integration that reads the port, a multi-point inspection with
+        severity per item, and the full service history behind both. What 2030 adds is the model on
+        top — and a model is a data problem and a year of records, not an invention.
       </p>
     </div>
   </div>
@@ -160,28 +162,29 @@
 <div class="rule"></div>
 
 <!-- ── FLEET GRID ──────────────────────────────────────────────────── -->
-<section id="fleet" data-label="SERVICE GRID">
+<section id="fleet" data-label="THE NETWORK">
   <div class="sec-head rise">
-    <span class="tag">03 — Service comes to you</span>
-    <h2>Autonomous service grid</h2>
+    <span class="tag">03 — Some jobs do not need a workshop</span>
+    <h2>The network</h2>
     <p>
-      No appointment, no drop-off. The grid dispatches a bay to the vehicle: a mobile cell rolls out
-      from the nearest node, docks in the customer's parking bay overnight, and is gone before the
-      commute. The workshop's four walls became a delivery radius.
+      Eleven branches and nine service vans across the kingdom, on one schedule. A battery check, a
+      brake pad, a diagnostic read &mdash; a van does those in a car park while the customer is at
+      work, and books the job against the same vehicle record the branch would have used. Anything
+      needing a lift still comes in. That is not a limitation; it is an honest division of labour.
     </p>
   </div>
 
   <div class="fleet-wrap">
     <div class="panel map rise">
       <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-      <canvas id="fleetCanvas" role="img" aria-label="Animated map of service nodes across the kingdom with dispatch arcs between them."></canvas>
+      <canvas id="fleetCanvas" role="img" aria-label="Animated map of branches across the kingdom with service vans travelling between them."></canvas>
       <div class="map-legend">
-        <span><b>◆</b> NODE</span><span><b>—</b> DISPATCH</span><span><b class="e">◆</b> PRIORITY</span>
+        <span><b>◆</b> BRANCH</span><span><b>—</b> VAN EN ROUTE</span><span><b class="e">◆</b> BUSIEST</span>
       </div>
     </div>
     <div class="panel log rise">
       <i class="corner tl"></i><i class="corner br"></i>
-      <h4>Dispatch stream</h4>
+      <h4>Today, as it happens</h4>
       <ul id="logList"></ul>
     </div>
   </div>
@@ -190,13 +193,13 @@
 <div class="rule"></div>
 
 <!-- ── CHRONO RAIL ─────────────────────────────────────────────────── -->
-<section id="chrono" data-label="CHRONO RAIL">
+<section id="chrono" data-label="2026 → 2030">
   <div class="sec-head rise">
-    <span class="tag">04 — The long road here</span>
-    <h2>2025 → 2060</h2>
+    <span class="tag">04 — Four years, four steps</span>
+    <h2>2026 &rarr; 2030</h2>
     <p>
-      Every leap on this rail starts from something that already exists in the product today. The
-      first entry is not speculation; it is the changelog.
+      No leaps. Each step below is the obvious next thing once the step before it is in place, and
+      the first entry is not a prediction at all &mdash; it is the current changelog.
     </p>
   </div>
   <div class="chrono" id="chronoRail"></div>
@@ -205,14 +208,15 @@
 <div class="rule"></div>
 
 <!-- ── LEDGER ──────────────────────────────────────────────────────── -->
-<section id="ledger" data-label="CHRONO-LEDGER">
+<section id="ledger" data-label="THE INVOICE">
   <div class="sec-head rise">
-    <span class="tag">05 — The invoice that signs itself</span>
-    <h2>Chrono-ledger</h2>
+    <span class="tag">05 — Written once</span>
+    <h2>The invoice</h2>
     <p>
-      In 2025 the invoice carried a QR and a ZATCA Phase&nbsp;2 hash. In 2060 it carries its own
-      history: every part, every hand that touched the car, every minute of bay time, notarised at
-      the moment of issue and readable for the life of the vehicle. Tilt it.
+      It already carries a QR and a ZATCA Phase&nbsp;2 hash. What 2030 adds is that nobody types it
+      twice: the journal entry comes from the invoice, the invoice comes from the job card, and the
+      job card comes from the work. The customer keeps a copy that outlives their ownership of the
+      car. Tilt it.
     </p>
   </div>
 
@@ -221,28 +225,28 @@
       <article class="holo" id="holo">
         <div class="hh">
           <b>SALIS AUTO</b>
-          <span>ZATCA PHASE ∞<br/>NOTARISED 2060-03-14</span>
+          <span>ZATCA PHASE 2<br/>ISSUED 2030-03-12</span>
         </div>
         <div class="amt"><em>SAR</em><span id="holoAmt">4,182.00</span></div>
         <div class="lines">
-          <div><span>Autonomous intake &amp; signature capture</span><b>0.00</b></div>
-          <div><span>Neural bay 07 — 11 min</span><b>1,240.00</b></div>
-          <div><span>Printed cell · drive unit housing</span><b>1,905.00</b></div>
-          <div><span>Core diagnosis · 98.6% confidence</span><b>402.00</b></div>
+          <div><span>Diagnostic read &amp; inspection</span><b>180.00</b></div>
+          <div><span>Labour — bay 07, 2.4 h</span><b>720.00</b></div>
+          <div><span>Front brake discs &amp; pads, fitted</span><b>1,430.00</b></div>
+          <div><span>Coolant service — flagged, approved</span><b>310.00</b></div>
           <div><span>VAT 15%</span><b>635.00</b></div>
         </div>
         <div class="seal">
           <div class="qr" aria-hidden="true"></div>
-          <p>Notary chain<br/><span id="holoHash">7F2A·C41E·9B03</span><br/>Immutable · customer-held</p>
+          <p>ZATCA hash<br/><span id="holoHash">7F2A·C41E·9B03</span><br/>Verifiable · customer keeps it</p>
         </div>
       </article>
     </div>
     <div class="rise">
       <div class="dlist">
-        <div><div><div class="t">Signed before arrival</div><div class="d">Estimate authorised from the vehicle, en route.</div></div><div class="v">−4 h</div></div>
+        <div><div><div class="t">Signed from the phone</div><div class="d">Estimate approved before the customer reaches the counter.</div></div><div class="v">34 min</div></div>
         <div><div><div class="t">Zero re-keying</div><div class="d">The journal entry is the invoice, written once.</div></div><div class="v">0 steps</div></div>
-        <div><div><div class="t">Held by the customer</div><div class="d">The vehicle carries its own service history, not us.</div></div><div class="v">Lifetime</div></div>
-        <div><div><div class="t">Dispute window</div><div class="d">Every figure traces to the minute that produced it.</div></div><div class="v warn">Open</div></div>
+        <div><div><div class="t">Kept by the customer</div><div class="d">A record that survives the sale of the car.</div></div><div class="v">Lifetime</div></div>
+        <div><div><div class="t">Every figure traceable</div><div class="d">Back to the job card line that produced it.</div></div><div class="v warn">Always</div></div>
       </div>
     </div>
   </div>
@@ -251,18 +255,18 @@
 <div class="rule"></div>
 
 <!-- ── COMMAND DECK ────────────────────────────────────────────────── -->
-<section id="deck" data-label="COMMAND DECK">
+<section id="deck" data-label="CONSOLE">
   <div class="sec-head rise">
-    <span class="tag">06 — Talk to the lattice</span>
-    <h2>Command deck</h2>
+    <span class="tag">06 — Ask it something</span>
+    <h2>Console</h2>
     <p>
-      A console with no backend behind it — it answers from this page alone. Type
+      There is no server behind this — it answers from the page in front of you. Type
       <span class="mono" style="color:var(--cyan)">help</span> to see what it knows.
     </p>
   </div>
 
   <div class="panel deck rise">
-    <div class="deck-bar"><i></i> SALIS://lattice-09 — local shell, no network</div>
+    <div class="deck-bar"><i></i> salis-auto · al-malaz — local shell, no network</div>
     <pre id="deckOut"></pre>
     <form class="deck-in" id="deckForm" autocomplete="off">
       <span aria-hidden="true">▸</span>

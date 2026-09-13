@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SALIS AUTO // GARAGE OS 2060 — shared runtime.
+   SALIS AUTO // GARAGE OS 2030 — shared runtime.
 
    Every page in this site loads exactly two files: os.css and this one.
    The chrome — atmosphere, cold start, top bar with the site navigation,
@@ -27,7 +27,7 @@
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
-  var rand = rng(20600314);
+  var rand = rng(20300312);
   function pick(list) { return list[Math.floor(rand() * list.length)]; }
   function between(lo, hi) { return lo + rand() * (hi - lo); }
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
@@ -37,12 +37,12 @@
 
   /* ── The site ────────────────────────────────────────────────────── */
   var PAGES = [
-    { file: 'index.html',   nav: 'Arrival', note: 'The lattice, and what it feels like to stand in it' },
-    { file: 'system.html',  nav: 'System',  note: 'Thirteen subsystems, and what each one is today' },
-    { file: 'grid.html',    nav: 'Grid',    note: 'Parts, printing, portals and the service mesh' },
-    { file: 'access.html',  nav: 'Access',  note: 'What a cycle costs and what comes with it' },
-    { file: 'origin.html',  nav: 'Origin',  note: 'Who builds this, what they believe, who they need' },
-    { file: 'channel.html', nav: 'Channel', note: 'Open a channel — a demo, a question, a bay' }
+    { file: 'index.html',   nav: 'The Floor', note: 'A Tuesday in 2030, from the counter out' },
+    { file: 'system.html',  nav: 'System',    note: 'Thirteen subsystems, and what each one is today' },
+    { file: 'grid.html',    nav: 'Network',   note: 'Parts, sourcing, portals and eleven branches' },
+    { file: 'access.html',  nav: 'Pricing',   note: 'What it costs and what comes with it' },
+    { file: 'origin.html',  nav: 'Origin',    note: 'Who builds this, what they believe, who they need' },
+    { file: 'channel.html', nav: 'Contact',   note: 'Book a demo, ask a question, argue with the page' }
   ];
 
   function currentFile() {
@@ -75,9 +75,9 @@
     var top = document.createElement('div');
     top.className = 'hud hud-top';
     top.innerHTML =
-      '<a class="brand" href="index.html" aria-label="SALIS AUTO — Garage OS 2060 home">' +
+      '<a class="brand" href="index.html" aria-label="SALIS AUTO 2030 home">' +
         '<img src="../assets/logo-blue-orange.png" alt="" />' +
-        '<b>SALIS&nbsp;AUTO</b><span class="opt">/ OS 2060</span>' +
+        '<b>SALIS&nbsp;AUTO</b><span class="opt">/ 2030</span>' +
       '</a>' +
       '<nav class="nav" aria-label="Site">' + navHtml + '</nav>' +
       '<div class="rhs">' +
@@ -117,7 +117,7 @@
     var foot = document.createElement('div');
     foot.className = 'hud hud-foot';
     foot.innerHTML = '<span>SCROLL TO TRAVERSE</span><span class="dimtag">·</span>' +
-                     '<span>SPECULATIVE BUILD — NOT A PRODUCT CLAIM</span>';
+                     '<span>A DESIGN STUDY — NOT A PRODUCT CLAIM</span>';
     body.appendChild(foot);
   }
 
@@ -141,35 +141,37 @@
           '<li><a href="system.html">Thirteen subsystems</a></li>' +
           '<li><a href="system.html#roles">Fourteen roles</a></li>' +
           '<li><a href="grid.html#portals">Three portals</a></li>' +
-          '<li><a href="index.html#chrono">2025 → 2060</a></li>' +
+          '<li><a href="index.html#chrono">2026 → 2030</a></li>' +
         '</ul></div>' +
         '<div><h5>Standing</h5><ul>' +
           '<li><a href="origin.html#principles">What we believe</a></li>' +
           '<li><a href="origin.html#roles">Open roles</a></li>' +
-          '<li><a href="channel.html">Open a channel</a></li>' +
+          '<li><a href="channel.html">Get in touch</a></li>' +
         '</ul></div>' +
       '</div>' +
-      '<div class="big">END OF TRANSMISSION</div>' +
-      '<p class="note">SALIS AUTO — GARAGE OS 2060 · A SPECULATIVE DESIGN STUDY</p>' +
-      '<p class="disclaimer">Everything dated after 2025 on this site is invented for the purpose of the ' +
-      'study — the bays, the grid, the figures, the year. What is real is the product underneath it and ' +
-      'the shape of the work: check-in, inspection, estimate, repair, quality control, delivery. That ' +
-      'order has not changed in a hundred years, and nothing here claims it will.</p>';
+      '<div class="big">FOUR YEARS OUT</div>' +
+      '<p class="note">SALIS AUTO — 2030 · A DESIGN STUDY, NOT A PRICE LIST</p>' +
+      '<p class="disclaimer">Every workshop, vehicle, plate and figure on this site is invented for ' +
+      'the purpose of the study. What is not invented is the capability behind each claim: each one ' +
+      'is a four-year extension of something the product ships today — check-in, inspection, ' +
+      'estimate, repair, quality control, delivery, and an audit row for every change. Where a page ' +
+      'states a number, read it as illustrative. Where it states a capability, the System page names ' +
+      'exactly what would still have to be built.</p>';
     document.body.appendChild(f);
   }
 
   /* ── Cold start ──────────────────────────────────────────────────── */
   var BOOT = [
-    ['SALIS GARAGE OS', 'v20.60.3 — lattice kernel'],
-    ['mounting bay substrate', 'ok'],
-    ['negotiating with 9 neural bays', 'quorum reached'],
-    ['spooling diagnostic core', '4.1 PFLOP reserved'],
-    ['syncing chrono-ledger', 'notary chain intact'],
-    ['handshake · autonomous service grid', '31 nodes'],
-    ['restoring technician profiles', '48 signatures'],
-    ['calibrating thermal envelope', 'nominal'],
-    ['WARN thermal drift · bay 04', 'within tolerance'],
-    ['lattice online', 'welcome back']
+    ['SALIS AUTO', 'v2030.3 — workshop management'],
+    ['opening the job board', '9 bays'],
+    ['loading today\u2019s schedule', '31 jobs booked'],
+    ['connecting OBD gateway', '18 vehicles reporting'],
+    ['reading service history', '11 years on file'],
+    ['ZATCA credentials', 'verified'],
+    ['restoring technician profiles', '48 accounts'],
+    ['checking parts against bookings', '6 shortfalls flagged'],
+    ['WARN bay 04 lift', 'inspection due in 9 days'],
+    ['ready', 'good morning']
   ];
 
   var booted = false, startFns = [];
@@ -213,7 +215,7 @@
     });
 
     var logEl = $('#bootLog'), barEl = $('#bootBar'), pctEl = $('#bootPct');
-    if (reduced) { logEl.textContent = 'SALIS GARAGE OS v20.60.3 — lattice online.'; endBoot(); return; }
+    if (reduced) { logEl.textContent = 'SALIS AUTO v2030.3 — ready.'; endBoot(); return; }
 
     var i = 0;
     (function step() {
@@ -238,7 +240,7 @@
     var now = new Date();
     var clock = $('#hudClock'), lat = $('#hudLat');
     if (clock) {
-      clock.textContent = '2060·' + pad(now.getMonth() + 1) + '·' + pad(now.getDate()) + ' ' +
+      clock.textContent = '2030·' + pad(now.getMonth() + 1) + '·' + pad(now.getDate()) + ' ' +
         pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
     }
     if (lat) lat.textContent = between(0.4, 2.9).toFixed(1) + ' MS';
