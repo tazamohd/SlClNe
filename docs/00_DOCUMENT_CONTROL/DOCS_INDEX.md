@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Generated:** 2026-09-13 · 357 documents, 88 in the numbered architecture
+**Generated:** 2026-09-13 · 402 documents, 133 in the numbered architecture
 
 ## Start here
 
@@ -30,41 +30,41 @@ An executive or an agent should be able to understand the state of this project 
 
 | Section | Purpose | Documents |
 | --- | --- | --- |
-| `00_DOCUMENT_CONTROL/` | The index, the registry, the standards and the traceability model. Start here. | 11 |
-| `01_EXECUTIVE_STRATEGY/` | Why SALIS AUTO exists, what it is for, and what success is. | 1 |
-| `02_MARKET_BUSINESS_RESEARCH/` | Market, segments, personas and competitors — with claims marked by evidence level. | 0 |
-| `03_PRINCE2_GOVERNANCE/` | Project governance in PRINCE2 form, as views over the canonical registers. | 0 |
-| `04_PROJECT_MANAGEMENT/` | The live control centre: dashboard, plan, risks, blockers, decisions. | 0 |
-| `05_PLANNING/` | Roadmap, work breakdown, milestones, dependencies, release plan. | 0 |
-| `06_AGILE_DELIVERY/` | Epics, features, stories, acceptance criteria, definition of done. | 0 |
-| `07_BUSINESS_ANALYSIS/` | Capability map, stakeholders, business requirements, business rules. | 1 |
-| `08_PRODUCT/` | Product requirements, personas, journeys, product capability model. | 0 |
-| `09_SYSTEM_ANALYSIS/` | Requirements catalogue with IDs, and the traceability matrix. | 2 |
-| `10_SCENARIOS_USE_CASES/` | Business, user and system scenarios; use cases; golden paths. | 0 |
-| `11_PROCESS_FLOW_MODELS/` | Process catalogue, user flows, system flows, data flows. | 0 |
-| `12_UML_BPMN_MODELS/` | Use case, sequence, activity, state and component models. | 1 |
-| `13_DATA_MODELING/` | Entity catalogue, data dictionary, relationships, lineage, ownership. | 3 |
-| `14_SOLUTION_ARCHITECTURE/` | Master architecture, principles, constraints, risks — current versus target. | 1 |
-| `15_C4_ARCHITECTURE_DIAGRAMS/` | Context, container and component views, and dynamic views. | 1 |
-| `16_SYSTEM_DESIGN/` | High- and low-level design of each cross-cutting mechanism. | 0 |
-| `17_API_INTEGRATION/` | The API surface, per domain, generated from the routers. | 21 |
-| `18_DATABASE/` | Physical model, migrations, RLS, backup, retention. | 1 |
-| `19_SECURITY/` | Authentication, authorization, isolation, audit, threat model. | 3 |
-| `20_UI_UX_EXPERIENCE/` | Information architecture, screen registry, states, accessibility, Arabic and RTL. | 1 |
-| `21_DOMAIN_DOCUMENTATION/` | One document per business domain, to a single standard. | 19 |
-| `22_PORTALS_CHANNELS/` | Customer, technician, supplier, procurement, kiosk, call centre, website, mobile. | 0 |
-| `23_BUSINESS_OPERATIONS/` | Operating model, SOPs, support and escalation. | 0 |
-| `24_COMMERCIAL_FINANCIAL/` | Pricing, revenue and cost model — projections labelled as projections. | 0 |
-| `25_SALES_MARKETING_CUSTOMER_SUCCESS/` | Go-to-market, onboarding, retention. | 0 |
-| `26_LEGAL_COMPLIANCE/` | ZATCA, VAT, privacy, retention — system requirements, not legal advice. | 0 |
-| `27_TESTING_VALIDATION/` | Strategy, catalogue, coverage and the requirement-to-test trace. | 1 |
-| `28_ITIL_SERVICE_MANAGEMENT/` | Service catalogue, SLAs, incident, problem, change, release. | 2 |
-| `29_OPERATIONS_DEVOPS/` | Environments, deployment, observability, backup, runbooks. | 1 |
-| `30_RELEASE_CERTIFICATION/` | Release plan, readiness, known limitations, certification against evidence. | 3 |
-| `31_ARCHITECTURE_DECISIONS/` | ADRs for the decisions the code actually reflects. | 0 |
-| `32_METRICS_KPI_REPORTING/` | What is measured, where the number comes from, and what it is for. | 0 |
-| `33_MASTER_DIAGRAM_LIBRARY/` | Every diagram, in version-controlled source form. | 15 |
-| `99_ARCHIVE/` | Superseded material, retained for history. Never current truth. | 0 |
+| `00_DOCUMENT_CONTROL/` | The index, the registry, the standards and the traceability model. Start here. | 12 |
+| `01_EXECUTIVE_STRATEGY/` | Why SALIS AUTO exists, what it is for, and what success is. | 2 |
+| `02_MARKET_BUSINESS_RESEARCH/` | Market, segments, personas and competitors — with claims marked by evidence level. | 1 |
+| `03_PRINCE2_GOVERNANCE/` | Project governance in PRINCE2 form, as views over the canonical registers. | 2 |
+| `04_PROJECT_MANAGEMENT/` | The live control centre: dashboard, plan, risks, blockers, decisions. | 2 |
+| `05_PLANNING/` | Roadmap, work breakdown, milestones, dependencies, release plan. | 1 |
+| `06_AGILE_DELIVERY/` | Epics, features, stories, acceptance criteria, definition of done. | 1 |
+| `07_BUSINESS_ANALYSIS/` | Capability map, stakeholders, business requirements, business rules. | 2 |
+| `08_PRODUCT/` | Product requirements, personas, journeys, product capability model. | 1 |
+| `09_SYSTEM_ANALYSIS/` | Requirements catalogue with IDs, and the traceability matrix. | 3 |
+| `10_SCENARIOS_USE_CASES/` | Business, user and system scenarios; use cases; golden paths. | 4 |
+| `11_PROCESS_FLOW_MODELS/` | Process catalogue, user flows, system flows, data flows. | 3 |
+| `12_UML_BPMN_MODELS/` | Use case, sequence, activity, state and component models. | 2 |
+| `13_DATA_MODELING/` | Entity catalogue, data dictionary, relationships, lineage, ownership. | 4 |
+| `14_SOLUTION_ARCHITECTURE/` | Master architecture, principles, constraints, risks — current versus target. | 2 |
+| `15_C4_ARCHITECTURE_DIAGRAMS/` | Context, container and component views, and dynamic views. | 2 |
+| `16_SYSTEM_DESIGN/` | High- and low-level design of each cross-cutting mechanism. | 1 |
+| `17_API_INTEGRATION/` | The API surface, per domain, generated from the routers. | 22 |
+| `18_DATABASE/` | Physical model, migrations, RLS, backup, retention. | 2 |
+| `19_SECURITY/` | Authentication, authorization, isolation, audit, threat model. | 4 |
+| `20_UI_UX_EXPERIENCE/` | Information architecture, screen registry, states, accessibility, Arabic and RTL. | 2 |
+| `21_DOMAIN_DOCUMENTATION/` | One document per business domain, to a single standard. | 20 |
+| `22_PORTALS_CHANNELS/` | Customer, technician, supplier, procurement, kiosk, call centre, website, mobile. | 1 |
+| `23_BUSINESS_OPERATIONS/` | Operating model, SOPs, support and escalation. | 1 |
+| `24_COMMERCIAL_FINANCIAL/` | Pricing, revenue and cost model — projections labelled as projections. | 1 |
+| `25_SALES_MARKETING_CUSTOMER_SUCCESS/` | Go-to-market, onboarding, retention. | 1 |
+| `26_LEGAL_COMPLIANCE/` | ZATCA, VAT, privacy, retention — system requirements, not legal advice. | 1 |
+| `27_TESTING_VALIDATION/` | Strategy, catalogue, coverage and the requirement-to-test trace. | 2 |
+| `28_ITIL_SERVICE_MANAGEMENT/` | Service catalogue, SLAs, incident, problem, change, release. | 3 |
+| `29_OPERATIONS_DEVOPS/` | Environments, deployment, observability, backup, runbooks. | 4 |
+| `30_RELEASE_CERTIFICATION/` | Release plan, readiness, known limitations, certification against evidence. | 5 |
+| `31_ARCHITECTURE_DECISIONS/` | ADRs for the decisions the code actually reflects. | 1 |
+| `32_METRICS_KPI_REPORTING/` | What is measured, where the number comes from, and what it is for. | 1 |
+| `33_MASTER_DIAGRAM_LIBRARY/` | Every diagram, in version-controlled source form. | 16 |
+| `99_ARCHIVE/` | Superseded material, retained for history. Never current truth. | 1 |
 
 ## Documents outside the numbered architecture
 

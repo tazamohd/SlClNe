@@ -1,0 +1,22 @@
+<!-- GENERATED FILE — DO NOT EDIT BY HAND.
+     Generator: tools/docs/generators/control.mjs
+     Regenerate: npm run docs:generate
+     Derived from:
+       - the docs/ tree
+       - tools/docs/lib/structure.mjs
+-->
+
+# UML and BPMN models
+
+**Status:** GENERATED · **Generated:** 2026-09-13
+
+Use case, sequence, activity, state and component models.
+
+## In this section
+
+| Document | Kind |
+| --- | --- |
+| [`STATE_MACHINES.md`](STATE_MACHINES.md) | generated |
+
+
+[← Documentation index](../00_DOCUMENT_CONTROL/DOCS_INDEX.md)

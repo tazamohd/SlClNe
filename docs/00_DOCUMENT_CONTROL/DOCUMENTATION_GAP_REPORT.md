@@ -16,9 +16,9 @@ This report exists to be read before anything else in the set is relied on. It i
 
 | Measure | Value |
 | --- | --- |
-| Required documents | 34 present of 35 |
-| Documents generated from source | 75 |
-| Documents authored by hand | 282 |
+| Required documents | 35 present of 35 |
+| Documents generated from source | 116 |
+| Documents authored by hand | 286 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 68 of 68 |
 | Relationships documented | 164 (61 FK-backed, 103 convention only) |
@@ -30,6 +30,8 @@ This report exists to be read before anything else in the set is relied on. It i
 | Screens wired to the live API | 99 of 424 |
 | Test suites catalogued | 178 containing 2088 cases |
 | Capabilities with no linked test suite | 10 |
+| Canonical registers at least 3 days behind the newest | 6 of 9 |
+| Direct contradictions between registers | 3 |
 
 ## What is not verified
 
@@ -85,6 +87,29 @@ Matching is by path string, so a test that reaches an endpoint through a helper 
 
 Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 285 of 424 are not yet connected to live data.
 
+## The canonical registers disagree with each other
+
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-08; 6 registers are at least 3 days behind it.
+
+| Register | Generated | Days behind the newest |
+| --- | --- | --- |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 28 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 28 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 27 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 6 |
+| `project-control/BASELINE.json` | 2026-09-03 | 5 |
+| `project-control/BLOCKERS.json` | 2026-09-05 | 3 |
+
+Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
+
+| Claim | Current reality |
+| --- | --- |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
+| RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
+
+A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
+
 ## Gaps in the documentation itself
 
 ### Requirements are as-built, not as-elicited
@@ -99,21 +124,48 @@ Market sizing, competitor positioning, pricing and financial projections are bus
 
 ZATCA, VAT and privacy material states *system requirements* — what the software does and must do. Where the question is whether that satisfies a legal obligation, it is marked `LEGAL_REVIEW_REQUIRED` rather than answered.
 
-### 2 documents are thin
+### 31 documents are thin
 
 Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an index, an ADR with a one-line decision); others are placeholders. They are listed so the difference can be judged rather than assumed.
 
 | Document | Bytes |
 | --- | --- |
+| `docs/01_EXECUTIVE_STRATEGY/README.md` | 968 |
+| `docs/02_MARKET_BUSINESS_RESEARCH/README.md` | 1029 |
+| `docs/03_PRINCE2_GOVERNANCE/README.md` | 934 |
+| `docs/04_PROJECT_MANAGEMENT/README.md` | 1060 |
+| `docs/05_PLANNING/README.md` | 951 |
+| `docs/06_AGILE_DELIVERY/README.md` | 890 |
+| `docs/07_BUSINESS_ANALYSIS/README.md` | 553 |
+| `docs/08_PRODUCT/README.md` | 902 |
+| `docs/10_SCENARIOS_USE_CASES/README.md` | 658 |
+| `docs/11_PROCESS_FLOW_MODELS/README.md` | 582 |
+| `docs/12_UML_BPMN_MODELS/README.md` | 526 |
+| `docs/13_DATA_MODELING/README.md` | 661 |
+| `docs/14_SOLUTION_ARCHITECTURE/README.md` | 556 |
+| `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 520 |
+| `docs/16_SYSTEM_DESIGN/README.md` | 923 |
 | `docs/17_API_INTEGRATION/endpoints/platform.md` | 937 |
+| `docs/18_DATABASE/README.md` | 511 |
+| `docs/19_SECURITY/README.md` | 1021 |
+| `docs/20_UI_UX_EXPERIENCE/README.md` | 921 |
+| `docs/22_PORTALS_CHANNELS/README.md` | 906 |
+| `docs/23_BUSINESS_OPERATIONS/README.md` | 992 |
+| `docs/24_COMMERCIAL_FINANCIAL/README.md` | 955 |
+| `docs/25_SALES_MARKETING_CUSTOMER_SUCCESS/README.md` | 973 |
+| `docs/26_LEGAL_COMPLIANCE/README.md` | 1043 |
+| `docs/27_TESTING_VALIDATION/README.md` | 978 |
+| `docs/28_ITIL_SERVICE_MANAGEMENT/README.md` | 1055 |
+| `docs/29_OPERATIONS_DEVOPS/README.md` | 1077 |
+| `docs/30_RELEASE_CERTIFICATION/README.md` | 763 |
+| `docs/31_ARCHITECTURE_DECISIONS/README.md` | 865 |
+| `docs/32_METRICS_KPI_REPORTING/README.md` | 534 |
 | `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 876 |
 
 
 ## Missing required documents
 
-| Document | Kind |
-| --- | --- |
-| `11_PROCESS_FLOW_MODELS/PROCESS_CATALOG.md` | authored |
+_None — every required document is present._
 
 ## Recommended next actions, in order
 

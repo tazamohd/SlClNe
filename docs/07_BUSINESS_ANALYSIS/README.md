@@ -1,0 +1,22 @@
+<!-- GENERATED FILE — DO NOT EDIT BY HAND.
+     Generator: tools/docs/generators/control.mjs
+     Regenerate: npm run docs:generate
+     Derived from:
+       - the docs/ tree
+       - tools/docs/lib/structure.mjs
+-->
+
+# Business analysis
+
+**Status:** GENERATED · **Generated:** 2026-09-13
+
+Capability map, stakeholders, business requirements, business rules.
+
+## In this section
+
+| Document | Kind |
+| --- | --- |
+| [`BUSINESS_CAPABILITY_MAP.md`](BUSINESS_CAPABILITY_MAP.md) | generated |
+
+
+[← Documentation index](../00_DOCUMENT_CONTROL/DOCS_INDEX.md)

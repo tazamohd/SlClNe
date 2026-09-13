@@ -14,14 +14,14 @@
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 357 |
-| In the numbered architecture | 88 |
+| Documents in `docs/` | 402 |
+| In the numbered architecture | 133 |
 | In the pre-existing folders (classified, not yet migrated) | 269 |
-| Machine-generated from source | 75 |
-| Authored | 282 |
-| Substantive (> 1.2 kB) | 355 |
-| Thin — placeholder or stub | 2 |
-| Required documents present | 34 of 35 |
+| Machine-generated from source | 116 |
+| Authored | 286 |
+| Substantive (> 1.2 kB) | 370 |
+| Thin — placeholder or stub | 32 |
+| Required documents present | 35 of 35 |
 
 ## What is generated, and therefore cannot go stale silently
 
@@ -58,7 +58,7 @@
 | `07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md` | generated | yes | yes |
 | `09_SYSTEM_ANALYSIS/REQUIREMENTS_CATALOG.md` | generated | yes | yes |
 | `09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md` | generated | yes | yes |
-| `11_PROCESS_FLOW_MODELS/PROCESS_CATALOG.md` | authored | **no** | — |
+| `11_PROCESS_FLOW_MODELS/PROCESS_CATALOG.md` | authored | yes | yes |
 | `13_DATA_MODELING/ENTITY_CATALOG.md` | generated | yes | yes |
 | `13_DATA_MODELING/DATA_DICTIONARY.md` | generated | yes | yes |
 | `13_DATA_MODELING/RELATIONSHIP_CATALOG.md` | generated | yes | yes |

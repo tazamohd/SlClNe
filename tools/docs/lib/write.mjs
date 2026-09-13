@@ -29,6 +29,19 @@ export function banner(generator, sources, extra = '') {
     .join('\n')
 }
 
+/** Two generators writing the same path overwrite each other on every pass and
+ *  the run never settles — a failure that presents as "generation did not
+ *  stabilise" and gives no hint which file is at fault. Catching the collision
+ *  where it happens names the file immediately. */
+function assertSingleOwner(rel) {
+  if (written.some((w) => w.path === rel)) {
+    throw new Error(
+      `Two generators wrote ${rel} in the same pass. Exactly one generator may own a path; ` +
+        'rename one of them.',
+    )
+  }
+}
+
 export function write(absPath, content) {
   mkdirSync(dirname(absPath), { recursive: true })
   const normalised = content.endsWith('\n') ? content : `${content}\n`
@@ -39,6 +52,7 @@ export function write(absPath, content) {
     /* new file */
   }
   const rel = relative(P.root, absPath).replace(/\\/g, '/')
+  assertSingleOwner(rel)
   if (previous === normalised) {
     written.push({ path: rel, changed: false })
     return false

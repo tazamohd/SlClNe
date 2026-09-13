@@ -13,6 +13,106 @@ import { P } from '../lib/paths.mjs'
 import { REQUIRED, SECTIONS } from '../lib/structure.mjs'
 import { banner, table, write, writeJson } from '../lib/write.mjs'
 
+/** Pre-existing material that belongs to a numbered section but has not been
+ *  moved into it yet. Pointing at it is the honest interim state: the reader
+ *  gets to the document, and the fact that it is not yet migrated stays
+ *  visible rather than being quietly resolved by a bulk move nobody reviewed. */
+const LEGACY_POINTERS = {
+  '01_EXECUTIVE_STRATEGY': [
+    { path: 'management/strategic-plan.md', covers: 'Strategic plan' },
+    { path: 'management/business-plan.md', covers: 'Business plan' },
+    { path: 'management/financial-plan.md', covers: 'Financial plan' },
+  ],
+  '02_MARKET_BUSINESS_RESEARCH': [
+    { path: 'marketing/market-analysis.md', covers: 'Market analysis' },
+    { path: 'marketing/competitive-analysis.md', covers: 'Competitive analysis' },
+    { path: 'knowledge-base/library/saudi-automotive-market-guide.md', covers: 'Saudi market guide' },
+  ],
+  '03_PRINCE2_GOVERNANCE': [
+    { path: 'project-management/prince2/', covers: 'Business case, PID, product descriptions, stage plans, quality register' },
+  ],
+  '04_PROJECT_MANAGEMENT': [
+    { path: 'project-management/pmp/', covers: 'Charter, scope, schedule, stakeholders, communication, risk register' },
+    { path: 'project-management/governance-framework.md', covers: 'Governance framework' },
+    { path: 'project-management/change-management.md', covers: 'Change management' },
+  ],
+  '05_PLANNING': [
+    { path: 'project-management/planning/', covers: 'Release, deployment, migration, training and go-to-market plans' },
+    { path: 'project-management/pmp/wbs.md', covers: 'Work breakdown structure' },
+  ],
+  '06_AGILE_DELIVERY': [
+    { path: 'project-management/agile/', covers: 'Backlog, epics, user stories, definition of done, sprint template' },
+  ],
+  '08_PRODUCT': [
+    { path: 'requirements/prd.md', covers: 'Product requirements document' },
+    { path: 'marketing/product-overview.md', covers: 'Product overview' },
+  ],
+  '09_SYSTEM_ANALYSIS': [
+    { path: 'requirements/srs.md', covers: 'Software requirements specification' },
+    { path: 'MASTER_SRS.md', covers: 'Master SRS — the largest inherited document; needs review before it is treated as current' },
+    { path: 'requirements/functional/', covers: 'Eight functional domain narratives' },
+    { path: 'requirements/non-functional/', covers: 'Eight non-functional areas' },
+  ],
+  '16_SYSTEM_DESIGN': [
+    { path: 'system/architecture/', covers: 'Frontend, backend, auth, data-flow and database design' },
+    { path: 'system/coding-standards.md', covers: 'Coding standards' },
+  ],
+  '17_API_INTEGRATION': [
+    { path: 'system/integration/', covers: 'ZATCA, payment gateway and third-party integrations' },
+    { path: 'system/api-versioning.md', covers: 'API versioning' },
+  ],
+  '19_SECURITY': [
+    { path: 'system/security/', covers: 'Authentication guide, authorization matrix, data protection, security architecture' },
+  ],
+  '20_UI_UX_EXPERIENCE': [
+    { path: 'knowledge-base/reference/design-system.md', covers: 'Design system' },
+    { path: 'A11Y_AUDIT.md', covers: 'Accessibility audit' },
+  ],
+  '22_PORTALS_CHANNELS': [
+    { path: 'user-documentation/portals/', covers: 'Customer app, supplier portal and technician portal guides' },
+  ],
+  '23_BUSINESS_OPERATIONS': [
+    { path: 'departments/', covers: 'Six departmental operating documents' },
+    { path: 'training/', covers: 'Fourteen role-based training courses' },
+    { path: 'knowledge-base/library/standard-operating-procedures.md', covers: 'Standard operating procedures' },
+  ],
+  '24_COMMERCIAL_FINANCIAL': [
+    { path: 'marketing/pricing-guide.md', covers: 'Pricing' },
+    { path: 'marketing/roi-calculator.md', covers: 'ROI model' },
+    { path: 'management/financial-plan.md', covers: 'Financial plan' },
+  ],
+  '25_SALES_MARKETING_CUSTOMER_SUCCESS': [
+    { path: 'marketing/', covers: 'Sales playbook, demo script, press kit, partnership programme, case study template' },
+    { path: 'project-management/planning/customer-success-plan.md', covers: 'Customer success plan' },
+  ],
+  '26_LEGAL_COMPLIANCE': [
+    { path: 'legal/', covers: 'Terms, privacy policy, DPA, EULA, acceptable use, cookie policy' },
+    { path: 'knowledge-base/library/zatca-compliance-checklist.md', covers: 'ZATCA checklist' },
+    { path: 'management/compliance-management-plan.md', covers: 'Compliance management plan' },
+  ],
+  '27_TESTING_VALIDATION': [
+    { path: 'testing/', covers: 'Load, security, regression and UAT test plans' },
+    { path: 'system/testing-strategy.md', covers: 'Testing strategy' },
+    { path: 'MASTER_TEST_STRATEGY.md', covers: 'Master test strategy' },
+  ],
+  '28_ITIL_SERVICE_MANAGEMENT': [
+    { path: 'system/sla-document.md', covers: 'Service level agreement' },
+    { path: 'system/incident-response.md', covers: 'Incident response' },
+    { path: 'system/business-continuity.md', covers: 'Business continuity' },
+  ],
+  '29_OPERATIONS_DEVOPS': [
+    { path: 'system/runbooks/', covers: 'Six operational runbooks' },
+    { path: 'system/operations/', covers: 'Environment setup, DevOps guide, monitoring, backup and recovery' },
+  ],
+  '31_ARCHITECTURE_DECISIONS': [
+    { path: 'system/adr/', covers: 'Eight ADRs — immutable by convention; indexed, never rewritten' },
+  ],
+  '33_MASTER_DIAGRAM_LIBRARY': [
+    { path: 'mermaid/', covers: 'Forty-six authored Mermaid diagrams: project, user flows, journeys, experience maps' },
+    { path: 'visualizations/', covers: 'Twenty-seven authored HTML visualizations — image-equivalent, not diffable' },
+  ],
+}
+
 function walk(dir, out = []) {
   let entries
   try {
@@ -146,6 +246,55 @@ export function generateControl(model, requirements, trace) {
     ].join('\n'),
   )
 
+  // ── Section READMEs ─────────────────────────────────────────────────────
+  //
+  // A numbered section with no README is an empty directory a reader opens and
+  // closes again. Each one states what belongs there, what is currently in it,
+  // and — where the material exists but has not yet been migrated — where to
+  // find it in the pre-existing tree.
+  for (const section of SECTIONS) {
+    const contents = docs.filter((d) => d.section === section.dir && !d.path.endsWith('README.md'))
+    const legacyFor = LEGACY_POINTERS[section.dir] ?? []
+    write(
+      join(P.docs, section.dir, 'README.md'),
+      [
+        banner('control.mjs', ['the docs/ tree', 'tools/docs/lib/structure.mjs']),
+        `# ${section.title}`,
+        '',
+        `**Status:** GENERATED · **Generated:** ${model.generatedAt}`,
+        '',
+        section.purpose,
+        '',
+        '## In this section',
+        '',
+        contents.length
+          ? // No byte sizes here. A README that reports the size of its
+            // neighbours changes whenever any of them changes by a single
+            // character, which puts the generator into an oscillation it never
+            // settles out of — and the size was never the useful part.
+            table(
+              ['Document', 'Kind'],
+              contents
+                .sort((a, b) => a.path.localeCompare(b.path))
+                .map((d) => [`[\`${d.path.slice(section.dir.length + 1)}\`](${d.path.slice(section.dir.length + 1)})`, d.type === 'GENERATED' ? 'generated' : 'authored']),
+            )
+          : '_Nothing yet. Material for this section is listed below, or has not been written._',
+        '',
+        legacyFor.length ? '## Related material not yet migrated' : null,
+        legacyFor.length ? '' : null,
+        legacyFor.length
+          ? table(['Where it is now', 'What it covers'], legacyFor.map((l) => [`\`docs/${l.path}\``, l.covers])) +
+            '\n\nThese are classified in the [migration manifest](../00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md) and move one section at a time so each change stays reviewable.'
+          : null,
+        '',
+        '[← Documentation index](../00_DOCUMENT_CONTROL/DOCS_INDEX.md)',
+        '',
+      ]
+        .filter((l) => l !== null)
+        .join('\n'),
+    )
+  }
+
   // ── Registry ────────────────────────────────────────────────────────────
   writeJson(join(dir, 'DOCUMENTATION_REGISTRY.json'), {
     generatedAt: model.generatedAt,
@@ -263,6 +412,8 @@ export function generateControl(model, requirements, trace) {
           ['Screens wired to the live API', `${model.statusTotals.dataBacked ?? '?'} of ${model.statusTotals.capabilities ?? model.screens.length}`],
           ['Test suites catalogued', `${model.tests.length} containing ${model.tests.reduce((s, t) => s + t.caseCount, 0)} cases`],
           ['Capabilities with no linked test suite', trace.untracedCapabilities],
+          ['Canonical registers at least 3 days behind the newest', `${model.staleness.stale.length} of ${model.staleness.registers.length}`],
+          ['Direct contradictions between registers', model.staleness.contradictions.length],
         ],
       ),
       '',
@@ -298,6 +449,25 @@ export function generateControl(model, requirements, trace) {
       `### 5. ${model.statusTotals.mockOnly ?? '?'} screens read design fixtures rather than the API`,
       '',
       `Measured in \`project-control/STATUS.json\`, not asserted here. Every screen renders and every screen has a content assertion — and ${model.statusTotals.mockOnly ?? '?'} of ${model.statusTotals.capabilities ?? '?'} are not yet connected to live data.`,
+      '',
+      '## The canonical registers disagree with each other',
+      '',
+      `The registries under \`project-control/\` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is \`${model.staleness.newest?.register}\` at ${model.staleness.newest?.stamp}; ${model.staleness.stale.length} registers are at least ${model.staleness.staleThresholdDays} days behind it.`,
+      '',
+      table(
+        ['Register', 'Generated', 'Days behind the newest'],
+        model.staleness.stale.map((s2) => [`\`project-control/${s2.register}\``, s2.stamp, s2.daysBehind]),
+      ),
+      '',
+      model.staleness.contradictions.length
+        ? [
+            'Staleness alone would be tolerable. These are direct contradictions — one register quoting another\'s numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:',
+            '',
+            table(['Claim', 'Current reality'], model.staleness.contradictions.map((c) => [c.claim, c.reality])),
+            '',
+            'A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.',
+          ].join('\n')
+        : '_No cross-register contradictions detected._',
       '',
       '## Gaps in the documentation itself',
       '',

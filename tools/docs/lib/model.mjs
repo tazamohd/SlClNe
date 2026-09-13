@@ -20,6 +20,7 @@ import { extractRbac } from './extract-rbac.mjs'
 import { extractRules, extractStateMachines } from './extract-rules.mjs'
 import { extractTests } from './extract-tests.mjs'
 import { extractSecurity } from './extract-security.mjs'
+import { detectStaleness } from './staleness.mjs'
 
 const json = (path, fallback = null) => {
   try {
@@ -166,5 +167,6 @@ export function buildModel() {
     blockers,
     findings,
     testStatus,
+    staleness: detectStaleness(),
   }
 }

@@ -149,6 +149,19 @@ const undeclared = model.stateMachines.filter((m) => !m.transitionsDeclared).len
 if (undeclared) warn('lifecycles-without-transition-table', `${undeclared} of ${model.stateMachines.length} lifecycles declare states but no legal transitions.`)
 if (model.relationships.inferredCount) warn('relationships-without-fk', `${model.relationships.inferredCount} of ${model.relationships.relationships.length} relationships have no database foreign key.`)
 if (controlStats.missing) warn('required-docs-missing', `${controlStats.missing} required document(s) absent.`)
+if (model.staleness.stale.length) {
+  warn(
+    'registers-stale',
+    `${model.staleness.stale.length} of ${model.staleness.registers.length} canonical registers are at least ${model.staleness.staleThresholdDays} days behind the newest: ` +
+      model.staleness.stale.map((s2) => `${s2.register} (${s2.daysBehind}d)`).join(', '),
+  )
+}
+// A contradiction between two canonical registers is louder than staleness —
+// but the registers belong to other tooling, so this system reports it rather
+// than failing on something it cannot fix.
+for (const c of model.staleness.contradictions) {
+  warn('registers-contradict', `${c.claim}, but ${c.reality}.`)
+}
 
 // ── Report ────────────────────────────────────────────────────────────────
 console.log('')

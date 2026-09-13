@@ -16,7 +16,7 @@ A grade of the documentation, not of the product. Each dimension states why poin
 
 | Dimension | Weight | Score | Reasoning |
 | --- | --- | --- | --- |
-| Coverage | 15 | 15/15 | 34 of 35 required documents present; every entity, endpoint, rule and screen catalogued |
+| Coverage | 15 | 15/15 | 35 of 35 required documents present; every entity, endpoint, rule and screen catalogued |
 | Accuracy against implementation | 20 | 18/20 | Every factual document is generated from source and diffed by `docs:check`, so it cannot drift silently. Two points withheld: no human has verified that the parses capture intent, and nothing is marked VERIFIED. |
 | Traceability | 15 | 11/15 | Objective → capability → requirement → entity → API → permission → screen → test resolves in both directions and the breaks are enumerated. Withheld: requirements are as-built, so the chain has no business-need anchor at the top. |
 | Business and product documentation | 10 | 5/10 | Capability map, objectives and product structure are generated and accurate. Market, pricing and financial material is unsourced and marked `RESEARCH_REQUIRED` rather than written. |

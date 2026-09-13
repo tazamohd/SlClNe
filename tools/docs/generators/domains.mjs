@@ -176,9 +176,11 @@ export function generateDomains(model) {
     written.push(file)
   }
 
-  // Index.
+  // Named DOMAIN_INDEX, not README: `control.mjs` owns the README of every
+  // numbered section. Two generators writing the same path overwrote each
+  // other on every pass, and the run never settled.
   write(
-    join(dir, 'README.md'),
+    join(dir, 'DOMAIN_INDEX.md'),
     [
       banner('domains.mjs', SOURCES),
       '# Domain documentation',
