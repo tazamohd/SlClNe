@@ -36,9 +36,9 @@ import './landing/landing.css'
  *  to a different page and has no container here.
  *
  *  `<CornerBrackets>` on the bay-board mock is a second, later borrowing —
- *  the instrument-panel framing from the "SALIS AUTO 2060" design study,
+ *  the instrument-panel framing from the "SALIS AUTO 2030" design study,
  *  kept in this page's real palette and real copy rather than that study's
- *  fictional 2060 content. See `sections/CornerBrackets.tsx`. */
+ *  fictional 2030 content. See `sections/CornerBrackets.tsx`. */
 
 /** The decorative circuit trace behind the hero, drawn once on load. */
 function Trace({ className, style }: { className: string; style: CSSProperties }) {

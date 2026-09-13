@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- All public, crawlable routes: Tier A (10 design-authoritative), Tier B (17
-     design-system), and Tier C (7 content/SEO) pages, rendered ungated with no
+<!-- All public, crawlable routes: Tier A (9 design-authoritative), Tier B (19
+     design-system — including Parts & Accessories and Deals & Offers, which
+     replaced the Tier A Marketplace page), and Tier C (7 content/SEO) pages,
+     rendered ungated with no
      session. Kept in step with the website barrel — the SEO test asserts every
      ungated public route appears here. Base origin https://salisauto.sa is
      provisional: no public origin is configured anywhere in the repository
@@ -10,7 +12,6 @@
   <url><loc>https://salisauto.sa/public-portal/landing</loc><lastmod>2026-08-21</lastmod><priority>1.0</priority></url>
   <url><loc>https://salisauto.sa/public-portal/about</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/services</loc><lastmod>2026-08-12</lastmod></url>
-  <url><loc>https://salisauto.sa/public-portal/marketplace</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/insurance</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/loans</loc><lastmod>2026-08-12</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/blog</loc><lastmod>2026-08-12</lastmod></url>
@@ -34,6 +35,8 @@
   <url><loc>https://salisauto.sa/public-portal/supplier-portal</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/integrations</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/industries</loc><lastmod>2026-08-21</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/parts-accessories</loc><lastmod>2026-09-13</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/deals-offers</loc><lastmod>2026-09-13</lastmod></url>
   <!-- Tier C — content/SEO pages -->
   <url><loc>https://salisauto.sa/public-portal/pricing</loc><lastmod>2026-08-21</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/request-demo</loc><lastmod>2026-08-21</lastmod></url>

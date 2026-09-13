@@ -13,7 +13,7 @@ export interface SectionIntroProps {
   centered?: boolean
   as?: 'h1' | 'h2'
   /** A small mono, uppercase, letter-spaced label above the heading — the
-   *  "signal tag" read borrowed from the SALIS AUTO 2060 design study's
+   *  "signal tag" read borrowed from the SALIS AUTO 2030 design study's
    *  section headers (`.tag`). Optional: most pages don't carry one. It is
    *  not a heading, so it never affects the page's heading hierarchy. */
   eyebrow?: string

@@ -6,10 +6,10 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { Footer } from '@/screens/public/sections/Footer'
 
-/** The marketing chrome all ten `PublicPortal.*.dc.html` designs share: a
- *  64px sticky header — logo, centred nav, theme toggle, sign-in — and the
- *  shared footer. Rendered `ungated`, entirely outside `RequireAccess`: a
- *  visitor with no session must see every page in this shell.
+/** The marketing chrome the nine remaining `PublicPortal.*.dc.html` designs
+ *  share: a 64px sticky header — logo, centred nav, theme toggle, sign-in —
+ *  and the shared footer. Rendered `ungated`, entirely outside `RequireAccess`:
+ *  a visitor with no session must see every page in this shell.
  *
  *  Two deliberate additions over the design source, both required by the
  *  product brief rather than drawn in the handoff:
@@ -18,12 +18,16 @@ import { Footer } from '@/screens/public/sections/Footer'
  *  - a mobile pattern — the designs ship no `PublicPortal.*.Mobile.dc.html`,
  *    so below the app's 860px breakpoint the centred nav becomes a hamburger
  *    disclosure panel. That pattern is this shell's own, not the handoff's.
- */
+ *
+ *  `Marketplace` (Tier A) was retired in favour of two Tier B pages, `Parts &
+ *  Accessories` and `Deals & Offers` — both composed from the section system
+ *  rather than a `.dc.html` source, same as `Pricing` or `Workshop`. */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
   { label: 'About', to: '/public-portal/about' },
   { label: 'Services', to: '/public-portal/services' },
-  { label: 'Marketplace', to: '/public-portal/marketplace' },
+  { label: 'Parts & Accessories', to: '/public-portal/parts-accessories' },
+  { label: 'Deals & Offers', to: '/public-portal/deals-offers' },
   { label: 'Contact', to: '/public-portal/contact' },
   { label: 'Blog', to: '/public-portal/blog' },
 ] as const

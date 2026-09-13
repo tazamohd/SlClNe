@@ -1,5 +1,5 @@
 /** Four small corner-bracket accents — the instrument-panel framing borrowed
- *  from the "SALIS AUTO 2060" design study (its `.panel .corner` treatment),
+ *  from the "SALIS AUTO 2030" design study (its `.panel .corner` treatment),
  *  adapted to the site's own light palette and brand tokens rather than that
  *  study's dark HUD theme. Purely decorative: drop into any `relative`
  *  container to give a data-forward block (a stat band, a plan card, a

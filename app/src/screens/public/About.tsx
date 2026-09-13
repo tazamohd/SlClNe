@@ -10,8 +10,8 @@ import { CornerBrackets } from './sections/CornerBrackets'
  *  because the About design flows its paragraph as a lede (larger line height,
  *  no subtitle style). The mono eyebrow above the heading, and the corner
  *  brackets framing the stat band, are the one visual borrowing from the
- *  "SALIS AUTO 2060" design study — its instrument-panel framing, kept in
- *  the site's own light palette, not that study's fictional 2060 copy. */
+ *  "SALIS AUTO 2030" design study — its instrument-panel framing, kept in
+ *  the site's own light palette, not that study's fictional 2030 copy. */
 const STATS = [
   { value: '500+', label: 'Workshops' },
   { value: '50K+', label: 'Vehicles Serviced' },
