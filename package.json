@@ -1,0 +1,11 @@
+{
+  "name": "salis-auto-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SALIS AUTO — workspace root. Holds the documentation generation and validation toolchain; the application, API and shared contract live in app/, server/ and packages/contract/.",
+  "scripts": {
+    "docs:generate": "node tools/docs/generate.mjs",
+    "docs:check": "node tools/docs/check.mjs"
+  }
+}

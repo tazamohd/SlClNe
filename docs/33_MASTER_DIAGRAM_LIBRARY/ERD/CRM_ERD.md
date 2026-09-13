@@ -1,0 +1,75 @@
+<!-- GENERATED FILE — DO NOT EDIT BY HAND.
+     Generator: tools/docs/generators/data.mjs
+     Regenerate: npm run docs:generate
+     Derived from:
+       - server/src/db/schema.ts
+       - server/drizzle/*.sql
+-->
+
+# CRM ERD
+
+**Status:** GENERATED · **Generated:** 2026-09-13 · 5 tables
+
+### CRM
+
+```mermaid
+erDiagram
+  leads {
+    varchar id PK
+    varchar name
+    varchar company
+    money value_halalas
+    varchar source
+    varchar stage
+    date lead_date
+    integer score
+    varchar converted_opportunity_id FK
+  }
+  opportunities {
+    varchar id PK
+    varchar name
+    varchar company
+    money value_halalas
+    varchar stage
+    integer probability_pct
+    date close_date
+    varchar owner_name
+  }
+  campaigns {
+    varchar id PK
+    varchar name
+    varchar type
+    varchar status
+    integer reach
+    integer opens
+    integer clicks
+    integer conversions
+    money budget_halalas
+    money spent_halalas
+  }
+  segments {
+    varchar id PK
+    varchar name
+    integer member_count
+    text rules
+    varchar last_updated_label
+  }
+  crm_tasks {
+    varchar id PK
+    varchar title
+    varchar assigned_to
+    date due_date
+    varchar priority
+    varchar status
+    varchar type
+  }
+```
+
+
+| Table | Purpose |
+| --- | --- |
+| `leads` | — |
+| `opportunities` | — |
+| `campaigns` | — |
+| `segments` | — |
+| `crm_tasks` | — |

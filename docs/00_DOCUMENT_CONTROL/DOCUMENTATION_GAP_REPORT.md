@@ -1,0 +1,137 @@
+<!-- GENERATED FILE — DO NOT EDIT BY HAND.
+     Generator: tools/docs/generators/control.mjs
+     Regenerate: npm run docs:generate
+     Derived from:
+       - every extractor
+       - the docs/ tree
+-->
+
+# Documentation gap report
+
+**Generated:** 2026-09-13
+
+This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
+
+## Headline
+
+| Measure | Value |
+| --- | --- |
+| Required documents | 23 present of 35 |
+| Documents generated from source | 55 |
+| Documents authored by hand | 270 |
+| Documents marked VERIFIED | **0** — see "What is not verified" below |
+| Entities documented | 68 of 68 |
+| Relationships documented | 164 (61 FK-backed, 103 convention only) |
+| Endpoints documented | 303 of 303 |
+| Endpoints with a linked test | 42 of 303 |
+| Business rules documented | 30, each naming its enforcing function |
+| Lifecycles with a declared transition table | 1 of 18 |
+| Screens registered and mapped to a capability | 424 of 424 |
+| Screens wired to the live API | 99 of 424 |
+| Test suites catalogued | 178 containing 2088 cases |
+| Capabilities with no linked test suite | 10 |
+
+## What is not verified
+
+**No document in this set is marked VERIFIED, and that is deliberate.**
+
+VERIFIED would mean a person or a test run confirmed the document against the implementation on a stated date. This generator can confirm that a document was *derived* from source — which is why the generated ones cannot drift — but derivation is not verification. A generated document faithfully reproduces a parse of the code; whether that parse captures what the code *means* is a human judgement.
+
+Marking documents VERIFIED because a generator wrote them is precisely the self-certification this system was built to avoid.
+
+## Gaps in the implementation that the documentation records
+
+### 1. Referential integrity is not in the database
+
+103 of 164 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+
+### 2. One lifecycle in eighteen declares its legal transitions
+
+`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 17 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
+
+### 3. 21 authenticated endpoints state no permission guard in the handler
+
+| Method | Path | Declared in |
+| --- | --- | --- |
+| POST | `/api/v1/auth/2fa/enrol` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/2fa/verify` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/biometric/challenge` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/biometric/enrol` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/forgot-password` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/login` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/logout` | `server/src/auth/routes.ts` |
+| GET | `/api/v1/auth/me` | `server/src/auth/routes.ts` |
+| GET | `/api/v1/auth/providers` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/refresh` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/register` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/request-otp` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/reset-password` | `server/src/auth/routes.ts` |
+| GET | `/api/v1/auth/sessions` | `server/src/auth/routes.ts` |
+| DELETE | `/api/v1/auth/sessions/:id` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/sessions/revoke-all` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/social/:provider` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/sso/callback` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/sso/start` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/switch-role` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/verify-otp` | `server/src/auth/routes.ts` |
+
+Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
+
+### 4. 261 endpoints have no test matched to them by path
+
+Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
+
+### 5. 285 screens read design fixtures rather than the API
+
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 285 of 424 are not yet connected to live data.
+
+## Gaps in the documentation itself
+
+### Requirements are as-built, not as-elicited
+
+The requirements catalogue is reverse-engineered from the implementation and says so on every row. There is no elicited, stakeholder-signed requirements baseline in this workspace, so the question "did we build what the business asked for" cannot be answered from these documents. Closing that needs a business analyst and a stakeholder, not a generator.
+
+### Market and financial claims need evidence
+
+Market sizing, competitor positioning, pricing and financial projections are business inputs, not properties of the code. Anything in `02_MARKET_BUSINESS_RESEARCH/` and `24_COMMERCIAL_FINANCIAL/` that is not sourced is marked `RESEARCH_REQUIRED`, and nothing in this set fabricates a figure to fill the space.
+
+### Legal conclusions need a lawyer
+
+ZATCA, VAT and privacy material states *system requirements* — what the software does and must do. Where the question is whether that satisfies a legal obligation, it is marked `LEGAL_REVIEW_REQUIRED` rather than answered.
+
+### 2 documents are thin
+
+Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an index, an ADR with a one-line decision); others are placeholders. They are listed so the difference can be judged rather than assumed.
+
+| Document | Bytes |
+| --- | --- |
+| `docs/17_API_INTEGRATION/endpoints/platform.md` | 937 |
+| `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 876 |
+
+
+## Missing required documents
+
+| Document | Kind |
+| --- | --- |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_TRACEABILITY_REPORT.md` | generated |
+| `00_DOCUMENT_CONTROL/SOURCE_OF_TRUTH_MAP.md` | authored |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md` | authored |
+| `00_DOCUMENT_CONTROL/TRACEABILITY_MODEL.md` | authored |
+| `00_DOCUMENT_CONTROL/MASTER_GLOSSARY.md` | authored |
+| `00_DOCUMENT_CONTROL/DOCUMENTATION_MIGRATION_MANIFEST.md` | authored |
+| `01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md` | authored |
+| `11_PROCESS_FLOW_MODELS/PROCESS_CATALOG.md` | authored |
+| `14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md` | authored |
+| `19_SECURITY/SECURITY_ARCHITECTURE.md` | authored |
+| `28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md` | authored |
+| `29_OPERATIONS_DEVOPS/RUNBOOK_INDEX.md` | authored |
+
+## Recommended next actions, in order
+
+1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
+2. **Declare transition tables for the remaining 17 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
+3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
+4. **Drive the 261 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
+6. **Connect the remaining 285 screens to the API**, which is the bulk of the product work still outstanding.
+7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

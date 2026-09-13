@@ -1,0 +1,343 @@
+/** The document-control layer: index, registry, status, gap report,
+ *  certification and the diagram index.
+ *
+ *  These are the documents that make the rest of the set trustworthy. The gap
+ *  report in particular is the one that has to be honest: a documentation
+ *  system that reports itself complete is indistinguishable from one that has
+ *  not been checked, and the difference only shows up when somebody relies on
+ *  it.
+ */
+import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { join, relative } from 'node:path'
+import { P } from '../lib/paths.mjs'
+import { REQUIRED, SECTIONS } from '../lib/structure.mjs'
+import { banner, table, write, writeJson } from '../lib/write.mjs'
+
+function walk(dir, out = []) {
+  let entries
+  try {
+    entries = readdirSync(dir)
+  } catch {
+    return out
+  }
+  for (const name of entries) {
+    const abs = join(dir, name)
+    if (statSync(abs).isDirectory()) walk(abs, out)
+    else out.push(abs)
+  }
+  return out
+}
+
+/** Every document under `docs/`, classified. A document is GENERATED when it
+ *  carries the generator banner; the banner is the only evidence used, so a
+ *  file cannot claim to be generated without being generated. */
+export function inventory() {
+  return walk(P.docs)
+    .filter((f) => /\.(md|json)$/.test(f))
+    .map((abs) => {
+      const path = relative(P.docs, abs).replace(/\\/g, '/')
+      let content = ''
+      try {
+        content = readFileSync(abs, 'utf8')
+      } catch {
+        /* unreadable files are reported as such below */
+      }
+      const generated = content.includes('GENERATED FILE — DO NOT EDIT BY HAND')
+      const section = path.includes('/') ? path.split('/')[0] : '(root)'
+      return {
+        path,
+        abs,
+        section,
+        bytes: content.length,
+        lines: content.split('\n').length,
+        type: generated ? 'GENERATED' : section === '99_ARCHIVE' ? 'HISTORICAL' : 'NORMATIVE_OR_AUTHORED',
+        archived: section === '99_ARCHIVE',
+        // A document with almost nothing in it is a placeholder, whatever its
+        // title says. Counting those as "written" is how a set reports 300
+        // documents and delivers 40.
+        substantive: content.length > 1200,
+      }
+    })
+}
+
+export function generateControl(model, requirements, trace) {
+  const dir = join(P.docs, '00_DOCUMENT_CONTROL')
+  const docs = inventory()
+  const structured = docs.filter((d) => /^\d\d_/.test(d.section))
+  const legacy = docs.filter((d) => !/^\d\d_/.test(d.section))
+
+  const required = REQUIRED.map((r) => {
+    const found = docs.find((d) => d.path === r.path)
+    return { ...r, present: !!found, substantive: found?.substantive ?? false, type: found?.type ?? null }
+  })
+  const missing = required.filter((r) => !r.present)
+
+  // ── DOCS_INDEX ──────────────────────────────────────────────────────────
+  write(
+    join(dir, 'DOCS_INDEX.md'),
+    [
+      banner('control.mjs', ['the docs/ tree itself', 'tools/docs/lib/structure.mjs']),
+      '# SALIS AUTO documentation index',
+      '',
+      `**Generated:** ${model.generatedAt} · ${docs.length} documents, ${structured.length} in the numbered architecture`,
+      '',
+      '## Start here',
+      '',
+      'An executive or an agent should be able to understand the state of this project from these nine documents before opening anything else.',
+      '',
+      table(
+        ['Read this', 'To learn'],
+        [
+          ['[Executive summary](../01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md)', 'What SALIS AUTO is and why it exists'],
+          ['[Documentation status](DOCUMENTATION_STATUS.md)', 'What is documented, what is generated, what is stale'],
+          ['[Gap report](DOCUMENTATION_GAP_REPORT.md)', 'What is missing or unverified — read before trusting anything else'],
+          ['[Business capability map](../07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md)', 'What the product does, by capability'],
+          ['[Master architecture](../14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md)', 'How it is built, current versus target'],
+          ['[Requirements traceability](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md)', 'Objective → capability → API → test, and where the chain breaks'],
+          ['[API overview](../17_API_INTEGRATION/API_OVERVIEW.md)', `The ${model.api.length}-endpoint surface and its cross-cutting contract`],
+          ['[RBAC matrix](../19_SECURITY/RBAC_MATRIX.md)', 'Who may do what, and the six-letter grant alphabet'],
+          ['[Production readiness](../30_RELEASE_CERTIFICATION/PRODUCTION_READINESS.md)', 'What still blocks a release'],
+        ],
+      ),
+      '',
+      '## The architecture',
+      '',
+      table(
+        ['Section', 'Purpose', 'Documents'],
+        SECTIONS.map((s) => [`\`${s.dir}/\``, s.purpose, docs.filter((d) => d.section === s.dir).length]),
+      ),
+      '',
+      '## Documents outside the numbered architecture',
+      '',
+      `${legacy.length} documents sit in the pre-existing \`docs/\` folders (\`system/\`, \`requirements/\`, \`project-management/\`, \`knowledge-base/\`, \`mermaid/\`, \`visualizations/\` and others). They were **not** deleted or bulk-moved: many are accurate, several are the only record of a decision, and a migration that moves 300 files in one commit destroys the ability to review any of them. \`DOCUMENTATION_MIGRATION_MANIFEST.md\` classifies each one and records where it is going.`,
+      '',
+      table(
+        ['Folder', 'Documents'],
+        Object.entries(
+          legacy.reduce((acc, d) => {
+            acc[d.section] = (acc[d.section] ?? 0) + 1
+            return acc
+          }, {}),
+        )
+          .sort((a, b) => b[1] - a[1])
+          .map(([folder, count]) => [`\`docs/${folder}/\``, count]),
+      ),
+      '',
+      '## Machine-readable registries',
+      '',
+      'The Markdown is a view. These are the canonical form, and what `docs:check` and SAHEL read.',
+      '',
+      table(
+        ['Registry', 'Holds', 'Generated from'],
+        [
+          ['`project-control/ENTITY_REGISTRY.json`', `${model.entities.length} tables with every column`, '`server/src/db/schema.ts`'],
+          ['`project-control/RELATIONSHIP_REGISTRY.json`', `${model.relationships.relationships.length} relationships, declared versus inferred`, '`server/src/db/schema.ts`'],
+          ['`project-control/API_REGISTRY.json`', `${model.api.length} endpoints with guards and scopes`, 'the route files'],
+          ['`project-control/PERMISSION_REGISTRY.json`', `${model.rbac.totals.cells} permission cells, scopes, ceilings, SOD`, '`packages/contract/src/rbac.ts`'],
+          ['`project-control/BUSINESS_RULES.json`', `${model.rules.length} rules, each naming its function`, '`packages/contract/src/rules/*.ts`'],
+          ['`project-control/STATE_MACHINE_REGISTRY.json`', `${model.stateMachines.length} lifecycles`, '`packages/contract/src/entities/*.ts`'],
+          ['`project-control/TEST_REGISTRY.json`', `${model.tests.length} suites, ${model.tests.reduce((s, t) => s + t.caseCount, 0)} cases`, 'the spec files'],
+          ['`project-control/CAPABILITY_REGISTRY.json`', `${model.capabilities.length} capabilities linked to everything below them`, 'modules + screen domains'],
+          ['`project-control/SECURITY_REGISTRY.json`', 'RLS policies, triggers, unauthenticated surface', '`server/drizzle/*.sql`'],
+          ['`project-control/MASTER_REGISTRY.json`', `${model.screens.length} screens — **owned by \`app/scripts/build-registry.mjs\`, not by this system**`, 'the screen sources'],
+        ],
+      ),
+      '',
+    ].join('\n'),
+  )
+
+  // ── Registry ────────────────────────────────────────────────────────────
+  writeJson(join(dir, 'DOCUMENTATION_REGISTRY.json'), {
+    generatedAt: model.generatedAt,
+    generator: 'tools/docs/generators/control.mjs',
+    statusValues: ['MISSING', 'DRAFT', 'IMPLEMENTED_NOT_VERIFIED', 'VERIFIED', 'STALE', 'SUPERSEDED'],
+    note: 'A document is GENERATED only if it carries the generator banner; nothing may claim the status without it. VERIFIED is never set by this generator — it requires a human or a test run as evidence, and self-certification is exactly what this registry exists to prevent.',
+    totals: {
+      documents: docs.length,
+      inNumberedArchitecture: structured.length,
+      legacy: legacy.length,
+      generated: docs.filter((d) => d.type === 'GENERATED').length,
+      authored: docs.filter((d) => d.type === 'NORMATIVE_OR_AUTHORED').length,
+      archived: docs.filter((d) => d.archived).length,
+      substantive: docs.filter((d) => d.substantive).length,
+      thin: docs.filter((d) => !d.substantive).length,
+      requiredTotal: required.length,
+      requiredPresent: required.filter((r) => r.present).length,
+      requiredMissing: missing.length,
+    },
+    required,
+    documents: docs.map(({ abs, ...rest }) => ({
+      ...rest,
+      sourceOfTruth: rest.type === 'GENERATED' ? 'the source files named in its banner' : 'this document',
+      status: rest.type === 'GENERATED' ? 'IMPLEMENTED_NOT_VERIFIED' : rest.substantive ? 'DRAFT' : 'DRAFT',
+    })),
+  })
+
+  // ── Status ──────────────────────────────────────────────────────────────
+  write(
+    join(dir, 'DOCUMENTATION_STATUS.md'),
+    [
+      banner('control.mjs', ['the docs/ tree', 'project-control/*.json']),
+      '# Documentation status',
+      '',
+      `**Generated:** ${model.generatedAt}`,
+      '',
+      '## Coverage',
+      '',
+      table(
+        ['Measure', 'Value'],
+        [
+          ['Documents in `docs/`', docs.length],
+          ['In the numbered architecture', structured.length],
+          ['In the pre-existing folders (classified, not yet migrated)', legacy.length],
+          ['Machine-generated from source', docs.filter((d) => d.type === 'GENERATED').length],
+          ['Authored', docs.filter((d) => d.type === 'NORMATIVE_OR_AUTHORED').length],
+          ['Substantive (> 1.2 kB)', docs.filter((d) => d.substantive).length],
+          ['Thin — placeholder or stub', docs.filter((d) => !d.substantive).length],
+          ['Required documents present', `${required.filter((r) => r.present).length} of ${required.length}`],
+        ],
+      ),
+      '',
+      '## What is generated, and therefore cannot go stale silently',
+      '',
+      table(
+        ['Area', 'Derived from', 'Count'],
+        [
+          ['Entity catalogue, data dictionary, ERDs', '`server/src/db/schema.ts`', `${model.entities.length} tables`],
+          ['Relationship catalogue', '`server/src/db/schema.ts`', `${model.relationships.relationships.length} relationships`],
+          ['API reference', 'the route files', `${model.api.length} endpoints`],
+          ['RBAC matrix, roles, SOD, field redaction', '`packages/contract/src/rbac.ts`', `${model.rbac.totals.cells} cells`],
+          ['Business rules', '`packages/contract/src/rules/*.ts`', `${model.rules.length} rules`],
+          ['State machines', '`packages/contract/src/entities/*.ts`', `${model.stateMachines.length} lifecycles`],
+          ['Isolation and policies', '`server/drizzle/*.sql`', `${model.security.policies.length} policies`],
+          ['Test catalogue', 'the spec files', `${model.tests.length} suites`],
+          ['Screen registry view', '`project-control/MASTER_REGISTRY.json`', `${model.screens.length} screens`],
+          ['Capability map, requirements, traceability', 'all of the above', `${requirements.functional.length + requirements.nonFunctional.length + requirements.data.length + requirements.security.length} requirements`],
+        ],
+      ),
+      '',
+      '`npm run docs:check` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.',
+      '',
+      '## Required documents',
+      '',
+      table(
+        ['Document', 'Kind', 'Present', 'Substantive'],
+        required.map((r) => [`\`${r.path}\``, r.generated ? 'generated' : 'authored', r.present ? 'yes' : '**no**', r.present ? (r.substantive ? 'yes' : 'thin') : '—']),
+      ),
+      '',
+    ].join('\n'),
+  )
+
+  // ── Gap report ──────────────────────────────────────────────────────────
+  const thin = docs.filter((d) => !d.substantive && !d.archived)
+  const untestedEndpoints = model.api.filter((e) => !(e.tests ?? []).length)
+  const noPermission = model.api.filter((e) => !e.authentication.startsWith('None') && (!e.permissionModule || String(e.permissionModule).startsWith('(')))
+  const stateSetOnly = model.stateMachines.filter((m) => !m.transitionsDeclared)
+
+  write(
+    join(dir, 'DOCUMENTATION_GAP_REPORT.md'),
+    [
+      banner('control.mjs', ['every extractor', 'the docs/ tree']),
+      '# Documentation gap report',
+      '',
+      `**Generated:** ${model.generatedAt}`,
+      '',
+      'This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.',
+      '',
+      '## Headline',
+      '',
+      table(
+        ['Measure', 'Value'],
+        [
+          ['Required documents', `${required.filter((r) => r.present).length} present of ${required.length}`],
+          ['Documents generated from source', docs.filter((d) => d.type === 'GENERATED').length],
+          ['Documents authored by hand', docs.filter((d) => d.type === 'NORMATIVE_OR_AUTHORED').length],
+          ['Documents marked VERIFIED', '**0** — see "What is not verified" below'],
+          ['Entities documented', `${model.entities.length} of ${model.entities.length}`],
+          ['Relationships documented', `${model.relationships.relationships.length} (${model.relationships.declaredCount} FK-backed, ${model.relationships.inferredCount} convention only)`],
+          ['Endpoints documented', `${model.api.length} of ${model.api.length}`],
+          ['Endpoints with a linked test', `${model.api.length - untestedEndpoints.length} of ${model.api.length}`],
+          ['Business rules documented', `${model.rules.length}, each naming its enforcing function`],
+          ['Lifecycles with a declared transition table', `${model.stateMachines.length - stateSetOnly.length} of ${model.stateMachines.length}`],
+          ['Screens registered and mapped to a capability', `${model.screens.length} of ${model.screens.length}`],
+          ['Screens wired to the live API', `${model.statusTotals.dataBacked ?? '?'} of ${model.statusTotals.capabilities ?? model.screens.length}`],
+          ['Test suites catalogued', `${model.tests.length} containing ${model.tests.reduce((s, t) => s + t.caseCount, 0)} cases`],
+          ['Capabilities with no linked test suite', trace.untracedCapabilities],
+        ],
+      ),
+      '',
+      '## What is not verified',
+      '',
+      '**No document in this set is marked VERIFIED, and that is deliberate.**',
+      '',
+      'VERIFIED would mean a person or a test run confirmed the document against the implementation on a stated date. This generator can confirm that a document was *derived* from source — which is why the generated ones cannot drift — but derivation is not verification. A generated document faithfully reproduces a parse of the code; whether that parse captures what the code *means* is a human judgement.',
+      '',
+      'Marking documents VERIFIED because a generator wrote them is precisely the self-certification this system was built to avoid.',
+      '',
+      '## Gaps in the implementation that the documentation records',
+      '',
+      '### 1. Referential integrity is not in the database',
+      '',
+      `${model.relationships.inferredCount} of ${model.relationships.relationships.length} relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.`,
+      '',
+      '### 2. One lifecycle in eighteen declares its legal transitions',
+      '',
+      `\`jobCard.JOB_STAGE_TRANSITIONS\` has a transition table a single guard enforces. The other ${stateSetOnly.length} lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in \`docs/12_UML_BPMN_MODELS/STATE_MACHINES.md\`.`,
+      '',
+      `### 3. ${noPermission.length} authenticated endpoints state no permission guard in the handler`,
+      '',
+      noPermission.length
+        ? table(['Method', 'Path', 'Declared in'], noPermission.slice(0, 40).map((e) => [e.method, `\`${e.path}\``, `\`${e.source}\``])) +
+          '\n\nSome of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.'
+        : '_None._',
+      '',
+      `### 4. ${untestedEndpoints.length} endpoints have no test matched to them by path`,
+      '',
+      'Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.',
+      '',
+      `### 5. ${model.statusTotals.mockOnly ?? '?'} screens read design fixtures rather than the API`,
+      '',
+      `Measured in \`project-control/STATUS.json\`, not asserted here. Every screen renders and every screen has a content assertion — and ${model.statusTotals.mockOnly ?? '?'} of ${model.statusTotals.capabilities ?? '?'} are not yet connected to live data.`,
+      '',
+      '## Gaps in the documentation itself',
+      '',
+      '### Requirements are as-built, not as-elicited',
+      '',
+      'The requirements catalogue is reverse-engineered from the implementation and says so on every row. There is no elicited, stakeholder-signed requirements baseline in this workspace, so the question "did we build what the business asked for" cannot be answered from these documents. Closing that needs a business analyst and a stakeholder, not a generator.',
+      '',
+      '### Market and financial claims need evidence',
+      '',
+      'Market sizing, competitor positioning, pricing and financial projections are business inputs, not properties of the code. Anything in `02_MARKET_BUSINESS_RESEARCH/` and `24_COMMERCIAL_FINANCIAL/` that is not sourced is marked `RESEARCH_REQUIRED`, and nothing in this set fabricates a figure to fill the space.',
+      '',
+      '### Legal conclusions need a lawyer',
+      '',
+      'ZATCA, VAT and privacy material states *system requirements* — what the software does and must do. Where the question is whether that satisfies a legal obligation, it is marked `LEGAL_REVIEW_REQUIRED` rather than answered.',
+      '',
+      `### ${thin.length} documents are thin`,
+      '',
+      'Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an index, an ADR with a one-line decision); others are placeholders. They are listed so the difference can be judged rather than assumed.',
+      '',
+      table(['Document', 'Bytes'], thin.slice(0, 50).map((d) => [`\`docs/${d.path}\``, d.bytes])),
+      thin.length > 50 ? `\n_…and ${thin.length - 50} more, in \`DOCUMENTATION_REGISTRY.json\` where \`substantive\` is false._` : '',
+      '',
+      '## Missing required documents',
+      '',
+      missing.length ? table(['Document', 'Kind'], missing.map((r) => [`\`${r.path}\``, r.generated ? 'generated' : 'authored'])) : '_None — every required document is present._',
+      '',
+      '## Recommended next actions, in order',
+      '',
+      [
+        '1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.',
+        `2. **Declare transition tables for the remaining ${stateSetOnly.length} lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.`,
+        `3. **Confirm the ${noPermission.length} endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).`,
+        `4. **Drive the ${untestedEndpoints.length} path-unmatched endpoints down**, starting with the write endpoints that move money or stock.`,
+        '5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application\'s job and why.',
+        `6. **Connect the remaining ${model.statusTotals.mockOnly ?? '?'} screens to the API**, which is the bulk of the product work still outstanding.`,
+        '7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.',
+      ].join('\n'),
+      '',
+    ].join('\n'),
+  )
+
+  return { docs: docs.length, required: required.length, missing: missing.length, thin: thin.length }
+}
