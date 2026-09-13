@@ -12,11 +12,11 @@
 
 **Status:** GENERATED · **Source of truth:** the route files · **Generated:** 2026-09-13
 
-303 endpoints under `/api/v1`, plus the two unauthenticated probes.
+372 endpoints under `/api/v1`, plus the two unauthenticated probes.
 
 ## How the surface is built
 
-**172 of them are generated.** `server/src/registry.ts` describes each of the 52 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 52 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
+**241 of them are generated.** `server/src/registry.ts` describes each of the 52 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 52 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
 
 **131 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
 
@@ -49,23 +49,23 @@ Everything reachable without a token, in full. This list is short on purpose and
 
 | Domain | Endpoints | Generated | Explicit | With a stated permission guard |
 | --- | --- | --- | --- | --- |
-| accounting | 40 | 22 | 18 | 40 |
-| admin | 3 | 2 | 1 | 3 |
-| ai | 6 | 4 | 2 | 6 |
-| appointments | 7 | 6 | 1 | 7 |
-| approvals | 4 | 2 | 2 | 4 |
+| accounting | 50 | 32 | 18 | 50 |
+| admin | 4 | 3 | 1 | 4 |
+| ai | 8 | 6 | 2 | 8 |
+| appointments | 9 | 8 | 1 | 9 |
+| approvals | 5 | 3 | 2 | 5 |
 | auth | 24 | 0 | 24 | 0 |
-| crm | 35 | 28 | 7 | 35 |
-| customers | 15 | 12 | 3 | 15 |
-| dashboard | 3 | 2 | 1 | 3 |
-| estimates | 10 | 2 | 8 | 10 |
-| hr | 38 | 30 | 8 | 38 |
-| inventory | 11 | 6 | 5 | 11 |
-| invoices | 11 | 4 | 7 | 11 |
-| jobcards | 44 | 26 | 18 | 44 |
-| payments | 9 | 4 | 5 | 9 |
+| crm | 45 | 38 | 7 | 45 |
+| customers | 19 | 16 | 3 | 19 |
+| dashboard | 4 | 3 | 1 | 4 |
+| estimates | 11 | 3 | 8 | 11 |
+| hr | 48 | 40 | 8 | 48 |
+| inventory | 13 | 8 | 5 | 13 |
+| invoices | 13 | 6 | 7 | 13 |
+| jobcards | 56 | 38 | 18 | 56 |
+| payments | 11 | 6 | 5 | 11 |
 | platform | 3 | 0 | 3 | 0 |
-| procurement | 24 | 10 | 14 | 24 |
-| settings | 6 | 4 | 2 | 6 |
-| technicians | 3 | 2 | 1 | 3 |
-| vehicles | 7 | 6 | 1 | 7 |
+| procurement | 28 | 14 | 14 | 28 |
+| settings | 8 | 6 | 2 | 8 |
+| technicians | 4 | 3 | 1 | 4 |
+| vehicles | 9 | 8 | 1 | 9 |

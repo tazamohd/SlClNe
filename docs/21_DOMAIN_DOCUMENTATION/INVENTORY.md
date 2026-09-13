@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 7 screens, 11 API endpoints and 1 entities, gated by the `inventory` permission module.
+This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 7 screens, 13 API endpoints and 1 entities, gated by the `inventory` permission module.
 
 
 ## Actors
@@ -54,6 +54,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/inventory` | inventory:v | generated | — | 11 |
+| POST | `/api/v1/inventory` | inventory:c | generated | — | 11 |
 | DELETE | `/api/v1/inventory/:id` | inventory:d | generated | — | **0** |
 | GET | `/api/v1/inventory/:id` | inventory:v | generated | — | **0** |
 | PATCH | `/api/v1/inventory/:id` | inventory:e | generated | — | **0** |
@@ -95,7 +97,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **6 of 7 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **10 of 11 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **10 of 13 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **4 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 

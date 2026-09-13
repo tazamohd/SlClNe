@@ -148,10 +148,26 @@ function leadingComment(source, declIndex) {
     .trim()
 }
 
-function parseColumn(segment) {
+/** Local column-builder aliases, resolved to the Drizzle builder they wrap.
+ *
+ *  `const money = (name) => bigint(name, { mode: 'number' })` is a helper, not
+ *  a type. Reporting the alias name in the data dictionary produced a column
+ *  typed `money` — which is actively misleading, because PostgreSQL *has* a
+ *  `money` type and this schema deliberately does not use it. The whole point
+ *  of the convention is that money is a `bigint` count of halalas. */
+function builderAliases(source) {
+  const aliases = new Map()
+  for (const m of source.matchAll(/const (\w+)\s*=\s*\([^)]*\)\s*(?::[^=]*)?=>\s*(\w+)\s*\(/g)) {
+    aliases.set(m[1], m[2])
+  }
+  return aliases
+}
+
+function parseColumn(segment, aliases = new Map()) {
   const nameMatch = segment.match(/^\s*(\w+)\s*:\s*(\w+)\s*\(/)
   if (!nameMatch) return null
-  const [, property, builder] = nameMatch
+  const [, property, rawBuilder] = nameMatch
+  const builder = aliases.get(rawBuilder) ?? rawBuilder
   const colMatch = segment.match(/\(\s*'([^']+)'/)
   const column = colMatch ? colMatch[1] : property
   const lengthMatch = segment.match(/length:\s*(\w+)/)
@@ -161,6 +177,7 @@ function parseColumn(segment) {
     property,
     column,
     type: TYPE_MAP[builder] ?? builder,
+    via: aliases.has(rawBuilder) ? rawBuilder : null,
     length: lengthMatch ? lengthMatch[1] : null,
     notNull: segment.includes('.notNull()'),
     primaryKey: segment.includes('.primaryKey()'),
@@ -189,7 +206,7 @@ const UNIVERSAL = [
  *  them once here means every table that spreads them reports the columns it
  *  actually has in Postgres rather than the columns literally typed in its
  *  body. */
-function parseSpreads(source) {
+function parseSpreads(source, aliases) {
   const spreads = {}
   for (const name of ['tenant', 'audit', 'softDelete', 'stamps']) {
     const decl = source.indexOf(`const ${name} = {`)
@@ -198,7 +215,7 @@ function parseSpreads(source) {
     const close = balanced(source, open, '{', '}')
     if (close === -1) continue
     spreads[name] = topLevelSegments(source.slice(open + 1, close))
-      .map(parseColumn)
+      .map((segment) => parseColumn(segment, aliases))
       .filter(Boolean)
   }
   return spreads
@@ -207,7 +224,8 @@ function parseSpreads(source) {
 export function extractEntities() {
   const original = readFileSync(P.schema, 'utf8')
   const source = blankComments(original)
-  const spreads = parseSpreads(source)
+  const aliases = builderAliases(source)
+  const spreads = parseSpreads(source, aliases)
   const entities = []
   const unparsed = []
 
@@ -240,7 +258,7 @@ export function extractEntities() {
         columns.push(...(spreads[spread[1]] ?? []))
         continue
       }
-      const col = parseColumn(segment)
+      const col = parseColumn(segment, aliases)
       if (col) columns.push(col)
     }
 

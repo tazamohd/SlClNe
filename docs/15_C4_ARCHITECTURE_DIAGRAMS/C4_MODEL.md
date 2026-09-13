@@ -43,7 +43,7 @@ flowchart TB
 flowchart TB
   browser["Web browser / Capacitor shell<br/>iOS + Android"]
   spa["<b>SPA</b><br/>React 18 + Vite + React Router<br/>TanStack Query, Zustand<br/>app/"]
-  api["<b>API</b><br/>Fastify 5 on Node<br/>303 endpoints under /api/v1<br/>server/"]
+  api["<b>API</b><br/>Fastify 5 on Node<br/>372 endpoints under /api/v1<br/>server/"]
   contract["<b>Shared contract</b><br/>Zod entities, RBAC matrix,<br/>business rules<br/>packages/contract/"]
   db[("<b>PostgreSQL</b><br/>68 tables<br/>Row-level security on 64<br/>Drizzle ORM")]
   browser --> spa
@@ -65,7 +65,7 @@ flowchart TB
     authn["authn onRequest hook<br/>authenticated by default"]
   end
   subgraph routing[Routing]
-    generic["collections.ts<br/>172 generated routes<br/>from registry.ts"]
+    generic["collections.ts<br/>241 generated routes<br/>from registry.ts"]
     explicit["131 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
   end
   subgraph guards[Guards]
@@ -119,23 +119,23 @@ sequenceDiagram
 
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
-| accounting | 40 | CAP-ACCOUNTING |
-| admin | 3 | CAP-PLATFORM |
-| ai | 6 | CAP-AI |
-| appointments | 7 | CAP-WORKSHOP |
-| approvals | 4 | CAP-GOVERNANCE |
+| accounting | 50 | CAP-ACCOUNTING |
+| admin | 4 | CAP-PLATFORM |
+| ai | 8 | CAP-AI |
+| appointments | 9 | CAP-WORKSHOP |
+| approvals | 5 | CAP-GOVERNANCE |
 | auth | 24 | CAP-IDENTITY |
-| crm | 35 | CAP-CRM |
-| customers | 15 | CAP-CUSTOMERS |
-| dashboard | 3 | CAP-PLATFORM |
-| estimates | 10 | CAP-WORKSHOP |
-| hr | 38 | CAP-HR |
-| inventory | 11 | CAP-INVENTORY |
-| invoices | 11 | CAP-BILLING |
-| jobcards | 44 | CAP-WORKSHOP |
-| payments | 9 | CAP-BILLING |
+| crm | 45 | CAP-CRM |
+| customers | 19 | CAP-CUSTOMERS |
+| dashboard | 4 | CAP-PLATFORM |
+| estimates | 11 | CAP-WORKSHOP |
+| hr | 48 | CAP-HR |
+| inventory | 13 | CAP-INVENTORY |
+| invoices | 13 | CAP-BILLING |
+| jobcards | 56 | CAP-WORKSHOP |
+| payments | 11 | CAP-BILLING |
 | platform | 3 | CAP-PLATFORM |
-| procurement | 24 | CAP-PROCUREMENT |
-| settings | 6 | CAP-PLATFORM |
-| technicians | 3 | CAP-HR |
-| vehicles | 7 | CAP-VEHICLES |
+| procurement | 28 | CAP-PROCUREMENT |
+| settings | 8 | CAP-PLATFORM |
+| technicians | 4 | CAP-HR |
+| vehicles | 9 | CAP-VEHICLES |

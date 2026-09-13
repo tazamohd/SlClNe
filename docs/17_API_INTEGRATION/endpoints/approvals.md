@@ -10,11 +10,12 @@
 
 # API — approvals
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 4 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 5 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | GET | `/api/v1/approvals` | approvals:v | token | — | — | 1 | `server/src/routes/approvals.ts` |
+| GET | `/api/v1/approvals/lines` | approvals:v | token | `approvalLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/approvals/lines/:id` | approvals:v | token | `approvalLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/approvals/lines/:id/history` | approvals:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/approvals/lines/export` | approvals:x | token | `approvalLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

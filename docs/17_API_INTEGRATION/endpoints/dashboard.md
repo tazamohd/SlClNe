@@ -10,10 +10,11 @@
 
 # API — dashboard
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 3 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/branches` | dashboard:v | token | `branches` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/branches/:id` | dashboard:v | token | `branches` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/branches/:id/history` | dashboard:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/branches/export` | dashboard:x | token | `branches` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

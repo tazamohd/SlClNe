@@ -10,10 +10,11 @@
 
 # API — admin
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 3 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/admin/departments` | admin:v | token | `departments` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/admin/departments/:id` | admin:v | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/admin/departments/:id/history` | admin:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/admin/departments/export` | admin:x | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

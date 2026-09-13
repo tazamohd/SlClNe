@@ -15,6 +15,7 @@
  */
 import { join } from 'node:path'
 import { P } from '../lib/paths.mjs'
+import { DOCUMENTATION_FINDINGS } from '../lib/findings.mjs'
 import { writeJson } from '../lib/write.mjs'
 
 const meta = (model, generator, sources) => ({
@@ -156,6 +157,18 @@ export function generateRegistries(model) {
     authenticationSurface: model.api
       .filter((e) => e.authentication.startsWith('None'))
       .map((e) => ({ method: e.method, path: e.path, source: e.source })),
+  })
+
+  writeJson(out('DOCUMENTATION_FINDINGS.json'), {
+    ...meta(model, 'registries.mjs', ['tools/docs/lib/findings.mjs']),
+    note:
+      'Implementation findings surfaced while documenting the system, each verified against the source. Kept separate from FINDINGS.json, which engineering owns — a documentation generator appending to that register would make its provenance unclear and its regeneration destructive.',
+    totals: {
+      findings: DOCUMENTATION_FINDINGS.length,
+      open: DOCUMENTATION_FINDINGS.filter((f) => f.status !== 'RESOLVED').length,
+      high: DOCUMENTATION_FINDINGS.filter((f) => f.severity === 'HIGH' && f.status !== 'RESOLVED').length,
+    },
+    findings: DOCUMENTATION_FINDINGS,
   })
 
   return written(model)

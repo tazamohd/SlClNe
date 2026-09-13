@@ -10,35 +10,44 @@
 
 # API — jobcards
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 44 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 56 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/diagnostics/copies` | jobcards:v | token | `diagCopies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/copies/:id` | jobcards:v | token | `diagCopies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/copies/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/copies/export` | jobcards:x | token | `diagCopies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/diagnostics/devices` | jobcards:v | token | `obdDevices` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/devices/:id` | jobcards:v | token | `obdDevices` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/diagnostics/devices/:id/clear-codes` | jobcards:e | token | — | — | — | `server/src/routes/obd.ts` |
 | GET | `/api/v1/diagnostics/devices/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/devices/:id/readings` | jobcards:v | token | — | — | — | `server/src/routes/obd.ts` |
 | POST | `/api/v1/diagnostics/devices/:id/rescan` | jobcards:e | token | — | — | — | `server/src/routes/obd.ts` |
 | GET | `/api/v1/diagnostics/devices/export` | jobcards:x | token | `obdDevices` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/diagnostics/findings` | jobcards:v | token | `diagFindings` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/findings/:id` | jobcards:v | token | `diagFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/findings/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/findings/export` | jobcards:x | token | `diagFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/integrations` | jobcards:v | token | — | — | 1 | `server/src/routes/obd.ts` |
+| GET | `/api/v1/diagnostics/labour` | jobcards:v | token | `diagLabour` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/labour/:id` | jobcards:v | token | `diagLabour` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/labour/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/labour/export` | jobcards:x | token | `diagLabour` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/diagnostics/parts` | jobcards:v | token | `diagParts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/parts/:id` | jobcards:v | token | `diagParts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/parts/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/parts/export` | jobcards:x | token | `diagParts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/diagnostics/readings` | jobcards:v | token | `obdDtcReadings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/readings/:id` | jobcards:v | token | `obdDtcReadings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/readings/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/readings/export` | jobcards:x | token | `obdDtcReadings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/diagnostics/stages` | jobcards:v | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/jobs` | jobcards:v | token | `jobCards` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/jobs` | jobcards:c | token | `jobCards` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/jobs/:id` | jobcards:v | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -48,13 +57,16 @@
 | POST | `/api/v1/jobs/bulk-delete` | jobcards:d | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/jobs/bulk-update` | jobcards:e | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/jobs/export` | jobcards:x | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/kb/dtc` | jobcards:v | token | `dtcCodes` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/kb/dtc/:id` | jobcards:v | token | `dtcCodes` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/kb/dtc/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/kb/dtc/export` | jobcards:x | token | `dtcCodes` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/kb/procedures` | jobcards:v | token | `kbProcedures` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/kb/procedures/:id` | jobcards:v | token | `kbProcedures` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/kb/procedures/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/kb/procedures/export` | jobcards:x | token | `kbProcedures` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/reports/workshop` | jobcards:v | token | — | — | 1 | `server/src/routes/workshop-reports.ts` |
+| GET | `/api/v1/services` | jobcards:v | token | `services` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/services/:id` | jobcards:v | token | `services` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/services/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/services/export` | jobcards:x | token | `services` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 10 screens, 6 API endpoints and 1 entities, gated by the `ai` permission module.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 10 screens, 8 API endpoints and 1 entities, gated by the `ai` permission module.
 
 
 ## Actors
@@ -51,9 +51,11 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/ai/agents` | ai:v | generated | — | 1 |
 | GET | `/api/v1/ai/agents/:id` | ai:v | generated | — | **0** |
 | GET | `/api/v1/ai/agents/:id/history` | ai:v | explicit | — | **0** |
 | GET | `/api/v1/ai/agents/export` | ai:x | generated | — | **0** |
+| GET | `/api/v1/ai/conversations` | ai:v | generated | — | 1 |
 | GET | `/api/v1/ai/conversations/:id` | ai:v | generated | — | **0** |
 | GET | `/api/v1/ai/conversations/:id/history` | ai:v | explicit | — | **0** |
 | GET | `/api/v1/ai/conversations/export` | ai:x | generated | — | **0** |
@@ -84,7 +86,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **7 of 10 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **6 of 6 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **6 of 8 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **7 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.

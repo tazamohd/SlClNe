@@ -23,16 +23,16 @@ erDiagram
     varchar department_id FK
     date hire_date
     varchar status
-    money salary_halalas
+    bigint salary_halalas
   }
   payroll_runs {
     varchar id PK
     varchar period
     varchar status
-    money gross_halalas
-    money allowances_halalas
-    money deductions_halalas
-    money net_halalas
+    bigint gross_halalas
+    bigint allowances_halalas
+    bigint deductions_halalas
+    bigint net_halalas
     timestamptz posted_at
     varchar posted_by
   }
@@ -41,10 +41,10 @@ erDiagram
     varchar payroll_run_id FK
     varchar employee_id FK
     varchar employee_name
-    money gross_halalas
-    money allowances_halalas
-    money deductions_halalas
-    money net_halalas
+    bigint gross_halalas
+    bigint allowances_halalas
+    bigint deductions_halalas
+    bigint net_halalas
   }
   timesheets {
     varchar id PK

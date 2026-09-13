@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 12 screens, 35 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 12 screens, 45 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
 
 
 ## Actors
@@ -61,9 +61,12 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/crm/campaigns` | crm:v | generated | — | 2 |
 | GET | `/api/v1/crm/campaigns/:id` | crm:v | generated | — | **0** |
 | GET | `/api/v1/crm/campaigns/:id/history` | crm:v | explicit | — | **0** |
 | GET | `/api/v1/crm/campaigns/export` | crm:x | generated | — | **0** |
+| GET | `/api/v1/crm/leads` | crm:v | generated | — | 2 |
+| POST | `/api/v1/crm/leads` | crm:c | generated | — | 2 |
 | DELETE | `/api/v1/crm/leads/:id` | crm:d | generated | — | **0** |
 | GET | `/api/v1/crm/leads/:id` | crm:v | generated | — | **0** |
 | PATCH | `/api/v1/crm/leads/:id` | crm:e | generated | — | **0** |
@@ -72,6 +75,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/crm/leads/bulk-delete` | crm:d | generated | — | **0** |
 | POST | `/api/v1/crm/leads/bulk-update` | crm:e | generated | — | **0** |
 | GET | `/api/v1/crm/leads/export` | crm:x | generated | — | **0** |
+| GET | `/api/v1/crm/opportunities` | crm:v | generated | — | 2 |
+| POST | `/api/v1/crm/opportunities` | crm:c | generated | — | 2 |
 | DELETE | `/api/v1/crm/opportunities/:id` | crm:d | generated | — | **0** |
 | GET | `/api/v1/crm/opportunities/:id` | crm:v | generated | — | **0** |
 | PATCH | `/api/v1/crm/opportunities/:id` | crm:e | generated | — | **0** |
@@ -79,9 +84,12 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/crm/opportunities/bulk-delete` | crm:d | generated | — | **0** |
 | POST | `/api/v1/crm/opportunities/bulk-update` | crm:e | generated | — | **0** |
 | GET | `/api/v1/crm/opportunities/export` | crm:x | generated | — | **0** |
+| GET | `/api/v1/crm/segments` | crm:v | generated | — | 1 |
 | GET | `/api/v1/crm/segments/:id` | crm:v | generated | — | **0** |
 | GET | `/api/v1/crm/segments/:id/history` | crm:v | explicit | — | **0** |
 | GET | `/api/v1/crm/segments/export` | crm:x | generated | — | **0** |
+| GET | `/api/v1/crm/tasks` | crm:v | generated | — | 2 |
+| POST | `/api/v1/crm/tasks` | crm:c | generated | — | 2 |
 | DELETE | `/api/v1/crm/tasks/:id` | crm:d | generated | — | **0** |
 | GET | `/api/v1/crm/tasks/:id` | crm:v | generated | — | **0** |
 | PATCH | `/api/v1/crm/tasks/:id` | crm:e | generated | — | **0** |
@@ -89,6 +97,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/crm/tasks/bulk-delete` | crm:d | generated | — | **0** |
 | POST | `/api/v1/crm/tasks/bulk-update` | crm:e | generated | — | **0** |
 | GET | `/api/v1/crm/tasks/export` | crm:x | generated | — | **0** |
+| GET | `/api/v1/customer-feedback` | crm:v | generated | — | 5 |
+| POST | `/api/v1/customer-feedback` | crm:c | generated | — | 5 |
 | DELETE | `/api/v1/customer-feedback/:id` | crm:d | generated | — | **0** |
 | GET | `/api/v1/customer-feedback/:id` | crm:v | generated | — | **0** |
 | PATCH | `/api/v1/customer-feedback/:id` | crm:e | generated | — | **0** |
@@ -128,7 +138,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **2 of 12 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **35 of 35 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **35 of 45 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`crmTaskStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

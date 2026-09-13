@@ -10,13 +10,15 @@
 
 # API — settings
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 6 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 8 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/integrations` | settings:v | token | `integrations` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/integrations/:id` | settings:v | token | `integrations` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/integrations/:id/history` | settings:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/integrations/export` | settings:x | token | `integrations` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/integrations/oem-tools` | settings:v | token | `oemTools` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/integrations/oem-tools/:id` | settings:v | token | `oemTools` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/integrations/oem-tools/:id/history` | settings:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/integrations/oem-tools/export` | settings:x | token | `oemTools` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

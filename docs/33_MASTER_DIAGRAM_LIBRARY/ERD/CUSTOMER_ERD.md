@@ -21,7 +21,7 @@ erDiagram
     integer active_count
     varchar contract_status
     varchar contract_type
-    money contract_value_halalas
+    bigint contract_value_halalas
     date contract_start_date
     date contract_end_date
     date renewal_date
@@ -37,7 +37,7 @@ erDiagram
     varchar type
     varchar fleet_id FK
     integer vehicle_count
-    money total_spent_halalas
+    bigint total_spent_halalas
     timestamptz last_visit_at
     varchar last_visit_label
     text notes

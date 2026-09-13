@@ -10,10 +10,12 @@
 
 # API — vehicles
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 7 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 9 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/vehicles` | vehicles:v | token | `vehicles` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/vehicles` | vehicles:c | token | `vehicles` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/vehicles/:id` | vehicles:d | token | `vehicles` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/vehicles/:id` | vehicles:v | token | `vehicles` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/vehicles/:id` | vehicles:e | token | `vehicles` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

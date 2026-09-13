@@ -317,6 +317,6 @@ This is not a business role. Its breadth is the reason the audit module is enfor
 | callcenter | open the approval inbox | holds no `approvals` grant |
 | customer, supplier | see any cost, margin or bank detail | redacted server-side before serialisation |
 
-## Registry note
+## Source note
 
-`project-control/PERMISSION_REGISTRY.json` renders the `procurement`, `hr` and `callcenter` rows of the matrix as entirely empty, which would mean nobody holds any grant on three modules that have working endpoints. That is a generator artefact, not the enforced state: `packages/contract/src/rbac.ts` carries real grants on all three, and `server/src/security/actions.ts` reads that file. This document uses `rbac.ts`. The registry's `totals.granted` of 196 is understated by the same amount.
+The grants above are `packages/contract/src/rbac.ts`, the matrix `server/src/security/actions.ts` reads and `server/src/security/permissions.ts` enforces. `project-control/PERMISSION_REGISTRY.json` is generated from that file and agrees with it cell for cell; either may be read, and the registry carries the cell counts in `totals`.

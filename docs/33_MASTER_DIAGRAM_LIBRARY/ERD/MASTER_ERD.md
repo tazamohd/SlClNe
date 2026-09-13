@@ -55,7 +55,7 @@ erDiagram
     varchar type
     varchar fleet_id FK
     integer vehicle_count
-    money total_spent_halalas
+    bigint total_spent_halalas
     timestamptz last_visit_at
     varchar last_visit_label
     text notes
@@ -95,10 +95,10 @@ erDiagram
     varchar customer_name
     varchar vehicle_id FK
     varchar vehicle_label
-    money subtotal_halalas
-    money tax_halalas
-    money discount_halalas
-    money total_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint discount_halalas
+    bigint total_halalas
     varchar status
     timestamptz valid_until
     varchar submitted_by
@@ -112,11 +112,11 @@ erDiagram
     varchar vehicle_id FK
     date due_date
     varchar status
-    money subtotal_halalas
-    money tax_halalas
-    money discount_halalas
-    money total_halalas
-    money paid_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint discount_halalas
+    bigint total_halalas
+    bigint paid_halalas
     varchar seller_vat_number
   }
   payments {
@@ -126,15 +126,15 @@ erDiagram
     varchar method
     varchar method_ar
     varchar reference
-    money amount_halalas
+    bigint amount_halalas
     text note
   }
   parts {
     varchar id PK
     varchar name
     varchar sku
-    money price_halalas
-    money cost_halalas
+    bigint price_halalas
+    bigint cost_halalas
     integer on_hand
     integer reserved
     integer reorder_level
@@ -147,9 +147,9 @@ erDiagram
     varchar supplier_name
     varchar requisition_id FK
     varchar status
-    money subtotal_halalas
-    money tax_halalas
-    money total_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint total_halalas
     text notes
     timestamptz ordered_at
     timestamptz expected_at
@@ -165,7 +165,7 @@ erDiagram
     varchar department_id FK
     date hire_date
     varchar status
-    money salary_halalas
+    bigint salary_halalas
   }
   organizations ||--o{ branches : "org_id"
   organizations ||--o{ users : "org_id"

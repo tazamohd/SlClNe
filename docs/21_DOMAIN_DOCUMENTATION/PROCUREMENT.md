@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 1 screens, 24 API endpoints and 2 entities, gated by the `procurement` permission module.
+This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 1 screens, 28 API endpoints and 2 entities, gated by the `procurement` permission module.
 
 
 ## Actors
@@ -56,6 +56,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/procurement/purchase-orders` | procurement:v | generated | — | **0** |
 | POST | `/api/v1/procurement/purchase-orders` | procurement:c | explicit | — | **0** |
 | GET | `/api/v1/procurement/purchase-orders/:id` | procurement:v | generated | — | **0** |
 | PATCH | `/api/v1/procurement/purchase-orders/:id` | procurement:e | explicit | — | **0** |
@@ -64,6 +65,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/procurement/purchase-orders/:id/lines` | procurement:v | explicit | — | **0** |
 | POST | `/api/v1/procurement/purchase-orders/:id/receive` | procurement:e | explicit | yes | **0** |
 | GET | `/api/v1/procurement/purchase-orders/export` | procurement:x | generated | — | **0** |
+| GET | `/api/v1/procurement/requisitions` | procurement:v | generated | — | **0** |
 | POST | `/api/v1/procurement/requisitions` | procurement:c | explicit | — | **0** |
 | GET | `/api/v1/procurement/requisitions/:id` | procurement:v | generated | — | **0** |
 | PATCH | `/api/v1/procurement/requisitions/:id` | procurement:e | explicit | — | **0** |
@@ -73,6 +75,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | explicit | — | **0** |
 | POST | `/api/v1/procurement/requisitions/:id/submit` | procurement:e | explicit | — | **0** |
 | GET | `/api/v1/procurement/requisitions/export` | procurement:x | generated | — | **0** |
+| GET | `/api/v1/procurement/suppliers` | procurement:v | generated | — | **0** |
+| POST | `/api/v1/procurement/suppliers` | procurement:c | generated | — | **0** |
 | DELETE | `/api/v1/procurement/suppliers/:id` | procurement:d | generated | — | **0** |
 | GET | `/api/v1/procurement/suppliers/:id` | procurement:v | generated | — | **0** |
 | PATCH | `/api/v1/procurement/suppliers/:id` | procurement:e | generated | — | **0** |
@@ -102,7 +106,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **24 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **28 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 of 4 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 
 ## Evidence
@@ -110,7 +114,7 @@ _No lifecycle in the contract belongs to this domain._
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/procurement.ts`, `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/procurement.ts`, `server/src/routes/history.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | `packages/contract/src/rules/procurement.ts` |
 | Screens | `project-control/MASTER_REGISTRY.json` |

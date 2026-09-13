@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 303,
-    "generated": 172,
+    "endpoints": 372,
+    "generated": 241,
     "explicit": 131,
     "unauthenticated": 6,
-    "withPermissionGuard": 276,
+    "withPermissionGuard": 345,
     "idempotent": 2,
-    "withTests": 42
+    "withTests": 90
   },
   "collections": [
     {
@@ -1414,6 +1414,45 @@
   ],
   "endpoints": [
     {
+      "id": "API-CHARTOFACCOUNTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/accounting/coa",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — account.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "account",
+      "table": "chartOfAccounts",
+      "search": [
+        "code",
+        "name"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "balanceHalalas"
+      ],
+      "filterable": [
+        "type",
+        "parentId"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-CHARTOFACCOUNTS-GETID",
       "method": "GET",
       "path": "/api/v1/accounting/coa/:id",
@@ -1446,7 +1485,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -1509,6 +1548,51 @@
       "tests": []
     },
     {
+      "id": "API-EXPENSES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/accounting/expenses",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — expense.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "expense",
+      "table": "expenses",
+      "search": [
+        "code",
+        "category",
+        "vendor"
+      ],
+      "sortable": [
+        "code",
+        "expenseDate",
+        "amountHalalas",
+        "status"
+      ],
+      "filterable": [
+        "status",
+        "category"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-APP-E2E-ACCOUNTING-RECONCILIATION-SPEC-TS",
+        "TS-APP-E2E-ACCOUNTING-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-EXPENSES-GETID",
       "method": "GET",
       "path": "/api/v1/accounting/expenses/:id",
@@ -1543,7 +1627,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -1608,6 +1692,49 @@
       "tests": []
     },
     {
+      "id": "API-JOURNALENTRIES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/accounting/journal-entries",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — journal_entry.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "journal_entry",
+      "table": "journalEntries",
+      "search": [
+        "code",
+        "ref",
+        "narration"
+      ],
+      "sortable": [
+        "code",
+        "entryDate",
+        "debitHalalas",
+        "status"
+      ],
+      "filterable": [
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-APP-E2E-ACCOUNTING-RECONCILIATION-SPEC-TS",
+        "TS-APP-E2E-ACCOUNTING-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-JOURNALENTRIES-GETID",
       "method": "GET",
       "path": "/api/v1/accounting/journal-entries/:id",
@@ -1641,7 +1768,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -1751,6 +1878,43 @@
       ]
     },
     {
+      "id": "API-DEPARTMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/admin/departments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "admin",
+      "purpose": "List the collection with search, sort, filter and pagination — department.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "admin",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "department",
+      "table": "departments",
+      "search": [
+        "name",
+        "head",
+        "costCenter"
+      ],
+      "sortable": [
+        "name",
+        "headcount",
+        "createdAt"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-ORG-BRANCH-SETUP-SPEC-TS"
+      ]
+    },
+    {
       "id": "API-DEPARTMENTS-GETID",
       "method": "GET",
       "path": "/api/v1/admin/departments/:id",
@@ -1781,7 +1945,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -1842,6 +2006,45 @@
       "tests": []
     },
     {
+      "id": "API-AIAGENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/ai/agents",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "ai",
+      "purpose": "List the collection with search, sort, filter and pagination — ai_agent.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "ai",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "ai_agent",
+      "table": "aiAgents",
+      "search": [
+        "name",
+        "role",
+        "model"
+      ],
+      "sortable": [
+        "name",
+        "tasks",
+        "createdAt"
+      ],
+      "filterable": [
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-AI",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-AIAGENTS-GETID",
       "method": "GET",
       "path": "/api/v1/ai/agents/:id",
@@ -1874,7 +2077,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-AI",
       "tests": []
     },
@@ -1937,6 +2140,42 @@
       "tests": []
     },
     {
+      "id": "API-CONVERSATIONS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/ai/conversations",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "ai",
+      "purpose": "List the collection with search, sort, filter and pagination — conversation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "ai",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "conversation",
+      "table": "conversations",
+      "search": [
+        "title",
+        "userName"
+      ],
+      "sortable": [
+        "title",
+        "conversationDate",
+        "messageCount"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-AI",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-CONVERSATIONS-GETID",
       "method": "GET",
       "path": "/api/v1/ai/conversations/:id",
@@ -1966,7 +2205,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-AI",
       "tests": []
     },
@@ -2024,6 +2263,108 @@
       "audited": false,
       "capability": "CAP-AI",
       "tests": []
+    },
+    {
+      "id": "API-APPOINTMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/appointments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "appointments",
+      "purpose": "List the collection with search, sort, filter and pagination — appointment.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "appointments",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "appointment",
+      "table": "appointments",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "plate",
+        "serviceLabel",
+        "technicianName"
+      ],
+      "sortable": [
+        "scheduledDate",
+        "startMinute",
+        "bay",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "bay",
+        "scheduledDate",
+        "technicianId"
+      ],
+      "defaultSort": {
+        "column": "startMinute",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-RBAC-SPEC-TS",
+        "TS-APP-E2E-RESPONSIVE-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-WRITES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-APPOINTMENTS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/appointments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "appointments",
+      "purpose": "Create one row — appointment.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "appointments",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "appointment",
+      "table": "appointments",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "plate",
+        "serviceLabel",
+        "technicianName"
+      ],
+      "sortable": [
+        "scheduledDate",
+        "startMinute",
+        "bay",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "bay",
+        "scheduledDate",
+        "technicianId"
+      ],
+      "defaultSort": {
+        "column": "startMinute",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-RBAC-SPEC-TS",
+        "TS-APP-E2E-RESPONSIVE-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-WRITES-TEST-TS"
+      ]
     },
     {
       "id": "API-APPOINTMENTS-DELETEID",
@@ -2109,7 +2450,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -2334,6 +2675,40 @@
       ]
     },
     {
+      "id": "API-APPROVALLINES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/approvals/lines",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "approvals",
+      "purpose": "List the collection with search, sort, filter and pagination — approval_line.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "approvals",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "approval_line",
+      "table": "approvalLines",
+      "search": [
+        "item"
+      ],
+      "sortable": [
+        "seq"
+      ],
+      "filterable": [
+        "kind",
+        "urgency"
+      ],
+      "defaultSort": {
+        "column": "seq",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-GOVERNANCE",
+      "tests": []
+    },
+    {
       "id": "API-APPROVALLINES-GETID",
       "method": "GET",
       "path": "/api/v1/approvals/lines/:id",
@@ -2363,7 +2738,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-GOVERNANCE",
       "tests": []
     },
@@ -2919,6 +3294,45 @@
       ]
     },
     {
+      "id": "API-BANKSTATEMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/bank-statements",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — bank_statement.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "bank_statement",
+      "table": "bankStatements",
+      "search": [
+        "description",
+        "reference"
+      ],
+      "sortable": [
+        "statementDate",
+        "amountHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "matched",
+        "direction"
+      ],
+      "defaultSort": {
+        "column": "statementDate",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-REPORT-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-BANKSTATEMENTS-GETID",
       "method": "GET",
       "path": "/api/v1/bank-statements/:id",
@@ -2951,7 +3365,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -3035,6 +3449,45 @@
       "tests": []
     },
     {
+      "id": "API-BRANCHES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/branches",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "dashboard",
+      "purpose": "List the collection with search, sort, filter and pagination — branch.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "dashboard",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "branch",
+      "table": "branches",
+      "search": [
+        "name",
+        "city"
+      ],
+      "sortable": [
+        "name",
+        "city",
+        "createdAt"
+      ],
+      "filterable": [
+        "isMain"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-ORG-BRANCH-SETUP-SPEC-TS",
+        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS"
+      ]
+    },
+    {
       "id": "API-BRANCHES-GETID",
       "method": "GET",
       "path": "/api/v1/branches/:id",
@@ -3066,7 +3519,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -3128,6 +3581,46 @@
       "tests": []
     },
     {
+      "id": "API-CAMPAIGNS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/crm/campaigns",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-CAMPAIGNS-GETID",
       "method": "GET",
       "path": "/api/v1/crm/campaigns/:id",
@@ -3160,7 +3653,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -3221,6 +3714,92 @@
       "audited": false,
       "capability": "CAP-CRM",
       "tests": []
+    },
+    {
+      "id": "API-LEADS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/crm/leads",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — lead.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "lead",
+      "table": "leads",
+      "search": [
+        "name",
+        "company",
+        "source"
+      ],
+      "sortable": [
+        "name",
+        "valueHalalas",
+        "score",
+        "stage",
+        "createdAt"
+      ],
+      "filterable": [
+        "stage",
+        "source"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-LEADS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/crm/leads",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Create one row — lead.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "lead",
+      "table": "leads",
+      "search": [
+        "name",
+        "company",
+        "source"
+      ],
+      "sortable": [
+        "name",
+        "valueHalalas",
+        "score",
+        "stage",
+        "createdAt"
+      ],
+      "filterable": [
+        "stage",
+        "source"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
     },
     {
       "id": "API-LEADS-DELETEID",
@@ -3298,7 +3877,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -3505,6 +4084,90 @@
       "tests": []
     },
     {
+      "id": "API-OPPORTUNITIES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/crm/opportunities",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — opportunity.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "opportunity",
+      "table": "opportunities",
+      "search": [
+        "name",
+        "company",
+        "ownerName"
+      ],
+      "sortable": [
+        "name",
+        "valueHalalas",
+        "stage",
+        "closeDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "stage"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-OPPORTUNITIES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/crm/opportunities",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Create one row — opportunity.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "opportunity",
+      "table": "opportunities",
+      "search": [
+        "name",
+        "company",
+        "ownerName"
+      ],
+      "sortable": [
+        "name",
+        "valueHalalas",
+        "stage",
+        "closeDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "stage"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-OPPORTUNITIES-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/crm/opportunities/:id",
@@ -3578,7 +4241,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -3760,6 +4423,42 @@
       "tests": []
     },
     {
+      "id": "API-SEGMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/crm/segments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — segment.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "segment",
+      "table": "segments",
+      "search": [
+        "name",
+        "rules"
+      ],
+      "sortable": [
+        "name",
+        "memberCount",
+        "createdAt"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-SEGMENTS-GETID",
       "method": "GET",
       "path": "/api/v1/crm/segments/:id",
@@ -3789,7 +4488,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -3847,6 +4546,92 @@
       "audited": false,
       "capability": "CAP-CRM",
       "tests": []
+    },
+    {
+      "id": "API-CRMTASKS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/crm/tasks",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — crm_task.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "crm_task",
+      "table": "crmTasks",
+      "search": [
+        "title",
+        "assignedTo"
+      ],
+      "sortable": [
+        "title",
+        "dueDate",
+        "priority",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "priority",
+        "type"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-CRMTASKS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/crm/tasks",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Create one row — crm_task.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "crm_task",
+      "table": "crmTasks",
+      "search": [
+        "title",
+        "assignedTo"
+      ],
+      "sortable": [
+        "title",
+        "dueDate",
+        "priority",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "priority",
+        "type"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
     },
     {
       "id": "API-CRMTASKS-DELETEID",
@@ -3924,7 +4709,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4110,6 +4895,92 @@
       "tests": []
     },
     {
+      "id": "API-FEEDBACK-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/customer-feedback",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "List the collection with search, sort, filter and pagination — customer_feedback.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "customer_feedback",
+      "table": "customerFeedback",
+      "search": [
+        "comment",
+        "customerName"
+      ],
+      "sortable": [
+        "rating",
+        "createdAt"
+      ],
+      "filterable": [
+        "rating",
+        "jobCardId",
+        "customerId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-APP-E2E-EXISTING-CUSTOMER-SERVICE-SPEC-TS",
+        "TS-APP-TESTS-COMPONENT-CRM-CALENDAR-FEEDBACK-TEST-TSX",
+        "TS-APP-TESTS-COMPONENT-CRM-WRITE-GAPS-TEST-TSX",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-FEEDBACK-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/customer-feedback",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Create one row — customer_feedback.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "customer_feedback",
+      "table": "customerFeedback",
+      "search": [
+        "comment",
+        "customerName"
+      ],
+      "sortable": [
+        "rating",
+        "createdAt"
+      ],
+      "filterable": [
+        "rating",
+        "jobCardId",
+        "customerId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-APP-E2E-EXISTING-CUSTOMER-SERVICE-SPEC-TS",
+        "TS-APP-TESTS-COMPONENT-CRM-CALENDAR-FEEDBACK-TEST-TSX",
+        "TS-APP-TESTS-COMPONENT-CRM-WRITE-GAPS-TEST-TSX",
+        "TS-SERVER-TESTS-CRM-FLEET-TEST-TS"
+      ]
+    },
+    {
       "id": "API-FEEDBACK-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/customer-feedback/:id",
@@ -4179,7 +5050,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4353,6 +5224,116 @@
       "tests": []
     },
     {
+      "id": "API-CUSTOMERS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/customers",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "customers",
+      "purpose": "List the collection with search, sort, filter and pagination — customer.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "customers",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "customer",
+      "table": "customers",
+      "search": [
+        "name",
+        "phone",
+        "email"
+      ],
+      "sortable": [
+        "name",
+        "phone",
+        "totalSpentHalalas",
+        "vehicleCount",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "fleetId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CUSTOMERS",
+      "tests": [
+        "TS-APP-E2E-CRUD-FLOW-SPEC-TS",
+        "TS-APP-E2E-CUSTOMERS-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-RESPONSIVE-SPEC-TS",
+        "TS-APP-E2E-TABLET-SPEC-TS",
+        "TS-APP-TESTS-COMPONENT-DETAIL-PAGE-TEST-TSX",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
+        "TS-SERVER-TESTS-AUTH-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS",
+        "TS-SERVER-TESTS-EXPORT-TEST-TS",
+        "TS-SERVER-TESTS-ISOLATION-TEST-TS",
+        "TS-SERVER-TESTS-WRITES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-CUSTOMERS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/customers",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "customers",
+      "purpose": "Create one row — customer.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "customers",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "customer",
+      "table": "customers",
+      "search": [
+        "name",
+        "phone",
+        "email"
+      ],
+      "sortable": [
+        "name",
+        "phone",
+        "totalSpentHalalas",
+        "vehicleCount",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "fleetId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CUSTOMERS",
+      "tests": [
+        "TS-APP-E2E-CRUD-FLOW-SPEC-TS",
+        "TS-APP-E2E-CUSTOMERS-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-RESPONSIVE-SPEC-TS",
+        "TS-APP-E2E-TABLET-SPEC-TS",
+        "TS-APP-TESTS-COMPONENT-DETAIL-PAGE-TEST-TSX",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
+        "TS-SERVER-TESTS-AUTH-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS",
+        "TS-SERVER-TESTS-EXPORT-TEST-TS",
+        "TS-SERVER-TESTS-ISOLATION-TEST-TS",
+        "TS-SERVER-TESTS-WRITES-TEST-TS"
+      ]
+    },
+    {
       "id": "API-CUSTOMERS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/customers/:id",
@@ -4428,7 +5409,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CUSTOMERS",
       "tests": []
     },
@@ -4618,6 +5599,39 @@
       ]
     },
     {
+      "id": "API-DIAGCOPIES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/copies",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — diag_copy.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "diag_copy",
+      "table": "diagCopies",
+      "search": [
+        "recipient"
+      ],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "state"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGCOPIES-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/copies/:id",
@@ -4646,7 +5660,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -4705,6 +5719,45 @@
       "tests": []
     },
     {
+      "id": "API-OBDDEVICES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/devices",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — obd_device.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "obd_device",
+      "table": "obdDevices",
+      "search": [
+        "code",
+        "vehicleLabel",
+        "plate",
+        "vin"
+      ],
+      "sortable": [
+        "code",
+        "bay",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "bay"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-OBDDEVICES-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/devices/:id",
@@ -4739,7 +5792,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -4867,6 +5920,44 @@
       "tests": []
     },
     {
+      "id": "API-DIAGFINDINGS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/findings",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — diag_finding.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "diag_finding",
+      "table": "diagFindings",
+      "search": [
+        "finding",
+        "dtc"
+      ],
+      "sortable": [
+        "createdAt",
+        "severity"
+      ],
+      "filterable": [
+        "severity",
+        "system"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
       "id": "API-DIAGFINDINGS-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/findings/:id",
@@ -4898,7 +5989,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -4983,6 +6074,37 @@
       ]
     },
     {
+      "id": "API-DIAGLABOUR-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/labour",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — diag_labour.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "diag_labour",
+      "table": "diagLabour",
+      "search": [
+        "task"
+      ],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGLABOUR-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/labour/:id",
@@ -5009,7 +6131,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5066,6 +6188,40 @@
       "tests": []
     },
     {
+      "id": "API-DIAGPARTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/parts",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — diag_part.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "diag_part",
+      "table": "diagParts",
+      "search": [
+        "partSku",
+        "description"
+      ],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "stock"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGPARTS-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/parts/:id",
@@ -5095,7 +6251,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5155,6 +6311,45 @@
       "tests": []
     },
     {
+      "id": "API-OBDREADINGS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/readings",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — obd_dtc_reading.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "obd_dtc_reading",
+      "table": "obdDtcReadings",
+      "search": [
+        "dtcCode",
+        "description"
+      ],
+      "sortable": [
+        "readAt",
+        "createdAt",
+        "severity"
+      ],
+      "filterable": [
+        "deviceId",
+        "source",
+        "cleared",
+        "severity"
+      ],
+      "defaultSort": {
+        "column": "readAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-OBDREADINGS-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/readings/:id",
@@ -5189,7 +6384,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5254,6 +6449,40 @@
       "tests": []
     },
     {
+      "id": "API-DIAGSTAGES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/diagnostics/stages",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — diag_stage.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "diag_stage",
+      "table": "diagStages",
+      "search": [
+        "label",
+        "ownerName"
+      ],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "role"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGSTAGES-GETID",
       "method": "GET",
       "path": "/api/v1/diagnostics/stages/:id",
@@ -5283,7 +6512,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5340,6 +6569,88 @@
       "idempotent": false,
       "audited": false,
       "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-EMPLOYEES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/employees",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "List the collection with search, sort, filter and pagination — employee.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "employee",
+      "table": "employees",
+      "search": [
+        "employeeNumber",
+        "name",
+        "nameAr",
+        "title"
+      ],
+      "sortable": [
+        "employeeNumber",
+        "name",
+        "status",
+        "hireDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "departmentId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": []
+    },
+    {
+      "id": "API-EMPLOYEES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/employees",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "Create one row — employee.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "employee",
+      "table": "employees",
+      "search": [
+        "employeeNumber",
+        "name",
+        "nameAr",
+        "title"
+      ],
+      "sortable": [
+        "employeeNumber",
+        "name",
+        "status",
+        "hireDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "departmentId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-HR",
       "tests": []
     },
     {
@@ -5420,7 +6731,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -5610,6 +6921,53 @@
       "tests": []
     },
     {
+      "id": "API-ESTIMATES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/estimates",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "List the collection with search, sort, filter and pagination — estimate.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "estimate",
+      "table": "estimates",
+      "search": [
+        "code",
+        "customerName",
+        "vehicleLabel"
+      ],
+      "sortable": [
+        "code",
+        "customerName",
+        "totalHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-APP-E2E-ESTIMATES-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-HISTORY-READ-TEST-TS"
+      ]
+    },
+    {
       "id": "API-POST-ESTIMATES",
       "method": "POST",
       "path": "/api/v1/estimates",
@@ -5673,7 +7031,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5865,6 +7223,88 @@
       "tests": []
     },
     {
+      "id": "API-FLEETS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/fleets",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "customers",
+      "purpose": "List the collection with search, sort, filter and pagination — fleet.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "customers",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "fleet",
+      "table": "fleets",
+      "search": [
+        "name",
+        "contactName"
+      ],
+      "sortable": [
+        "name",
+        "vehicleCount",
+        "contractValueHalalas",
+        "renewalDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "contractStatus",
+        "contractType"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-CUSTOMERS",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-FLEETS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/fleets",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "customers",
+      "purpose": "Create one row — fleet.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "customers",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "fleet",
+      "table": "fleets",
+      "search": [
+        "name",
+        "contactName"
+      ],
+      "sortable": [
+        "name",
+        "vehicleCount",
+        "contractValueHalalas",
+        "renewalDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "contractStatus",
+        "contractType"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CUSTOMERS",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-FLEETS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/fleets/:id",
@@ -5938,7 +7378,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-CUSTOMERS",
       "tests": []
     },
@@ -6141,6 +7581,52 @@
       "tests": []
     },
     {
+      "id": "API-INSURANCECLAIMS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/insurance-claims",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — insurance_claim.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "insurance_claim",
+      "table": "insuranceClaims",
+      "search": [
+        "claimNumber",
+        "policyNumber",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "claimNumber",
+        "amountClaimedHalalas",
+        "status",
+        "incidentDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "policyId",
+        "vehicleId",
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-APP-E2E-INSURANCE-CLAIM-SPEC-TS",
+        "TS-SERVER-TESTS-INSURANCE-LOANS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-POST-INSURANCE-CLAIMS",
       "method": "POST",
       "path": "/api/v1/insurance-claims",
@@ -6203,7 +7689,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -6335,6 +7821,50 @@
       "tests": []
     },
     {
+      "id": "API-INSURANCEPOLICIES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/insurance-policies",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — insurance_policy.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "insurance_policy",
+      "table": "insurancePolicies",
+      "search": [
+        "policyNumber",
+        "insurer",
+        "holderName",
+        "vehicleLabel"
+      ],
+      "sortable": [
+        "policyNumber",
+        "insurer",
+        "premiumHalalas",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "type",
+        "customerId",
+        "vehicleId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
       "id": "API-INSURANCEPOLICIES-GETID",
       "method": "GET",
       "path": "/api/v1/insurance-policies/:id",
@@ -6374,7 +7904,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -6467,6 +7997,42 @@
       ]
     },
     {
+      "id": "API-INTEGRATIONS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/integrations",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "settings",
+      "purpose": "List the collection with search, sort, filter and pagination — integration.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "settings",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "integration",
+      "table": "integrations",
+      "search": [
+        "name",
+        "category"
+      ],
+      "sortable": [
+        "name",
+        "category"
+      ],
+      "filterable": [
+        "status",
+        "category"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
       "id": "API-INTEGRATIONS-GETID",
       "method": "GET",
       "path": "/api/v1/integrations/:id",
@@ -6498,7 +8064,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -6560,6 +8126,43 @@
       "tests": []
     },
     {
+      "id": "API-OEMTOOLS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/integrations/oem-tools",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "settings",
+      "purpose": "List the collection with search, sort, filter and pagination — oem_tool.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "settings",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "oem_tool",
+      "table": "oemTools",
+      "search": [
+        "brand",
+        "tool",
+        "protocol"
+      ],
+      "sortable": [
+        "brand",
+        "vehicleCount",
+        "expiresOn"
+      ],
+      "filterable": [
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
       "id": "API-OEMTOOLS-GETID",
       "method": "GET",
       "path": "/api/v1/integrations/oem-tools/:id",
@@ -6592,7 +8195,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -6653,6 +8256,106 @@
       "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": []
+    },
+    {
+      "id": "API-PARTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/inventory",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "List the collection with search, sort, filter and pagination — part.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "part",
+      "table": "parts",
+      "search": [
+        "name",
+        "sku"
+      ],
+      "sortable": [
+        "name",
+        "sku",
+        "onHand",
+        "priceHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "backorderable"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-INVENTORY",
+      "tests": [
+        "TS-APP-E2E-A11Y-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-CONSUMPTION-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-RECEIVING-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-SECURITY-HEADERS-SPEC-TS",
+        "TS-APP-E2E-TABLET-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS",
+        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/inventory",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Create one row — part.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "part",
+      "table": "parts",
+      "search": [
+        "name",
+        "sku"
+      ],
+      "sortable": [
+        "name",
+        "sku",
+        "onHand",
+        "priceHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "backorderable"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": [
+        "TS-APP-E2E-A11Y-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-CONSUMPTION-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-RECEIVING-SPEC-TS",
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-SECURITY-HEADERS-SPEC-TS",
+        "TS-APP-E2E-TABLET-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS",
+        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS"
+      ]
     },
     {
       "id": "API-PARTS-DELETEID",
@@ -6726,7 +8429,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-INVENTORY",
       "tests": []
     },
@@ -6990,6 +8693,42 @@
       "tests": []
     },
     {
+      "id": "API-INVOICELINES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/invoice-lines",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "invoices",
+      "purpose": "List the collection with search, sort, filter and pagination — invoice_line.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "invoices",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "invoice_line",
+      "table": "invoiceLines",
+      "search": [
+        "description",
+        "partSku"
+      ],
+      "sortable": [
+        "sort",
+        "createdAt"
+      ],
+      "filterable": [
+        "invoiceId",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "sort",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-BILLING",
+      "tests": []
+    },
+    {
       "id": "API-INVOICELINES-GETID",
       "method": "GET",
       "path": "/api/v1/invoice-lines/:id",
@@ -7021,7 +8760,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -7081,6 +8820,56 @@
       "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
+    },
+    {
+      "id": "API-INVOICES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/invoices",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "invoices",
+      "purpose": "List the collection with search, sort, filter and pagination — invoice.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "invoices",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "invoice",
+      "table": "invoices",
+      "search": [
+        "code",
+        "customerName"
+      ],
+      "sortable": [
+        "code",
+        "customerName",
+        "dueDate",
+        "totalHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "customerId",
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-BILLING",
+      "tests": [
+        "TS-APP-E2E-INVOICES-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-RESPONSIVE-SPEC-TS",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-WRITES-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-INVOICES",
@@ -7149,7 +8938,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -7350,6 +9139,104 @@
       ]
     },
     {
+      "id": "API-JOBS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/jobs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — job_card.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "job_card",
+      "table": "jobCards",
+      "search": [
+        "code",
+        "customerName",
+        "vehicleLabel"
+      ],
+      "sortable": [
+        "code",
+        "customerName",
+        "status",
+        "priority",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "stage",
+        "priority",
+        "service",
+        "assignedTechId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-JOBS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/jobs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Create one row — job_card.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "job_card",
+      "table": "jobCards",
+      "search": [
+        "code",
+        "customerName",
+        "vehicleLabel"
+      ],
+      "sortable": [
+        "code",
+        "customerName",
+        "status",
+        "priority",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "stage",
+        "priority",
+        "service",
+        "assignedTechId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-SERVER-TESTS-API-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
       "id": "API-JOBS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/jobs/:id",
@@ -7431,7 +9318,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -7671,6 +9558,44 @@
       "tests": []
     },
     {
+      "id": "API-DTCCODES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/kb/dtc",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — dtc_code.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "dtc_code",
+      "table": "dtcCodes",
+      "search": [
+        "code",
+        "description"
+      ],
+      "sortable": [
+        "code",
+        "severity"
+      ],
+      "filterable": [
+        "severity",
+        "system"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
       "id": "API-DTCCODES-GETID",
       "method": "GET",
       "path": "/api/v1/kb/dtc/:id",
@@ -7702,7 +9627,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -7764,6 +9689,49 @@
       "tests": []
     },
     {
+      "id": "API-KBPROCEDURES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/kb/procedures",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — kb_procedure.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "kb_procedure",
+      "table": "kbProcedures",
+      "search": [
+        "code",
+        "title",
+        "make",
+        "category"
+      ],
+      "sortable": [
+        "code",
+        "title",
+        "views",
+        "mins"
+      ],
+      "filterable": [
+        "category",
+        "tsb"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
       "id": "API-KBPROCEDURES-GETID",
       "method": "GET",
       "path": "/api/v1/kb/procedures/:id",
@@ -7799,7 +9767,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -7863,6 +9831,92 @@
       "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
+    },
+    {
+      "id": "API-LEAVEREQUESTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/leave-requests",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "List the collection with search, sort, filter and pagination — leave_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "leave_request",
+      "table": "leaveRequests",
+      "search": [
+        "employeeName",
+        "type"
+      ],
+      "sortable": [
+        "startDate",
+        "employeeName",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "employeeId",
+        "status",
+        "type"
+      ],
+      "defaultSort": {
+        "column": "startDate",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-APP-E2E-EMPLOYEE-ONBOARDING-SPEC-TS",
+        "TS-APP-TESTS-HR-OVERVIEW-TEST-TSX",
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-LEAVEREQUESTS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/leave-requests",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "Create one row — leave_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "leave_request",
+      "table": "leaveRequests",
+      "search": [
+        "employeeName",
+        "type"
+      ],
+      "sortable": [
+        "startDate",
+        "employeeName",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "employeeId",
+        "status",
+        "type"
+      ],
+      "defaultSort": {
+        "column": "startDate",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-APP-E2E-EMPLOYEE-ONBOARDING-SPEC-TS",
+        "TS-APP-TESTS-HR-OVERVIEW-TEST-TSX",
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
     },
     {
       "id": "API-LEAVEREQUESTS-DELETEID",
@@ -7938,7 +9992,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -8162,6 +10216,45 @@
       "tests": []
     },
     {
+      "id": "API-LOANCONTRACTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/loan-contracts",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — loan_contract.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "loan_contract",
+      "table": "loanContracts",
+      "search": [
+        "contractNumber",
+        "borrowerName"
+      ],
+      "sortable": [
+        "contractNumber",
+        "principalHalalas",
+        "status",
+        "startDate",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "customerId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
       "id": "API-LOANCONTRACTS-GETID",
       "method": "GET",
       "path": "/api/v1/loan-contracts/:id",
@@ -8196,7 +10289,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -8261,6 +10354,44 @@
       "tests": []
     },
     {
+      "id": "API-LOANREPAYMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/loan-repayments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — loan_repayment.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "loan_repayment",
+      "table": "loanRepayments",
+      "search": [
+        "contractNumber"
+      ],
+      "sortable": [
+        "sequence",
+        "dueDate",
+        "amountDueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "loanContractId"
+      ],
+      "defaultSort": {
+        "column": "sequence",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
       "id": "API-LOANREPAYMENTS-GETID",
       "method": "GET",
       "path": "/api/v1/loan-repayments/:id",
@@ -8294,7 +10425,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -8381,6 +10512,46 @@
       ]
     },
     {
+      "id": "API-INVOICEPAYMENTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/payments",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "payments",
+      "purpose": "List the collection with search, sort, filter and pagination — payment.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "payments",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "payment",
+      "table": "payments",
+      "search": [
+        "reference",
+        "method"
+      ],
+      "sortable": [
+        "paidOn",
+        "amountHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "invoiceId",
+        "method"
+      ],
+      "defaultSort": {
+        "column": "paidOn",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-BILLING",
+      "tests": [
+        "TS-APP-E2E-INVOICES-SPEC-TS",
+        "TS-APP-E2E-NEW-CUSTOMER-TO-PAID-INVOICE-SPEC-TS"
+      ]
+    },
+    {
       "id": "API-INVOICEPAYMENTS-GETID",
       "method": "GET",
       "path": "/api/v1/payments/:id",
@@ -8413,7 +10584,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -8474,6 +10645,82 @@
       "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
+    },
+    {
+      "id": "API-PAYROLLLINES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/payroll/lines",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "List the collection with search, sort, filter and pagination — payroll_line.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "payroll_line",
+      "table": "payrollLines",
+      "search": [
+        "employeeName"
+      ],
+      "sortable": [
+        "employeeName",
+        "netHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "payrollRunId",
+        "employeeId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PAYROLLLINES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/payroll/lines",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "Create one row — payroll_line.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "payroll_line",
+      "table": "payrollLines",
+      "search": [
+        "employeeName"
+      ],
+      "sortable": [
+        "employeeName",
+        "netHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "payrollRunId",
+        "employeeId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
     },
     {
       "id": "API-PAYROLLLINES-DELETEID",
@@ -8543,7 +10790,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -8713,6 +10960,86 @@
       "tests": []
     },
     {
+      "id": "API-PAYROLLRUNS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/payroll/runs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "List the collection with search, sort, filter and pagination — payroll_run.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "payroll_run",
+      "table": "payrollRuns",
+      "search": [
+        "period",
+        "status"
+      ],
+      "sortable": [
+        "period",
+        "status",
+        "netHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "period"
+      ],
+      "defaultSort": {
+        "column": "period",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PAYROLLRUNS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/payroll/runs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "Create one row — payroll_run.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "payroll_run",
+      "table": "payrollRuns",
+      "search": [
+        "period",
+        "status"
+      ],
+      "sortable": [
+        "period",
+        "status",
+        "netHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "period"
+      ],
+      "defaultSort": {
+        "column": "period",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-SERVER-TESTS-HR-TEST-TS"
+      ]
+    },
+    {
       "id": "API-PAYROLLRUNS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/payroll/runs/:id",
@@ -8784,7 +11111,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -8983,6 +11310,47 @@
       "tests": []
     },
     {
+      "id": "API-PURCHASEORDERS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/procurement/purchase-orders",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "procurement",
+      "purpose": "List the collection with search, sort, filter and pagination — purchase_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "procurement",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "purchase_order",
+      "table": "purchaseOrders",
+      "search": [
+        "code",
+        "supplierName"
+      ],
+      "sortable": [
+        "code",
+        "supplierName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "supplierId",
+        "requisitionId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PROCUREMENT",
+      "tests": []
+    },
+    {
       "id": "API-POST-PROCUREMENT-PURCHASE-ORDERS",
       "method": "POST",
       "path": "/api/v1/procurement/purchase-orders",
@@ -9040,7 +11408,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -9191,6 +11559,47 @@
       "tests": []
     },
     {
+      "id": "API-REQUISITIONS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/procurement/requisitions",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "procurement",
+      "purpose": "List the collection with search, sort, filter and pagination — requisition.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "procurement",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "requisition",
+      "table": "requisitions",
+      "search": [
+        "code",
+        "requesterName",
+        "department"
+      ],
+      "sortable": [
+        "code",
+        "requesterName",
+        "estimatedTotalHalalas",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "priority"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PROCUREMENT",
+      "tests": []
+    },
+    {
       "id": "API-POST-PROCUREMENT-REQUISITIONS",
       "method": "POST",
       "path": "/api/v1/procurement/requisitions",
@@ -9248,7 +11657,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -9420,6 +11829,84 @@
       "tests": []
     },
     {
+      "id": "API-SUPPLIERS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/procurement/suppliers",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "procurement",
+      "purpose": "List the collection with search, sort, filter and pagination — supplier.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "procurement",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "supplier",
+      "table": "suppliers",
+      "search": [
+        "code",
+        "name",
+        "nameAr",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PROCUREMENT",
+      "tests": []
+    },
+    {
+      "id": "API-SUPPLIERS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/procurement/suppliers",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "procurement",
+      "purpose": "Create one row — supplier.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "procurement",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "supplier",
+      "table": "suppliers",
+      "search": [
+        "code",
+        "name",
+        "nameAr",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PROCUREMENT",
+      "tests": []
+    },
+    {
       "id": "API-SUPPLIERS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/procurement/suppliers/:id",
@@ -9493,7 +11980,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -9772,6 +12259,49 @@
       ]
     },
     {
+      "id": "API-RECEIPTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/receipts",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "payments",
+      "purpose": "List the collection with search, sort, filter and pagination — receipt.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "payments",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "receipt",
+      "table": "receipts",
+      "search": [
+        "code",
+        "customerName",
+        "invoiceCode"
+      ],
+      "sortable": [
+        "code",
+        "receiptDate",
+        "amountHalalas",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "method"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-BILLING",
+      "tests": [
+        "TS-APP-E2E-ACCOUNTING-RECONCILIATION-SPEC-TS",
+        "TS-APP-E2E-ACCOUNTING-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-POST-RECEIPTS",
       "method": "POST",
       "path": "/api/v1/receipts",
@@ -9831,7 +12361,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -9919,6 +12449,80 @@
       ]
     },
     {
+      "id": "API-SAVEDREPORTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/saved-reports",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — saved_report.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "saved_report",
+      "table": "savedReports",
+      "search": [
+        "name",
+        "source"
+      ],
+      "sortable": [
+        "name",
+        "createdAt"
+      ],
+      "filterable": [
+        "source"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-REPORT-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-SAVEDREPORTS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/saved-reports",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Create one row — saved_report.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "saved_report",
+      "table": "savedReports",
+      "search": [
+        "name",
+        "source"
+      ],
+      "sortable": [
+        "name",
+        "createdAt"
+      ],
+      "filterable": [
+        "source"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-REPORT-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-SAVEDREPORTS-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/saved-reports/:id",
@@ -9984,7 +12588,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -10150,6 +12754,40 @@
       "tests": []
     },
     {
+      "id": "API-SERVICES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/services",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — service.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "service",
+      "table": "services",
+      "search": [
+        "label"
+      ],
+      "sortable": [
+        "label",
+        "createdAt"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS"
+      ]
+    },
+    {
       "id": "API-SERVICES-GETID",
       "method": "GET",
       "path": "/api/v1/services/:id",
@@ -10177,7 +12815,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -10235,6 +12873,45 @@
       "tests": []
     },
     {
+      "id": "API-TECHNICIANS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/technicians",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "technicians",
+      "purpose": "List the collection with search, sort, filter and pagination — technician.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "technicians",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "technician",
+      "table": "technicians",
+      "search": [
+        "name",
+        "specialty"
+      ],
+      "sortable": [
+        "name",
+        "activeJobs",
+        "rating",
+        "createdAt"
+      ],
+      "filterable": [],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-TECHNICIAN-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-TECHNICIANS-GETID",
       "method": "GET",
       "path": "/api/v1/technicians/:id",
@@ -10265,7 +12942,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -10322,6 +12999,80 @@
       },
       "idempotent": false,
       "audited": false,
+      "capability": "CAP-HR",
+      "tests": []
+    },
+    {
+      "id": "API-TIMESHEETS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/timesheets",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "List the collection with search, sort, filter and pagination — timesheet.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "timesheet",
+      "table": "timesheets",
+      "search": [
+        "employeeName"
+      ],
+      "sortable": [
+        "workDate",
+        "employeeName",
+        "minutes",
+        "createdAt"
+      ],
+      "filterable": [
+        "employeeId",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "workDate",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-HR",
+      "tests": []
+    },
+    {
+      "id": "API-TIMESHEETS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/timesheets",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "hr",
+      "purpose": "Create one row — timesheet.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "hr",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "timesheet",
+      "table": "timesheets",
+      "search": [
+        "employeeName"
+      ],
+      "sortable": [
+        "workDate",
+        "employeeName",
+        "minutes",
+        "createdAt"
+      ],
+      "filterable": [
+        "employeeId",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "workDate",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -10395,7 +13146,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -10569,6 +13320,104 @@
       "tests": []
     },
     {
+      "id": "API-VEHICLES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/vehicles",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "vehicles",
+      "purpose": "List the collection with search, sort, filter and pagination — vehicle.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "vehicles",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "vehicle",
+      "table": "vehicles",
+      "search": [
+        "plate",
+        "makeModel",
+        "ownerName",
+        "vin"
+      ],
+      "sortable": [
+        "plate",
+        "makeModel",
+        "mileageKm",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "customerId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-VEHICLES",
+      "tests": [
+        "TS-APP-E2E-CUSTOMERS-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-VEHICLES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/vehicles",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "vehicles",
+      "purpose": "Create one row — vehicle.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "vehicles",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "vehicle",
+      "table": "vehicles",
+      "search": [
+        "plate",
+        "makeModel",
+        "ownerName",
+        "vin"
+      ],
+      "sortable": [
+        "plate",
+        "makeModel",
+        "mileageKm",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "customerId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-VEHICLES",
+      "tests": [
+        "TS-APP-E2E-CUSTOMERS-SPEC-TS",
+        "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-ERRORS-TEST-TS"
+      ]
+    },
+    {
       "id": "API-VEHICLES-DELETEID",
       "method": "DELETE",
       "path": "/api/v1/vehicles/:id",
@@ -10646,7 +13495,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": true,
+      "audited": false,
       "capability": "CAP-VEHICLES",
       "tests": []
     },

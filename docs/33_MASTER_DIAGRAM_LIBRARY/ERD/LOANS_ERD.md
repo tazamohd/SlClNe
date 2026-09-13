@@ -19,12 +19,12 @@ erDiagram
     varchar contract_number
     varchar customer_id FK
     varchar borrower_name
-    money principal_halalas
+    bigint principal_halalas
     integer rate_bps
     integer term_months
     date start_date
     varchar status
-    money monthly_instalment_halalas
+    bigint monthly_instalment_halalas
   }
   loan_repayments {
     varchar id PK
@@ -32,8 +32,8 @@ erDiagram
     varchar contract_number
     integer sequence
     date due_date
-    money amount_due_halalas
-    money amount_paid_halalas
+    bigint amount_due_halalas
+    bigint amount_paid_halalas
     date paid_date
     varchar status
   }

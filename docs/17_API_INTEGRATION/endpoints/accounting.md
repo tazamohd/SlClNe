@@ -10,25 +10,30 @@
 
 # API — accounting
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 40 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 50 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/accounting/coa` | accounting:v | token | `chartOfAccounts` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/coa/:id` | accounting:v | token | `chartOfAccounts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/coa/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/accounting/coa/export` | accounting:x | token | `chartOfAccounts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/accounting/expenses` | accounting:v | token | `expenses` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/expenses/:id` | accounting:v | token | `expenses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/expenses/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/accounting/expenses/export` | accounting:x | token | `expenses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/accounting/journal-entries` | accounting:v | token | `journalEntries` | — | 4 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/journal-entries/:id` | accounting:v | token | `journalEntries` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x | token | `journalEntries` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/reports/trial-balance` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
 | GET | `/api/v1/accounting/tax/return` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
+| GET | `/api/v1/bank-statements` | accounting:v | token | `bankStatements` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id` | accounting:v | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | token | — | — | — | `server/src/routes/bank.ts` |
 | GET | `/api/v1/bank-statements/export` | accounting:x | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/insurance-claims` | accounting:v | token | `insuranceClaims` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/insurance-claims` | accounting:c | token | — | — | 2 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/:id` | accounting:v | token | `insuranceClaims` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | token | — | — | — | `server/src/routes/insurance-claims.ts` |
@@ -36,17 +41,22 @@
 | POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | token | — | — | — | `server/src/routes/insurance-claims.ts` |
 | POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | token | — | — | — | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/export` | accounting:x | token | `insuranceClaims` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/insurance-policies` | accounting:v | token | `insurancePolicies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance-policies/:id` | accounting:v | token | `insurancePolicies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance-policies/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/insurance-policies/export` | accounting:x | token | `insurancePolicies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance/claims/summary` | accounting:v | token | — | — | 1 | `server/src/routes/product-reports.ts` |
+| GET | `/api/v1/loan-contracts` | accounting:v | token | `loanContracts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/loan-contracts/:id` | accounting:v | token | `loanContracts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/loan-contracts/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/loan-contracts/export` | accounting:x | token | `loanContracts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/loan-repayments` | accounting:v | token | `loanRepayments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/loan-repayments/:id` | accounting:v | token | `loanRepayments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/loan-repayments/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/loan-repayments/export` | accounting:x | token | `loanRepayments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/loans/summary` | accounting:v | token | — | — | 1 | `server/src/routes/product-reports.ts` |
+| GET | `/api/v1/saved-reports` | accounting:v | token | `savedReports` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/saved-reports` | accounting:c | token | `savedReports` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | token | `savedReports` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/saved-reports/:id` | accounting:v | token | `savedReports` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/saved-reports/:id` | accounting:e | token | `savedReports` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

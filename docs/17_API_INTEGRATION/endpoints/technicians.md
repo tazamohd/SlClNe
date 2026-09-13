@@ -10,10 +10,11 @@
 
 # API — technicians
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 3 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/technicians` | technicians:v | token | `technicians` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/technicians/:id` | technicians:v | token | `technicians` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/technicians/:id/history` | technicians:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/technicians/export` | technicians:x | token | `technicians` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

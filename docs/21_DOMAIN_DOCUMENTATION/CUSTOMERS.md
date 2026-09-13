@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 3 screens, 15 API endpoints and 2 entities, gated by the `customers` permission module.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 3 screens, 19 API endpoints and 2 entities, gated by the `customers` permission module.
 
 
 ## Actors
@@ -58,6 +58,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/customers` | customers:v | generated | — | 14 |
+| POST | `/api/v1/customers` | customers:c | generated | — | 14 |
 | DELETE | `/api/v1/customers/:id` | customers:d | generated | — | **0** |
 | GET | `/api/v1/customers/:id` | customers:v | generated | — | **0** |
 | PATCH | `/api/v1/customers/:id` | customers:e | generated | — | **0** |
@@ -65,6 +67,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/customers/bulk-delete` | customers:d | generated | — | 1 |
 | POST | `/api/v1/customers/bulk-update` | customers:e | generated | — | **0** |
 | GET | `/api/v1/customers/export` | customers:x | generated | — | 1 |
+| GET | `/api/v1/fleets` | customers:v | generated | — | 1 |
+| POST | `/api/v1/fleets` | customers:c | generated | — | 1 |
 | DELETE | `/api/v1/fleets/:id` | customers:d | generated | — | **0** |
 | GET | `/api/v1/fleets/:id` | customers:v | generated | — | **0** |
 | PATCH | `/api/v1/fleets/:id` | customers:e | generated | — | **0** |
@@ -95,7 +99,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **13 of 15 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **13 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`fleetContractStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **3 of 5 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 7 screens, 40 API endpoints and 1 entities, gated by the `accounting` permission module.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 7 screens, 50 API endpoints and 1 entities, gated by the `accounting` permission module.
 
 
 ## Actors
@@ -50,21 +50,26 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/accounting/coa` | accounting:v | generated | — | 1 |
 | GET | `/api/v1/accounting/coa/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/accounting/coa/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/accounting/coa/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/accounting/expenses` | accounting:v | generated | — | 5 |
 | GET | `/api/v1/accounting/expenses/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/accounting/expenses/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/accounting/expenses/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/accounting/journal-entries` | accounting:v | generated | — | 4 |
 | GET | `/api/v1/accounting/journal-entries/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x | generated | — | **0** |
 | GET | `/api/v1/accounting/reports/trial-balance` | accounting:v | explicit | — | 1 |
 | GET | `/api/v1/accounting/tax/return` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/bank-statements` | accounting:v | generated | — | 1 |
 | GET | `/api/v1/bank-statements/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | explicit | — | **0** |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | explicit | — | **0** |
 | GET | `/api/v1/bank-statements/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/insurance-claims` | accounting:v | generated | — | 2 |
 | POST | `/api/v1/insurance-claims` | accounting:c | explicit | — | 2 |
 | GET | `/api/v1/insurance-claims/:id` | accounting:v | generated | — | **0** |
 | POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | explicit | — | **0** |
@@ -72,17 +77,22 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | explicit | — | **0** |
 | POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | explicit | — | **0** |
 | GET | `/api/v1/insurance-claims/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/insurance-policies` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/insurance-policies/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/insurance-policies/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/insurance-policies/export` | accounting:x | generated | — | **0** |
 | GET | `/api/v1/insurance/claims/summary` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/loan-contracts` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/loan-contracts/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/loan-contracts/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/loan-contracts/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/loan-repayments` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/loan-repayments/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/loan-repayments/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/loan-repayments/export` | accounting:x | generated | — | **0** |
 | GET | `/api/v1/loans/summary` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/saved-reports` | accounting:v | generated | — | 1 |
+| POST | `/api/v1/saved-reports` | accounting:c | generated | — | 1 |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | generated | — | **0** |
 | GET | `/api/v1/saved-reports/:id` | accounting:v | generated | — | **0** |
 | PATCH | `/api/v1/saved-reports/:id` | accounting:e | generated | — | **0** |
@@ -129,7 +139,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **2 of 7 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **35 of 40 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **38 of 50 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`insurancePolicyStatus`, `insuranceClaimStatus`, `loanContractStatus`, `loanRepaymentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

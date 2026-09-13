@@ -20,7 +20,7 @@ Covers: the collection registry, the generic router, query contract, presentatio
 
 ## One description, many routes
 
-`server/src/registry.ts` describes each of the 52 collections once. `server/src/routes/collections.ts` generates 172 endpoints from those descriptions — list, export, detail, and for the 17 writable ones create, update, delete, bulk-update and bulk-delete.
+`server/src/registry.ts` describes each of the 52 collections once. `server/src/routes/collections.ts` generates 241 endpoints from those descriptions — list, export, detail, and for the 17 writable ones create, update, delete, bulk-update and bulk-delete.
 
 The argument is about people rather than elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. One description means the filter and the check exist once.
 

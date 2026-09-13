@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 4 screens, 7 API endpoints and 1 entities, gated by the `vehicles` permission module.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 4 screens, 9 API endpoints and 1 entities, gated by the `vehicles` permission module.
 
 
 ## Actors
@@ -57,6 +57,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/vehicles` | vehicles:v | generated | — | 7 |
+| POST | `/api/v1/vehicles` | vehicles:c | generated | — | 7 |
 | DELETE | `/api/v1/vehicles/:id` | vehicles:d | generated | — | **0** |
 | GET | `/api/v1/vehicles/:id` | vehicles:v | generated | — | **0** |
 | PATCH | `/api/v1/vehicles/:id` | vehicles:e | generated | — | **0** |
@@ -87,7 +89,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **7 of 7 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **7 of 9 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`vehicleStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **2 of 3 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

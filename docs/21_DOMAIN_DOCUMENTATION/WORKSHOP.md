@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 16 screens, 61 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 16 screens, 76 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -69,6 +69,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/appointments` | appointments:v | generated | — | 6 |
+| POST | `/api/v1/appointments` | appointments:c | generated | — | 6 |
 | DELETE | `/api/v1/appointments/:id` | appointments:d | generated | — | **0** |
 | GET | `/api/v1/appointments/:id` | appointments:v | generated | — | **0** |
 | PATCH | `/api/v1/appointments/:id` | appointments:e | generated | — | **0** |
@@ -76,31 +78,39 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/appointments/bulk-delete` | appointments:d | generated | — | **0** |
 | POST | `/api/v1/appointments/bulk-update` | appointments:e | generated | — | **0** |
 | GET | `/api/v1/appointments/export` | appointments:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/copies` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/copies/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/copies/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/copies/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/devices` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/devices/:id` | jobcards:v | generated | — | **0** |
 | POST | `/api/v1/diagnostics/devices/:id/clear-codes` | jobcards:e | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/devices/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/devices/:id/readings` | jobcards:v | explicit | — | **0** |
 | POST | `/api/v1/diagnostics/devices/:id/rescan` | jobcards:e | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/devices/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/findings` | jobcards:v | generated | — | 1 |
 | GET | `/api/v1/diagnostics/findings/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/findings/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/findings/export` | jobcards:x | generated | — | **0** |
 | GET | `/api/v1/diagnostics/integrations` | jobcards:v | explicit | — | 1 |
+| GET | `/api/v1/diagnostics/labour` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/labour/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/parts` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/parts/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/parts/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/parts/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/readings` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/readings/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/readings/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/readings/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/diagnostics/stages` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/estimates` | estimates:v | generated | — | 6 |
 | POST | `/api/v1/estimates` | estimates:c | explicit | — | 6 |
 | GET | `/api/v1/estimates/:id` | estimates:v | generated | — | **0** |
 | PATCH | `/api/v1/estimates/:id` | estimates:e | explicit | — | **0** |
@@ -111,6 +121,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/estimates/:id/request-approval-otp` | estimates:e | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/verify-approval-otp` | estimates:e | explicit | — | **0** |
 | GET | `/api/v1/estimates/export` | estimates:x | generated | — | **0** |
+| GET | `/api/v1/jobs` | jobcards:v | generated | — | 5 |
+| POST | `/api/v1/jobs` | jobcards:c | generated | — | 5 |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | generated | — | **0** |
 | GET | `/api/v1/jobs/:id` | jobcards:v | generated | — | **0** |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | generated | — | **0** |
@@ -120,13 +132,16 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/jobs/bulk-delete` | jobcards:d | generated | — | **0** |
 | POST | `/api/v1/jobs/bulk-update` | jobcards:e | generated | — | **0** |
 | GET | `/api/v1/jobs/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/kb/dtc` | jobcards:v | generated | — | 1 |
 | GET | `/api/v1/kb/dtc/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/kb/dtc/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/kb/dtc/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/kb/procedures` | jobcards:v | generated | — | 2 |
 | GET | `/api/v1/kb/procedures/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/kb/procedures/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/kb/procedures/export` | jobcards:x | generated | — | **0** |
 | GET | `/api/v1/reports/workshop` | jobcards:v | explicit | — | 1 |
+| GET | `/api/v1/services` | jobcards:v | generated | — | 1 |
 | GET | `/api/v1/services/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/services/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/services/export` | jobcards:x | generated | — | **0** |
@@ -170,7 +185,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **4 of 16 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **58 of 61 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **64 of 76 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 lifecycles (`appointmentStatus`, `estimateStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

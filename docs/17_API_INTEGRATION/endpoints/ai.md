@@ -10,13 +10,15 @@
 
 # API — ai
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 6 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 8 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/ai/agents` | ai:v | token | `aiAgents` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/ai/agents/:id` | ai:v | token | `aiAgents` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/ai/agents/:id/history` | ai:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/ai/agents/export` | ai:x | token | `aiAgents` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/ai/conversations` | ai:v | token | `conversations` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/ai/conversations/:id` | ai:v | token | `conversations` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/ai/conversations/:id/history` | ai:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/ai/conversations/export` | ai:x | token | `conversations` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

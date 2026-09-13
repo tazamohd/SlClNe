@@ -10,10 +10,11 @@
 
 # API — estimates
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 10 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 11 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/estimates` | estimates:v | token | `estimates` | — | 6 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/estimates` | estimates:c | token | — | — | 6 | `server/src/routes/estimates.ts` |
 | GET | `/api/v1/estimates/:id` | estimates:v | token | `estimates` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/estimates/:id` | estimates:e | token | — | — | — | `server/src/routes/estimates.ts` |

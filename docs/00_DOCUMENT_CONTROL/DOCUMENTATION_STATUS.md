@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 68 tables |
 | Relationship catalogue | `server/src/db/schema.ts` | 164 relationships |
-| API reference | the route files | 303 endpoints |
+| API reference | the route files | 372 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 420 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 18 lifecycles |

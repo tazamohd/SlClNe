@@ -23,11 +23,11 @@ erDiagram
     varchar vehicle_id FK
     date due_date
     varchar status
-    money subtotal_halalas
-    money tax_halalas
-    money discount_halalas
-    money total_halalas
-    money paid_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint discount_halalas
+    bigint total_halalas
+    bigint paid_halalas
     varchar seller_vat_number
   }
   invoice_lines {
@@ -37,7 +37,7 @@ erDiagram
     varchar description_ar
     varchar kind
     double_precision qty
-    money unit_price_halalas
+    bigint unit_price_halalas
     varchar part_sku
     integer sort
   }
@@ -48,7 +48,7 @@ erDiagram
     varchar method
     varchar method_ar
     varchar reference
-    money amount_halalas
+    bigint amount_halalas
     text note
   }
   receipts {
@@ -58,7 +58,7 @@ erDiagram
     varchar customer_name
     varchar invoice_code
     varchar method
-    money amount_halalas
+    bigint amount_halalas
     varchar status
   }
   invoices ||--o{ invoice_lines : "invoice_id"

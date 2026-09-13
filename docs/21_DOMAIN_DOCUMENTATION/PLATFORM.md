@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 15 API endpoints and 3 entities, gated by the `admin`, `settings`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
@@ -65,15 +65,19 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/admin/departments` | admin:v | generated | — | 1 |
 | GET | `/api/v1/admin/departments/:id` | admin:v | generated | — | **0** |
 | GET | `/api/v1/admin/departments/:id/history` | admin:v | explicit | — | **0** |
 | GET | `/api/v1/admin/departments/export` | admin:x | generated | — | **0** |
+| GET | `/api/v1/branches` | dashboard:v | generated | — | 2 |
 | GET | `/api/v1/branches/:id` | dashboard:v | generated | — | **0** |
 | GET | `/api/v1/branches/:id/history` | dashboard:v | explicit | — | **0** |
 | GET | `/api/v1/branches/export` | dashboard:x | generated | — | **0** |
+| GET | `/api/v1/integrations` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/:id` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/:id/history` | settings:v | explicit | — | **0** |
 | GET | `/api/v1/integrations/export` | settings:x | generated | — | **0** |
+| GET | `/api/v1/integrations/oem-tools` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/:id` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/:id/history` | settings:v | explicit | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/export` | settings:x | generated | — | **0** |
@@ -133,7 +137,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **31 of 36 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **12 of 15 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **14 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **24 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.

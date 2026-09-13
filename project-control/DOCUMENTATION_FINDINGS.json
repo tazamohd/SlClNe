@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-09-13",
+  "generator": "tools/docs/generators/registries.mjs",
+  "regenerate": "npm run docs:generate",
+  "derivedFrom": [
+    "tools/docs/lib/findings.mjs"
+  ],
+  "handEdit": "Never. Edit the source, then regenerate.",
+  "note": "Implementation findings surfaced while documenting the system, each verified against the source. Kept separate from FINDINGS.json, which engineering owns — a documentation generator appending to that register would make its provenance unclear and its regeneration destructive.",
+  "totals": {
+    "findings": 8,
+    "open": 7,
+    "high": 4
+  },
+  "findings": [
+    {
+      "id": "DF-001",
+      "severity": "HIGH",
+      "area": "accounting",
+      "title": "No API path writes to the general ledger",
+      "detail": "Nothing in server/src/routes inserts into journal_entries or chart_of_accounts. Not invoice issue, not payment capture, not payroll posting, not procurement. The trial balance and the VAT return read rows that exist only because the seed put them there, so both report on seed data rather than on trading activity.",
+      "consequence": "The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not.",
+      "verifiedBy": "grep -rn 'journalEntries' server/src — reads in routes/finance-reports.ts, a write only in db/seed.ts"
+    },
+    {
+      "id": "DF-002",
+      "severity": "HIGH",
+      "area": "workshop / billing",
+      "title": "checkInvoiceable is never called by the server",
+      "detail": "packages/contract/src/rules/workshop.ts defines checkInvoiceable — \"a job must reach delivery before it can be invoiced\". Its only callers are unit tests. routes/invoices.ts does not call it.",
+      "consequence": "An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production.",
+      "verifiedBy": "grep -rn 'checkInvoiceable' server packages app — defined once, called only from app/tests/unit/contract-rules.test.ts"
+    },
+    {
+      "id": "DF-003",
+      "severity": "HIGH",
+      "area": "accounting",
+      "title": "checkJournalBalanced is never called by the server",
+      "detail": "The double-entry balance guard in packages/contract/src/rules/money.ts has no caller outside tests. A comment in routes/finance-reports.ts describes the invariant as \"enforced by checkJournalBalanced\", which is not true of any code path.",
+      "consequence": "Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier.",
+      "verifiedBy": "grep -rn 'checkJournalBalanced' server packages app — defined in money.ts, called only from test files"
+    },
+    {
+      "id": "DF-004",
+      "severity": "HIGH",
+      "area": "inventory / procurement",
+      "title": "Goods receipt does not move stock",
+      "detail": "routes/procurement.ts updates purchase_order_lines.received_qty and never touches parts.on_hand — the string \"onHand\" does not appear in that file. Stock is moved only by routes/inventory.ts. The two are independent ledgers with nothing reconciling them.",
+      "consequence": "Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not.",
+      "verifiedBy": "grep -c 'onHand' server/src/routes/procurement.ts → 0; writes appear only in server/src/routes/inventory.ts"
+    },
+    {
+      "id": "DF-005",
+      "severity": "MEDIUM",
+      "area": "governance",
+      "title": "The approval inbox carries estimates only",
+      "detail": "routes/approvals.ts types ApprovalItem.kind as the literal 'estimate'. Requisitions, purchase orders, insurance claims and payroll runs all have approval semantics and approval ceilings, and none of them appears in the approvals queue.",
+      "consequence": "An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload.",
+      "verifiedBy": "grep -n 'kind' server/src/routes/approvals.ts — kind: 'estimate' is the only variant"
+    },
+    {
+      "id": "DF-006",
+      "severity": "MEDIUM",
+      "area": "audit / privacy",
+      "title": "Bulk export is not audited",
+      "detail": "The generated export route in routes/collections.ts writes no audit row, while the create, update, delete and bulk routes in the same file all call writeAudit.",
+      "consequence": "\"Who exported the customer list, and when\" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording.",
+      "verifiedBy": "The export handler in server/src/routes/collections.ts contains no writeAudit call; the write handlers below it do"
+    },
+    {
+      "id": "DF-007",
+      "severity": "MEDIUM",
+      "area": "workshop",
+      "title": "The document chain is broken at three joins",
+      "detail": "There is no endpoint that creates an invoice from an approved estimate, none that writes a verified customer OTP signature back to estimates.status, and none that opens a job card from a kept appointment.",
+      "consequence": "Each join is manual re-keying, which is where transcription errors enter a financial document chain.",
+      "verifiedBy": "No route in server/src/routes performs these transitions; see project-control/API_REGISTRY.json"
+    },
+    {
+      "id": "DF-008",
+      "severity": "MEDIUM",
+      "area": "documentation toolchain",
+      "title": "The API registry under-reported the surface by 69 endpoints",
+      "detail": "tools/docs/lib/extract-api.mjs matched only quoted route path arguments, so app.get(base, …) and app.post(base, …) in routes/collections.ts were never seen. Every collection list route and every generated create route was missing.",
+      "consequence": "Fixed. Recorded because it is the failure mode this toolchain exists to prevent, and because it shows the limit of the approach: a parser reports what it can match, and what it cannot match is invisible rather than flagged. The Mermaid, capability-coverage and schema-completeness checks in docs:check exist for that reason.",
+      "verifiedBy": "The registry went from 303 endpoints to 372 (241 generated, 131 explicit) with no change to the server",
+      "status": "RESOLVED"
+    }
+  ]
+}

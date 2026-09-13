@@ -10,15 +10,17 @@
 
 # API — payments
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 9 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 11 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | GET | `/api/v1/invoices/:id/payments` | payments:v | token | — | — | 2 | `server/src/routes/invoices.ts` |
 | POST | `/api/v1/invoices/:id/payments` | payments:c | token | — | — | 2 | `server/src/routes/invoices.ts` |
+| GET | `/api/v1/payments` | payments:v | token | `payments` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/payments/:id` | payments:v | token | `payments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/payments/:id/history` | payments:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/payments/export` | payments:x | token | `payments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/receipts` | payments:v | token | `receipts` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/receipts` | payments:c | token | — | — | 3 | `server/src/routes/invoices.ts` |
 | GET | `/api/v1/receipts/:id` | payments:v | token | `receipts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/receipts/:id/history` | payments:v | token | — | — | — | `server/src/routes/history.ts` |

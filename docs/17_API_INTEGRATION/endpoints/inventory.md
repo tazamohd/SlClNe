@@ -10,10 +10,12 @@
 
 # API — inventory
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 11 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 13 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/inventory` | inventory:v | token | `parts` | — | 11 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/inventory` | inventory:c | token | `parts` | — | 11 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/inventory/:id` | inventory:d | token | `parts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/inventory/:id` | inventory:v | token | `parts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/inventory/:id` | inventory:e | token | `parts` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

@@ -115,7 +115,7 @@ The role on the refresh token is never used. It is re-read from the `users` row 
 
 ## A generated collection read
 
-This is the path 172 of the registry's endpoints take. The example is `GET /api/v1/inventory`.
+This is the path every generated collection endpoint takes — the `GENERATED` rows in `project-control/API_REGISTRY.json`. The example is `GET /api/v1/inventory`.
 
 ```mermaid
 sequenceDiagram
@@ -467,6 +467,6 @@ sequenceDiagram
     Work-->>Qc: 200 with the released job
 ```
 
-## Registry coverage note
+## Surface
 
-`project-control/API_REGISTRY.json` records 303 endpoints, but it does not record the generated list route `GET /{path}` or the generated create route `POST /{path}` for any of the 52 collections — only six explicit base-path `POST`s appear. Those routes exist: `registerOne` in `server/src/routes/collections.ts` registers `app.get(base)` for every collection and `app.post(base)` for every writable one. Where this document or `PROCESS_CATALOG.md` names a collection create or list route, the evidence is the route file, not the registry.
+`project-control/API_REGISTRY.json` is the authority for the endpoint surface and carries its own counts in `totals`; every route named in this document and in `PROCESS_CATALOG.md` resolves there, generated collection list and create routes included.

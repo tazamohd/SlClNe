@@ -19,7 +19,7 @@ erDiagram
     varchar code
     varchar name
     varchar type
-    money balance_halalas
+    bigint balance_halalas
     integer children_count
     varchar parent_id FK
   }
@@ -29,8 +29,8 @@ erDiagram
     date entry_date
     varchar ref
     text narration
-    money debit_halalas
-    money credit_halalas
+    bigint debit_halalas
+    bigint credit_halalas
     varchar status
   }
   expenses {
@@ -39,7 +39,7 @@ erDiagram
     date expense_date
     varchar category
     varchar vendor
-    money amount_halalas
+    bigint amount_halalas
     varchar status
   }
   bank_statements {
@@ -48,7 +48,7 @@ erDiagram
     varchar description
     varchar reference
     varchar bank_account
-    money amount_halalas
+    bigint amount_halalas
     varchar direction
     boolean matched
     varchar matched_receipt_id FK

@@ -79,7 +79,7 @@ Recorded so a reader does not follow a stale instruction. These are observations
 | --- | --- |
 | `operations/devops-guide.md` §4.2 | Gives `npm run build` then `npm start` for the server. `server/package.json` has **no `build` script**; `start` is `tsx src/index.ts`, which runs TypeScript directly rather than compiled output. |
 | `operations/devops-guide.md` §4.1 | States that PGlite provides the development database. `server/package.json` depends on the `postgres` driver only; there is no PGlite dependency. ADR-002 records the intent, not the current state. |
-| `operations/devops-guide.md` §6.1 | Says RLS covers 53 tenant tables. The generated `docs/19_SECURITY/TENANT_ISOLATION.md` reports 64 tables with RLS, 63 of them tenant-scoped. Prefer the generated document; it is derived from the migrations. |
+| `operations/devops-guide.md` §6.1 | Says RLS covers 53 tenant tables. The generated `docs/19_SECURITY/TENANT_ISOLATION.md` reports that 64 of the schema's 68 tables have row-level security enabled, 63 of those 64 being tenant-scoped. Prefer the generated document; it is derived from the migrations. |
 | Several runbooks' trigger conditions | Fire on alerts from an APM dashboard, an error tracker, an uptime monitor and a paging service. None of these exist in this repository, so those triggers cannot currently fire. |
 
 ## 6. Related documents

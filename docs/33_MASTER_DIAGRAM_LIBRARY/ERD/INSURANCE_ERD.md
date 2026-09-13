@@ -23,8 +23,8 @@ erDiagram
     varchar vehicle_id FK
     varchar vehicle_label
     varchar type
-    money premium_halalas
-    money coverage_halalas
+    bigint premium_halalas
+    bigint coverage_halalas
     date start_date
     date end_date
     varchar status
@@ -37,8 +37,8 @@ erDiagram
     varchar vehicle_id FK
     varchar vehicle_label
     varchar job_card_id FK
-    money amount_claimed_halalas
-    money amount_approved_halalas
+    bigint amount_claimed_halalas
+    bigint amount_approved_halalas
     varchar status
     date incident_date
     text description

@@ -125,7 +125,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `active_count` | integer | NOT NULL | — | 0 | — |
 | `contract_status` | varchar(32) | NOT NULL | — | 'active' | — |
 | `contract_type` | varchar(32) | nullable | — | — | — |
-| `contract_value_halalas` | money | nullable | — | — | money — integer halalas |
+| `contract_value_halalas` | bigint | nullable | — | — | money — integer halalas |
 | `contract_start_date` | date | nullable | — | — | — |
 | `contract_end_date` | date | nullable | — | — | — |
 | `renewal_date` | date | nullable | — | — | — |
@@ -156,7 +156,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `type` | varchar(16) | NOT NULL | — | 'individual' | — |
 | `fleet_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_count` | integer | NOT NULL | — | 0 | — |
-| `total_spent_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `total_spent_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `last_visit_at` | timestamptz | nullable | — | — | — |
 | `last_visit_label` | varchar(64) | nullable | — | — | presentation string from the design bundle |
 | `notes` | text | nullable | — | — | — |
@@ -295,10 +295,10 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `customer_name` | varchar(200) | NOT NULL | — | — | — |
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_label` | varchar(160) | NOT NULL | — | — | presentation string from the design bundle |
-| `subtotal_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `tax_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `discount_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `total_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `subtotal_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `tax_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `discount_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
 | `valid_until` | timestamptz | nullable | — | — | — |
 | `submitted_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
@@ -329,7 +329,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `description_ar` | varchar(300) | nullable | — | — | — |
 | `kind` | varchar(16) | NOT NULL | — | — | — |
 | `qty` | double precision | NOT NULL | — | — | — |
-| `unit_price_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `part_sku` | varchar(64) | nullable | — | — | — |
 | `sort` | integer | NOT NULL | — | 0 | — |
 
@@ -357,11 +357,11 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `due_date` | date | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
-| `subtotal_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `tax_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `discount_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `total_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `paid_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `subtotal_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `tax_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `discount_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `paid_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `seller_vat_number` | varchar(20) | nullable | — | — | — |
 | `buyer_vat_number` | varchar(20) | nullable | — | — | — |
 | `qr_code` | text | nullable | — | — | — |
@@ -393,7 +393,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `description_ar` | varchar(300) | nullable | — | — | — |
 | `kind` | varchar(16) | NOT NULL | — | — | — |
 | `qty` | double precision | NOT NULL | — | — | — |
-| `unit_price_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `part_sku` | varchar(64) | nullable | — | — | — |
 | `sort` | integer | NOT NULL | — | 0 | — |
 
@@ -419,7 +419,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `method` | varchar(40) | NOT NULL | — | — | — |
 | `method_ar` | varchar(60) | nullable | — | — | — |
 | `reference` | varchar(64) | nullable | — | — | — |
-| `amount_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `amount_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `note` | text | nullable | — | — | — |
 
 | Index | Unique | Columns |
@@ -444,7 +444,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `customer_name` | varchar(200) | NOT NULL | — | — | — |
 | `invoice_code` | varchar(32) | nullable | — | — | — |
 | `method` | varchar(40) | NOT NULL | — | — | — |
-| `amount_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `amount_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'pending' | — |
 
 | Index | Unique | Columns |
@@ -466,8 +466,8 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `version` | integer | NOT NULL | — | 1 | — |
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `sku` | varchar(64) | NOT NULL | — | — | — |
-| `price_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `cost_halalas` | money | nullable | — | — | money — integer halalas |
+| `price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `cost_halalas` | bigint | nullable | — | — | money — integer halalas |
 | `on_hand` | integer | NOT NULL | — | 0 | — |
 | `reserved` | integer | NOT NULL | — | 0 | — |
 | `reorder_level` | integer | NOT NULL | — | 0 | — |
@@ -554,7 +554,7 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `priority` | varchar(16) | NOT NULL | — | 'normal' | — |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
 | `needed_by` | date | nullable | — | — | — |
-| `estimated_total_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `estimated_total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `notes` | text | nullable | — | — | — |
 | `submitted_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 | `approved_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
@@ -583,7 +583,7 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `description` | varchar(300) | NOT NULL | — | — | — |
 | `description_ar` | varchar(300) | nullable | — | — | — |
 | `qty` | integer | NOT NULL | — | — | — |
-| `est_unit_price_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `est_unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `sort` | integer | NOT NULL | — | 0 | — |
 
 | Index | Unique | Columns |
@@ -608,9 +608,9 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `supplier_name` | varchar(200) | NOT NULL | — | — | — |
 | `requisition_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `status` | varchar(24) | NOT NULL | — | 'draft' | — |
-| `subtotal_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `tax_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `total_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `subtotal_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `tax_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `notes` | text | nullable | — | — | — |
 | `ordered_at` | timestamptz | nullable | — | — | — |
 | `expected_at` | timestamptz | nullable | — | — | — |
@@ -642,7 +642,7 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `description_ar` | varchar(300) | nullable | — | — | — |
 | `qty` | integer | NOT NULL | — | — | — |
 | `received_qty` | integer | NOT NULL | — | 0 | — |
-| `unit_price_halalas` | money | NOT NULL | — | — | money — integer halalas |
+| `unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
 | `sort` | integer | NOT NULL | — | 0 | — |
 
 | Index | Unique | Columns |
@@ -707,7 +707,7 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `version` | integer | NOT NULL | — | 1 | — |
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `company` | varchar(200) | nullable | — | — | — |
-| `value_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `value_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `source` | varchar(64) | nullable | — | — | — |
 | `stage` | varchar(32) | NOT NULL | — | 'new' | — |
 | `lead_date` | date | nullable | — | — | — |
@@ -733,7 +733,7 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `version` | integer | NOT NULL | — | 1 | — |
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `company` | varchar(200) | nullable | — | — | — |
-| `value_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `value_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `stage` | varchar(32) | NOT NULL | — | — | — |
 | `probability_pct` | integer | nullable | — | — | — |
 | `close_date` | date | nullable | — | — | — |
@@ -759,8 +759,8 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `opens` | integer | NOT NULL | — | 0 | — |
 | `clicks` | integer | NOT NULL | — | 0 | — |
 | `conversions` | integer | NOT NULL | — | 0 | — |
-| `budget_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `spent_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `budget_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `spent_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 
 ## `segments`
 
@@ -868,7 +868,7 @@ Customer feedback (F-027). A rating and optional comment against a job card / cu
 | `code` | varchar(24) | NOT NULL | — | — | — |
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `type` | varchar(40) | NOT NULL | — | — | — |
-| `balance_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `balance_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `children_count` | integer | NOT NULL | — | 0 | — |
 | `parent_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 
@@ -893,8 +893,8 @@ Customer feedback (F-027). A rating and optional comment against a job card / cu
 | `entry_date` | date | NOT NULL | — | — | — |
 | `ref` | varchar(64) | nullable | — | — | — |
 | `narration` | text | nullable | — | — | — |
-| `debit_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `credit_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `debit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `credit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
 
 | Index | Unique | Columns |
@@ -918,7 +918,7 @@ Customer feedback (F-027). A rating and optional comment against a job card / cu
 | `expense_date` | date | NOT NULL | — | — | — |
 | `category` | varchar(120) | nullable | — | — | — |
 | `vendor` | varchar(200) | nullable | — | — | — |
-| `amount_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `amount_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'pending' | — |
 
 | Index | Unique | Columns |
@@ -944,7 +944,7 @@ Bank statement lines (F-028). The *bank* side of a reconciliation — one row pe
 | `description` | varchar(300) | NOT NULL | — | — | — |
 | `reference` | varchar(64) | nullable | — | — | — |
 | `bank_account` | varchar(120) | nullable | — | — | — |
-| `amount_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `amount_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `direction` | varchar(8) | NOT NULL | — | — | — |
 | `matched` | boolean | NOT NULL | — | false | — |
 | `matched_receipt_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
@@ -1000,8 +1000,8 @@ Insurance policies — the cover a customer holds on a vehicle. Money is integer
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_label` | varchar(160) | NOT NULL | — | — | presentation string from the design bundle |
 | `type` | varchar(24) | NOT NULL | — | 'comprehensive' | — |
-| `premium_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `coverage_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `premium_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `coverage_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `start_date` | date | NOT NULL | — | — | — |
 | `end_date` | date | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'active' | — |
@@ -1032,8 +1032,8 @@ Insurance claims — a request against a policy, which may relate to a repair. R
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_label` | varchar(160) | NOT NULL | — | — | presentation string from the design bundle |
 | `job_card_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
-| `amount_claimed_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `amount_approved_halalas` | money | nullable | — | — | money — integer halalas |
+| `amount_claimed_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `amount_approved_halalas` | bigint | nullable | — | — | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'submitted' | — |
 | `incident_date` | date | NOT NULL | — | — | — |
 | `description` | text | NOT NULL | — | — | — |
@@ -1066,12 +1066,12 @@ Auto-loan contracts — a financed principal at a rate over a term. The monthly 
 | `contract_number` | varchar(40) | NOT NULL | — | — | — |
 | `customer_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `borrower_name` | varchar(200) | NOT NULL | — | — | — |
-| `principal_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `principal_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `rate_bps` | integer | NOT NULL | — | 0 | — |
 | `term_months` | integer | NOT NULL | — | — | — |
 | `start_date` | date | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'active' | — |
-| `monthly_instalment_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `monthly_instalment_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
@@ -1097,8 +1097,8 @@ Loan repayments — the month-by-month schedule a contract's instalment implies.
 | `contract_number` | varchar(40) | NOT NULL | — | — | — |
 | `sequence` | integer | NOT NULL | — | — | — |
 | `due_date` | date | NOT NULL | — | — | — |
-| `amount_due_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `amount_paid_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `amount_due_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `amount_paid_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `paid_date` | date | nullable | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'due' | — |
 
@@ -1128,7 +1128,7 @@ Employees — a member of staff who belongs to a department (the existing `depar
 | `department_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `hire_date` | date | nullable | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'active' | — |
-| `salary_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `salary_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
@@ -1152,10 +1152,10 @@ Payroll runs — one calendar month. The totals (gross, allowances, deductions, 
 | `version` | integer | NOT NULL | — | 1 | — |
 | `period` | varchar(7) | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
-| `gross_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `allowances_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `deductions_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `net_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `gross_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `allowances_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `deductions_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `net_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `posted_at` | timestamptz | nullable | — | — | — |
 | `posted_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 
@@ -1182,10 +1182,10 @@ Payroll lines — one employee's pay within a run. The net is computed by the se
 | `payroll_run_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
 | `employee_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
 | `employee_name` | varchar(200) | NOT NULL | — | — | — |
-| `gross_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `allowances_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `deductions_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
-| `net_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `gross_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `allowances_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `deductions_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `net_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
@@ -1408,7 +1408,7 @@ Per-device DTC readings (F-029). The device↔dtc link a re-scan or a clear-code
 | `item` | varchar(300) | NOT NULL | — | — | — |
 | `item_ar` | varchar(300) | nullable | — | — | — |
 | `qty` | double precision | NOT NULL | — | 1 | — |
-| `unit_price_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `unit_price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `kind` | varchar(16) | nullable | — | — | — |
 | `urgency` | varchar(16) | nullable | — | — | — |
 | `note` | text | nullable | — | — | — |
@@ -1477,7 +1477,7 @@ Per-device DTC readings (F-029). The device↔dtc link a re-scan or a clear-code
 | `description` | varchar(300) | NOT NULL | — | — | — |
 | `description_ar` | varchar(300) | nullable | — | — | — |
 | `qty` | double precision | NOT NULL | — | 1 | — |
-| `price_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `stock` | varchar(16) | nullable | — | — | — |
 | `eta` | varchar(32) | nullable | — | — | — |
 
@@ -1497,7 +1497,7 @@ Per-device DTC readings (F-029). The device↔dtc link a re-scan or a clear-code
 | `task` | varchar(300) | NOT NULL | — | — | — |
 | `task_ar` | varchar(300) | nullable | — | — | — |
 | `hours` | double precision | NOT NULL | — | 0 | — |
-| `rate_halalas` | money | NOT NULL | — | 0 | money — integer halalas |
+| `rate_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 
 ## `diag_copies`
 

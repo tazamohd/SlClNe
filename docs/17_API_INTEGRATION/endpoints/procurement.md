@@ -10,10 +10,11 @@
 
 # API — procurement
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 24 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 28 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/procurement/purchase-orders` | procurement:v | token | `purchaseOrders` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/procurement/purchase-orders` | procurement:c | token | — | — | — | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/purchase-orders/:id` | procurement:v | token | `purchaseOrders` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/procurement/purchase-orders/:id` | procurement:e | token | — | — | — | `server/src/routes/procurement.ts` |
@@ -22,6 +23,7 @@
 | GET | `/api/v1/procurement/purchase-orders/:id/lines` | procurement:v | token | — | — | — | `server/src/routes/procurement.ts` |
 | POST | `/api/v1/procurement/purchase-orders/:id/receive` | procurement:e | token | — | yes | — | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/purchase-orders/export` | procurement:x | token | `purchaseOrders` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/procurement/requisitions` | procurement:v | token | `requisitions` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/procurement/requisitions` | procurement:c | token | — | — | — | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/requisitions/:id` | procurement:v | token | `requisitions` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/procurement/requisitions/:id` | procurement:e | token | — | — | — | `server/src/routes/procurement.ts` |
@@ -31,6 +33,8 @@
 | POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | token | — | — | — | `server/src/routes/procurement.ts` |
 | POST | `/api/v1/procurement/requisitions/:id/submit` | procurement:e | token | — | — | — | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/requisitions/export` | procurement:x | token | `requisitions` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/procurement/suppliers` | procurement:v | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/procurement/suppliers` | procurement:c | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/procurement/suppliers/:id` | procurement:d | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/procurement/suppliers/:id` | procurement:v | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/procurement/suppliers/:id` | procurement:e | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

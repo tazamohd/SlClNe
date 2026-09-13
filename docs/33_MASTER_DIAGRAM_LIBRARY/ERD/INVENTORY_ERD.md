@@ -18,8 +18,8 @@ erDiagram
     varchar id PK
     varchar name
     varchar sku
-    money price_halalas
-    money cost_halalas
+    bigint price_halalas
+    bigint cost_halalas
     integer on_hand
     integer reserved
     integer reorder_level

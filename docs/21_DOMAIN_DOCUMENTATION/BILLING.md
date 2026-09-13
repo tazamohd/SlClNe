@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 6 screens, 20 API endpoints and 3 entities, gated by the `invoices`, `payments` permission modules.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 6 screens, 24 API endpoints and 3 entities, gated by the `invoices`, `payments` permission modules.
 
 
 ## Actors
@@ -64,9 +64,11 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/invoice-lines` | invoices:v | generated | — | **0** |
 | GET | `/api/v1/invoice-lines/:id` | invoices:v | generated | — | **0** |
 | GET | `/api/v1/invoice-lines/:id/history` | invoices:v | explicit | — | **0** |
 | GET | `/api/v1/invoice-lines/export` | invoices:x | generated | — | **0** |
+| GET | `/api/v1/invoices` | invoices:v | generated | — | 8 |
 | POST | `/api/v1/invoices` | invoices:c | explicit | — | 8 |
 | GET | `/api/v1/invoices/:id` | invoices:v | generated | — | **0** |
 | PATCH | `/api/v1/invoices/:id` | invoices:e | explicit | — | **0** |
@@ -77,9 +79,11 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/invoices/:id/payments` | payments:c | explicit | — | 2 |
 | GET | `/api/v1/invoices/export` | invoices:x | generated | — | **0** |
 | GET | `/api/v1/invoices/summary` | invoices:v | explicit | — | 1 |
+| GET | `/api/v1/payments` | payments:v | generated | — | 2 |
 | GET | `/api/v1/payments/:id` | payments:v | generated | — | **0** |
 | GET | `/api/v1/payments/:id/history` | payments:v | explicit | — | **0** |
 | GET | `/api/v1/payments/export` | payments:x | generated | — | **0** |
+| GET | `/api/v1/receipts` | payments:v | generated | — | 3 |
 | POST | `/api/v1/receipts` | payments:c | explicit | — | 3 |
 | GET | `/api/v1/receipts/:id` | payments:v | generated | — | **0** |
 | GET | `/api/v1/receipts/:id/history` | payments:v | explicit | — | **0** |
@@ -109,7 +113,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **15 of 20 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **16 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`invoiceStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **7 of 10 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

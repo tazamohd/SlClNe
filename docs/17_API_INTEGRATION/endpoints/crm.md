@@ -10,13 +10,16 @@
 
 # API — crm
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 35 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 45 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/crm/campaigns` | crm:v | token | `campaigns` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/campaigns/:id` | crm:v | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/campaigns/:id/history` | crm:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/crm/campaigns/export` | crm:x | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/crm/leads` | crm:v | token | `leads` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/crm/leads` | crm:c | token | `leads` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/crm/leads/:id` | crm:d | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/leads/:id` | crm:v | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/crm/leads/:id` | crm:e | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -25,6 +28,8 @@
 | POST | `/api/v1/crm/leads/bulk-delete` | crm:d | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/crm/leads/bulk-update` | crm:e | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/leads/export` | crm:x | token | `leads` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/crm/opportunities` | crm:v | token | `opportunities` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/crm/opportunities` | crm:c | token | `opportunities` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/crm/opportunities/:id` | crm:d | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/opportunities/:id` | crm:v | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/crm/opportunities/:id` | crm:e | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -32,9 +37,12 @@
 | POST | `/api/v1/crm/opportunities/bulk-delete` | crm:d | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/crm/opportunities/bulk-update` | crm:e | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/opportunities/export` | crm:x | token | `opportunities` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/crm/segments` | crm:v | token | `segments` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/segments/:id` | crm:v | token | `segments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/segments/:id/history` | crm:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/crm/segments/export` | crm:x | token | `segments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/crm/tasks` | crm:v | token | `crmTasks` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/crm/tasks` | crm:c | token | `crmTasks` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/crm/tasks/:id` | crm:d | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/tasks/:id` | crm:v | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/crm/tasks/:id` | crm:e | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -42,6 +50,8 @@
 | POST | `/api/v1/crm/tasks/bulk-delete` | crm:d | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/crm/tasks/bulk-update` | crm:e | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/tasks/export` | crm:x | token | `crmTasks` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/customer-feedback` | crm:v | token | `customerFeedback` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/customer-feedback` | crm:c | token | `customerFeedback` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/customer-feedback/:id` | crm:d | token | `customerFeedback` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customer-feedback/:id` | crm:v | token | `customerFeedback` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/customer-feedback/:id` | crm:e | token | `customerFeedback` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

@@ -22,14 +22,14 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 68 of 68 |
 | Relationships documented | 164 (61 FK-backed, 103 convention only) |
-| Endpoints documented | 303 of 303 |
-| Endpoints with a linked test | 42 of 303 |
+| Endpoints documented | 372 of 372 |
+| Endpoints with a linked test | 90 of 372 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 424 of 424 |
 | Screens wired to the live API | 99 of 424 |
 | Test suites catalogued | 178 containing 2088 cases |
-| Capabilities with no linked test suite | 10 |
+| Capabilities with no linked test suite | 6 |
 | Canonical registers at least 3 days behind the newest | 6 of 9 |
 | Direct contradictions between registers | 3 |
 
@@ -79,13 +79,37 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 261 endpoints have no test matched to them by path
+### 4. 282 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
 ### 5. 285 screens read design fixtures rather than the API
 
 Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 285 of 424 are not yet connected to live data.
+
+## Implementation findings surfaced by documenting the system
+
+Documenting a system end to end is an unusually good way to find things wrong with it, because it forces someone to follow every chain to its end rather than to the point where it stops being interesting. Each of these was verified against the source before it was written down, and each names the command that confirms it.
+
+They are recorded in `project-control/DOCUMENTATION_FINDINGS.json`, which this toolchain owns. They are deliberately **not** appended to `project-control/FINDINGS.json`: that register belongs to engineering, and a documentation generator writing into it would make its provenance unclear and its regeneration destructive.
+
+| ID | Severity | Area | Finding | Consequence |
+| --- | --- | --- | --- | --- |
+| DF-001 | HIGH | accounting | No API path writes to the general ledger | The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not. |
+| DF-002 | HIGH | workshop / billing | checkInvoiceable is never called by the server | An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production. |
+| DF-003 | HIGH | accounting | checkJournalBalanced is never called by the server | Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier. |
+| DF-004 | HIGH | inventory / procurement | Goods receipt does not move stock | Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not. |
+| DF-005 | MEDIUM | governance | The approval inbox carries estimates only | An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload. |
+| DF-006 | MEDIUM | audit / privacy | Bulk export is not audited | "Who exported the customer list, and when" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording. |
+| DF-007 | MEDIUM | workshop | The document chain is broken at three joins | Each join is manual re-keying, which is where transcription errors enter a financial document chain. |
+
+The four highest-severity findings share a shape worth naming: **a rule exists, is tested, and does not run.** `checkInvoiceable` and `checkJournalBalanced` are both defined, both unit-tested, and neither is called by any handler. A test suite that exercises a rule function directly proves the function is correct; it proves nothing about whether anything calls it. That is a gap no amount of test coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.
+
+### Resolved during this work
+
+| ID | Finding | Note |
+| --- | --- | --- |
+| DF-008 | The API registry under-reported the surface by 69 endpoints | Fixed. Recorded because it is the failure mode this toolchain exists to prevent, and because it shows the limit of the approach: a parser reports what it can match, and what it cannot match is invisible rather than flagged. The Mermaid, capability-coverage and schema-completeness checks in docs:check exist for that reason. |
 
 ## The canonical registers disagree with each other
 
@@ -160,7 +184,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/30_RELEASE_CERTIFICATION/README.md` | 763 |
 | `docs/31_ARCHITECTURE_DECISIONS/README.md` | 865 |
 | `docs/32_METRICS_KPI_REPORTING/README.md` | 534 |
-| `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 876 |
+| `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 878 |
 
 
 ## Missing required documents
@@ -172,7 +196,7 @@ _None — every required document is present._
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 17 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 261 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 282 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 285 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

@@ -26,20 +26,20 @@ Every link below is derived from a real identifier — a permission module, a ta
 
 | Objective | Capability | Requirement | Entities | Endpoints | Permissioned roles | Screens | Rules | Linked test suites |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 61 | 12 | 16 | 0 | 8 |
-| OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 15 | 9 | 3 | 0 | 2 |
-| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 7 | 11 | 4 | 0 | **0** |
-| OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 11 | 9 | 7 | 5 | 1 |
-| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 24 | 8 | 1 | 4 | **0** |
-| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 20 | 9 | 6 | 0 | 12 |
-| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 40 | 5 | 7 | 0 | 3 |
-| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 41 | 10 | 5 | 2 | **0** |
-| OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 35 | 7 | 12 | 0 | **0** |
+| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 76 | 12 | 16 | 0 | 13 |
+| OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 3 | 0 | 15 |
+| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 7 |
+| OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 12 |
+| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | **0** |
+| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 24 | 9 | 6 | 0 | 12 |
+| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 9 |
+| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 6 |
+| OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 12 | 0 | 6 |
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
-| OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 4 | 9 | 2 | 4 | 1 |
+| OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
-| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 6 | 6 | 10 | 0 | **0** |
-| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 15 | 14 | 36 | 0 | 4 |
+| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 10 | 0 | 1 |
+| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 14 |
 | OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 31 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
@@ -62,24 +62,20 @@ Given a table, an endpoint, a permission or a screen, the registries answer the 
 
 The honest part of a traceability matrix is the list of links that do not exist.
 
-### Capabilities with no linked test suite (10 of 18)
+### Capabilities with no linked test suite (6 of 18)
 
 | Capability | Endpoints | Screens |
 | --- | --- | --- |
-| CAP-VEHICLES | 7 | 4 |
-| CAP-PROCUREMENT | 24 | 1 |
-| CAP-HR | 41 | 5 |
-| CAP-CRM | 35 | 12 |
+| CAP-PROCUREMENT | 28 | 1 |
 | CAP-REPORTING | 0 | 11 |
 | CAP-PORTALS | 0 | 11 |
-| CAP-AI | 6 | 10 |
 | CAP-WEBSITE | 0 | 31 |
 | CAP-CUSTOMERAPP | 0 | 11 |
 | CAP-DESIGNSYSTEM | 0 | 233 |
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
-### Endpoints with no linked test (261 of 303)
+### Endpoints with no linked test (282 of 372)
 
 Linkage here is by path match between a spec file and a route. A test that exercises an endpoint indirectly — through a helper, or through a golden path — will not match, so this over-reports. It is still the right number to drive down.
 
@@ -110,6 +106,7 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | POST | `/api/v1/appointments/bulk-delete` | appointments:d |
 | POST | `/api/v1/appointments/bulk-update` | appointments:e |
 | GET | `/api/v1/appointments/export` | appointments:x |
+| GET | `/api/v1/approvals/lines` | approvals:v |
 | GET | `/api/v1/approvals/lines/:id` | approvals:v |
 | GET | `/api/v1/approvals/lines/:id/history` | approvals:v |
 | GET | `/api/v1/approvals/lines/export` | approvals:x |
@@ -144,9 +141,8 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/crm/segments/:id/history` | crm:v |
 | GET | `/api/v1/crm/segments/export` | crm:x |
 | DELETE | `/api/v1/crm/tasks/:id` | crm:d |
-| GET | `/api/v1/crm/tasks/:id` | crm:v |
 
-_…and 201 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
+_…and 222 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
 
 ### Rule guards with no test naming them (2 of 17)
 

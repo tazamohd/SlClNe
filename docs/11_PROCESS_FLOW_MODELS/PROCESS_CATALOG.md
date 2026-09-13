@@ -2,7 +2,7 @@
 
 # Process catalogue
 
-This file catalogues the material business processes SALIS AUTO actually performs, one entry per process, each step tied to the endpoint or rule guard that implements it. Nothing here is aspirational: every endpoint named exists in `project-control/API_REGISTRY.json` or in the route file cited, every rule named exists in `packages/contract/src/rules/`, and every approval or segregation-of-duties control named is enforced by a function in `server/src/security/`. Where a step a workshop would expect has no implementation, it is written as a gap rather than described as if it worked. Read this with `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md` for the lifecycles and `docs/17_API_INTEGRATION/API_OVERVIEW.md` for the surface.
+This file catalogues the material business processes SALIS AUTO actually performs, one entry per process, each step tied to the endpoint or rule guard that implements it. Nothing here is aspirational: every endpoint named resolves in `project-control/API_REGISTRY.json`, every rule named exists in `packages/contract/src/rules/`, and every approval or segregation-of-duties control named is enforced by a function in `server/src/security/`. Where a step a workshop would expect has no implementation, it is written as a gap rather than described as if it worked. Read this with `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md` for the lifecycles and `docs/17_API_INTEGRATION/API_OVERVIEW.md` for the surface.
 
 ## How to read an entry
 
@@ -130,7 +130,7 @@ This file catalogues the material business processes SALIS AUTO actually perform
 | Inventory impact | None |
 | Audit events | `create` on `appointment` |
 | Systems and APIs | `POST /api/v1/appointments`, `PATCH /api/v1/appointments/:id`, `DELETE /api/v1/appointments/:id` |
-| Evidence | `server/src/routes/collections.ts`, `server/src/writers.ts`, `packages/contract/src/rules/workshop.ts` |
+| Evidence | `project-control/API_REGISTRY.json`, `server/src/routes/collections.ts`, `server/src/writers.ts`, `packages/contract/src/rules/workshop.ts` |
 | Known gaps | Nothing turns a kept appointment into a job card. NOT IMPLEMENTED — no endpoint links `appointments` to `job_cards`, so the handover from booking to workshop is manual re-keying. `SM-APPOINTMENT-appointmentStatus` is `STATE_SET_ONLY`: `confirmed`, `awaiting`, `no-show`, `cancelled` and `completed` can each be written by a plain `PATCH` in any order. |
 
 ## PRC-005 — Job card opening
@@ -152,7 +152,7 @@ This file catalogues the material business processes SALIS AUTO actually perform
 | Inventory impact | None |
 | Audit events | `create` on `job_card` |
 | Systems and APIs | `POST /api/v1/jobs`, `GET /api/v1/jobs/:id`, `PATCH /api/v1/jobs/:id` |
-| Evidence | `server/src/routes/collections.ts`, `server/src/writers.ts` |
+| Evidence | `project-control/API_REGISTRY.json`, `server/src/routes/collections.ts`, `server/src/writers.ts` |
 | Known gaps | The create route sets no opening stage explicitly; the stage comes from whatever `jobCardCreate` accepts or the column default. The stage machine governs moves, not the entry point. |
 
 ## PRC-006 — Job card stage progression and QC release
@@ -504,7 +504,7 @@ This file catalogues the material business processes SALIS AUTO actually perform
 | Inventory impact | None |
 | Audit events | `approve` or `reject` on `leave_request` |
 | Systems and APIs | `POST /api/v1/leave-requests`, `.../:id/approve`, `.../:id/reject` |
-| Evidence | `server/src/routes/leave.ts`, `server/src/writers.ts` |
+| Evidence | `project-control/API_REGISTRY.json`, `server/src/routes/leave.ts`, `server/src/writers.ts` |
 | Known gaps | No balance is tracked and no balance is checked, so leave can be approved without limit. Approved leave does not move `employees` to `on_leave`. |
 
 ## PRC-022 — Payroll run and posting
@@ -526,7 +526,7 @@ This file catalogues the material business processes SALIS AUTO actually perform
 | Inventory impact | None |
 | Audit events | `post` on `payroll_run` |
 | Systems and APIs | `POST /api/v1/payroll/runs/:id/post` |
-| Evidence | `server/src/routes/payroll.ts`, `server/src/writers.ts`, `packages/contract/src/rules/hr.ts` |
+| Evidence | `project-control/API_REGISTRY.json`, `server/src/routes/payroll.ts`, `server/src/writers.ts`, `packages/contract/src/rules/hr.ts` |
 | Known gaps | The salary figures on payroll payloads are nulled by `GLOBAL_REDACTIONS` for every role that does not hold the `Employee salary` field — but the redaction rule's hidden-from list does not include `hr` or `owner`, so those two see them, which is the intent. Payroll runs do not appear in the approval inbox. |
 
 ## PRC-023 — Bank statement matching
@@ -613,8 +613,8 @@ This file catalogues the material business processes SALIS AUTO actually perform
 | Financial impact | None |
 | Inventory impact | None |
 | Audit events | None — the export route writes no audit row |
-| Systems and APIs | `GET /api/v1/{collection}/export` for all 52 collections |
-| Evidence | `server/src/routes/collections.ts`, `server/src/security/permissions.ts` |
+| Systems and APIs | `GET /api/v1/{collection}/export`, one per collection in `project-control/API_REGISTRY.json` |
+| Evidence | `project-control/API_REGISTRY.json`, `server/src/routes/collections.ts`, `server/src/security/permissions.ts` |
 | Known gaps | Bulk egress of an entire collection is not audited. An operator cannot answer who exported the customer list and when from the audit log. |
 
 ---

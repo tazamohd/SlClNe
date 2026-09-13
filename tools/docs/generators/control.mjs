@@ -10,6 +10,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { P } from '../lib/paths.mjs'
+import { DOCUMENTATION_FINDINGS } from '../lib/findings.mjs'
 import { REQUIRED, SECTIONS } from '../lib/structure.mjs'
 import { banner, table, write, writeJson } from '../lib/write.mjs'
 
@@ -449,6 +450,26 @@ export function generateControl(model, requirements, trace) {
       `### 5. ${model.statusTotals.mockOnly ?? '?'} screens read design fixtures rather than the API`,
       '',
       `Measured in \`project-control/STATUS.json\`, not asserted here. Every screen renders and every screen has a content assertion — and ${model.statusTotals.mockOnly ?? '?'} of ${model.statusTotals.capabilities ?? '?'} are not yet connected to live data.`,
+      '',
+      '## Implementation findings surfaced by documenting the system',
+      '',
+      'Documenting a system end to end is an unusually good way to find things wrong with it, because it forces someone to follow every chain to its end rather than to the point where it stops being interesting. Each of these was verified against the source before it was written down, and each names the command that confirms it.',
+      '',
+      'They are recorded in `project-control/DOCUMENTATION_FINDINGS.json`, which this toolchain owns. They are deliberately **not** appended to `project-control/FINDINGS.json`: that register belongs to engineering, and a documentation generator writing into it would make its provenance unclear and its regeneration destructive.',
+      '',
+      table(
+        ['ID', 'Severity', 'Area', 'Finding', 'Consequence'],
+        DOCUMENTATION_FINDINGS.filter((f) => f.status !== 'RESOLVED').map((f) => [f.id, f.severity, f.area, f.title, f.consequence]),
+      ),
+      '',
+      'The four highest-severity findings share a shape worth naming: **a rule exists, is tested, and does not run.** `checkInvoiceable` and `checkJournalBalanced` are both defined, both unit-tested, and neither is called by any handler. A test suite that exercises a rule function directly proves the function is correct; it proves nothing about whether anything calls it. That is a gap no amount of test coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.',
+      '',
+      '### Resolved during this work',
+      '',
+      table(
+        ['ID', 'Finding', 'Note'],
+        DOCUMENTATION_FINDINGS.filter((f) => f.status === 'RESOLVED').map((f) => [f.id, f.title, f.consequence]),
+      ),
       '',
       '## The canonical registers disagree with each other',
       '',

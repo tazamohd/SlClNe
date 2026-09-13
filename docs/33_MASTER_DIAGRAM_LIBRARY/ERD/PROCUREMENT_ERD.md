@@ -33,7 +33,7 @@ erDiagram
     varchar priority
     varchar status
     date needed_by
-    money estimated_total_halalas
+    bigint estimated_total_halalas
     text notes
     varchar submitted_by
     varchar approved_by
@@ -46,7 +46,7 @@ erDiagram
     varchar description
     varchar description_ar
     integer qty
-    money est_unit_price_halalas
+    bigint est_unit_price_halalas
     integer sort
   }
   purchase_orders {
@@ -56,9 +56,9 @@ erDiagram
     varchar supplier_name
     varchar requisition_id FK
     varchar status
-    money subtotal_halalas
-    money tax_halalas
-    money total_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint total_halalas
     text notes
     timestamptz ordered_at
     timestamptz expected_at
@@ -73,7 +73,7 @@ erDiagram
     varchar description_ar
     integer qty
     integer received_qty
-    money unit_price_halalas
+    bigint unit_price_halalas
     integer sort
   }
   approval_lines {
@@ -82,7 +82,7 @@ erDiagram
     varchar item
     varchar item_ar
     double_precision qty
-    money unit_price_halalas
+    bigint unit_price_halalas
     varchar kind
     varchar urgency
     text note

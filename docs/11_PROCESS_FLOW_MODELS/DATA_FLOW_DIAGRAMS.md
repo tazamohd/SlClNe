@@ -338,4 +338,4 @@ Every data store referenced above, with the endpoint families that write it. Tab
 | `user_sessions` | login, refresh, logout, session revocation | refresh reuse detection |
 | `organizations`, `branches`, `departments` | seed and admin routes | tenancy and RLS |
 
-Six tables in the entity registry have no write path in the API at all: `chart_of_accounts`, `journal_entries`, `expenses`, `loan_contracts`, `loan_repayments` and `bank_statements`. Each has read endpoints and at least one report built on it, so the reports will render against seed data and against nothing else.
+Five tables in the entity registry have no write path in the API at all: `chart_of_accounts`, `journal_entries`, `expenses`, `loan_contracts` and `loan_repayments`. Each has read endpoints and at least one report built on it — the trial balance, the tax return, the loans summary — so those reports render against seed data and against nothing else. `bank_statements` is a sixth near-miss: the only write it accepts is the reconciliation flag from PRC-023, and the lines themselves have no import endpoint.

@@ -58,10 +58,10 @@ erDiagram
     varchar customer_name
     varchar vehicle_id FK
     varchar vehicle_label
-    money subtotal_halalas
-    money tax_halalas
-    money discount_halalas
-    money total_halalas
+    bigint subtotal_halalas
+    bigint tax_halalas
+    bigint discount_halalas
+    bigint total_halalas
     varchar status
     timestamptz valid_until
     varchar submitted_by
@@ -73,7 +73,7 @@ erDiagram
     varchar description_ar
     varchar kind
     double_precision qty
-    money unit_price_halalas
+    bigint unit_price_halalas
     varchar part_sku
     integer sort
   }
@@ -130,7 +130,7 @@ erDiagram
     varchar description
     varchar description_ar
     double_precision qty
-    money price_halalas
+    bigint price_halalas
     varchar stock
     varchar eta
   }
@@ -139,7 +139,7 @@ erDiagram
     varchar task
     varchar task_ar
     double_precision hours
-    money rate_halalas
+    bigint rate_halalas
   }
   diag_copies {
     varchar id PK

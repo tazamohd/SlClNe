@@ -10,10 +10,12 @@
 
 # API — customers
 
-**Status:** GENERATED · **Generated:** 2026-09-13 · 15 endpoints
+**Status:** GENERATED · **Generated:** 2026-09-13 · 19 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/customers` | customers:v | token | `customers` | — | 14 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/customers` | customers:c | token | `customers` | — | 14 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/customers/:id` | customers:d | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customers/:id` | customers:v | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/customers/:id` | customers:e | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -21,6 +23,8 @@
 | POST | `/api/v1/customers/bulk-delete` | customers:d | token | `customers` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/customers/bulk-update` | customers:e | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customers/export` | customers:x | token | `customers` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/fleets` | customers:v | token | `fleets` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/fleets` | customers:c | token | `fleets` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/fleets/:id` | customers:d | token | `fleets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/fleets/:id` | customers:v | token | `fleets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/fleets/:id` | customers:e | token | `fleets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

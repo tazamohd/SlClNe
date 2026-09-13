@@ -18,7 +18,7 @@ erDiagram
     varchar id PK
     varchar name
     varchar company
-    money value_halalas
+    bigint value_halalas
     varchar source
     varchar stage
     date lead_date
@@ -29,7 +29,7 @@ erDiagram
     varchar id PK
     varchar name
     varchar company
-    money value_halalas
+    bigint value_halalas
     varchar stage
     integer probability_pct
     date close_date
@@ -44,8 +44,8 @@ erDiagram
     integer opens
     integer clicks
     integer conversions
-    money budget_halalas
-    money spent_halalas
+    bigint budget_halalas
+    bigint spent_halalas
   }
   segments {
     varchar id PK

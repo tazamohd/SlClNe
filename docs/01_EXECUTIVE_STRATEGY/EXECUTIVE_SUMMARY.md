@@ -35,7 +35,7 @@ Measured from source, not estimated. Every figure regenerates with `npm run docs
 | | |
 |---|---|
 | Database tables | 68 |
-| API endpoints | 303 (172 generated from one description each, 131 written out) |
+| API endpoints | 372 (241 generated from one description each, 131 written out) |
 | Permission cells | 28 modules × 15 roles = 420, of which 196 carry a grant |
 | Registered screens | 424, every one mapped to a capability |
 | Test suites | 178, containing 2,088 cases |

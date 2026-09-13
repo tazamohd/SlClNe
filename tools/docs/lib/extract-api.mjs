@@ -27,12 +27,26 @@ function blankComments(source) {
 
 /** The slice of source belonging to one handler: from its `app.verb(` to the
  *  next one, which is close enough to attribute a `requirePermission` call to
- *  the route that makes it. */
+ *  the route that makes it.
+ *
+ *  The path argument comes in three shapes and all three have to match. Two
+ *  are quoted — `'/estimates'` and a `${base}/:id` template — and the third is
+ *  a bare identifier: `app.get(base, …)` is how the generic router registers a
+ *  collection's list and its create route. Matching only the quoted forms
+ *  dropped both for every collection — 52 list endpoints and 26 create
+ *  endpoints, 78 in all — while the totals still read as complete. An endpoint
+ *  missing from the catalogue is worse than one documented badly: nothing in
+ *  the output suggests there is anything to look for. */
 function handlerBodies(source) {
-  const marks = [...source.matchAll(/\n\s*app\.(get|post|patch|put|delete)\(\s*([`'"])((?:[^`'"\\]|\\.)*)\2/g)]
+  const marks = [
+    ...source.matchAll(
+      /\n\s*app\.(get|post|patch|put|delete)\(\s*(?:([`'"])((?:[^`'"\\]|\\.)*)\2|(\w+)\s*,)/g,
+    ),
+  ]
   return marks.map((m, i) => ({
     method: m[1].toUpperCase(),
-    rawPath: m[3],
+    // A bare identifier is the router's base path variable: no suffix.
+    rawPath: m[3] !== undefined ? m[3] : '${base}',
     body: source.slice(m.index, i + 1 < marks.length ? marks[i + 1].index : source.length),
   }))
 }

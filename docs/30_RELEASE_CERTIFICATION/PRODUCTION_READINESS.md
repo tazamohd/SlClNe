@@ -26,7 +26,7 @@ Each criterion names the evidence that decided it. No criterion is marked met on
 | PR-09 | RTL hazards are at zero | yes | rtlHazards: 0 |
 | PR-10 | Arabic is verified on every screen | **no** | arabicVerified: 82 of 424 |
 | PR-11 | Tablet layouts are verified | **no** | tabletVerified: 4 of 424 |
-| PR-12 | Every endpoint has a test matched to it | **no** | 261 of 303 unmatched by path |
+| PR-12 | Every endpoint has a test matched to it | **no** | 282 of 372 unmatched by path |
 | PR-13 | No open release blocker | **no** | project-control/BLOCKERS.json |
 | PR-14 | Every lifecycle that moves money or stock declares its legal transitions | **no** | 1 of 18 declared |
 | PR-15 | A requirements baseline exists that traces to stated business need | **no** | Requirements in this set are IMPLEMENTATION_DERIVED. No elicited baseline exists in the workspace. |

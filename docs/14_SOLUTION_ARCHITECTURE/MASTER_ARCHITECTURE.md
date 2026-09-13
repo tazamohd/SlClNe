@@ -8,7 +8,7 @@ Everything below describes what is in the repository today. Where an intent diff
 
 A multi-tenant workshop management system for the Saudi automotive aftermarket. One deployment serves many garages; each garage is an organization, and organizations may have branches. The product spans the workshop floor (job cards, estimates, quality control), the parts and procurement chain, invoicing and accounting under ZATCA VAT rules, CRM, HR and payroll, insurance and loan workflows, and four external-facing portals.
 
-Scale, measured rather than estimated: **68 tables**, **303 API endpoints**, **28 permission modules × 15 roles**, **424 registered screens**, **178 test suites**. Each of those numbers is generated from source and refreshed by `npm run docs:generate`.
+Scale, measured rather than estimated: **68 tables**, **372 API endpoints**, **28 permission modules × 15 roles**, **424 registered screens**, **178 test suites**. Each of those numbers is generated from source and refreshed by `npm run docs:generate`.
 
 ## 2. Shape
 
@@ -51,7 +51,7 @@ Every money column is `bigint` holding a count of halalas, named `*_halalas`. No
 
 ### 3.4 Describe once, generate the rest
 
-`server/src/registry.ts` describes each of the 52 collections a single time: its table, the permission module that gates it, the columns `?q=` searches, the columns `?sort=` and `?filter[]=` accept, and how a row is presented. `server/src/routes/collections.ts` generates **172 of the 303 endpoints** from those descriptions.
+`server/src/registry.ts` describes each of the 52 collections a single time: its table, the permission module that gates it, the columns `?q=` searches, the columns `?sort=` and `?filter[]=` accept, and how a row is presented. `server/src/routes/collections.ts` generates **241 of the 372 endpoints** from those descriptions.
 
 The reasoning is a claim about people, not about elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. The remaining 131 endpoints are written out because they have behaviour of their own — line items, derived money, idempotency, approval ceilings, OTP.
 
