@@ -3,6 +3,7 @@ import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { StatBand } from './sections/StatBand'
 import { IconCardGrid, type IconCardItem } from './sections/IconCardGrid'
+import { CornerBrackets } from './sections/CornerBrackets'
 
 /** PublicPortal.Workshop — Workshop Management product page.
  *
@@ -64,10 +65,14 @@ export function PublicWorkshop() {
     <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro
         centered
+        eyebrow="The lifecycle, end to end"
         title="Workshop Management"
         subtitle="End-to-end workshop management from vehicle check-in to delivery"
       />
-      <StatBand items={STATS} />
+      <div className="relative">
+        <CornerBrackets />
+        <StatBand items={STATS} />
+      </div>
       <IconCardGrid items={FEATURES} columns={3} centered iconSize={24} />
     </div>
   )

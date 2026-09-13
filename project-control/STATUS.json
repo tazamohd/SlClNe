@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-08",
+  "generatedAt": "2026-09-12",
   "totals": {
-    "capabilities": 424,
-    "product": 384,
+    "capabilities": 425,
+    "product": 385,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 424,
+    "rendered": 425,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 285,
+    "mockOnly": 286,
     "dataBacked": 99,
-    "e2eCovered": 424,
-    "contentAsserted": 424,
+    "e2eCovered": 425,
+    "contentAsserted": 425,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 143,
     "hasErrorState": 111,
@@ -99,11 +99,11 @@
       "dataBacked": 0
     },
     "public": {
-      "total": 31,
-      "rendered": 31,
+      "total": 32,
+      "rendered": 32,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 31,
+      "e2e": 32,
       "dataBacked": 0
     }
   },
@@ -197,11 +197,11 @@
       "dataBacked": 2
     },
     "website": {
-      "total": 31,
-      "rendered": 31,
+      "total": 32,
+      "rendered": 32,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 31,
+      "e2e": 32,
       "dataBacked": 0
     },
     "procurement": {

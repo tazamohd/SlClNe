@@ -4,8 +4,10 @@
  *  session at all. Every entry here is `ungated`: these pages must render for a
  *  visitor with no session, so they mount entirely outside `RequireAccess`.
  *
- *  Tier A (10): design-authoritative from `project/PublicPortal.*.dc.html`.
- *  Tier B (16): design-system pages composed from the approved section system.
+ *  Tier A (9): design-authoritative from `project/PublicPortal.*.dc.html`.
+ *  Tier B (18): design-system pages composed from the approved section system —
+ *  including `PartsAccessories` (formerly the Tier A `Marketplace`, retired
+ *  along with its `.dc.html`) and `DealsOffers`, both new.
  *  Tier C (3): content/SEO legal pages. */
 import type { ComponentType } from 'react'
 import type { DomainScreens, ScreenEntry } from '../registry'
@@ -30,8 +32,9 @@ import { PublicIndustries } from '../public/Industries'
 import { PublicInsurance } from '../public/Insurance'
 import { PublicIntegrations } from '../public/Integrations'
 import { PublicLoans } from '../public/Loans'
-import { PublicMarketplace } from '../public/Marketplace'
 import { PublicMiniERP } from '../public/MiniERP'
+import { PublicPartsAccessories } from '../public/PartsAccessories'
+import { PublicDealsOffers } from '../public/DealsOffers'
 import { PublicPricing } from '../public/Pricing'
 import { PublicProducts } from '../public/Products'
 import { PublicRequestDemo } from '../public/RequestDemo'
@@ -71,8 +74,9 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.Insurance': pub(PublicInsurance),
   'PublicPortal.Integrations': pub(PublicIntegrations),
   'PublicPortal.Loans': pub(PublicLoans),
-  'PublicPortal.Marketplace': pub(PublicMarketplace),
   'PublicPortal.MiniERP': pub(PublicMiniERP),
+  'PublicPortal.PartsAccessories': pub(PublicPartsAccessories),
+  'PublicPortal.DealsOffers': pub(PublicDealsOffers),
   'PublicPortal.Pricing': pub(PublicPricing),
   'PublicPortal.Products': pub(PublicProducts),
   'PublicPortal.RequestDemo': pub(PublicRequestDemo),

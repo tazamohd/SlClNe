@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02",
+  "generatedAt": "2026-09-12",
   "domains": [
     {
       "id": "workshop",
@@ -1572,6 +1572,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · DealsOffers",
+          "route": "/public-portal/deals-offers",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · FAQ",
           "route": "/public-portal/faq",
           "status": "built",
@@ -1644,8 +1653,8 @@
           "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal · Marketplace",
-          "route": "/public-portal/marketplace",
+          "name": "PublicPortal · MiniERP",
+          "route": "/public-portal/mini-erp",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1653,8 +1662,8 @@
           "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal · MiniERP",
-          "route": "/public-portal/mini-erp",
+          "name": "PublicPortal · PartsAccessories",
+          "route": "/public-portal/parts-accessories",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -3931,8 +3940,8 @@
     }
   ],
   "totals": {
-    "total": 424,
-    "built": 424,
+    "total": 425,
+    "built": 425,
     "designedMobile": 113
   }
 }
