@@ -10,7 +10,7 @@
 
 # Test catalogue
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 178 spec files containing 2088 test cases.
 

@@ -12,7 +12,7 @@
 
 # Domain — Reporting and analytics
 
-**Status:** GENERATED · **Capability:** CAP-REPORTING · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-REPORTING · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 

@@ -21,6 +21,7 @@ import { extractRules, extractStateMachines } from './extract-rules.mjs'
 import { extractTests } from './extract-tests.mjs'
 import { extractSecurity } from './extract-security.mjs'
 import { detectStaleness } from './staleness.mjs'
+import { sourceStamp } from './stamp.mjs'
 
 const json = (path, fallback = null) => {
   try {
@@ -145,7 +146,10 @@ export function buildModel() {
   })
 
   return {
-    generatedAt: new Date().toISOString().slice(0, 10),
+    // The commit date of the newest source change, not today's date. See
+    // tools/docs/lib/stamp.mjs: a wall-clock stamp made every generated file
+    // differ overnight and turned docs:check red with nothing changed.
+    generatedAt: sourceStamp(),
     objectives: OBJECTIVES,
     capabilities,
     entities,

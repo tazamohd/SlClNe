@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Generated:** 2026-09-13
+**Sources as of:** 2026-09-13
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 
@@ -154,37 +154,37 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 
 | Document | Bytes |
 | --- | --- |
-| `docs/01_EXECUTIVE_STRATEGY/README.md` | 968 |
-| `docs/02_MARKET_BUSINESS_RESEARCH/README.md` | 1029 |
-| `docs/03_PRINCE2_GOVERNANCE/README.md` | 934 |
-| `docs/04_PROJECT_MANAGEMENT/README.md` | 1060 |
-| `docs/05_PLANNING/README.md` | 951 |
-| `docs/06_AGILE_DELIVERY/README.md` | 890 |
-| `docs/07_BUSINESS_ANALYSIS/README.md` | 553 |
-| `docs/08_PRODUCT/README.md` | 902 |
-| `docs/10_SCENARIOS_USE_CASES/README.md` | 658 |
-| `docs/11_PROCESS_FLOW_MODELS/README.md` | 694 |
-| `docs/12_UML_BPMN_MODELS/README.md` | 526 |
-| `docs/13_DATA_MODELING/README.md` | 661 |
-| `docs/14_SOLUTION_ARCHITECTURE/README.md` | 556 |
-| `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 520 |
-| `docs/16_SYSTEM_DESIGN/README.md` | 1146 |
-| `docs/17_API_INTEGRATION/endpoints/platform.md` | 937 |
-| `docs/18_DATABASE/README.md` | 511 |
-| `docs/19_SECURITY/README.md` | 1021 |
-| `docs/20_UI_UX_EXPERIENCE/README.md` | 921 |
-| `docs/22_PORTALS_CHANNELS/README.md` | 906 |
-| `docs/23_BUSINESS_OPERATIONS/README.md` | 992 |
-| `docs/24_COMMERCIAL_FINANCIAL/README.md` | 955 |
-| `docs/25_SALES_MARKETING_CUSTOMER_SUCCESS/README.md` | 973 |
-| `docs/26_LEGAL_COMPLIANCE/README.md` | 1043 |
-| `docs/27_TESTING_VALIDATION/README.md` | 978 |
-| `docs/28_ITIL_SERVICE_MANAGEMENT/README.md` | 1055 |
-| `docs/29_OPERATIONS_DEVOPS/README.md` | 1077 |
-| `docs/30_RELEASE_CERTIFICATION/README.md` | 763 |
-| `docs/31_ARCHITECTURE_DECISIONS/README.md` | 865 |
-| `docs/32_METRICS_KPI_REPORTING/README.md` | 534 |
-| `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 878 |
+| `docs/01_EXECUTIVE_STRATEGY/README.md` | 972 |
+| `docs/02_MARKET_BUSINESS_RESEARCH/README.md` | 1033 |
+| `docs/03_PRINCE2_GOVERNANCE/README.md` | 938 |
+| `docs/04_PROJECT_MANAGEMENT/README.md` | 1064 |
+| `docs/05_PLANNING/README.md` | 955 |
+| `docs/06_AGILE_DELIVERY/README.md` | 894 |
+| `docs/07_BUSINESS_ANALYSIS/README.md` | 557 |
+| `docs/08_PRODUCT/README.md` | 906 |
+| `docs/10_SCENARIOS_USE_CASES/README.md` | 662 |
+| `docs/11_PROCESS_FLOW_MODELS/README.md` | 698 |
+| `docs/12_UML_BPMN_MODELS/README.md` | 530 |
+| `docs/13_DATA_MODELING/README.md` | 665 |
+| `docs/14_SOLUTION_ARCHITECTURE/README.md` | 560 |
+| `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 524 |
+| `docs/16_SYSTEM_DESIGN/README.md` | 1150 |
+| `docs/17_API_INTEGRATION/endpoints/platform.md` | 941 |
+| `docs/18_DATABASE/README.md` | 515 |
+| `docs/19_SECURITY/README.md` | 1025 |
+| `docs/20_UI_UX_EXPERIENCE/README.md` | 925 |
+| `docs/22_PORTALS_CHANNELS/README.md` | 910 |
+| `docs/23_BUSINESS_OPERATIONS/README.md` | 996 |
+| `docs/24_COMMERCIAL_FINANCIAL/README.md` | 959 |
+| `docs/25_SALES_MARKETING_CUSTOMER_SUCCESS/README.md` | 977 |
+| `docs/26_LEGAL_COMPLIANCE/README.md` | 1047 |
+| `docs/27_TESTING_VALIDATION/README.md` | 982 |
+| `docs/28_ITIL_SERVICE_MANAGEMENT/README.md` | 1059 |
+| `docs/29_OPERATIONS_DEVOPS/README.md` | 1081 |
+| `docs/30_RELEASE_CERTIFICATION/README.md` | 767 |
+| `docs/31_ARCHITECTURE_DECISIONS/README.md` | 869 |
+| `docs/32_METRICS_KPI_REPORTING/README.md` | 538 |
+| `docs/33_MASTER_DIAGRAM_LIBRARY/ERD/INVENTORY_ERD.md` | 882 |
 
 
 ## Missing required documents

@@ -8,7 +8,7 @@
 
 # Sales, marketing and customer success
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 Go-to-market, onboarding, retention.
 

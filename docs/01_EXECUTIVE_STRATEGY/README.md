@@ -8,7 +8,7 @@
 
 # Executive and strategy
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 Why SALIS AUTO exists, what it is for, and what success is.
 

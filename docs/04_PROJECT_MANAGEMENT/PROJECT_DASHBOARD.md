@@ -13,7 +13,7 @@
 
 # Project dashboard
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 A view over the canonical registers. Nothing here is entered by hand; if a number looks wrong, the register is wrong.
 

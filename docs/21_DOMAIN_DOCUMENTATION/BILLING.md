@@ -12,7 +12,7 @@
 
 # Domain — Invoicing and payments
 
-**Status:** GENERATED · **Capability:** CAP-BILLING · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-BILLING · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 

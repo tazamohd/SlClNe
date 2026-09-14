@@ -8,7 +8,7 @@
 
 # Documentation certification
 
-**Generated:** 2026-09-13 · **Score: 81 / 100**
+**Sources as of:** 2026-09-13 · **Score: 81 / 100**
 
 ## What this score is
 

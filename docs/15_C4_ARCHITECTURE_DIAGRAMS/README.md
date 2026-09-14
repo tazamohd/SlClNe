@@ -8,7 +8,7 @@
 
 # C4 architecture diagrams
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 Context, container and component views, and dynamic views.
 

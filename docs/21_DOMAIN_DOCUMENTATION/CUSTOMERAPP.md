@@ -12,7 +12,7 @@
 
 # Domain — Customer mobile application
 
-**Status:** GENERATED · **Capability:** CAP-CUSTOMERAPP · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-CUSTOMERAPP · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 

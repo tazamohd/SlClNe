@@ -8,7 +8,7 @@
 
 # Document control
 
-**Status:** GENERATED · **Generated:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-13
 
 The index, the registry, the standards and the traceability model. Start here.
 

@@ -328,7 +328,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      # Full history: generated documents are stamped with the commit date of
+      # the newest source change (tools/docs/lib/stamp.mjs), not with today's
+      # date, so that the check does not turn red overnight with nothing
+      # changed. Resolving that stamp needs more than the default single
+      # commit. There is a fallback for a shallow checkout, but it recovers the
+      # committed stamp rather than computing it, which is a weaker answer.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:

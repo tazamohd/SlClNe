@@ -12,7 +12,7 @@
 
 # Domain — CRM and sales
 
-**Status:** GENERATED · **Capability:** CAP-CRM · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-CRM · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 

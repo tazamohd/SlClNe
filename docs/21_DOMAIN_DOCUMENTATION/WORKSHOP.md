@@ -12,7 +12,7 @@
 
 # Domain — Workshop operations
 
-**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 

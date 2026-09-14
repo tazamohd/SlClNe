@@ -12,7 +12,7 @@
 
 # Domain — Design system and reference surfaces
 
-**Status:** GENERATED · **Capability:** CAP-DESIGNSYSTEM · **Generated:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-DESIGNSYSTEM · **Sources as of:** 2026-09-13
 
 ## Purpose and scope
 
