@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { T } from '../types'
 import type { EraRow, LedgerData } from '../landingData'
 import { CommandDeck } from '../CommandDeck'
+import { CornerBrackets } from '../../sections/CornerBrackets'
 
 /** Arrival — the real SALIS AUTO pitch, styled as the concept page's own dark
  *  HUD. Every number and claim here is one already made, in plain language,
@@ -9,7 +10,11 @@ import { CommandDeck } from '../CommandDeck'
  *  lifecycle), the measured proof figures, ZATCA Phase 2 e-invoicing, the AI
  *  platform (configuration required, honestly labelled), the real personas
  *  and quoted results, and a roadmap that keeps 2025 as fact and everything
- *  after it as a clearly-labelled vision rather than a claim. */
+ *  after it as a clearly-labelled vision rather than a claim.
+ *
+ *  The bay-board mock carries `<CornerBrackets>`, the instrument-panel
+ *  corner accent other public pages borrowed from this same design study
+ *  — see `sections/CornerBrackets.tsx`. */
 
 /** The bay board mock behind the hero — the same illustrative rows the real
  *  landing page uses, not customer data. */
@@ -178,7 +183,8 @@ export function IndexPage({ t }: { t: T }) {
               </div>
             </div>
           </div>
-          <div>
+          <div style={{ position: 'relative' }}>
+            <CornerBrackets />
             <span className="tag">{t('Bay board · Riyadh Main')}</span>
             <div className="dlist-plain">
               {bays.map((bay) => (

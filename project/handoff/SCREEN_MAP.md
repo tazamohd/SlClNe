@@ -180,7 +180,8 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **PublicPortal.Integrations** | `/public-portal/integrations` | 🖥 | Public website — Integration partners |
 | **PublicPortal.Landing** | `/public-portal/landing` | 🖥 `PublicPortal.Landing.dc.html` | Public website — Landing |
 | **PublicPortal.Loans** | `/public-portal/loans` | 🖥 `PublicPortal.Loans.dc.html` | Public website — Loans |
-| **PublicPortal.Marketplace** | `/public-portal/marketplace` | 🖥 `PublicPortal.Marketplace.dc.html` | Public website — Marketplace |
+| **PublicPortal.PartsAccessories** | `/public-portal/parts-accessories` | 🖥 | Public website — Services, Parts & Accessories |
+| **PublicPortal.DealsOffers** | `/public-portal/deals-offers` | 🖥 | Public website — Deals & Offers |
 | **PublicPortal.MiniERP** | `/public-portal/mini-erp` | 🖥 | Public website — Mini ERP product page |
 | **PublicPortal.Pricing** | `/public-portal/pricing` | 🖥 | Public website — Pricing plans |
 | **PublicPortal.Products** | `/public-portal/products` | 🖥 | Public website — Product suite overview |

@@ -46,7 +46,11 @@ import './landing/landing.css'
  *  at the top of `landing/landing.css`. Every CTA on every page is a real
  *  destination: an in-page scroll, an in-page page switch, or a `<Link>` to
  *  a route that already exists (book a demo, real pricing, real contact,
- *  the real portals, the real careers and blog pages). */
+ *  the real portals, the real careers and blog pages).
+ *
+ *  `IndexPage`'s bay-board mock also carries `<CornerBrackets>`, the same
+ *  instrument-panel corner accent other public pages borrowed from this
+ *  design study — see `sections/CornerBrackets.tsx`. */
 
 const PANEL_ID = 'salis-landing-panel'
 

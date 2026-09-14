@@ -1,0 +1,108 @@
+name: Deploy to Hostinger (saleisco.com)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "packages/**"
+      - "site/**"
+      - ".github/workflows/deploy-hostinger.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: true
+
+jobs:
+  # Detects which of the two independent deploy targets actually changed,
+  # so a site/ edit doesn't rebuild+redeploy the app and vice versa. On a
+  # manual workflow_dispatch (no push diff to compare) both are treated
+  # as changed.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.app == 'true' }}
+      site: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.site == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - "app/**"
+              - "packages/**"
+            site:
+              - "site/**"
+
+  deploy-app:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Build
+        working-directory: app
+        run: npm run build
+
+      # TEMPORARY — reports only whether each secret is non-empty, never
+      # its value, to distinguish "secret missing" from "workflow bug"
+      # while the FTP upload below keeps failing with "Input required
+      # and not supplied: server". Remove once the upload succeeds.
+      - name: Debug — check FTP secrets are set
+        run: |
+          check() {
+            if [ -z "$2" ]; then echo "$1: EMPTY or NOT SET"; else echo "$1: set (${#2} chars)"; fi
+          }
+          check HOSTINGER_FTP_SERVER "${{ secrets.HOSTINGER_FTP_SERVER }}"
+          check HOSTINGER_FTP_USERNAME "${{ secrets.HOSTINGER_FTP_USERNAME }}"
+          check HOSTINGER_FTP_PASSWORD "${{ secrets.HOSTINGER_FTP_PASSWORD }}"
+
+      # SamKirkland/FTP-Deploy-Action supports both FTPS and SFTP — set
+      # HOSTINGER_FTP_PROTOCOL to "ftps" (default, Hostinger's standard FTP
+      # over TLS) or "sftp" if the Hostinger plan exposes SFTP instead.
+      - name: Upload to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ${{ vars.HOSTINGER_FTP_PROTOCOL || 'ftps' }}
+          local-dir: app/dist/
+          server-dir: ${{ vars.HOSTINGER_SERVER_DIR || '/public_html/' }}
+          dangerous-clean-slate: false
+
+  # Salisco company site (site/) is a separate static page — no build step,
+  # and deployed to its own subpath so it never touches the SalisAuto
+  # app's files at the domain root. Override HOSTINGER_SITE_SERVER_DIR
+  # (repo/org variable) if it should live somewhere else, e.g. a
+  # different subdomain's document root.
+  deploy-site:
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload site/ to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ${{ vars.HOSTINGER_FTP_PROTOCOL || 'ftps' }}
+          local-dir: site/
+          server-dir: ${{ vars.HOSTINGER_SITE_SERVER_DIR || '/public_html/company/' }}
+          dangerous-clean-slate: false
