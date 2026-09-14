@@ -32,7 +32,7 @@ The full mapping of objectives to capabilities to endpoints, screens and tests i
 
 Measured from source, not estimated — and deliberately not repeated as a list of numbers here, because a count written into prose goes stale the next time a route or a table is added.
 
-The live figures are in [the documentation status](../00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md), which is regenerated from the schema, the routers, the permission matrix and the spec files on every run of `npm run docs:generate`. In shape: tens of tables, hundreds of endpoints, a permission matrix of 28 modules against 15 roles, several hundred screens, and a test suite in the thousands of cases.
+The live figures are in [the documentation status](../00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md), which is regenerated from the schema, the routers, the permission matrix and the spec files on every run of `node tools/docs/generate.mjs`. In shape: tens of tables, hundreds of endpoints, a permission matrix of 28 modules against 15 roles, several hundred screens, and a test suite in the thousands of cases.
 
 ## What is genuinely strong
 

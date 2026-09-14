@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/control.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - the docs/ tree
        - project-control/*.json
@@ -38,7 +38,7 @@
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 425 screens |
 | Capability map, requirements, traceability | all of the above | 150 requirements |
 
-`npm run docs:check` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
+`node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
 
 ## Required documents
 

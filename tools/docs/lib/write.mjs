@@ -18,7 +18,7 @@ export function banner(generator, sources, extra = '') {
   return [
     '<!-- GENERATED FILE — DO NOT EDIT BY HAND.',
     `     Generator: tools/docs/generators/${generator}`,
-    '     Regenerate: npm run docs:generate',
+    '     Regenerate: node tools/docs/generate.mjs',
     '     Derived from:',
     ...sources.map((s) => `       - ${s}`),
     extra ? `     ${extra}` : null,

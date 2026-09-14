@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** `npm run docs:generate` — regenerates every derived document and registry.
+/** `node tools/docs/generate.mjs` — regenerates every derived document and registry.
  *
  *  Run it after any change to the schema, the routers, the permission matrix,
  *  the rule functions or the spec files. `docs:check` runs the same code and

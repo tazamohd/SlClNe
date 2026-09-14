@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** `npm run docs:check` — fails when the documentation and the code disagree.
+/** `node tools/docs/check.mjs` — fails when the documentation and the code disagree.
  *
  *  The check that matters is the first one: regenerate everything into memory
  *  and compare it against what is checked in. A generated document that has
@@ -46,7 +46,7 @@ const { model, trace, controlStats, firstPassChanged, driftedFiles } = run()
 if (firstPassChanged > 0) {
   fail(
     'generated-docs-stale',
-    `${firstPassChanged} generated file(s) differed from a fresh generation. Run \`npm run docs:generate\` and commit the result.\n` +
+    `${firstPassChanged} generated file(s) differed from a fresh generation. Run \`node tools/docs/generate.mjs\` and commit the result.\n` +
       driftedFiles.slice(0, 20).map((d) => `      ${d}`).join('\n') +
       (driftedFiles.length > 20 ? `\n      …and ${driftedFiles.length - 20} more` : ''),
   )

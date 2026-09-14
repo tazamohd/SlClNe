@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-09-14",
   "generator": "tools/docs/generators/registries.mjs",
-  "regenerate": "npm run docs:generate",
+  "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
     "packages/contract/src/rbac.ts",
     "project-control/MASTER_REGISTRY.json",

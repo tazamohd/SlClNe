@@ -178,7 +178,7 @@ These are the commands an operator or reviewer runs; all are real scripts in the
 | `npm run verify:api` | `app/` | `scripts/verify-live-api.mjs` against a running API |
 | `npm run registry` | `app/` | Rebuilds the generated registers; CI fails if the committed output differs |
 | `node project-control/release-gates.mjs` | repo root | Evaluates the fourteen release blockers and writes `RELEASE_GATES.json`. Needs a real PostgreSQL and the two-role setup; it re-checks `pg_roles` before and after the run and reports UNCHECKABLE rather than PASS if the role the suite connected as could bypass RLS. `--skip-server-suite` marks the six suite-backed gates UNCHECKABLE as operator-skipped |
-| `npm run docs:generate` / `docs:check` | repo root | Regenerates and validates the generated documentation set |
+| `node tools/docs/generate.mjs` / `docs:check` | repo root | Regenerates and validates the generated documentation set |
 | `npm run rbac-lab` | `server/` | `scripts/rbac-lab.ts` — the cross-tenant access lab behind gate RB-04 |
 
 ## 10. The gaps that matter most

@@ -69,6 +69,6 @@ Recorded here so nobody looks for a source that does not exist, and so nobody in
 
 1. Find the fact in the tables above.
 2. The authority wins. Always.
-3. If the losing document is `GENERATED`, run `npm run docs:generate` — it was stale, and `docs:check` should have caught it.
+3. If the losing document is `GENERATED`, run `node tools/docs/generate.mjs` — it was stale, and `docs:check` should have caught it.
 4. If the losing document is `NORMATIVE`, the discrepancy is a real decision to make: either the code is wrong or the rule changed. Record which in an ADR under `31_ARCHITECTURE_DECISIONS/`.
 5. If the losing document is `HISTORICAL`, nothing needs doing. Historical documents are allowed to be out of date; that is what they are for.

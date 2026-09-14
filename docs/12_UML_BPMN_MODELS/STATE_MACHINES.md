@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/architecture.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - packages/contract/src/entities/*.ts
        - packages/contract/src/rules/*.ts

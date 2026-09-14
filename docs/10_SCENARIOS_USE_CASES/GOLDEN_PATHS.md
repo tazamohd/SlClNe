@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/scenarios.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - project-control/GOLDEN_PATHS.json
        - app/e2e/**

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/domains.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - project-control/CAPABILITY_REGISTRY.json
        - project-control/API_REGISTRY.json

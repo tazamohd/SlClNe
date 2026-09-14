@@ -11,7 +11,7 @@ Every document is exactly one of these. The class decides who may change it and 
 | Class | What it is | Rule |
 |---|---|---|
 | **NORMATIVE** | States a rule, a decision or an intent: architecture principles, the definition of done, a security policy, an ADR. | Changed by a human with authority over that domain. Never machine-generated. |
-| **GENERATED** | Reports what the implementation currently is: entity catalogue, API reference, RBAC matrix, test catalogue, ERDs. | Never hand-edited. Edit the source and run `npm run docs:generate`. |
+| **GENERATED** | Reports what the implementation currently is: entity catalogue, API reference, RBAC matrix, test catalogue, ERDs. | Never hand-edited. Edit the source and run `node tools/docs/generate.mjs`. |
 | **HISTORICAL** | A previous state, retained for reference. Lives in `99_ARCHIVE/`. | Never cited as current truth, by anyone, for any reason. |
 
 A generated document carries a banner naming its generator and its sources. `docs:check` fails if a document claims `GENERATED` without one, so the class cannot be faked.
@@ -77,7 +77,7 @@ The reason is not tidiness. Two copies of a risk register do not stay equal; the
 
 | Command | Does |
 |---|---|
-| `npm run docs:generate` | Regenerates every derived document and registry from source. |
-| `npm run docs:check` | Fails on drift, missing required documents, broken links, unfounded `VERIFIED` claims, unmapped screens or endpoints, and tenant tables without row-level security. |
+| `node tools/docs/generate.mjs` | Regenerates every derived document and registry from source. |
+| `node tools/docs/check.mjs` | Fails on drift, missing required documents, broken links, unfounded `VERIFIED` claims, unmapped screens or endpoints, and tenant tables without row-level security. |
 
 Run `docs:generate` after any change to the schema, the routers, the permission matrix, the rule functions or the spec files. `docs:check` runs the same code and compares, so forgetting is caught at review rather than discovered by a reader months later.

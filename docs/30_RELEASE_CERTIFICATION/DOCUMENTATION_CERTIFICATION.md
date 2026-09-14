@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/release.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - the gap report
        - the extractors
@@ -30,7 +30,7 @@ A grade of the documentation, not of the product. Each dimension states why poin
 
 ## Release gates for documentation
 
-Documentation cannot pass a release gate if any of these is true. Each is checked by `npm run docs:check`.
+Documentation cannot pass a release gate if any of these is true. Each is checked by `node tools/docs/check.mjs`.
 
 | Gate | Status |
 | --- | --- |

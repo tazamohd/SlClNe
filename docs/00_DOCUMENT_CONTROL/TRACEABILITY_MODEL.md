@@ -71,4 +71,4 @@ Only the objective-to-capability link is asserted by a human. Everything below i
 
 ## Keeping it true
 
-`npm run docs:check` fails when a screen or an endpoint maps to no capability. That single check is what keeps the model from decaying: a new endpoint with a permission module nobody has mapped breaks the build on the day it is added, rather than becoming an untraced orphan discovered during an audit.
+`node tools/docs/check.mjs` fails when a screen or an endpoint maps to no capability. That single check is what keeps the model from decaying: a new endpoint with a permission module nobody has mapped breaks the build on the day it is added, rather than becoming an untraced orphan discovered during an audit.

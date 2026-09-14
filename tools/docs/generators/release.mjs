@@ -139,7 +139,7 @@ export function generateRelease(model, requirements, trace, controlStats) {
       '',
       '## Release gates for documentation',
       '',
-      'Documentation cannot pass a release gate if any of these is true. Each is checked by `npm run docs:check`.',
+      'Documentation cannot pass a release gate if any of these is true. Each is checked by `node tools/docs/check.mjs`.',
       '',
       table(
         ['Gate', 'Status'],

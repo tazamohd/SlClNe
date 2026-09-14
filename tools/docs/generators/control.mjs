@@ -366,7 +366,7 @@ export function generateControl(model, requirements, trace) {
         ],
       ),
       '',
-      '`npm run docs:check` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.',
+      '`node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.',
       '',
       '## Required documents',
       '',

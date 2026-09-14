@@ -21,7 +21,7 @@ import { writeJson } from '../lib/write.mjs'
 const meta = (model, generator, sources) => ({
   generatedAt: model.generatedAt,
   generator: `tools/docs/generators/${generator}`,
-  regenerate: 'npm run docs:generate',
+  regenerate: 'node tools/docs/generate.mjs',
   derivedFrom: sources,
   handEdit: 'Never. Edit the source, then regenerate.',
 })

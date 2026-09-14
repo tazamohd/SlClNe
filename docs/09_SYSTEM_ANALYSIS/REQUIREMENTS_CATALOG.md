@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
      Generator: tools/docs/generators/requirements.mjs
-     Regenerate: npm run docs:generate
+     Regenerate: node tools/docs/generate.mjs
      Derived from:
        - server/src/registry.ts + server/src/routes/*.ts (functional behaviour)
        - packages/contract/src/rules/*.ts (business rules)

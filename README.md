@@ -12,7 +12,7 @@ Multi-tenant workshop management for the Saudi automotive aftermarket.
 | The API | [API overview](docs/17_API_INTEGRATION/API_OVERVIEW.md) |
 | Who may do what | [RBAC matrix](docs/19_SECURITY/RBAC_MATRIX.md) |
 
-Every factual document under `docs/` is generated from the implementation — the Drizzle schema, the route files, the shared contract, the migrations, the spec files — and regenerated with `npm run docs:generate`. `npm run docs:check` fails when the committed documentation differs from a fresh generation, so it cannot drift from the code without breaking the build. The rules those documents are held to are in [the documentation standards](docs/00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md).
+Every factual document under `docs/` is generated from the implementation — the Drizzle schema, the route files, the shared contract, the migrations, the spec files — and regenerated with `node tools/docs/generate.mjs`. `node tools/docs/check.mjs` fails when the committed documentation differs from a fresh generation, so it cannot drift from the code without breaking the build. The rules those documents are held to are in [the documentation standards](docs/00_DOCUMENT_CONTROL/DOCUMENTATION_STANDARDS.md).
 
 Layout: `app/` is the React SPA (packaged for iOS and Android with Capacitor), `server/` the Fastify API and PostgreSQL migrations, `packages/contract/` the schemas, permission matrix and business rules both sides share, `project-control/` the machine-readable registries, and `tools/docs/` the documentation toolchain.
 
