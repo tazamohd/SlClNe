@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-09-08'
+export const REGISTRY_GENERATED_AT = '2026-09-12'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -2675,6 +2675,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-PublicPortal.DealsOffers",
+    "name": "PublicPortal.DealsOffers",
+    "title": "PublicPortal · DealsOffers",
+    "route": "/public-portal/deals-offers",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-PublicPortal.FAQ",
     "name": "PublicPortal.FAQ",
     "title": "PublicPortal · FAQ",
@@ -2845,28 +2867,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
-    "screenId": "D-PublicPortal.Marketplace",
-    "name": "PublicPortal.Marketplace",
-    "title": "PublicPortal · Marketplace",
-    "route": "/public-portal/marketplace",
-    "surface": "public",
-    "shell": "PublicShell",
-    "module": null,
-    "category": "PRODUCT",
-    "domain": "website",
-    "owner": "17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
-    ],
-    "inNav": false,
-    "designSource": "project/PublicPortal.Marketplace.dc.html",
-    "designMobileSource": null,
-    "featureMapSource": null
-  },
-  {
     "screenId": "D-PublicPortal.MiniERP",
     "name": "PublicPortal.MiniERP",
     "title": "PublicPortal · MiniERP",
@@ -2880,6 +2880,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.PartsAccessories",
+    "name": "PublicPortal.PartsAccessories",
+    "title": "PublicPortal · PartsAccessories",
+    "route": "/public-portal/parts-accessories",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,

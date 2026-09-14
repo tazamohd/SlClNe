@@ -28,7 +28,12 @@ const PAGES: readonly { name: string; h1: string; title: string }[] = [
   { name: 'PublicPortal.Landing', h1: 'Workshop Management. Saudi Standard.', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
-  { name: 'PublicPortal.Marketplace', h1: 'Parts Marketplace', title: 'Parts Marketplace — SALIS AUTO' },
+  {
+    name: 'PublicPortal.PartsAccessories',
+    h1: 'Services, Parts & Accessories',
+    title: 'Services, Parts & Accessories — SALIS AUTO',
+  },
+  { name: 'PublicPortal.DealsOffers', h1: 'Deals & Offers', title: 'Deals & Offers — SALIS AUTO' },
   { name: 'PublicPortal.Insurance', h1: 'Vehicle Insurance', title: 'Vehicle Insurance — SALIS AUTO' },
   { name: 'PublicPortal.Loans', h1: 'Auto Financing', title: 'Auto Financing — SALIS AUTO' },
   { name: 'PublicPortal.Blog', h1: 'Blog', title: 'Blog — SALIS AUTO' },
@@ -147,15 +152,19 @@ describe('Tier A public pages', () => {
     }
   })
 
-  it('Blog and Marketplace cards are informational, not links to nowhere', () => {
+  it('Blog and catalogue cards are informational, not links to nowhere', () => {
     const Blog = componentOf('PublicPortal.Blog')
     const { unmount } = renderPublic(<Blog />)
     // Six post cards, none of them anchors.
     expect(screen.getAllByRole('article')).toHaveLength(6)
     unmount()
 
-    const Marketplace = componentOf('PublicPortal.Marketplace')
-    renderPublic(<Marketplace />)
-    expect(screen.getAllByRole('article')).toHaveLength(8)
+    const PartsAccessories = componentOf('PublicPortal.PartsAccessories')
+    renderPublic(<PartsAccessories />)
+    // Six services + eight parts + six accessories, each a plain tile.
+    expect(screen.getAllByRole('article')).toHaveLength(20)
+    expect(screen.getByRole('region', { name: 'Services' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Parts' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Accessories' })).toBeInTheDocument()
   })
 })

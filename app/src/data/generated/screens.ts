@@ -3,7 +3,7 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 213 screens. */
+ *  handoff/SCREEN_MAP.md — 214 screens. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -732,6 +732,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Customer Portal product page"
   },
   {
+    "name": "PublicPortal.DealsOffers",
+    "route": "/public-portal/deals-offers",
+    "hasMobile": false,
+    "purpose": "Public website — Deals & Offers"
+  },
+  {
     "name": "PublicPortal.FAQ",
     "route": "/public-portal/faq",
     "hasMobile": false,
@@ -780,16 +786,16 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Loans"
   },
   {
-    "name": "PublicPortal.Marketplace",
-    "route": "/public-portal/marketplace",
-    "hasMobile": false,
-    "purpose": "Public website — Marketplace"
-  },
-  {
     "name": "PublicPortal.MiniERP",
     "route": "/public-portal/mini-erp",
     "hasMobile": false,
     "purpose": "Public website — Mini ERP product page"
+  },
+  {
+    "name": "PublicPortal.PartsAccessories",
+    "route": "/public-portal/parts-accessories",
+    "hasMobile": false,
+    "purpose": "Public website — Services, Parts & Accessories"
   },
   {
     "name": "PublicPortal.Pricing",

@@ -5,6 +5,7 @@ import { usePageMeta } from './usePageMeta'
 import { useLandingMotion } from './landing/useLandingMotion'
 import { useLandingScenes } from './landing/useLandingScenes'
 import { MAP_ACCENTS, MAP_GRID } from './landing/mapFallback'
+import { CornerBrackets } from './sections/CornerBrackets'
 import './landing/landing.css'
 
 /** PublicPortal.Landing — a port of the `SALIS AUTO last` design artifact.
@@ -32,7 +33,12 @@ import './landing/landing.css'
  *  So the static SVG and HTML fallbacks in the markup below are not a degraded
  *  path; they are what most visitors see, and they must keep reading correctly
  *  on their own. The artifact's fourth scene, the ZATCA invoice card, belongs
- *  to a different page and has no container here. */
+ *  to a different page and has no container here.
+ *
+ *  `<CornerBrackets>` on the bay-board mock is a second, later borrowing —
+ *  the instrument-panel framing from the "SALIS AUTO 2030" design study,
+ *  kept in this page's real palette and real copy rather than that study's
+ *  fictional 2030 content. See `sections/CornerBrackets.tsx`. */
 
 /** The decorative circuit trace behind the hero, drawn once on load. */
 function Trace({ className, style }: { className: string; style: CSSProperties }) {
@@ -291,6 +297,7 @@ export function PublicLanding() {
           </div>
 
           <div className="hero-mock tilt-deep">
+            <CornerBrackets />
             <div className="mock" aria-label={t('Bay board, illustrative')}>
               <div className="bar">
                 <b>{t('Bay board · Riyadh Main')}</b>
