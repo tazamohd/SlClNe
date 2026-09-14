@@ -12,7 +12,7 @@
 
 # Domain — AI and automation
 
-**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

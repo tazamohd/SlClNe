@@ -12,7 +12,7 @@
 
 # Domain — Accounting and finance
 
-**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

@@ -12,7 +12,7 @@
 
 # Domain documentation
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13 · 18 domains
+**Status:** GENERATED · **Sources as of:** 2026-09-14 · 18 domains
 
 One document per domain, all to the same standard: purpose, actors and their data scopes, entities and relationships, API surface, business rules, lifecycles, screens, and the gaps. Derived from the registries, so a domain document cannot quietly fall behind the code it describes.
 
@@ -33,6 +33,6 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | AI and automation | [CAP-AI](AI.md) | 10 | 8 | 2 | 3 of 10 |
 | Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 36 | 19 | 4 | 5 of 36 |
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 18 | 24 | 0 | 0 of 18 |
-| Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 31 | 0 | 0 | 0 of 31 |
+| Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 32 | 0 | 0 | 0 of 32 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 3 of 11 |
 | Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 24 of 233 |

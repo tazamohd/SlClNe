@@ -8,7 +8,7 @@
 
 # Agile delivery
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 Epics, features, stories, acceptance criteria, definition of done.
 

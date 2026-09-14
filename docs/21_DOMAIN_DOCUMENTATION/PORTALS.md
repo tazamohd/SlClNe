@@ -12,7 +12,7 @@
 
 # Domain — Portals and channels
 
-**Status:** GENERATED · **Capability:** CAP-PORTALS · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-PORTALS · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

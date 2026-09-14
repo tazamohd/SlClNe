@@ -12,7 +12,7 @@
 
 # Domain — Administration and platform
 
-**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

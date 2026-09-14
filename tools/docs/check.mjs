@@ -178,6 +178,32 @@ const LIVE_COUNTS = [
   { name: 'test suites', value: model.tests.length, patterns: [/\b(\d{2,4}) test suites\b/gi] },
   { name: 'relationships', value: model.relationships.relationships.length, patterns: [/\b(\d{2,4}) relationships in (?:the|this) model\b/gi] },
 ]
+// "285 of 424 screens" states a total too — as the denominator. Flagging it
+// needs care, because "12 of 16 screens data-backed" is a legitimate subset
+// and its denominator is nobody's total. The rule: flag a denominator only
+// when it is close enough to the real total to be attempting it, and wrong.
+const DENOMINATORS = [
+  { name: 'registered screens', value: model.screens.length, pattern: /\b\d{1,4} of (\d{2,4}) screens\b/gi },
+  { name: 'endpoints', value: model.api.length, pattern: /\b\d{1,4} of (\d{2,4}) endpoints\b/gi },
+  { name: 'tables', value: model.entities.length, pattern: /\b\d{1,4} of (\d{2,4}) tables\b/gi },
+]
+for (const doc of docs) {
+  if (!/^\d\d_/.test(doc.section)) continue
+  const content = readFileSync(doc.abs, 'utf8')
+  if (content.includes('GENERATED FILE — DO NOT EDIT BY HAND')) continue
+  for (const d of DENOMINATORS) {
+    for (const m of content.matchAll(d.pattern)) {
+      const stated = Number(m[1])
+      if (stated === d.value) continue
+      if (Math.abs(stated - d.value) / d.value > 0.1) continue
+      fail(
+        'stale-count-in-authored-doc',
+        `docs/${doc.path} states "${m[0].trim()}" but there are ${d.value} ${d.name}. Update it, or describe the proportion and link to the registry.`,
+      )
+    }
+  }
+}
+
 for (const doc of docs) {
   if (!/^\d\d_/.test(doc.section)) continue
   const content = readFileSync(doc.abs, 'utf8')

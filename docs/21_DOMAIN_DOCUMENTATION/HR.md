@@ -12,7 +12,7 @@
 
 # Domain — HR and payroll
 
-**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

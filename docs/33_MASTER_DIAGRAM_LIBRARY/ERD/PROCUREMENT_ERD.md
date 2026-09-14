@@ -8,7 +8,7 @@
 
 # PROCUREMENT ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13 · 6 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-14 · 6 tables
 
 ### PROCUREMENT
 

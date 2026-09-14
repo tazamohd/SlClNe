@@ -12,11 +12,11 @@
 
 # Domain — Public website and acquisition
 
-**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 31 screens, 0 API endpoints and 0 entities, gated by the `website` screen domain.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 32 screens, 0 API endpoints and 0 entities, gated by the `website` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -58,6 +58,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-PublicPortal.Contact | `/public-portal/contact` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.CRM | `/public-portal/crm` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.CustomerPortal | `/public-portal/customer-portal` | public | **mock** | — | — | — | verified | yes |
+| D-PublicPortal.DealsOffers | `/public-portal/deals-offers` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.FAQ | `/public-portal/faq` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Features | `/public-portal/features` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Fleet | `/public-portal/fleet` | public | **mock** | — | — | — | verified | yes |
@@ -66,8 +67,8 @@ _No lifecycle in the contract belongs to this domain._
 | D-PublicPortal.Integrations | `/public-portal/integrations` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Landing | `/public-portal/landing` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Loans | `/public-portal/loans` | public | **mock** | — | — | — | PARTIAL | yes |
-| D-PublicPortal.Marketplace | `/public-portal/marketplace` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.MiniERP | `/public-portal/mini-erp` | public | **mock** | — | — | — | verified | yes |
+| D-PublicPortal.PartsAccessories | `/public-portal/parts-accessories` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.Pricing | `/public-portal/pricing` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.Products | `/public-portal/products` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.RequestDemo | `/public-portal/request-demo` | public | **mock** | — | — | — | verified | yes |
@@ -82,8 +83,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **31 of 31 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **31 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **32 of 32 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **32 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

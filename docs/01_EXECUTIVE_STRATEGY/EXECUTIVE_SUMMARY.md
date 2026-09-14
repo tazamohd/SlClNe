@@ -30,16 +30,9 @@ The full mapping of objectives to capabilities to endpoints, screens and tests i
 
 ## What exists today
 
-Measured from source, not estimated. Every figure regenerates with `npm run docs:generate`.
+Measured from source, not estimated — and deliberately not repeated as a list of numbers here, because a count written into prose goes stale the next time a route or a table is added.
 
-| | |
-|---|---|
-| Database tables | 68 |
-| API endpoints | 372 (241 generated from one description each, 131 written out) |
-| Permission cells | 28 modules × 15 roles = 420, of which 196 carry a grant |
-| Registered screens | 424, every one mapped to a capability |
-| Test suites | 178, containing 2,088 cases |
-| Business rule guards | 30, each naming the function that enforces it |
+The live figures are in [the documentation status](../00_DOCUMENT_CONTROL/DOCUMENTATION_STATUS.md), which is regenerated from the schema, the routers, the permission matrix and the spec files on every run of `npm run docs:generate`. In shape: tens of tables, hundreds of endpoints, a permission matrix of 28 modules against 15 roles, several hundred screens, and a test suite in the thousands of cases.
 
 ## What is genuinely strong
 
@@ -47,11 +40,11 @@ Measured from source, not estimated. Every figure regenerates with `npm run docs
 
 **Money is structurally protected.** Every money value is an integer count of halalas in a `bigint` column. Totals are computed server-side; a client-supplied total is never trusted. Rounding happens once, not per line.
 
-**The product surface is complete and asserted.** All 424 screens render, and every one has an end-to-end test asserting its *content* rather than merely that its route resolves. Twenty-three golden paths pass. RTL hazards are at zero.
+**The product surface is complete and asserted.** Every registered screen renders, and every one has an end-to-end test asserting its *content* rather than merely that its route resolves. Twenty-three golden paths pass. RTL hazards are at zero.
 
 ## What is not done
 
-**Two hundred and eighty-five of 424 screens still read design fixtures rather than the API.** This is the headline. Those screens render correctly and are tested, and they have never exchanged a byte with the server under real latency, real errors or real permissions. Connecting them is the bulk of the remaining product work, and no release decision should be taken without it in view.
+**About two thirds of the screens still read design fixtures rather than the API.** This is the headline, and the exact figure is in [the project dashboard](../04_PROJECT_MANAGEMENT/PROJECT_DASHBOARD.md), which is generated. Those screens render correctly and are tested, and they have never exchanged a byte with the server under real latency, real errors or real permissions. Connecting them is the bulk of the remaining product work, and no release decision should be taken without it in view.
 
 Three other gaps matter:
 
@@ -71,7 +64,7 @@ Market sizing, pricing and financial projections are likewise absent rather than
 
 ## What would have to be true to ship
 
-1. The remaining 285 screens connected to the API and exercised against it.
+1. The fixture-backed screens connected to the API and exercised against it.
 2. The financial lifecycles — invoice, purchase order, requisition — with declared, guarded transitions.
 3. The foreign-key position settled: constraints added, or an ADR recording why not.
 4. Tablet layouts verified, because that is the device the workshop floor uses.

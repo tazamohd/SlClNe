@@ -12,7 +12,7 @@
 
 # Documentation traceability report
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 Whether the traceability chain actually resolves, measured rather than asserted. The chain itself and the full matrix are in [the requirements traceability matrix](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md); this is the summary a reader needs before deciding how much to trust the set.
 
@@ -23,7 +23,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | Objective → capability | 18 | 18 | Declared in `tools/docs/lib/model.mjs` — the only hand-asserted link |
 | Capability → requirement | 18 | 18 | One functional requirement generated per capability |
 | Capability → endpoint | 372 | 372 | Permission module |
-| Capability → screen | 424 | 424 | Permission module, or screen domain where the screen has none |
+| Capability → screen | 425 | 425 | Permission module, or screen domain where the screen has none |
 | Endpoint → entity | 241 | 372 | Table name via the collection definition |
 | Endpoint → permission | 345 | 372 | `requirePermission` call in the handler |
 | Entity → relationship | 64 | 68 | Column name resolving to a table name |
@@ -32,7 +32,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 
 ## Where it is intact
 
-Every screen and every endpoint maps to a capability — 424 and 372 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
+Every screen and every endpoint maps to a capability — 425 and 372 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
 
 Every business rule names the function that enforces it, every entity is catalogued from the schema, and every permission cell is read from the matrix the server enforces with.
 

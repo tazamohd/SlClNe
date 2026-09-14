@@ -7,7 +7,7 @@
 
 # Screen registry
 
-**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-13
+**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-14
 
 `project-control/MASTER_REGISTRY.json` is built by `app/scripts/build-registry.mjs` from the screen sources and the design bundle. This document is a reading of it, not a second copy — the numbers below change when that registry is rebuilt, never when someone edits this file.
 
@@ -15,26 +15,26 @@
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Registered capabilities | 424 | — |
-| Product screens | 384 | 424 |
-| Reference-only | 28 | 424 |
-| Rendered | 424 | 424 |
-| Placeholder | 0 | 424 |
-| Data-backed (live API) | 99 | 424 |
-| Mock-only (design fixtures) | 285 | 424 |
-| End-to-end covered | 424 | 424 |
-| Content-asserted (not just routed) | 424 | 424 |
-| Has a loading state | 143 | 424 |
-| Has an error state | 111 | 424 |
-| Has an empty state | 169 | 424 |
-| Arabic verified | 82 | 424 |
+| Registered capabilities | 425 | — |
+| Product screens | 385 | 425 |
+| Reference-only | 28 | 425 |
+| Rendered | 425 | 425 |
+| Placeholder | 0 | 425 |
+| Data-backed (live API) | 99 | 425 |
+| Mock-only (design fixtures) | 286 | 425 |
+| End-to-end covered | 425 | 425 |
+| Content-asserted (not just routed) | 425 | 425 |
+| Has a loading state | 143 | 425 |
+| Has an error state | 111 | 425 |
+| Has an empty state | 169 | 425 |
+| Arabic verified | 82 | 425 |
 | RTL hazards | 0 | — |
-| Tablet verified | 4 | 424 |
+| Tablet verified | 4 | 425 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **285 of 424 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **286 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
@@ -48,7 +48,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | reference | 28 | 0 | 0 |
 | kiosk | 1 | 1 | 1 |
 | native | 2 | 0 | 0 |
-| public | 31 | 0 | 0 |
+| public | 32 | 0 | 0 |
 
 ## By capability
 
@@ -69,7 +69,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-AI | 10 | 3 | 3 | 3 | 3 | 4 |
 | CAP-PLATFORM | 36 | 5 | 12 | 6 | 16 | 17 |
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
-| CAP-WEBSITE | 31 | 0 | 0 | 0 | 0 | 22 |
+| CAP-WEBSITE | 32 | 0 | 0 | 0 | 0 | 22 |
 | CAP-CUSTOMERAPP | 11 | 3 | 11 | 11 | 11 | 0 |
 | CAP-DESIGNSYSTEM | 233 | 24 | 46 | 24 | 72 | 21 |
 

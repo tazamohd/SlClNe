@@ -10,7 +10,7 @@
 
 # API — accounting
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13 · 50 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-14 · 50 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

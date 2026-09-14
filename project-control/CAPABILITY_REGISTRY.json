@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13",
+  "generatedAt": "2026-09-14",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "npm run docs:generate",
   "derivedFrom": [
@@ -48,8 +48,8 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 424,
-    "screensTotal": 424,
+    "screensMapped": 425,
+    "screensTotal": 425,
     "endpointsMapped": 372,
     "endpointsTotal": 372
   },
@@ -1159,7 +1159,7 @@
       "objectiveName": "Retain customers",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 31,
+      "screenCount": 32,
       "screens": [
         "D-PublicPortal.About",
         "D-PublicPortal.Accounting",
@@ -1171,6 +1171,7 @@
         "D-PublicPortal.Contact",
         "D-PublicPortal.CRM",
         "D-PublicPortal.CustomerPortal",
+        "D-PublicPortal.DealsOffers",
         "D-PublicPortal.FAQ",
         "D-PublicPortal.Features",
         "D-PublicPortal.Fleet",
@@ -1179,8 +1180,8 @@
         "D-PublicPortal.Integrations",
         "D-PublicPortal.Landing",
         "D-PublicPortal.Loans",
-        "D-PublicPortal.Marketplace",
         "D-PublicPortal.MiniERP",
+        "D-PublicPortal.PartsAccessories",
         "D-PublicPortal.Pricing",
         "D-PublicPortal.Products",
         "D-PublicPortal.RequestDemo",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13",
+  "generatedAt": "2026-09-14",
   "generator": "tools/docs/generators/control.mjs",
   "statusValues": [
     "MISSING",
@@ -296,7 +296,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 13876,
+      "bytes": 13883,
       "lines": 203,
       "type": "GENERATED",
       "archived": false,
@@ -406,8 +406,8 @@
     {
       "path": "01_EXECUTIVE_STRATEGY/EXECUTIVE_SUMMARY.md",
       "section": "01_EXECUTIVE_STRATEGY",
-      "bytes": 7180,
-      "lines": 90,
+      "bytes": 7408,
+      "lines": 83,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -736,7 +736,7 @@
     {
       "path": "14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md",
       "section": "14_SOLUTION_ARCHITECTURE",
-      "bytes": 11085,
+      "bytes": 11347,
       "lines": 126,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1363,8 +1363,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/WEBSITE.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 5622,
-      "lines": 97,
+      "bytes": 5744,
+      "lines": 98,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1473,7 +1473,7 @@
     {
       "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md",
       "section": "28_ITIL_SERVICE_MANAGEMENT",
-      "bytes": 21807,
+      "bytes": 21945,
       "lines": 344,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1946,8 +1946,8 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 60648,
-      "lines": 433,
+      "bytes": 60818,
+      "lines": 434,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,

@@ -8,7 +8,7 @@
 
 # Solution architecture
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 Master architecture, principles, constraints, risks — current versus target.
 

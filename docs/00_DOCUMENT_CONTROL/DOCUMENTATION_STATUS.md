@@ -8,7 +8,7 @@
 
 # Documentation status
 
-**Sources as of:** 2026-09-13
+**Sources as of:** 2026-09-14
 
 ## Coverage
 
@@ -35,7 +35,7 @@
 | State machines | `packages/contract/src/entities/*.ts` | 18 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 49 policies |
 | Test catalogue | the spec files | 178 suites |
-| Screen registry view | `project-control/MASTER_REGISTRY.json` | 424 screens |
+| Screen registry view | `project-control/MASTER_REGISTRY.json` | 425 screens |
 | Capability map, requirements, traceability | all of the above | 150 requirements |
 
 `npm run docs:check` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.

@@ -8,7 +8,7 @@
 
 # INSURANCE ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13 · 2 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-14 · 2 tables
 
 ### INSURANCE
 

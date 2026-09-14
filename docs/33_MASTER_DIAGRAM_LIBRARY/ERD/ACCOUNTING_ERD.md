@@ -8,7 +8,7 @@
 
 # ACCOUNTING ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-14 · 5 tables
 
 ### ACCOUNTING
 

@@ -12,7 +12,7 @@
 
 # Domain — Identity and access
 
-**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 

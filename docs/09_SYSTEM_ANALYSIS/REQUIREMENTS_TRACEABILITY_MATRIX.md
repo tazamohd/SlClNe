@@ -12,7 +12,7 @@
 
 # Requirements traceability matrix
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 ## The chain
 
@@ -41,7 +41,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 10 | 0 | 1 |
 | OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 14 |
-| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 31 | 0 | **0** |
+| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 32 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
 | OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 233 | 0 | **0** |
 
@@ -69,7 +69,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 | CAP-PROCUREMENT | 28 | 1 |
 | CAP-REPORTING | 0 | 11 |
 | CAP-PORTALS | 0 | 11 |
-| CAP-WEBSITE | 0 | 31 |
+| CAP-WEBSITE | 0 | 32 |
 | CAP-CUSTOMERAPP | 0 | 11 |
 | CAP-DESIGNSYSTEM | 0 | 233 |
 

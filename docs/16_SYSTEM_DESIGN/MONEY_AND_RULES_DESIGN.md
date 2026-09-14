@@ -8,7 +8,7 @@
 
 # Money and business-rule design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 ## Money is an integer count of halalas
 

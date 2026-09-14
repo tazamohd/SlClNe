@@ -8,7 +8,7 @@
 
 # API and integration
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 The API surface, per domain, generated from the routers.
 

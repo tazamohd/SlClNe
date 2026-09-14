@@ -4,7 +4,7 @@
 
 This catalogue describes services SALIS AUTO is **designed** to offer its tenants. It is not a record of an operating service: this workspace contains no production deployment, no tenant contracts and no operating history, so nothing here reports attainment, volume or availability achieved. Every service level in this document is a **TARGET**. Each service is labelled CURRENT where the realising code exists in the repository today, PARTIAL where it exists but is not wired end to end, and ABSENT where the capability is named by the product but nothing in the repository implements it.
 
-Derived from `project-control/CAPABILITY_REGISTRY.json` (18 capabilities, 424 of 424 screens mapped, 372 of 372 endpoints mapped), `project-control/PERMISSION_REGISTRY.json` (15 roles, 28 permission modules), `server/src/registry.ts` and the route files.
+Derived from `project-control/CAPABILITY_REGISTRY.json` (18 capabilities, every registered screen and every endpoint mapped — the totals are in `project-control/CAPABILITY_REGISTRY.json`, and `npm run docs:check` fails if any screen or endpoint maps to no capability), `project-control/PERMISSION_REGISTRY.json` (15 roles, 28 permission modules), `server/src/registry.ts` and the route files.
 
 ## Reading the columns
 

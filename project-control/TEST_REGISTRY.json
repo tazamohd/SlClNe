@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-13",
+  "generatedAt": "2026-09-14",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "npm run docs:generate",
   "derivedFrom": [
@@ -3673,7 +3673,7 @@
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
-        "Blog and Marketplace cards are informational, not links to nowhere"
+        "Blog and catalogue cards are informational, not links to nowhere"
       ],
       "caseCount": 10,
       "touchesPaths": [
@@ -3713,7 +3713,7 @@
       ],
       "cases": [
         "renders signed out — no session provider anywhere in the tree",
-        "carries the six design nav links, each to a real public route",
+        "carries the seven design nav links, each to a real public route",
         "links Sign In into the auth chain at /login",
         "switches to Arabic and flips the document to RTL",
         "renders Arabic RTL from a stored preference, signed out",
@@ -3726,7 +3726,8 @@
         "/public-portal/landing",
         "/public-portal/about",
         "/public-portal/services",
-        "/public-portal/marketplace",
+        "/public-portal/parts-accessories",
+        "/public-portal/deals-offers",
         "/public-portal/contact",
         "/public-portal/blog",
         "/login"

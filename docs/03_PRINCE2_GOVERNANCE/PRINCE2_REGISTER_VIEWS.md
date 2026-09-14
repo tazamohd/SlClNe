@@ -13,7 +13,7 @@
 
 # PRINCE2 register views
 
-**Status:** GENERATED · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Sources as of:** 2026-09-14
 
 ## How PRINCE2 is applied here
 
@@ -91,8 +91,8 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 
 | Quality criterion | Method | Result |
 | --- | --- | --- |
-| Every capability renders | Registry build + e2e | 424 of 424 |
-| Content asserted, not just routed | e2e content assertions | 424 of 424 |
+| Every capability renders | Registry build + e2e | 425 of 425 |
+| Content asserted, not just routed | e2e content assertions | 425 of 425 |
 | Golden paths pass | Playwright | 23 of 23 |
 | Permission matrix enforced server-side | `server/tests/authz-matrix.test.ts` | suite present |
 | Frontend and server matrices identical | `server/tests/rbac-parity.test.ts` | suite present |

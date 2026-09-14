@@ -12,7 +12,7 @@
 
 # Domain — Approvals and governance
 
-**Status:** GENERATED · **Capability:** CAP-GOVERNANCE · **Sources as of:** 2026-09-13
+**Status:** GENERATED · **Capability:** CAP-GOVERNANCE · **Sources as of:** 2026-09-14
 
 ## Purpose and scope
 
