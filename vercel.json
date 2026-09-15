@@ -4,6 +4,14 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/2030",
+      "destination": "/2030/index.html"
+    },
+    {
+      "source": "/2030/",
+      "destination": "/2030/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
