@@ -8,7 +8,7 @@
 
 # BILLING ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14 · 4 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-15 · 4 tables
 
 ### BILLING
 

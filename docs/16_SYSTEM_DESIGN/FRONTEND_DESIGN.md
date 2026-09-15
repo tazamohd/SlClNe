@@ -8,7 +8,7 @@
 
 # Frontend design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 Covers: the repository seam, screen states, navigation, Arabic and RTL, the mobile shell.
 

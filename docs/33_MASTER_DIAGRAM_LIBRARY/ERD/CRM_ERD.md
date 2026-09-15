@@ -8,7 +8,7 @@
 
 # CRM ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-15 · 5 tables
 
 ### CRM
 

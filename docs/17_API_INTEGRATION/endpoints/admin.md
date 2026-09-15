@@ -10,7 +10,7 @@
 
 # API — admin
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14 · 4 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-15 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

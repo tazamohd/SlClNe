@@ -8,7 +8,7 @@
 
 # UML and BPMN models
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 Use case, sequence, activity, state and component models.
 

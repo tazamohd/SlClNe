@@ -8,7 +8,7 @@
 
 # Architecture decisions
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 ADRs for the decisions the code actually reflects.
 

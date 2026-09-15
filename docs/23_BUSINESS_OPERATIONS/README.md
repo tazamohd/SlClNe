@@ -8,7 +8,7 @@
 
 # Business operations
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 Operating model, SOPs, support and escalation.
 

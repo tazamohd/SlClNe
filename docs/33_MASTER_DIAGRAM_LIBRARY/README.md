@@ -8,7 +8,7 @@
 
 # Master diagram library
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 Every diagram, in version-controlled source form.
 

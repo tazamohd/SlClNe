@@ -10,7 +10,7 @@
 
 # API — hr
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14 · 48 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-15 · 48 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

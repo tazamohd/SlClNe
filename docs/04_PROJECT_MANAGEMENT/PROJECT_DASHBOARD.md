@@ -13,7 +13,7 @@
 
 # Project dashboard
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 A view over the canonical registers. Nothing here is entered by hand; if a number looks wrong, the register is wrong.
 
@@ -30,7 +30,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Arabic verified | 82 of 425 | `STATUS.json` |
 | Tablet verified | 4 of 425 | `STATUS.json` |
 | API endpoints | 372 | the route files |
-| Test cases | 2088 | the spec files |
+| Test cases | 2093 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 3 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |

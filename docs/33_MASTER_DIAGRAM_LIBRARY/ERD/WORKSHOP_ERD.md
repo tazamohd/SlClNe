@@ -8,7 +8,7 @@
 
 # WORKSHOP ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14 · 12 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-15 · 12 tables
 
 ### WORKSHOP
 

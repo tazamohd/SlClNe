@@ -8,7 +8,7 @@
 
 # Project management
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 The live control centre: dashboard, plan, risks, blockers, decisions.
 

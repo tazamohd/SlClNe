@@ -8,7 +8,7 @@
 
 # Legal and compliance
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 ZATCA, VAT, privacy, retention — system requirements, not legal advice.
 

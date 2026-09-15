@@ -7,7 +7,7 @@
 
 # Master diagram index
 
-**Sources as of:** 2026-09-14 · 21 diagrams across 18 documents
+**Sources as of:** 2026-09-15 · 21 diagrams across 18 documents
 
 ## Format
 

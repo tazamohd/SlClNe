@@ -8,7 +8,7 @@
 
 # System design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 High- and low-level design of each cross-cutting mechanism.
 

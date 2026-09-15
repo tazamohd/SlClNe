@@ -8,7 +8,7 @@
 
 # PRINCE2 governance
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
 Project governance in PRINCE2 form, as views over the canonical registers.
 

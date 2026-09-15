@@ -10,9 +10,9 @@
 
 # Test catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-14
+**Status:** GENERATED · **Sources as of:** 2026-09-15
 
-178 spec files containing 2088 test cases.
+178 spec files containing 2093 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 104 | 973 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 104 | 978 | Handler behaviour, repository seam, presentation |
 | E2E | 31 | 296 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 33 | 428 |
-| app | 104 | 1293 |
+| app | 104 | 1298 |
 | browser | 41 | 367 |
 
 ## Suites
@@ -164,7 +164,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/public-contact-live.test.tsx` | UNIT_OR_API | 4 | — |
 | `app/tests/public-legal.test.tsx` | UNIT_OR_API | 3 | — |
 | `app/tests/public-loan-calculator.test.tsx` | UNIT_OR_API | 5 | — |
-| `app/tests/public-pages.test.tsx` | UNIT_OR_API | 10 | — |
+| `app/tests/public-pages.test.tsx` | UNIT_OR_API | 15 | — |
 | `app/tests/public-seo.test.tsx` | UNIT_OR_API | 4 | — |
 | `app/tests/public-shell.test.tsx` | UNIT_OR_API | 8 | — |
 | `app/tests/rbac-matrix.test.ts` | SECURITY | 64 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
