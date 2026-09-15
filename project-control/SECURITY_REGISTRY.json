@@ -1,0 +1,797 @@
+{
+  "generatedAt": "2026-09-15",
+  "generator": "tools/docs/generators/registries.mjs",
+  "regenerate": "node tools/docs/generate.mjs",
+  "derivedFrom": [
+    "server/drizzle/*.sql",
+    "packages/contract/src/rbac.ts"
+  ],
+  "handEdit": "Never. Edit the source, then regenerate.",
+  "rowLevelSecurity": {
+    "rlsTables": [
+      "ai_agents",
+      "appointments",
+      "approval_lines",
+      "audit_log",
+      "bank_statements",
+      "branches",
+      "campaigns",
+      "chart_of_accounts",
+      "conversations",
+      "crm_tasks",
+      "customer_feedback",
+      "customers",
+      "departments",
+      "diag_copies",
+      "diag_findings",
+      "diag_labour",
+      "diag_parts",
+      "diag_stages",
+      "dtc_codes",
+      "employees",
+      "estimate_lines",
+      "estimates",
+      "expenses",
+      "fleets",
+      "idempotency_keys",
+      "insurance_claims",
+      "insurance_policies",
+      "integrations",
+      "inventory_movements",
+      "invoice_lines",
+      "invoices",
+      "job_cards",
+      "journal_entries",
+      "kb_procedures",
+      "leads",
+      "leave_requests",
+      "loan_contracts",
+      "loan_repayments",
+      "obd_devices",
+      "obd_dtc_readings",
+      "oem_tools",
+      "opportunities",
+      "organizations",
+      "parts",
+      "payments",
+      "payroll_lines",
+      "payroll_runs",
+      "public_leads",
+      "purchase_order_lines",
+      "purchase_orders",
+      "receipts",
+      "requisition_lines",
+      "requisitions",
+      "saved_reports",
+      "segments",
+      "services",
+      "subscription_requests",
+      "suppliers",
+      "support_tickets",
+      "technicians",
+      "timesheets",
+      "user_sessions",
+      "users",
+      "vehicles"
+    ],
+    "forcedTables": [
+      "ai_agents",
+      "appointments",
+      "approval_lines",
+      "audit_log",
+      "bank_statements",
+      "branches",
+      "campaigns",
+      "chart_of_accounts",
+      "conversations",
+      "crm_tasks",
+      "customer_feedback",
+      "customers",
+      "departments",
+      "diag_copies",
+      "diag_findings",
+      "diag_labour",
+      "diag_parts",
+      "diag_stages",
+      "dtc_codes",
+      "employees",
+      "estimate_lines",
+      "estimates",
+      "expenses",
+      "fleets",
+      "idempotency_keys",
+      "insurance_claims",
+      "insurance_policies",
+      "integrations",
+      "inventory_movements",
+      "invoice_lines",
+      "invoices",
+      "job_cards",
+      "journal_entries",
+      "kb_procedures",
+      "leads",
+      "leave_requests",
+      "loan_contracts",
+      "loan_repayments",
+      "obd_devices",
+      "obd_dtc_readings",
+      "oem_tools",
+      "opportunities",
+      "organizations",
+      "parts",
+      "payments",
+      "payroll_lines",
+      "payroll_runs",
+      "public_leads",
+      "purchase_order_lines",
+      "purchase_orders",
+      "receipts",
+      "requisition_lines",
+      "requisitions",
+      "saved_reports",
+      "segments",
+      "services",
+      "subscription_requests",
+      "suppliers",
+      "support_tickets",
+      "technicians",
+      "timesheets",
+      "user_sessions",
+      "users",
+      "vehicles"
+    ],
+    "policies": [
+      {
+        "name": "p_tenant",
+        "appliesTo": "every table in the tenant_tables array",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": "Tenant isolation. A connection with no app.org_id set sees nothing.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "every table in the tenant_tables array",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": "Branch narrowing. RESTRICTIVE, so it is AND-ed: a PERMISSIVE branch policy would widen access rather than narrow it.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "job_cards",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','self','assigned') OR assigned_tech_id = app_user() OR created_by = app_user()",
+        "purpose": "Row ownership for the own/self/assigned scopes, keyed off job_cards.assigned_tech_id.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "appointments",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','self','assigned') OR technician_id = app_user() OR created_by = app_user()",
+        "purpose": "Row ownership for the own/self/assigned scopes, keyed off appointments.technician_id.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "crm_tasks",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','self','assigned') OR created_by = app_user() OR created_by = app_user()",
+        "purpose": "Row ownership for the own/self/assigned scopes, keyed off crm_tasks.created_by.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "user_sessions",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','self','assigned') OR user_id = app_user() OR created_by = app_user()",
+        "purpose": "Row ownership for the own/self/assigned scopes, keyed off user_sessions.user_id.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "p_self",
+        "appliesTo": "organizations",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "p_tenant_read",
+        "appliesTo": "audit_log",
+        "type": "PERMISSIVE",
+        "command": "SELECT",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "p_tenant_write",
+        "appliesTo": "audit_log",
+        "type": "PERMISSIVE",
+        "command": "INSERT",
+        "predicate": null,
+        "purpose": null,
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "idempotency_keys",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "subscription_requests",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "job_cards",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','self','assigned') OR created_by = app_user() OR assigned_tech_id IN (SELECT id FROM technicians WHERE user_id = app_user())",
+        "purpose": null,
+        "file": "server/drizzle/0002_own_scope_tech.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "public_leads",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "public_leads",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "customer_feedback",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "customer_feedback",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "bank_statements",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "bank_statements",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "saved_reports",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "saved_reports",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "obd_dtc_readings",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0006_obd_dtc_readings.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "obd_dtc_readings",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0006_obd_dtc_readings.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "insurance_policies",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "insurance_policies",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "insurance_claims",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "insurance_claims",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "loan_contracts",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "loan_contracts",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "loan_repayments",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "loan_repayments",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "employees",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "employees",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "payroll_runs",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "payroll_runs",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "payroll_lines",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "payroll_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "timesheets",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "timesheets",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "leave_requests",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "leave_requests",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "suppliers",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "suppliers",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "requisitions",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "requisitions",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "requisition_lines",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "requisition_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "job_cards",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','assigned') OR created_by = app_user() OR assigned_tech_id IN (SELECT id FROM technicians WHERE user_id = app_user())",
+        "purpose": null,
+        "file": "server/drizzle/0014_customer_id_link.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "appointments",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','assigned') OR technician_id = app_user() OR created_by = app_user()",
+        "purpose": null,
+        "file": "server/drizzle/0014_customer_id_link.sql"
+      },
+      {
+        "name": "r_own",
+        "appliesTo": "crm_tasks",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('own','assigned') OR created_by = app_user()",
+        "purpose": null,
+        "file": "server/drizzle/0014_customer_id_link.sql"
+      }
+    ],
+    "triggers": [
+      {
+        "name": "organizations_bump_version",
+        "table": "organizations",
+        "function": "bump_version",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "audit_log_no_update",
+        "table": "audit_log",
+        "function": "audit_log_is_immutable",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "audit_log_no_delete",
+        "table": "audit_log",
+        "function": "audit_log_is_immutable",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "<table>_bump_version",
+        "table": "every table in the tenant_tables array",
+        "function": "bump_version",
+        "purpose": "Optimistic concurrency: version is incremented by the database, not by the statement.",
+        "file": "server/drizzle/0001_rls.sql"
+      },
+      {
+        "name": "public_leads_bump_version",
+        "table": "public_leads",
+        "function": "bump_version",
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "customer_feedback_bump_version",
+        "table": "customer_feedback",
+        "function": "bump_version",
+        "file": "server/drizzle/0004_crm_fleet_feedback.sql"
+      },
+      {
+        "name": "bank_statements_bump_version",
+        "table": "bank_statements",
+        "function": "bump_version",
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "saved_reports_bump_version",
+        "table": "saved_reports",
+        "function": "bump_version",
+        "file": "server/drizzle/0005_bank_statements_saved_reports.sql"
+      },
+      {
+        "name": "obd_dtc_readings_bump_version",
+        "table": "obd_dtc_readings",
+        "function": "bump_version",
+        "file": "server/drizzle/0006_obd_dtc_readings.sql"
+      },
+      {
+        "name": "insurance_policies_bump_version",
+        "table": "insurance_policies",
+        "function": "bump_version",
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "insurance_claims_bump_version",
+        "table": "insurance_claims",
+        "function": "bump_version",
+        "file": "server/drizzle/0007_insurance.sql"
+      },
+      {
+        "name": "loan_contracts_bump_version",
+        "table": "loan_contracts",
+        "function": "bump_version",
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "loan_repayments_bump_version",
+        "table": "loan_repayments",
+        "function": "bump_version",
+        "file": "server/drizzle/0008_loans.sql"
+      },
+      {
+        "name": "employees_bump_version",
+        "table": "employees",
+        "function": "bump_version",
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "payroll_runs_bump_version",
+        "table": "payroll_runs",
+        "function": "bump_version",
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "payroll_lines_bump_version",
+        "table": "payroll_lines",
+        "function": "bump_version",
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "timesheets_bump_version",
+        "table": "timesheets",
+        "function": "bump_version",
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "leave_requests_bump_version",
+        "table": "leave_requests",
+        "function": "bump_version",
+        "file": "server/drizzle/0009_hr.sql"
+      },
+      {
+        "name": "suppliers_bump_version",
+        "table": "suppliers",
+        "function": "bump_version",
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "requisitions_bump_version",
+        "table": "requisitions",
+        "function": "bump_version",
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "requisition_lines_bump_version",
+        "table": "requisition_lines",
+        "function": "bump_version",
+        "file": "server/drizzle/0010_procurement.sql"
+      },
+      {
+        "name": "audit_log_no_update",
+        "table": "audit_log",
+        "function": "audit_log_is_immutable",
+        "file": "server/drizzle/0011_audit_log_statement_immutability.sql"
+      },
+      {
+        "name": "audit_log_no_delete",
+        "table": "audit_log",
+        "function": "audit_log_is_immutable",
+        "file": "server/drizzle/0011_audit_log_statement_immutability.sql"
+      },
+      {
+        "name": "audit_log_no_truncate",
+        "table": "audit_log",
+        "function": "audit_log_is_immutable",
+        "file": "server/drizzle/0011_audit_log_statement_immutability.sql"
+      }
+    ],
+    "contextFunctions": [
+      "app_org()",
+      "app_branch()",
+      "app_user()",
+      "app_scope()"
+    ],
+    "coverage": {
+      "tenantScopedTables": 63,
+      "rlsEnabled": 64,
+      "forced": 64,
+      "tenantScopedWithoutRls": [],
+      "rlsWithoutForce": []
+    },
+    "evidence": [
+      "server/drizzle/0000_init.sql",
+      "server/drizzle/0000_lonely_black_widow.sql",
+      "server/drizzle/0001_rls.sql",
+      "server/drizzle/0002_own_scope_tech.sql",
+      "server/drizzle/0003_transfer_pair_branches.sql",
+      "server/drizzle/0004_crm_fleet_feedback.sql",
+      "server/drizzle/0005_bank_statements_saved_reports.sql",
+      "server/drizzle/0006_obd_dtc_readings.sql",
+      "server/drizzle/0007_insurance.sql",
+      "server/drizzle/0008_loans.sql",
+      "server/drizzle/0009_hr.sql",
+      "server/drizzle/0010_procurement.sql",
+      "server/drizzle/0011_audit_log_statement_immutability.sql",
+      "server/drizzle/0012_snapshot_realign.sql",
+      "server/drizzle/0013_users_acting_role.sql",
+      "server/drizzle/0014_customer_id_link.sql"
+    ]
+  },
+  "authenticationSurface": [
+    {
+      "method": "POST",
+      "path": "/api/v1/public/customers/register",
+      "source": "server/src/auth/routes.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/public/customers/resend-otp",
+      "source": "server/src/auth/routes.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/public/customers/verify-otp",
+      "source": "server/src/auth/routes.ts"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/public/leads",
+      "source": "server/src/routes/public.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "source": "server/src/routes/health.ts"
+    },
+    {
+      "method": "GET",
+      "path": "/ready",
+      "source": "server/src/routes/health.ts"
+    }
+  ]
+}

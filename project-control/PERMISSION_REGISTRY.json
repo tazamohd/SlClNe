@@ -1,0 +1,4583 @@
+{
+  "generatedAt": "2026-09-15",
+  "generator": "tools/docs/generators/registries.mjs",
+  "regenerate": "node tools/docs/generate.mjs",
+  "derivedFrom": [
+    "packages/contract/src/rbac.ts"
+  ],
+  "handEdit": "Never. Edit the source, then regenerate.",
+  "note": "The server enforces this matrix directly (server/src/security/permissions.ts). The frontend copy is asserted identical by server/tests/rbac-parity.test.ts; frontend RBAC is not a security boundary.",
+  "actions": {
+    "v": "view",
+    "c": "create",
+    "e": "edit",
+    "d": "delete",
+    "a": "approve",
+    "x": "export"
+  },
+  "roles": [
+    "owner",
+    "superadmin",
+    "manager",
+    "advisor",
+    "technician",
+    "qc",
+    "parts",
+    "accountant",
+    "hr",
+    "frontdesk",
+    "callcenter",
+    "procurement",
+    "supplier",
+    "customer",
+    "test"
+  ],
+  "modules": [
+    "dashboard",
+    "jobcards",
+    "appointments",
+    "estimates",
+    "customers",
+    "vehicles",
+    "inventory",
+    "procurement",
+    "invoices",
+    "payments",
+    "accounting",
+    "hr",
+    "technicians",
+    "crm",
+    "callcenter",
+    "reports",
+    "approvals",
+    "kiosk",
+    "execreports",
+    "portaltech",
+    "portalcustomer",
+    "portalsupplier",
+    "portalprocure",
+    "ai",
+    "admin",
+    "settings",
+    "audit",
+    "network"
+  ],
+  "dataScopes": [
+    "platform",
+    "all",
+    "org",
+    "branch",
+    "own",
+    "self",
+    "assigned",
+    "external"
+  ],
+  "roleMeta": {
+    "owner": {
+      "scope": "all",
+      "approvalLimitSar": null,
+      "approvalCeilingHalalas": null,
+      "unlimited": true
+    },
+    "superadmin": {
+      "scope": "platform",
+      "approvalLimitSar": null,
+      "approvalCeilingHalalas": null,
+      "unlimited": true
+    },
+    "manager": {
+      "scope": "branch",
+      "approvalLimitSar": 50000,
+      "approvalCeilingHalalas": 5000000,
+      "unlimited": false
+    },
+    "advisor": {
+      "scope": "branch",
+      "approvalLimitSar": 5000,
+      "approvalCeilingHalalas": 500000,
+      "unlimited": false
+    },
+    "technician": {
+      "scope": "own",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "qc": {
+      "scope": "branch",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "parts": {
+      "scope": "branch",
+      "approvalLimitSar": 10000,
+      "approvalCeilingHalalas": 1000000,
+      "unlimited": false
+    },
+    "accountant": {
+      "scope": "all",
+      "approvalLimitSar": 25000,
+      "approvalCeilingHalalas": 2500000,
+      "unlimited": false
+    },
+    "hr": {
+      "scope": "all",
+      "approvalLimitSar": 15000,
+      "approvalCeilingHalalas": 1500000,
+      "unlimited": false
+    },
+    "frontdesk": {
+      "scope": "branch",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "callcenter": {
+      "scope": "all",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "procurement": {
+      "scope": "all",
+      "approvalLimitSar": 20000,
+      "approvalCeilingHalalas": 2000000,
+      "unlimited": false
+    },
+    "supplier": {
+      "scope": "external",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "customer": {
+      "scope": "self",
+      "approvalLimitSar": 0,
+      "approvalCeilingHalalas": 0,
+      "unlimited": false
+    },
+    "test": {
+      "scope": "all",
+      "approvalLimitSar": null,
+      "approvalCeilingHalalas": null,
+      "unlimited": true
+    }
+  },
+  "segregationOfDuties": [
+    {
+      "a": "Raise purchase order",
+      "b": "Approve purchase order",
+      "risk": "high"
+    },
+    {
+      "a": "Create supplier",
+      "b": "Approve supplier payment",
+      "risk": "high"
+    },
+    {
+      "a": "Post journal entry",
+      "b": "Approve journal entry",
+      "risk": "high"
+    },
+    {
+      "a": "Perform repair",
+      "b": "Pass quality check",
+      "risk": "high"
+    },
+    {
+      "a": "Issue stock",
+      "b": "Adjust stock count",
+      "risk": "medium"
+    },
+    {
+      "a": "Create employee",
+      "b": "Approve payroll run",
+      "risk": "medium"
+    }
+  ],
+  "fieldRedaction": [
+    {
+      "field": "Part cost / margin",
+      "fieldAr": "تكلفة القطعة / الهامش",
+      "hiddenFrom": [
+        "advisor",
+        "technician",
+        "qc",
+        "frontdesk",
+        "callcenter",
+        "customer",
+        "supplier"
+      ]
+    },
+    {
+      "field": "Labour cost rate",
+      "fieldAr": "تكلفة أجر العمل",
+      "hiddenFrom": [
+        "technician",
+        "qc",
+        "frontdesk",
+        "callcenter",
+        "customer",
+        "supplier"
+      ]
+    },
+    {
+      "field": "Employee salary",
+      "fieldAr": "راتب الموظف",
+      "hiddenFrom": [
+        "advisor",
+        "technician",
+        "qc",
+        "parts",
+        "frontdesk",
+        "callcenter",
+        "procurement",
+        "supplier",
+        "customer"
+      ]
+    },
+    {
+      "field": "Supplier purchase price",
+      "fieldAr": "سعر الشراء من المورد",
+      "hiddenFrom": [
+        "advisor",
+        "technician",
+        "qc",
+        "frontdesk",
+        "callcenter",
+        "customer"
+      ]
+    },
+    {
+      "field": "Customer contact details",
+      "fieldAr": "بيانات اتصال العميل",
+      "hiddenFrom": [
+        "technician",
+        "qc",
+        "supplier"
+      ]
+    },
+    {
+      "field": "Bank account details",
+      "fieldAr": "بيانات الحساب البنكي",
+      "hiddenFrom": [
+        "advisor",
+        "technician",
+        "qc",
+        "parts",
+        "frontdesk",
+        "callcenter",
+        "hr",
+        "procurement",
+        "supplier",
+        "customer"
+      ]
+    },
+    {
+      "field": "Branch P&L",
+      "fieldAr": "أرباح وخسائر الفرع",
+      "hiddenFrom": [
+        "advisor",
+        "technician",
+        "qc",
+        "parts",
+        "frontdesk",
+        "callcenter",
+        "procurement",
+        "supplier",
+        "customer"
+      ]
+    }
+  ],
+  "totals": {
+    "modules": 28,
+    "roles": 15,
+    "cells": 420,
+    "granted": 217,
+    "denied": 203
+  },
+  "matrix": {
+    "dashboard": {
+      "owner": "vx",
+      "superadmin": "vx",
+      "manager": "vx",
+      "advisor": "v",
+      "technician": "v",
+      "qc": "v",
+      "parts": "v",
+      "accountant": "vx",
+      "hr": "v",
+      "frontdesk": "v",
+      "callcenter": "v",
+      "procurement": "v",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "jobcards": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedax",
+      "advisor": "vcea",
+      "technician": "ve",
+      "qc": "va",
+      "parts": "v",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "vc",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "v",
+      "test": "vcedax"
+    },
+    "appointments": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedax",
+      "advisor": "vced",
+      "technician": "v",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "vced",
+      "callcenter": "vced",
+      "procurement": "",
+      "supplier": "",
+      "customer": "vc",
+      "test": "vcedax"
+    },
+    "estimates": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vceax",
+      "advisor": "vce",
+      "technician": "v",
+      "qc": "",
+      "parts": "v",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "v",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "v",
+      "test": "vcedax"
+    },
+    "customers": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedx",
+      "advisor": "vce",
+      "technician": "v",
+      "qc": "",
+      "parts": "",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "vce",
+      "callcenter": "vce",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "vehicles": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedx",
+      "advisor": "vce",
+      "technician": "v",
+      "qc": "v",
+      "parts": "",
+      "accountant": "v",
+      "hr": "",
+      "frontdesk": "vce",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "v",
+      "test": "vcedax"
+    },
+    "inventory": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedax",
+      "advisor": "v",
+      "technician": "v",
+      "qc": "",
+      "parts": "vcedax",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vcex",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "procurement": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcax",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "vc",
+      "accountant": "vax",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vcedax",
+      "supplier": "v",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "invoices": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vceax",
+      "advisor": "vc",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vcedax",
+      "hr": "",
+      "frontdesk": "vc",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "v",
+      "test": "vcedax"
+    },
+    "payments": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcax",
+      "advisor": "vc",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vcedax",
+      "hr": "",
+      "frontdesk": "vc",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "accounting": {
+      "owner": "vax",
+      "superadmin": "v",
+      "manager": "vx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vcedax",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "hr": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vx",
+      "hr": "vcedax",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "technicians": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedax",
+      "advisor": "v",
+      "technician": "v",
+      "qc": "v",
+      "parts": "",
+      "accountant": "",
+      "hr": "vcedx",
+      "frontdesk": "v",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "crm": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedx",
+      "advisor": "vce",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "vced",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "callcenter": {
+      "owner": "vx",
+      "superadmin": "v",
+      "manager": "vx",
+      "advisor": "v",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "v",
+      "callcenter": "vcedx",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "reports": {
+      "owner": "vx",
+      "superadmin": "vx",
+      "manager": "vx",
+      "advisor": "v",
+      "technician": "",
+      "qc": "v",
+      "parts": "vx",
+      "accountant": "vx",
+      "hr": "vx",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vx",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "approvals": {
+      "owner": "vax",
+      "superadmin": "vx",
+      "manager": "vax",
+      "advisor": "va",
+      "technician": "",
+      "qc": "",
+      "parts": "va",
+      "accountant": "vax",
+      "hr": "va",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vax",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "kiosk": {
+      "owner": "v",
+      "superadmin": "v",
+      "manager": "v",
+      "advisor": "v",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "vcex",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "execreports": {
+      "owner": "vx",
+      "superadmin": "vx",
+      "manager": "vx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "portaltech": {
+      "owner": "v",
+      "superadmin": "v",
+      "manager": "v",
+      "advisor": "v",
+      "technician": "vx",
+      "qc": "vx",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "portalcustomer": {
+      "owner": "v",
+      "superadmin": "v",
+      "manager": "v",
+      "advisor": "v",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "v",
+      "callcenter": "v",
+      "procurement": "",
+      "supplier": "",
+      "customer": "vx",
+      "test": "vcedax"
+    },
+    "portalsupplier": {
+      "owner": "v",
+      "superadmin": "v",
+      "manager": "v",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "v",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "v",
+      "supplier": "vx",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "portalprocure": {
+      "owner": "v",
+      "superadmin": "v",
+      "manager": "v",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "v",
+      "accountant": "v",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vx",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "ai": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "vce",
+      "advisor": "v",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "v",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "admin": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "v",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "settings": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "ve",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "audit": {
+      "owner": "vx",
+      "superadmin": "vx",
+      "manager": "vx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "vx",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "network": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "vced",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vcedax",
+      "supplier": "vce",
+      "customer": "",
+      "test": "vcedax"
+    }
+  },
+  "cells": [
+    {
+      "module": "dashboard",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "qc",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "parts",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "hr",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "frontdesk",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "procurement",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "dashboard",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "dashboard",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "dashboard",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "manager",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "advisor",
+      "grant": "vcea",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "approve"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "technician",
+      "grant": "ve",
+      "actions": [
+        "view",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "qc",
+      "grant": "va",
+      "actions": [
+        "view",
+        "approve"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "parts",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "jobcards",
+      "role": "frontdesk",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "jobcards",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "jobcards",
+      "role": "customer",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "jobcards",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "manager",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "advisor",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "frontdesk",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "callcenter",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "appointments",
+      "role": "customer",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "appointments",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "manager",
+      "grant": "vceax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "advisor",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "estimates",
+      "role": "parts",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "estimates",
+      "role": "frontdesk",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "estimates",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "estimates",
+      "role": "customer",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "estimates",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "manager",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "advisor",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "frontdesk",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "callcenter",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "customers",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "customers",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "manager",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "advisor",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "qc",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "vehicles",
+      "role": "accountant",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "vehicles",
+      "role": "frontdesk",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "vehicles",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "vehicles",
+      "role": "customer",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "vehicles",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "manager",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "parts",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "procurement",
+      "grant": "vcex",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "inventory",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "inventory",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "manager",
+      "grant": "vcax",
+      "actions": [
+        "view",
+        "create",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "parts",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "accountant",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "procurement",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "supplier",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "procurement",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "procurement",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "manager",
+      "grant": "vceax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "advisor",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "accountant",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "frontdesk",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "invoices",
+      "role": "customer",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "invoices",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "manager",
+      "grant": "vcax",
+      "actions": [
+        "view",
+        "create",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "advisor",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "accountant",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "frontdesk",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "payments",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "payments",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "accounting",
+      "role": "owner",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "accounting",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "accounting",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "accounting",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "accountant",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "accounting",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "accounting",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "hr",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "hr",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "hr",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "manager",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "technician",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "qc",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "hr",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "frontdesk",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "technicians",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "technicians",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "manager",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "advisor",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "callcenter",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "crm",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "crm",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "frontdesk",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "callcenter",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "callcenter",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "callcenter",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "reports",
+      "role": "qc",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "parts",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "hr",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "reports",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "reports",
+      "role": "procurement",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "reports",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "reports",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "reports",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "owner",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "manager",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "advisor",
+      "grant": "va",
+      "actions": [
+        "view",
+        "approve"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "parts",
+      "grant": "va",
+      "actions": [
+        "view",
+        "approve"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "accountant",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "hr",
+      "grant": "va",
+      "actions": [
+        "view",
+        "approve"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "procurement",
+      "grant": "vax",
+      "actions": [
+        "view",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "approvals",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "approvals",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "owner",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "frontdesk",
+      "grant": "vcex",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "kiosk",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "kiosk",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "execreports",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "execreports",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "execreports",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "execreports",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "execreports",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "execreports",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "owner",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "technician",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "qc",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portaltech",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portaltech",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "owner",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "frontdesk",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "callcenter",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalcustomer",
+      "role": "customer",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalcustomer",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "owner",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "parts",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "procurement",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "supplier",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalsupplier",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalsupplier",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "owner",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "parts",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "accountant",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "procurement",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "portalprocure",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "portalprocure",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "manager",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "advisor",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "accountant",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "ai",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "ai",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "admin",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "admin",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "admin",
+      "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "admin",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "admin",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "manager",
+      "grant": "ve",
+      "actions": [
+        "view",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "manager",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "parts",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "procurement",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "supplier",
+      "grant": "vce",
+      "actions": [
+        "view",
+        "create",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    }
+  ]
+}
