@@ -1,6 +1,6 @@
 import { useEffect, type RefObject } from 'react'
 
-/** The `SALIS AUTO 2060` artifact's own motion layer, ported to a React
+/** The `SALIS AUTO 2030` artifact's own motion layer, ported to a React
  *  effect. The artifact reveals any `.rise` (or `.era`) element the moment it
  *  scrolls into view, staggering each batch of six by 70ms, and lets a
  *  pointer tilt a `.tilt` element by a few degrees — both transform/opacity
@@ -10,7 +10,7 @@ import { useEffect, type RefObject } from 'react'
  *
  *  This replaces the previous, much larger hook that also drove the old
  *  design's rail progress, AI-era paper-fold and hero/rail/map WebGL scenes.
- *  None of those elements exist in the 2060 markup, and the three WebGL
+ *  None of those elements exist in the 2030 markup, and the three WebGL
  *  scenes are not ported at all (see the doc comment at the top of
  *  `landing.css`), so this hook only does what today's markup can use:
  *  reveal, tilt, and the counted-figure convention already used elsewhere in

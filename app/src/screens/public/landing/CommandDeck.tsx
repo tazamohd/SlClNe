@@ -1,28 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { T } from './types'
-import type { EraRow, LedgerData } from './landingData'
 
 /** The command deck (`#deck`) — a real controlled component, not a `<pre>`
- *  filled with `innerHTML`. Same idea as the original concept artifact (a
- *  small local console with no backend), but every answer it gives is a real
- *  fact about the shipping product: the thirteen domains, the fourteen
- *  roles, the measured proof figures, the real FAQ, and the roadmap this
- *  same page renders — never an invented diagnostic or telemetry reading.
+ *  filled with `innerHTML`. The "SALIS AUTO 2030" artifact's console, ported
+ *  command for command: `help`, `status`, `lifecycle`, `domains`, `roles`,
+ *  `zatca`, `parts`, `pricing`, `salis`, `clear`, plus `ls` and `?` as
+ *  aliases of `help`, and the same eight chips under the shell.
  *
- *  `IndexPage` already ran every one of `eras`/`proof`/`ledger`'s strings
- *  through `t(...)` once, at the point each array is built — this component
- *  reads them as already-localized text and never re-wraps them in `t(...)`
- *  (that would be a *dynamic* call, invisible to `check-i18n`). Its own copy
- *  (`help`, `status` labels, and so on) is literal `t(...)` calls throughout. */
-
-interface Props {
-  t: T
-  eras: readonly EraRow[]
-  proof: readonly { from: string; to: string; what: string; base: string }[]
-  ledger: LedgerData
-  domainCount: number
-  roleCount: number
-}
+ *  Two departures from the artifact. Its `status` figures are re-rolled from
+ *  a seeded RNG on every call; here they are fixed sample values, because a
+ *  number that changes when you ask twice reads as live telemetry and this
+ *  page has no tenant behind it — the answer says "sample tenant" either way.
+ *  And every string is a literal `t(...)` call, so `check-i18n` can see it;
+ *  nothing here is assembled from a template literal. */
 
 interface Line {
   id: number
@@ -35,41 +25,55 @@ function nextId(): number {
   return seq
 }
 
-/** The thirteen real domains and the fourteen real roles — the same lists
- *  `SystemPage` renders, kept short here since the deck only ever prints one
- *  line per entry. */
-function domainNames(t: T): readonly string[] {
+/** The thirteen domains and what each carries — the artifact's `DOMAINS`. */
+function domainLines(t: T): readonly { name: string; body: string }[] {
   return [
-    t('Workshop'), t('Registry'), t('Finance'), t('Accounting'), t('CRM and marketing'),
-    t('Administration'), t('Authentication'), t('AI platform'), t('Parts and inventory'),
-    t('Call centre'), t('Reports and analytics'), t('Team and HR'), t('Portals'),
+    { name: t('Workshop'), body: t('the six-stage job card') },
+    { name: t('Registry'), body: t('customers, vehicles, service history') },
+    { name: t('Finance'), body: t('invoices, payments, receipts') },
+    { name: t('Accounting'), body: t('double-entry ledger and statements') },
+    { name: t('CRM & Marketing'), body: t('leads, campaigns, reminders') },
+    { name: t('Administration'), body: t('tenants, branches, roles, audit') },
+    { name: t('Authentication'), body: t('sessions, OTP, permissions') },
+    { name: t('AI Platform'), body: t('assistant, knowledge base, scheduling') },
+    { name: t('Parts & Inventory'), body: t('stock, orders, transfers') },
+    { name: t('Call Center'), body: t('queues, call logs, follow-ups') },
+    { name: t('Reports & Analytics'), body: t('KPIs, report builder, export') },
+    { name: t('Team & HR'), body: t('shifts, timesheets, payroll prep') },
+    { name: t('Portals'), body: t('customer, technician, supplier, kiosk') },
   ]
 }
 
-function roleNames(t: T): readonly string[] {
+/** The fourteen roles and their approval ceiling in SAR — the artifact's
+ *  `ROLE_LINES`. A ceiling of `0` prints struck through: a role that may
+ *  approve nothing is a boundary, not a lesser role. */
+function roleLines(t: T): readonly { name: string; ceiling: string }[] {
   return [
-    t('Owner / CEO'), t('Super Admin'), t('Branch Manager'), t('Service Advisor'), t('Technician'),
-    t('QC Inspector'), t('Storekeeper'), t('Accountant'), t('HR Manager'), t('Receptionist'),
-    t('Call Center Agent'), t('Procurement Agent'), t('Supplier'), t('Customer'),
+    { name: t('Owner / CEO — المالك'), ceiling: '∞' },
+    { name: t('Super Admin — المشرف العام'), ceiling: '∞' },
+    { name: t('Branch Manager — مدير الفرع'), ceiling: '50,000' },
+    { name: t('Accountant — محاسب'), ceiling: '25,000' },
+    { name: t('Procurement Agent — وكيل المشتريات'), ceiling: '20,000' },
+    { name: t('HR Manager — مدير الموارد البشرية'), ceiling: '15,000' },
+    { name: t('Storekeeper — أمين المستودع'), ceiling: '10,000' },
+    { name: t('Service Advisor — مستشار الخدمة'), ceiling: '5,000' },
+    { name: t('Receptionist — موظف الاستقبال'), ceiling: '0' },
+    { name: t('Call Center Agent — موظف مركز الاتصال'), ceiling: '0' },
+    { name: t('Technician — فني'), ceiling: '0' },
+    { name: t('QC Inspector — مفتش الجودة'), ceiling: '0' },
+    { name: t('Customer — عميل'), ceiling: '0' },
+    { name: t('Supplier — مورّد'), ceiling: '0' },
   ]
 }
 
-function faqExcerpts(t: T): readonly { q: string; a: string }[] {
-  return [
-    { q: t('How long does it take to get started?'), a: t('Most workshops run their first job card within a day.') },
-    { q: t('Is the e-invoicing really ZATCA Phase 2?'), a: t('Yes — TLV QR, hash chain, UBL 2.1 XML, immutable after issue.') },
-    { q: t('Is my data isolated from other workshops?'), a: t('Yes, isolated at the database level, access by role.') },
-  ]
-}
-
-export function CommandDeck({ t, eras, proof, ledger, domainCount, roleCount }: Props) {
+export function CommandDeck({ t }: { t: T }) {
   const [lines, setLines] = useState<Line[]>(() => [
-    { id: nextId(), node: <span>{t('SALIS AUTO — local shell, no network.')}</span> },
+    { id: nextId(), node: <span>{t('SALIS AUTO · GARAGE OS v1.0 — local shell.')}</span> },
     {
       id: nextId(),
       node: (
         <span>
-          {t('Every answer here is a real fact about the product. Type')} <b>help</b>.
+          {t('No network, no backend, no tenant data. Type')} <b>help</b>.
         </span>
       ),
     },
@@ -90,28 +94,28 @@ export function CommandDeck({ t, eras, proof, ledger, domainCount, roleCount }: 
     push(
       <u>{t('Known commands')}</u>,
       <span>
-        <b>status</b> — {t('a one-line summary of the platform')}
+        <b>status</b> — {t('today on a sample tenant, one line per figure')}
       </span>,
       <span>
-        <b>domains</b> — {t('the thirteen real domains')}
+        <b>lifecycle</b> — {t('the six stages of a job card, and the two gates')}
       </span>,
       <span>
-        <b>roles</b> — {t('the fourteen real roles')}
+        <b>domains</b> — {t('the thirteen functional domains')}
       </span>,
       <span>
-        <b>proof</b> — {t('measured results from real deployments')}
+        <b>roles</b> — {t('the fourteen roles and what each may approve')}
       </span>,
       <span>
-        <b>ledger</b> — {t('a sample ZATCA Phase 2 invoice')}
+        <b>zatca</b> — {t('the e-invoicing pipeline, step by step')}
       </span>,
       <span>
-        <b>faq</b> — {t('answers asked before every demo')}
+        <b>parts</b> — {t('how a part reaches a job card')}
       </span>,
       <span>
-        <b>warp</b> — {t('jump to a year on the roadmap — try')} <b dir="ltr">warp 2030</b>
+        <b>pricing</b> — {t('the three plans')}
       </span>,
       <span>
-        <b>salis</b> — {t('what this page actually is')}
+        <b>salis</b> — {t('what this actually is')}
       </span>,
       <span>
         <b>clear</b> — {t('wipe the console')}
@@ -121,130 +125,154 @@ export function CommandDeck({ t, eras, proof, ledger, domainCount, roleCount }: 
 
   function status(): void {
     push(
-      <u>SALIS AUTO</u>,
+      <u>{t('SAMPLE TENANT — RIYADH')}</u>,
       <span>
-        {t('Domains')} — <b dir="ltr">{domainCount}</b>
+        {t('branches')} <b dir="ltr">3 / 3</b> {t('online')}
       </span>,
       <span>
-        {t('Roles')} — <b dir="ltr">{roleCount}</b>
+        {t('job cards open')} <b dir="ltr">31</b>
       </span>,
       <span>
-        {t('E-invoicing')} — <b>{t('ZATCA Phase 2, live')}</b>
+        {t('awaiting signature')} <b dir="ltr">6</b> {t('estimates')}
       </span>,
       <span>
-        {t('Languages')} — <b>{t('Arabic and English, RTL throughout')}</b>
+        {t('invoices cleared')} <b dir="ltr">24</b> {t('today')}
       </span>,
       <span>
-        {t('Audit trail')} — <b>{t('one row per change, always on')}</b>
-      </span>
+        {t('below reorder point')} <s dir="ltr">18 SKUs</s> — {t('purchasing notified')}
+      </span>,
+      <span>{t('Sample data. No tenant data reaches this page.')}</span>
+    )
+  }
+
+  function lifecycle(): void {
+    push(
+      <u>{t('THE JOB CARD — SIX STAGES, IN ORDER')}</u>,
+      <span>
+        <b dir="ltr">1</b> {t('Check-in')} — {t('reception or the kiosk; customer, vehicle, complaint, photos')}
+      </span>,
+      <span>
+        <b dir="ltr">2</b> {t('Inspection')} — {t('technician; multi-point, each finding with a severity')}
+      </span>,
+      <span>
+        <b dir="ltr">3</b> {t('Estimate')} — {t('advisor prices it')} <s>{t('GATE: customer signs by SMS one-time code')}</s>
+      </span>,
+      <span>
+        <b dir="ltr">4</b> {t('Repair')} — {t('only the authorised lines; parts issued by the storekeeper')}
+      </span>,
+      <span>
+        <b dir="ltr">5</b> {t('Quality check')} — {t('inspector passes or fails')} <s>{t('GATE: never the same technician')}</s>
+      </span>,
+      <span>
+        <b dir="ltr">6</b> {t('Delivery')} — {t('checklist, customer sign-off, then the ZATCA invoice')}
+      </span>,
+      <span>{t('A card that skips a stage is refused by the server, not by habit.')}</span>
     )
   }
 
   function listDomains(): void {
-    domainNames(t).forEach((name, i) => {
+    push(<u>{t('THIRTEEN FUNCTIONAL DOMAINS')}</u>)
+    for (const domain of domainLines(t)) {
       push(
-        <span dir="ltr">
-          <b>{String(i + 1).padStart(2, '0')}/13</b> {name}
+        <span>
+          <b>{domain.name}</b> — {domain.body}
         </span>
       )
-    })
+    }
   }
 
   function listRoles(): void {
-    roleNames(t).forEach((name, i) => {
-      push(
-        <span dir="ltr">
-          <b>{String(i + 1).padStart(2, '0')}/14</b> {name}
-        </span>
-      )
-    })
-  }
-
-  function runProof(): void {
-    push(<u>{t('Results from deployments')}</u>)
-    for (const p of proof) {
+    push(<u>{t('FOURTEEN ROLES · APPROVAL CEILING IN SAR')}</u>)
+    for (const role of roleLines(t)) {
       push(
         <span>
-          <s>{p.from}</s> → <b>{p.to}</b> — {p.what}
+          {role.ceiling === '0' ? <s dir="ltr">{role.ceiling}</s> : <b dir="ltr">{role.ceiling}</b>} {role.name}
         </span>
       )
     }
+    push(<span>{t('A role that may approve nothing is not a lesser role — it is a boundary.')}</span>)
   }
 
-  function runLedger(): void {
-    push(<u>{t('ZATCA PHASE 2 · VAT 15%')}</u>)
-    for (const line of ledger.lines) {
-      push(
-        <span>
-          {line.label} <b dir="ltr">{line.amount}</b>
-        </span>
-      )
-    }
+  function zatca(): void {
     push(
+      <u>{t('ZATCA PHASE 2 — EVERY INVOICE, FIVE STEPS')}</u>,
       <span>
-        {t('Total')} <b dir="ltr">{ledger.total}</b>
+        <b dir="ltr">1</b> {t('UBL 2.1 XML generated from the invoice itself')}
+      </span>,
+      <span>
+        <b dir="ltr">2</b> {t('TLV QR code, five tags, printed on the document')}
+      </span>,
+      <span>
+        <b dir="ltr">3</b> {t('SHA-256 hash, chained to the invoice before it')}
+      </span>,
+      <span>
+        <b dir="ltr">4</b> {t('X.509 signature applied')}
+      </span>,
+      <span>
+        <b dir="ltr">5</b> {t('Fatoora API —')} <b>{t('standard')}</b> {t('cleared in real time,')} <b>{t('simplified')}</b> {t('reported')}
+      </span>,
+      <span>{t('VAT is computed on the server at the ZATCA rate. Retained seven years.')}</span>
+    )
+  }
+
+  function parts(): void {
+    push(
+      <u>{t('HOW A PART REACHES A JOB CARD')}</u>,
+      <span>
+        <b>{t('requisition')}</b> — {t('raised against the job')} <s>{t('never approved by the same person')}</s>
+      </span>,
+      <span>
+        <b>{t('order')}</b> — {t('approved within the role ceiling, sent to the supplier')}
+      </span>,
+      <span>
+        <b>{t('received')}</b> — {t('checked against the order and costed into stock')}
+      </span>,
+      <span>
+        <b>{t('issued')}</b> — {t('storekeeper issues it to the card; stock is a sum of movements')}
       </span>
     )
-    push(<span>{t('Illustrative figures, not customer data.')}</span>)
   }
 
-  function runFaq(): void {
-    push(<u>{t('Asked before every demo')}</u>)
-    for (const item of faqExcerpts(t)) {
-      push(
-        <span>
-          <b>{item.q}</b> — {item.a}
-        </span>
-      )
-    }
-  }
-
-  function runWarp(arg: string): void {
-    const era = eras.find((e) => e.year === arg.trim())
-    if (!era) {
-      push(
-        <span>
-          <s>{t('No waypoint there.')}</s> {t('The roadmap stops at:')}{' '}
-          <b dir="ltr">{eras.map((e) => e.year).join(', ')}</b>
-        </span>
-      )
-      return
-    }
+  function pricing(): void {
     push(
+      <u>{t('THREE PLANS · SAR, EXCLUDING VAT')}</u>,
       <span>
-        ▸ {t('Jumping to')} <u dir="ltr">{era.year}</u> — {era.status}
+        <b>{t('Starter')}</b> — <span dir="ltr">999</span> {t('/ month — 1 branch, 10 users')}
       </span>,
-      <b>{era.headline}</b>,
-      <span>{era.body}</span>
+      <span>
+        <b>{t('Professional')}</b> — <span dir="ltr">2,499</span> {t('/ month — 3 branches, 50 users')}
+      </span>,
+      <span>
+        <b>{t('Enterprise')}</b> — {t('by quotation — unlimited branches and users')}
+      </span>,
+      <span>{t('Annual billing takes 15% off. See Access for the full comparison.')}</span>
     )
-    document.getElementById('roadmap')?.scrollIntoView?.({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    })
   }
 
   function salis(): void {
     push(
-      <u>{t('What this page actually is')}</u>,
-      <span>{t('A real feature tour of SALIS AUTO, styled as a future-facing concept page.')}</span>,
-      <span>{t('Every domain, role, number and quote shown here is drawn from the real product.')}</span>,
-      <span>{t('The roadmap section is the only place that speculates, and it says so.')}</span>,
+      <u>{t('What this is')}</u>,
+      <span>{t('SALIS AUTO — a multi-tenant garage management platform for the Saudi market:')}</span>,
+      <span>{t('workshop operations, parts and inventory, ZATCA-compliant invoicing and')}</span>,
+      <span>{t('accounting, CRM, HR, procurement, and the customer, technician, supplier')}</span>,
+      <span>{t('and procurement portals. Arabic and English.')}</span>,
       <span>
-        {t('Full pricing and details are at')} <b dir="ltr">/public-portal/pricing</b>.
+        <s>{t('Figures on this page are sample data.')}</s>
       </span>
     )
   }
 
-  const COMMANDS: Record<string, (arg: string) => void> = {
+  const COMMANDS: Record<string, () => void> = {
     help,
     ls: help,
     '?': help,
     status,
+    lifecycle,
     domains: listDomains,
     roles: listRoles,
-    proof: runProof,
-    ledger: runLedger,
-    faq: runFaq,
-    warp: runWarp,
+    zatca,
+    parts,
+    pricing,
     salis,
     clear: () => setLines([]),
   }
@@ -253,16 +281,14 @@ export function CommandDeck({ t, eras, proof, ledger, domainCount, roleCount }: 
     const input = raw.trim()
     if (!input) return
     push(<span className="you">▸ {input}</span>)
-    const parts = input.split(/\s+/)
-    const cmd = (parts.shift() ?? '').toLowerCase()
-    const arg = parts.join(' ')
+    const cmd = (input.split(/\s+/)[0] ?? '').toLowerCase()
     const handler = COMMANDS[cmd]
-    if (handler) handler(arg)
+    if (handler) handler()
     else
       push(
         <span>
           <s>
-            {cmd}: {t('not a known command.')}
+            {cmd}: {t('not a command here.')}
           </s>{' '}
           {t('Try')} <b>help</b>.
         </span>
@@ -275,13 +301,13 @@ export function CommandDeck({ t, eras, proof, ledger, domainCount, roleCount }: 
     setValue('')
   }
 
-  const chips = ['help', 'status', 'domains', 'roles', 'proof', 'warp 2030', 'salis']
+  const chips = ['help', 'status', 'lifecycle', 'domains', 'roles', 'zatca', 'pricing', 'salis']
 
   return (
     <div>
       <div className="panel deck rise">
         <div className="deck-bar">
-          <i aria-hidden="true" /> SALIS://workshop-os — {t('local shell, no network')}
+          <i aria-hidden="true" /> SALIS://riyadh — {t('local shell, no network')}
         </div>
         <div className="deck-out mono" ref={outRef} role="log" aria-live="polite">
           {lines.map((line) => (

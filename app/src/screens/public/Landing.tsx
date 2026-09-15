@@ -13,23 +13,30 @@ import { isPageKey, type PageKey } from './landing/types'
 import './landing/landing.css'
 
 /** PublicPortal.Landing — a six-page tour of SALIS AUTO (Arrival / System /
- *  Grid / Access / Origin / Channel), styled as a dark, futuristic HUD
- *  concept page. It began as a full port of a speculative "SALIS AUTO 2060"
- *  design artifact whose content was entirely invented fiction; that content
- *  has since been replaced end to end with the real product's own facts —
- *  the same domains, roles, lifecycle stages, proof figures, pricing plans
- *  and FAQ the rest of the public site states in plain language. Only the
- *  roadmap section (`#roadmap` on Arrival) still looks forward, and every
- *  entry on it past 2025 is labelled a vision or an in-progress feature, not
- *  a claim — the same honesty rule the rest of the page follows throughout.
+ *  Grid / Access / Origin / Channel), styled as a dark, futuristic HUD. It is
+ *  a faithful port of the "SALIS AUTO 2030" design artifact: that artifact's
+ *  own six pages, section for section, with its own copy — the six-stage job
+ *  card and its two gates, the thirteen domains in English and Arabic, the
+ *  fourteen roles and their approval ceilings, the six separated duty pairs,
+ *  the parts flow from requisition to issue, the six portal doors, the three
+ *  plans and the comparison matrix, the principles and dispatches, and the
+ *  ways to reach a person.
  *
- *  The artifact this page's shell is drawn from was a standalone six-document
- *  site with its own header, nav, language toggle, skip link and boot
- *  sequence. All of that is dropped — PublicShell already supplies the
- *  site's real header, footer, nav and language toggle. What is kept is the
- *  six pages' visual identity and structure, plus a lightweight in-page tab
- *  nav (`PageNav`) for moving between them, since PublicShell's own nav does
- *  not know about pages that live inside one screen.
+ *  Every figure on a "live" panel — the bay board, the meters, the throughput
+ *  bars, the activity and store-floor streams, the order stream, the branch
+ *  roll-call, the invoice — is the artifact's own sample data, and is labelled
+ *  as sample data wherever it is shown, exactly as the artifact labels it. The
+ *  artifact re-rolls those figures from a seeded RNG on a timer; here they are
+ *  frozen at one representative reading, because a number that moves on its
+ *  own reads as live telemetry and there is no tenant behind this page.
+ *
+ *  The artifact was a standalone six-document site with its own header, nav,
+ *  language toggle, skip link and boot sequence. All of that is dropped —
+ *  PublicShell already supplies the site's real header, footer, nav and
+ *  language toggle. What is kept is the six pages' visual identity and
+ *  structure, plus a lightweight in-page tab nav (`PageNav`) for moving
+ *  between them, since PublicShell's own nav does not know about pages that
+ *  live inside one screen.
  *
  *  One route (`/public-portal/landing`), six pages as React state rather
  *  than six routes, so exactly one page's markup is ever mounted — which is
@@ -41,12 +48,18 @@ import './landing/landing.css'
  *  back/forward and shared links work without adding six entries to the
  *  browser history for one visit.
  *
- *  The artifact's three WebGL scenes (a hand-rolled 3D hovercar, animated
- *  dispatch arcs, a supply-mesh flow) are not ported — see the doc comment
- *  at the top of `landing/landing.css`. Every CTA on every page is a real
- *  destination: an in-page scroll, an in-page page switch, or a `<Link>` to
- *  a route that already exists (book a demo, real pricing, real contact,
- *  the real portals, the real careers and blog pages).
+ *  The artifact's canvas/WebGL scenes (a hand-rolled 3D service vehicle, the
+ *  branch map with animated transfer arcs, the supply-mesh flow, the spinning
+ *  diagnostic orb, the carrier signal) are reimplemented as static SVG drawn
+ *  at rest — see the doc comment at the top of `landing/landing.css`. Two
+ *  content departures, both for the same reason: the artifact's six portal
+ *  doors become three real `<Link>`s and three informational tiles, because
+ *  only customer, technician and supplier have a public route; and the
+ *  Channel page's deliberately-local contact form is dropped, because a form
+ *  that reads your text back and throws it away is honest inside a design
+ *  document and a dead end inside the real application. Every remaining CTA
+ *  is a real destination: an in-page scroll, an in-page page switch, or a
+ *  `<Link>` to a route that already exists.
  *
  *  `IndexPage`'s bay-board mock also carries `<CornerBrackets>`, the same
  *  instrument-panel corner accent other public pages borrowed from this

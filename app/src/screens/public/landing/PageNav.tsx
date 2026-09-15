@@ -6,17 +6,18 @@ interface PageDef {
   readonly note: string
 }
 
-/** The six pages, their nav label and a real one-line note for each — a
- *  function of `t` rather than a module constant, so every string here is a
- *  literal `t(...)` call site `check-i18n` can see. */
+/** The six pages, their nav label and their one-line note — the `PAGES` array
+ *  from the "SALIS AUTO 2030" artifact, verbatim. A function of `t` rather
+ *  than a module constant, so every string here is a literal `t(...)` call
+ *  site `check-i18n` can see. */
 export function pageDefs(t: T): readonly PageDef[] {
   return [
-    { key: 'index', label: t('Arrival'), note: t('The pitch, the lifecycle and the proof') },
-    { key: 'system', label: t('System'), note: t('Thirteen domains and fourteen roles') },
-    { key: 'grid', label: t('Grid'), note: t('Parts, procurement and the three portals') },
-    { key: 'access', label: t('Access'), note: t('The real plans, and what each includes') },
-    { key: 'origin', label: t('Origin'), note: t('Who builds this, and who is hiring') },
-    { key: 'channel', label: t('Channel'), note: t('Book a demo, or ask a question') },
+    { key: 'index', label: t('Arrival'), note: t('The workshop floor, and what the system does on it') },
+    { key: 'system', label: t('System'), note: t('Thirteen domains, fourteen roles, one contract') },
+    { key: 'grid', label: t('Grid'), note: t('Parts, purchasing, suppliers and the portals') },
+    { key: 'access', label: t('Access'), note: t('What a month costs and what comes with it') },
+    { key: 'origin', label: t('Origin'), note: t('Who builds this, what it holds to, who it is for') },
+    { key: 'channel', label: t('Channel'), note: t('Book a demo, ask a question, start a pilot') },
   ]
 }
 

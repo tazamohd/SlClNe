@@ -1,4 +1,4 @@
-/** The six pages of the `SALIS AUTO 2060` concept screen. One route
+/** The six pages of the `SALIS AUTO 2030` screen. One route
  *  (`/public-portal/landing`), six in-page views selected by React state and
  *  mirrored to `location.hash` — see `Landing.tsx`. */
 export type PageKey = 'index' | 'system' | 'grid' | 'access' | 'origin' | 'channel'

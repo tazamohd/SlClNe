@@ -25,7 +25,7 @@ function renderPublic(ui: ReactElement, route = '/') {
 }
 
 const PAGES: readonly { name: string; h1: string; title: string }[] = [
-  { name: 'PublicPortal.Landing', h1: 'Workshop Management. Saudi Standard.', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
+  { name: 'PublicPortal.Landing', h1: 'SALIS AUTO 2030', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
   {
@@ -108,16 +108,14 @@ describe('Tier A public pages', () => {
     window.localStorage.clear()
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Workshop Management. Saudi Standard.' })
-    ).toBeInTheDocument()
-    // The Arrival page's hero CTA pair, both with real destinations. "Book a
-    // 20-minute demo" repeats in the FAQ/next-steps content, hence getAllByRole.
-    expect(screen.getAllByRole('link', { name: 'Book a 20-minute demo' })[0]).toHaveAttribute(
-      'href',
-      '/public-portal/book-demo'
-    )
-    expect(screen.getByRole('link', { name: /See where it.s headed/ })).toHaveAttribute('href', '#roadmap')
+    expect(screen.getByRole('heading', { level: 1, name: 'SALIS AUTO 2030' })).toBeInTheDocument()
+    // The Arrival page's hero CTA pair, both with real destinations: one
+    // scrolls to the workshop floor, one to the release rail. Neither is a
+    // decorative dead end, and neither invents a route.
+    expect(screen.getByRole('button', { name: /See the workshop floor/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'The road to 1.0' })).toHaveAttribute('href', '#chrono')
+    // The hero's own honesty label, carried over from the source artifact.
+    expect(screen.getByText('Figures on the live panels are sample data.')).toBeInTheDocument()
   })
 
   it('Landing renders in Arabic with the document flipped to RTL', () => {
@@ -126,7 +124,7 @@ describe('Tier A public pages', () => {
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
     // The hero CTA carries the Arabic translation from `ar-overrides.ts`.
-    expect(screen.getAllByRole('link', { name: 'احجز عرضاً لعشرين دقيقة' })[0]).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /شاهد أرضية الورشة/ })).toBeInTheDocument()
   })
 
   it('Landing switches its six in-page pages and mirrors the choice to the hash', () => {
@@ -142,11 +140,25 @@ describe('Tier A public pages', () => {
     expect(window.location.hash).toBe('#system')
   })
 
-  it("Grid's three portal doors link to the real portal routes, not a decorative dead end", () => {
+  it("Grid's six doors are three real portal links and three informational tiles", () => {
     window.location.hash = ''
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     fireEvent.click(screen.getByRole('button', { name: /^Grid/ }))
+
+    // All six doors from the design are rendered.
+    for (const door of [
+      'The customer door',
+      'The technician door',
+      'The supplier door',
+      'The procurement door',
+      'The kiosk door',
+      'The admin door',
+    ]) {
+      expect(screen.getByRole('heading', { name: door })).toBeInTheDocument()
+    }
+
+    // The three with a public route carry a real link to it.
     expect(screen.getByRole('link', { name: 'Open the customer portal' })).toHaveAttribute(
       'href',
       '/public-portal/customer-portal'
@@ -158,6 +170,41 @@ describe('Tier A public pages', () => {
     expect(screen.getByRole('link', { name: 'Open the supplier portal' })).toHaveAttribute(
       'href',
       '/public-portal/supplier-portal'
+    )
+
+    // The other three say where they live instead of inventing a route: three
+    // tiles, three notes, and no fourth/fifth/sixth link out of this section.
+    expect(
+      screen.getAllByText('Inside the signed-in application — this door has no public page.')
+    ).toHaveLength(3)
+    const doors = screen.getByRole('region', { name: 'Six doors' })
+    expect(doors.querySelectorAll('a')).toHaveLength(3)
+  })
+
+  it('Access names what each plan carries but quotes no price — pricing has one home', () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Access/ }))
+
+    // The plans are still here, by name and by what they contain.
+    for (const plan of ['Starter', 'Professional', 'Enterprise']) {
+      expect(screen.getAllByText(plan).length).toBeGreaterThan(0)
+    }
+    expect(screen.getByText('1 branch · up to 5 users · 10 GB of documents')).toBeInTheDocument()
+
+    // No plan quotes a figure: the pricing page is the only place a price is
+    // published, so the two can never drift into naming different numbers.
+    // (The FAQ's "SAR 5,000 per invoice" stays — that is ZATCA's penalty, not
+    // ours, which is why this looks at the plans rather than the whole page.)
+    const plans = screen.getByRole('region', { name: 'Three plans' })
+    expect(plans.textContent).not.toMatch(/SAR\s*\d/)
+    expect(plans.textContent).not.toMatch(/\/mo\b/)
+
+    // And it says so with a real link rather than leaving you to hunt.
+    expect(screen.getAllByRole('link', { name: 'See pricing' })[0]).toHaveAttribute(
+      'href',
+      '/public-portal/pricing'
     )
   })
 
@@ -177,9 +224,15 @@ describe('Tier A public pages', () => {
     const input = screen.getByPlaceholderText('type a command, or `help`')
     fireEvent.change(input, { target: { value: 'status' } })
     fireEvent.submit(input.closest('form') as HTMLFormElement)
-    // The deck's `status` answer states the real domain and role counts —
-    // never an invented diagnostic or telemetry reading.
-    expect(screen.getByText(/ZATCA Phase 2, live/)).toBeInTheDocument()
+    // `status` answers from this page alone, and says so: its heading names the
+    // sample tenant rather than implying a live reading off somebody's floor.
+    expect(screen.getByText('SAMPLE TENANT — RIYADH')).toBeInTheDocument()
+    expect(screen.getByText('Sample data. No tenant data reaches this page.')).toBeInTheDocument()
+
+    // `lifecycle` states the two real gates on the six-stage job card.
+    fireEvent.change(input, { target: { value: 'lifecycle' } })
+    fireEvent.submit(input.closest('form') as HTMLFormElement)
+    expect(screen.getByText('GATE: never the same technician')).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {
