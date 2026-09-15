@@ -76,7 +76,7 @@ export function PublicLanding() {
   const t = useT()
   const root = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState<PageKey>(() => pageFromHash())
-  useLandingMotion(root)
+  useLandingMotion(root, [page])
 
   // Deep-linkable via hash: a direct load or a paste of `#system` etc. opens
   // straight to that page, and switching pages updates the hash in place
