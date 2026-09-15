@@ -176,7 +176,7 @@ export function ChannelPage({ t }: { t: T }) {
               <tr>
                 <th>{t('Contact page')}</th>
                 <td style={{ textAlign: 'start' }}>
-                  <Link className="coords-real" to="/public-portal/contact">
+                  <Link className="coords-real" dir="ltr" to="/public-portal/contact">
                     /public-portal/contact
                   </Link>
                 </td>
@@ -186,7 +186,7 @@ export function ChannelPage({ t }: { t: T }) {
               <tr>
                 <th>{t('Book a demo')}</th>
                 <td style={{ textAlign: 'start' }}>
-                  <Link className="coords-real" to="/public-portal/book-demo">
+                  <Link className="coords-real" dir="ltr" to="/public-portal/book-demo">
                     /public-portal/book-demo
                   </Link>
                 </td>
