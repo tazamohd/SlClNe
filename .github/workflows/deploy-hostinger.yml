@@ -28,6 +28,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # TEMPORARY — the FTP upload below keeps failing with
+      # "getaddrinfo EAI_AGAIN" (DNS resolution failure for the FTP
+      # hostname) even after the HOSTINGER_FTP_SERVER secret was
+      # reportedly updated twice. GitHub masks the secret's literal
+      # value in logs, so this reports only length/shape signals plus
+      # whether the runner's own resolver can actually resolve it —
+      # the same DNS step Node.js performs — without ever printing the
+      # value itself. Remove once the upload succeeds.
+      - name: Debug — inspect FTP server hostname shape and resolvability
+        run: |
+          v="${{ secrets.HOSTINGER_FTP_SERVER }}"
+          echo "length: ${#v} chars"
+          echo "dot count: $(echo -n "$v" | tr -cd '.' | wc -c)"
+          echo "starts with http:// or https://: $(echo "$v" | grep -qi '^https\?://' && echo yes || echo no)"
+          echo "contains whitespace: $(echo "$v" | grep -q '[[:space:]]' && echo yes || echo no)"
+          echo "contains a slash: $(echo "$v" | grep -q '/' && echo yes || echo no)"
+          if getent hosts "$v" > /dev/null 2>&1; then
+            echo "getent hosts resolution: SUCCESS"
+          else
+            echo "getent hosts resolution: FAILED (exit $?)"
+          fi
+
       - name: Upload site/ to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
