@@ -4401,4 +4401,5 @@ export const AR_OVERRIDES: Record<string, string> = {
   "The figures live on the pricing page, so there is one place for them to be right.": "الأرقام موجودة في صفحة الأسعار، ليكون لها موضع واحد تصحّ فيه.",
   "Three plans. Every plan carries the whole product —": "ثلاث باقات. كل باقة تحمل المنتج كاملًا —",
   "on every plan": "في كل باقة",
+  "The three plans, and what each one carries": "الباقات الثلاث، وما تحمله كل واحدة",
 }

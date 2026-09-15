@@ -15,7 +15,7 @@ export function pageDefs(t: T): readonly PageDef[] {
     { key: 'index', label: t('Arrival'), note: t('The workshop floor, and what the system does on it') },
     { key: 'system', label: t('System'), note: t('Thirteen domains, fourteen roles, one contract') },
     { key: 'grid', label: t('Grid'), note: t('Parts, purchasing, suppliers and the portals') },
-    { key: 'access', label: t('Access'), note: t('What a month costs and what comes with it') },
+    { key: 'access', label: t('Access'), note: t('The three plans, and what each one carries') },
     { key: 'origin', label: t('Origin'), note: t('Who builds this, what it holds to, who it is for') },
     { key: 'channel', label: t('Channel'), note: t('Book a demo, ask a question, start a pilot') },
   ]
