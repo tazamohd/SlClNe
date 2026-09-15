@@ -247,6 +247,7 @@ html[lang="ar"] .salis-landing .era .yr small{font-family:var(--f-ar);letter-spa
 @media (max-width:900px){.salis-landing .masthead-grid{grid-template-columns:1fr}}
 .salis-landing .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair)}
 .salis-landing .stats.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.salis-landing .stats.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .salis-landing .stats > div{background:var(--void-2);padding:16px 18px}
 .salis-landing .stats .k{font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 html[lang="ar"] .salis-landing .stats .k{font-family:var(--f-ar);letter-spacing:0;font-size:11px}

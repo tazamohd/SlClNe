@@ -14,8 +14,18 @@ import { useEffect, type RefObject } from 'react'
  *  scenes are not ported at all (see the doc comment at the top of
  *  `landing.css`), so this hook only does what today's markup can use:
  *  reveal, tilt, and the counted-figure convention already used elsewhere in
- *  the codebase for a couple of hero KPIs. */
-export function useLandingMotion(ref: RefObject<HTMLElement | null>): void {
+ *  the codebase for a couple of hero KPIs.
+ *
+ *  `deps` re-arms the whole effect — a fresh reveal scan, a fresh tilt
+ *  listener set, a fresh counter scan — whenever it changes. The six-page
+ *  tour needs this: switching pages swaps in a whole new set of `.rise`
+ *  elements via React state, not a remount, so without a deps bump tied to
+ *  the active page, `querySelectorAll` above never sees them and they sit at
+ *  the resting `.rise` opacity forever. Pass `[page]` from the caller. */
+export function useLandingMotion(
+  ref: RefObject<HTMLElement | null>,
+  deps: readonly unknown[] = []
+): void {
   useEffect(() => {
     const root = ref.current
     if (!root) return
@@ -129,5 +139,5 @@ export function useLandingMotion(ref: RefObject<HTMLElement | null>): void {
       for (const cleanup of cleanups) cleanup()
       root.classList.remove('is-ready', 'motion-ready')
     }
-  }, [ref])
+  }, [ref, ...deps])
 }

@@ -54,7 +54,7 @@ export function OriginPage({ t }: { t: T }) {
             </p>
           </div>
           <div className="rise">
-            <div className="stats two">
+            <div className="stats three">
               {stats(t).map((s) => (
                 <div key={s.label}>
                   <div className="k">{s.label}</div>
