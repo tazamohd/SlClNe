@@ -14,7 +14,7 @@
  *                     nothing keeps its cache and one that changed anything
  *                     gets a fresh one and drops the old.
  *    __SW_SCOPE__     the base path, because GitHub Pages serves this under
- *                     /<repo>/ while Netlify, Vercel and the container serve it
+ *                     /<repo>/ while Vercel and the container serve it
  *                     at the root.
  *    __SW_PRECACHE__  the shell: index.html, the entry bundle, the vendor
  *                     chunks, the stylesheet, the fonts, the icon, the manifest.

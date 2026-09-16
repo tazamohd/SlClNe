@@ -22,7 +22,7 @@ import { isNative } from './native'
 
 /** Where the worker lives, and the scope it controls.
  *
- *  Both come from `BASE_URL`, which is `/` for Netlify, Vercel and the
+ *  Both come from `BASE_URL`, which is `/` for Vercel and the
  *  container, and `/<repo>/` on GitHub Pages. A worker registered at the origin
  *  root from a page served under a sub-path would be refused by the browser,
  *  and one registered without an explicit scope would only ever see the
