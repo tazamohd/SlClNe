@@ -7,7 +7,7 @@
 
 # RBAC matrix
 
-**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-09
 
 28 modules × 15 roles = 420 cells, of which 217 carry at least one grant.
 

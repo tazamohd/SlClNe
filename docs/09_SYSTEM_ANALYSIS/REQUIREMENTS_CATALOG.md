@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 150 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · 151 requirements
 
 ## What these requirements are, and what they are not
 
@@ -36,12 +36,12 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 
 | ID | Statement | Capability | Endpoints | Screens | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| FR-WORKSHOP-001 | The system provides workshop operations through 16 screens and 76 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 76 | 16 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-WORKSHOP-001 | The system provides workshop operations through 16 screens and 77 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 77 | 16 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERS-001 | The system provides customer management through 3 screens and 19 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 19 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-VEHICLES-001 | The system provides vehicle management through 4 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-INVENTORY-001 | The system provides parts and inventory through 7 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PROCUREMENT-001 | The system provides procurement through 1 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 1 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 24 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 24 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-ACCOUNTING-001 | The system provides accounting and finance through 7 screens and 50 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 50 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-HR-001 | The system provides hr and payroll through 5 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 5 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CRM-001 | The system provides crm and sales through 12 screens and 45 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 45 | 12 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -104,11 +104,11 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-CUSTOMERS | `customers` holds 19 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-VEHICLES | `vehicles` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-SERVICES | `services` holds 11 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
-| DR-JOB-CARDS | `job_cards` holds 21 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-JOB-CARDS | `job_cards` holds 22 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-APPOINTMENTS | `appointments` holds 23 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
-| DR-ESTIMATES | `estimates` holds 25 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-ESTIMATES | `estimates` holds 28 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-ESTIMATE-LINES | `estimate_lines` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
-| DR-INVOICES | `invoices` holds 28 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-INVOICES | `invoices` holds 29 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-INVOICE-LINES | `invoice_lines` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-PAYMENTS | `payments` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-RECEIPTS | `receipts` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
@@ -129,7 +129,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-PUBLIC-LEADS | `public_leads` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-CUSTOMER-FEEDBACK | `customer_feedback` holds 14 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-CHART-OF-ACCOUNTS | `chart_of_accounts` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
-| DR-JOURNAL-ENTRIES | `journal_entries` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-JOURNAL-ENTRIES | `journal_entries` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-JOURNAL-LINES | `journal_lines` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-EXPENSES | `expenses` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-BANK-STATEMENTS | `bank_statements` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-SAVED-REPORTS | `saved_reports` holds 13 columns, is tenant-scoped on `org_id` and is protected by row-level security. |

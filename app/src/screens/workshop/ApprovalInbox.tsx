@@ -13,8 +13,8 @@ import { useSession } from '@/providers/SessionProvider'
 import { useCollection, queryKeys, type RowOf } from '@/data/useCollection'
 import { canApprove, approvalLimit } from '@/data/rbac'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { approvals, type ApprovalQueue } from '@/data/repository'
-import { approveEstimate, rejectEstimate, transitionFailureMessage } from './api'
+import { approvals, type ApprovalItem, type ApprovalQueue } from '@/data/repository'
+import { approveQueueItem, rejectQueueItem, transitionFailureMessage } from './api'
 
 type Estimate = RowOf<'estimates'> & { _id?: string; totalHalalas?: number }
 
@@ -23,31 +23,87 @@ type Estimate = RowOf<'estimates'> & { _id?: string; totalHalalas?: number }
  *  `isSubmitter`) so the inbox and the approval engine cannot disagree; the
  *  fixture build fills the same fields from the client `canApprove` proxy, and
  *  cannot know `isSubmitter` because the fixture estimate does not record who
- *  raised it. */
+ *  raised it.
+ *
+ *  `approvePath`/`rejectPath` are the endpoints that decide *this* row. The
+ *  live queue is mixed — estimates, requisitions, purchase orders and insurance
+ *  claims — and each source approves at its own route, so the row carries the
+ *  route rather than the screen guessing it from `kind`. `rejectPath` is null
+ *  where the source has no reject route; the fixture build can only produce
+ *  estimates, so it fills both. */
 interface InboxItem {
   key: string
   ref: string
+  kind: ApprovalItem['kind']
   reference: string
-  cust: string
-  veh: string
+  party: string
+  subject: string
   status: string
   amountSar: number
   canApprove: boolean
   withinCeiling: boolean
   isSubmitter: boolean
   ceilingHalalas: number | null
+  approvePath: string
+  rejectPath: string | null
+}
+
+/** What each source is called, so the copy names the document in front of the
+ *  user rather than always saying "estimate".
+ *
+ *  Each entry is a **whole** translatable string, not a noun to be concatenated
+ *  into a sentence. Translating a verb phrase and its object separately and
+ *  joining them happens to read correctly in English and Arabic, and would not
+ *  survive a third language. These are still reached through a dynamic lookup,
+ *  which `check-i18n` cannot follow — it only sees literal keys — so every
+ *  value below is in `ar-overrides.ts`, checked by hand rather than by the
+ *  gate. (The scanner reads comments too: spelling a key out in prose here
+ *  would report it as an untranslated string.) */
+const KIND_NOUN: Record<ApprovalItem['kind'], string> = {
+  estimate: 'estimate',
+  requisition: 'requisition',
+  purchase_order: 'purchase order',
+  insurance_claim: 'insurance claim',
+}
+
+/** The badge on the row. */
+const KIND_LABEL: Record<ApprovalItem['kind'], string> = {
+  estimate: 'Estimate',
+  requisition: 'Requisition',
+  purchase_order: 'Purchase order',
+  insurance_claim: 'Insurance claim',
+}
+
+/** Why the approve button is unavailable when the role simply lacks authority
+ *  on that source's module. One complete sentence each. */
+const KIND_NO_AUTHORITY: Record<ApprovalItem['kind'], string> = {
+  estimate: 'Your role cannot approve estimates',
+  requisition: 'Your role cannot approve requisitions',
+  purchase_order: 'Your role cannot approve purchase orders',
+  insurance_claim: 'Your role cannot approve insurance claims',
+}
+
+const KIND_ICON: Record<ApprovalItem['kind'], string> = {
+  estimate: 'FileText',
+  requisition: 'ClipboardList',
+  purchase_order: 'ShoppingCart',
+  insurance_claim: 'Shield',
 }
 
 /** The approval inbox — everything waiting on the signer's authority.
  *
- *  The design paints a cross-domain queue: estimates, purchase orders, journal
- *  entries, payroll. Only estimates are a real, approvable document with a
- *  server action behind them (`POST /estimates/:id/approve`), so that is what
- *  this screen operates on. Purchase orders, journals and payroll have no
- *  approval endpoint yet and belong to other domains; a unified queue that
- *  aggregates all four does not exist server-side. Rather than invent rows for
- *  the three that cannot be actioned, the inbox shows the one it can act on and
- *  the gap is recorded in `workshop-approval-gaps.test.ts`.
+ *  The design paints a cross-domain queue. Four sources are real, approvable
+ *  documents with a ceiling-gated server action behind them — estimates,
+ *  requisitions, purchase orders and insurance claims — and `GET /approvals`
+ *  aggregates all four, each row naming the endpoint that decides it. The
+ *  server folds a source in only when the caller may view that source's own
+ *  module, so this screen renders whatever came back rather than filtering.
+ *
+ *  Payroll runs and journal entries are still absent, and deliberately: posting
+ *  a payroll run is gated on `hr:e` as an edit, not on a ceiling, and journal
+ *  entries are written by the business event that caused them. Neither has an
+ *  approval to show, so neither gets an unactionable row. The gap is recorded
+ *  in `workshop-approval-gaps.test.ts`.
  *
  *  The approve button is gated with `canApprove(role, amount, 'estimates')`,
  *  which the F-002 fix made answer *both* questions the server asks: does the
@@ -87,17 +143,20 @@ export function ApprovalInbox() {
   const queue = useMemo<InboxItem[]>(() => {
     if (approvals) {
       return (live.data?.rows ?? []).map((row) => ({
-        key: row.entityId,
+        key: `${row.kind}:${row.entityId}`,
         ref: row.entityId,
+        kind: row.kind,
         reference: row.reference,
-        cust: row.customerName,
-        veh: row.vehicleLabel,
+        party: row.party,
+        subject: row.subject,
         status: row.status,
         amountSar: row.amountHalalas / 100,
         canApprove: row.approval.canApprove,
         withinCeiling: row.approval.withinCeiling,
         isSubmitter: row.approval.isSubmitter,
         ceilingHalalas: row.approval.ceilingHalalas,
+        approvePath: row.approvePath,
+        rejectPath: row.rejectPath,
       }))
     }
     const rows = (estimates.data ?? []) as readonly Estimate[]
@@ -106,12 +165,14 @@ export function ApprovalInbox() {
       .map((e) => {
         const amountSar = e.totalHalalas != null ? e.totalHalalas / 100 : parseSar(e.amount)
         const withinCeiling = clientCeiling === null || amountSar <= clientCeiling
+        const ref = e._id ?? e.id
         return {
-          key: e._id ?? e.id,
-          ref: e._id ?? e.id,
+          key: `estimate:${ref}`,
+          ref,
+          kind: 'estimate' as const,
           reference: e.id,
-          cust: e.cust,
-          veh: e.veh,
+          party: e.cust,
+          subject: e.veh,
           status: e.status,
           amountSar,
           // The client proxy answers authority + ceiling; the server re-checks,
@@ -120,6 +181,8 @@ export function ApprovalInbox() {
           withinCeiling,
           isSubmitter: false,
           ceilingHalalas: clientCeiling === null ? null : clientCeiling * 100,
+          approvePath: `estimates/${encodeURIComponent(ref)}/approve`,
+          rejectPath: `estimates/${encodeURIComponent(ref)}/reject`,
         }
       })
   }, [live.data, estimates.data, clientCeiling, role])
@@ -142,11 +205,15 @@ export function ApprovalInbox() {
       : clientCeiling
 
   async function decide(item: InboxItem, action: 'approve' | 'reject') {
-    const { ref } = item
+    const { key, rejectPath } = item
+    const noun = KIND_NOUN[item.kind]
     if (action === 'reject') {
+      /* A source with no reject route never offers the button; this guard keeps
+       * that true if the two ever drift. */
+      if (!rejectPath) return
       const reason = await confirm({
-        title: 'Reject estimate?',
-        description: `${item.reference} — ${item.cust}. The raiser is notified. This cannot be undone.`,
+        title: `Reject ${noun}?`,
+        description: `${item.reference} — ${item.party}. The raiser is notified. This cannot be undone.`,
         icon: 'X',
         confirmLabel: 'Reject',
         destructive: true,
@@ -154,16 +221,18 @@ export function ApprovalInbox() {
       })
       if (!reason) return
     }
-    setBusy(ref)
+    setBusy(key)
     try {
       if (action === 'approve') {
-        await approveEstimate(ref)
+        await approveQueueItem(item.approvePath)
         toast.show({ title: t('Approved'), description: `${item.reference} · ${formatSar(item.amountSar)}` })
       } else {
         // The server requires a reason; the confirmation is the intent, and the
         // reason is recorded server-side. A dedicated reason field is a future
         // refinement — noted in the gaps test.
-        await rejectEstimate(ref, 'Rejected from the approval inbox.')
+        /* Non-null by the guard above: `action === 'reject'` returns early when
+         * the source has no reject route. */
+        await rejectQueueItem(rejectPath!, 'Rejected from the approval inbox.')
         toast.show({ title: t('Rejected'), description: `${item.reference}`, error: true })
       }
       void client.invalidateQueries({ queryKey: queryKeys.all('estimates') })
@@ -239,7 +308,7 @@ export function ApprovalInbox() {
           <p className="mt-0.5 text-xs leading-relaxed text-body">
             {approvals
               ? t(
-                  'An estimate raised by you cannot be approved by you. The queue flags one you raised from the server standing, and the server refuses it on submit either way.'
+                  'A document raised by you cannot be approved by you. The queue flags one you raised from the server standing, and the server refuses it on submit either way.'
                 )
               : t(
                   'An estimate raised by you cannot be approved by you. The server refuses that on submit — this inbox cannot show it in advance, because the estimate does not carry who raised it.'
@@ -258,7 +327,7 @@ export function ApprovalInbox() {
           <EmptyState
             icon="CheckCircle"
             title={t('Everything is handled')}
-            description={t('No estimates are waiting on a decision. New requests show up here.')}
+            description={t('Nothing is waiting on a decision. New requests show up here.')}
           />
         </Card>
       ) : (
@@ -267,7 +336,7 @@ export function ApprovalInbox() {
             {shown.map((item, index) => {
               const blocked = !item.withinCeiling
               const allowed = item.canApprove
-              const isBusy = busy === item.ref
+              const isBusy = busy === item.key
               /* Why the approve button is unavailable, in the row's own terms:
                * an over-ceiling item escalates; the raiser cannot approve their
                * own; otherwise the role simply lacks the authority. */
@@ -275,7 +344,7 @@ export function ApprovalInbox() {
                 ? t('You raised this — it needs a different approver.')
                 : blocked
                   ? `${t('Above your approval limit')} (${formatSar(ceiling ?? 0)}) — ${t('escalate to a manager')}`
-                  : t('Your role cannot approve estimates')
+                  : t(KIND_NO_AUTHORITY[item.kind])
               return (
                 <li
                   key={item.key}
@@ -285,13 +354,16 @@ export function ApprovalInbox() {
                   }
                 >
                   <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-tint-blue text-salis-blue">
-                    <Icon name="FileText" size={16} />
+                    <Icon name={KIND_ICON[item.kind]} size={16} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-mono text-[13px] font-bold text-heading" dir="ltr">
                         {item.reference}
                       </span>
+                      <Badge background="rgba(37,99,235,.10)" color="var(--salis-blue)">
+                        {t(KIND_LABEL[item.kind])}
+                      </Badge>
                       <StatusBadge value={item.status} label={t(item.status)} />
                       {blocked ? (
                         <Badge background="rgba(249,115,22,.13)" color="var(--salis-orange)">
@@ -306,8 +378,10 @@ export function ApprovalInbox() {
                         </Badge>
                       ) : null}
                     </div>
-                    <p className="mt-1 text-[13px] font-semibold text-heading">{item.cust}</p>
-                    <p className="mt-0.5 text-[11px] text-muted">{item.veh}</p>
+                    <p className="mt-1 text-[13px] font-semibold text-heading">{item.party}</p>
+                    {item.subject ? (
+                      <p className="mt-0.5 text-[11px] text-muted">{item.subject}</p>
+                    ) : null}
                   </div>
                   <div className="min-w-[96px] flex-shrink-0 text-end">
                     <Money sar={item.amountSar} className="text-sm font-extrabold text-heading" />
@@ -324,7 +398,7 @@ export function ApprovalInbox() {
                         {blocked && !item.isSubmitter ? t('Escalate') : t('Approve')}
                       </Button>
                     )}
-                    {allowed ? (
+                    {allowed && item.rejectPath ? (
                       <Button
                         variant="outline"
                         size="sm"

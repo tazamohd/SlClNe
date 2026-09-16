@@ -1134,7 +1134,7 @@ that can never become production data.
 | Local | Vite dev | Fastify + tsx watch | Docker Postgres + MinIO |
 | PR preview | Vercel/Netlify preview | Fly.io app | Neon branch DB |
 | Staging | production build, seeded | same as production | isolated |
-| Production | static CDN (Vercel/Cloudflare) | Fly.io / Railway / ECS, ≥2 instances | managed Postgres (Neon/RDS) + PITR |
+| Production | static CDN (Vercel) | Fly.io / Railway / ECS, ≥2 instances | managed Postgres (Neon/RDS) + PITR |
 
 **Staging gate (§55)** — production-like build deployed, migrations run against
 staging, auth tested, APIs tested, integrations tested, full E2E, visual
@@ -1387,7 +1387,7 @@ evidence for review, not permission to merge.
 - Credentials required before an integration can leave `BLOCKED`: ZATCA,
   payment gateway, Unifonic, WhatsApp Cloud API, SES, OIDC provider, map tiles,
   OBD bridge, insurance and loan partners.
-- Hosting accounts (Vercel/Cloudflare, Fly.io/Railway, Neon/RDS, Sentry) must be
+- Hosting accounts (Vercel, Fly.io/Railway, Neon/RDS, Sentry) must be
   provisioned before the staging gate.
 - `Payments`' headline figures deliberately diverge from the mock (documented in
   `app/README.md`); once the API is live they come from the ledger endpoint and

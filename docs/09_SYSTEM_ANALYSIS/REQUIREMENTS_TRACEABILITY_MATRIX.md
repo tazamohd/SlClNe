@@ -12,7 +12,7 @@
 
 # Requirements traceability matrix
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-09
 
 ## The chain
 
@@ -26,14 +26,14 @@ Every link below is derived from a real identifier — a permission module, a ta
 
 | Objective | Capability | Requirement | Entities | Endpoints | Permissioned roles | Screens | Rules | Linked test suites |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 76 | 12 | 16 | 0 | 13 |
+| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 77 | 12 | 16 | 0 | 16 |
 | OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 3 | 0 | 15 |
-| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 7 |
+| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 8 |
 | OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 12 |
-| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | **0** |
-| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 24 | 9 | 6 | 0 | 12 |
-| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 9 |
-| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 6 |
+| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | 2 |
+| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 25 | 9 | 6 | 0 | 13 |
+| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 11 |
+| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 7 |
 | OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 12 | 0 | 6 |
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
 | OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
@@ -62,11 +62,10 @@ Given a table, an endpoint, a permission or a screen, the registries answer the 
 
 The honest part of a traceability matrix is the list of links that do not exist.
 
-### Capabilities with no linked test suite (6 of 18)
+### Capabilities with no linked test suite (5 of 18)
 
 | Capability | Endpoints | Screens |
 | --- | --- | --- |
-| CAP-PROCUREMENT | 28 | 1 |
 | CAP-REPORTING | 0 | 11 |
 | CAP-PORTALS | 0 | 11 |
 | CAP-WEBSITE | 0 | 32 |
@@ -75,7 +74,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
-### Endpoints with no linked test (282 of 372)
+### Endpoints with no linked test (273 of 374)
 
 Linkage here is by path match between a spec file and a route. A test that exercises an endpoint indirectly — through a helper, or through a golden path — will not match, so this over-reports. It is still the right number to drive down.
 
@@ -103,6 +102,7 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/appointments/:id` | appointments:v |
 | PATCH | `/api/v1/appointments/:id` | appointments:e |
 | GET | `/api/v1/appointments/:id/history` | appointments:v |
+| POST | `/api/v1/appointments/:id/job-card` | jobcards:c |
 | POST | `/api/v1/appointments/bulk-delete` | appointments:d |
 | POST | `/api/v1/appointments/bulk-update` | appointments:e |
 | GET | `/api/v1/appointments/export` | appointments:x |
@@ -140,9 +140,8 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/crm/segments/:id` | crm:v |
 | GET | `/api/v1/crm/segments/:id/history` | crm:v |
 | GET | `/api/v1/crm/segments/export` | crm:x |
-| DELETE | `/api/v1/crm/tasks/:id` | crm:d |
 
-_…and 222 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
+_…and 213 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
 
 ### Rule guards with no test naming them (2 of 17)
 

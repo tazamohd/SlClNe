@@ -10,7 +10,7 @@
 
 # C4 model
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · **Scope:** CURRENT implementation
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · **Scope:** CURRENT implementation
 
 Everything on these diagrams exists in the repository today. Nothing planned is drawn.
 
@@ -43,9 +43,9 @@ flowchart TB
 flowchart TB
   browser["Web browser / Capacitor shell<br/>iOS + Android"]
   spa["<b>SPA</b><br/>React 18 + Vite + React Router<br/>TanStack Query, Zustand<br/>app/"]
-  api["<b>API</b><br/>Fastify 5 on Node<br/>372 endpoints under /api/v1<br/>server/"]
+  api["<b>API</b><br/>Fastify 5 on Node<br/>374 endpoints under /api/v1<br/>server/"]
   contract["<b>Shared contract</b><br/>Zod entities, RBAC matrix,<br/>business rules<br/>packages/contract/"]
-  db[("<b>PostgreSQL</b><br/>68 tables<br/>Row-level security on 64<br/>Drizzle ORM")]
+  db[("<b>PostgreSQL</b><br/>69 tables<br/>Row-level security on 65<br/>Drizzle ORM")]
   browser --> spa
   spa -->|"HTTPS, Bearer token"| api
   spa -.->|"types, RBAC, rules"| contract
@@ -66,7 +66,7 @@ flowchart TB
   end
   subgraph routing[Routing]
     generic["collections.ts<br/>241 generated routes<br/>from registry.ts"]
-    explicit["131 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
+    explicit["133 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
   end
   subgraph guards[Guards]
     perms["security/permissions.ts<br/>module + action"]
@@ -131,8 +131,8 @@ sequenceDiagram
 | estimates | 11 | CAP-WORKSHOP |
 | hr | 48 | CAP-HR |
 | inventory | 13 | CAP-INVENTORY |
-| invoices | 13 | CAP-BILLING |
-| jobcards | 56 | CAP-WORKSHOP |
+| invoices | 14 | CAP-BILLING |
+| jobcards | 57 | CAP-WORKSHOP |
 | payments | 11 | CAP-BILLING |
 | platform | 3 | CAP-PLATFORM |
 | procurement | 28 | CAP-PROCUREMENT |

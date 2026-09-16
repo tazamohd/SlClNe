@@ -8,7 +8,7 @@
 
 # ITIL service management
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-09
 
 Service catalogue, SLAs, incident, problem, change, release.
 

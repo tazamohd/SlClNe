@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-09",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -7,15 +7,15 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "entities": 68,
-    "tenantScoped": 63,
-    "branchScoped": 61,
-    "softDelete": 61,
-    "versioned": 61,
-    "audited": 60,
-    "withMoneyColumns": 30,
-    "rlsEnabled": 64,
-    "columns": 1128
+    "entities": 69,
+    "tenantScoped": 64,
+    "branchScoped": 62,
+    "softDelete": 62,
+    "versioned": 62,
+    "audited": 61,
+    "withMoneyColumns": 31,
+    "rlsEnabled": 65,
+    "columns": 1151
   },
   "entities": [
     {
@@ -260,6 +260,7 @@
         "REL-CUSTOMER-FEEDBACK-ORG-ID",
         "REL-CHART-OF-ACCOUNTS-ORG-ID",
         "REL-JOURNAL-ENTRIES-ORG-ID",
+        "REL-JOURNAL-LINES-ORG-ID",
         "REL-EXPENSES-ORG-ID",
         "REL-BANK-STATEMENTS-ORG-ID",
         "REL-SAVED-REPORTS-ORG-ID",
@@ -573,6 +574,7 @@
         "REL-CUSTOMER-FEEDBACK-BRANCH-ID",
         "REL-CHART-OF-ACCOUNTS-BRANCH-ID",
         "REL-JOURNAL-ENTRIES-BRANCH-ID",
+        "REL-JOURNAL-LINES-BRANCH-ID",
         "REL-EXPENSES-BRANCH-ID",
         "REL-BANK-STATEMENTS-BRANCH-ID",
         "REL-SAVED-REPORTS-BRANCH-ID",
@@ -2898,6 +2900,21 @@
           "references": null,
           "money": false,
           "presentational": false
+        },
+        {
+          "property": "appointmentId",
+          "column": "appointment_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
         }
       ],
       "indexes": [
@@ -2924,6 +2941,14 @@
           "columns": [
             "orgId",
             "assignedTechId"
+          ]
+        },
+        {
+          "name": "job_cards_appointment_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "appointmentId"
           ]
         }
       ],
@@ -2955,7 +2980,8 @@
         "REL-JOB-CARDS-BRANCH-ID",
         "REL-JOB-CARDS-CUSTOMER-ID",
         "REL-JOB-CARDS-VEHICLE-ID",
-        "REL-JOB-CARDS-ASSIGNED-TECH-ID"
+        "REL-JOB-CARDS-ASSIGNED-TECH-ID",
+        "REL-JOB-CARDS-APPOINTMENT-ID"
       ],
       "relationshipsIn": [
         "REL-ESTIMATES-JOB-CARD-ID",
@@ -3388,7 +3414,9 @@
         "REL-APPOINTMENTS-VEHICLE-ID",
         "REL-APPOINTMENTS-TECHNICIAN-ID"
       ],
-      "relationshipsIn": [],
+      "relationshipsIn": [
+        "REL-JOB-CARDS-APPOINTMENT-ID"
+      ],
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-CUSTOMER-PORTAL-SPEC-TS",
@@ -3771,6 +3799,51 @@
           "presentational": false
         },
         {
+          "property": "customerSignedAt",
+          "column": "customer_signed_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "customerSignatureChannel",
+          "column": "customer_signature_channel",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "customerSignatureChallengeId",
+          "column": "customer_signature_challenge_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
           "property": "notes",
           "column": "notes",
           "type": "text",
@@ -3845,7 +3918,8 @@
         "REL-ESTIMATES-VEHICLE-ID"
       ],
       "relationshipsIn": [
-        "REL-ESTIMATE-LINES-ESTIMATE-ID"
+        "REL-ESTIMATE-LINES-ESTIMATE-ID",
+        "REL-INVOICES-ESTIMATE-ID"
       ],
       "rlsEnabled": true,
       "tests": [
@@ -3855,7 +3929,8 @@
         "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-DETAIL-TEST-TSX",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
         "TS-SERVER-TESTS-API-TEST-TS",
-        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
       ]
     },
     {
@@ -4370,6 +4445,21 @@
           "presentational": false
         },
         {
+          "property": "estimateId",
+          "column": "estimate_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
           "property": "vehicleId",
           "column": "vehicle_id",
           "type": "varchar",
@@ -4612,6 +4702,14 @@
             "branchId",
             "status"
           ]
+        },
+        {
+          "name": "invoices_estimate_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "estimateId"
+          ]
         }
       ],
       "primaryKey": [
@@ -4650,6 +4748,7 @@
         "REL-INVOICES-BRANCH-ID",
         "REL-INVOICES-CUSTOMER-ID",
         "REL-INVOICES-JOB-CARD-ID",
+        "REL-INVOICES-ESTIMATE-ID",
         "REL-INVOICES-VEHICLE-ID"
       ],
       "relationshipsIn": [
@@ -4667,6 +4766,7 @@
         "TS-APP-TESTS-UNIT-DERIVATIONS-TEST-TS",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS",
         "TS-SERVER-TESTS-SEED-COHERENCE-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"
@@ -10765,7 +10865,9 @@
         "REL-CHART-OF-ACCOUNTS-ORG-ID",
         "REL-CHART-OF-ACCOUNTS-BRANCH-ID"
       ],
-      "relationshipsIn": [],
+      "relationshipsIn": [
+        "REL-JOURNAL-LINES-ACCOUNT-ID"
+      ],
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-ACCOUNTING-RECONCILIATION-SPEC-TS",
@@ -11024,6 +11126,36 @@
           "references": null,
           "money": false,
           "presentational": false
+        },
+        {
+          "property": "source",
+          "column": "source",
+          "type": "varchar",
+          "via": null,
+          "length": "32",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "sourceId",
+          "column": "source_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
         }
       ],
       "indexes": [
@@ -11033,6 +11165,15 @@
           "columns": [
             "orgId",
             "code"
+          ]
+        },
+        {
+          "name": "journal_entries_source_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "source",
+            "sourceId"
           ]
         }
       ],
@@ -11064,12 +11205,316 @@
         "REL-JOURNAL-ENTRIES-ORG-ID",
         "REL-JOURNAL-ENTRIES-BRANCH-ID"
       ],
-      "relationshipsIn": [],
+      "relationshipsIn": [
+        "REL-JOURNAL-LINES-JOURNAL-ENTRY-ID"
+      ],
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-ACCOUNTING-RECONCILIATION-SPEC-TS",
         "TS-APP-E2E-ACCOUNTING-SPEC-TS"
       ]
+    },
+    {
+      "id": "ENT-JOURNAL-LINES",
+      "property": "journalLines",
+      "table": "journal_lines",
+      "description": "The lines that make a journal entry double-entry (DF-001, DF-003). `journal_entries` carries only a header total, so before this table an \"entry\" could not name the accounts it moved and `checkJournalBalanced` — which takes lines and requires at least two — had nothing to be called with. Every posting route writes a header and its lines together, in one transaction, after the rule has passed. `accountCode` sits beside `accountId` on purpose: the code is what a person reads on a trial balance and what the posting rules are written against, and it stays legible on the row if the account is later renamed.",
+      "columns": [
+        {
+          "property": "id",
+          "column": "id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": true,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "orgId",
+          "column": "org_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": {
+            "table": "organizations",
+            "column": "id"
+          },
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "branchId",
+          "column": "branch_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdAt",
+          "column": "created_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedAt",
+          "column": "updated_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdBy",
+          "column": "created_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedBy",
+          "column": "updated_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "deletedAt",
+          "column": "deleted_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "version",
+          "column": "version",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "1",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "journalEntryId",
+          "column": "journal_entry_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "accountId",
+          "column": "account_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "accountCode",
+          "column": "account_code",
+          "type": "varchar",
+          "via": null,
+          "length": "24",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "debitHalalas",
+          "column": "debit_halalas",
+          "type": "bigint",
+          "via": "money",
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "0",
+          "references": null,
+          "money": true,
+          "presentational": false
+        },
+        {
+          "property": "creditHalalas",
+          "column": "credit_halalas",
+          "type": "bigint",
+          "via": "money",
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "0",
+          "references": null,
+          "money": true,
+          "presentational": false
+        },
+        {
+          "property": "narration",
+          "column": "narration",
+          "type": "text",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "sort",
+          "column": "sort",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "0",
+          "references": null,
+          "money": false,
+          "presentational": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "journal_lines_entry_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "journalEntryId"
+          ]
+        },
+        {
+          "name": "journal_lines_account_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "accountId"
+          ]
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ],
+      "foreignKeys": [
+        {
+          "column": "org_id",
+          "referencesProperty": "organizations",
+          "referencesColumn": "id",
+          "referencesTable": "organizations"
+        }
+      ],
+      "tenantScoped": true,
+      "branchScoped": true,
+      "softDelete": true,
+      "versioned": true,
+      "audited": true,
+      "moneyColumns": [
+        "debit_halalas",
+        "credit_halalas"
+      ],
+      "presentationalColumns": [],
+      "missingUniversal": [],
+      "endpoints": [],
+      "collection": null,
+      "relationshipsOut": [
+        "REL-JOURNAL-LINES-ORG-ID",
+        "REL-JOURNAL-LINES-BRANCH-ID",
+        "REL-JOURNAL-LINES-JOURNAL-ENTRY-ID",
+        "REL-JOURNAL-LINES-ACCOUNT-ID"
+      ],
+      "relationshipsIn": [],
+      "rlsEnabled": true,
+      "tests": []
     },
     {
       "id": "ENT-EXPENSES",

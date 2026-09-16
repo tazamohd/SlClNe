@@ -13,7 +13,7 @@
 
 # PRINCE2 register views
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-09
 
 ## How PRINCE2 is applied here
 

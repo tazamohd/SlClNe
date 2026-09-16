@@ -8,7 +8,7 @@
 
 # ACCOUNTING ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · 5 tables
 
 ### ACCOUNTING
 
@@ -32,6 +32,8 @@ erDiagram
     bigint debit_halalas
     bigint credit_halalas
     varchar status
+    varchar source
+    varchar source_id FK
   }
   expenses {
     varchar id PK

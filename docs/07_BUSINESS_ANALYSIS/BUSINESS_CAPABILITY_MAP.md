@@ -9,13 +9,13 @@
 
 # Business capability map
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 18 capabilities
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · 18 capabilities
 
 ## How capabilities are defined here
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 425 registered screens and all 372 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 425 registered screens and all 374 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -28,7 +28,7 @@ flowchart LR
   OBJ_CAPACITY["Use technician capacity well"]
   OBJ_VISIBILITY["Give owners operational visibility"]
   OBJ_CONTROL["Keep financial control auditable"]
-  CAP_WORKSHOP["Workshop operations<br/>16 screens · 76 endpoints"]
+  CAP_WORKSHOP["Workshop operations<br/>16 screens · 77 endpoints"]
   OBJ_THROUGHPUT --> CAP_WORKSHOP
   CAP_CUSTOMERS["Customer management<br/>3 screens · 19 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERS
@@ -38,7 +38,7 @@ flowchart LR
   OBJ_MARGIN --> CAP_INVENTORY
   CAP_PROCUREMENT["Procurement<br/>1 screens · 28 endpoints"]
   OBJ_MARGIN --> CAP_PROCUREMENT
-  CAP_BILLING["Invoicing and payments<br/>6 screens · 24 endpoints"]
+  CAP_BILLING["Invoicing and payments<br/>6 screens · 25 endpoints"]
   OBJ_CASH --> CAP_BILLING
   CAP_ACCOUNTING["Accounting and finance<br/>7 screens · 50 endpoints"]
   OBJ_CASH --> CAP_ACCOUNTING
@@ -70,12 +70,12 @@ flowchart LR
 
 | Capability | Name | Objective | Permission modules | Screens | Data-backed | Endpoints | Entities | Roles with access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 16 | 12 | 76 | 13 | 12 |
+| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 16 | 12 | 77 | 13 | 12 |
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 3 | 3 | 19 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 4 | 4 | 9 | 1 | 11 |
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 7 | 1 | 13 | 1 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 28 | 3 | 8 |
-| CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 24 | 4 | 9 |
+| CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 5 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
@@ -116,7 +116,7 @@ flowchart LR
 | Permission modules | `jobcards`, `appointments`, `estimates` |
 | Screen domains | `workshop` |
 | Screens | 16 (12 data-backed) |
-| Endpoints | 76 |
+| Endpoints | 77 |
 | Entities | `appointments`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, frontdesk, callcenter, customer, test |
 | Rule guards | — |
@@ -186,7 +186,7 @@ flowchart LR
 | Permission modules | `invoices`, `payments` |
 | Screen domains | — |
 | Screens | 6 (6 data-backed) |
-| Endpoints | 24 |
+| Endpoints | 25 |
 | Entities | `invoiceLines`, `invoices`, `payments`, `receipts` |
 | Roles with any grant | owner, superadmin, manager, advisor, accountant, frontdesk, callcenter, customer, test |
 | Rule guards | — |

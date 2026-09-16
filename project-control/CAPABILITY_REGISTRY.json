@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-09",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 425,
     "screensTotal": 425,
-    "endpointsMapped": 372,
-    "endpointsTotal": 372
+    "endpointsMapped": 374,
+    "endpointsTotal": 374
   },
   "capabilities": [
     {
@@ -67,7 +67,7 @@
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
-      "endpointCount": 76,
+      "endpointCount": 77,
       "endpoints": [
         "API-APPOINTMENTS-GET-LIST",
         "API-APPOINTMENTS-POST-LIST",
@@ -75,6 +75,7 @@
         "API-APPOINTMENTS-GETID",
         "API-APPOINTMENTS-PATCHID",
         "API-GET-APPOINTMENTS-ID-HISTORY",
+        "API-POST-APPOINTMENTS-ID-JOB-CARD",
         "API-APPOINTMENTS-POSTBULK-DELETE",
         "API-APPOINTMENTS-POSTBULK-UPDATE",
         "API-APPOINTMENTS-GETEXPORT",
@@ -442,8 +443,9 @@
       ],
       "objective": "OBJ-CASH",
       "objectiveName": "Shorten the cash cycle",
-      "endpointCount": 24,
+      "endpointCount": 25,
       "endpoints": [
+        "API-POST-ESTIMATES-ID-INVOICE",
         "API-INVOICELINES-GET-LIST",
         "API-INVOICELINES-GETID",
         "API-GET-INVOICE-LINES-ID-HISTORY",

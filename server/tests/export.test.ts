@@ -11,9 +11,15 @@
  *       than view, which is the entire reason the export column exists;
  *    3. the field-level redaction `presentRow` applies is honoured on the CSV,
  *       so an exporter never receives a column their role may not see;
- *    4. the RLS scope holds, so an export carries only the caller's own org.
+ *    4. the RLS scope holds, so an export carries only the caller's own org;
+ *    5. the export is written to the audit log (DF-006), so "who took the
+ *       customer list, and when" is answerable from `audit_log` — the one
+ *       question a bulk-egress control exists to answer.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { and, desc, eq } from 'drizzle-orm'
+import { withAuthPlane } from '../src/auth/context'
+import { auditLog } from '../src/db/schema'
 import { collectionByKey } from '../src/registry'
 import { presentRow, toCsv } from '../src/routes/collections'
 import type { Principal } from '../src/db/tenant'
@@ -198,5 +204,96 @@ describe('an export carries only the caller’s own tenant', () => {
     // …but the home org's record — reachable by the home owner a line above — is
     // invisible across the tenant boundary, exactly as it is on the list route.
     expect(neighbour.body).not.toContain(homeId as string)
+  })
+})
+
+/* ──────────────────────────────────────────── the egress is on the record */
+
+describe('a bulk export is audited (DF-006)', () => {
+  /** The newest audit row for a collection's entity, read on the auth plane —
+   *  a direct `db.execute` carries no tenant context, so `app_org()` is null
+   *  and RLS matches nothing. */
+  async function latestExportAudit(entity: string) {
+    const [row] = await withAuthPlane(harness.handle.db, async (tx) =>
+      tx
+        .select()
+        .from(auditLog)
+        .where(and(eq(auditLog.entity, entity), eq(auditLog.action, 'export')))
+        .orderBy(desc(auditLog.id))
+        .limit(1),
+    )
+    return row
+  }
+
+  it('records the actor, the collection, the row count and the narrowing', async () => {
+    const owner = await harness.token('owner')
+    const res = await harness.app.inject({
+      method: 'GET',
+      url: '/api/v1/customers/export?q=a&sort=createdAt:desc',
+      ...auth(owner),
+    })
+    expect(res.statusCode, res.body).toBe(200)
+    /* The data rows the caller actually received, header line excluded. */
+    const received = csvLines(res.body).length - 1
+
+    const row = await latestExportAudit('customer')
+    expect(row, 'the export must have written an audit row').toBeDefined()
+    expect(row!.action).toBe('export')
+    expect(row!.actorRole).toBe('owner')
+    /* An act on a set, not on a record. */
+    expect(row!.entityId).toBeNull()
+
+    const after = row!.after as {
+      collection: string
+      format: string
+      rowCount: number
+      totalInScope: number
+      truncated: boolean
+      query: { q: string | null; sort: string | null; includeDeleted: boolean }
+    }
+    expect(after.collection).toBe('customers')
+    expect(after.format).toBe('csv')
+    /* The log's count is the count that left, not an estimate. */
+    expect(after.rowCount).toBe(received)
+    expect(after.truncated).toBe(false)
+    /* *Which* rows left: an export of every customer and an export of one
+     * search are different disclosures. */
+    expect(after.query.q).toBe('a')
+    expect(after.query.sort).toBe('createdAt:desc')
+    expect(after.query.includeDeleted).toBe(false)
+  })
+
+  it('writes nothing when the export is refused', async () => {
+    /* advisor holds `customers:vce` — view, but no `x`. Nothing was disclosed,
+     * so there is nothing to record; the gate throws before the transaction
+     * opens. */
+    const before = await latestExportAudit('customer')
+    const advisor = await harness.token('advisor')
+    const refused = await harness.app.inject({
+      method: 'GET',
+      url: '/api/v1/customers/export',
+      ...auth(advisor),
+    })
+    expect(refused.statusCode).toBe(403)
+    const after = await latestExportAudit('customer')
+    expect(after?.id).toBe(before?.id)
+  })
+
+  it('does not surface one org\'s export to another', async () => {
+    const otherOwner = await harness.token('owner', {
+      orgId: SEED.otherOrgId,
+      branchId: SEED.otherBranchId,
+    })
+    const res = await harness.app.inject({
+      method: 'GET',
+      url: '/api/v1/vehicles/export',
+      ...auth(otherOwner),
+    })
+    expect(res.statusCode, res.body).toBe(200)
+
+    /* The row landed under the neighbour's org, which is what makes the log
+     * readable per tenant rather than a shared pile. */
+    const row = await latestExportAudit('vehicle')
+    expect(row!.orgId).toBe(SEED.otherOrgId)
   })
 })

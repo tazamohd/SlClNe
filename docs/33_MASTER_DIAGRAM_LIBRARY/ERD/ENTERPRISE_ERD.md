@@ -8,7 +8,7 @@
 
 # ENTERPRISE ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 8 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · 8 tables
 
 ### ENTERPRISE
 

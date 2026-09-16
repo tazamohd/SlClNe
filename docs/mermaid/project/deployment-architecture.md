@@ -5,7 +5,7 @@ Deployment topology by security zone — DMZ, application tier, and isolated dat
 ```mermaid
 flowchart TB
     subgraph DMZ["DMZ — Public Network"]
-        CDN["Cloudflare CDN\nSSL termination, DDoS, edge cache"]
+        CDN["Vercel Edge\nTLS termination, DDoS mitigation, edge cache"]
         LB["NGINX / ALB\nLayer 7 routing, health checks"]
         CDN --> LB
     end

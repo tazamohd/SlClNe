@@ -8,7 +8,7 @@
 
 # Database
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-09
 
 Physical model, migrations, RLS, backup, retention.
 

@@ -10,7 +10,7 @@
 
 # API — approvals
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 5 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-09 · 5 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

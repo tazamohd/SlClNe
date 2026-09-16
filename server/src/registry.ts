@@ -216,6 +216,9 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       pr: row.priority,
       stage: row.stage,
       assignedTechId: row.assignedTechId,
+      /* The appointment this job card was opened from (DF-007), or null for a
+       * car that arrived at the counter. */
+      appointmentId: row.appointmentId ?? null,
     }),
   }),
 
@@ -279,6 +282,14 @@ export const COLLECTIONS: readonly CollectionDef[] = [
        * it so a screen can show who did approve, once one has. */
       submittedBy: row.submittedBy ?? null,
       approvedBy: row.approvedBy ?? null,
+      /* The customer's e-signature (DF-007), beside the internal approval and
+       * never instead of it: `customerSignedAt` is the customer saying yes,
+       * `approvedBy` is the shop authorising the spend. A screen showing one as
+       * the other would misstate who agreed to what. */
+      customerSignedAt: row.customerSignedAt
+        ? new Date(row.customerSignedAt as string | Date).toISOString()
+        : null,
+      customerSignatureChannel: row.customerSignatureChannel ?? null,
     }),
   }),
 
@@ -309,6 +320,10 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       balanceHalalas: count(row.totalHalalas) - count(row.paidHalalas),
       issuedAt: row.issuedAt ? new Date(row.issuedAt).toISOString() : null,
       qrCode: row.qrCode,
+      jobCardId: row.jobCardId ?? null,
+      /* The estimate this was raised from (DF-007), so a screen can walk the
+       * chain back without a second lookup. */
+      estimateId: row.estimateId ?? null,
     }),
   }),
 

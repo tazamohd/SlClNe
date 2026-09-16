@@ -18,14 +18,20 @@
  *     inventory movements), because a retried receipt would otherwise book the
  *     quantity twice.
  *
- *  Receiving updates the purchase-order status and the running `received_qty`;
- *  it does **not** move stock. Linking a receipt to an inventory movement is a
- *  later integration (see the report): the PO line's part reference is optional
- *  free text that need not resolve to a `parts` row, and the movement endpoint
- *  carries its own mandatory idempotency, part lock and SOD checks. Booking
- *  stock for the lines that happen to resolve and silently skipping the rest
- *  would be the half-wired, dishonest behaviour §5b forbids, so the received
- *  quantity is the authoritative ledger until that integration lands.
+ *  Receiving moves stock (DF-004). It did not, and the objection recorded here
+ *  was a fair one: a PO line's part reference is optional free text that need
+ *  not resolve to a `parts` row, so booking stock for the lines that happen to
+ *  resolve and *silently* skipping the rest would be half-wired and dishonest.
+ *
+ *  The answer is to stop it being silent rather than to keep stock unmoved.
+ *  Every received line is now reported as one of two outcomes: `stocked`, with
+ *  the part it moved and the new on-hand, or `notStocked`, with the reason —
+ *  the line names no part, or names one this organization does not carry. Both
+ *  lists come back in the response and both go into the audit row, so a
+ *  storekeeper can see exactly what did and did not reach the shelf. Two
+ *  ledgers that never reconcile were the worse failure: `received_qty` said the
+ *  goods had arrived while `parts.on_hand` said they had not, and nothing
+ *  compared them.
  *
  *  Gated on `procurement`. Money is integer halalas; no total is client-sent.
  */
@@ -49,8 +55,11 @@ import {
   purchaseOrderTotals,
   requisitionEstimatedTotalHalalas,
 } from '@salis/contract/rules'
+import { ACCOUNT, postJournalEntry } from '../accounting/posting'
 import { writeAudit } from '../audit/audit'
 import {
+  inventoryMovements,
+  parts,
   purchaseOrderLines,
   purchaseOrders,
   requisitionLines,
@@ -528,6 +537,25 @@ export function registerProcurementRoutes(app: FastifyInstance, deps: RouteDeps)
         .for('update')
       const byId = new Map(lines.map((line) => [line.id, line]))
 
+      /* One id for this receipt event. It is not a stored entity — receiving
+       * books against the order's lines — but the ledger posting needs a
+       * source id to be traceable back to what produced it. */
+      const receiptId = ulid()
+
+      /* Where the received goods went. Every line lands in exactly one of
+       * these, and both are reported — that is what stops the skip being
+       * silent. */
+      const stocked: {
+        lineId: string
+        partSku: string
+        partId: string
+        qty: number
+        onHand: number
+      }[] = []
+      const notStocked: { lineId: string; partSku: string | null; reason: string }[] = []
+      let stockedValueHalalas = 0
+      let unstockedValueHalalas = 0
+
       for (const receipt of input.lines) {
         const line = byId.get(receipt.lineId)
         if (!line) throw badRequest('That line is not on this purchase order.', 'lineId')
@@ -544,6 +572,71 @@ export function registerProcurementRoutes(app: FastifyInstance, deps: RouteDeps)
           .update(purchaseOrderLines)
           .set({ receivedQty: line.receivedQty + receipt.qty, updatedBy: principal.userId })
           .where(eq(purchaseOrderLines.id, line.id))
+
+        const lineValue = receipt.qty * line.unitPriceHalalas
+
+        /* DF-004: the receipt now reaches the shelf. The part is located by SKU
+         * under the caller's RLS context, so another tenant's part is simply
+         * invisible, and locked for update so the on-hand this receipt adds to
+         * is the on-hand it writes back — the same discipline the movement
+         * endpoint uses. */
+        if (!line.partSku) {
+          notStocked.push({
+            lineId: line.id,
+            partSku: null,
+            reason: 'This line names no part, so there is nothing to stock.',
+          })
+          unstockedValueHalalas += lineValue
+          continue
+        }
+
+        const [part] = await tx
+          .select()
+          .from(parts)
+          .where(and(eq(parts.sku, line.partSku), isNull(parts.deletedAt)))
+          .limit(1)
+          .for('update')
+
+        if (!part) {
+          notStocked.push({
+            lineId: line.id,
+            partSku: line.partSku,
+            reason: `No part with SKU ${line.partSku} exists here, so the receipt could not be stocked.`,
+          })
+          unstockedValueHalalas += lineValue
+          continue
+        }
+
+        const [movedPart] = await tx
+          .update(parts)
+          .set({ onHand: part.onHand + receipt.qty, updatedBy: principal.userId })
+          .where(eq(parts.id, part.id))
+          .returning()
+        if (!movedPart) throw notFound('Part')
+
+        await tx.insert(inventoryMovements).values({
+          id: ulid(),
+          orgId: principal.orgId,
+          branchId: principal.branchId,
+          partId: part.id,
+          type: 'in',
+          qty: receipt.qty,
+          delta: receipt.qty,
+          ref: order.code,
+          reason: input.reason ?? `Goods receipt against ${order.code}`,
+          toBranchId: null,
+          createdBy: principal.userId,
+          updatedBy: principal.userId,
+        })
+
+        stocked.push({
+          lineId: line.id,
+          partSku: line.partSku,
+          partId: part.id,
+          qty: receipt.qty,
+          onHand: movedPart.onHand,
+        })
+        stockedValueHalalas += lineValue
       }
 
       /* The order's status follows the lines: fully received when every line has
@@ -564,6 +657,38 @@ export function registerProcurementRoutes(app: FastifyInstance, deps: RouteDeps)
         updatedBy: principal.userId,
       })
 
+      /* DF-001: a receipt is the moment the organization owes the supplier, so
+       * the ledger hears about it here. Dr inventory for what reached the
+       * shelf; Dr operating expenses for what did not, because a purchase that
+       * is not carried as stock is consumed when it arrives; Cr accounts
+       * payable for the whole invoiced value either way.
+       *
+       * Expensing the unstocked remainder is an accounting *policy*, not a
+       * derivation — it is the standard default, and it is stated here rather
+       * than buried so that a finance owner can disagree with it knowingly.
+       * VAT is deliberately absent: the PO total carries it, but the input-tax
+       * claim belongs to the supplier's tax invoice, which this system does not
+       * yet capture. */
+      /* No `alreadyPosted` check here: `receiptId` is minted above, so it could
+       * not already be posted. What prevents a retried receipt from posting
+       * twice is the `Idempotency-Key` this route already requires — a replay
+       * returns the stored response without re-entering this block at all. */
+      const receiptValue = stockedValueHalalas + unstockedValueHalalas
+      if (receiptValue > 0) {
+        await postJournalEntry(tx, principal, {
+          entryDate: new Date().toISOString().slice(0, 10),
+          ref: order.code,
+          narration: `Goods received against ${order.code}`,
+          source: 'goods_receipt',
+          sourceId: receiptId,
+          lines: [
+            { accountCode: ACCOUNT.inventory, debitHalalas: stockedValueHalalas },
+            { accountCode: ACCOUNT.operatingExpenses, debitHalalas: unstockedValueHalalas },
+            { accountCode: ACCOUNT.accountsPayable, creditHalalas: receiptValue },
+          ],
+        })
+      }
+
       await writeAudit(tx, {
         actor: principal,
         action: 'receive',
@@ -574,12 +699,21 @@ export function registerProcurementRoutes(app: FastifyInstance, deps: RouteDeps)
           status: updated.status,
           received: input.lines.map((line: (typeof input.lines)[number]) => ({ lineId: line.lineId, qty: line.qty })),
           overReceiptApproved: input.overReceiptApproved ?? false,
+          /* Both outcomes on the audit row, not just the happy one: "which of
+           * these actually reached the shelf" has to be answerable afterwards
+           * from the log alone. */
+          stocked,
+          notStocked,
         },
         reason: input.reason ?? null,
         ...metaOf(request),
       })
 
-      const body = presentRow(poDef(), principal, updated as Record<string, unknown>)
+      const body = {
+        ...(presentRow(poDef(), principal, updated as Record<string, unknown>) as Record<string, unknown>),
+        stocked,
+        notStocked,
+      }
       await recordResult(tx, {
         orgId: principal.orgId,
         key,

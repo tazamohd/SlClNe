@@ -60,6 +60,11 @@ export const invoiceRow = appRow({
   balanceHalalas: z.number().int(),
   issuedAt: isoDateTime.nullable(),
   qrCode: z.string().nullable(),
+  /** The job card this invoice bills, and the approved estimate it was raised
+   *  from — the document chain, readable from the invoice end (DF-007). Both
+   *  null for an invoice with neither behind it: a parts sale, a fee. */
+  jobCardId: ulid.nullable(),
+  estimateId: ulid.nullable(),
 })
 
 export type InvoiceRow = z.infer<typeof invoiceRow>

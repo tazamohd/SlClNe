@@ -14,7 +14,7 @@
 
 # Data access design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-09
 
 Covers: the collection registry, the generic router, query contract, presentation, soft delete, the repository seam.
 
@@ -49,7 +49,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 
 ## Soft delete
 
-`DELETE` sets `deleted_at`; the row stays. 61 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
+`DELETE` sets `deleted_at`; the row stays. 62 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
 
 ## Collections
 
