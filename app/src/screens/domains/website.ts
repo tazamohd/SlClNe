@@ -5,9 +5,9 @@
  *  visitor with no session, so they mount entirely outside `RequireAccess`.
  *
  *  Tier A (9): design-authoritative from `project/PublicPortal.*.dc.html`.
- *  Tier B (18): design-system pages composed from the approved section system —
+ *  Tier B (20): design-system pages composed from the approved section system —
  *  including `PartsAccessories` (formerly the Tier A `Marketplace`, retired
- *  along with its `.dc.html`) and `DealsOffers`, both new.
+ *  along with its `.dc.html`), `DealsOffers`, `RoiCalculator` and `Security`.
  *  Tier C (3): content/SEO legal pages. */
 import type { ComponentType } from 'react'
 import type { DomainScreens, ScreenEntry } from '../registry'
@@ -39,6 +39,8 @@ import { PublicPricing } from '../public/Pricing'
 import { PublicProducts } from '../public/Products'
 import { PublicRequestDemo } from '../public/RequestDemo'
 import { PublicResources } from '../public/Resources'
+import { PublicRoiCalculator } from '../public/RoiCalculator'
+import { PublicSecurity } from '../public/Security'
 import { PublicServices } from '../public/Services'
 import { PublicSolutions } from '../public/Solutions'
 import { PublicSpareParts } from '../public/SpareParts'
@@ -81,6 +83,8 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.Products': pub(PublicProducts),
   'PublicPortal.RequestDemo': pub(PublicRequestDemo),
   'PublicPortal.Resources': pub(PublicResources),
+  'PublicPortal.RoiCalculator': pub(PublicRoiCalculator),
+  'PublicPortal.Security': pub(PublicSecurity),
   'PublicPortal.Services': pub(PublicServices),
   'PublicPortal.Solutions': pub(PublicSolutions),
   'PublicPortal.SpareParts': pub(PublicSpareParts),

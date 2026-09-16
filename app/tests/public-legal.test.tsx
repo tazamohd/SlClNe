@@ -35,7 +35,7 @@ const PAGES = [
 
 describe('Tier C legal pages', () => {
   for (const page of PAGES) {
-    it(`${page.name} renders signed-out with its h1, meta and template banner`, () => {
+    it(`${page.name} renders signed-out with its h1, meta, effective date and version`, () => {
       const Page = componentOf(page.name)
       renderPublic(<Page />)
 
@@ -47,10 +47,13 @@ describe('Tier C legal pages', () => {
         document.head.querySelector('meta[name="description"]')?.getAttribute('content')
       ).toBeTruthy()
 
-      // Honest provenance: clearly a template, not counsel-reviewed.
-      expect(
-        screen.getByText(/has not been reviewed by legal counsel/i)
-      ).toBeInTheDocument()
+      // Dated and versioned, like a real legal document — no public
+      // "not reviewed by counsel" disclaimer (that made production look
+      // careless; open review items are tracked in LEGAL_REVIEW_REQUIRED.md
+      // instead of surfaced on the live page).
+      const meta = screen.getByText(/^Effective date/i)
+      expect(meta.textContent).toMatch(/Version/i)
+      expect(screen.queryByText(/reviewed by legal counsel/i)).not.toBeInTheDocument()
 
       // No skipped heading levels.
       const levels = new Set(

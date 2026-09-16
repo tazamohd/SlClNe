@@ -1501,6 +1501,8 @@ const EXPECTED_TEXT = {
   '/ui/timeline-view': "UI · TimelineView",
   '/wearable-integration': "Wearable Integration",
   '/quantum-computing': "Quantum Computing",
+  '/public-portal/roi-calculator': "PublicPortal · RoiCalculator",
+  '/public-portal/security': "PublicPortal · Security",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────
@@ -1569,6 +1571,8 @@ Object.assign(EXPECTED_TEXT, {
   '/public-portal/products': 'Products',
   '/public-portal/request-demo': 'Request a Demo',
   '/public-portal/resources': 'Resources',
+  '/public-portal/roi-calculator': 'ROI Calculator',
+  '/public-portal/security': 'Security & Data',
   '/public-portal/services': 'Services',
   '/public-portal/solutions': 'Solutions',
   '/public-portal/spare-parts': 'Spare Parts',
