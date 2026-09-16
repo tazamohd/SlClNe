@@ -49,7 +49,7 @@ This template defines the structure and criteria for formally closing the SALIS 
 | Workshop lifecycle (6 stages)        | Check-In through Delivery E2E tested                  | [ ] Accepted    |
 | Approval chain                       | owner -> superadmin -> manager -> advisor verified    | [ ] Accepted    |
 | Design-data pipeline                 | `gms-data.js` -> generated files pipeline documented  | [ ] Accepted    |
-| Deployment configurations            | GitHub Pages + Vercel + Netlify configs working       | [ ] Accepted    |
+| Deployment configurations            | GitHub Pages + Vercel configs working                 | [ ] Accepted    |
 
 ### 2.3 Documentation Deliverables
 

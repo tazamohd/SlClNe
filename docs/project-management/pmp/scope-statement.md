@@ -38,7 +38,7 @@ SALIS AUTO is a multi-tenant, bilingual (EN/AR) web application for managing aut
 | Supplier Portal                      | PO acknowledgment, invoice submission, catalog management                |
 | Notification System                  | Fan-out: in-app, SMS, WhatsApp, email, push notifications                |
 | AI/OBD Module                        | 5-desk diagnostic handoff chain, predictive maintenance scoring          |
-| CI/CD Pipeline                       | Automated build, test, deploy to GitHub Pages / Vercel / Netlify         |
+| CI/CD Pipeline                       | Automated build, test, deploy to GitHub Pages / Vercel                   |
 
 ### 3.2 Documentation Deliverables
 
@@ -230,7 +230,7 @@ SALIS AUTO is a multi-tenant, bilingual (EN/AR) web application for managing aut
 
 ### 8.1 Technical Constraints
 
-- Frontend must be deployable as static assets (GitHub Pages, Vercel, Netlify).
+- Frontend must be deployable as static assets (GitHub Pages, Vercel).
 - All monetary values stored as integer halalas (1 SAR = 100 halalas).
 - React Router 7 for client-side routing; no server-side rendering.
 - TanStack React Query for server state management.

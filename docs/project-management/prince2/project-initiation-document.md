@@ -62,7 +62,7 @@ Hybrid approach combining PRINCE2 stage-gate governance with Agile/Scrum executi
 | i18n       | EN/AR with RTL support (TailwindCSS RTL plugin)       |
 | Testing    | Vitest (unit), Supertest (integration), Playwright (E2E) |
 | CI/CD      | GitHub Actions                                        |
-| Hosting    | GitHub Pages / Vercel / Netlify (frontend SPA)        |
+| Hosting    | GitHub Pages / Vercel (frontend SPA)                 |
 
 ### 2.3 Multi-Tenancy Architecture
 

@@ -335,7 +335,7 @@ every fetch directive outright.
 | SRS-SEC-10 | Exposed GitHub PATs rotated and secret scanning added to CI | **Not met** — BLK-003, open |
 
 **5.5.2 The delivered application.** Added 2026-09-03. This half had no
-requirements and no headers: nginx, Vercel and Netlify each served the built SPA
+requirements and no headers: nginx and Vercel each served the built SPA
 with none at all. It is the half that matters most, because it is the document a
 browser parses and executes — where an XSS actually lands. The API being locked
 down while the page loading it was not is the more dangerous of the two gaps,

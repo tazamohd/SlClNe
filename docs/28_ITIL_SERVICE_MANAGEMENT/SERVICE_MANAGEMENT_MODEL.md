@@ -120,7 +120,7 @@ Evidence names a file, a script or a workflow that exists in this repository at 
 | Aspect | Detail |
 | --- | --- |
 | State | **PARTIAL — frontend CURRENT, API and database TARGET** |
-| Exists today | Frontend deployment is automated in three independent directions: `deploy-pages.yml` (GitHub Pages on every push to `main`), `deploy-hostinger.yml` (FTPS or SFTP upload of `app/dist` and `site/`, path-filtered so an app change and a site change do not trigger each other), and the committed `netlify.toml` and `vercel.json` for hosted builds. The container image in `Dockerfile` is an nginx image serving the built SPA. |
+| Exists today | Frontend deployment is automated in three independent directions: `deploy-pages.yml` (GitHub Pages on every push to `main`), `deploy-hostinger.yml` (FTPS or SFTP upload of `app/dist` and `site/`, path-filtered so an app change and a site change do not trigger each other), and the committed `vercel.json` for hosted builds. The container image in `Dockerfile` is an nginx image serving the built SPA. |
 | Absent | **There is no deployment path for the API.** `.dockerignore` excludes `server/`, so the container image contains no API. No workflow builds, tests-for-release or deploys the Fastify server, and no workflow runs `db:migrate` against any environment. Database migration is therefore a manual act with no recorded execution path. |
 | Rollback | Designed in `runbooks/deployment-rollback.md`. The static deploys are re-deployable by re-running a workflow; no API or database rollback mechanism exists because no API deployment exists. |
 
@@ -163,7 +163,7 @@ Evidence names a file, a script or a workflow that exists in this repository at 
 | Aspect | Detail |
 | --- | --- |
 | State | **ABSENT as a practice** |
-| Exists today | Third parties are *named* in `docs/system/integration/third-party-services.md`, `payment-gateway.md` and `zatca-integration.md`, and technical dependencies are pinned in three lockfiles and audited by CI. Actual platform suppliers visible in configuration: GitHub (source, CI, Pages), Hostinger (FTP target), Netlify and Vercel (committed configs), cdnjs (the one CSP script-src exception, for three.js on the public landing page), and PostgreSQL as a self-managed or managed dependency. |
+| Exists today | Third parties are *named* in `docs/system/integration/third-party-services.md`, `payment-gateway.md` and `zatca-integration.md`, and technical dependencies are pinned in three lockfiles and audited by CI. Actual platform suppliers visible in configuration: GitHub (source, CI, Pages), Hostinger (FTP target), Vercel (committed config), cdnjs (the one CSP script-src exception, for three.js on the public landing page), and PostgreSQL as a self-managed or managed dependency. |
 | Absent | No supplier register, no contracts, no supplier service levels, no review cadence, no exit plan. **Do not read the integration documents as evidence that any supplier relationship exists** — no payment gateway, SMS provider, email provider or ZATCA submission credential is configured in this repository. |
 | Related | `RISK_REGISTER.json` R-09 records that twelve capabilities depend on hardware or paid services that are not held. |
 

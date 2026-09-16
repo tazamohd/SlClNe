@@ -532,7 +532,7 @@ Non-compliance with ZATCA Phase 2 carries penalties starting at SAR 5,000 per no
 - Sub-2-second page load on 4G connections.
 - Lighthouse performance score >= 80.
 - P95 API response time < 500ms.
-- Static SPA deployment (GitHub Pages, Vercel, Netlify compatible).
+- Static SPA deployment (GitHub Pages, Vercel compatible).
 
 ---
 
@@ -744,7 +744,7 @@ See [Release Plan](../project-management/planning/release-plan.md) for full vers
 | SAR stored as integer halalas                    | All monetary arithmetic avoids floating point; 1 SAR = 100 halalas |
 | VAT fixed at 15%                                 | Tax engine hardcoded to current Saudi VAT rate       |
 | JWT: 15-minute access, 14-day refresh            | Token refresh rotation required for session continuity |
-| Static SPA hosting (GitHub Pages, Vercel, Netlify)| Frontend must be fully static; no server-side rendering |
+| Static SPA hosting (GitHub Pages, Vercel)       | Frontend must be fully static; no server-side rendering |
 | PostgreSQL for production; PGlite for local dev  | ORM queries must be compatible with both             |
 
 ### 13.2 Regulatory Constraints

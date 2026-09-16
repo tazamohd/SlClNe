@@ -216,7 +216,7 @@ pm2 restart salis-api
 
 ### Phase 3: Renew Frontend TLS
 
-**Step 6.** Frontend TLS on GitHub Pages, Vercel, or Netlify is managed automatically by the hosting provider. Verify the certificate is valid:
+**Step 6.** Frontend TLS on GitHub Pages or Vercel is managed automatically by the hosting provider. Verify the certificate is valid:
 
 ```bash
 echo | openssl s_client -connect app.salisauto.com:443 -servername app.salisauto.com 2>/dev/null \

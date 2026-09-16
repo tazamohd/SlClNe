@@ -3,7 +3,7 @@
  *  Defined once, in a plain module, because the same set has to reach four
  *  places that cannot import from each other: `vite.config.ts` (so `npm run
  *  preview` — and therefore the E2E suite — runs under the real policy),
- *  `nginx.conf` for the container, and `vercel.json` / `netlify.toml` for the
+ *  `nginx.conf` for the container, and `vercel.json` for the
  *  hosted deploys. `npm run gen:headers` rewrites the three deploy files from
  *  this module, and `check-headers.mjs` fails the build when they drift.
  *

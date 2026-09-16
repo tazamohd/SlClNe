@@ -234,7 +234,7 @@ Authors:        [Names]
 
 | Scenario               | Procedure                                              | RTO      |
 |------------------------|--------------------------------------------------------|----------|
-| Bad deployment         | Roll back via Vercel/Netlify instant rollback           | 2 min    |
+| Bad deployment         | Roll back via Vercel instant rollback                   | 2 min    |
 | Memory leak            | Restart application instances                           | 5 min    |
 | Infinite loop / CPU    | Kill process, deploy fix, restart                       | 10 min   |
 | Rate limiter blocking  | Adjust `RATE_LIMIT_MAX`, restart                        | 5 min    |
@@ -243,7 +243,7 @@ Authors:        [Names]
 
 | Service             | Failover                                                  | Documented In     |
 |---------------------|-----------------------------------------------------------|--------------------|
-| Vercel hosting      | Switch DNS to Netlify                                     | [BCP](business-continuity.md) |
+| Vercel hosting      | Switch DNS to the GitHub Pages deployment                 | [BCP](business-continuity.md) |
 | HyperPay payments   | Queue payments, retry when service recovers               | [BCP](business-continuity.md) |
 | ZATCA API           | Queue invoices, submit when API recovers                  | [BCP](business-continuity.md) |
 | Unifonic SMS        | Fall back to Twilio for OTP delivery                      | [BCP](business-continuity.md) |

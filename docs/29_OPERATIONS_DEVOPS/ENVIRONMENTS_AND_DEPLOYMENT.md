@@ -15,8 +15,7 @@ Secrets appear here by **name only**. No value is copied from any file, and none
 | Container image | `Dockerfile` | The built SPA, served by nginx | CURRENT |
 | Compose file | `docker-compose.yml` | That one image, port 3000 to 80 | CURRENT — single service, no database |
 | nginx site config | `nginx.conf` | SPA fallback routing plus the security headers | CURRENT |
-| Netlify config | `netlify.toml` | Builds `app/`, publishes `app/dist`, SPA redirect, headers | CURRENT — no site is known to be linked |
-| Vercel config | `vercel.json` | Builds `app/`, output `app/dist`, SPA rewrite, headers | CURRENT — no project is known to be linked |
+| Vercel config | `vercel.json` | Builds `app/`, output `app/dist`, SPA rewrite, headers | CURRENT — linked; deployments report on pull requests |
 | CI | `.github/workflows/ci.yml` | Nothing — it verifies | CURRENT |
 | GitHub Pages deploy | `.github/workflows/deploy-pages.yml` | The SPA, on every push to `main` | CURRENT |
 | Hostinger deploy | `.github/workflows/deploy-hostinger.yml` | The SPA and the separate marketing site, by FTPS or SFTP | CURRENT |
@@ -45,7 +44,7 @@ The security headers are emitted twice on purpose — once at server level and o
 
 ## 4. Security headers
 
-Defined once in `app/security-headers.mjs` and propagated to four places that cannot import from one another: `app/vite.config.ts` (so `npm run preview`, and therefore the whole Playwright suite, runs under the real policy), `nginx.conf`, `netlify.toml` and `vercel.json`.
+Defined once in `app/security-headers.mjs` and propagated to three places that cannot import from one another: `app/vite.config.ts` (so `npm run preview`, and therefore the whole Playwright suite, runs under the real policy), `nginx.conf` and `vercel.json`.
 
 | Script | Effect |
 | --- | --- |
@@ -121,7 +120,7 @@ On pull requests to `main`: runs app typecheck, app unit tests, app build, serve
 | --- | --- | --- |
 | Production (API and database) | `NODE_ENV=production` branch in `server/src/env.ts`; `operations/devops-guide.md` §4.2; `environment-setup.md` §6; every runbook | No host, no image, no process manager, no service definition, no database instance, no connection string source, no TLS termination, no DNS record |
 | Staging | `operations/backup-recovery.md` §3.2 and `environment-setup.md` §7 | No configuration of any kind in this repository |
-| Netlify and Vercel targets | `netlify.toml`, `vercel.json` | Config files are committed; nothing indicates a linked site or project, and neither appears in any workflow |
+| Vercel target | `vercel.json` | The config is committed and the project is linked, but the deployment happens on Vercel rather than in any workflow here |
 
 An operator should read the environment comparison in `docs/system/operations/environment-setup.md` as a design of environments, not an inventory of them.
 

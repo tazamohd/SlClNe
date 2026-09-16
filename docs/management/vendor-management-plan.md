@@ -58,7 +58,7 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Service               | Primary Vendor | Alternative              | Monthly Cost (SAR) |
 |-----------------------|----------------|--------------------------|---------------------|
-| Frontend hosting + CDN| Vercel         | Netlify (config kept)    | not yet costed      |
+| Frontend hosting + CDN| Vercel         | GitHub Pages (static fallback) | not yet costed      |
 | DNS                   | Vercel DNS     | --                       | not yet costed      |
 | Database (managed)    | Neon           | --                       | not yet costed      |
 | Object storage        | NOT RECORDED   | --                       | not yet costed      |
@@ -75,8 +75,11 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 > rather than smoothed over:
 >
 > - **Frontend hosting + CDN — evidenced in the repository.** `vercel.json` is
->   the live config. `netlify.toml` is still maintained and Netlify still builds
->   previews, so it is a real alternative rather than an aspirational one.
+>   the live config. Netlify has been dropped entirely — `netlify.toml` is
+>   deleted and the build no longer targets it. `.github/workflows/deploy-pages.yml`
+>   publishes the same build to GitHub Pages on every push to `main`, which is
+>   the only remaining alternative, and it is a static fallback rather than a
+>   drop-in replacement (no previews, no edge configuration of its own).
 >   Vercel's edge network provides the CDN, so CDN is no longer a separate line
 >   item or a separate bill.
 > - **DNS — confirmed by the maintainer, 2026-09-16.** Vercel DNS. The
@@ -325,7 +328,7 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Service             | Primary Vendor | Alternative Ready? | Switch Time | Risk Level |
 |---------------------|----------------|---------------------|-------------|------------|
-| Frontend hosting    | Vercel         | Netlify (config kept)| 1-2 weeks  | Low        |
+| Frontend hosting    | Vercel         | GitHub Pages (static)| 1-2 weeks  | Medium     |
 | DNS                 | Vercel DNS     | any DNS provider    | 1-2 days    | Low        |
 | Database            | Neon           | any managed Postgres| 1-2 weeks   | Medium     |
 | Payment processing  | Stripe         | Moyasar (evaluated) | 4-6 weeks   | High       |
