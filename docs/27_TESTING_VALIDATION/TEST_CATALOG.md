@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-16
 
-187 spec files containing 2184 test cases.
+188 spec files containing 2197 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 111 | 1059 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 112 | 1072 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 461 |
-| app | 109 | 1346 |
+| app | 110 | 1359 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -170,8 +170,9 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/public-legal.test.tsx` | UNIT_OR_API | 3 | — |
 | `app/tests/public-loan-calculator.test.tsx` | UNIT_OR_API | 5 | — |
 | `app/tests/public-pages.test.tsx` | UNIT_OR_API | 15 | — |
-| `app/tests/public-seo.test.tsx` | UNIT_OR_API | 4 | — |
-| `app/tests/public-shell.test.tsx` | UNIT_OR_API | 8 | — |
+| `app/tests/public-request-demo-form.test.tsx` | UNIT_OR_API | 10 | — |
+| `app/tests/public-seo.test.tsx` | UNIT_OR_API | 6 | — |
+| `app/tests/public-shell.test.tsx` | UNIT_OR_API | 9 | — |
 | `app/tests/rbac-matrix.test.ts` | SECURITY | 64 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
 | `app/tests/route-smoke.test.tsx` | UNIT_OR_API | 1 | owner |
 | `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 11 | owner, accountant |

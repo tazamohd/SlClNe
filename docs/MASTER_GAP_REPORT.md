@@ -10,7 +10,6 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | 06 | W0 |
 | BLK-004 | CRITICAL | 288 rendered capabilities are mock-only | 05 | W2 |
-| BLK-012 | HIGH | 2 rendering capabilities are visited but assert nothing | 07 | W2 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 
 ## Flags across the inventory
@@ -21,10 +20,10 @@ Computed from the registry. Every line is a query, not an opinion.
 | TABLET_MISSING | 301 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | MOCK_ONLY | 288 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
-| NO_CONTENT_ASSERTION | 2 | the route is visited but nothing is asserted about it |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | DUPLICATE | 0 | two entries claim one route |
 | MOBILE_MISSING | 0 | a .Mobile design exists and is not built |
+| NO_CONTENT_ASSERTION | 0 | the route is visited but nothing is asserted about it |
 | PLACEHOLDER | 0 | product route renders PendingScreen |
 | RTL_BROKEN | 0 | a hard-coded physical side (ml-/pr-/text-left) the RTL flip will not mirror |
 | UNTESTED | 0 | no route check in the smoke suite |

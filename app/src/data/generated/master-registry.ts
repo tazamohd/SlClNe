@@ -3013,7 +3013,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3036,7 +3035,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "NO_CONTENT_ASSERTION",
       "MOCK_ONLY"
     ],
     "inNav": false,

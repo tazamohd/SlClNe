@@ -19,8 +19,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | mock only | 288 |
 | data backed | 99 |
 | e2e covered | 427 |
-| content asserted | 425 |
-| rendered without assertion | 2 |
+| content asserted | 427 |
+| rendered without assertion | 0 |
 | has loading state | 143 |
 | has error state | 111 |
 | has empty state | 169 |

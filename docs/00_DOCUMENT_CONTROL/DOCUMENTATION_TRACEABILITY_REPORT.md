@@ -23,7 +23,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | Objective → capability | 18 | 18 | Declared in `tools/docs/lib/model.mjs` — the only hand-asserted link |
 | Capability → requirement | 18 | 18 | One functional requirement generated per capability |
 | Capability → endpoint | 374 | 374 | Permission module |
-| Capability → screen | 425 | 425 | Permission module, or screen domain where the screen has none |
+| Capability → screen | 427 | 427 | Permission module, or screen domain where the screen has none |
 | Endpoint → entity | 241 | 374 | Table name via the collection definition |
 | Endpoint → permission | 347 | 374 | `requirePermission` call in the handler |
 | Entity → relationship | 65 | 69 | Column name resolving to a table name |
@@ -32,7 +32,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 
 ## Where it is intact
 
-Every screen and every endpoint maps to a capability — 425 and 374 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
+Every screen and every endpoint maps to a capability — 427 and 374 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
 
 Every business rule names the function that enforces it, every entity is catalogued from the schema, and every permission cell is read from the matrix the server enforces with.
 

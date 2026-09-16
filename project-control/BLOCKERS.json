@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-16",
-  "open": 4,
+  "open": 3,
   "blockers": [
     {
       "id": "BLK-003",
@@ -16,14 +16,6 @@
       "title": "288 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
-      "wave": "W2"
-    },
-    {
-      "id": "BLK-012",
-      "severity": "HIGH",
-      "title": "2 rendering capabilities are visited but assert nothing",
-      "detail": "The route is checked but no content assertion covers it. A visit with no assertion is the weakest possible test.",
-      "owner": "07",
       "wave": "W2"
     },
     {

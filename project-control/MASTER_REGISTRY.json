@@ -14,8 +14,8 @@
     "mockOnly": 288,
     "dataBacked": 99,
     "e2eCovered": 427,
-    "contentAsserted": 425,
-    "renderedWithoutAssertion": 2,
+    "contentAsserted": 427,
+    "renderedWithoutAssertion": 0,
     "hasLoadingState": 143,
     "hasErrorState": 111,
     "hasEmptyState": 169,
@@ -9552,7 +9552,7 @@
         "integration": false,
         "e2e": true
       },
-      "e2eContent": false,
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9564,7 +9564,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },
@@ -9617,7 +9616,7 @@
         "integration": false,
         "e2e": true
       },
-      "e2eContent": false,
+      "e2eContent": true,
       "visualTests": false,
       "accessibilityTests": false,
       "securityTests": false,
@@ -9629,7 +9628,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_CONTENT_ASSERTION",
         "MOCK_ONLY"
       ]
     },

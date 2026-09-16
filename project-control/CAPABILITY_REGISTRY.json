@@ -48,8 +48,8 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 425,
-    "screensTotal": 425,
+    "screensMapped": 427,
+    "screensTotal": 427,
     "endpointsMapped": 374,
     "endpointsTotal": 374
   },
@@ -1161,7 +1161,7 @@
       "objectiveName": "Retain customers",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 32,
+      "screenCount": 34,
       "screens": [
         "D-PublicPortal.About",
         "D-PublicPortal.Accounting",
@@ -1188,6 +1188,8 @@
         "D-PublicPortal.Products",
         "D-PublicPortal.RequestDemo",
         "D-PublicPortal.Resources",
+        "D-PublicPortal.RoiCalculator",
+        "D-PublicPortal.Security",
         "D-PublicPortal.Services",
         "D-PublicPortal.Solutions",
         "D-PublicPortal.SpareParts",

@@ -15,26 +15,26 @@
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Registered capabilities | 425 | — |
-| Product screens | 385 | 425 |
-| Reference-only | 28 | 425 |
-| Rendered | 425 | 425 |
-| Placeholder | 0 | 425 |
-| Data-backed (live API) | 99 | 425 |
-| Mock-only (design fixtures) | 286 | 425 |
-| End-to-end covered | 425 | 425 |
-| Content-asserted (not just routed) | 425 | 425 |
-| Has a loading state | 143 | 425 |
-| Has an error state | 111 | 425 |
-| Has an empty state | 169 | 425 |
-| Arabic verified | 82 | 425 |
+| Registered capabilities | 427 | — |
+| Product screens | 387 | 427 |
+| Reference-only | 28 | 427 |
+| Rendered | 427 | 427 |
+| Placeholder | 0 | 427 |
+| Data-backed (live API) | 99 | 427 |
+| Mock-only (design fixtures) | 288 | 427 |
+| End-to-end covered | 427 | 427 |
+| Content-asserted (not just routed) | 427 | 427 |
+| Has a loading state | 143 | 427 |
+| Has an error state | 111 | 427 |
+| Has an empty state | 169 | 427 |
+| Arabic verified | 79 | 427 |
 | RTL hazards | 0 | — |
-| Tablet verified | 4 | 425 |
+| Tablet verified | 4 | 427 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **286 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **288 of 427 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
@@ -48,7 +48,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | reference | 28 | 0 | 0 |
 | kiosk | 1 | 1 | 1 |
 | native | 2 | 0 | 0 |
-| public | 32 | 0 | 0 |
+| public | 34 | 0 | 0 |
 
 ## By capability
 
@@ -69,7 +69,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-AI | 10 | 3 | 3 | 3 | 3 | 4 |
 | CAP-PLATFORM | 36 | 5 | 12 | 6 | 16 | 17 |
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
-| CAP-WEBSITE | 32 | 0 | 0 | 0 | 0 | 22 |
+| CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 3 | 11 | 11 | 11 | 0 |
 | CAP-DESIGNSYSTEM | 233 | 24 | 46 | 24 | 72 | 21 |
 
