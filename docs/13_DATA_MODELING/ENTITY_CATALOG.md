@@ -8,9 +8,9 @@
 
 # Entity catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-16
 
-68 tables. 63 are tenant-scoped (carry `org_id`) and 64 have row-level security enabled and forced.
+69 tables. 64 are tenant-scoped (carry `org_id`) and 65 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -57,7 +57,8 @@
 | ENT-PUBLIC-LEADS | `public_leads` | 16 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-CUSTOMER-FEEDBACK | `customer_feedback` | 14 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-CHART-OF-ACCOUNTS | `chart_of_accounts` | 15 | yes | yes | yes | yes | yes | yes | 1 | 0 |
-| ENT-JOURNAL-ENTRIES | `journal_entries` | 16 | yes | yes | yes | yes | yes | yes | 2 | 0 |
+| ENT-JOURNAL-ENTRIES | `journal_entries` | 18 | yes | yes | yes | yes | yes | yes | 2 | 0 |
+| ENT-JOURNAL-LINES | `journal_lines` | 16 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-EXPENSES | `expenses` | 15 | yes | yes | yes | yes | yes | yes | 1 | 3 |
 | ENT-BANK-STATEMENTS | `bank_statements` | 18 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-SAVED-REPORTS | `saved_reports` | 13 | yes | yes | yes | yes | yes | yes | — | 0 |

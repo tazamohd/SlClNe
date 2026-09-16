@@ -12,7 +12,7 @@
 
 # Domain — Procurement
 
-**Status:** GENERATED · **Capability:** CAP-PROCUREMENT · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-PROCUREMENT · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 

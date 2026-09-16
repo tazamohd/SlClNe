@@ -8,7 +8,7 @@
 
 # INVENTORY ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 2 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 2 tables
 
 ### INVENTORY
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -9,8 +9,8 @@
   "note": "Implementation findings surfaced while documenting the system, each verified against the source. Kept separate from FINDINGS.json, which engineering owns — a documentation generator appending to that register would make its provenance unclear and its regeneration destructive.",
   "totals": {
     "findings": 8,
-    "open": 7,
-    "high": 4
+    "open": 3,
+    "high": 0
   },
   "findings": [
     {
@@ -20,7 +20,9 @@
       "title": "No API path writes to the general ledger",
       "detail": "Nothing in server/src/routes inserts into journal_entries or chart_of_accounts. Not invoice issue, not payment capture, not payroll posting, not procurement. The trial balance and the VAT return read rows that exist only because the seed put them there, so both report on seed data rather than on trading activity.",
       "consequence": "The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not.",
-      "verifiedBy": "grep -rn 'journalEntries' server/src — reads in routes/finance-reports.ts, a write only in db/seed.ts"
+      "verifiedBy": "grep -rn 'journalEntries' server/src — reads in routes/finance-reports.ts, a write only in db/seed.ts",
+      "status": "RESOLVED",
+      "resolution": "server/src/accounting/posting.ts posts through one function, and three events now call it: invoice issue (Dr receivables, Cr revenue, Cr VAT payable), payment capture (Dr cash, Cr receivables) and goods receipt (Dr inventory and operating expenses, Cr accounts payable). Account balances move with the lines, inside the same transaction as the business write. Migration 0015 adds the journal_lines table the ledger needed to be double-entry at all. Payroll posting is still absent — it has no route that completes a run."
     },
     {
       "id": "DF-002",
@@ -29,7 +31,10 @@
       "title": "checkInvoiceable is never called by the server",
       "detail": "packages/contract/src/rules/workshop.ts defines checkInvoiceable — \"a job must reach delivery before it can be invoiced\". Its only callers are unit tests. routes/invoices.ts does not call it.",
       "consequence": "An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production.",
-      "verifiedBy": "grep -rn 'checkInvoiceable' server packages app — defined once, called only from app/tests/unit/contract-rules.test.ts"
+      "verifiedBy": "grep -rn 'checkInvoiceable' server packages app — defined once, called only from app/tests/unit/contract-rules.test.ts",
+      "status": "RESOLVED",
+      "resolution": "routes/invoices.ts calls it when an invoice names a job card, refusing one raised against a job that has not reached delivery.",
+      "remaining": "Only half the rule. It cannot run when no job card is named, and jobCardId is optional in the contract and nullable in the schema. An invoice with no job card behind it — a parts-only sale, a fee — is a real case, so requiring one is a product decision rather than a bug fix, and is left open deliberately rather than closed quietly."
     },
     {
       "id": "DF-003",
@@ -38,7 +43,9 @@
       "title": "checkJournalBalanced is never called by the server",
       "detail": "The double-entry balance guard in packages/contract/src/rules/money.ts has no caller outside tests. A comment in routes/finance-reports.ts describes the invariant as \"enforced by checkJournalBalanced\", which is not true of any code path.",
       "consequence": "Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier.",
-      "verifiedBy": "grep -rn 'checkJournalBalanced' server packages app — defined in money.ts, called only from test files"
+      "verifiedBy": "grep -rn 'checkJournalBalanced' server packages app — defined in money.ts, called only from test files",
+      "status": "RESOLVED",
+      "resolution": "postJournalEntry runs it over the lines before writing anything and fails the transaction when they do not balance. The rule needed lines to be called with at all, which is why migration 0015 had to come first. The misleading comment in routes/finance-reports.ts now states the narrower claim that is actually true: posted entries are checked, the seeded ones have no lines and are not."
     },
     {
       "id": "DF-004",
@@ -47,7 +54,9 @@
       "title": "Goods receipt does not move stock",
       "detail": "routes/procurement.ts updates purchase_order_lines.received_qty and never touches parts.on_hand — the string \"onHand\" does not appear in that file. Stock is moved only by routes/inventory.ts. The two are independent ledgers with nothing reconciling them.",
       "consequence": "Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not.",
-      "verifiedBy": "grep -c 'onHand' server/src/routes/procurement.ts → 0; writes appear only in server/src/routes/inventory.ts"
+      "verifiedBy": "grep -c 'onHand' server/src/routes/procurement.ts → 0; writes appear only in server/src/routes/inventory.ts",
+      "status": "RESOLVED",
+      "resolution": "Receiving now locks the part by SKU, raises on_hand and writes an inventory_movements row referencing the purchase order. The route header had recorded a deliberate decision not to do this, on the grounds that booking stock for the lines that resolve and silently skipping the rest would be half-wired — a fair objection. It is answered by making the skip loud rather than by leaving stock unmoved: every received line comes back as stocked, with the part and new on-hand, or notStocked, with the reason, in both the response and the audit row."
     },
     {
       "id": "DF-005",

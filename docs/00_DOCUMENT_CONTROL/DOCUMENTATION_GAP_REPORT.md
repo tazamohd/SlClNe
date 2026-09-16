@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Sources as of:** 2026-09-15
+**Sources as of:** 2026-09-16
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 
@@ -20,15 +20,15 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents generated from source | 120 |
 | Documents authored by hand | 288 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 68 of 68 |
-| Relationships documented | 164 (61 FK-backed, 103 convention only) |
+| Entities documented | 69 of 69 |
+| Relationships documented | 168 (62 FK-backed, 106 convention only) |
 | Endpoints documented | 372 of 372 |
 | Endpoints with a linked test | 90 of 372 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 425 of 425 |
 | Screens wired to the live API | 99 of 425 |
-| Test suites catalogued | 178 containing 2093 cases |
+| Test suites catalogued | 179 containing 2100 cases |
 | Capabilities with no linked test suite | 6 |
 | Canonical registers at least 3 days behind the newest | 6 of 9 |
 | Direct contradictions between registers | 3 |
@@ -45,7 +45,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-103 of 164 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+106 of 168 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
@@ -95,21 +95,27 @@ They are recorded in `project-control/DOCUMENTATION_FINDINGS.json`, which this t
 
 | ID | Severity | Area | Finding | Consequence |
 | --- | --- | --- | --- | --- |
-| DF-001 | HIGH | accounting | No API path writes to the general ledger | The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not. |
-| DF-002 | HIGH | workshop / billing | checkInvoiceable is never called by the server | An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production. |
-| DF-003 | HIGH | accounting | checkJournalBalanced is never called by the server | Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier. |
-| DF-004 | HIGH | inventory / procurement | Goods receipt does not move stock | Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not. |
 | DF-005 | MEDIUM | governance | The approval inbox carries estimates only | An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload. |
 | DF-006 | MEDIUM | audit / privacy | Bulk export is not audited | "Who exported the customer list, and when" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording. |
 | DF-007 | MEDIUM | workshop | The document chain is broken at three joins | Each join is manual re-keying, which is where transcription errors enter a financial document chain. |
 
-The four highest-severity findings share a shape worth naming: **a rule exists, is tested, and does not run.** `checkInvoiceable` and `checkJournalBalanced` are both defined, both unit-tested, and neither is called by any handler. A test suite that exercises a rule function directly proves the function is correct; it proves nothing about whether anything calls it. That is a gap no amount of test coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.
+The four findings that shared one shape — **a rule exists, is tested, and does not run** — are now closed. `checkInvoiceable` and `checkJournalBalanced` were both defined, both unit-tested, and called by no handler. A suite that exercises a rule function directly proves the function is correct and proves nothing about whether anything calls it; that is a gap no amount of coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.
 
-### Resolved during this work
+### Resolved
 
-| ID | Finding | Note |
+| ID | Finding | How it was closed |
 | --- | --- | --- |
+| DF-001 | No API path writes to the general ledger | server/src/accounting/posting.ts posts through one function, and three events now call it: invoice issue (Dr receivables, Cr revenue, Cr VAT payable), payment capture (Dr cash, Cr receivables) and goods receipt (Dr inventory and operating expenses, Cr accounts payable). Account balances move with the lines, inside the same transaction as the business write. Migration 0015 adds the journal_lines table the ledger needed to be double-entry at all. Payroll posting is still absent — it has no route that completes a run. |
+| DF-002 | checkInvoiceable is never called by the server | routes/invoices.ts calls it when an invoice names a job card, refusing one raised against a job that has not reached delivery. |
+| DF-003 | checkJournalBalanced is never called by the server | postJournalEntry runs it over the lines before writing anything and fails the transaction when they do not balance. The rule needed lines to be called with at all, which is why migration 0015 had to come first. The misleading comment in routes/finance-reports.ts now states the narrower claim that is actually true: posted entries are checked, the seeded ones have no lines and are not. |
+| DF-004 | Goods receipt does not move stock | Receiving now locks the part by SKU, raises on_hand and writes an inventory_movements row referencing the purchase order. The route header had recorded a deliberate decision not to do this, on the grounds that booking stock for the lines that resolve and silently skipping the rest would be half-wired — a fair objection. It is answered by making the skip loud rather than by leaving stock unmoved: every received line comes back as stocked, with the part and new on-hand, or notStocked, with the reason, in both the response and the audit row. |
 | DF-008 | The API registry under-reported the surface by 69 endpoints | Fixed. Recorded because it is the failure mode this toolchain exists to prevent, and because it shows the limit of the approach: a parser reports what it can match, and what it cannot match is invisible rather than flagged. The Mermaid, capability-coverage and schema-completeness checks in docs:check exist for that reason. |
+
+One of them is closed only in part, and says so rather than reading as finished:
+
+| ID | What remains |
+| --- | --- |
+| DF-002 | Only half the rule. It cannot run when no job card is named, and jobCardId is optional in the contract and nullable in the schema. An invoice with no job card behind it — a parts-only sale, a fee — is a real case, so requiring one is a product decision rather than a bug fix, and is left open deliberately rather than closed quietly. |
 
 ## The canonical registers disagree with each other
 

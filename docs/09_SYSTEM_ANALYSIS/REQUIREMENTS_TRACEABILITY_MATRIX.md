@@ -12,7 +12,7 @@
 
 # Requirements traceability matrix
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 ## The chain
 
@@ -31,7 +31,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 7 |
 | OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 12 |
 | OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | **0** |
-| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 24 | 9 | 6 | 0 | 12 |
+| OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 24 | 9 | 6 | 0 | 13 |
 | OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 9 |
 | OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 6 |
 | OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 12 | 0 | 6 |

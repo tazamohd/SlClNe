@@ -8,13 +8,13 @@
 
 # Known limitations
 
-**Sources as of:** 2026-09-15
+**Sources as of:** 2026-09-16
 
 Properties of the system as it stands. Each is a deliberate position or a known gap — none is a defect report, and none is speculation.
 
 | # | Limitation | Consequence | Evidence |
 | --- | --- | --- | --- |
-| L-01 | 103 of 164 relationships have no foreign key | Orphaned references are possible; no cascade; integrity depends on application code | `server/src/db/schema.ts` |
+| L-01 | 106 of 168 relationships have no foreign key | Orphaned references are possible; no cascade; integrity depends on application code | `server/src/db/schema.ts` |
 | L-02 | 286 of 425 screens read design fixtures, not the API | Behaviour under real data, latency and error conditions is unproven for those screens | `project-control/STATUS.json` |
 | L-03 | 17 of 18 lifecycles declare states but no legal transitions | An illegal status move is refused only where a handler happens to check | `packages/contract/src/entities/*.ts` |
 | L-04 | Only 4 of 425 screens are tablet-verified | Tablet is the primary device on a workshop floor; layout regressions would not be caught | `project-control/STATUS.json` |

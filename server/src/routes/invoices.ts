@@ -17,9 +17,10 @@ import {
   invoiceUpdate,
   paymentCreate,
 } from '@salis/contract'
-import { checkPayment, computeInvoiceTotals } from '@salis/contract/rules'
+import { checkInvoiceable, checkPayment, computeInvoiceTotals } from '@salis/contract/rules'
+import { ACCOUNT, alreadyPosted, postJournalEntry } from '../accounting/posting'
 import { writeAudit } from '../audit/audit'
-import { invoiceLines, invoices, payments, receipts } from '../db/schema'
+import { invoiceLines, invoices, jobCards, payments, receipts } from '../db/schema'
 import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { badRequest, conflict, notFound, ruleViolated } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
@@ -90,6 +91,28 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
     const result = await withTenant(deps.db, principal, async (tx) =>
       once(tx, request, { principal, endpoint: 'POST /invoices', status: 201 }, async () => {
+        /* DF-002: `checkInvoiceable` existed, was unit-tested, and was called
+         * by nothing — so an invoice could be raised against a job card at any
+         * stage, including one still on the ramp. It runs here, where the link
+         * is made.
+         *
+         * It can only run when a job card is named. `jobCardId` is optional in
+         * the contract and nullable in the schema, and an invoice with no job
+         * card behind it — a parts-only sale, a fee — is a real case, so
+         * requiring one would be a different and larger change than this
+         * finding asks for. That remaining gap is recorded rather than closed
+         * quietly: see DF-002 in project-control/DOCUMENTATION_FINDINGS.json. */
+        if (input.jobCardId) {
+          const [job] = await tx
+            .select({ stage: jobCards.stage, status: jobCards.status })
+            .from(jobCards)
+            .where(and(eq(jobCards.id, input.jobCardId), isNull(jobCards.deletedAt)))
+            .limit(1)
+          if (!job) throw badRequest('That job card does not exist.', 'jobCardId')
+          const stageFailure = checkInvoiceable({ stage: job.stage as never, status: job.status })
+          if (stageFailure) throw ruleViolated(stageFailure.message, 'jobCardId')
+        }
+
         const totals = computeInvoiceTotals(
           input.lines.map((line: (typeof input.lines)[number]) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
           input.discountHalalas,
@@ -257,6 +280,31 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
         .returning()
       if (!after) throw conflict('This invoice changed since you loaded it.')
 
+      /* DF-001: issuing is the moment the sale becomes a receivable, so it is
+       * the moment the ledger has to hear about it. Dr receivables for what the
+       * customer owes; Cr revenue for the net and Cr VAT payable for the tax,
+       * because the tax was never the workshop's to earn — it is collected on
+       * the authority's behalf and owed onward.
+       *
+       * Posted inside the same transaction as the status change. If the posting
+       * fails the invoice does not become issued, which is the only ordering
+       * that cannot leave the two disagreeing. */
+      if (!(await alreadyPosted(tx, 'invoice', after.id))) {
+        const netHalalas = before.subtotalHalalas - before.discountHalalas
+        await postJournalEntry(tx, principal, {
+          entryDate: new Date().toISOString().slice(0, 10),
+          ref: before.code,
+          narration: `Invoice ${before.code} issued to ${before.customerName}`,
+          source: 'invoice',
+          sourceId: after.id,
+          lines: [
+            { accountCode: ACCOUNT.accountsReceivable, debitHalalas: before.totalHalalas },
+            { accountCode: ACCOUNT.revenue, creditHalalas: netHalalas },
+            { accountCode: ACCOUNT.vatPayable, creditHalalas: before.taxHalalas },
+          ],
+        })
+      }
+
       await writeAudit(tx, {
         actor: principal,
         action: 'issue',
@@ -363,6 +411,29 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
             status: 'cleared',
             createdBy: principal.userId,
             updatedBy: principal.userId,
+          })
+
+          /* DF-001: collecting turns a receivable into cash. Dr cash for what
+           * arrived, Cr receivables for the same — revenue is untouched,
+           * because it was recognised when the invoice was issued and
+           * recognising it again here would double the month's sales.
+           *
+           * No `alreadyPosted` guard: `paymentId` was minted a few lines above
+           * and so cannot already be posted. What stops a retried payment
+           * posting twice is the `Idempotency-Key` this route requires — a
+           * replay returns the stored response without reaching here. The
+           * guard does belong on invoice issue, where the source id is the
+           * invoice's own and a second issue attempt really can arrive. */
+          await postJournalEntry(tx, principal, {
+            entryDate: paidOn,
+            ref: invoice.code,
+            narration: `Payment received against ${invoice.code}`,
+            source: 'payment',
+            sourceId: paymentId,
+            lines: [
+              { accountCode: ACCOUNT.cash, debitHalalas: input.amountHalalas },
+              { accountCode: ACCOUNT.accountsReceivable, creditHalalas: input.amountHalalas },
+            ],
           })
 
           await writeAudit(tx, {

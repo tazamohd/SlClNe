@@ -12,7 +12,7 @@
 
 # Domain — Invoicing and payments
 
-**Status:** GENERATED · **Capability:** CAP-BILLING · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-BILLING · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
@@ -68,8 +68,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/invoice-lines/:id` | invoices:v | generated | — | **0** |
 | GET | `/api/v1/invoice-lines/:id/history` | invoices:v | explicit | — | **0** |
 | GET | `/api/v1/invoice-lines/export` | invoices:x | generated | — | **0** |
-| GET | `/api/v1/invoices` | invoices:v | generated | — | 8 |
-| POST | `/api/v1/invoices` | invoices:c | explicit | — | 8 |
+| GET | `/api/v1/invoices` | invoices:v | generated | — | 9 |
+| POST | `/api/v1/invoices` | invoices:c | explicit | — | 9 |
 | GET | `/api/v1/invoices/:id` | invoices:v | generated | — | **0** |
 | PATCH | `/api/v1/invoices/:id` | invoices:e | explicit | — | **0** |
 | GET | `/api/v1/invoices/:id/history` | invoices:v | explicit | — | **0** |

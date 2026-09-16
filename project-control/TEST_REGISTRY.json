@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 178,
-    "cases": 2093,
+    "suites": 179,
+    "cases": 2100,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 296,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
       "SECURITY": 242,
-      "UNIT_OR_API": 978,
+      "UNIT_OR_API": 985,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -5492,6 +5492,35 @@
         "procurement",
         "supplier",
         "customer"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
+      "file": "server/tests/ledger-posting.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "DF-001 · issuing an invoice posts to the general ledger",
+        "DF-002 · checkInvoiceable is enforced, not merely defined",
+        "DF-004 · receiving moves stock and says what it could not move",
+        "DF-003 · every posted entry balances"
+      ],
+      "cases": [
+        "debits receivables and credits revenue and VAT, and moves the balances",
+        "posts a payment as cash in and receivables down, leaving revenue alone",
+        "refuses an invoice against a job card that has not reached delivery",
+        "allows one against a job card that has",
+        "raises on-hand, writes a movement, and posts inventory against payables",
+        "reports a line it cannot stock instead of skipping it quietly",
+        "holds for every journal entry the request path wrote"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/invoices"
+      ],
+      "touchesRoles": [
+        "accountant",
+        "procurement"
       ]
     },
     {

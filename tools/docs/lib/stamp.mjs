@@ -76,7 +76,13 @@ export function sourceStamp() {
   try {
     const out = execFileSync(
       'git',
-      ['log', '-1', '--format=%cs', '--', ...SOURCES],
+      /* Author date (%as), not committer date (%cs). A commit that changes a
+       * source and its regenerated documentation together moves the stamp to
+       * its own date, so the documentation it carries is stale the moment it
+       * lands and has to be regenerated and amended. Under %cs the amend
+       * changes the committer date again and the chase never ends; %as is
+       * preserved across amend and rebase, so it settles in one pass. */
+      ['log', '-1', '--format=%as', '--', ...SOURCES],
       { cwd: P.root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
     ).trim()
     if (/^\d{4}-\d{2}-\d{2}$/.test(out)) {

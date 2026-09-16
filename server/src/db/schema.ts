@@ -693,8 +693,46 @@ export const journalEntries = pgTable(
     debitHalalas: money('debit_halalas').notNull().default(0),
     creditHalalas: money('credit_halalas').notNull().default(0),
     status: varchar('status', { length: 16 }).notNull().default('draft'),
+    /** What produced this entry — `invoice`, `payment`, `goods_receipt` — and
+     *  the id of that document. Together they make a posting traceable back to
+     *  the business event, and make a double-post detectable. */
+    source: varchar('source', { length: 32 }),
+    sourceId: varchar('source_id', { length: ULID_LENGTH }),
   },
-  (t) => ({ codePerOrg: uniqueIndex('journal_org_code_idx').on(t.orgId, t.code) }),
+  (t) => ({
+    codePerOrg: uniqueIndex('journal_org_code_idx').on(t.orgId, t.code),
+    bySource: index('journal_entries_source_idx').on(t.orgId, t.source, t.sourceId),
+  }),
+)
+
+/** The lines that make a journal entry double-entry (DF-001, DF-003).
+ *
+ *  `journal_entries` carries only a header total, so before this table an
+ *  "entry" could not name the accounts it moved and `checkJournalBalanced` —
+ *  which takes lines and requires at least two — had nothing to be called
+ *  with. Every posting route writes a header and its lines together, in one
+ *  transaction, after the rule has passed.
+ *
+ *  `accountCode` sits beside `accountId` on purpose: the code is what a person
+ *  reads on a trial balance and what the posting rules are written against, and
+ *  it stays legible on the row if the account is later renamed.
+ */
+export const journalLines = pgTable(
+  'journal_lines',
+  {
+    ...tenant,
+    journalEntryId: varchar('journal_entry_id', { length: ULID_LENGTH }).notNull(),
+    accountId: varchar('account_id', { length: ULID_LENGTH }).notNull(),
+    accountCode: varchar('account_code', { length: 24 }).notNull(),
+    debitHalalas: money('debit_halalas').notNull().default(0),
+    creditHalalas: money('credit_halalas').notNull().default(0),
+    narration: text('narration'),
+    sort: integer('sort').notNull().default(0),
+  },
+  (t) => ({
+    byEntry: index('journal_lines_entry_idx').on(t.orgId, t.journalEntryId),
+    byAccount: index('journal_lines_account_idx').on(t.orgId, t.accountId),
+  }),
 )
 
 export const expenses = pgTable(

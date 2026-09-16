@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -8,10 +8,10 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 164,
-    "declared": 61,
-    "inferred": 103,
-    "orphanReferenceColumns": 10
+    "relationships": 168,
+    "declared": 62,
+    "inferred": 106,
+    "orphanReferenceColumns": 11
   },
   "orphanReferences": [
     {
@@ -33,6 +33,10 @@
     {
       "table": "chart_of_accounts",
       "column": "parent_id"
+    },
+    {
+      "table": "journal_entries",
+      "column": "source_id"
     },
     {
       "table": "bank_statements",
@@ -1449,6 +1453,66 @@
       "tenantScope": "org_id",
       "branchScope": "branch_id",
       "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-JOURNAL-LINES-ORG-ID",
+      "from": "journal_lines",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-JOURNAL-LINES-BRANCH-ID",
+      "from": "journal_lines",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-JOURNAL-LINES-JOURNAL-ENTRY-ID",
+      "from": "journal_lines",
+      "fromColumn": "journal_entry_id",
+      "to": "journal_entries",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-JOURNAL-LINES-ACCOUNT-ID",
+      "from": "journal_lines",
+      "fromColumn": "account_id",
+      "to": "chart_of_accounts",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
       "evidence": "server/src/db/schema.ts"
     },
     {

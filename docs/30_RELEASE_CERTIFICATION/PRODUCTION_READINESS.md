@@ -9,7 +9,7 @@
 
 # Production readiness
 
-**Sources as of:** 2026-09-15 · **8 of 15 criteria met**
+**Sources as of:** 2026-09-16 · **8 of 15 criteria met**
 
 Each criterion names the evidence that decided it. No criterion is marked met on judgement alone.
 
@@ -19,7 +19,7 @@ Each criterion names the evidence that decided it. No criterion is marked met on
 | PR-02 | Every screen has an end-to-end assertion on its content | yes | contentAsserted: 425 of 425 |
 | PR-03 | Golden paths pass | yes | 23 passing, 0 failing, 0 unwritten |
 | PR-04 | Screens are wired to the live API rather than design fixtures | **no** | mockOnly: 286 of 425 |
-| PR-05 | Tenant isolation covers every tenant-scoped table | yes | 64 tables with RLS, all FORCEd; 0 uncovered |
+| PR-05 | Tenant isolation covers every tenant-scoped table | yes | 65 tables with RLS, all FORCEd; 0 uncovered |
 | PR-06 | The permission matrix is enforced server-side and the two copies are asserted identical | yes | server/tests/rbac-parity.test.ts |
 | PR-07 | Segregation of duties is enforced, not advisory | yes | server/tests/authz-sod.test.ts |
 | PR-08 | The audit log is append-only at the database level | yes | server/drizzle/0011_audit_log_statement_immutability.sql |

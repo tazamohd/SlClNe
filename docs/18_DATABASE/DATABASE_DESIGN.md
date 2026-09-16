@@ -8,9 +8,9 @@
 
 # Database design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
-PostgreSQL, accessed through Drizzle ORM. 68 tables, 1128 columns, 16 migrations.
+PostgreSQL, accessed through Drizzle ORM. 69 tables, 1146 columns, 17 migrations.
 
 ## Migrations
 
@@ -32,24 +32,25 @@ PostgreSQL, accessed through Drizzle ORM. 68 tables, 1128 columns, 16 migrations
 | `server/drizzle/0012_snapshot_realign.sql` | Drizzle snapshot realignment |
 | `server/drizzle/0013_users_acting_role.sql` | Acting-role support for role switching |
 | `server/drizzle/0014_customer_id_link.sql` | Customer link giving the `self` scope something to narrow by |
+| `server/drizzle/0015_journal_lines.sql` | — |
 
 ## Structural guarantees
 
 | Guarantee | Mechanism | Coverage |
 | --- | --- | --- |
-| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 64 tables |
-| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 64 tables |
+| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 65 tables |
+| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 65 tables |
 | Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 8 tables |
-| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 64 tables |
+| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 65 tables |
 | Optimistic concurrency | `bump_version` BEFORE UPDATE trigger | every table in the tenant array |
 | Audit immutability | Trigger raising `insufficient_privilege` on UPDATE/DELETE | `audit_log` |
 | Idempotency | Unique index on `(org_id, key, endpoint)` + stored response | `idempotency_keys` |
-| Soft delete | `deleted_at`, filtered by the generic router | 61 tables |
-| Money integrity | `bigint` halalas, never `numeric` | 30 tables carry money |
+| Soft delete | `deleted_at`, filtered by the generic router | 62 tables |
+| Money integrity | `bigint` halalas, never `numeric` | 31 tables carry money |
 
 ## Referential integrity — read this before drawing conclusions from an ERD
 
-Only **61 of 164** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 103 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
+Only **62 of 168** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 106 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
 
 The practical consequences: an orphaned reference is possible and will not be refused by the database; deleting a parent does not clean up children (though deletes are soft anyway); and a join that assumes a row exists needs to handle its absence.
 
@@ -97,6 +98,9 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `customer_feedback` | `customer_feedback_org_idx` | no | orgId, branchId |
 | `chart_of_accounts` | `coa_org_code_idx` | yes | orgId, code |
 | `journal_entries` | `journal_org_code_idx` | yes | orgId, code |
+| `journal_entries` | `journal_entries_source_idx` | no | orgId, source, sourceId |
+| `journal_lines` | `journal_lines_entry_idx` | no | orgId, journalEntryId |
+| `journal_lines` | `journal_lines_account_idx` | no | orgId, accountId |
 | `expenses` | `expenses_org_code_idx` | yes | orgId, code |
 | `bank_statements` | `bank_statements_org_idx` | no | orgId, matched |
 | `saved_reports` | `saved_reports_org_idx` | no | orgId, createdBy |

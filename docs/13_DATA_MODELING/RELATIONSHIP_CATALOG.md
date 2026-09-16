@@ -8,11 +8,11 @@
 
 # Relationship catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-16
 
 ## The one thing to read first
 
-Of 164 relationships in the model, **61 are backed by a database foreign key** and **103 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 168 relationships in the model, **62 are backed by a database foreign key** and **106 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -113,6 +113,10 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-CHART-OF-ACCOUNTS-BRANCH-ID | `chart_of_accounts` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-JOURNAL-ENTRIES-ORG-ID | `journal_entries` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-JOURNAL-ENTRIES-BRANCH-ID | `journal_entries` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
+| REL-JOURNAL-LINES-ORG-ID | `journal_lines` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-JOURNAL-LINES-BRANCH-ID | `journal_lines` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
+| REL-JOURNAL-LINES-JOURNAL-ENTRY-ID | `journal_lines` | `journal_entry_id` | `journal_entries` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-JOURNAL-LINES-ACCOUNT-ID | `journal_lines` | `account_id` | `chart_of_accounts` | many-to-one | mandatory | **INFERRED** | yes |
 | REL-EXPENSES-ORG-ID | `expenses` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-EXPENSES-BRANCH-ID | `expenses` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-BANK-STATEMENTS-ORG-ID | `bank_statements` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
@@ -196,6 +200,7 @@ A `*_id` column whose name does not resolve to a table. Some are legitimate (`au
 | `inventory_movements` | `transfer_id` |
 | `leads` | `converted_opportunity_id` |
 | `chart_of_accounts` | `parent_id` |
+| `journal_entries` | `source_id` |
 | `bank_statements` | `matched_receipt_id` |
 | `leave_requests` | `approver_id` |
 | `audit_log` | `actor_id` |

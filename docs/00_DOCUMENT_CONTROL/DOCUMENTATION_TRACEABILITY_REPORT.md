@@ -12,7 +12,7 @@
 
 # Documentation traceability report
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Whether the traceability chain actually resolves, measured rather than asserted. The chain itself and the full matrix are in [the requirements traceability matrix](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md); this is the summary a reader needs before deciding how much to trust the set.
 
@@ -26,7 +26,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | Capability → screen | 425 | 425 | Permission module, or screen domain where the screen has none |
 | Endpoint → entity | 241 | 372 | Table name via the collection definition |
 | Endpoint → permission | 345 | 372 | `requirePermission` call in the handler |
-| Entity → relationship | 64 | 68 | Column name resolving to a table name |
+| Entity → relationship | 65 | 69 | Column name resolving to a table name |
 | Rule → enforcing function | 30 | 30 | The exported function itself |
 | Endpoint → test | 90 | 372 | Path string appearing in a spec file |
 

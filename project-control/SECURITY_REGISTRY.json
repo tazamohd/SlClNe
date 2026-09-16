@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -42,6 +42,7 @@
       "invoices",
       "job_cards",
       "journal_entries",
+      "journal_lines",
       "kb_procedures",
       "leads",
       "leave_requests",
@@ -108,6 +109,7 @@
       "invoices",
       "job_cards",
       "journal_entries",
+      "journal_lines",
       "kb_procedures",
       "leads",
       "leave_requests",
@@ -581,6 +583,33 @@
         "predicate": "app_scope() NOT IN ('own','assigned') OR created_by = app_user()",
         "purpose": null,
         "file": "server/drizzle/0014_customer_id_link.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "journal_lines",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0015_journal_lines.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "journal_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0015_journal_lines.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "journal_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0015_journal_lines.sql"
       }
     ],
     "triggers": [
@@ -728,6 +757,12 @@
         "table": "audit_log",
         "function": "audit_log_is_immutable",
         "file": "server/drizzle/0011_audit_log_statement_immutability.sql"
+      },
+      {
+        "name": "journal_lines_bump_version",
+        "table": "journal_lines",
+        "function": "bump_version",
+        "file": "server/drizzle/0015_journal_lines.sql"
       }
     ],
     "contextFunctions": [
@@ -737,9 +772,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 63,
-      "rlsEnabled": 64,
-      "forced": 64,
+      "tenantScopedTables": 64,
+      "rlsEnabled": 65,
+      "forced": 65,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -759,7 +794,8 @@
       "server/drizzle/0011_audit_log_statement_immutability.sql",
       "server/drizzle/0012_snapshot_realign.sql",
       "server/drizzle/0013_users_acting_role.sql",
-      "server/drizzle/0014_customer_id_link.sql"
+      "server/drizzle/0014_customer_id_link.sql",
+      "server/drizzle/0015_journal_lines.sql"
     ]
   },
   "authenticationSurface": [

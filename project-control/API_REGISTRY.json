@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -8868,6 +8868,7 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"
       ]
     },
@@ -8898,6 +8899,7 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"
       ]
     },

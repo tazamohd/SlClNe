@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 150 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 151 requirements
 
 ## What these requirements are, and what they are not
 
@@ -129,7 +129,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-PUBLIC-LEADS | `public_leads` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-CUSTOMER-FEEDBACK | `customer_feedback` holds 14 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-CHART-OF-ACCOUNTS | `chart_of_accounts` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
-| DR-JOURNAL-ENTRIES | `journal_entries` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-JOURNAL-ENTRIES | `journal_entries` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-JOURNAL-LINES | `journal_lines` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-EXPENSES | `expenses` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-BANK-STATEMENTS | `bank_statements` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-SAVED-REPORTS | `saved_reports` holds 13 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
