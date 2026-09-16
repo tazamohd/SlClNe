@@ -795,7 +795,8 @@
       "server/drizzle/0012_snapshot_realign.sql",
       "server/drizzle/0013_users_acting_role.sql",
       "server/drizzle/0014_customer_id_link.sql",
-      "server/drizzle/0015_journal_lines.sql"
+      "server/drizzle/0015_journal_lines.sql",
+      "server/drizzle/0016_document_chain.sql"
     ]
   },
   "authenticationSurface": [

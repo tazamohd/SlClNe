@@ -12,7 +12,7 @@
 
 ## The one thing to read first
 
-Of 168 relationships in the model, **62 are backed by a database foreign key** and **106 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 170 relationships in the model, **62 are backed by a database foreign key** and **108 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -43,6 +43,7 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-JOB-CARDS-CUSTOMER-ID | `job_cards` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
 | REL-JOB-CARDS-VEHICLE-ID | `job_cards` | `vehicle_id` | `vehicles` | many-to-one | optional | **INFERRED** | no |
 | REL-JOB-CARDS-ASSIGNED-TECH-ID | `job_cards` | `assigned_tech_id` | `technicians` | many-to-one | optional | **INFERRED** | yes |
+| REL-JOB-CARDS-APPOINTMENT-ID | `job_cards` | `appointment_id` | `appointments` | many-to-one | optional | **INFERRED** | yes |
 | REL-APPOINTMENTS-ORG-ID | `appointments` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-APPOINTMENTS-BRANCH-ID | `appointments` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-APPOINTMENTS-CUSTOMER-ID | `appointments` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
@@ -60,6 +61,7 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-INVOICES-BRANCH-ID | `invoices` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-INVOICES-CUSTOMER-ID | `invoices` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
 | REL-INVOICES-JOB-CARD-ID | `invoices` | `job_card_id` | `job_cards` | many-to-one | optional | **INFERRED** | no |
+| REL-INVOICES-ESTIMATE-ID | `invoices` | `estimate_id` | `estimates` | many-to-one | optional | **INFERRED** | yes |
 | REL-INVOICES-VEHICLE-ID | `invoices` | `vehicle_id` | `vehicles` | many-to-one | optional | **INFERRED** | no |
 | REL-INVOICE-LINES-ORG-ID | `invoice_lines` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-INVOICE-LINES-BRANCH-ID | `invoice_lines` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
@@ -196,6 +198,7 @@ A `*_id` column whose name does not resolve to a table. Some are legitimate (`au
 | Table | Column |
 | --- | --- |
 | `user_sessions` | `family_id` |
+| `estimates` | `customer_signature_challenge_id` |
 | `inventory_movements` | `to_branch_id` |
 | `inventory_movements` | `transfer_id` |
 | `leads` | `converted_opportunity_id` |

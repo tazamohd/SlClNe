@@ -33,10 +33,10 @@
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | token | — | — | — | `server/src/routes/bank.ts` |
 | GET | `/api/v1/bank-statements/export` | accounting:x | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/insurance-claims` | accounting:v | token | `insuranceClaims` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/insurance-claims` | accounting:c | token | — | — | 2 | `server/src/routes/insurance-claims.ts` |
+| GET | `/api/v1/insurance-claims` | accounting:v | token | `insuranceClaims` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/insurance-claims` | accounting:c | token | — | — | 3 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/:id` | accounting:v | token | `insuranceClaims` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | token | — | — | — | `server/src/routes/insurance-claims.ts` |
+| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | token | — | — | 1 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | token | — | — | — | `server/src/routes/insurance-claims.ts` |
 | POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | token | — | — | — | `server/src/routes/insurance-claims.ts` |

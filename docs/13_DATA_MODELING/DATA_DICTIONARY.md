@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-16
 
-Every column of every table, 1146 in total.
+Every column of every table, 1151 in total.
 
 ## `organizations`
 
@@ -236,12 +236,14 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `assigned_tech_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `complaint` | text | nullable | — | — | — |
 | `qc_passed_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `appointment_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `job_cards_org_code_idx` | yes | orgId, code |
 | `job_cards_org_idx` | no | orgId, branchId, status |
 | `job_cards_tech_idx` | no | orgId, assignedTechId |
+| `job_cards_appointment_idx` | no | orgId, appointmentId |
 
 ## `appointments`
 
@@ -304,6 +306,9 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `submitted_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 | `approved_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 | `approved_at` | timestamptz | nullable | — | — | — |
+| `customer_signed_at` | timestamptz | nullable | — | — | — |
+| `customer_signature_channel` | varchar(16) | nullable | — | — | — |
+| `customer_signature_challenge_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `notes` | text | nullable | — | — | — |
 
 | Index | Unique | Columns |
@@ -354,6 +359,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `customer_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `customer_name` | varchar(200) | NOT NULL | — | — | — |
 | `job_card_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `estimate_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `due_date` | date | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
@@ -374,6 +380,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | --- | --- | --- |
 | `invoices_org_code_idx` | yes | orgId, code |
 | `invoices_org_idx` | no | orgId, branchId, status |
+| `invoices_estimate_idx` | no | orgId, estimateId |
 
 ## `invoice_lines`
 

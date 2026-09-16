@@ -15,7 +15,7 @@
     "audited": 61,
     "withMoneyColumns": 31,
     "rlsEnabled": 65,
-    "columns": 1146
+    "columns": 1151
   },
   "entities": [
     {
@@ -2900,6 +2900,21 @@
           "references": null,
           "money": false,
           "presentational": false
+        },
+        {
+          "property": "appointmentId",
+          "column": "appointment_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
         }
       ],
       "indexes": [
@@ -2926,6 +2941,14 @@
           "columns": [
             "orgId",
             "assignedTechId"
+          ]
+        },
+        {
+          "name": "job_cards_appointment_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "appointmentId"
           ]
         }
       ],
@@ -2957,7 +2980,8 @@
         "REL-JOB-CARDS-BRANCH-ID",
         "REL-JOB-CARDS-CUSTOMER-ID",
         "REL-JOB-CARDS-VEHICLE-ID",
-        "REL-JOB-CARDS-ASSIGNED-TECH-ID"
+        "REL-JOB-CARDS-ASSIGNED-TECH-ID",
+        "REL-JOB-CARDS-APPOINTMENT-ID"
       ],
       "relationshipsIn": [
         "REL-ESTIMATES-JOB-CARD-ID",
@@ -3390,7 +3414,9 @@
         "REL-APPOINTMENTS-VEHICLE-ID",
         "REL-APPOINTMENTS-TECHNICIAN-ID"
       ],
-      "relationshipsIn": [],
+      "relationshipsIn": [
+        "REL-JOB-CARDS-APPOINTMENT-ID"
+      ],
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-CUSTOMER-PORTAL-SPEC-TS",
@@ -3773,6 +3799,51 @@
           "presentational": false
         },
         {
+          "property": "customerSignedAt",
+          "column": "customer_signed_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "customerSignatureChannel",
+          "column": "customer_signature_channel",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "customerSignatureChallengeId",
+          "column": "customer_signature_challenge_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
           "property": "notes",
           "column": "notes",
           "type": "text",
@@ -3847,7 +3918,8 @@
         "REL-ESTIMATES-VEHICLE-ID"
       ],
       "relationshipsIn": [
-        "REL-ESTIMATE-LINES-ESTIMATE-ID"
+        "REL-ESTIMATE-LINES-ESTIMATE-ID",
+        "REL-INVOICES-ESTIMATE-ID"
       ],
       "rlsEnabled": true,
       "tests": [
@@ -3857,7 +3929,8 @@
         "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-DETAIL-TEST-TSX",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
         "TS-SERVER-TESTS-API-TEST-TS",
-        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
       ]
     },
     {
@@ -4372,6 +4445,21 @@
           "presentational": false
         },
         {
+          "property": "estimateId",
+          "column": "estimate_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
           "property": "vehicleId",
           "column": "vehicle_id",
           "type": "varchar",
@@ -4614,6 +4702,14 @@
             "branchId",
             "status"
           ]
+        },
+        {
+          "name": "invoices_estimate_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "estimateId"
+          ]
         }
       ],
       "primaryKey": [
@@ -4652,6 +4748,7 @@
         "REL-INVOICES-BRANCH-ID",
         "REL-INVOICES-CUSTOMER-ID",
         "REL-INVOICES-JOB-CARD-ID",
+        "REL-INVOICES-ESTIMATE-ID",
         "REL-INVOICES-VEHICLE-ID"
       ],
       "relationshipsIn": [
@@ -4669,6 +4766,7 @@
         "TS-APP-TESTS-UNIT-DERIVATIONS-TEST-TS",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS",
         "TS-SERVER-TESTS-SEED-COHERENCE-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"

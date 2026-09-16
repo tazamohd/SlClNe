@@ -235,11 +235,16 @@ export const jobCards = pgTable(
     assignedTechId: varchar('assigned_tech_id', { length: ULID_LENGTH }),
     complaint: text('complaint'),
     qcPassedBy: varchar('qc_passed_by', { length: ULID_LENGTH }),
+    /** The appointment this job card was opened from, when it came from one
+     *  (DF-007). A partial unique index makes one appointment produce at most
+     *  one live job card. Null for a car that arrived at the counter. */
+    appointmentId: varchar('appointment_id', { length: ULID_LENGTH }),
   },
   (t) => ({
     codePerOrg: uniqueIndex('job_cards_org_code_idx').on(t.orgId, t.code),
     byOrg: index('job_cards_org_idx').on(t.orgId, t.branchId, t.status),
     byTech: index('job_cards_tech_idx').on(t.orgId, t.assignedTechId),
+    byAppointment: index('job_cards_appointment_idx').on(t.orgId, t.appointmentId),
   }),
 )
 
@@ -289,6 +294,15 @@ export const estimates = pgTable(
     submittedBy: varchar('submitted_by', { length: ULID_LENGTH }),
     approvedBy: varchar('approved_by', { length: ULID_LENGTH }),
     approvedAt: timestamp('approved_at', { withTimezone: true }),
+    /** The customer's OTP e-signature, persisted on the record rather than only
+     *  in the audit trail (DF-007). This is the customer saying yes; the shop's
+     *  own authorisation against the approval ceiling stays in `status` /
+     *  `approvedBy`, so a code from a phone can never stand in for it. */
+    customerSignedAt: timestamp('customer_signed_at', { withTimezone: true }),
+    customerSignatureChannel: varchar('customer_signature_channel', { length: 16 }),
+    customerSignatureChallengeId: varchar('customer_signature_challenge_id', {
+      length: ULID_LENGTH,
+    }),
     notes: text('notes'),
   },
   (t) => ({
@@ -321,6 +335,10 @@ export const invoices = pgTable(
     customerId: varchar('customer_id', { length: ULID_LENGTH }),
     customerName: varchar('customer_name', { length: 200 }).notNull(),
     jobCardId: varchar('job_card_id', { length: ULID_LENGTH }),
+    /** The approved estimate this invoice was raised from (DF-007). A partial
+     *  unique index makes one estimate produce at most one live invoice. Null
+     *  for an invoice with no estimate behind it — a parts sale, a fee. */
+    estimateId: varchar('estimate_id', { length: ULID_LENGTH }),
     vehicleId: varchar('vehicle_id', { length: ULID_LENGTH }),
     dueDate: date('due_date').notNull(),
     status: varchar('status', { length: 16 }).notNull().default('draft'),
@@ -343,6 +361,7 @@ export const invoices = pgTable(
   (t) => ({
     codePerOrg: uniqueIndex('invoices_org_code_idx').on(t.orgId, t.code),
     byOrg: index('invoices_org_idx').on(t.orgId, t.branchId, t.status),
+    byEstimate: index('invoices_estimate_idx').on(t.orgId, t.estimateId),
   }),
 )
 

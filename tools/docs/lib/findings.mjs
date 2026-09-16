@@ -82,6 +82,11 @@ export const DOCUMENTATION_FINDINGS = [
     consequence:
       'An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload.',
     verifiedBy: "grep -n 'kind' server/src/routes/approvals.ts — kind: 'estimate' is the only variant",
+    status: 'RESOLVED',
+    resolution:
+      "routes/approvals.ts carries four sources: estimates ('sent'), requisitions ('submitted'), purchase orders ('draft') and insurance claims ('submitted'/'under_review') — every document with a ceiling-gated approve endpoint behind it. Each source folds in only when the caller holds view on that source's own module, each row carries the caller's standing computed server-side, and each names the endpoint that decides it (approvePath / rejectPath), so a mixed queue cannot post a requisition to /estimates/:id/approve. A byKind roll-up sits beside byModule, because requisitions and purchase orders share the procurement module. The ApprovalInbox screen renders the mixed queue and actions each row against its own path.",
+    remaining:
+      "Payroll runs are deliberately not a source, and the finding named them. POST /payroll/runs/:id/post is gated on hr:e and documented in routes/payroll.ts as 'an edit of the run, not an approval against a ceiling'. There is no approve endpoint, no ceiling and no submitter check, so a payroll row would carry an approval standing the server does not enforce and an action the client could not take. Modelling payroll posting as an approval is a product decision, not a bug fix; a test pins the absence so it stays a decision.",
   },
   {
     id: 'DF-006',
@@ -93,6 +98,9 @@ export const DOCUMENTATION_FINDINGS = [
     consequence:
       '"Who exported the customer list, and when" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording.',
     verifiedBy: 'The export handler in server/src/routes/collections.ts contains no writeAudit call; the write handlers below it do',
+    status: 'RESOLVED',
+    resolution:
+      "The export route writes an audit row with action 'export', inside the same transaction that gathered the rows, so there is no state in which the data left and the record of it did not. It records the actor, the collection, the row count that actually left, the total in scope, whether the egress cap truncated it, and the narrowing (q, sort, filter, includeDeleted) — because which rows left is as much the question as how many. entityId is null: an export acts on a set, not a record. A refused export writes nothing, which is correct — requirePermission throws before the transaction opens and nothing was disclosed.",
   },
   {
     id: 'DF-007',
@@ -104,6 +112,11 @@ export const DOCUMENTATION_FINDINGS = [
     consequence:
       'Each join is manual re-keying, which is where transcription errors enter a financial document chain.',
     verifiedBy: 'No route in server/src/routes performs these transitions; see project-control/API_REGISTRY.json',
+    status: 'RESOLVED',
+    resolution:
+      "All three joins are endpoints, and migration 0016 adds the columns they write. POST /estimates/:id/invoice raises a draft invoice from an approved estimate, copying the lines from the database rather than the request, recomputing the totals with the same function the estimate used and refusing when they no longer match what was approved; invoices.estimate_id carries a partial unique index, so one estimate bills once even under a race. POST /estimates/:id/verify-approval-otp now writes the verified signature back to the estimate (customer_signed_at, channel, challenge id). POST /appointments/:id/job-card opens a job card from a kept appointment, copying the customer, vehicle and booked technician across and closing the booking out; job_cards.appointment_id carries the same kind of partial unique index.",
+    remaining:
+      "The OTP verification deliberately does NOT move estimates.status to 'approved', which is what the finding's wording asked for. 'approved' means the shop authorised the spend, and POST /estimates/:id/approve gates that on the role's SAR ceiling and on segregation of duties. A code typed from a customer's phone must not route around either, so the customer's acceptance is persisted as its own first-class fact on the row beside the internal decision rather than as a substitute for it. That makes the signature readable without trawling audit_log, which was the gap, without weakening an approval gate. Separately, the CustomerApproval screen is still not wired to these endpoints.",
   },
   {
     id: 'DF-008',

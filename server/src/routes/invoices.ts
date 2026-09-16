@@ -18,9 +18,18 @@ import {
   paymentCreate,
 } from '@salis/contract'
 import { checkInvoiceable, checkPayment, computeInvoiceTotals } from '@salis/contract/rules'
+import { z } from 'zod'
 import { ACCOUNT, alreadyPosted, postJournalEntry } from '../accounting/posting'
 import { writeAudit } from '../audit/audit'
-import { invoiceLines, invoices, jobCards, payments, receipts } from '../db/schema'
+import {
+  estimateLines,
+  estimates,
+  invoiceLines,
+  invoices,
+  jobCards,
+  payments,
+  receipts,
+} from '../db/schema'
 import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { badRequest, conflict, notFound, ruleViolated } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
@@ -33,6 +42,16 @@ const INVOICES = () => must('invoices')
 const LINES = () => must('invoiceLines')
 const PAYMENTS = () => must('invoicePayments')
 const RECEIPTS = () => must('receipts')
+
+/** What raising an invoice from an estimate still needs from the caller. Every
+ *  figure comes from the estimate; these are the facts the estimate does not
+ *  carry. `dueDate` is required rather than defaulted — payment terms are a
+ *  commercial decision this codebase does not model. */
+const estimateInvoiceBody = z.object({
+  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'expected an ISO date (YYYY-MM-DD)'),
+  buyerVatNumber: z.string().max(20).optional(),
+  notes: z.string().max(2000).optional(),
+})
 
 function must(key: string) {
   const def = collectionByKey(key)
@@ -245,6 +264,183 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
       })
       return presentRow(INVOICES(), principal, after as Record<string, unknown>)
     })
+  })
+
+  /* ------------------------------------------ raise one from an estimate */
+
+  /** `POST /estimates/:id/invoice` — the first of the three joins DF-007 names.
+   *
+   *  Before this, turning an approved estimate into an invoice meant reading
+   *  the estimate on one screen and typing its lines into another. That is
+   *  where a transcription error enters a financial document chain, and it is
+   *  invisible afterwards because nothing records that the two were meant to
+   *  be the same figures.
+   *
+   *  What makes this a join rather than a shortcut:
+   *
+   *  - **Only an approved estimate.** A draft or a `sent` one has not been
+   *    authorised, and a rejected or expired one never will be. The ceiling and
+   *    segregation-of-duties checks live on `POST /estimates/:id/approve`; this
+   *    route requires that they have already run, and never re-decides them.
+   *  - **The lines are copied from the database, not from the request.** The
+   *    caller cannot substitute a figure between approval and billing.
+   *  - **The totals are recomputed** by the same `computeInvoiceTotals` the
+   *    estimate used, and then checked against the total that was approved. A
+   *    mismatch is a 409, not a silent re-bill: it means the estimate's lines
+   *    changed after approval, and a human should look.
+   *  - **Once.** `invoices.estimate_id` carries a partial unique index, so a
+   *    second attempt is refused by the database even if two requests race the
+   *    route's own check.
+   *
+   *  `dueDate` is required in the body. Payment terms are a commercial decision
+   *  this codebase does not model, and defaulting to "thirty days" would be
+   *  inventing one.
+   */
+  app.post('/estimates/:id/invoice', async (request, reply) => {
+    const principal = principalOf(request)
+    /* Creating an invoice, from a document the caller must also be able to
+     * read. Both, because this route does both. */
+    requirePermission(principal, 'invoices', 'c')
+    requirePermission(principal, 'estimates', 'v')
+    const parsed = estimateInvoiceBody.safeParse(request.body ?? {})
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]
+      throw badRequest(issue?.message ?? 'Invalid request.', issue?.path.join('.'))
+    }
+    const { id } = request.params as { id: string }
+
+    const result = await withTenant(deps.db, principal, async (tx) =>
+      once(tx, request, { principal, endpoint: 'POST /estimates/:id/invoice', status: 201 }, async () => {
+        const [estimate] = await tx
+          .select()
+          .from(estimates)
+          .where(
+            and(
+              isNull(estimates.deletedAt),
+              sql`(${estimates.id} = ${id} or ${estimates.code} = ${id})`,
+            ),
+          )
+          .limit(1)
+          .for('update')
+        if (!estimate) throw notFound('Estimate')
+
+        if (estimate.status !== 'approved') {
+          throw ruleViolated(
+            `Only an approved estimate can be invoiced — ${estimate.code} is ${estimate.status}.`,
+            'status',
+          )
+        }
+
+        /* The route's own check, so the caller gets the existing invoice's code
+         * rather than a bare unique-violation. The index behind it is what
+         * actually guarantees the "once". */
+        const [existing] = await tx
+          .select({ code: invoices.code })
+          .from(invoices)
+          .where(and(eq(invoices.estimateId, estimate.id), isNull(invoices.deletedAt)))
+          .limit(1)
+        if (existing) {
+          throw conflict(`${estimate.code} has already been invoiced as ${existing.code}.`)
+        }
+
+        const lines = await tx
+          .select()
+          .from(estimateLines)
+          .where(and(eq(estimateLines.estimateId, estimate.id), isNull(estimateLines.deletedAt)))
+          .orderBy(estimateLines.sort)
+        if (lines.length === 0) {
+          throw ruleViolated('That estimate has no lines to invoice.', 'lines')
+        }
+
+        /* Recomputed from the stored lines by the same function the estimate
+         * used — the client supplies no figure here at all. */
+        const totals = computeInvoiceTotals(
+          lines.map((line) => ({ qty: line.qty, unitPriceHalalas: line.unitPriceHalalas })),
+          estimate.discountHalalas,
+        )
+        /* And it must still come to what was approved. If the lines moved after
+         * the approval, the authorised amount and the billed amount are not the
+         * same number, and that is a refusal rather than a rounding note. */
+        if (totals.totalHalalas !== estimate.totalHalalas) {
+          throw conflict(
+            `${estimate.code} was approved at ${estimate.totalHalalas} halalas but its lines now come to ${totals.totalHalalas}. Re-approve it before invoicing.`,
+          )
+        }
+
+        const invoiceId = ulid()
+        const [invoice] = await tx
+          .insert(invoices)
+          .values({
+            id: invoiceId,
+            orgId: principal.orgId,
+            branchId: principal.branchId,
+            code: await nextCode(tx, 'INV'),
+            customerId: estimate.customerId,
+            customerName: estimate.customerName,
+            /* Both links travel with it: the estimate it came from, and the job
+             * card the estimate was against. */
+            estimateId: estimate.id,
+            jobCardId: estimate.jobCardId,
+            vehicleId: estimate.vehicleId,
+            dueDate: parsed.data.dueDate,
+            status: 'draft',
+            subtotalHalalas: totals.subtotalHalalas,
+            taxHalalas: totals.taxHalalas,
+            discountHalalas: totals.discountHalalas,
+            totalHalalas: totals.totalHalalas,
+            buyerVatNumber: parsed.data.buyerVatNumber ?? null,
+            notes: parsed.data.notes ?? estimate.notes,
+            createdBy: principal.userId,
+            updatedBy: principal.userId,
+          })
+          .returning()
+        if (!invoice) throw notFound('Invoice')
+
+        await tx.insert(invoiceLines).values(
+          lines.map((line, index) => ({
+            id: ulid(),
+            orgId: principal.orgId,
+            branchId: principal.branchId,
+            invoiceId,
+            description: line.description,
+            descriptionAr: line.descriptionAr,
+            kind: line.kind,
+            qty: line.qty,
+            unitPriceHalalas: line.unitPriceHalalas,
+            partSku: line.partSku,
+            sort: index,
+            createdBy: principal.userId,
+            updatedBy: principal.userId,
+          })),
+        )
+
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'invoice',
+          entityId: invoiceId,
+          after: invoice,
+          reason: `raised from estimate ${estimate.code}`,
+          ...metaOf(request),
+        })
+        /* And on the estimate's own trail, so the chain reads forwards from
+         * either end. */
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'transition',
+          entity: 'estimate',
+          entityId: estimate.id,
+          before: { invoiceId: null },
+          after: { invoiceId, invoiceCode: invoice.code },
+          reason: 'invoiced',
+          ...metaOf(request),
+        })
+        return presentRow(INVOICES(), principal, invoice as Record<string, unknown>)
+      }),
+    )
+
+    reply.code(result.status)
+    return result.body
   })
 
   /* ----------------------------------------------------------------- issue */

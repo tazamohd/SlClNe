@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-16
 
-PostgreSQL, accessed through Drizzle ORM. 69 tables, 1146 columns, 17 migrations.
+PostgreSQL, accessed through Drizzle ORM. 69 tables, 1151 columns, 18 migrations.
 
 ## Migrations
 
@@ -33,6 +33,7 @@ PostgreSQL, accessed through Drizzle ORM. 69 tables, 1146 columns, 17 migrations
 | `server/drizzle/0013_users_acting_role.sql` | Acting-role support for role switching |
 | `server/drizzle/0014_customer_id_link.sql` | Customer link giving the `self` scope something to narrow by |
 | `server/drizzle/0015_journal_lines.sql` | — |
+| `server/drizzle/0016_document_chain.sql` | — |
 
 ## Structural guarantees
 
@@ -50,7 +51,7 @@ PostgreSQL, accessed through Drizzle ORM. 69 tables, 1146 columns, 17 migrations
 
 ## Referential integrity — read this before drawing conclusions from an ERD
 
-Only **62 of 168** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 106 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
+Only **62 of 170** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 108 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
 
 The practical consequences: an orphaned reference is possible and will not be refused by the database; deleting a parent does not clean up children (though deletes are soft anyway); and a join that assumes a row exists needs to handle its absence.
 
@@ -71,6 +72,7 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `job_cards` | `job_cards_org_code_idx` | yes | orgId, code |
 | `job_cards` | `job_cards_org_idx` | no | orgId, branchId, status |
 | `job_cards` | `job_cards_tech_idx` | no | orgId, assignedTechId |
+| `job_cards` | `job_cards_appointment_idx` | no | orgId, appointmentId |
 | `appointments` | `appointments_date_idx` | no | orgId, branchId, scheduledDate |
 | `appointments` | `appointments_bay_idx` | no | orgId, scheduledDate, bay |
 | `estimates` | `estimates_org_code_idx` | yes | orgId, code |
@@ -78,6 +80,7 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `estimate_lines` | `estimate_lines_estimate_idx` | no | orgId, estimateId |
 | `invoices` | `invoices_org_code_idx` | yes | orgId, code |
 | `invoices` | `invoices_org_idx` | no | orgId, branchId, status |
+| `invoices` | `invoices_estimate_idx` | no | orgId, estimateId |
 | `invoice_lines` | `invoice_lines_invoice_idx` | no | orgId, invoiceId |
 | `payments` | `payments_invoice_idx` | no | orgId, invoiceId |
 | `receipts` | `receipts_org_code_idx` | yes | orgId, code |

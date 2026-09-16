@@ -86,6 +86,7 @@ erDiagram
     varchar assigned_tech_id FK
     text complaint
     varchar qc_passed_by
+    varchar appointment_id FK
   }
   estimates {
     varchar id PK
@@ -109,6 +110,7 @@ erDiagram
     varchar customer_id FK
     varchar customer_name
     varchar job_card_id FK
+    varchar estimate_id FK
     varchar vehicle_id FK
     date due_date
     varchar status
@@ -117,7 +119,6 @@ erDiagram
     bigint discount_halalas
     bigint total_halalas
     bigint paid_halalas
-    varchar seller_vat_number
   }
   payments {
     varchar id PK
@@ -189,6 +190,7 @@ erDiagram
   branches |o--o{ invoices : "branch_id"
   customers |o--o{ invoices : "customer_id"
   job_cards |o--o{ invoices : "job_card_id"
+  estimates |o--o{ invoices : "estimate_id"
   vehicles |o--o{ invoices : "vehicle_id"
   organizations ||--o{ payments : "org_id"
   branches |o--o{ payments : "branch_id"

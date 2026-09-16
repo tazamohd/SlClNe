@@ -32,11 +32,11 @@
 | ENT-CUSTOMERS | `customers` | 19 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-VEHICLES | `vehicles` | 18 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-SERVICES | `services` | 11 | yes | yes | yes | yes | yes | yes | — | 3 |
-| ENT-JOB-CARDS | `job_cards` | 21 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-JOB-CARDS | `job_cards` | 22 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-APPOINTMENTS | `appointments` | 23 | yes | yes | yes | yes | yes | yes | — | 8 |
-| ENT-ESTIMATES | `estimates` | 25 | yes | yes | yes | yes | yes | yes | 4 | 3 |
+| ENT-ESTIMATES | `estimates` | 28 | yes | yes | yes | yes | yes | yes | 4 | 3 |
 | ENT-ESTIMATE-LINES | `estimate_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
-| ENT-INVOICES | `invoices` | 28 | yes | yes | yes | yes | yes | yes | 5 | 3 |
+| ENT-INVOICES | `invoices` | 29 | yes | yes | yes | yes | yes | yes | 5 | 3 |
 | ENT-INVOICE-LINES | `invoice_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-PAYMENTS | `payments` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |
 | ENT-RECEIPTS | `receipts` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |

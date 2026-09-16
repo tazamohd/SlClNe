@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-16
 
-179 spec files containing 2100 test cases.
+180 spec files containing 2126 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 105 | 985 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 106 | 1011 | Handler behaviour, repository seam, presentation |
 | E2E | 31 | 296 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,7 +35,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 34 | 435 |
+| server | 35 | 461 |
 | app | 104 | 1298 |
 | browser | 41 | 367 |
 
@@ -189,7 +189,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/workshop-api.test.ts` | UNIT_OR_API | 7 | qc |
 | `app/tests/unit/workshop-stages.test.ts` | UNIT_OR_API | 5 | qc |
 | `server/tests/api.test.ts` | UNIT_OR_API | 43 | frontdesk, technician, owner, manager, accountant, advisor, parts, customer |
-| `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 5 | manager, advisor, technician |
+| `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 13 | manager, advisor, technician, owner, accountant, procurement, hr |
 | `server/tests/auth-test-account.test.ts` | UNIT_OR_API | 19 | test, technician, customer, accountant, manager, owner, superadmin |
 | `server/tests/auth.test.ts` | UNIT_OR_API | 31 | owner, manager, technician, frontdesk |
 | `server/tests/authz-matrix.test.ts` | SECURITY | 20 | owner, accountant, manager, superadmin, qc, technician |
@@ -198,9 +198,10 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/crm-fleet.test.ts` | UNIT_OR_API | 13 | advisor, technician, manager, owner |
 | `server/tests/customer-registration.test.ts` | UNIT_OR_API | 14 | customer, owner |
 | `server/tests/customer-self-scope.test.ts` | UNIT_OR_API | 11 | customer, manager, technician |
+| `server/tests/document-chain.test.ts` | UNIT_OR_API | 13 | advisor, owner, accountant, parts, frontdesk, manager, callcenter |
 | `server/tests/errors.test.ts` | UNIT_OR_API | 8 | owner, parts |
 | `server/tests/estimate-money.test.ts` | FINANCIAL_INTEGRITY | 3 | manager |
-| `server/tests/export.test.ts` | UNIT_OR_API | 5 | owner, advisor, parts, technician |
+| `server/tests/export.test.ts` | UNIT_OR_API | 8 | owner, advisor, parts, technician, customer |
 | `server/tests/finance-reports.test.ts` | FINANCIAL_INTEGRITY | 8 | owner, technician, accountant |
 | `server/tests/history-read.test.ts` | UNIT_OR_API | 6 | manager, owner, supplier, qc |
 | `server/tests/hr.test.ts` | UNIT_OR_API | 12 | hr, technician, advisor, accountant |
@@ -208,7 +209,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/inventory-enforcement.test.ts` | INVENTORY_INTEGRITY | 21 | owner, parts, supplier |
 | `server/tests/isolation.test.ts` | SECURITY | 21 | owner, accountant, manager, superadmin, advisor, technician, qc, parts, hr, frontdesk, callcenter, procurement, supplier, customer |
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
-| `server/tests/obd-otp.test.ts` | UNIT_OR_API | 8 | manager, parts |
+| `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |
 | `server/tests/rbac-matrix.test.ts` | SECURITY | 28 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |

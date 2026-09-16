@@ -8,15 +8,19 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 168,
+    "relationships": 170,
     "declared": 62,
-    "inferred": 106,
-    "orphanReferenceColumns": 11
+    "inferred": 108,
+    "orphanReferenceColumns": 12
   },
   "orphanReferences": [
     {
       "table": "user_sessions",
       "column": "family_id"
+    },
+    {
+      "table": "estimates",
+      "column": "customer_signature_challenge_id"
     },
     {
       "table": "inventory_movements",
@@ -406,6 +410,21 @@
       "evidence": "server/src/db/schema.ts"
     },
     {
+      "id": "REL-JOB-CARDS-APPOINTMENT-ID",
+      "from": "job_cards",
+      "fromColumn": "appointment_id",
+      "to": "appointments",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
       "id": "REL-APPOINTMENTS-ORG-ID",
       "from": "appointments",
       "fromColumn": "org_id",
@@ -658,6 +677,21 @@
       "tenantScope": "org_id",
       "branchScope": "branch_id",
       "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INVOICES-ESTIMATE-ID",
+      "from": "invoices",
+      "fromColumn": "estimate_id",
+      "to": "estimates",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
       "evidence": "server/src/db/schema.ts"
     },
     {

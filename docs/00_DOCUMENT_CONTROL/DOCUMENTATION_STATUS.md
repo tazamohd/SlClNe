@@ -28,13 +28,13 @@
 | Area | Derived from | Count |
 | --- | --- | --- |
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 69 tables |
-| Relationship catalogue | `server/src/db/schema.ts` | 168 relationships |
-| API reference | the route files | 372 endpoints |
+| Relationship catalogue | `server/src/db/schema.ts` | 170 relationships |
+| API reference | the route files | 374 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 420 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 18 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 52 policies |
-| Test catalogue | the spec files | 179 suites |
+| Test catalogue | the spec files | 180 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 425 screens |
 | Capability map, requirements, traceability | all of the above | 151 requirements |
 
