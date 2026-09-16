@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import { initialLanguage, preloadArabic } from './providers/PreferencesProvider'
+import { initServiceWorker } from './lib/service-worker'
 import './styles/index.css'
 
 const container = document.getElementById('root')
@@ -41,3 +42,12 @@ if (initialLanguage() === 'ar') {
 } else {
   mount()
 }
+
+/** The service worker, after the app is on screen.
+ *
+ *  Registration is a network request and a worker install, and neither does
+ *  anything for the visit that pays for them — a service worker only ever
+ *  serves the *next* load. Running it before mount would put it in front of the
+ *  first paint for no benefit at all; running it after costs this visit
+ *  nothing. It no-ops in dev and under Capacitor; see `lib/service-worker.ts`. */
+initServiceWorker()

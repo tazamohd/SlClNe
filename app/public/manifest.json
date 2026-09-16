@@ -2,16 +2,18 @@
   "name": "SALIS AUTO",
   "short_name": "SALIS",
   "description": "Integrated automotive workshop management system",
-  "start_url": "/",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#F8FAFC",
   "theme_color": "#0A5ED7",
   "icons": [
     {
-      "src": "/assets/logo-blue-orange.png",
-      "sizes": "1024x1024",
+      "src": "assets/logo-blue-orange.png",
+      "sizes": "500x500",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

@@ -51,6 +51,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      # The worker's generated values, and the bypasses that keep tenant-scoped
+      # API responses out of a per-origin cache. Every failure it catches is one
+      # that leaves the build green and the app working.
+      - name: Service worker is generated and safe
+        run: npm run check-sw
+
       - name: Registry is current
         run: |
           npm run registry
