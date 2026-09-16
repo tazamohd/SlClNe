@@ -32,7 +32,7 @@ Execute this runbook when any of the following occur after a production deployme
 | Previous version artifacts      | Git tag or commit SHA of the last known good version             |
 | Database migration rollback     | Drizzle down-migration scripts available in `server/drizzle/`   |
 | Feature flag access             | Environment variable or configuration to disable new features   |
-| Deployment platform access      | GitHub Actions, Vercel, Netlify dashboard, or cloud provider    |
+| Deployment platform access      | GitHub Actions, the Vercel dashboard, or cloud provider         |
 | DNS / load balancer access      | Ability to route traffic away from the new deployment           |
 | Database backup                 | Pre-deployment backup confirmed (per [Deployment Plan](../../project-management/planning/deployment-plan.md)) |
 | CTO approval                    | Required for L3 escalation (full rollback with DB migration)    |
@@ -121,16 +121,6 @@ vercel rollback
 
 # Or select the specific deployment in the Vercel dashboard
 # Deployments > [last good deployment] > Promote to Production
-```
-
-**Netlify:**
-
-```bash
-# Use the Netlify CLI
-netlify deploy --prod --dir=app/dist
-
-# Or use the Netlify dashboard
-# Deploys > [last good deploy] > Publish deploy
 ```
 
 **Step 3.** Verify the frontend is serving the correct version.

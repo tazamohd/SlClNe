@@ -128,7 +128,7 @@ For each change request, the Tech Lead completes:
 - [ ] Does it modify the workshop lifecycle (Check-In -> Inspection -> Estimate -> Repair -> QC -> Delivery)?
 - [ ] Does it change the approval chain (owner -> superadmin -> manager -> advisor)?
 - [ ] Does it affect RTL layout or require new Arabic translation keys?
-- [ ] Does it impact any of the 3 deployment targets (GitHub Pages, Vercel, Netlify)?
+- [ ] Does it impact either deployment target (GitHub Pages, Vercel)?
 
 ---
 

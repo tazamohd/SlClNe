@@ -84,7 +84,6 @@ SALIS AUTO is a multi-tenant automotive workshop management system. It covers th
 ├── chats/                      # Design conversation transcripts
 ├── .github/workflows/          # CI/CD (GitHub Pages deploy)
 ├── vercel.json                 # Vercel deployment config
-├── netlify.toml                # Netlify deployment config
 └── README.md                   # Handoff bundle description
 ```
 
@@ -252,11 +251,6 @@ Three deployment targets are configured:
 - Build: `cd app && npm install && npm run build`
 - Output: `app/dist`
 - SPA fallback: all routes rewrite to `/index.html`
-
-### Netlify
-- Config: `netlify.toml`
-- Build base: `app/`, command: `npm run build`, publish: `dist`
-- SPA fallback: `/* → /index.html` (200 redirect)
 
 ## Internationalization
 

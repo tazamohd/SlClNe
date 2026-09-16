@@ -63,13 +63,13 @@ This document defines the business continuity and disaster recovery strategy for
 | Step | Action                                                         | Time     | Owner        |
 |------|----------------------------------------------------------------|----------|--------------|
 | 1    | Vercel status page confirms outage                              | 0-5 min  | Monitoring   |
-| 2    | Activate Netlify deployment (pre-built, always current)         | 5-10 min | DevOps       |
-| 3    | Update DNS to point to Netlify domain                           | 10-30 min| DevOps       |
-| 4    | Verify application loads from Netlify                           | 5 min    | QA           |
+| 2    | Activate the GitHub Pages deployment (rebuilt on every push to `main`) | 5-10 min | DevOps |
+| 3    | Update DNS to point to the GitHub Pages domain                  | 10-30 min| DevOps       |
+| 4    | Verify application loads from GitHub Pages                      | 5 min    | QA           |
 | 5    | Notify users of temporary URL if DNS propagation is slow        | 15 min   | PM           |
 | 6    | Monitor Vercel recovery, plan switch-back                       | Ongoing  | DevOps       |
 
-**Failover readiness:** Both `vercel.json` and `netlify.toml` are maintained in the repository. The CI/CD pipeline deploys to both targets on every merge to `main`. GitHub Pages serves as a third option via GitHub Actions.
+**Failover readiness:** `vercel.json` is maintained in the repository, and `.github/workflows/deploy-pages.yml` publishes the same build to GitHub Pages on every push to `main`, so the fallback is always current. Netlify was retired as a target in favour of Vercel, which leaves GitHub Pages as the only second frontend host — a static one, with no preview environments and no edge configuration of its own.
 
 ### 3.3 Payment Gateway Down (HyperPay)
 
@@ -187,7 +187,7 @@ Saudi regulations may require certain data categories to remain within the Kingd
 
 | Component          | Primary Location       | Secondary Location     |
 |--------------------|------------------------|------------------------|
-| Frontend (SPA)     | Vercel Edge (global CDN)| Netlify CDN (global)   |
+| Frontend (SPA)     | Vercel Edge (global CDN)| GitHub Pages (global CDN) |
 | Backend API        | AWS ME (Bahrain)       | Future: STC Cloud (KSA)|
 | PostgreSQL         | AWS RDS (Bahrain)      | Read replica (same region) |
 | Backups            | AWS S3 (Bahrain)       | Cross-region copy (future) |
@@ -255,7 +255,7 @@ If resources are constrained during a major incident, the following domains must
 | Test Type                    | Frequency   | Scope                                  | Duration  |
 |------------------------------|-------------|----------------------------------------|-----------|
 | Backup restore verification  | Monthly     | Restore latest backup to staging       | 2 hours   |
-| Hosting failover drill       | Quarterly   | Switch from Vercel to Netlify and back | 1 hour    |
+| Hosting failover drill       | Quarterly   | Switch from Vercel to GitHub Pages and back | 1 hour |
 | Full DR simulation           | Bi-annually | Simulate database failure + recovery   | Half-day  |
 | ZATCA resilience test        | Quarterly   | Simulate ZATCA API outage + recovery   | 2 hours   |
 | Tabletop exercise            | Annually    | Walk through worst-case scenario       | Half-day  |
