@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Sources as of:** 2026-09-15 · 408 documents, 139 in the numbered architecture
+**Sources as of:** 2026-09-16 · 408 documents, 139 in the numbered architecture
 
 ## Start here
 
@@ -100,7 +100,7 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 | `project-control/PERMISSION_REGISTRY.json` | 420 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
 | `project-control/BUSINESS_RULES.json` | 30 rules, each naming its function | `packages/contract/src/rules/*.ts` |
 | `project-control/STATE_MACHINE_REGISTRY.json` | 18 lifecycles | `packages/contract/src/entities/*.ts` |
-| `project-control/TEST_REGISTRY.json` | 178 suites, 2093 cases | the spec files |
+| `project-control/TEST_REGISTRY.json` | 180 suites, 2111 cases | the spec files |
 | `project-control/CAPABILITY_REGISTRY.json` | 18 capabilities linked to everything below them | modules + screen domains |
 | `project-control/SECURITY_REGISTRY.json` | RLS policies, triggers, unauthenticated surface | `server/drizzle/*.sql` |
 | `project-control/MASTER_REGISTRY.json` | 425 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |

@@ -10,7 +10,7 @@
 
 # C4 model
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · **Scope:** CURRENT implementation
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · **Scope:** CURRENT implementation
 
 Everything on these diagrams exists in the repository today. Nothing planned is drawn.
 

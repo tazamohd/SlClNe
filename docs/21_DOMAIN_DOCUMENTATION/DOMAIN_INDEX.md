@@ -12,7 +12,7 @@
 
 # Domain documentation
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 18 domains
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 18 domains
 
 One document per domain, all to the same standard: purpose, actors and their data scopes, entities and relationships, API surface, business rules, lifecycles, screens, and the gaps. Derived from the registries, so a domain document cannot quietly fall behind the code it describes.
 

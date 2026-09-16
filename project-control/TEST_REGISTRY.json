@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 178,
-    "cases": 2093,
+    "suites": 180,
+    "cases": 2111,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 296,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
       "SECURITY": 242,
-      "UNIT_OR_API": 978,
+      "UNIT_OR_API": 996,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3301,6 +3301,58 @@
       ],
       "caseCount": 8,
       "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-NATIVE-BRIDGE-TEST-TSX",
+      "file": "app/tests/native-bridge.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "back stack",
+        "dismissible layers register with the back stack"
+      ],
+      "cases": [
+        "reports nothing to close when no layer is open",
+        "closes the most recently opened layer first",
+        "leaves the handler in place so a layer that declines to close stays on top",
+        "unregisters by identity, so layers closing out of order still clean up",
+        "empties as layers close, so back goes back to navigating",
+        "is idempotent when a layer unregisters twice",
+        "an open drawer is what back closes, and closing it releases back again"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-NATIVE-DEEP-LINK-TEST-TS",
+      "file": "app/tests/native-deep-link.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "samePathFor"
+      ],
+      "cases": [
+        "follows an absolute link to this app",
+        "keeps the query and hash a deep link carries",
+        "follows the app’s own custom scheme",
+        "normalises a custom-scheme link that arrives with extra slashes",
+        "follows a multi-segment custom-scheme link",
+        "keeps the query and hash on a custom-scheme link",
+        "refuses a link to another origin",
+        "refuses a protocol-relative link, which resolves off-origin",
+        "refuses another app’s scheme",
+        "refuses a javascript: payload",
+        "treats a bare path as this app’s, since that is what it resolves to"
+      ],
+      "caseCount": 11,
+      "touchesPaths": [
+        "/job-cards",
+        "//job-cards",
+        "/customer-app/home",
+        "/dashboard"
+      ],
       "touchesRoles": []
     },
     {

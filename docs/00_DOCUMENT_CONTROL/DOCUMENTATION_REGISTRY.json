@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-09-16",
   "generator": "tools/docs/generators/control.mjs",
   "statusValues": [
     "MISSING",
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 15672,
-      "lines": 224,
+      "bytes": 15797,
+      "lines": 226,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,

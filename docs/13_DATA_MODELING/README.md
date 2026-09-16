@@ -8,7 +8,7 @@
 
 # Data modelling
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Entity catalogue, data dictionary, relationships, lineage, ownership.
 

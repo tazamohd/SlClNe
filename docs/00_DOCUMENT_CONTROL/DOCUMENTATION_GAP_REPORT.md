@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Sources as of:** 2026-09-15
+**Sources as of:** 2026-09-16
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 
@@ -28,7 +28,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 425 of 425 |
 | Screens wired to the live API | 99 of 425 |
-| Test suites catalogued | 178 containing 2093 cases |
+| Test suites catalogued | 180 containing 2111 cases |
 | Capabilities with no linked test suite | 6 |
 | Canonical registers at least 3 days behind the newest | 6 of 9 |
 | Direct contradictions between registers | 3 |
