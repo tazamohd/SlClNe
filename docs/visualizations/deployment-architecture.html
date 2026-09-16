@@ -175,8 +175,8 @@
 
   // Nodes definition: [id, label, sublabel, x, y, w, h, color, iconFn]
   var nodes=[
-    {id:'cdn',label:'Cloudflare CDN',sub:'SSL termination, DDoS, edge cache',x:175,y:32,w:330,h:58,color:'#DA7756',
-      desc:'Cloudflare CDN with custom domain (salis.auto). SSL/TLS termination, DDoS mitigation, edge caching for static assets, WAF rules. Ports: 443 (HTTPS), 80 redirect.'},
+    {id:'cdn',label:'Vercel Edge',sub:'TLS termination, DDoS mitigation, edge cache',x:175,y:32,w:330,h:58,color:'#DA7756',
+      desc:'Vercel\u2019s edge network with a custom domain. Automatic TLS termination and renewal, DDoS mitigation, edge caching for static assets. Ports: 443 (HTTPS), 80 redirect. No WAF is claimed here \u2014 Vercel Firewall is a separate product this project does not currently use.'},
     {id:'lb',label:'NGINX / ALB',sub:'Layer 7 routing, health checks',x:195,y:130,w:290,h:55,color:'#DA7756',
       desc:'NGINX reverse proxy or AWS Application Load Balancer. Layer 7 routing, sticky sessions, health-check probes every 10s. Rate limiting: 100 req/s per IP. Ports: 80/443 inbound, 3000/8080 upstream.'},
     {id:'spa1',label:'React SPA',sub:'Vite build, static',x:75,y:265,w:195,h:52,color:'#6ba4d9',

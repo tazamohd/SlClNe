@@ -23,8 +23,8 @@
 #
 # The job's own pass/fail is decided by **GitHub Actions checks from this
 # repository** — the jobs in `ci.yml`, the ones a change here can actually fix.
-# External providers (Cloudflare Pages, Netlify, Vercel) are reported in full,
-# with their real state, but do not decide it.
+# External deploy providers are reported in full, with their real state, but do
+# not decide it.
 #
 # That is deliberate and it is not a loosening: those checks never gated this
 # job, because it could not see them. Making them gate now would paint every

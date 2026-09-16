@@ -1935,7 +1935,7 @@
     {
       "path": "SALIS_AUTO_EXECUTION_PLAN.md",
       "section": "(root)",
-      "bytes": 76314,
+      "bytes": 76292,
       "lines": 1395,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -2969,7 +2969,7 @@
     {
       "path": "mermaid/project/deployment-architecture.md",
       "section": "mermaid",
-      "bytes": 3280,
+      "bytes": 3288,
       "lines": 82,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
