@@ -28,9 +28,9 @@ This report exists to be read before anything else in the set is relied on. It i
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 425 of 425 |
 | Screens wired to the live API | 99 of 425 |
-| Test suites catalogued | 182 containing 2144 cases |
+| Test suites catalogued | 187 containing 2184 cases |
 | Capabilities with no linked test suite | 5 |
-| Canonical registers at least 3 days behind the newest | 6 of 9 |
+| Canonical registers at least 3 days behind the newest | 8 of 9 |
 | Direct contradictions between registers | 3 |
 
 ## What is not verified
@@ -120,16 +120,18 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-12; 6 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-16; 8 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 32 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 32 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 31 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 10 |
-| `project-control/BASELINE.json` | 2026-09-03 | 9 |
-| `project-control/GOLDEN_PATHS.json` | 2026-09-06 | 5 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 36 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 36 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 35 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 14 |
+| `project-control/BASELINE.json` | 2026-09-03 | 13 |
+| `project-control/MASTER_REGISTRY.json` | 2026-09-12 | 4 |
+| `project-control/STATUS.json` | 2026-09-12 | 4 |
+| `project-control/BLOCKERS.json` | 2026-09-12 | 4 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 

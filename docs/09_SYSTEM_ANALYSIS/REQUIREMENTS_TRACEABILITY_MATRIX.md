@@ -26,7 +26,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 
 | Objective | Capability | Requirement | Entities | Endpoints | Permissioned roles | Screens | Rules | Linked test suites |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 77 | 12 | 16 | 0 | 16 |
+| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 77 | 12 | 16 | 0 | 18 |
 | OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 3 | 0 | 15 |
 | OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 8 |
 | OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 12 |
@@ -40,7 +40,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
 | OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 10 | 0 | 1 |
 | OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
-| OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 14 |
+| OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 16 |
 | OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 32 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
 | OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 233 | 0 | **0** |

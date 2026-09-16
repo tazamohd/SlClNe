@@ -22,6 +22,21 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<!-- Deep links. Without CFBundleURLTypes iOS never routes a
+	     com.salisauto.app:// URL to this app, so the appUrlOpen listener in
+	     src/providers/NativeProvider.tsx can never fire. Any app can open a
+	     custom scheme, which is why the handler validates before navigating. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.salisauto.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.salisauto.app</string>
+			</array>
+		</dict>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

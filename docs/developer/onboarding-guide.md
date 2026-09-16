@@ -23,7 +23,7 @@ The platform serves 220+ screens across 13 business domains, supports bilingual 
 - **Backend Team** -- Fastify REST API, Drizzle ORM, PostgreSQL, authentication, RBAC enforcement
 - **Design Team** -- UI/UX prototypes (`.dc.html` files), design data pipeline
 - **QA Team** -- Vitest unit tests, Playwright E2E tests, accessibility and RTL validation
-- **DevOps** -- CI/CD pipelines, GitHub Pages / Vercel / Netlify deployment
+- **DevOps** -- CI/CD pipelines, GitHub Pages / Vercel deployment
 
 ---
 

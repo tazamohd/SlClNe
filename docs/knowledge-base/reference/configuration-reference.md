@@ -141,17 +141,6 @@ Key settings:
 
 SPA fallback: All routes are rewritten to `index.html` for client-side routing.
 
-### Netlify (`netlify.toml`)
-
-```toml
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
-
-Same SPA fallback pattern.
-
 ### GitHub Actions
 
 Typical CI/CD workflow steps:

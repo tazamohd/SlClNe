@@ -47,7 +47,7 @@ This document identifies all stakeholders of the SALIS AUTO platform, classifies
 | S-17 | QA Team                    | Testers ensuring quality                                 | All domains                           |
 | S-18 | UX/UI Design Team          | Interface and experience designers                       | All domains (especially RTL/i18n)     |
 | S-19 | SMS/Notification Provider  | Twilio or equivalent for OTP, SMS, WhatsApp              | Authentication, Notifications         |
-| S-20 | Hosting Providers          | GitHub Pages, Vercel, Netlify                            | Deployment                            |
+| S-20 | Hosting Providers          | GitHub Pages, Vercel                                     | Deployment                            |
 | S-21 | Saudi Workshop Association | Industry body; potential pilot partner                   | Adoption, requirements validation     |
 
 ---

@@ -85,7 +85,7 @@ SALIS AUTO Platform
 | **Composition**     | Vite 5.4 + React 18.3 scaffold, Express 4.21 API scaffold, Drizzle ORM 0.36 + PGlite local dev, GitHub Actions CI/CD, multi-tenant DB schema |
 | **Derivation**      | Epic E-09 (10 stories, 61 SP)                                        |
 | **Format**          | Config files, pipeline YAML, TypeScript scaffolds                    |
-| **Quality Criteria**| CI runs in < 10 min; deploys to GitHub Pages/Vercel/Netlify succeed; PGlite parity with PostgreSQL for schema |
+| **Quality Criteria**| CI runs in < 10 min; deploys to GitHub Pages/Vercel succeed; PGlite parity with PostgreSQL for schema |
 | **Quality Method**  | Pipeline execution audit; deployment smoke tests                      |
 | **Quality Tolerance**| +10% on CI time; zero tolerance on deployment failures               |
 

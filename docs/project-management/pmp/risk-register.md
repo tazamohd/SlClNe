@@ -97,7 +97,7 @@ Risk Score = Probability x Impact. Classification:
 
 | Risk ID | Risk Description | Prob | Impact | Score | Category | Response Strategy | Owner | Status |
 |---------|-----------------|------|--------|-------|----------|-------------------|-------|--------|
-| R-D01 | Static hosting (GitHub Pages/Vercel/Netlify) limitations block required server features | 2 | 3 | 6 | Medium | **Mitigate:** Strict SPA architecture; API deployed separately; validate all hosting targets in Sprint 1 | DevOps Lead | Open |
+| R-D01 | Static hosting (GitHub Pages/Vercel) limitations block required server features | 2 | 3 | 6 | Medium | **Mitigate:** Strict SPA architecture; API deployed separately; validate all hosting targets in Sprint 1 | DevOps Lead | Open |
 | R-D02 | Database migration fails during production cutover, causing data loss | 2 | 5 | 10 | High | **Mitigate:** Rehearse migration 3 times before go-live; point-in-time backup before cutover; automated rollback script; see [Migration Plan](../planning/migration-plan.md) | DBA | Open |
 | R-D03 | Go-live performance issues under production load | 3 | 4 | 12 | High | **Mitigate:** Load test with k6 at 2x expected users; performance budget per API endpoint; CDN for static assets; see [Capacity Rollback Plan](../planning/capacity-rollback-plan.md) | DevOps Lead | Open |
 

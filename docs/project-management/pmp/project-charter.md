@@ -110,7 +110,7 @@ See [Stakeholder Register](stakeholder-register.md) for full engagement strategi
 | RTL/LTR dual-direction layout                    | Every UI component must render correctly in both     |
 | VAT fixed at 15%                                 | Tax engine hardcoded to current Saudi VAT rate       |
 | Approval limit hierarchy                         | Owner unlimited; cascading limits down to SAR 5,000  |
-| Static hosting targets (GitHub Pages, Vercel, Netlify) | Frontend must be fully static SPA               |
+| Static hosting targets (GitHub Pages, Vercel)          | Frontend must be fully static SPA               |
 
 ---
 

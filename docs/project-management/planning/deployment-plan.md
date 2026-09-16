@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-This document defines the deployment procedures for the SALIS AUTO platform across all target environments: GitHub Pages, Vercel, and Netlify for the frontend SPA, and cloud infrastructure for the backend API and PostgreSQL database.
+This document defines the deployment procedures for the SALIS AUTO platform across all target environments: GitHub Pages and Vercel for the frontend SPA, and cloud infrastructure for the backend API and PostgreSQL database.
 
 ---
 
@@ -23,7 +23,7 @@ This document defines the deployment procedures for the SALIS AUTO platform acro
                  +--------------------+
                  |   Static Hosting   |
                  | (GitHub Pages /    |
-                 |  Vercel / Netlify) |
+                 |      Vercel)       |
                  +--------+---------+
                           |
                     React SPA
@@ -57,7 +57,7 @@ This document defines the deployment procedures for the SALIS AUTO platform acro
 | Local       | Developer workstation | `localhost:5173`   | `localhost:3000`    | PGlite (local)    |
 | Development | Integration testing  | Vercel (preview)    | Cloud (dev instance)| PostgreSQL (dev)   |
 | Staging     | UAT, demos           | Vercel (staging)    | Cloud (staging)     | PostgreSQL (staging)|
-| Production  | Live system          | GitHub Pages/Vercel/Netlify | Cloud (prod) | PostgreSQL (prod)  |
+| Production  | Live system          | GitHub Pages / Vercel       | Cloud (prod) | PostgreSQL (prod)  |
 
 ### 3.2 Environment Variables
 
@@ -157,30 +157,6 @@ npm run build                     # Vite produces dist/
 - Environment variables set in Vercel dashboard per environment.
 - Preview deployments enabled for PRs.
 - Production branch: `main` with manual promotion.
-
-### 5.3 Netlify
-
-```toml
-# netlify.toml
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-```
-
-**Configuration:**
-- Build environment variables set in Netlify dashboard.
-- Deploy previews for PRs.
-- Branch deploys for staging.
 
 ---
 

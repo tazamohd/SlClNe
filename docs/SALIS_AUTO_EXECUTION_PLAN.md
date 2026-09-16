@@ -1132,7 +1132,7 @@ that can never become production data.
 | Environment | Frontend | API | Database |
 |---|---|---|---|
 | Local | Vite dev | Fastify + tsx watch | Docker Postgres + MinIO |
-| PR preview | Vercel/Netlify preview | Fly.io app | Neon branch DB |
+| PR preview | Vercel preview | Fly.io app | Neon branch DB |
 | Staging | production build, seeded | same as production | isolated |
 | Production | static CDN (Vercel) | Fly.io / Railway / ECS, ≥2 instances | managed Postgres (Neon/RDS) + PITR |
 

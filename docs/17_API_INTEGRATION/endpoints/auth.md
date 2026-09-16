@@ -19,11 +19,11 @@
 | POST | `/api/v1/auth/biometric/challenge` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/enrol` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/forgot-password` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
-| POST | `/api/v1/auth/login` | — | token | — | — | 12 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/login` | — | token | — | — | 13 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/logout` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/providers` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
-| POST | `/api/v1/auth/refresh` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/refresh` | — | token | — | — | 3 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/register` | — | token | — | — | 5 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/request-otp` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/reset-password` | — | token | — | — | 1 | `server/src/auth/routes.ts` |

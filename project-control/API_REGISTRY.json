@@ -2957,6 +2957,7 @@
         "TS-APP-E2E-A11Y-SPEC-TS",
         "TS-APP-E2E-AUTH-SPEC-TS",
         "TS-APP-E2E-NAVIGATION-SPEC-TS",
+        "TS-APP-E2E-OFFLINE-SPEC-TS",
         "TS-APP-E2E-REDUCED-MOTION-SPEC-TS",
         "TS-APP-E2E-SAFE-AREA-SPEC-TS",
         "TS-APP-E2E-SECURITY-HEADERS-SPEC-TS",
@@ -3058,6 +3059,8 @@
       "validates": false,
       "capability": "CAP-IDENTITY",
       "tests": [
+        "TS-APP-E2E-OFFLINE-SPEC-TS",
+        "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS"
       ]
     },
@@ -9236,7 +9239,9 @@
       "audited": false,
       "capability": "CAP-WORKSHOP",
       "tests": [
+        "TS-APP-E2E-OFFLINE-SPEC-TS",
         "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
@@ -9285,7 +9290,9 @@
       "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": [
+        "TS-APP-E2E-OFFLINE-SPEC-TS",
         "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
+        "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",

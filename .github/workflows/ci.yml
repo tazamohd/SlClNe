@@ -51,6 +51,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      # The worker's generated values, and the bypasses that keep tenant-scoped
+      # API responses out of a per-origin cache. Every failure it catches is one
+      # that leaves the build green and the app working.
+      - name: Service worker is generated and safe
+        run: npm run check-sw
+
       - name: Registry is current
         run: |
           npm run registry
@@ -63,6 +69,19 @@ jobs:
 
       - name: Design tokens and brand palette
         run: npm run check-tokens
+
+      # The manifest against the icon files it names. Catches a declared size
+      # that is not the file's real size, a missing maskable icon, and an icon
+      # referenced but never committed — none of which fail a build.
+      - name: PWA icons match the manifest
+        run: npm run check-icons
+
+      # What /native/android and /native/i-os claim, against the native
+      # projects and the installed plugin list — in both directions, so the
+      # pages can neither advertise what is absent nor keep apologising for
+      # what has since been built.
+      - name: Native app pages tell the truth
+        run: npm run check-native
 
       - name: Upload the gap report
         if: always()

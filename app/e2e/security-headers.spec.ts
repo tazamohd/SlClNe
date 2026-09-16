@@ -7,7 +7,7 @@ import { SECURITY_HEADERS } from '../security-headers.mjs'
  *  The API had a Content-Security-Policy for months that was never sent — the
  *  certification recorded it as configured, the test that would have caught it
  *  could not run, and the claim outlived the thing that justified it. The
- *  browser-facing half was worse: nginx, Vercel and Netlify each served the SPA
+ *  browser-facing half was worse: nginx and Vercel each served the SPA
  *  with no security headers at all, which nobody had claimed either way.
  *
  *  `vite.config.ts` applies the production set to `preview`, and this suite runs

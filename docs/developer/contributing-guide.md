@@ -277,7 +277,7 @@ We use **squash and merge** for all PRs. The PR title becomes the squash commit 
 
 ### 8.3 Deployment
 
-Automatic on push to `main`: GitHub Pages (`.github/workflows/deploy-pages.yml`), Vercel (`vercel.json`), and Netlify (`netlify.toml`) -- all build from `app/`.
+Automatic on push to `main`: GitHub Pages (`.github/workflows/deploy-pages.yml`) and Vercel (`vercel.json`) -- both build from `app/`.
 
 ---
 
