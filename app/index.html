@@ -9,7 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" href="/assets/logo-blue-orange.png" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/assets/logo-blue-orange.png" />
+    <!-- iOS composites an apple-touch-icon onto an opaque background and shows
+         it at 180px, where the logo's near-white wordmark on transparency
+         disappears. This is the same artwork on the brand plate. The favicon
+         above keeps the transparent original: it renders at 16px against
+         browser chrome, where the plate would read as a navy square. -->
+    <link rel="apple-touch-icon" href="/assets/icon-192.png" />
     <meta name="theme-color" content="#0A5ED7" />
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin />

@@ -70,6 +70,12 @@ jobs:
       - name: Design tokens and brand palette
         run: npm run check-tokens
 
+      # The manifest against the icon files it names. Catches a declared size
+      # that is not the file's real size, a missing maskable icon, and an icon
+      # referenced but never committed — none of which fail a build.
+      - name: PWA icons match the manifest
+        run: npm run check-icons
+
       - name: Upload the gap report
         if: always()
         uses: actions/upload-artifact@v4
