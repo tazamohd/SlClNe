@@ -12,7 +12,7 @@
 
 # Domain — Identity and access
 
-**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
@@ -40,11 +40,11 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/biometric/challenge` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/biometric/enrol` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/forgot-password` | — | explicit | — | 2 |
-| POST | `/api/v1/auth/login` | — | explicit | — | 12 |
+| POST | `/api/v1/auth/login` | — | explicit | — | 13 |
 | POST | `/api/v1/auth/logout` | — | explicit | — | 1 |
 | GET | `/api/v1/auth/me` | — | explicit | — | 2 |
 | GET | `/api/v1/auth/providers` | — | explicit | — | 1 |
-| POST | `/api/v1/auth/refresh` | — | explicit | — | 1 |
+| POST | `/api/v1/auth/refresh` | — | explicit | — | 3 |
 | POST | `/api/v1/auth/register` | — | explicit | — | 5 |
 | POST | `/api/v1/auth/request-otp` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/reset-password` | — | explicit | — | 1 |

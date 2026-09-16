@@ -8,7 +8,7 @@
 
 # Operations and DevOps
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Environments, deployment, observability, backup, runbooks.
 

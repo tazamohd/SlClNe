@@ -8,7 +8,7 @@
 
 # State machines
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 ## What is and is not declared
 

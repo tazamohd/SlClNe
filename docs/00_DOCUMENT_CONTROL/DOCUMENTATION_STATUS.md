@@ -8,7 +8,7 @@
 
 # Documentation status
 
-**Sources as of:** 2026-09-15
+**Sources as of:** 2026-09-16
 
 ## Coverage
 
@@ -34,7 +34,7 @@
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 18 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 49 policies |
-| Test catalogue | the spec files | 178 suites |
+| Test catalogue | the spec files | 185 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 425 screens |
 | Capability map, requirements, traceability | all of the above | 150 requirements |
 

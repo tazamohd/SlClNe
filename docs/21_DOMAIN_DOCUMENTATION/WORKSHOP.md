@@ -12,7 +12,7 @@
 
 # Domain — Workshop operations
 
-**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
@@ -121,8 +121,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/estimates/:id/request-approval-otp` | estimates:e | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/verify-approval-otp` | estimates:e | explicit | — | **0** |
 | GET | `/api/v1/estimates/export` | estimates:x | generated | — | **0** |
-| GET | `/api/v1/jobs` | jobcards:v | generated | — | 5 |
-| POST | `/api/v1/jobs` | jobcards:c | generated | — | 5 |
+| GET | `/api/v1/jobs` | jobcards:v | generated | — | 7 |
+| POST | `/api/v1/jobs` | jobcards:c | generated | — | 7 |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | generated | — | **0** |
 | GET | `/api/v1/jobs/:id` | jobcards:v | generated | — | **0** |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | generated | — | **0** |

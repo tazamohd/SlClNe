@@ -8,7 +8,7 @@
 
 # Domain documentation
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 One document per business domain, to a single standard.
 

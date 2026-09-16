@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 150 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 150 requirements
 
 ## What these requirements are, and what they are not
 

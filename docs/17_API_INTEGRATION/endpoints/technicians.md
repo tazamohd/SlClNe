@@ -10,7 +10,7 @@
 
 # API — technicians
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 4 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
