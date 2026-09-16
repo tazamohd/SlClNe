@@ -48,13 +48,39 @@ interface InboxItem {
   rejectPath: string | null
 }
 
-/** What each source is called in a refusal or a confirmation, so the copy names
- *  the document in front of the user rather than always saying "estimate". */
+/** What each source is called, so the copy names the document in front of the
+ *  user rather than always saying "estimate".
+ *
+ *  Each entry is a **whole** translatable string, not a noun to be concatenated
+ *  into a sentence. Translating a verb phrase and its object separately and
+ *  joining them happens to read correctly in English and Arabic, and would not
+ *  survive a third language. These are still reached through a dynamic lookup,
+ *  which `check-i18n` cannot follow — it only sees literal keys — so every
+ *  value below is in `ar-overrides.ts`, checked by hand rather than by the
+ *  gate. (The scanner reads comments too: spelling a key out in prose here
+ *  would report it as an untranslated string.) */
 const KIND_NOUN: Record<ApprovalItem['kind'], string> = {
   estimate: 'estimate',
   requisition: 'requisition',
   purchase_order: 'purchase order',
   insurance_claim: 'insurance claim',
+}
+
+/** The badge on the row. */
+const KIND_LABEL: Record<ApprovalItem['kind'], string> = {
+  estimate: 'Estimate',
+  requisition: 'Requisition',
+  purchase_order: 'Purchase order',
+  insurance_claim: 'Insurance claim',
+}
+
+/** Why the approve button is unavailable when the role simply lacks authority
+ *  on that source's module. One complete sentence each. */
+const KIND_NO_AUTHORITY: Record<ApprovalItem['kind'], string> = {
+  estimate: 'Your role cannot approve estimates',
+  requisition: 'Your role cannot approve requisitions',
+  purchase_order: 'Your role cannot approve purchase orders',
+  insurance_claim: 'Your role cannot approve insurance claims',
 }
 
 const KIND_ICON: Record<ApprovalItem['kind'], string> = {
@@ -318,7 +344,7 @@ export function ApprovalInbox() {
                 ? t('You raised this — it needs a different approver.')
                 : blocked
                   ? `${t('Above your approval limit')} (${formatSar(ceiling ?? 0)}) — ${t('escalate to a manager')}`
-                  : `${t('Your role cannot approve')} ${t(`${KIND_NOUN[item.kind]}s`)}`
+                  : t(KIND_NO_AUTHORITY[item.kind])
               return (
                 <li
                   key={item.key}
@@ -336,7 +362,7 @@ export function ApprovalInbox() {
                         {item.reference}
                       </span>
                       <Badge background="rgba(37,99,235,.10)" color="var(--salis-blue)">
-                        {t(KIND_NOUN[item.kind])}
+                        {t(KIND_LABEL[item.kind])}
                       </Badge>
                       <StatusBadge value={item.status} label={t(item.status)} />
                       {blocked ? (
