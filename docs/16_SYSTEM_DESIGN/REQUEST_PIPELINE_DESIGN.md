@@ -14,7 +14,7 @@
 
 # Request pipeline design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Covers: authentication, authorization, approval, segregation of duties, tenancy, validation, error handling, idempotency, concurrency, audit.
 

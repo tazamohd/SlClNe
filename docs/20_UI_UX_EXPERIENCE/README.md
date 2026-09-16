@@ -8,7 +8,7 @@
 
 # UI and UX
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Information architecture, screen registry, states, accessibility, Arabic and RTL.
 

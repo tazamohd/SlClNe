@@ -9,7 +9,7 @@
 
 # Business capability map
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09 · 18 capabilities
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 18 capabilities
 
 ## How capabilities are defined here
 

@@ -8,7 +8,7 @@
 
 # Release and certification
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Release plan, readiness, known limitations, certification against evidence.
 

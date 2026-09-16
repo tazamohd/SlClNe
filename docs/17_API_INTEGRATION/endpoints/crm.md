@@ -10,7 +10,7 @@
 
 # API — crm
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09 · 45 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 45 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

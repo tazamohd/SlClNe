@@ -8,7 +8,7 @@
 
 # Relationship catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-16
 
 ## The one thing to read first
 

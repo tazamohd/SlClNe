@@ -8,7 +8,7 @@
 
 # Master ERD — the tenancy spine
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 The twelve tables a reader needs to understand how a tenant, a customer, a vehicle, a job and its money hang together. Every other table hangs off this spine; the domain ERDs show those.
 

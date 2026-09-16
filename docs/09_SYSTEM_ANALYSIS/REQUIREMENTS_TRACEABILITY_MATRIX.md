@@ -12,7 +12,7 @@
 
 # Requirements traceability matrix
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 ## The chain
 

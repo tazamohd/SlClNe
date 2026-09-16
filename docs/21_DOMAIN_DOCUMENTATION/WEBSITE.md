@@ -12,7 +12,7 @@
 
 # Domain — Public website and acquisition
 
-**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 

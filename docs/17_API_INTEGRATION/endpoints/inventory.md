@@ -10,7 +10,7 @@
 
 # API — inventory
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09 · 13 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 13 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

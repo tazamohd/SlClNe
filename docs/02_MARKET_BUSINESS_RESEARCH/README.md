@@ -8,7 +8,7 @@
 
 # Market and business research
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 Market, segments, personas and competitors — with claims marked by evidence level.
 

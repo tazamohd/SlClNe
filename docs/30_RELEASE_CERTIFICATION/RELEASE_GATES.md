@@ -7,7 +7,7 @@
 
 # Release gates
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 14 gates: 8 passing, 3 failing, 3 uncheckable.
 

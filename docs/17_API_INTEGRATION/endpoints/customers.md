@@ -10,7 +10,7 @@
 
 # API — customers
 
-**Status:** GENERATED · **Sources as of:** 2026-09-09 · 19 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 19 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

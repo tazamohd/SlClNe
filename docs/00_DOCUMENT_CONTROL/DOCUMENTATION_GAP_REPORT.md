@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Sources as of:** 2026-09-09
+**Sources as of:** 2026-09-16
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 

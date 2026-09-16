@@ -7,7 +7,7 @@
 
 # Screen registry
 
-**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-09
+**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-16
 
 `project-control/MASTER_REGISTRY.json` is built by `app/scripts/build-registry.mjs` from the screen sources and the design bundle. This document is a reading of it, not a second copy — the numbers below change when that registry is rebuilt, never when someone edits this file.
 
