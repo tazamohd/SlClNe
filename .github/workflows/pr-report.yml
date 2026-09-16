@@ -139,13 +139,34 @@ jobs:
               await sleep(POLL_MS)
             }
 
-            /* `filter: 'latest'` is what the PR's own check list shows: one row
-             * per check name, the most recent. `ci.yml` triggers on both push
-             * and pull_request, so every job exists twice on this commit and an
-             * unfiltered table would print each one twice. */
-            const latest = (await listChecks('latest'))
-              .filter((run) => !isSelf(run))
-              .sort((a, b) => a.name.localeCompare(b.name))
+            /* One row per check *name*.
+             *
+             * `filter: 'latest'` is not enough on its own, which the first live
+             * run proved: it is latest-per-check-suite, and `ci.yml` triggers on
+             * both push and pull_request, so each of its eight jobs has a check
+             * run in two suites. The table came out with sixteen rows and a
+             * headline to match. So collapse by name here as well.
+             *
+             * Which duplicate wins is not arbitrary. A red one beats a green
+             * one — two runs of the same job on the same commit should agree,
+             * and when they do not, the failure is the fact worth showing.
+             * An unfinished one beats a finished one, because "still running"
+             * is the honest answer while any copy is unresolved. Only then does
+             * the most recent win. */
+            const bad = (run) => run.status === 'completed' && !PASSING.has(run.conclusion)
+            const unresolved = (run) => run.status !== 'completed'
+            const preferred = (a, b) => {
+              if (bad(a) !== bad(b)) return bad(a) ? a : b
+              if (unresolved(a) !== unresolved(b)) return unresolved(a) ? a : b
+              return new Date(b.started_at ?? 0) > new Date(a.started_at ?? 0) ? b : a
+            }
+
+            const byName = new Map()
+            for (const run of (await listChecks('latest')).filter((r) => !isSelf(r))) {
+              const seen = byName.get(run.name)
+              byName.set(run.name, seen ? preferred(seen, run) : run)
+            }
+            const latest = [...byName.values()].sort((a, b) => a.name.localeCompare(b.name))
 
             const icon = (run) => {
               if (run.status !== 'completed') return '⏳'
@@ -233,8 +254,18 @@ jobs:
              * was a bug: `c.user.type === 'Bot' && c.body.includes(a) ||
              * c.body.includes(b)` binds as `(A && B) || C`, so any comment by
              * anyone containing "Some checks failed" — a human quoting the
-             * bot, for instance — was overwritten by the next run. */
+             * bot, for instance — was overwritten by the next run.
+             *
+             * `LEGACY` recognises a report posted before the marker existed, so
+             * the first run after this change updates that comment instead of
+             * leaving it on the thread forever, frozen on its last wrong
+             * answer. Both tests require a Bot author, with the parentheses the
+             * old one was missing. */
             const MARKER = '<!-- salis-ci-pr-report -->'
+            const isReport = (c) =>
+              c.user?.type === 'Bot' &&
+              (c.body?.includes(MARKER) ||
+                (c.body?.includes('Posted by CI ·') && c.body?.includes('| Check | Status |')))
             body = `${MARKER}\n${body}`
 
             const comments = await github.paginate(github.rest.issues.listComments, {
@@ -243,9 +274,7 @@ jobs:
               issue_number: context.issue.number,
               per_page: 100,
             })
-            const existing = comments.find(
-              (c) => c.user?.type === 'Bot' && c.body?.includes(MARKER),
-            )
+            const [existing, ...duplicates] = comments.filter(isReport)
 
             if (existing) {
               await github.rest.issues.updateComment({
@@ -261,6 +290,22 @@ jobs:
                 issue_number: context.issue.number,
                 body,
               })
+            }
+
+            /* One report per PR. A second copy is a second answer, and the
+             * stale one is the one people scroll to first. Deleting is
+             * best-effort: losing a duplicate comment must not turn a green
+             * pipeline red. */
+            for (const stale of duplicates) {
+              try {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: stale.id,
+                })
+              } catch (error) {
+                core.warning(`Could not remove a stale report comment: ${error.message}`)
+              }
             }
 
             /* The job's verdict matches the headline: red when one of ours
