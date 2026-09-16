@@ -357,6 +357,9 @@ async function loadEmployee(tx: Tx, employeeId: string): Promise<{ id: string; n
 
 /** The eight-character code the job board shows. Random rather than sequential
  *  so one tenant's volume is not readable from another's job numbers. */
-function jobCode(): string {
+/** The job-card code the board shows, e.g. `A3F8B2C1`. Exported so the route
+ *  that opens a job card from an appointment mints the same shape — one owner
+ *  for the format, not two that can drift. */
+export function jobCode(): string {
   return randomBytes(4).toString('hex').toUpperCase()
 }

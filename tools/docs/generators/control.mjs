@@ -462,14 +462,29 @@ export function generateControl(model, requirements, trace) {
         DOCUMENTATION_FINDINGS.filter((f) => f.status !== 'RESOLVED').map((f) => [f.id, f.severity, f.area, f.title, f.consequence]),
       ),
       '',
-      'The four highest-severity findings share a shape worth naming: **a rule exists, is tested, and does not run.** `checkInvoiceable` and `checkJournalBalanced` are both defined, both unit-tested, and neither is called by any handler. A test suite that exercises a rule function directly proves the function is correct; it proves nothing about whether anything calls it. That is a gap no amount of test coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.',
+      'The four findings that shared one shape — **a rule exists, is tested, and does not run** — are now closed. `checkInvoiceable` and `checkJournalBalanced` were both defined, both unit-tested, and called by no handler. A suite that exercises a rule function directly proves the function is correct and proves nothing about whether anything calls it; that is a gap no amount of coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.',
       '',
-      '### Resolved during this work',
+      '### Resolved',
       '',
       table(
-        ['ID', 'Finding', 'Note'],
-        DOCUMENTATION_FINDINGS.filter((f) => f.status === 'RESOLVED').map((f) => [f.id, f.title, f.consequence]),
+        ['ID', 'Finding', 'How it was closed'],
+        DOCUMENTATION_FINDINGS.filter((f) => f.status === 'RESOLVED').map((f) => [
+          f.id,
+          f.title,
+          f.resolution ?? f.consequence,
+        ]),
       ),
+      '',
+      DOCUMENTATION_FINDINGS.some((f) => f.remaining)
+        ? [
+            'One of them is closed only in part, and says so rather than reading as finished:',
+            '',
+            table(
+              ['ID', 'What remains'],
+              DOCUMENTATION_FINDINGS.filter((f) => f.remaining).map((f) => [f.id, f.remaining]),
+            ),
+          ].join('\n')
+        : null,
       '',
       '## The canonical registers disagree with each other',
       '',

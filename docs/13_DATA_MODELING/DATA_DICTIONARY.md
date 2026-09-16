@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-16
 
-Every column of every table, 1128 in total.
+Every column of every table, 1151 in total.
 
 ## `organizations`
 
@@ -236,12 +236,14 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `assigned_tech_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `complaint` | text | nullable | — | — | — |
 | `qc_passed_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `appointment_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `job_cards_org_code_idx` | yes | orgId, code |
 | `job_cards_org_idx` | no | orgId, branchId, status |
 | `job_cards_tech_idx` | no | orgId, assignedTechId |
+| `job_cards_appointment_idx` | no | orgId, appointmentId |
 
 ## `appointments`
 
@@ -304,6 +306,9 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `submitted_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 | `approved_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
 | `approved_at` | timestamptz | nullable | — | — | — |
+| `customer_signed_at` | timestamptz | nullable | — | — | — |
+| `customer_signature_channel` | varchar(16) | nullable | — | — | — |
+| `customer_signature_challenge_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `notes` | text | nullable | — | — | — |
 
 | Index | Unique | Columns |
@@ -354,6 +359,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | `customer_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `customer_name` | varchar(200) | NOT NULL | — | — | — |
 | `job_card_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `estimate_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 | `due_date` | date | NOT NULL | — | — | — |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
@@ -374,6 +380,7 @@ Organizations sit above tenancy — a row *is* the tenant.
 | --- | --- | --- |
 | `invoices_org_code_idx` | yes | orgId, code |
 | `invoices_org_idx` | no | orgId, branchId, status |
+| `invoices_estimate_idx` | no | orgId, estimateId |
 
 ## `invoice_lines`
 
@@ -896,10 +903,41 @@ Customer feedback (F-027). A rating and optional comment against a job card / cu
 | `debit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `credit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `status` | varchar(16) | NOT NULL | — | 'draft' | — |
+| `source` | varchar(32) | nullable | — | — | — |
+| `source_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `journal_org_code_idx` | yes | orgId, code |
+| `journal_entries_source_idx` | no | orgId, source, sourceId |
+
+## `journal_lines`
+
+The lines that make a journal entry double-entry (DF-001, DF-003). `journal_entries` carries only a header total, so before this table an "entry" could not name the accounts it moved and `checkJournalBalanced` — which takes lines and requires at least two — had nothing to be called with. Every posting route writes a header and its lines together, in one transaction, after the rule has passed. `accountCode` sits beside `accountId` on purpose: the code is what a person reads on a trial balance and what the posting rules are written against, and it stays legible on the row if the account is later renamed.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `journal_entry_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `account_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `account_code` | varchar(24) | NOT NULL | — | — | — |
+| `debit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `credit_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `narration` | text | nullable | — | — | — |
+| `sort` | integer | NOT NULL | — | 0 | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `journal_lines_entry_idx` | no | orgId, journalEntryId |
+| `journal_lines_account_idx` | no | orgId, accountId |
 
 ## `expenses`
 

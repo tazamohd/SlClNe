@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 372,
+    "endpoints": 374,
     "generated": 241,
-    "explicit": 131,
+    "explicit": 133,
     "unauthenticated": 6,
-    "withPermissionGuard": 345,
+    "withPermissionGuard": 347,
     "idempotent": 2,
-    "withTests": 90
+    "withTests": 101
   },
   "collections": [
     {
@@ -1543,7 +1543,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -1687,7 +1687,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -1827,7 +1827,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -2001,7 +2001,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -2135,7 +2135,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-AI",
       "tests": []
     },
@@ -2260,7 +2260,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-AI",
       "tests": []
     },
@@ -2520,6 +2520,27 @@
       "tests": []
     },
     {
+      "id": "API-POST-APPOINTMENTS-ID-JOB-CARD",
+      "method": "POST",
+      "path": "/api/v1/appointments/:id/job-card",
+      "source": "server/src/routes/workshop.ts",
+      "kind": "EXPLICIT",
+      "domain": "jobcards",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "jobcards",
+      "permissionAction": "c",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-APPOINTMENTS-POSTBULK-DELETE",
       "method": "POST",
       "path": "/api/v1/appointments/bulk-delete",
@@ -2647,7 +2668,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -2793,7 +2814,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-GOVERNANCE",
       "tests": []
     },
@@ -3447,7 +3468,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -3579,7 +3600,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -3714,7 +3735,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4082,7 +4103,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4421,7 +4442,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4546,7 +4567,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -4893,7 +4914,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -5222,7 +5243,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -5595,7 +5616,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CUSTOMERS",
       "tests": [
         "TS-SERVER-TESTS-EXPORT-TEST-TS"
@@ -5717,7 +5738,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -5918,7 +5939,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6049,7 +6070,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6186,7 +6207,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6309,7 +6330,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6447,7 +6468,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6570,7 +6591,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -6919,7 +6940,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -6967,6 +6988,7 @@
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-HISTORY-READ-TEST-TS"
       ]
     },
@@ -6995,6 +7017,7 @@
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-HISTORY-READ-TEST-TS"
       ]
     },
@@ -7078,7 +7101,11 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-WORKSHOP",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS",
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
+        "TS-SERVER-TESTS-OBD-OTP-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-ESTIMATES-ID-HISTORY",
@@ -7099,6 +7126,27 @@
       "transactional": false,
       "validates": false,
       "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-POST-ESTIMATES-ID-INVOICE",
+      "method": "POST",
+      "path": "/api/v1/estimates/:id/invoice",
+      "source": "server/src/routes/invoices.ts",
+      "kind": "EXPLICIT",
+      "domain": "invoices",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "invoices",
+      "permissionAction": "c",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": true,
+      "capability": "CAP-BILLING",
       "tests": []
     },
     {
@@ -7183,7 +7231,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-WORKSHOP",
-      "tests": []
+      "tests": [
+        "TS-APP-TESTS-COMPONENT-WORKSHOP-APPROVAL-GAPS-TEST-TSX"
+      ]
     },
     {
       "id": "API-ESTIMATES-GETEXPORT",
@@ -7221,7 +7271,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -7579,7 +7629,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-CUSTOMERS",
       "tests": []
     },
@@ -7626,6 +7676,7 @@
       "capability": "CAP-ACCOUNTING",
       "tests": [
         "TS-APP-E2E-INSURANCE-CLAIM-SPEC-TS",
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS",
         "TS-SERVER-TESTS-INSURANCE-LOANS-TEST-TS"
       ]
     },
@@ -7650,6 +7701,7 @@
       "capability": "CAP-ACCOUNTING",
       "tests": [
         "TS-APP-E2E-INSURANCE-CLAIM-SPEC-TS",
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS",
         "TS-SERVER-TESTS-INSURANCE-LOANS-TEST-TS"
       ]
     },
@@ -7715,7 +7767,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-ACCOUNTING",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-INSURANCE-CLAIMS-ID-HISTORY",
@@ -7819,7 +7873,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -7972,7 +8026,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -8124,7 +8178,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -8256,7 +8310,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PLATFORM",
       "tests": []
     },
@@ -8691,7 +8745,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-INVENTORY",
       "tests": []
     },
@@ -8820,7 +8874,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -8871,6 +8925,7 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"
       ]
     },
@@ -8901,6 +8956,7 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
         "TS-SERVER-TESTS-WRITES-TEST-TS"
       ]
     },
@@ -9114,7 +9170,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -9560,7 +9616,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -9691,7 +9747,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -9835,7 +9891,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -10061,7 +10117,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-HR",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-LEAVE-REQUESTS-ID-HISTORY",
@@ -10218,7 +10276,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -10356,7 +10414,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -10491,7 +10549,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -10649,7 +10707,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -10962,7 +11020,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -11312,7 +11370,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -11355,7 +11413,9 @@
       "idempotent": false,
       "audited": false,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-PROCUREMENT-PURCHASE-ORDERS",
@@ -11376,7 +11436,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+      ]
     },
     {
       "id": "API-PURCHASEORDERS-GETID",
@@ -11459,7 +11521,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-PROCUREMENT-PURCHASE-ORDERS-ID-HISTORY",
@@ -11561,7 +11625,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -11604,7 +11668,9 @@
       "idempotent": false,
       "audited": false,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-PROCUREMENT-REQUISITIONS",
@@ -11625,7 +11691,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-APPROVALS-QUEUE-TEST-TS"
+      ]
     },
     {
       "id": "API-REQUISITIONS-GETID",
@@ -11708,7 +11776,9 @@
       "transactional": false,
       "validates": true,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-PROCUREMENT-REQUISITIONS-ID-HISTORY",
@@ -11831,7 +11901,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -12164,7 +12234,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-PROCUREMENT",
       "tests": []
     },
@@ -12428,7 +12498,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-BILLING",
       "tests": []
     },
@@ -12756,7 +12826,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
     },
@@ -12875,7 +12945,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-WORKSHOP",
       "tests": []
     },
@@ -13005,7 +13075,7 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -13322,7 +13392,7 @@
         "dir": "desc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-HR",
       "tests": []
     },
@@ -13687,9 +13757,11 @@
         "dir": "asc"
       },
       "idempotent": false,
-      "audited": false,
+      "audited": true,
       "capability": "CAP-VEHICLES",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-EXPORT-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-HEALTH",

@@ -49,7 +49,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 
 ## Soft delete
 
-`DELETE` sets `deleted_at`; the row stays. 61 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
+`DELETE` sets `deleted_at`; the row stays. 62 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
 
 ## Collections
 

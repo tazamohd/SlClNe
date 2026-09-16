@@ -14,6 +14,15 @@
 // estimate = عرض سعر. Brand names, env vars and units (SALIS AUTO, SAR,
 // VITE_API_URL, YYYY-MM, ZATCA, OBD, IFRS, API) are left verbatim.
 export const AR_OVERRIDES: Record<string, string> = {
+  "A document raised by you cannot be approved by you. The queue flags one you raised from the server standing, and the server refuses it on submit either way.": "لا يمكنك اعتماد مستند رفعته بنفسك. يشير سجل الانتظار إلى ما رفعته وفقًا لحالة الخادم، ويرفضه الخادم عند الإرسال في كل الأحوال.",
+  "Nothing is waiting on a decision. New requests show up here.": "لا شيء ينتظر قرارًا. تظهر الطلبات الجديدة هنا.",
+  "Estimate": "عرض سعر",
+  "Requisition": "طلب شراء",
+  "Purchase order": "أمر شراء",
+  "Insurance claim": "مطالبة تأمين",
+  "Your role cannot approve requisitions": "دورك لا يمكنه اعتماد طلبات الشراء",
+  "Your role cannot approve purchase orders": "دورك لا يمكنه اعتماد أوامر الشراء",
+  "Your role cannot approve insurance claims": "دورك لا يمكنه اعتماد مطالبات التأمين",
   "% Change": "% التغيير",
   "% Used": "% المستخدم",
   "% of Expenses": "% من المصروفات",

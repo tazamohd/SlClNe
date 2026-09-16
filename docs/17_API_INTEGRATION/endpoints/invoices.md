@@ -10,16 +10,17 @@
 
 # API — invoices
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 13 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 14 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| POST | `/api/v1/estimates/:id/invoice` | invoices:c | token | — | — | — | `server/src/routes/invoices.ts` |
 | GET | `/api/v1/invoice-lines` | invoices:v | token | `invoiceLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/invoice-lines/:id` | invoices:v | token | `invoiceLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/invoice-lines/:id/history` | invoices:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/invoice-lines/export` | invoices:x | token | `invoiceLines` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/invoices` | invoices:v | token | `invoices` | — | 8 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/invoices` | invoices:c | token | — | — | 8 | `server/src/routes/invoices.ts` |
+| GET | `/api/v1/invoices` | invoices:v | token | `invoices` | — | 9 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/invoices` | invoices:c | token | — | — | 9 | `server/src/routes/invoices.ts` |
 | GET | `/api/v1/invoices/:id` | invoices:v | token | `invoices` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/invoices/:id` | invoices:e | token | — | — | — | `server/src/routes/invoices.ts` |
 | GET | `/api/v1/invoices/:id/history` | invoices:v | token | — | — | — | `server/src/routes/history.ts` |

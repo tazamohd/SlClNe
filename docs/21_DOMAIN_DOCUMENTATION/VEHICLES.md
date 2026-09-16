@@ -65,7 +65,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/vehicles/:id/history` | vehicles:v | explicit | — | **0** |
 | POST | `/api/v1/vehicles/bulk-delete` | vehicles:d | generated | — | **0** |
 | POST | `/api/v1/vehicles/bulk-update` | vehicles:e | generated | — | **0** |
-| GET | `/api/v1/vehicles/export` | vehicles:x | generated | — | **0** |
+| GET | `/api/v1/vehicles/export` | vehicles:x | generated | — | 1 |
 
 ## Business rules
 
@@ -89,7 +89,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **7 of 9 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **6 of 9 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`vehicleStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **2 of 3 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

@@ -940,23 +940,30 @@ export function createHttpRepository(baseUrl: string): Repository {
 /* --------------------------------------------------------- approval queue */
 
 /** One pending decision in the unified queue, as `GET /approvals` presents it
- *  (F-029). Uniform across sources: a `kind` discriminates estimate / purchase
- *  order / journal / payroll, but the fields a screen renders are the same. The
- *  row carries `amountHalalas` and `module` so the client's own `canApprove`
- *  reads honestly, plus the server's standing so the two cannot disagree. */
+ *  (F-029). Uniform across sources: a `kind` discriminates estimate /
+ *  requisition / purchase order / insurance claim, but the fields a screen
+ *  renders are the same. The row carries `amountHalalas` and `module` so the
+ *  client's own `canApprove` reads honestly, plus the server's standing so the
+ *  two cannot disagree, and `approvePath`/`rejectPath` so a mixed queue posts
+ *  each decision to the endpoint that actually decides it. */
 export interface ApprovalItem extends EntityMeta {
-  kind: 'estimate'
+  kind: 'estimate' | 'requisition' | 'purchase_order' | 'insurance_claim'
   module: string
   entityId: string
   reference: string
   title: string
-  customerName: string
-  vehicleLabel: string
+  /** Whoever the document is with — customer, supplier, requester, policy. */
+  party: string
+  /** What it is about — vehicle, department. Empty where the source has none. */
+  subject: string
   amountHalalas: number
   amount: string
   submittedBy: string | null
   status: string
   submittedAt: string
+  approvePath: string
+  /** Null where the source has no reject endpoint (a purchase order). */
+  rejectPath: string | null
   approval: {
     canApprove: boolean
     ceilingHalalas: number | null
@@ -971,6 +978,9 @@ export interface ApprovalQueue {
     count: number
     pendingHalalas: number
     byModule: Record<string, { count: number; totalHalalas: number }>
+    /** Beside `byModule`, because requisitions and purchase orders share the
+     *  `procurement` module and a badge per source needs them apart. */
+    byKind: Record<string, { count: number; totalHalalas: number }>
   }
 }
 

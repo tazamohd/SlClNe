@@ -22,17 +22,17 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | --- | --- | --- | --- |
 | Objective → capability | 18 | 18 | Declared in `tools/docs/lib/model.mjs` — the only hand-asserted link |
 | Capability → requirement | 18 | 18 | One functional requirement generated per capability |
-| Capability → endpoint | 372 | 372 | Permission module |
+| Capability → endpoint | 374 | 374 | Permission module |
 | Capability → screen | 425 | 425 | Permission module, or screen domain where the screen has none |
-| Endpoint → entity | 241 | 372 | Table name via the collection definition |
-| Endpoint → permission | 345 | 372 | `requirePermission` call in the handler |
-| Entity → relationship | 64 | 68 | Column name resolving to a table name |
+| Endpoint → entity | 241 | 374 | Table name via the collection definition |
+| Endpoint → permission | 347 | 374 | `requirePermission` call in the handler |
+| Entity → relationship | 65 | 69 | Column name resolving to a table name |
 | Rule → enforcing function | 30 | 30 | The exported function itself |
-| Endpoint → test | 90 | 372 | Path string appearing in a spec file |
+| Endpoint → test | 101 | 374 | Path string appearing in a spec file |
 
 ## Where it is intact
 
-Every screen and every endpoint maps to a capability — 425 and 372 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
+Every screen and every endpoint maps to a capability — 425 and 374 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
 
 Every business rule names the function that enforces it, every entity is catalogued from the schema, and every permission cell is read from the matrix the server enforces with.
 
@@ -40,9 +40,9 @@ Every business rule names the function that enforces it, every entity is catalog
 
 **The top link is asserted, not derived.** Objectives and their mapping to capabilities are declared by a human; everything below is parsed from code. There is no elicited requirements baseline in this workspace to derive the top link from, so the chain has no business-need anchor. This is the largest structural gap in the documentation.
 
-**Endpoint-to-test matching is by path string.** 282 of 372 endpoints have no spec file naming their path. A test reaching an endpoint through a helper or a golden path does not match, so this over-reports — and it is still the right number to drive down.
+**Endpoint-to-test matching is by path string.** 273 of 374 endpoints have no spec file naming their path. A test reaching an endpoint through a helper or a golden path does not match, so this over-reports — and it is still the right number to drive down.
 
-**2 rule guard(s) have no test naming them**, and 6 capabilities have no linked test suite.
+**2 rule guard(s) have no test naming them**, and 5 capabilities have no linked test suite.
 
 ## Answering the reverse question
 

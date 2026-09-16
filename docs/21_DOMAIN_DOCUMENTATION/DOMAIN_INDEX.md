@@ -18,12 +18,12 @@ One document per domain, all to the same standard: purpose, actors and their dat
 
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
-| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 16 | 76 | 13 | 12 of 16 |
+| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 16 | 77 | 13 | 12 of 16 |
 | Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 19 | 2 | 3 of 3 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 4 | 9 | 1 | 4 of 4 |
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |
 | Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 1 | 28 | 3 | 1 of 1 |
-| Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 24 | 4 | 6 of 6 |
+| Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
 | Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 5 of 7 |
 | HR and payroll | [CAP-HR](HR.md) | 5 | 52 | 6 | 5 of 5 |
 | CRM and sales | [CAP-CRM](CRM.md) | 12 | 45 | 6 | 10 of 12 |

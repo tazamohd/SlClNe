@@ -20,17 +20,17 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents generated from source | 120 |
 | Documents authored by hand | 288 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 68 of 68 |
-| Relationships documented | 164 (61 FK-backed, 103 convention only) |
-| Endpoints documented | 372 of 372 |
-| Endpoints with a linked test | 90 of 372 |
+| Entities documented | 69 of 69 |
+| Relationships documented | 170 (62 FK-backed, 108 convention only) |
+| Endpoints documented | 374 of 374 |
+| Endpoints with a linked test | 101 of 374 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 425 of 425 |
 | Screens wired to the live API | 99 of 425 |
-| Test suites catalogued | 185 containing 2151 cases |
-| Capabilities with no linked test suite | 6 |
-| Canonical registers at least 3 days behind the newest | 8 of 9 |
+| Test suites catalogued | 182 containing 2144 cases |
+| Capabilities with no linked test suite | 5 |
+| Canonical registers at least 3 days behind the newest | 6 of 9 |
 | Direct contradictions between registers | 3 |
 
 ## What is not verified
@@ -45,7 +45,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-103 of 164 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+108 of 170 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
@@ -79,7 +79,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 282 endpoints have no test matched to them by path
+### 4. 273 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
@@ -93,38 +93,43 @@ Documenting a system end to end is an unusually good way to find things wrong wi
 
 They are recorded in `project-control/DOCUMENTATION_FINDINGS.json`, which this toolchain owns. They are deliberately **not** appended to `project-control/FINDINGS.json`: that register belongs to engineering, and a documentation generator writing into it would make its provenance unclear and its regeneration destructive.
 
-| ID | Severity | Area | Finding | Consequence |
-| --- | --- | --- | --- | --- |
-| DF-001 | HIGH | accounting | No API path writes to the general ledger | The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not. |
-| DF-002 | HIGH | workshop / billing | checkInvoiceable is never called by the server | An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production. |
-| DF-003 | HIGH | accounting | checkJournalBalanced is never called by the server | Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier. |
-| DF-004 | HIGH | inventory / procurement | Goods receipt does not move stock | Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not. |
-| DF-005 | MEDIUM | governance | The approval inbox carries estimates only | An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload. |
-| DF-006 | MEDIUM | audit / privacy | Bulk export is not audited | "Who exported the customer list, and when" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording. |
-| DF-007 | MEDIUM | workshop | The document chain is broken at three joins | Each join is manual re-keying, which is where transcription errors enter a financial document chain. |
+_None._
 
-The four highest-severity findings share a shape worth naming: **a rule exists, is tested, and does not run.** `checkInvoiceable` and `checkJournalBalanced` are both defined, both unit-tested, and neither is called by any handler. A test suite that exercises a rule function directly proves the function is correct; it proves nothing about whether anything calls it. That is a gap no amount of test coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.
+The four findings that shared one shape — **a rule exists, is tested, and does not run** — are now closed. `checkInvoiceable` and `checkJournalBalanced` were both defined, both unit-tested, and called by no handler. A suite that exercises a rule function directly proves the function is correct and proves nothing about whether anything calls it; that is a gap no amount of coverage closes, and it is why the traceability matrix links endpoints to tests rather than rules to tests.
 
-### Resolved during this work
+### Resolved
 
-| ID | Finding | Note |
+| ID | Finding | How it was closed |
 | --- | --- | --- |
+| DF-001 | No API path writes to the general ledger | server/src/accounting/posting.ts posts through one function, and three events now call it: invoice issue (Dr receivables, Cr revenue, Cr VAT payable), payment capture (Dr cash, Cr receivables) and goods receipt (Dr inventory and operating expenses, Cr accounts payable). Account balances move with the lines, inside the same transaction as the business write. Migration 0015 adds the journal_lines table the ledger needed to be double-entry at all. Payroll posting is still absent — it has no route that completes a run. |
+| DF-002 | checkInvoiceable is never called by the server | routes/invoices.ts calls it when an invoice names a job card, refusing one raised against a job that has not reached delivery. |
+| DF-003 | checkJournalBalanced is never called by the server | postJournalEntry runs it over the lines before writing anything and fails the transaction when they do not balance. The rule needed lines to be called with at all, which is why migration 0015 had to come first. The misleading comment in routes/finance-reports.ts now states the narrower claim that is actually true: posted entries are checked, the seeded ones have no lines and are not. |
+| DF-004 | Goods receipt does not move stock | Receiving now locks the part by SKU, raises on_hand and writes an inventory_movements row referencing the purchase order. The route header had recorded a deliberate decision not to do this, on the grounds that booking stock for the lines that resolve and silently skipping the rest would be half-wired — a fair objection. It is answered by making the skip loud rather than by leaving stock unmoved: every received line comes back as stocked, with the part and new on-hand, or notStocked, with the reason, in both the response and the audit row. |
+| DF-005 | The approval inbox carries estimates only | routes/approvals.ts carries four sources: estimates ('sent'), requisitions ('submitted'), purchase orders ('draft') and insurance claims ('submitted'/'under_review') — every document with a ceiling-gated approve endpoint behind it. Each source folds in only when the caller holds view on that source's own module, each row carries the caller's standing computed server-side, and each names the endpoint that decides it (approvePath / rejectPath), so a mixed queue cannot post a requisition to /estimates/:id/approve. A byKind roll-up sits beside byModule, because requisitions and purchase orders share the procurement module. The ApprovalInbox screen renders the mixed queue and actions each row against its own path. |
+| DF-006 | Bulk export is not audited | The export route writes an audit row with action 'export', inside the same transaction that gathered the rows, so there is no state in which the data left and the record of it did not. It records the actor, the collection, the row count that actually left, the total in scope, whether the egress cap truncated it, and the narrowing (q, sort, filter, includeDeleted) — because which rows left is as much the question as how many. entityId is null: an export acts on a set, not a record. A refused export writes nothing, which is correct — requirePermission throws before the transaction opens and nothing was disclosed. |
+| DF-007 | The document chain is broken at three joins | All three joins are endpoints, and migration 0016 adds the columns they write. POST /estimates/:id/invoice raises a draft invoice from an approved estimate, copying the lines from the database rather than the request, recomputing the totals with the same function the estimate used and refusing when they no longer match what was approved; invoices.estimate_id carries a partial unique index, so one estimate bills once even under a race. POST /estimates/:id/verify-approval-otp now writes the verified signature back to the estimate (customer_signed_at, channel, challenge id). POST /appointments/:id/job-card opens a job card from a kept appointment, copying the customer, vehicle and booked technician across and closing the booking out; job_cards.appointment_id carries the same kind of partial unique index. |
 | DF-008 | The API registry under-reported the surface by 69 endpoints | Fixed. Recorded because it is the failure mode this toolchain exists to prevent, and because it shows the limit of the approach: a parser reports what it can match, and what it cannot match is invisible rather than flagged. The Mermaid, capability-coverage and schema-completeness checks in docs:check exist for that reason. |
+
+One of them is closed only in part, and says so rather than reading as finished:
+
+| ID | What remains |
+| --- | --- |
+| DF-002 | Only half the rule. It cannot run when no job card is named, and jobCardId is optional in the contract and nullable in the schema. An invoice with no job card behind it — a parts-only sale, a fee — is a real case, so requiring one is a product decision rather than a bug fix, and is left open deliberately rather than closed quietly. |
+| DF-005 | Payroll runs are deliberately not a source, and the finding named them. POST /payroll/runs/:id/post is gated on hr:e and documented in routes/payroll.ts as 'an edit of the run, not an approval against a ceiling'. There is no approve endpoint, no ceiling and no submitter check, so a payroll row would carry an approval standing the server does not enforce and an action the client could not take. Modelling payroll posting as an approval is a product decision, not a bug fix; a test pins the absence so it stays a decision. |
+| DF-007 | The OTP verification deliberately does NOT move estimates.status to 'approved', which is what the finding's wording asked for. 'approved' means the shop authorised the spend, and POST /estimates/:id/approve gates that on the role's SAR ceiling and on segregation of duties. A code typed from a customer's phone must not route around either, so the customer's acceptance is persisted as its own first-class fact on the row beside the internal decision rather than as a substitute for it. That makes the signature readable without trawling audit_log, which was the gap, without weakening an approval gate. Separately, the CustomerApproval screen is still not wired to these endpoints. |
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-16; 8 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-12; 6 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 36 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 36 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 35 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 14 |
-| `project-control/BASELINE.json` | 2026-09-03 | 13 |
-| `project-control/MASTER_REGISTRY.json` | 2026-09-12 | 4 |
-| `project-control/STATUS.json` | 2026-09-12 | 4 |
-| `project-control/BLOCKERS.json` | 2026-09-12 | 4 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 32 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 32 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 31 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 10 |
+| `project-control/BASELINE.json` | 2026-09-03 | 9 |
+| `project-control/GOLDEN_PATHS.json` | 2026-09-06 | 5 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
@@ -198,7 +203,7 @@ _None — every required document is present._
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 17 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 282 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 273 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 286 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

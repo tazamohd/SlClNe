@@ -32,6 +32,8 @@ erDiagram
     bigint debit_halalas
     bigint credit_halalas
     varchar status
+    varchar source
+    varchar source_id FK
   }
   expenses {
     varchar id PK

@@ -235,11 +235,16 @@ export const jobCards = pgTable(
     assignedTechId: varchar('assigned_tech_id', { length: ULID_LENGTH }),
     complaint: text('complaint'),
     qcPassedBy: varchar('qc_passed_by', { length: ULID_LENGTH }),
+    /** The appointment this job card was opened from, when it came from one
+     *  (DF-007). A partial unique index makes one appointment produce at most
+     *  one live job card. Null for a car that arrived at the counter. */
+    appointmentId: varchar('appointment_id', { length: ULID_LENGTH }),
   },
   (t) => ({
     codePerOrg: uniqueIndex('job_cards_org_code_idx').on(t.orgId, t.code),
     byOrg: index('job_cards_org_idx').on(t.orgId, t.branchId, t.status),
     byTech: index('job_cards_tech_idx').on(t.orgId, t.assignedTechId),
+    byAppointment: index('job_cards_appointment_idx').on(t.orgId, t.appointmentId),
   }),
 )
 
@@ -289,6 +294,15 @@ export const estimates = pgTable(
     submittedBy: varchar('submitted_by', { length: ULID_LENGTH }),
     approvedBy: varchar('approved_by', { length: ULID_LENGTH }),
     approvedAt: timestamp('approved_at', { withTimezone: true }),
+    /** The customer's OTP e-signature, persisted on the record rather than only
+     *  in the audit trail (DF-007). This is the customer saying yes; the shop's
+     *  own authorisation against the approval ceiling stays in `status` /
+     *  `approvedBy`, so a code from a phone can never stand in for it. */
+    customerSignedAt: timestamp('customer_signed_at', { withTimezone: true }),
+    customerSignatureChannel: varchar('customer_signature_channel', { length: 16 }),
+    customerSignatureChallengeId: varchar('customer_signature_challenge_id', {
+      length: ULID_LENGTH,
+    }),
     notes: text('notes'),
   },
   (t) => ({
@@ -321,6 +335,10 @@ export const invoices = pgTable(
     customerId: varchar('customer_id', { length: ULID_LENGTH }),
     customerName: varchar('customer_name', { length: 200 }).notNull(),
     jobCardId: varchar('job_card_id', { length: ULID_LENGTH }),
+    /** The approved estimate this invoice was raised from (DF-007). A partial
+     *  unique index makes one estimate produce at most one live invoice. Null
+     *  for an invoice with no estimate behind it — a parts sale, a fee. */
+    estimateId: varchar('estimate_id', { length: ULID_LENGTH }),
     vehicleId: varchar('vehicle_id', { length: ULID_LENGTH }),
     dueDate: date('due_date').notNull(),
     status: varchar('status', { length: 16 }).notNull().default('draft'),
@@ -343,6 +361,7 @@ export const invoices = pgTable(
   (t) => ({
     codePerOrg: uniqueIndex('invoices_org_code_idx').on(t.orgId, t.code),
     byOrg: index('invoices_org_idx').on(t.orgId, t.branchId, t.status),
+    byEstimate: index('invoices_estimate_idx').on(t.orgId, t.estimateId),
   }),
 )
 
@@ -693,8 +712,46 @@ export const journalEntries = pgTable(
     debitHalalas: money('debit_halalas').notNull().default(0),
     creditHalalas: money('credit_halalas').notNull().default(0),
     status: varchar('status', { length: 16 }).notNull().default('draft'),
+    /** What produced this entry — `invoice`, `payment`, `goods_receipt` — and
+     *  the id of that document. Together they make a posting traceable back to
+     *  the business event, and make a double-post detectable. */
+    source: varchar('source', { length: 32 }),
+    sourceId: varchar('source_id', { length: ULID_LENGTH }),
   },
-  (t) => ({ codePerOrg: uniqueIndex('journal_org_code_idx').on(t.orgId, t.code) }),
+  (t) => ({
+    codePerOrg: uniqueIndex('journal_org_code_idx').on(t.orgId, t.code),
+    bySource: index('journal_entries_source_idx').on(t.orgId, t.source, t.sourceId),
+  }),
+)
+
+/** The lines that make a journal entry double-entry (DF-001, DF-003).
+ *
+ *  `journal_entries` carries only a header total, so before this table an
+ *  "entry" could not name the accounts it moved and `checkJournalBalanced` —
+ *  which takes lines and requires at least two — had nothing to be called
+ *  with. Every posting route writes a header and its lines together, in one
+ *  transaction, after the rule has passed.
+ *
+ *  `accountCode` sits beside `accountId` on purpose: the code is what a person
+ *  reads on a trial balance and what the posting rules are written against, and
+ *  it stays legible on the row if the account is later renamed.
+ */
+export const journalLines = pgTable(
+  'journal_lines',
+  {
+    ...tenant,
+    journalEntryId: varchar('journal_entry_id', { length: ULID_LENGTH }).notNull(),
+    accountId: varchar('account_id', { length: ULID_LENGTH }).notNull(),
+    accountCode: varchar('account_code', { length: 24 }).notNull(),
+    debitHalalas: money('debit_halalas').notNull().default(0),
+    creditHalalas: money('credit_halalas').notNull().default(0),
+    narration: text('narration'),
+    sort: integer('sort').notNull().default(0),
+  },
+  (t) => ({
+    byEntry: index('journal_lines_entry_idx').on(t.orgId, t.journalEntryId),
+    byAccount: index('journal_lines_account_idx').on(t.orgId, t.accountId),
+  }),
 )
 
 export const expenses = pgTable(

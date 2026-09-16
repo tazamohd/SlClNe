@@ -14,7 +14,7 @@
 
 Isolation is a database policy, not a `WHERE` clause. A `WHERE` clause is something a developer has to remember; a policy is something the database applies whether they remembered or not.
 
-**64 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 63 tenant-scoped tables, **0 lack a policy**.
+**65 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 64 tenant-scoped tables, **0 lack a policy**.
 
 ## Request context
 
@@ -84,6 +84,9 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `r_own` | `job_cards` | RESTRICTIVE | ALL | `app_scope() NOT IN ('own','assigned') OR created_by = app_user() OR assigned_tech_id IN (SELECT id FROM technicians WHERE user_id = app_user())` |
 | `r_own` | `appointments` | RESTRICTIVE | ALL | `app_scope() NOT IN ('own','assigned') OR technician_id = app_user() OR created_by = app_user()` |
 | `r_own` | `crm_tasks` | RESTRICTIVE | ALL | `app_scope() NOT IN ('own','assigned') OR created_by = app_user()` |
+| `p_tenant` | `journal_lines` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `journal_lines` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `journal_lines` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
 
 ## Triggers
 
@@ -113,6 +116,7 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `audit_log_no_update` | `audit_log` | `audit_log_is_immutable` | `server/drizzle/0011_audit_log_statement_immutability.sql` |
 | `audit_log_no_delete` | `audit_log` | `audit_log_is_immutable` | `server/drizzle/0011_audit_log_statement_immutability.sql` |
 | `audit_log_no_truncate` | `audit_log` | `audit_log_is_immutable` | `server/drizzle/0011_audit_log_statement_immutability.sql` |
+| `journal_lines_bump_version` | `journal_lines` | `bump_version` | `server/drizzle/0015_journal_lines.sql` |
 
 ## Sequence: a request that reads tenant data
 

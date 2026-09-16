@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 185,
-    "cases": 2151,
+    "suites": 182,
+    "cases": 2144,
     "byKind": {
       "ACCESSIBILITY": 2,
-      "E2E": 306,
+      "E2E": 296,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
       "SECURITY": 242,
-      "UNIT_OR_API": 1026,
+      "UNIT_OR_API": 1029,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -527,25 +527,6 @@
       ]
     },
     {
-      "id": "TS-APP-E2E-ICONS-SPEC-TS",
-      "file": "app/e2e/icons.spec.ts",
-      "kind": "E2E",
-      "surface": "browser",
-      "describes": [
-        "PWA icons"
-      ],
-      "cases": [
-        "PWA icons",
-        "${icon} is opaque, so the wordmark survives a light launcher",
-        "the maskable icon keeps its artwork inside the safe circle",
-        "the maskable artwork is centred",
-        "the manifest and the icons on disk agree"
-      ],
-      "caseCount": 5,
-      "touchesPaths": [],
-      "touchesRoles": []
-    },
-    {
       "id": "TS-APP-E2E-INSURANCE-CLAIM-SPEC-TS",
       "file": "app/e2e/insurance-claim.spec.ts",
       "kind": "E2E",
@@ -871,34 +852,6 @@
       "touchesRoles": [
         "owner",
         "accountant"
-      ]
-    },
-    {
-      "id": "TS-APP-E2E-OFFLINE-SPEC-TS",
-      "file": "app/e2e/offline.spec.ts",
-      "kind": "E2E",
-      "surface": "browser",
-      "describes": [
-        "Service worker"
-      ],
-      "cases": [
-        "Service worker",
-        "installs, claims the page, and precaches the shell",
-        "renders the app with the network cut off",
-        "an offline deep link still lands on its own route, not the home screen",
-        "never caches an API response"
-      ],
-      "caseCount": 5,
-      "touchesPaths": [
-        "/login",
-        "/dashboard",
-        "/job-cards",
-        "/api/invoices",
-        "/auth/refresh",
-        "/v1/jobs"
-      ],
-      "touchesRoles": [
-        "owner"
       ]
     },
     {
@@ -2354,7 +2307,9 @@
         "GAP SoD preflight — ApprovalInbox states the control is server-side"
       ],
       "caseCount": 5,
-      "touchesPaths": [],
+      "touchesPaths": [
+        "/verify-approval-otp"
+      ],
       "touchesRoles": [
         "owner",
         "advisor",
@@ -3403,34 +3358,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-NATIVE-PAGES-TEST-TSX",
-      "file": "app/tests/native-pages.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "Android app page",
-        "iOS app page",
-        "both pages"
-      ],
-      "cases": [
-        "states the version and minimum from the Android project",
-        "says the app is not on a store, rather than implying it is",
-        "renders no star rating — there is no listing to rate",
-        "renders none of the figures it used to invent",
-        "states the version and deployment target from the Xcode project",
-        "no longer claims iOS 16, which the project never targeted",
-        "render every capability the build actually has",
-        "name what is missing, and what each one needs",
-        "translate their whole body into Arabic"
-      ],
-      "caseCount": 9,
-      "touchesPaths": [
-        "/native/android",
-        "/native/i-os"
-      ],
-      "touchesRoles": []
-    },
-    {
       "id": "TS-APP-TESTS-PORTAL-BOOKING-LIVE-TEST-TSX",
       "file": "app/tests/portal-booking-live.test.tsx",
       "kind": "UNIT_OR_API",
@@ -4036,63 +3963,6 @@
         "owner",
         "accountant"
       ]
-    },
-    {
-      "id": "TS-APP-TESTS-SERVICE-WORKER-REGISTRATION-TEST-TS",
-      "file": "app/tests/service-worker-registration.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "shouldRegister",
-        "initServiceWorker",
-        "clearCaches"
-      ],
-      "cases": [
-        "is false in a development build",
-        "is false under Capacitor even in a production build",
-        "is false where the browser has no service worker support",
-        "tears down an existing worker where one does not belong",
-        "drops this app’s caches and nothing else on the origin",
-        "is survivable where storage is unavailable"
-      ],
-      "caseCount": 6,
-      "touchesPaths": [],
-      "touchesRoles": []
-    },
-    {
-      "id": "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
-      "file": "app/tests/service-worker.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "service worker — requests it refuses to touch",
-        "service worker — strategies",
-        "service worker — activation"
-      ],
-      "cases": [
-        "passes non-GET straight through",
-        "passes cross-origin requests through — this is where the API lives",
-        "passes same-origin API paths through, for an API behind the same host",
-        "passes API media through, which the asset rules would otherwise cache",
-        "honours a request that explicitly declines the cache",
-        "leaves same-origin files it has no policy for alone",
-        "serves a hashed asset from cache without touching the network",
-        "fetches and stores a hashed asset it has not seen",
-        "goes to the network first for a navigation, so a new deploy is seen",
-        "falls back to the cached shell when a navigation is offline",
-        "reports failure rather than a blank page when offline with nothing cached",
-        "answers a font from cache immediately and refreshes it behind",
-        "never stores a response the server marked no-store",
-        "never stores an error response",
-        "drops its own stale caches and leaves other apps on the origin alone"
-      ],
-      "caseCount": 15,
-      "touchesPaths": [
-        "/api/invoices",
-        "/auth/refresh",
-        "/v1/jobs"
-      ],
-      "touchesRoles": []
     },
     {
       "id": "TS-APP-TESTS-TEST-ACCOUNT-TEST-TSX",
@@ -4955,23 +4825,40 @@
       "kind": "UNIT_OR_API",
       "surface": "server",
       "describes": [
-        "GET /approvals"
+        "GET /approvals",
+        "GET /approvals carries every source with a ceiling-gated approve route"
       ],
       "cases": [
         "returns the seeded pending estimate with its amount and module",
         "says a manager may approve the SAR 3,600 estimate (within a SAR 50,000 ceiling, not the submitter)",
         "shows the row to an advisor but says they may not approve it (no approve authority)",
         "refuses a role without view on approvals (403)",
-        "does not surface another organization's pending estimates"
+        "does not surface another organization's pending estimates",
+        "shows a submitted requisition, a draft purchase order and a submitted claim beside the estimate",
+        "names the endpoint that decides each row, and null where no reject route exists",
+        "the path a row names is the path that actually approves it",
+        "withholds a source the caller cannot view, without withholding the queue",
+        "answers the caller's standing per module, not per queue",
+        "refuses to let the raiser approve their own requisition",
+        "rolls up by kind as well as by module, because two kinds share one module",
+        "carries no payroll row, because posting a run is not an approval"
       ],
-      "caseCount": 5,
+      "caseCount": 13,
       "touchesPaths": [
-        "/approvals"
+        "/estimates/:id/approve",
+        "/approvals",
+        "/procurement/requisitions",
+        "/procurement/purchase-orders",
+        "/insurance-claims"
       ],
       "touchesRoles": [
         "manager",
         "advisor",
-        "technician"
+        "technician",
+        "owner",
+        "accountant",
+        "procurement",
+        "hr"
       ]
     },
     {
@@ -5358,6 +5245,46 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
+      "file": "server/tests/document-chain.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "POST /estimates/:id/invoice",
+        "POST /appointments/:id/job-card"
+      ],
+      "cases": [
+        "copies the approved estimate onto a draft invoice, lines and totals intact",
+        "refuses an estimate that has not been approved",
+        "invoices an estimate exactly once",
+        "refuses a caller who may read estimates but not create invoices",
+        "404s an estimate belonging to another organization",
+        "requires a due date rather than inventing payment terms",
+        "refuses to bill an estimate whose lines moved after it was approved",
+        "opens a job card carrying the appointment, the customer and the vehicle",
+        "refuses an appointment that was cancelled or a no-show",
+        "opens at most one job card per appointment",
+        "requires the service kind, because an appointment cannot supply it",
+        "refuses a caller without job-card create",
+        "404s an appointment belonging to another organization"
+      ],
+      "caseCount": 13,
+      "touchesPaths": [
+        "/api/v1",
+        "/approve",
+        "/estimates"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "owner",
+        "accountant",
+        "parts",
+        "frontdesk",
+        "manager",
+        "callcenter"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-ERRORS-TEST-TS",
       "file": "server/tests/errors.test.ts",
       "kind": "UNIT_OR_API",
@@ -5415,25 +5342,31 @@
         "a role holding the export grant gets a spreadsheet-safe CSV",
         "export refuses a role that may view but not export",
         "a redacted field never reaches the exported CSV",
-        "an export carries only the caller’s own tenant"
+        "an export carries only the caller’s own tenant",
+        "a bulk export is audited (DF-006)"
       ],
       "cases": [
         "serves text/csv as a dated attachment, with a header row and data",
         "neutralises formula-injection cells and quotes delimiters (OWASP)",
         "lets an advisor list customers but 403s their export",
         "omits part cost for a hidden role but keeps it for a permitted one",
-        "excludes another org’s rows from the neighbour’s export"
+        "excludes another org’s rows from the neighbour’s export",
+        "records the actor, the collection, the row count and the narrowing",
+        "writes nothing when the export is refused",
+        "does not surface one org\\'s export to another"
       ],
-      "caseCount": 5,
+      "caseCount": 8,
       "touchesPaths": [
         "/api/v1/customers/export",
-        "/api/v1/customers"
+        "/api/v1/customers",
+        "/api/v1/vehicles/export"
       ],
       "touchesRoles": [
         "owner",
         "advisor",
         "parts",
-        "technician"
+        "technician",
+        "customer"
       ]
     },
     {
@@ -5679,6 +5612,35 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-LEDGER-POSTING-TEST-TS",
+      "file": "server/tests/ledger-posting.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "DF-001 · issuing an invoice posts to the general ledger",
+        "DF-002 · checkInvoiceable is enforced, not merely defined",
+        "DF-004 · receiving moves stock and says what it could not move",
+        "DF-003 · every posted entry balances"
+      ],
+      "cases": [
+        "debits receivables and credits revenue and VAT, and moves the balances",
+        "posts a payment as cash in and receivables down, leaving revenue alone",
+        "refuses an invoice against a job card that has not reached delivery",
+        "allows one against a job card that has",
+        "raises on-hand, writes a movement, and posts inventory against payables",
+        "reports a line it cannot stock instead of skipping it quietly",
+        "holds for every journal entry the request path wrote"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/invoices"
+      ],
+      "touchesRoles": [
+        "accountant",
+        "procurement"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-OBD-OTP-TEST-TS",
       "file": "server/tests/obd-otp.test.ts",
       "kind": "UNIT_OR_API",
@@ -5695,11 +5657,14 @@
         "404s a device command from another organization",
         "reports both integrations as EXTERNAL_DEPENDENCY with the dependency named",
         "the unconfigured transport refuses to send with a 503",
-        "the memory transport completes the flow: request, a wrong code refuses, the right code verifies"
+        "the memory transport completes the flow: request, a wrong code refuses, the right code verifies",
+        "writes the verified signature back to the estimate, and leaves its status alone",
+        "leaves no signature behind when the code is wrong"
       ],
-      "caseCount": 8,
+      "caseCount": 10,
       "touchesPaths": [
-        "/diagnostics/integrations"
+        "/diagnostics/integrations",
+        "/estimates/:id/approve"
       ],
       "touchesRoles": [
         "manager",

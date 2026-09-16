@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 16 screens, 76 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 16 screens, 77 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -44,7 +44,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | --- | --- | --- | --- | --- | --- | --- |
 | `services` | 11 | yes | yes | yes | yes | — |
 | `appointments` | 23 | yes | yes | yes | yes | — |
-| `estimates` | 25 | yes | yes | yes | yes | `subtotal_halalas`, `tax_halalas`, `discount_halalas`, `total_halalas` |
+| `estimates` | 28 | yes | yes | yes | yes | `subtotal_halalas`, `tax_halalas`, `discount_halalas`, `total_halalas` |
 
 ### Relationships
 
@@ -75,6 +75,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/appointments/:id` | appointments:v | generated | — | **0** |
 | PATCH | `/api/v1/appointments/:id` | appointments:e | generated | — | **0** |
 | GET | `/api/v1/appointments/:id/history` | appointments:v | explicit | — | **0** |
+| POST | `/api/v1/appointments/:id/job-card` | jobcards:c | explicit | — | **0** |
 | POST | `/api/v1/appointments/bulk-delete` | appointments:d | generated | — | **0** |
 | POST | `/api/v1/appointments/bulk-update` | appointments:e | generated | — | **0** |
 | GET | `/api/v1/appointments/export` | appointments:x | generated | — | **0** |
@@ -110,16 +111,16 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | generated | — | **0** |
-| GET | `/api/v1/estimates` | estimates:v | generated | — | 6 |
-| POST | `/api/v1/estimates` | estimates:c | explicit | — | 6 |
+| GET | `/api/v1/estimates` | estimates:v | generated | — | 7 |
+| POST | `/api/v1/estimates` | estimates:c | explicit | — | 7 |
 | GET | `/api/v1/estimates/:id` | estimates:v | generated | — | **0** |
 | PATCH | `/api/v1/estimates/:id` | estimates:e | explicit | — | **0** |
-| POST | `/api/v1/estimates/:id/approve` | estimates:a | explicit | — | **0** |
+| POST | `/api/v1/estimates/:id/approve` | estimates:a | explicit | — | 3 |
 | GET | `/api/v1/estimates/:id/history` | estimates:v | explicit | — | **0** |
 | GET | `/api/v1/estimates/:id/lines` | estimates:v | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/reject` | estimates:a | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/request-approval-otp` | estimates:e | explicit | — | **0** |
-| POST | `/api/v1/estimates/:id/verify-approval-otp` | estimates:e | explicit | — | **0** |
+| POST | `/api/v1/estimates/:id/verify-approval-otp` | estimates:e | explicit | — | 1 |
 | GET | `/api/v1/estimates/export` | estimates:x | generated | — | **0** |
 | GET | `/api/v1/jobs` | jobcards:v | generated | — | 7 |
 | POST | `/api/v1/jobs` | jobcards:c | generated | — | 7 |
@@ -185,7 +186,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **4 of 16 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **64 of 76 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **63 of 77 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 lifecycles (`appointmentStatus`, `estimateStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
@@ -196,7 +197,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/obd.ts`, `server/src/routes/estimates.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/workshop.ts`, `server/src/routes/obd.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

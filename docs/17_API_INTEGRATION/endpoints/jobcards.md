@@ -10,10 +10,11 @@
 
 # API — jobcards
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 56 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 57 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| POST | `/api/v1/appointments/:id/job-card` | jobcards:c | token | — | — | — | `server/src/routes/workshop.ts` |
 | GET | `/api/v1/diagnostics/copies` | jobcards:v | token | `diagCopies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/copies/:id` | jobcards:v | token | `diagCopies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/copies/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
@@ -46,8 +47,8 @@
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/jobs` | jobcards:v | token | `jobCards` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/jobs` | jobcards:c | token | `jobCards` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/jobs` | jobcards:v | token | `jobCards` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/jobs` | jobcards:c | token | `jobCards` | — | 5 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/jobs/:id` | jobcards:v | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
