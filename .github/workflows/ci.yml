@@ -76,6 +76,13 @@ jobs:
       - name: PWA icons match the manifest
         run: npm run check-icons
 
+      # What /native/android and /native/i-os claim, against the native
+      # projects and the installed plugin list — in both directions, so the
+      # pages can neither advertise what is absent nor keep apologising for
+      # what has since been built.
+      - name: Native app pages tell the truth
+        run: npm run check-native
+
       - name: Upload the gap report
         if: always()
         uses: actions/upload-artifact@v4

@@ -285,6 +285,57 @@ const BARREL_ALIASES = (() => {
   return pairs
 })()
 
+/** Screen export -> the component it delegates to, across files.
+ *
+ *  `NativeAndroid` is eleven lines: it renders `<NativeAppPage build={ANDROID}/>`
+ *  and nothing else, because the Android and iOS pages differ only in their
+ *  platform's build facts. Every per-file detector below then measured the
+ *  wrapper and found nothing — no `t()`, so "not translated"; no `isMobile`, so
+ *  "no mobile layout" — and reported two screens as gaps on the strength of
+ *  where the code lives rather than what it does.
+ *
+ *  So a wrapper inherits from what it renders. One level only, and only when
+ *  the wrapper mounts exactly one imported local component: that resolves the
+ *  delegation case without pretending to be a call graph, which is the same
+ *  line `dataBackedScreens` draws for the in-file version of this. A component
+ *  that renders two is a composition, not a delegation, and is left alone.
+ *
+ *  Scoped to local imports — a wrapper around `<Card>` inherits nothing, which
+ *  is right: the fact belongs to the screen, not to the primitive. */
+const WRAPPER_TARGET = (() => {
+  const map = new Map()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return map
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      let src
+      try { src = fs.readFileSync(full, 'utf8') } catch (_) { continue }
+
+      /* Components imported from another module under src/screens. */
+      const imported = new Set()
+      for (const m of src.matchAll(/import\s*\{([^}]+)\}\s*from\s*'(\.[^']*|@\/screens\/[^']*)'/g)) {
+        for (const spec of m[1].split(',')) {
+          const name = spec.trim().replace(/^type\s+/, '').split(/\s+as\s+/).pop()?.trim()
+          if (name && /^[A-Z]/.test(name)) imported.add(name)
+        }
+      }
+      if (!imported.size) continue
+
+      const marks = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
+      for (let i = 0; i < marks.length; i++) {
+        const body = src.slice(marks[i].index, i + 1 < marks.length ? marks[i + 1].index : src.length)
+        const mounted = [...imported].filter((name) => new RegExp(`<${name}\\b`).test(body))
+        if (mounted.length === 1) map.set(marks[i][1], mounted[0])
+      }
+    }
+  }
+  walk(screensDir)
+  return map
+})()
+
 /** Screens whose source file already contains a useIsMobile / isMobile branch.
  *  This is how the builder upgrades a designed-mobile screen from MISSING → DONE
  *  once an agent has actually wired up the mobile layout. */
@@ -307,6 +358,11 @@ const mobileImplemented = (() => {
     }
   }
   walk(screensDir)
+
+  // A thin wrapper has no branch of its own; the one it delegates to does.
+  for (const [wrapper, target] of WRAPPER_TARGET) {
+    if (!names.has(wrapper) && names.has(target)) names.add(wrapper)
+  }
 
   // Also resolve domain barrel aliases: a barrel maps ScreenName → ImportedComponent,
   // so if the ImportedComponent is in our set, the ScreenName should be too.
@@ -715,6 +771,16 @@ const arabicFacts = (() => {
     }
   }
   walk(screensDir)
+  /* A wrapper that calls no `t()` of its own contributes nothing to judge it
+   * by; the component it delegates to is what the visitor actually reads. Only
+   * an empty contribution inherits — a wrapper with its own strings keeps its
+   * own verdict, merged the same way two exports in one file are. */
+  for (const [wrapper, target] of WRAPPER_TARGET) {
+    const own = map.get(wrapper)
+    const inherited = map.get(target)
+    if (!inherited) continue
+    if (!own || (!own.translated && !own.dynamic)) map.set(wrapper, inherited)
+  }
   for (const [screenName, componentName] of BARREL_ALIASES) {
     if (map.has(componentName) && !map.has(screenName)) map.set(screenName, map.get(componentName))
   }
