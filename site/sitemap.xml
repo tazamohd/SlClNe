@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<!--
+  Legal pages (/legal/...) are intentionally excluded: they carry
+  <meta name="robots" content="noindex, follow"> and a sitemap entry
+  for a noindex page is a contradiction search engines flag.
+-->
+<url>
+  <loc>https://www.saleisco.com/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/solutions/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/solutions/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/solutions/workshops/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/workshops/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/workshops/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/workshops/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/solutions/workshops/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/workshops/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/workshops/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/workshops/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/solutions/vehicle-owners/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/vehicle-owners/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/vehicle-owners/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/vehicle-owners/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/solutions/vehicle-owners/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/vehicle-owners/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/vehicle-owners/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/vehicle-owners/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/solutions/parts-suppliers/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/parts-suppliers/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/parts-suppliers/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/parts-suppliers/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/solutions/parts-suppliers/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/parts-suppliers/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/parts-suppliers/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/parts-suppliers/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/solutions/enterprise/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/enterprise/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/enterprise/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/enterprise/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/solutions/enterprise/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/solutions/enterprise/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/solutions/enterprise/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/solutions/enterprise/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/industries/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/industries/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/industries/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/industries/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/industries/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/industries/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/industries/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/industries/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/platform/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/platform/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/platform/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/platform/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/platform/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/platform/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/platform/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/platform/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/platform/security/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/platform/security/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/platform/security/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/platform/security/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/platform/security/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/platform/security/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/platform/security/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/platform/security/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/roi-calculator/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/roi-calculator/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/roi-calculator/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/roi-calculator/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/roi-calculator/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/roi-calculator/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/roi-calculator/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/roi-calculator/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/pricing/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/pricing/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/pricing/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/pricing/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/pricing/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/pricing/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/pricing/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/pricing/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/resources/faq/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/resources/faq/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/resources/faq/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/resources/faq/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/resources/faq/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/resources/faq/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/resources/faq/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/resources/faq/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/about/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/about/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/about/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/about/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/about/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/about/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/about/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/about/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/contact/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/contact/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/contact/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/contact/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/contact/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/contact/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/contact/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/contact/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/request-demo/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/request-demo/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/request-demo/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/request-demo/" />
+</url>
+<url>
+  <loc>https://www.saleisco.com/ar/request-demo/</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="https://www.saleisco.com/request-demo/" />
+  <xhtml:link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/request-demo/" />
+  <xhtml:link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/request-demo/" />
+</url>
+</urlset>

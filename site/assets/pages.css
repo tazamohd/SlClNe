@@ -1,0 +1,200 @@
+/* ============================================================
+   Salisco — inner-page components
+   Shared across every page beyond the home page: headers, FAQ
+   accordions, breadcrumbs, forms, the ROI calculator, legal prose.
+   Loaded after styles.css; reuses its tokens.
+   ============================================================ */
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute; top: -48px; inset-inline-start: 1rem; z-index: 300;
+  background: var(--cyan); color: #061224; padding: .7rem 1.2rem; border-radius: 10px;
+  font-weight: 600; font-size: .9rem; transition: top .2s var(--ease);
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- Simple (non-cinematic) nav for inner pages ---------- */
+.nav-links a[aria-current="page"] { color: var(--text); }
+.nav-links a[aria-current="page"]::after { width: 100%; }
+.nav-lang-link {
+  display: inline-flex; align-items: center; gap: .4rem; background: var(--panel);
+  border: 1px solid var(--border-2); color: var(--text); border-radius: 999px;
+  padding: .5rem 1rem; font-size: .9rem; transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.nav-lang-link:hover { background: var(--panel-2); border-color: var(--text); }
+.nav-lang-link:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px;
+}
+
+/* mobile menu */
+.nav-toggle { display: none; }
+@media (max-width: 900px) {
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px;
+    border-radius: 10px; border: 1px solid var(--border-2); background: var(--panel); color: var(--text); cursor: pointer;
+  }
+  .nav-links {
+    position: fixed; inset-inline: 0; top: 68px; z-index: 49; display: none; flex-direction: column;
+    gap: 0; padding: .5rem 1.2rem 1.5rem; background: rgba(9,14,24,.98); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border); max-height: calc(100vh - 68px); overflow-y: auto;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: .9rem 0; border-bottom: 1px solid var(--border); font-size: 1.02rem; }
+  .nav-actions { gap: .6rem; }
+}
+
+/* ---------- Inner-page hero ---------- */
+.page-hero { max-width: var(--maxw); margin: 0 auto; padding: 9rem 1.5rem 3rem; }
+.page-hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.3rem); font-weight: 800; margin-bottom: 1.1rem; max-width: 22ch; }
+.page-hero .lede { color: var(--muted); font-size: 1.1rem; max-width: 46rem; }
+.page-hero .hero-cta { margin-top: 1.8rem; }
+
+/* ---------- Breadcrumbs ---------- */
+.crumbs { max-width: var(--maxw); margin: 0 auto; padding: 6.6rem 1.5rem 0; font-size: .85rem; color: var(--faint); display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.crumbs a { color: var(--muted); }
+.crumbs a:hover { color: var(--text); }
+.crumbs span[aria-hidden] { color: var(--faint); }
+.crumbs [aria-current="page"] { color: var(--text); }
+
+/* ---------- Audience / card grids ---------- */
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+.card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.info-card {
+  padding: 1.9rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--panel);
+  transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+}
+.info-card:hover { transform: translateY(-4px); border-color: var(--border-2); background: var(--panel-2); }
+.info-card h3 { font-size: 1.2rem; margin-bottom: .6rem; }
+.info-card p { color: var(--muted); font-size: .94rem; line-height: 1.6; }
+.info-card .pillar-link { margin-top: 1.1rem; }
+
+/* ---------- Status pills ---------- */
+.status-pill {
+  display: inline-flex; align-items: center; gap: .4rem; font-size: .72rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; padding: .3rem .7rem; border-radius: 999px;
+  border: 1px solid var(--border-2); color: var(--muted); background: var(--panel);
+}
+.status-pill--live { color: var(--live); border-color: rgba(52,211,153,.4); background: rgba(52,211,153,.08); }
+.status-pill--dev { color: var(--cyan); border-color: rgba(47,128,230,.4); background: rgba(47,128,230,.08); }
+.status-pill--planned { color: var(--amber-2); border-color: rgba(239,122,42,.4); background: rgba(239,122,42,.08); }
+.status-pill--custom { color: var(--muted); }
+
+/* ---------- Workflow steps (numbered list) ---------- */
+.workflow { list-style: none; display: grid; gap: 1rem; counter-reset: wf; }
+.workflow li { position: relative; padding-inline-start: 3.2rem; padding-block: .3rem; }
+.workflow li::before {
+  counter-increment: wf; content: counter(wf);
+  position: absolute; inset-inline-start: 0; top: 0; width: 2.2rem; height: 2.2rem; border-radius: 10px;
+  display: grid; place-items: center; font-family: var(--mono); font-weight: 700; color: var(--cyan);
+  background: rgba(47,128,230,.12); border: 1px solid rgba(47,128,230,.3);
+}
+.workflow li b { display: block; font-size: 1.02rem; margin-bottom: .2rem; }
+.workflow li p { color: var(--muted); font-size: .93rem; margin: 0; }
+
+/* ---------- FAQ accordion (native <details>) ---------- */
+.faq-list { display: grid; gap: .8rem; max-width: 54rem; }
+.faq-item { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--panel); overflow: hidden; }
+.faq-item summary {
+  cursor: pointer; list-style: none; padding: 1.1rem 1.4rem; font-weight: 600; display: flex;
+  align-items: center; justify-content: space-between; gap: 1rem;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; font-family: var(--mono); font-size: 1.2rem; color: var(--cyan); flex: none; transition: transform .2s var(--ease);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item .faq-a { padding: 0 1.4rem 1.3rem; color: var(--muted); font-size: .95rem; line-height: 1.7; }
+
+/* ---------- Tables (RBAC-style, comparisons) ---------- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+table.data-table { width: 100%; border-collapse: collapse; font-size: .92rem; min-width: 480px; }
+table.data-table th, table.data-table td { padding: .8rem 1.1rem; text-align: start; border-bottom: 1px solid var(--border); }
+table.data-table th { color: var(--muted); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; background: rgba(255,255,255,.02); }
+table.data-table tr:last-child td { border-bottom: none; }
+
+/* ---------- Legal / long-form prose ---------- */
+.prose { max-width: 46rem; }
+.prose h2 { font-size: 1.4rem; margin: 2.2rem 0 .8rem; }
+.prose h2:first-child { margin-top: 0; }
+.prose h3 { font-size: 1.1rem; margin: 1.4rem 0 .5rem; }
+.prose p { color: var(--muted); margin-bottom: .9rem; line-height: 1.75; }
+.prose ul, .prose ol { color: var(--muted); margin: 0 0 .9rem; padding-inline-start: 1.4rem; line-height: 1.75; }
+.prose li { margin-bottom: .3rem; }
+.prose a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.prose strong { color: var(--text); }
+.doc-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--faint); font-size: .85rem; margin-bottom: 2.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border); }
+
+/* ---------- Notice / callout boxes ---------- */
+.notice {
+  padding: 1.1rem 1.3rem; border-radius: var(--radius-sm); border: 1px solid rgba(239,122,42,.35);
+  background: rgba(239,122,42,.07); color: var(--text); font-size: .92rem; line-height: 1.65; margin: 1.2rem 0;
+}
+.notice strong { color: var(--amber-2); }
+.notice--info { border-color: rgba(47,128,230,.35); background: rgba(47,128,230,.07); }
+.notice--info strong { color: var(--cyan); }
+
+/* ---------- Forms (demo request / contact) ---------- */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field.full { grid-column: 1 / -1; }
+.field .req { color: var(--amber-2); margin-inline-start: .2rem; }
+.field .hint { font-size: .78rem; color: var(--faint); }
+.field textarea { min-height: 110px; }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"], .field select[aria-invalid="true"] { border-color: #ef4444; }
+.field-error { font-size: .82rem; color: #ff8080; min-height: 1.1em; }
+.field select {
+  font-family: inherit; font-size: .95rem; color: var(--text); background: rgba(11,18,32,.6);
+  border: 1px solid var(--border-2); border-radius: 10px; padding: .8rem 1rem;
+}
+.consent-row { display: flex; align-items: flex-start; gap: .6rem; font-size: .86rem; color: var(--muted); grid-column: 1 / -1; }
+.consent-row input { margin-top: .25rem; flex: none; width: 17px; height: 17px; accent-color: var(--cyan); }
+.form-note[aria-busy="true"]::before { content: "⏳ "; }
+.btn[disabled] { opacity: .6; cursor: not-allowed; pointer-events: none; }
+.btn-spinner { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(6,18,36,.3); border-top-color: #061224; animation: spin .7s linear infinite; }
+
+/* ---------- ROI calculator ---------- */
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+.calc-inputs { display: grid; gap: 1.1rem; padding: 1.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--panel); }
+.calc-field { display: grid; gap: .35rem; }
+.calc-field label { font-size: .88rem; color: var(--muted); display: flex; justify-content: space-between; }
+.calc-field output { font-family: var(--mono); color: var(--cyan); font-weight: 600; }
+.calc-field input[type="range"] { width: 100%; accent-color: var(--cyan); }
+.calc-field input[type="number"] {
+  font-family: inherit; font-size: .95rem; color: var(--text); background: rgba(11,18,32,.6);
+  border: 1px solid var(--border-2); border-radius: 10px; padding: .6rem .8rem; width: 100%;
+}
+.calc-results { padding: 1.8rem; border-radius: var(--radius); border: 1px solid rgba(47,128,230,.3); background: linear-gradient(160deg, rgba(47,128,230,.09), rgba(15,25,43,.6)); position: sticky; top: 6.5rem; }
+.calc-results h3 { font-size: 1.1rem; margin-bottom: 1.2rem; }
+.calc-stat { display: flex; justify-content: space-between; align-items: baseline; padding: .7rem 0; border-bottom: 1px solid var(--border); }
+.calc-stat:last-of-type { border-bottom: none; }
+.calc-stat .lbl { color: var(--muted); font-size: .9rem; }
+.calc-stat .val { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; color: var(--text); }
+.calc-stat .val.hi { color: var(--live); }
+.calc-methodology { margin-top: 1.2rem; font-size: .8rem; color: var(--faint); line-height: 1.6; }
+
+/* ---------- Persona nav (Solutions overview) ---------- */
+.persona-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .7rem; margin: 2rem 0 3.5rem; }
+.persona-strip a {
+  display: flex; flex-direction: column; gap: .3rem; padding: 1rem 1.1rem; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--panel); font-size: .88rem; color: var(--muted);
+  transition: border-color .2s var(--ease), color .2s var(--ease);
+}
+.persona-strip a:hover { border-color: rgba(47,128,230,.4); color: var(--text); }
+.persona-strip a b { color: var(--text); font-size: .98rem; }
+
+@media (max-width: 900px) {
+  .card-grid, .card-grid--2, .calc-grid, .form-grid { grid-template-columns: 1fr; }
+  .calc-results { position: static; }
+  .page-hero { padding-top: 7.5rem; }
+  .crumbs { padding-top: 5.6rem; }
+}
+
+/* ---------- Footer sitemap ---------- */
+.footer-links { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem 3rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; border-top: 1px solid var(--border); padding-top: 2.6rem; }
+.footer-links h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); margin-bottom: .9rem; }
+.footer-links ul { list-style: none; display: grid; gap: .6rem; }
+.footer-links a { color: var(--muted); font-size: .92rem; }
+.footer-links a:hover { color: var(--text); }
+@media (max-width: 700px) { .footer-links { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Light background (inner pages, no cinematic canvas) ---------- */
+.bg-lite { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
