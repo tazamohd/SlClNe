@@ -12,11 +12,11 @@
 
 # Domain — Invoicing and payments
 
-**Status:** GENERATED · **Capability:** CAP-BILLING · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-BILLING · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 6 screens, 24 API endpoints and 3 entities, gated by the `invoices`, `payments` permission modules.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 6 screens, 25 API endpoints and 3 entities, gated by the `invoices`, `payments` permission modules.
 
 
 ## Actors
@@ -39,7 +39,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 
 | Table | Columns | Tenant | Branch | Soft delete | RLS | Money columns |
 | --- | --- | --- | --- | --- | --- | --- |
-| `invoices` | 28 | yes | yes | yes | yes | `subtotal_halalas`, `tax_halalas`, `discount_halalas`, `total_halalas`, `paid_halalas` |
+| `invoices` | 29 | yes | yes | yes | yes | `subtotal_halalas`, `tax_halalas`, `discount_halalas`, `total_halalas`, `paid_halalas` |
 | `payments` | 16 | yes | yes | yes | yes | `amount_halalas` |
 | `receipts` | 16 | yes | yes | yes | yes | `amount_halalas` |
 
@@ -51,6 +51,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | `invoices` | `branch_id` | `branches` | optional | **convention only** |
 | `invoices` | `customer_id` | `customers` | optional | **convention only** |
 | `invoices` | `job_card_id` | `job_cards` | optional | **convention only** |
+| `invoices` | `estimate_id` | `estimates` | optional | **convention only** |
 | `invoices` | `vehicle_id` | `vehicles` | optional | **convention only** |
 | `payments` | `org_id` | `organizations` | mandatory | FK |
 | `payments` | `branch_id` | `branches` | optional | **convention only** |
@@ -64,12 +65,13 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
+| POST | `/api/v1/estimates/:id/invoice` | invoices:c | explicit | — | **0** |
 | GET | `/api/v1/invoice-lines` | invoices:v | generated | — | **0** |
 | GET | `/api/v1/invoice-lines/:id` | invoices:v | generated | — | **0** |
 | GET | `/api/v1/invoice-lines/:id/history` | invoices:v | explicit | — | **0** |
 | GET | `/api/v1/invoice-lines/export` | invoices:x | generated | — | **0** |
-| GET | `/api/v1/invoices` | invoices:v | generated | — | 8 |
-| POST | `/api/v1/invoices` | invoices:c | explicit | — | 8 |
+| GET | `/api/v1/invoices` | invoices:v | generated | — | 9 |
+| POST | `/api/v1/invoices` | invoices:c | explicit | — | 9 |
 | GET | `/api/v1/invoices/:id` | invoices:v | generated | — | **0** |
 | PATCH | `/api/v1/invoices/:id` | invoices:e | explicit | — | **0** |
 | GET | `/api/v1/invoices/:id/history` | invoices:v | explicit | — | **0** |
@@ -113,9 +115,9 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **16 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **17 of 25 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`invoiceStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
-- **7 of 10 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
+- **8 of 11 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 
 ## Evidence
@@ -123,7 +125,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/invoices.ts`, `server/src/routes/finance-reports.ts` |
+| Endpoints and guards | `server/src/routes/invoices.ts`, `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/finance-reports.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

@@ -11,14 +11,15 @@
 
 # Use case catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Sources as of:** 2026-09-16
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-59 behavioural use cases.
+61 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| UC-POST-APPOINTMENTS-ID-JOB-CARD | POST /appointments/:id/job-card | owner, manager, advisor, frontdesk, test | jobcards:c | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-AUTH-2FA-ENROL | POST /auth/2fa/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-2FA-VERIFY | POST /auth/2fa/verify | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-BIOMETRIC-CHALLENGE | POST /auth/biometric/challenge | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
@@ -44,6 +45,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-ESTIMATES | POST /estimates | owner, manager, advisor, test | estimates:c | — | — | — | yes | `server/src/routes/estimates.ts` |
 | UC-PATCH-ESTIMATES-ID | PATCH /estimates/:id | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-APPROVE | POST /estimates/:id/approve | owner, manager, test | estimates:a | yes | — | — | yes | `server/src/routes/estimates.ts` |
+| UC-POST-ESTIMATES-ID-INVOICE | POST /estimates/:id/invoice | owner, manager, advisor, accountant, frontdesk +1 | invoices:c | — | — | — | yes | `server/src/routes/invoices.ts` |
 | UC-POST-ESTIMATES-ID-REJECT | POST /estimates/:id/reject | owner, manager, test | estimates:a | — | — | — | — | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-REQUEST-APPROVAL-OTP | POST /estimates/:id/request-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | — | `server/src/routes/estimate-otp.ts` |
 | UC-POST-ESTIMATES-ID-VERIFY-APPROVAL-OTP | POST /estimates/:id/verify-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimate-otp.ts` |

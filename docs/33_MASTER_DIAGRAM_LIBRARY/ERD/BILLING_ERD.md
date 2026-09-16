@@ -8,7 +8,7 @@
 
 # BILLING ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 4 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 4 tables
 
 ### BILLING
 
@@ -20,6 +20,7 @@ erDiagram
     varchar customer_id FK
     varchar customer_name
     varchar job_card_id FK
+    varchar estimate_id FK
     varchar vehicle_id FK
     date due_date
     varchar status
@@ -28,7 +29,6 @@ erDiagram
     bigint discount_halalas
     bigint total_halalas
     bigint paid_halalas
-    varchar seller_vat_number
   }
   invoice_lines {
     varchar id PK

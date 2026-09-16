@@ -12,7 +12,7 @@
 
 # Domain — Procurement
 
-**Status:** GENERATED · **Capability:** CAP-PROCUREMENT · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-PROCUREMENT · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
@@ -56,20 +56,20 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/procurement/purchase-orders` | procurement:v | generated | — | **0** |
-| POST | `/api/v1/procurement/purchase-orders` | procurement:c | explicit | — | **0** |
+| GET | `/api/v1/procurement/purchase-orders` | procurement:v | generated | — | 1 |
+| POST | `/api/v1/procurement/purchase-orders` | procurement:c | explicit | — | 1 |
 | GET | `/api/v1/procurement/purchase-orders/:id` | procurement:v | generated | — | **0** |
 | PATCH | `/api/v1/procurement/purchase-orders/:id` | procurement:e | explicit | — | **0** |
-| POST | `/api/v1/procurement/purchase-orders/:id/approve` | procurement:a | explicit | — | **0** |
+| POST | `/api/v1/procurement/purchase-orders/:id/approve` | procurement:a | explicit | — | 1 |
 | GET | `/api/v1/procurement/purchase-orders/:id/history` | procurement:v | explicit | — | **0** |
 | GET | `/api/v1/procurement/purchase-orders/:id/lines` | procurement:v | explicit | — | **0** |
 | POST | `/api/v1/procurement/purchase-orders/:id/receive` | procurement:e | explicit | yes | **0** |
 | GET | `/api/v1/procurement/purchase-orders/export` | procurement:x | generated | — | **0** |
-| GET | `/api/v1/procurement/requisitions` | procurement:v | generated | — | **0** |
-| POST | `/api/v1/procurement/requisitions` | procurement:c | explicit | — | **0** |
+| GET | `/api/v1/procurement/requisitions` | procurement:v | generated | — | 1 |
+| POST | `/api/v1/procurement/requisitions` | procurement:c | explicit | — | 1 |
 | GET | `/api/v1/procurement/requisitions/:id` | procurement:v | generated | — | **0** |
 | PATCH | `/api/v1/procurement/requisitions/:id` | procurement:e | explicit | — | **0** |
-| POST | `/api/v1/procurement/requisitions/:id/approve` | procurement:a | explicit | — | **0** |
+| POST | `/api/v1/procurement/requisitions/:id/approve` | procurement:a | explicit | — | 1 |
 | GET | `/api/v1/procurement/requisitions/:id/history` | procurement:v | explicit | — | **0** |
 | GET | `/api/v1/procurement/requisitions/:id/lines` | procurement:v | explicit | — | **0** |
 | POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | explicit | — | **0** |
@@ -106,7 +106,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **28 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **22 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 of 4 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 
 ## Evidence

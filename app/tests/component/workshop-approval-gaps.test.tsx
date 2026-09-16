@@ -21,10 +21,13 @@ import { renderWithProviders } from '../helpers/render'
  *     no server-computed total, and Part 5b forbids a client VAT/grand total, so
  *     DiagnosticReport shows lines and defers the total to the estimate.
  *
- *  3. Customer approval capabilities — an approval-OTP endpoint, e-signature
- *     persistence, and a link from `approvalLines` to the estimate the
- *     `POST /estimates/:id/approve` action needs. None exist; CustomerApproval
- *     marks each "Not connected".
+ *  3. Customer approval capabilities — the `CustomerApproval` screen's own
+ *     wiring. The server side of the e-signature now exists
+ *     (`POST /estimates/:id/request-approval-otp` and `/verify-approval-otp`,
+ *     which persists `estimates.customer_signed_at` — DF-007), but this screen
+ *     is not yet connected to it and `approvalLines` still has no link to the
+ *     estimate, so it marks each "Not connected" rather than implying a flow it
+ *     does not drive.
  *
  *  4. OBD device commands — re-scan / clear-codes / add-to-job, and a per-device
  *     DTC readings endpoint. None exist; OBDDiagnostics shows last-reading
@@ -34,9 +37,14 @@ import { renderWithProviders } from '../helpers/render'
  *     there is no GET /estimates/:id/history, so the inbox cannot show the SoD
  *     conflict per row; it states the control is server-side (F-004).
  *
- *  6. A unified approvals queue. Only estimates have an approve action; POs,
- *     journals and payroll (other domains) have none, so the inbox operates on
- *     estimates alone rather than inventing rows.
+ *  6. A unified approvals queue — CLOSED for the four sources that have one
+ *     (DF-005). `GET /approvals` now carries estimates, requisitions, purchase
+ *     orders and insurance claims, each row naming the endpoint that decides
+ *     it. Payroll runs and journal entries are still absent on purpose:
+ *     posting a payroll run is gated on `hr:e` as an edit, not against a
+ *     ceiling, and journal entries are written by the business event that
+ *     caused them. Neither has an approval to show, and an unactionable row
+ *     carrying a fabricated approval standing is worse than an absent one.
  *
  *  7. Appointment↔technician reconciliation in the seed: appointments carry
  *     `technicianName` strings with no `technicianId`, and those names are not

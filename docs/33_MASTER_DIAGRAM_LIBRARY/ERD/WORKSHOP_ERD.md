@@ -8,7 +8,7 @@
 
 # WORKSHOP ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-15 · 12 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-16 · 12 tables
 
 ### WORKSHOP
 
@@ -33,6 +33,7 @@ erDiagram
     varchar assigned_tech_id FK
     text complaint
     varchar qc_passed_by
+    varchar appointment_id FK
   }
   appointments {
     varchar id PK
@@ -150,6 +151,7 @@ erDiagram
     varchar state
   }
   technicians |o--o{ job_cards : "assigned_tech_id"
+  appointments |o--o{ job_cards : "appointment_id"
   technicians |o--o{ appointments : "technician_id"
   job_cards |o--o{ estimates : "job_card_id"
   estimates ||--o{ estimate_lines : "estimate_id"

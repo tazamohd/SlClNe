@@ -3,10 +3,10 @@
 | Field         | Value                                      |
 |---------------|--------------------------------------------|
 | Document ID   | SA-MGT-013                                 |
-| Version       | 1.0                                        |
-| Date          | 2026-08-31                                 |
+| Version       | 1.1                                        |
+| Date          | 2026-09-16                                 |
 | Author        | SALIS AUTO PMO                             |
-| Status        | Approved                                   |
+| Status        | Approved (v1.0); v1.1 infrastructure section NEEDS RE-APPROVAL |
 | Classification| Internal -- Confidential                   |
 
 ---
@@ -22,8 +22,22 @@ regulatory compliance. The plan covers six vendor categories spanning
 infrastructure, payments, communications, compliance, development tools,
 and security services.
 
-Total annual vendor spend (Year 1 estimate): SAR 480,000.
+Total annual vendor spend (Year 1 estimate): **withdrawn in v1.1** — see §9.1.
 Active vendor relationships: 12-15 vendors across 6 categories.
+
+> **v1.1 scope.** The infrastructure section of v1.0 described an AWS
+> `me-south-1` deployment with CloudFront and Route 53, and Cloudflare as their
+> alternative. The platform is deployed on **Vercel**, and Cloudflare has been
+> dropped entirely. v1.1 corrects the vendors, withdraws the cost figures that
+> were priced against AWS, and marks as `NOT RECORDED` every vendor this
+> repository holds no evidence for, rather than substituting a guess. Figures
+> marked `NOT RE-DERIVED` are withdrawn, not replaced: re-pricing is a
+> procurement exercise. **The infrastructure and cost sections therefore need
+> re-approval before anyone budgets from them, and two production-critical
+> vendors (Vercel, Neon) have no contract recorded at all.** Payment,
+> communication,
+> compliance, development-tools and (except for the three edge controls in
+> §2.7) security vendors are untouched and still carry their v1.0 approval.
 
 ---
 
@@ -33,7 +47,7 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Category         | Criticality | Vendor Count | Annual Spend (SAR) | Contract Type     |
 |------------------|-------------|--------------|---------------------|-------------------|
-| Infrastructure   | Critical    | 3            | 180,000             | SaaS subscription |
+| Infrastructure   | Critical    | 2 (+1 unknown)| NOT RE-DERIVED     | SaaS subscription |
 | Payment          | Critical    | 1            | Usage-based          | API usage-based   |
 | Communication    | High        | 3            | 72,000              | API usage-based   |
 | Compliance       | Critical    | 2            | 48,000              | Professional svc  |
@@ -42,14 +56,53 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 ### 2.2 Infrastructure Vendors
 
-| Service         | Primary Vendor     | Alternative          | Monthly Cost (SAR) |
-|-----------------|--------------------|----------------------|---------------------|
-| Cloud hosting   | AWS (me-south-1)   | Azure (UAE North)    | 10,000-15,000       |
-| CDN             | CloudFront         | Cloudflare           | 1,500               |
-| DNS             | Route 53           | Cloudflare DNS       | 200                 |
-| Database (managed)| AWS RDS           | Azure SQL            | 3,000               |
-| Object storage  | AWS S3             | MinIO (self-hosted)  | 800                 |
-| Redis cache     | AWS ElastiCache    | Upstash              | 1,200               |
+| Service               | Primary Vendor | Alternative              | Monthly Cost (SAR) |
+|-----------------------|----------------|--------------------------|---------------------|
+| Frontend hosting + CDN| Vercel         | Netlify (config kept)    | not yet costed      |
+| DNS                   | Vercel DNS     | --                       | not yet costed      |
+| Database (managed)    | Neon           | --                       | not yet costed      |
+| Object storage        | NOT RECORDED   | --                       | not yet costed      |
+| Redis cache           | NOT PROVISIONED| Upstash                  | --                  |
+
+> **This table was rewritten on 2026-09-16 and is deliberately incomplete.**
+>
+> It previously named AWS `me-south-1` as the primary for every row, with
+> CloudFront/Route 53 for CDN and DNS and Cloudflare as their alternative. That
+> is not what is deployed. The frontend is on **Vercel**; Cloudflare has been
+> dropped entirely.
+>
+> Rows differ in how well they are attested, and the difference is stated
+> rather than smoothed over:
+>
+> - **Frontend hosting + CDN — evidenced in the repository.** `vercel.json` is
+>   the live config. `netlify.toml` is still maintained and Netlify still builds
+>   previews, so it is a real alternative rather than an aspirational one.
+>   Vercel's edge network provides the CDN, so CDN is no longer a separate line
+>   item or a separate bill.
+> - **DNS — confirmed by the maintainer, 2026-09-16.** Vercel DNS. The
+>   repository carries no DNS configuration, so nothing here corroborates it;
+>   it is recorded on the maintainer's word.
+> - **Database — confirmed by the maintainer, 2026-09-16.** Neon.
+>   `SALIS_AUTO_EXECUTION_PLAN.md` had listed "Neon/RDS" as undecided
+>   candidates; Neon is the one in use. The connection string is an environment
+>   variable, so the repository itself reveals nothing about the host.
+> - **Object storage — still `NOT RECORDED`.** No S3, MinIO or other storage
+>   client appears in `server/package.json`, and no vendor has been named. It
+>   may simply not be in use yet; the row stays honest rather than being quietly
+>   dropped.
+> - **Redis — not provisioned.** `server/src/auth/service.ts` records moving
+>   session state to Redis as "a deliberate future step", so it is planned, not
+>   running.
+>
+> Three of these five are single-vendor: Vercel now carries hosting, CDN **and**
+> DNS. That is a concentration worth a deliberate decision rather than a default
+> — see §7.2, where the hosting dependency is rated.
+>
+> **Costs are not carried over.** Every figure in the old table was priced
+> against an AWS vendor that is not in use, so keeping the numbers beside new
+> vendors would have been the most misleading option available. They are not
+> re-estimated here either: that is a procurement exercise, not a documentation
+> one. The knock-on is stated in §2.1 and §9.1 below.
 
 ### 2.3 Payment Vendors
 
@@ -91,10 +144,10 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 | Service                | Vendor            | Frequency   | Annual Cost (SAR) |
 |------------------------|-------------------|-------------|---------------------|
 | Penetration testing    | Licensed Saudi firm| Semi-annual | 30,000              |
-| SSL/TLS certificates  | AWS ACM / Let's Encrypt | Auto-renew | Included       |
-| WAF                    | AWS WAF           | Continuous  | 6,000               |
+| SSL/TLS certificates  | Vercel (automatic)| Auto-renew  | Included             |
+| WAF                    | NOT PROVISIONED   | --          | not committed        |
 | Vulnerability scanning | Snyk             | Continuous  | 12,000              |
-| DDoS protection        | AWS Shield Standard| Continuous | Included             |
+| DDoS protection        | Vercel (baseline) | Continuous  | Included             |
 
 ---
 
@@ -272,7 +325,9 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Service             | Primary Vendor | Alternative Ready? | Switch Time | Risk Level |
 |---------------------|----------------|---------------------|-------------|------------|
-| Cloud hosting       | AWS            | Azure (tested)      | 2-4 weeks   | Medium     |
+| Frontend hosting    | Vercel         | Netlify (config kept)| 1-2 weeks  | Low        |
+| DNS                 | Vercel DNS     | any DNS provider    | 1-2 days    | Low        |
+| Database            | Neon           | any managed Postgres| 1-2 weeks   | Medium     |
 | Payment processing  | Stripe         | Moyasar (evaluated) | 4-6 weeks   | High       |
 | SMS delivery        | Unifonic        | Twilio (API compat) | 1 week      | Low        |
 | WhatsApp API        | 360dialog      | Twilio (tested)     | 2 weeks     | Medium     |
@@ -330,13 +385,20 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Category         | Year 1 (SAR)   | Year 2 Target (SAR) | Savings Strategy             |
 |------------------|----------------|----------------------|------------------------------|
-| Infrastructure   | 180,000        | 165,000 (-8%)        | Reserved instances, right-sizing|
+| Infrastructure   | NOT RE-DERIVED | NOT RE-DERIVED       | see §2.2                     |
 | Payment          | 60,000 (est.)  | 55,000 (-8%)         | Volume tier negotiation      |
 | Communication    | 72,000         | 65,000 (-10%)        | SMS optimization, batch sends|
 | Compliance       | 48,000         | 48,000 (flat)        | Fixed annual engagement      |
 | Development Tools| 36,000         | 33,000 (-8%)         | Consolidation, OSS migration |
 | Security         | 60,000         | 55,000 (-8%)         | Multi-year contract discount |
-| **Total**        | **456,000**    | **421,000 (-8%)**    |                              |
+| **Total**        | NOT RE-DERIVED | NOT RE-DERIVED       | see the note below           |
+
+> **The infrastructure line and both totals are withdrawn, not restated.**
+> They were built on the AWS pricing in the old §2.2 — SAR 180,000/year, with
+> "reserved instances, right-sizing" as the savings strategy, neither of which
+> applies to a Vercel plan. Re-deriving them needs actual Vercel and database
+> pricing at the expected tenant volume, which is a procurement exercise. The
+> other five category lines are untouched and still stand.
 
 ### 9.2 Cost Optimization Strategies
 
@@ -353,7 +415,7 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 | Currency | % of Vendor Spend | Vendors                           | Hedging Approach       |
 |----------|--------------------|-----------------------------------|------------------------|
-| USD      | 65%                | AWS, Stripe, GitHub, Sentry       | Quarterly forward contracts |
+| USD      | NOT RE-DERIVED     | Vercel, Neon, Stripe, GitHub, Sentry, AWS (SES) | Quarterly forward contracts |
 | SAR      | 30%                | Unifonic, compliance, security    | No hedging needed      |
 | EUR      | 5%                 | 360dialog (WhatsApp API)          | Spot rate (low volume) |
 
@@ -402,9 +464,25 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 
 ### 11.1 Current Approved Vendors
 
+> **Two gaps here, both needing someone with sight of the actual agreements.**
+>
+> The AWS contract covers **SES only** (maintainer, 2026-09-16), so its category
+> is corrected from Infrastructure to Communication. Its **annual value is
+> flagged, not changed**: SAR 180,000 was the AWS *infrastructure* estimate from
+> the old §2.2, and SES is billed per email (§2.4 puts it at SAR 0.0004). The
+> figure is almost certainly wrong for an email-only contract, but a contract
+> register records what was signed and that is a commercial fact to confirm, not
+> one to infer from a unit price.
+>
+> **Vercel and Neon appear nowhere in this register.** Both are now
+> production-critical — Vercel carries hosting, CDN and DNS; Neon carries the
+> database — and neither has a contract row, a term, or a value here.
+
 | Vendor          | Category       | Contract Start | Contract End | Annual Value (SAR) | Status   |
 |-----------------|----------------|----------------|--------------|---------------------|----------|
-| AWS             | Infrastructure | 2026-07-01     | 2027-06-30   | 180,000             | Active   |
+| AWS (SES only)  | Communication  | 2026-07-01     | 2027-06-30   | 180,000 — CONFIRM   | Active   |
+| Vercel          | Infrastructure | NOT RECORDED   | NOT RECORDED | NOT RECORDED        | Active   |
+| Neon            | Infrastructure | NOT RECORDED   | NOT RECORDED | NOT RECORDED        | Active   |
 | Stripe          | Payment        | 2026-07-01     | 2027-06-30   | Usage-based         | Active   |
 | Unifonic        | SMS            | 2026-08-01     | 2027-07-31   | 24,000              | Active   |
 | 360dialog       | WhatsApp API   | 2026-08-01     | 2027-07-31   | 36,000              | Active   |
@@ -442,3 +520,4 @@ Active vendor relationships: 12-15 vendors across 6 categories.
 | Version | Date       | Author           | Changes                          |
 |---------|------------|------------------|----------------------------------|
 | 1.0     | 2026-08-31 | SALIS AUTO PMO   | Initial release                  |
+| 1.1     | 2026-09-16 | SALIS AUTO PMO   | Infrastructure corrected to Vercel (hosting, CDN, DNS) and Neon (database); Cloudflare removed entirely; AWS reduced to SES. §2.2 rewritten, with each row marked by how it is attested and object storage left `NOT RECORDED`; §2.7 TLS and DDoS reassigned to Vercel and WAF marked not provisioned; §7.2 gains DNS and database dependency rows; §11.1 recategorises the AWS contract to Communication, flags its value for confirmation, and adds Vercel and Neon as unrecorded. AWS-derived costs in §2.1, §9.1 and §9.3 withdrawn rather than re-estimated. |

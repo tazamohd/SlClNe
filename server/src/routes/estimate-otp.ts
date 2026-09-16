@@ -5,9 +5,25 @@
  *  (`auth/otp.ts`): the code is hashed at rest, throttled, attempt-capped, and —
  *  the point of §40 — never pretended. SMS is an external dependency. The
  *  default transport refuses with a 503 naming what is missing; it does not
- *  return a cheerful 202 for a message that was never sent. The verified
- *  challenge (`otp_challenges.verified_at`) plus an `approve` audit row is the
- *  persisted e-signature.
+ *  return a cheerful 202 for a message that was never sent.
+ *
+ *  ### Where the signature is kept (DF-007)
+ *
+ *  The verified challenge (`otp_challenges.verified_at`) and the `approve`
+ *  audit row used to be the whole of it, which meant "has this customer signed
+ *  their estimate?" could only be answered by trawling the audit log. The
+ *  verification now also writes back to the estimate — `customer_signed_at`,
+ *  the channel, and the challenge it was verified against — so the fact lives
+ *  on the record it is a fact about.
+ *
+ *  It does **not** move `estimates.status` to `approved`, and that is the
+ *  point. `approved` means the shop authorised the spend, which
+ *  `POST /estimates/:id/approve` gates on the role's SAR ceiling and on
+ *  segregation of duties. An OTP typed from a customer's phone must not route
+ *  around either gate, so the customer's acceptance is recorded as its own
+ *  fact beside the internal decision rather than as a substitute for it. The
+ *  two together are the chain: the customer said yes, and then someone with the
+ *  authority signed for the money.
  */
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
@@ -135,9 +151,27 @@ export function registerEstimateOtpRoutes(app: FastifyInstance, deps: RouteDeps)
         }
       }
 
-      /* The e-signature: the customer's acceptance is recorded on the trail. The
-       * internal ceiling/SOD approval remains the separate `/approve` route —
-       * this is the customer saying yes, not the shop authorising the spend. */
+      /* The e-signature, written back to the estimate itself (DF-007). Only
+       * the signature fields move; `status`, `approvedBy` and `approvedAt` are
+       * untouched, because the internal ceiling/SOD approval remains the
+       * separate `/approve` route — this is the customer saying yes, not the
+       * shop authorising the spend.
+       *
+       * A second verification restamps the signature rather than conflicting:
+       * the customer signing again is not an error, and the latest acceptance
+       * is the one that stands. Every one of them is on the audit trail. */
+      const [signed] = await tx
+        .update(estimates)
+        .set({
+          customerSignedAt: sql`now()`,
+          customerSignatureChannel: 'sms',
+          customerSignatureChallengeId: verdict.challengeId,
+          updatedBy: principal.userId,
+        })
+        .where(eq(estimates.id, estimate.id))
+        .returning({ signedAt: estimates.customerSignedAt })
+      if (!signed) throw notFound('Estimate')
+
       await writeAudit(tx, {
         actor: principal,
         action: 'approve',
@@ -147,7 +181,16 @@ export function registerEstimateOtpRoutes(app: FastifyInstance, deps: RouteDeps)
         after: { signature: 'otp', channel: 'sms', challengeId: verdict.challengeId, destination: maskPhone(phone) },
         ...metaOf(request),
       })
-      return { verified: true, challengeId: verdict.challengeId }
+      return {
+        verified: true,
+        challengeId: verdict.challengeId,
+        /* The signature as persisted, so the caller does not have to re-read
+         * the estimate to know it landed. */
+        customerSignedAt: signed.signedAt?.toISOString() ?? null,
+        /* Named so a client cannot mistake the signature for the internal
+         * approval: the estimate is still whatever it was. */
+        estimateStatus: estimate.status,
+      }
     })
   })
 }

@@ -12,7 +12,7 @@
 
 # Domain — Accounting and finance
 
-**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-15
+**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-16
 
 ## Purpose and scope
 
@@ -69,10 +69,10 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | explicit | — | **0** |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | explicit | — | **0** |
 | GET | `/api/v1/bank-statements/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/insurance-claims` | accounting:v | generated | — | 2 |
-| POST | `/api/v1/insurance-claims` | accounting:c | explicit | — | 2 |
+| GET | `/api/v1/insurance-claims` | accounting:v | generated | — | 3 |
+| POST | `/api/v1/insurance-claims` | accounting:c | explicit | — | 3 |
 | GET | `/api/v1/insurance-claims/:id` | accounting:v | generated | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | explicit | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | explicit | — | 1 |
 | GET | `/api/v1/insurance-claims/:id/history` | accounting:v | explicit | — | **0** |
 | POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | explicit | — | **0** |
 | POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | explicit | — | **0** |
@@ -139,7 +139,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **2 of 7 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **38 of 50 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **37 of 50 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`insurancePolicyStatus`, `insuranceClaimStatus`, `loanContractStatus`, `loanRepaymentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
