@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-16
 
-180 spec files containing 2126 test cases.
+182 spec files containing 2144 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 106 | 1011 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 108 | 1029 | Handler behaviour, repository seam, presentation |
 | E2E | 31 | 296 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 461 |
-| app | 104 | 1298 |
+| app | 106 | 1316 |
 | browser | 41 | 367 |
 
 ## Suites
@@ -152,6 +152,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/inventory-transport.test.ts` | INVENTORY_INTEGRITY | 9 | — |
 | `app/tests/kiosk-identify.test.tsx` | UNIT_OR_API | 10 | frontdesk |
 | `app/tests/money-f007.test.ts` | FINANCIAL_INTEGRITY | 8 | — |
+| `app/tests/native-bridge.test.tsx` | UNIT_OR_API | 7 | — |
+| `app/tests/native-deep-link.test.ts` | UNIT_OR_API | 11 | — |
 | `app/tests/portal-booking-live.test.tsx` | UNIT_OR_API | 3 | customer |
 | `app/tests/portal-customer.test.tsx` | UNIT_OR_API | 8 | customer |
 | `app/tests/portal-seam-wiring.test.tsx` | UNIT_OR_API | 17 | customer, owner |

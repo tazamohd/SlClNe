@@ -149,6 +149,24 @@
     }
   }
 
+  /* ── Software keyboard ────────────────────────────────────────────────────
+     Published by `NativeBridge` from the Keyboard plugin, and 0 everywhere
+     else — including in a browser, where the on-screen keyboard is the
+     browser's problem rather than the app's.
+
+     `capacitor.config.ts` sets `resize: 'body'`, which shortens the web view
+     so the focused field stays visible. What that does *not* do is move a bar
+     the layout pins to the bottom of a full-height column, so the customer
+     app's tab bar would ride up on top of the keyboard. Hiding it while the
+     keyboard is open is what a native app does: the field the user is typing
+     into matters more than a navigation control they are not using. */
+  :root {
+    --keyboard-height: 0px;
+  }
+  html.keyboard-open [data-hide-on-keyboard] {
+    display: none;
+  }
+
   html, body, #root {
     min-height: 100%;
   }
