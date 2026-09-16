@@ -296,8 +296,8 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 17980,
-      "lines": 210,
+      "bytes": 18092,
+      "lines": 212,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16061,
-      "lines": 228,
+      "bytes": 16347,
+      "lines": 233,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1473,7 +1473,7 @@
     {
       "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_CATALOG.md",
       "section": "28_ITIL_SERVICE_MANAGEMENT",
-      "bytes": 21952,
+      "bytes": 21936,
       "lines": 344,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1484,7 +1484,7 @@
     {
       "path": "28_ITIL_SERVICE_MANAGEMENT/SERVICE_MANAGEMENT_MODEL.md",
       "section": "28_ITIL_SERVICE_MANAGEMENT",
-      "bytes": 18501,
+      "bytes": 18469,
       "lines": 221,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1495,8 +1495,8 @@
     {
       "path": "29_OPERATIONS_DEVOPS/ENVIRONMENTS_AND_DEPLOYMENT.md",
       "section": "29_OPERATIONS_DEVOPS",
-      "bytes": 17784,
-      "lines": 201,
+      "bytes": 17625,
+      "lines": 200,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -1913,7 +1913,7 @@
     {
       "path": "MASTER_SRS.md",
       "section": "(root)",
-      "bytes": 32498,
+      "bytes": 32489,
       "lines": 524,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1935,7 +1935,7 @@
     {
       "path": "SALIS_AUTO_EXECUTION_PLAN.md",
       "section": "(root)",
-      "bytes": 76292,
+      "bytes": 76284,
       "lines": 1395,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1968,8 +1968,8 @@
     {
       "path": "architecture.md",
       "section": "(root)",
-      "bytes": 14353,
-      "lines": 279,
+      "bytes": 14141,
+      "lines": 273,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -2111,8 +2111,8 @@
     {
       "path": "developer/codebase-tour.md",
       "section": "developer",
-      "bytes": 17088,
-      "lines": 349,
+      "bytes": 17036,
+      "lines": 348,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -2122,7 +2122,7 @@
     {
       "path": "developer/contributing-guide.md",
       "section": "developer",
-      "bytes": 13207,
+      "bytes": 13181,
       "lines": 350,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -2155,7 +2155,7 @@
     {
       "path": "developer/onboarding-guide.md",
       "section": "developer",
-      "bytes": 11902,
+      "bytes": 11892,
       "lines": 287,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -2177,8 +2177,8 @@
     {
       "path": "development.md",
       "section": "(root)",
-      "bytes": 9937,
-      "lines": 311,
+      "bytes": 9757,
+      "lines": 302,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -2452,8 +2452,8 @@
     {
       "path": "knowledge-base/reference/configuration-reference.md",
       "section": "knowledge-base",
-      "bytes": 8062,
-      "lines": 230,
+      "bytes": 7927,
+      "lines": 219,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -2969,7 +2969,7 @@
     {
       "path": "mermaid/project/deployment-architecture.md",
       "section": "mermaid",
-      "bytes": 3288,
+      "bytes": 3260,
       "lines": 82,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3497,7 +3497,7 @@
     {
       "path": "project-management/change-management.md",
       "section": "project-management",
-      "bytes": 12091,
+      "bytes": 12075,
       "lines": 254,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3541,8 +3541,8 @@
     {
       "path": "project-management/planning/capacity-rollback-plan.md",
       "section": "project-management",
-      "bytes": 16119,
-      "lines": 334,
+      "bytes": 15948,
+      "lines": 330,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -3563,8 +3563,8 @@
     {
       "path": "project-management/planning/deployment-plan.md",
       "section": "project-management",
-      "bytes": 12649,
-      "lines": 315,
+      "bytes": 12231,
+      "lines": 291,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -3651,7 +3651,7 @@
     {
       "path": "project-management/pmp/risk-register.md",
       "section": "project-management",
-      "bytes": 15713,
+      "bytes": 15705,
       "lines": 222,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3673,7 +3673,7 @@
     {
       "path": "project-management/pmp/scope-statement.md",
       "section": "project-management",
-      "bytes": 12303,
+      "bytes": 12294,
       "lines": 257,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3717,7 +3717,7 @@
     {
       "path": "project-management/prince2/product-descriptions.md",
       "section": "project-management",
-      "bytes": 19903,
+      "bytes": 19895,
       "lines": 279,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3728,7 +3728,7 @@
     {
       "path": "project-management/prince2/project-initiation-document.md",
       "section": "project-management",
-      "bytes": 13803,
+      "bytes": 13802,
       "lines": 283,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -3761,8 +3761,8 @@
     {
       "path": "project-management/procurement-management.md",
       "section": "project-management",
-      "bytes": 13017,
-      "lines": 214,
+      "bytes": 12916,
+      "lines": 213,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -3981,7 +3981,7 @@
     {
       "path": "requirements/prd.md",
       "section": "requirements",
-      "bytes": 51414,
+      "bytes": 51403,
       "lines": 872,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -4168,7 +4168,7 @@
     {
       "path": "system/business-continuity.md",
       "section": "system",
-      "bytes": 17012,
+      "bytes": 17203,
       "lines": 294,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -4278,7 +4278,7 @@
     {
       "path": "system/runbooks/certificate-renewal.md",
       "section": "system",
-      "bytes": 12159,
+      "bytes": 12149,
       "lines": 311,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -4311,8 +4311,8 @@
     {
       "path": "system/runbooks/deployment-rollback.md",
       "section": "system",
-      "bytes": 15237,
-      "lines": 403,
+      "bytes": 15071,
+      "lines": 393,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -4388,7 +4388,7 @@
     {
       "path": "system/sla-document.md",
       "section": "system",
-      "bytes": 14654,
+      "bytes": 14645,
       "lines": 283,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

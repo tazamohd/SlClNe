@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 182,
-    "cases": 2144,
+    "suites": 187,
+    "cases": 2184,
     "byKind": {
       "ACCESSIBILITY": 2,
-      "E2E": 296,
+      "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
       "SECURITY": 242,
-      "UNIT_OR_API": 1029,
+      "UNIT_OR_API": 1059,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -527,6 +527,25 @@
       ]
     },
     {
+      "id": "TS-APP-E2E-ICONS-SPEC-TS",
+      "file": "app/e2e/icons.spec.ts",
+      "kind": "E2E",
+      "surface": "browser",
+      "describes": [
+        "PWA icons"
+      ],
+      "cases": [
+        "PWA icons",
+        "${icon} is opaque, so the wordmark survives a light launcher",
+        "the maskable icon keeps its artwork inside the safe circle",
+        "the maskable artwork is centred",
+        "the manifest and the icons on disk agree"
+      ],
+      "caseCount": 5,
+      "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
       "id": "TS-APP-E2E-INSURANCE-CLAIM-SPEC-TS",
       "file": "app/e2e/insurance-claim.spec.ts",
       "kind": "E2E",
@@ -852,6 +871,34 @@
       "touchesRoles": [
         "owner",
         "accountant"
+      ]
+    },
+    {
+      "id": "TS-APP-E2E-OFFLINE-SPEC-TS",
+      "file": "app/e2e/offline.spec.ts",
+      "kind": "E2E",
+      "surface": "browser",
+      "describes": [
+        "Service worker"
+      ],
+      "cases": [
+        "Service worker",
+        "installs, claims the page, and precaches the shell",
+        "renders the app with the network cut off",
+        "an offline deep link still lands on its own route, not the home screen",
+        "never caches an API response"
+      ],
+      "caseCount": 5,
+      "touchesPaths": [
+        "/login",
+        "/dashboard",
+        "/job-cards",
+        "/api/invoices",
+        "/auth/refresh",
+        "/v1/jobs"
+      ],
+      "touchesRoles": [
+        "owner"
       ]
     },
     {
@@ -3358,6 +3405,34 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-NATIVE-PAGES-TEST-TSX",
+      "file": "app/tests/native-pages.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Android app page",
+        "iOS app page",
+        "both pages"
+      ],
+      "cases": [
+        "states the version and minimum from the Android project",
+        "says the app is not on a store, rather than implying it is",
+        "renders no star rating — there is no listing to rate",
+        "renders none of the figures it used to invent",
+        "states the version and deployment target from the Xcode project",
+        "no longer claims iOS 16, which the project never targeted",
+        "render every capability the build actually has",
+        "name what is missing, and what each one needs",
+        "translate their whole body into Arabic"
+      ],
+      "caseCount": 9,
+      "touchesPaths": [
+        "/native/android",
+        "/native/i-os"
+      ],
+      "touchesRoles": []
+    },
+    {
       "id": "TS-APP-TESTS-PORTAL-BOOKING-LIVE-TEST-TSX",
       "file": "app/tests/portal-booking-live.test.tsx",
       "kind": "UNIT_OR_API",
@@ -3963,6 +4038,63 @@
         "owner",
         "accountant"
       ]
+    },
+    {
+      "id": "TS-APP-TESTS-SERVICE-WORKER-REGISTRATION-TEST-TS",
+      "file": "app/tests/service-worker-registration.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "shouldRegister",
+        "initServiceWorker",
+        "clearCaches"
+      ],
+      "cases": [
+        "is false in a development build",
+        "is false under Capacitor even in a production build",
+        "is false where the browser has no service worker support",
+        "tears down an existing worker where one does not belong",
+        "drops this app’s caches and nothing else on the origin",
+        "is survivable where storage is unavailable"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
+      "file": "app/tests/service-worker.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "service worker — requests it refuses to touch",
+        "service worker — strategies",
+        "service worker — activation"
+      ],
+      "cases": [
+        "passes non-GET straight through",
+        "passes cross-origin requests through — this is where the API lives",
+        "passes same-origin API paths through, for an API behind the same host",
+        "passes API media through, which the asset rules would otherwise cache",
+        "honours a request that explicitly declines the cache",
+        "leaves same-origin files it has no policy for alone",
+        "serves a hashed asset from cache without touching the network",
+        "fetches and stores a hashed asset it has not seen",
+        "goes to the network first for a navigation, so a new deploy is seen",
+        "falls back to the cached shell when a navigation is offline",
+        "reports failure rather than a blank page when offline with nothing cached",
+        "answers a font from cache immediately and refreshes it behind",
+        "never stores a response the server marked no-store",
+        "never stores an error response",
+        "drops its own stale caches and leaves other apps on the origin alone"
+      ],
+      "caseCount": 15,
+      "touchesPaths": [
+        "/api/invoices",
+        "/auth/refresh",
+        "/v1/jobs"
+      ],
+      "touchesRoles": []
     },
     {
       "id": "TS-APP-TESTS-TEST-ACCOUNT-TEST-TSX",
