@@ -4696,7 +4696,6 @@ export const AR_OVERRIDES: Record<string, string> = {
 
   // ── Homepage enterprise-SaaS redesign (2026-09) ──
   "Every plan is configured to your workshop — modules, branches, users and integrations. A specialist scopes it with you before any commitment.": "كل باقة تُهيَّأ حسب ورشتك — الوحدات، والفروع، والمستخدمون، والتكاملات. يحدد أخصائي نطاقها معك قبل أي التزام.",
-  "Request a Demo": "اطلب عرضًا توضيحيًا",
   "Talk to sales, not a script": "تحدث مع المبيعات، لا مع نص جاهز",
   "Illustrative — the shape of the flow, not a live board": "توضيحي — شكل سير العمل، لا لوحة حية",
   "JOB CARD · SIX STAGES": "بطاقة العمل · ست مراحل",
