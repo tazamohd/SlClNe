@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Sources as of:** 2026-09-17 · 408 documents, 139 in the numbered architecture
+**Sources as of:** 2026-09-17 · 409 documents, 139 in the numbered architecture
 
 ## Start here
 
@@ -68,7 +68,7 @@ An executive or an agent should be able to understand the state of this project 
 
 ## Documents outside the numbered architecture
 
-269 documents sit in the pre-existing `docs/` folders (`system/`, `requirements/`, `project-management/`, `knowledge-base/`, `mermaid/`, `visualizations/` and others). They were **not** deleted or bulk-moved: many are accurate, several are the only record of a decision, and a migration that moves 300 files in one commit destroys the ability to review any of them. `DOCUMENTATION_MIGRATION_MANIFEST.md` classifies each one and records where it is going.
+270 documents sit in the pre-existing `docs/` folders (`system/`, `requirements/`, `project-management/`, `knowledge-base/`, `mermaid/`, `visualizations/` and others). They were **not** deleted or bulk-moved: many are accurate, several are the only record of a decision, and a migration that moves 300 files in one commit destroys the ability to review any of them. `DOCUMENTATION_MIGRATION_MANIFEST.md` classifies each one and records where it is going.
 
 | Folder | Documents |
 | --- | --- |
@@ -87,6 +87,7 @@ An executive or an agent should be able to understand the state of this project 
 | `docs/legal/` | 6 |
 | `docs/customer/` | 4 |
 | `docs/testing/` | 4 |
+| `docs/research/` | 1 |
 
 ## Machine-readable registries
 

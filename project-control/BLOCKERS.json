@@ -1,15 +1,7 @@
 {
-  "generatedAt": "2026-09-12",
-  "open": 3,
+  "generatedAt": "2026-09-17",
+  "open": 2,
   "blockers": [
-    {
-      "id": "BLK-003",
-      "severity": "BLOCKER",
-      "title": "Three GitHub PATs were exposed in chat and are not confirmed rotated",
-      "detail": "Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.",
-      "owner": "06",
-      "wave": "W0"
-    },
     {
       "id": "BLK-004",
       "severity": "CRITICAL",

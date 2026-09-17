@@ -18,7 +18,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | --- | --- |
 | Required documents | 35 present of 35 |
 | Documents generated from source | 120 |
-| Documents authored by hand | 288 |
+| Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 69 of 69 |
 | Relationships documented | 170 (62 FK-backed, 108 convention only) |
@@ -30,7 +30,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Screens wired to the live API | 99 of 425 |
 | Test suites catalogued | 187 containing 2185 cases |
 | Capabilities with no linked test suite | 5 |
-| Canonical registers at least 3 days behind the newest | 6 of 9 |
+| Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
 
 ## What is not verified
@@ -120,7 +120,7 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-17; 6 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-17; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
@@ -129,14 +129,13 @@ The registries under `project-control/` are each generated at their own time by 
 | `project-control/FINDINGS.json` | 2026-08-12 | 36 |
 | `project-control/RELEASE_GATES.json` | 2026-09-02 | 15 |
 | `project-control/BASELINE.json` | 2026-09-03 | 14 |
-| `project-control/BLOCKERS.json` | 2026-09-12 | 5 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
 | RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
