@@ -7,8 +7,11 @@
  *  to the product could move it, and no change to it said anything about the
  *  product. This script replaces that with a run.
  *
- *  The run is `app/e2e/` — the Playwright suite. A spec declares which path it
- *  covers in its `describe` title:
+ *  The run is the `app/e2e/*.spec.ts` files that declare a path — the same
+ *  Playwright suite, scoped to those files rather than the whole directory
+ *  (a spec that isn't a journey, like the tablet sweep, can be arbitrarily
+ *  large without slowing this down). A spec declares which path it covers
+ *  in its `describe` title:
  *
  *      test.describe('Kiosk (Golden Path 23)', () => { … })
  *
@@ -135,9 +138,33 @@ if (supplied) {
   reportFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'golden-paths-')), 'report.json')
   source = 'a run of the Playwright suite (npx playwright test --reporter=json)'
 
+  /* Scoped to the files that actually declare a path, not the whole e2e/
+   * directory. This used to run every spec — cheap while every file was a
+   * few dozen tests, but BLK-008's tablet.spec.ts now sweeps all 425
+   * registered screens across 8 viewports (6,800+ assertions) to do a job
+   * that has nothing to do with golden paths, and running it here blew the
+   * job's 30-minute CI budget. `--grep` would filter at the test-title
+   * level and silently drop a declaring file's un-named "… lifecycle"
+   * tests (see the file header: "every test in the spec file that declares
+   * it, not only the tests inside the declaring describe") — passing the
+   * files themselves keeps that guarantee and excludes everything else. */
+  const e2eDir = path.join(APP, 'e2e')
+  const goldenFiles = fs
+    .readdirSync(e2eDir)
+    .filter((f) => f.endsWith('.spec.ts') && /\(Golden Path\s+\d+\)/i.test(fs.readFileSync(path.join(e2eDir, f), 'utf8')))
+    .sort()
+  if (!goldenFiles.length) {
+    console.error('golden-paths: no e2e/*.spec.ts file declares a "(Golden Path N)" describe title.')
+    process.exit(2)
+  }
+
   const bin = path.join(APP, 'node_modules/.bin/playwright')
   const cli = fs.existsSync(bin) ? bin : 'npx'
-  const args = fs.existsSync(bin) ? ['test', '--reporter=json'] : ['playwright', 'test', '--reporter=json']
+  const args = [
+    ...(fs.existsSync(bin) ? ['test'] : ['playwright', 'test']),
+    '--reporter=json',
+    ...goldenFiles.map((f) => `e2e/${f}`),
+  ]
 
   console.log(`golden-paths: running the Playwright suite (${cli} ${args.join(' ')})\n`)
   const run = spawnSync(cli, args, {
