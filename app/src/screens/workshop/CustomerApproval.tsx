@@ -112,6 +112,13 @@ export function CustomerApproval() {
 
   return (
     <div className="mx-auto flex max-w-[1180px] animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+      {/* A page-level heading was missing entirely — "SALIS AUTO" below is the
+       * brand mark, not a description of the page, and nothing else named what
+       * this screen is. This is the public, customer-facing secure approval
+       * link (opened from an SMS/WhatsApp/email link, no account required) —
+       * distinct from the advisor-facing internal preview and from the full
+       * Customer Portal, which the "Secure link" badge exists to say. */}
+      <h1 className="sr-only">{t('Estimate Approval')}</h1>
       <div className="flex items-center gap-3">
         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-salis-gradient text-white">
           <Icon name="Car" size={18} />

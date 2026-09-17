@@ -12,23 +12,23 @@
 
 # Domain — AI and automation
 
-**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-17
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 10 screens, 8 API endpoints and 1 entities, gated by the `ai` permission module.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 10 screens, 8 API endpoints and 1 entities, gated by the `ai`, `aiadmin` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `ai:vcedax` |
-| superadmin | platform | unlimited | `ai:vcedax` |
+| owner | all | unlimited | `ai:vcedax` `aiadmin:vcedax` |
+| superadmin | platform | unlimited | `ai:vcedax` `aiadmin:vcedax` |
 | manager | branch | SAR 50,000 | `ai:vce` |
 | advisor | branch | SAR 5,000 | `ai:v` |
 | accountant | all | SAR 25,000 | `ai:v` |
-| test | all | unlimited | `ai:vcedax` |
+| test | all | unlimited | `ai:vcedax` `aiadmin:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 

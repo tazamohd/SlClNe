@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-17",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -12,13 +12,13 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 187,
-    "cases": 2184,
+    "cases": 2185,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
-      "SECURITY": 242,
+      "SECURITY": 243,
       "UNIT_OR_API": 1059,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
@@ -3896,7 +3896,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 28 modules",
+        "defines exactly 30 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "every role has required metadata fields",
@@ -4580,10 +4580,10 @@
         "navFor unknown and edge roles"
       ],
       "cases": [
-        "is the documented 15 roles × 28 modules × 5 actions",
+        "is the documented 15 roles × 30 modules × 5 actions",
         "grants no action to a role the module never names",
         "denies an unknown module and an unknown role outright",
-        "agrees with the matrix for all 2,100 role × module × action combinations",
+        "agrees with the matrix for all 2,250 role × module × action combinations",
         "never confers a write without the matching read",
         "uses exactly six grant letters — one more than the Action union declares",
         "confines grant letters to the declared Action union",
@@ -4592,6 +4592,7 @@
         "leaves the ungated screens open to all 14 roles, and none of them is module-mapped",
         "opens an unmapped screen rather than closing it",
         "denies the operational screens to the roles the matrix excludes",
+        "confines the platform/cross-tenant admin screens to owner, superadmin and test",
         "shows a role only what it can open, and drops emptied groups entirely",
         "gives a role with no grant on a module no nav entry for that module",
         "never gives a role more than the owner sees",
@@ -4640,8 +4641,10 @@
         "preserves group ordering from the source nav",
         "never duplicates a nav item within a role"
       ],
-      "caseCount": 59,
+      "caseCount": 60,
       "touchesPaths": [
+        "/super-admin",
+        "/roles-permissions",
         "/supplier-portal",
         "/procurement-portal",
         "/dashboard"
@@ -4653,14 +4656,14 @@
         "technician",
         "accountant",
         "advisor",
+        "test",
+        "manager",
         "supplier",
         "hr",
         "procurement",
         "qc",
         "frontdesk",
-        "callcenter",
-        "manager",
-        "test"
+        "callcenter"
       ]
     },
     {
@@ -5134,8 +5137,8 @@
         "segregation of duties over the audit trail (F-004)"
       ],
       "cases": [
-        "matches on every one of the 420 module × role cells, string for string",
-        "answers every one of the 2,520 role × module × action questions from the table",
+        "matches on every one of the 450 module × role cells, string for string",
+        "answers every one of the 2,700 role × module × action questions from the table",
         "fails closed on an unknown module and an unknown role",
         "is six letters, and x is export while d is delete",
         "names the roles the wrong reading would have handed a delete grant",
@@ -5875,7 +5878,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 28 modules",
+        "defines exactly 30 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "re-exported ROLES/PERMS are the same objects as rbac-data",
@@ -5889,7 +5892,7 @@
         "returns false for an unknown role",
         "returns false for both unknown",
         "returns correct metadata for each role",
-        "falls back to ROLES[0] for unknown id",
+        "fails closed for an unknown id rather than inheriting Owner (F-006 parity)",
         "returns true for all valid role ids",
         "returns false for invalid values",
         "${roleId} limit is ${expected === null ? 'unlimited' : expected}",

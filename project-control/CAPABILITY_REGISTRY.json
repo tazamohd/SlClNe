@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-17",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -935,7 +935,8 @@
       "id": "CAP-AI",
       "name": "AI and automation",
       "modules": [
-        "ai"
+        "ai",
+        "aiadmin"
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
@@ -988,6 +989,7 @@
       "modules": [
         "admin",
         "settings",
+        "superadmin",
         "dashboard",
         "network",
         "ungated",

@@ -8,7 +8,7 @@
 
 # Known limitations
 
-**Sources as of:** 2026-09-16
+**Sources as of:** 2026-09-17
 
 Properties of the system as it stands. Each is a deliberate position or a known gap — none is a defect report, and none is speculation.
 

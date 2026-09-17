@@ -25,8 +25,29 @@ const permsTyped = PERMS as unknown as Record<string, Record<string, string>>
 
 export const DEFAULT_ROLE = 'owner'
 
+/** A role id with no authority at all, for `roleMeta` to fall back to.
+ *
+ *  Mirrors `UNKNOWN_ROLE` in `app/src/data/rbac.ts` (fix F-006): the previous
+ *  fallback here was `rolesTyped[0]`, which is Owner — an unrecognised role id
+ *  would silently inherit an unlimited approval ceiling and `scope: "all"`.
+ *  This function is not on the live request path today (the API's actual
+ *  enforcement reads `packages/contract`'s `roleId` zod enum via
+ *  `principalFromClaims`, which already rejects an unrecognised role before
+ *  any permission check runs), but a helper named `roleMeta` that fails open
+ *  is a trap for the next caller who reaches for it. */
+const UNKNOWN_ROLE_META: RoleMeta = Object.freeze({
+  id: 'unknown',
+  label: 'Unknown role',
+  ar: 'دور غير معروف',
+  icon: 'ShieldAlert',
+  demo: { name: 'Unknown', ar: 'غير معروف', email: '' },
+  scope: 'self',
+  limit: 0,
+  color: '#6B7280',
+})
+
 export function roleMeta(id: string): RoleMeta {
-  return rolesTyped.find((r) => r.id === id) ?? rolesTyped[0]
+  return rolesTyped.find((r) => r.id === id) ?? UNKNOWN_ROLE_META
 }
 
 export function isRoleId(id: string | null | undefined): boolean {

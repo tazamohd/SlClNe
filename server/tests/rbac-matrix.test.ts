@@ -29,8 +29,8 @@ const ALL_MODULES = [
   'vehicles', 'inventory', 'procurement', 'invoices', 'payments',
   'accounting', 'hr', 'technicians', 'crm', 'callcenter', 'reports',
   'approvals', 'kiosk', 'execreports', 'portaltech', 'portalcustomer',
-  'portalsupplier', 'portalprocure', 'ai', 'admin', 'settings',
-  'audit', 'network',
+  'portalsupplier', 'portalprocure', 'ai', 'aiadmin', 'admin', 'settings',
+  'superadmin', 'audit', 'network',
 ] as const
 
 const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
@@ -44,8 +44,8 @@ describe('server RBAC data integrity', () => {
     expect(ROLES).toHaveLength(15)
   })
 
-  it('defines exactly 28 modules', () => {
-    expect(Object.keys(PERMS)).toHaveLength(28)
+  it('defines exactly 30 modules', () => {
+    expect(Object.keys(PERMS)).toHaveLength(30)
   })
 
   it('ROLES ids match the expected list', () => {
@@ -152,9 +152,17 @@ describe('server roleMeta()', () => {
     }
   })
 
-  it('falls back to ROLES[0] for unknown id', () => {
+  it('fails closed for an unknown id rather than inheriting Owner (F-006 parity)', () => {
+    // Mirrors app/src/data/rbac.ts's UNKNOWN_ROLE fix: the previous fallback
+    // was ROLES[0] (Owner), which handed an unrecognised role id an unlimited
+    // approval ceiling and scope "all". This function is not on the live
+    // request path (principalFromClaims rejects an unrecognised role before
+    // any permission check runs), but it must not disagree with the client.
     const meta = roleMeta('nonexistent')
-    expect(meta.id).toBe('owner')
+    expect(meta.id).not.toBe('owner')
+    expect(meta.limit).toBe(0)
+    expect(meta.scope).toBe('self')
+    expect(approvalLimit('nonexistent')).toBe(0)
   })
 })
 

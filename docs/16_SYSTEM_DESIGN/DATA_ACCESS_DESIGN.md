@@ -14,7 +14,7 @@
 
 # Data access design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-17
 
 Covers: the collection registry, the generic router, query contract, presentation, soft delete, the repository seam.
 

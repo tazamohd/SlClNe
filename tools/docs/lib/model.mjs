@@ -47,8 +47,8 @@ const CAPABILITIES = [
   { id: 'CAP-REPORTING', name: 'Reporting and analytics', modules: ['reports', 'execreports'], objective: 'OBJ-VISIBILITY' },
   { id: 'CAP-GOVERNANCE', name: 'Approvals and governance', modules: ['approvals', 'audit'], objective: 'OBJ-CONTROL' },
   { id: 'CAP-PORTALS', name: 'Portals and channels', modules: ['portaltech', 'portalcustomer', 'portalsupplier', 'portalprocure', 'kiosk'], domains: ['portals'], objective: 'OBJ-RETENTION' },
-  { id: 'CAP-AI', name: 'AI and automation', modules: ['ai'], objective: 'OBJ-THROUGHPUT' },
-  { id: 'CAP-PLATFORM', name: 'Administration and platform', modules: ['admin', 'settings', 'dashboard', 'network', 'ungated', 'platform'], domains: ['admin'], objective: 'OBJ-CONTROL' },
+  { id: 'CAP-AI', name: 'AI and automation', modules: ['ai', 'aiadmin'], objective: 'OBJ-THROUGHPUT' },
+  { id: 'CAP-PLATFORM', name: 'Administration and platform', modules: ['admin', 'settings', 'superadmin', 'dashboard', 'network', 'ungated', 'platform'], domains: ['admin'], objective: 'OBJ-CONTROL' },
   // Four capabilities carry screens but no permission module of their own.
   // The screen registry files them under `domain` instead: authentication is
   // pre-authorization by definition, the public website is unauthenticated,

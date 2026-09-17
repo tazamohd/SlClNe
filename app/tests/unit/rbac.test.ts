@@ -28,7 +28,7 @@ import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
 /** The permission engine, exercised across the whole matrix rather than at a
- *  handful of hand-picked points: 15 roles × 28 modules × 5 actions, generated
+ *  handful of hand-picked points: 15 roles × 30 modules × 5 actions, generated
  *  from `PERMS` so a module or role added to the design bundle is covered the
  *  day it lands.
  *
@@ -47,9 +47,9 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 const UNLIMITED: RoleId[] = ['owner', 'superadmin']
 
 describe('matrix shape', () => {
-  it('is the documented 15 roles × 28 modules × 5 actions', () => {
+  it('is the documented 15 roles × 30 modules × 5 actions', () => {
     expect(ROLE_IDS).toHaveLength(15)
-    expect(MODULES).toHaveLength(28)
+    expect(MODULES).toHaveLength(30)
     expect(ACTIONS).toHaveLength(5)
     expect(new Set(ROLE_IDS).size).toBe(ROLE_IDS.length)
   })
@@ -74,7 +74,7 @@ describe('matrix shape', () => {
 })
 
 describe('can()', () => {
-  it('agrees with the matrix for all 2,100 role × module × action combinations', () => {
+  it('agrees with the matrix for all 2,250 role × module × action combinations', () => {
     let checked = 0
     for (const module of MODULES) {
       for (const role of ROLE_IDS) {
@@ -87,7 +87,7 @@ describe('can()', () => {
         }
       }
     }
-    expect(checked).toBe(15 * 28 * 5)
+    expect(checked).toBe(15 * 30 * 5)
   })
 
   it('never confers a write without the matching read', () => {
@@ -189,6 +189,40 @@ describe('canScreen()', () => {
     expect(canScreen('HRPayroll', 'advisor')).toBe(false)
     expect(canScreen('ExecutiveReports', 'advisor')).toBe(false)
     expect(canScreen('ExecutiveReports', 'owner')).toBe(true)
+  })
+
+  /* Regression for the Branch Manager privilege-escalation report: `manager`
+   * held `v` on the coarse `settings` and `admin` modules, and SuperAdmin,
+   * RolesPermissions and Organizations were mapped to those same modules —
+   * so a manager who typed `/super-admin` or `/roles-permissions` into the
+   * address bar passed the guard. The fix splits a dedicated `superadmin`
+   * module (and `aiadmin` for AI platform configuration) off from the
+   * tenant-scoped modules, granted only to owner/superadmin/test. Pin every
+   * non-privileged role here so the split cannot silently regress. */
+  it('confines the platform/cross-tenant admin screens to owner, superadmin and test', () => {
+    const PLATFORM_SCREENS = ['SuperAdmin', 'RolesPermissions', 'Organizations']
+    const AI_ADMIN_SCREENS = [
+      'ModelSettings',
+      'AgentRegistry',
+      'AutomationRules',
+      'WorkflowBuilder',
+      'ConversationHistory',
+    ]
+    const PRIVILEGED: RoleId[] = ['owner', 'superadmin', 'test']
+
+    for (const screen of [...PLATFORM_SCREENS, ...AI_ADMIN_SCREENS]) {
+      for (const role of ROLE_IDS) {
+        expect(canScreen(screen, role), `${role} on ${screen}`).toBe(PRIVILEGED.includes(role))
+      }
+    }
+
+    // The named report: Branch Manager, specifically, on the two named routes.
+    expect(canScreen('SuperAdmin', 'manager')).toBe(false)
+    expect(canScreen('RolesPermissions', 'manager')).toBe(false)
+    // Service Advisor keeps day-to-day AI assistance without AI administration.
+    expect(canScreen('AIAssistant', 'advisor')).toBe(true)
+    expect(canScreen('ModelSettings', 'advisor')).toBe(false)
+    expect(canScreen('AgentRegistry', 'advisor')).toBe(false)
   })
 })
 

@@ -7,9 +7,9 @@
 
 # RBAC matrix
 
-**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-17
 
-28 modules × 15 roles = 420 cells, of which 217 carry at least one grant.
+30 modules × 15 roles = 450 cells, of which 223 carry at least one grant.
 
 ## Grant alphabet
 
@@ -54,8 +54,10 @@ This is not a naming quibble. A router that checked `x` on `DELETE` under the fi
 | portalsupplier | v | v | v | · | · | · | v | · | · | · | · | v | vx | · | vcedax |
 | portalprocure | v | v | v | · | · | · | v | v | · | · | · | vx | · | · | vcedax |
 | ai | vcedax | vcedax | vce | v | · | · | · | v | · | · | · | · | · | · | vcedax |
+| aiadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | admin | vcedax | vcedax | v | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | settings | vcedax | vcedax | ve | · | · | · | · | · | · | · | · | · | · | · | vcedax |
+| superadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | audit | vx | vx | vx | · | · | · | · | vx | · | · | · | · | · | · | vcedax |
 | network | vcedax | v | vcedx | · | · | · | vced | · | · | · | · | vcedax | vce | · | vcedax |
 

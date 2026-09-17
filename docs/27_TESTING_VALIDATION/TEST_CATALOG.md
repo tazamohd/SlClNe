@@ -10,9 +10,9 @@
 
 # Test catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-17
 
-187 spec files containing 2184 test cases.
+187 spec files containing 2185 test cases.
 
 ## What this document claims, and what it does not
 
@@ -26,7 +26,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
-| SECURITY | 12 | 242 | Permission grants, tenant isolation, segregation of duties, session handling |
+| SECURITY | 12 | 243 | Permission grants, tenant isolation, segregation of duties, session handling |
 | CONTRACT | 3 | 182 | The shared rule functions both sides depend on |
 | DATA_FIDELITY | 2 | 15 | That the seeded data matches what the design bundle carried |
 | ACCESSIBILITY | 1 | 2 | Axe sweeps, ratcheted per route and viewport |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 461 |
-| app | 109 | 1346 |
+| app | 109 | 1347 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -186,7 +186,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/generated-tables.test.ts` | UNIT_OR_API | 42 | owner |
 | `app/tests/unit/money.test.ts` | FINANCIAL_INTEGRITY | 19 | — |
 | `app/tests/unit/page-size-parity.test.ts` | UNIT_OR_API | 3 | — |
-| `app/tests/unit/rbac.test.ts` | SECURITY | 59 | owner, superadmin, customer, technician, accountant, advisor, supplier, hr, procurement, qc, frontdesk, callcenter, manager, test |
+| `app/tests/unit/rbac.test.ts` | SECURITY | 60 | owner, superadmin, customer, technician, accountant, advisor, test, manager, supplier, hr, procurement, qc, frontdesk, callcenter |
 | `app/tests/unit/repository-fixture.test.ts` | UNIT_OR_API | 27 | — |
 | `app/tests/unit/route-shells-parser.test.ts` | UNIT_OR_API | 10 | — |
 | `app/tests/unit/route-shells.test.ts` | UNIT_OR_API | 3 | — |
