@@ -1,134 +1,253 @@
 import { Card } from '@/components/ui/Card'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
-import { DataTable, type Column } from '@/components/ui/DataTable'
+import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { Money } from '@/components/ui/Money'
+import { usePagedCollection, type RowOf } from '@/data/useCollection'
+import { InvoiceStatusBadge } from '@/screens/registry/badges'
+import { derived, UNKNOWN } from '@/screens/registry/writes'
+import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
+import { AGGREGATE_GAP } from '@/screens/accounting/reporting'
 
-interface Payment {
-  id: string
-  description: string
-  amount: number
-  date: string
-  method: 'Visa' | 'Mada' | 'Apple Pay' | 'Cash' | 'Bank Transfer'
-  invoice: string
-  status: 'Completed' | 'Pending' | 'Refunded'
+/** The customer's payment history, read through the repository seam.
+ *
+ *  Scope is the server's — this reads `invoices`, self-scoped by RLS (F-015's
+ *  pattern, extended to customers: `drizzle/0014_customer_id_link.sql`), the
+ *  way `ClientPortalInvoices` does. It used to be seven hand-written rows
+ *  with fabricated payment-method last-4 digits and a spending total nobody
+ *  computed; a customer's *own* payment history was not the concept it
+ *  showed.
+ *
+ *  This is invoice-level, not payment-transaction-level. `payments` (the
+ *  individual charges an invoice can carry more than one of) is not scoped
+ *  to a customer anywhere in this system yet — no `customer_id` column, no
+ *  RLS entry — so a per-transaction ledger cannot be shown safely here
+ *  without either a schema change or a query a self-scoped principal has no
+ *  business running. `invoices.paidHalalas` / `balanceHalalas` are exactly
+ *  what a customer needs to answer "what have I paid, what do I still owe" —
+ *  server-computed, per record — so that is what this shows instead of a
+ *  fabricated one.
+ *
+ *  Saved payment methods (cards) are a card-vaulting integration this system
+ *  does not have — `/stripe-payment-processing` is its own, separately
+ *  tracked, unconnected placeholder — so this screen names that gap rather
+ *  than listing invented card numbers next to real invoice data.
+ */
+type Invoice = RowOf<'invoices'> & {
+  _id?: string
+  totalHalalas?: number
+  paidHalalas?: number
+  balanceHalalas?: number
+  svc?: string | null
 }
 
-interface PaymentMethod {
-  type: string
-  last4: string
-  expiry: string
-  icon: string
-  primary: boolean
+function AggregateNote() {
+  const { t } = usePreferences()
+  return (
+    <p className="flex items-start gap-1.5 text-[11px] text-muted">
+      <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+      {t('Server aggregate:')}{' '}
+      <span dir="ltr" className="font-mono text-body">{AGGREGATE_GAP.sales}</span>
+    </p>
+  )
 }
 
-const PAYMENTS: Payment[] = [
-  { id: 'PAY-8401', description: 'Oil Change + Filter', amount: 285, date: 'Aug 15, 2026', method: 'Visa', invoice: 'INV-2026-1284', status: 'Completed' },
-  { id: 'PAY-8398', description: 'Brake Pad Replacement', amount: 1240, date: 'Aug 12, 2026', method: 'Mada', invoice: 'INV-2026-1280', status: 'Completed' },
-  { id: 'PAY-8395', description: 'Full Service Package', amount: 2180, date: 'Aug 05, 2026', method: 'Apple Pay', invoice: 'INV-2026-1275', status: 'Completed' },
-  { id: 'PAY-8392', description: 'AC Service & Recharge', amount: 450, date: 'Jul 28, 2026', method: 'Visa', invoice: 'INV-2026-1270', status: 'Refunded' },
-  { id: 'PAY-8390', description: 'Tire Rotation (4x)', amount: 120, date: 'Jul 20, 2026', method: 'Cash', invoice: 'INV-2026-1265', status: 'Completed' },
-  { id: 'PAY-8387', description: 'Battery Replacement', amount: 380, date: 'Jul 15, 2026', method: 'Bank Transfer', invoice: 'INV-2026-1260', status: 'Pending' },
-  { id: 'PAY-8384', description: 'Engine Diagnostic', amount: 199, date: 'Jul 10, 2026', method: 'Mada', invoice: 'INV-2026-1255', status: 'Completed' },
-]
-
-const METHODS: PaymentMethod[] = [
-  { type: 'Visa', last4: '4821', expiry: '09/28', icon: 'CreditCard', primary: true },
-  { type: 'Mada', last4: '7733', expiry: '12/27', icon: 'CreditCard', primary: false },
-  { type: 'Apple Pay', last4: '1155', expiry: '-', icon: 'Smartphone', primary: false },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Refunded: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+function PaymentMethodsGap() {
+  const { t } = usePreferences()
+  return (
+    <Card className="rounded-2xl p-5 shadow-sm">
+      <div className="flex items-start gap-3">
+        <span className="flex flex-shrink-0 rounded-lg bg-inset p-2 text-muted" aria-hidden>
+          <Icon name="CreditCard" size={16} />
+        </span>
+        <div className="min-w-0">
+          <h2 className="font-display text-sm font-bold text-heading">{t('Payment Methods')}</h2>
+          <p className="mt-1 text-xs leading-relaxed text-muted">
+            {t(
+              'Saving a card needs a card-vaulting integration this deployment does not have connected. Nothing is stored here today.'
+            )}
+          </p>
+        </div>
+      </div>
+    </Card>
+  )
 }
 
 export function CustomerAppPayments() {
   const { t } = usePreferences()
+  const isMobile = useIsMobile()
+  const { data, isLoading, isError, error, refetch } = usePagedCollection('invoices')
+  const rows = (data?.rows ?? []) as readonly Invoice[]
+  const total = data?.page.total
 
-  const totalSpent = PAYMENTS.filter((p) => p.status === 'Completed').reduce((sum, p) => sum + p.amount, 0)
+  const settled = rows.filter((inv) => invoiceMoney(inv).fromServer && invoiceMoney(inv).balanceHalalas <= 0)
+  const outstanding = rows.filter((inv) => invoiceMoney(inv).fromServer && invoiceMoney(inv).balanceHalalas > 0)
+  const anyServerMoney = rows.some((inv) => invoiceMoney(inv).fromServer)
 
   const kpis = [
-    { label: t('Total Spent'), value: `${(totalSpent / 1000).toFixed(1)}K`, icon: 'DollarSign', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Transactions'), value: String(PAYMENTS.length), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Pending'), value: String(PAYMENTS.filter((p) => p.status === 'Pending').length), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Payment Methods'), value: String(METHODS.length), icon: 'CreditCard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    {
+      label: t('Total Paid'),
+      value: anyServerMoney
+        ? `${(rows.reduce((sum, inv) => sum + (invoiceMoney(inv).fromServer ? invoiceMoney(inv).paidHalalas : 0), 0) / 100_000).toFixed(1)}K`
+        : UNKNOWN,
+      icon: 'DollarSign',
+      bg: 'var(--tint-blue)',
+      fg: 'var(--salis-blue)',
+    },
+    { label: t('Invoices'), value: total === undefined ? UNKNOWN : String(total), icon: 'Receipt', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Outstanding'), value: String(outstanding.length), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Settled'), value: String(settled.length), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
-  const columns: Column<Payment>[] = [
-    { header: 'ID', cell: (p) => p.id, code: true },
-    { header: 'Description', cell: (p) => <span className="font-medium text-heading">{t(p.description)}</span> },
-    { header: 'Amount', cell: (p) => p.amount.toLocaleString(), code: true, className: 'text-end' },
-    { header: 'Method', cell: (p) => p.method },
-    { header: 'Invoice', cell: (p) => p.invoice, code: true },
-    { header: 'Date', cell: (p) => p.date },
-    {
-      header: 'Status',
-      cell: (p) => (
-        <Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>
-      ),
-    },
-  ]
+  const empty = (
+    <Card className="p-5">
+      <EmptyState
+        icon="Receipt"
+        title={t('No invoices yet')}
+        description={t('Invoices and payments for your services appear here.')}
+      />
+    </Card>
+  )
+
+  const failed = <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  function BalanceLine({ invoice }: { invoice: Invoice }) {
+    const money = invoiceMoney(invoice)
+    if (!money.fromServer) return <span className="text-muted">{UNKNOWN}</span>
+    return (
+      <span className={money.balanceHalalas > 0 ? 'font-semibold text-salis-orange' : 'font-semibold text-salis-blue'}>
+        <Money sar={fromHalalas(money.balanceHalalas)} />
+      </span>
+    )
+  }
+
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="CreditCard" title={t('Payments')} subtitle={t('Payment history and balances')} />
+        <div className="grid grid-cols-2 gap-3">
+          {kpis.map((k) => (
+            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
+              <div className="flex items-center gap-2">
+                <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
+                <span className="text-[11px] font-medium text-muted">{k.label}</span>
+              </div>
+              <p className="mt-1.5 font-display text-xl font-black text-heading">{k.value}</p>
+            </Card>
+          ))}
+        </div>
+        <AggregateNote />
+        <PaymentMethodsGap />
+
+        <p className="mt-1 text-sm font-bold text-heading">{t('Payment History')}</p>
+        {isLoading ? (
+          <Loading label="Loading invoices..." />
+        ) : isError ? (
+          failed
+        ) : rows.length === 0 ? (
+          empty
+        ) : (
+          rows.map((inv, index) => (
+            <MobileCard key={inv._id ?? `${inv.id}-${index}`}>
+              <MobileCardHeader
+                leading={
+                  <div className="flex items-center gap-2">
+                    <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
+                    <div>
+                      <p className="text-[13px] font-semibold text-heading">{derived(inv.svc)}</p>
+                      <p className="text-xs text-muted" dir="ltr">{inv.id}</p>
+                    </div>
+                  </div>
+                }
+                trailing={<InvoiceStatusBadge value={inv.status} />}
+              />
+              <MobileCardRow label={t('Amount')}>
+                <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} />
+              </MobileCardRow>
+              <MobileCardRow label={t('Balance')}>
+                <BalanceLine invoice={inv} />
+              </MobileCardRow>
+              <MobileCardRow label={t('Due')} value={derived(inv.due)} />
+            </MobileCard>
+          ))
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="CreditCard" title={t('Payments')} subtitle={t('Payment history and saved methods')} />
+      <PageHeader icon="CreditCard" title={t('Payments')} subtitle={t('Payment history and balances')} />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
+      <AggregateNote />
 
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <h2 className="mb-4 font-display text-sm font-bold text-heading">{t('Payment Methods')}</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {METHODS.map((m) => (
-            <div key={m.last4} className="flex items-center gap-3 rounded-xl border border-border p-4">
-              <span className="flex rounded-lg bg-tint-blue p-2 text-salis-blue" aria-hidden><Icon name={m.icon} size={18} /></span>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-heading">{m.type} <span className="font-mono text-muted" dir="ltr">****{m.last4}</span></p>
-                <p className="text-xs text-muted">{m.expiry !== '-' ? `${t('Expires')} ${m.expiry}` : t('Digital Wallet')}</p>
-              </div>
-              {m.primary && <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('Primary')}</Badge>}
-            </div>
-          ))}
-        </div>
-      </Card>
+      <PaymentMethodsGap />
 
       <div>
         <p className="mb-3 text-sm font-bold text-heading">{t('Payment History')}</p>
-        <DataTable
-          caption="Payment history"
-          columns={columns}
-          rows={PAYMENTS}
-          rowKey={(p) => p.id}
-          empty={t('No payments found')}
-          mobileCard={(p) => (
-            <>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2">
-                    <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Receipt" size={14} /></span>
-                    <div>
-                      <p className="text-[13px] font-semibold text-heading">{t(p.description)}</p>
-                      <p className="text-xs text-muted">{p.date}</p>
-                    </div>
-                  </div>
-                }
-                trailing={<Badge background={STATUS_STYLES[p.status].bg} color={STATUS_STYLES[p.status].fg}>{t(p.status)}</Badge>}
-              />
-              <MobileCardRow label={t('Amount')} value={`${p.amount.toLocaleString()} SAR`} />
-              <MobileCardRow label={t('Method')} value={p.method} />
-              <MobileCardRow label={t('Invoice')} value={p.invoice} />
-            </>
-          )}
-        />
+        {isLoading ? (
+          <Loading label="Loading invoices..." />
+        ) : isError ? (
+          failed
+        ) : rows.length === 0 ? (
+          empty
+        ) : (
+          <Card className="overflow-hidden p-0">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr>
+                  <Th align="start" className="ps-5">{t('Invoice')}</Th>
+                  <Th align="start">{t('Service')}</Th>
+                  <Th align="start">{t('Due')}</Th>
+                  <Th align="end">{t('Amount')}</Th>
+                  <Th align="end">{t('Balance')}</Th>
+                  <Th align="end" className="pe-5">{t('Status')}</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((inv, index) => (
+                  <tr key={inv._id ?? `${inv.id}-${index}`}>
+                    <td className="border-t border-border py-3 ps-5 font-mono text-xs text-body" dir="ltr">
+                      {inv.id}
+                    </td>
+                    <td className="border-t border-border py-3 text-body">{derived(inv.svc)}</td>
+                    <td className="border-t border-border py-3 text-body">{derived(inv.due)}</td>
+                    <td className="border-t border-border py-3 text-end">
+                      <Money sar={fromHalalas(invoiceMoney(inv).totalHalalas)} className="font-semibold text-heading" />
+                    </td>
+                    <td className="border-t border-border py-3 text-end">
+                      <BalanceLine invoice={inv} />
+                    </td>
+                    <td className="border-t border-border py-3 pe-5 text-end">
+                      <InvoiceStatusBadge value={inv.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
+        )}
       </div>
     </div>
+  )
+}
+
+function Th({ children, align, className = '' }: { children: React.ReactNode; align: 'start' | 'end'; className?: string }) {
+  return (
+    <th
+      scope="col"
+      className={`py-2.5 text-[10.5px] font-bold uppercase tracking-[.05em] text-muted ${align === 'end' ? 'text-end' : 'text-start'} ${className}`}
+    >
+      {children}
+    </th>
   )
 }

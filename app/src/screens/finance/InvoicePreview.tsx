@@ -93,6 +93,7 @@ export function InvoicePreview() {
   const issuedAt = (invoice as { issuedAt?: string | null }).issuedAt ?? null
   const qrCode = (invoice as { qrCode?: string | null }).qrCode ?? null
   const buyerVat = (invoice as { buyerVatNumber?: string | null }).buyerVatNumber ?? null
+  const sellerVat = (invoice as { sellerVatNumber?: string | null }).sellerVatNumber ?? null
 
   /* A check, not a total: rounded the way the server rounds a subtotal so the
    * comparison never trips on a half-halala the server never carried. */
@@ -191,6 +192,18 @@ export function InvoicePreview() {
                     {t('The QR payload is assigned when the invoice is issued.')}
                   </p>
                 )}
+                {/* The registration the QR itself encodes — from the
+                    organization, captured onto the invoice at issue. Shown
+                    only once it is real; a draft names no VAT number it
+                    cannot yet back. */}
+                {sellerVat ? (
+                  <p className="mt-1 text-[11px] text-muted">
+                    {t('Seller VAT')}{' '}
+                    <span dir="ltr" className="font-mono text-body">
+                      {sellerVat}
+                    </span>
+                  </p>
+                ) : null}
               </div>
             </div>
           ),

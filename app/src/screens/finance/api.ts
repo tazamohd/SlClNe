@@ -122,6 +122,11 @@ export interface InvoiceResult {
   paidHalalas?: number
   balanceHalalas?: number
   issuedAt?: string | null
+  /** The registration the invoice was actually issued under — captured from
+   *  the organization onto the row at `POST /invoices/:id/issue`, null before
+   *  that. Never a literal a screen names on its own. */
+  sellerVatNumber?: string | null
+  buyerVatNumber?: string | null
 }
 
 export interface PaymentResult {

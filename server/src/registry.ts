@@ -330,6 +330,13 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       /* The estimate this was raised from (DF-007), so a screen can walk the
        * chain back without a second lookup. */
       estimateId: row.estimateId ?? null,
+      /* The buyer's VAT number was already on the wire; the seller's was not,
+       * so no screen could show the real registration a document was actually
+       * issued under — only a literal a screen hardcoded. Null until issued:
+       * `POST /invoices/:id/issue` is what captures it, from the organization,
+       * onto the row. */
+      buyerVatNumber: row.buyerVatNumber ?? null,
+      sellerVatNumber: row.sellerVatNumber ?? null,
     }),
   }),
 

@@ -7,6 +7,7 @@ import { WorkshopQC } from '@/screens/workshop/WorkshopQC'
 import { WorkshopReports } from '@/screens/workshop/WorkshopReports'
 import { OBDDiagnostics } from '@/screens/workshop/OBDDiagnostics'
 import { CustomerApproval } from '@/screens/workshop/CustomerApproval'
+import { PurchaseAgentPayments } from '@/screens/portals/purchase/PurchaseAgentPayments'
 import { RepositoryError } from '@/data/repository'
 import { renderWithProviders } from '../helpers/render'
 
@@ -33,6 +34,7 @@ const wire = vi.hoisted(() => ({
   otpVerify: null as null | ((id: string, code: string) => Promise<unknown>),
   estimateRows: null as null | Record<string, unknown>[],
   estimateGet: null as null | ((id: string) => Promise<unknown>),
+  purchaseOrderRows: null as null | Record<string, unknown>[],
 }))
 
 vi.mock('@/data/repository', async (importOriginal) => {
@@ -68,6 +70,16 @@ vi.mock('@/data/repository', async (importOriginal) => {
             : mod.repository.estimates.list(query as never),
         get: (id: string) =>
           wire.estimateGet ? wire.estimateGet(id) : mod.repository.estimates.get(id),
+      },
+      purchaseOrders: {
+        ...mod.repository.purchaseOrders,
+        list: (query?: unknown) =>
+          wire.purchaseOrderRows
+            ? Promise.resolve({
+                rows: wire.purchaseOrderRows,
+                page: { page: 1, pageSize: 50, total: wire.purchaseOrderRows.length, totalPages: 1 },
+              })
+            : mod.repository.purchaseOrders.list(query as never),
       },
     },
   }
@@ -478,5 +490,45 @@ describe('CustomerApproval — the linked estimate itself (estimates.get)', () =
     // The signature step is independent of whether the preview loaded — the
     // server settles it against its own record by id.
     expect(screen.getByRole('button', { name: /Send one-time code/ })).toBeInTheDocument()
+  })
+})
+
+/* ------------------------------------------------------- PurchaseAgentPayments */
+
+describe('PurchaseAgentPayments — live purchase orders (purchaseOrders.list)', () => {
+  it('renders the real supplier, amount and status for an open order', async () => {
+    wire.purchaseOrderRows = [
+      {
+        _id: 'id-PO-9001',
+        id: 'PO-9001',
+        code: 'PO-9001',
+        supplierName: 'Al-Futtaim Auto Parts',
+        status: 'approved',
+        totalHalalas: 480_000,
+      },
+    ]
+    renderWithProviders(<PurchaseAgentPayments />, { role: 'procurement' })
+    expect(await screen.findByText('PO-9001')).toBeInTheDocument()
+    expect(screen.getByText('Al-Futtaim Auto Parts')).toBeInTheDocument()
+    // Appears twice: the "Total on Open Orders" KPI and PO-9001's own row.
+    expect(screen.getAllByText(/SAR\s*4,800\.00/).length).toBe(2)
+    // The honest gap note still names what this order-level total is not.
+    expect(screen.getByText('Supplier payment tracking is not connected')).toBeInTheDocument()
+  })
+
+  it('excludes draft and closed orders from the owed total', async () => {
+    wire.purchaseOrderRows = [
+      { _id: 'id-1', id: 'PO-1', code: 'PO-1', supplierName: 'A', status: 'draft', totalHalalas: 100_000 },
+      { _id: 'id-2', id: 'PO-2', code: 'PO-2', supplierName: 'B', status: 'closed', totalHalalas: 200_000 },
+      { _id: 'id-3', id: 'PO-3', code: 'PO-3', supplierName: 'C', status: 'approved', totalHalalas: 50_000 },
+    ]
+    renderWithProviders(<PurchaseAgentPayments />, { role: 'procurement' })
+    await screen.findByText('PO-3')
+    // PO-1 (draft) and PO-2 (closed) are excluded, so only PO-3's SAR 500
+    // counts toward "Total on Open Orders" — the KPI and PO-3's own row both
+    // read SAR 500.00, and nothing else in the table does.
+    expect(screen.getAllByText('SAR 500.00').length).toBe(2)
+    expect(screen.queryByText('SAR 1,000.00')).toBeNull()
+    expect(screen.queryByText('SAR 2,000.00')).toBeNull()
   })
 })
