@@ -32,6 +32,7 @@ const wire = vi.hoisted(() => ({
   otpRequest: null as null | ((id: string) => Promise<unknown>),
   otpVerify: null as null | ((id: string, code: string) => Promise<unknown>),
   estimateRows: null as null | Record<string, unknown>[],
+  estimateGet: null as null | ((id: string) => Promise<unknown>),
 }))
 
 vi.mock('@/data/repository', async (importOriginal) => {
@@ -65,6 +66,8 @@ vi.mock('@/data/repository', async (importOriginal) => {
                 page: { page: 1, pageSize: 50, total: wire.estimateRows.length, totalPages: 1 },
               })
             : mod.repository.estimates.list(query as never),
+        get: (id: string) =>
+          wire.estimateGet ? wire.estimateGet(id) : mod.repository.estimates.get(id),
       },
     },
   }
@@ -393,5 +396,87 @@ describe('CustomerApproval — live OTP e-signature (estimateOtp)', () => {
     renderWithProviders(<CustomerApproval />, { role: 'customer' })
     expect(await screen.findByText('Authorise the work')).toBeInTheDocument()
     expect(screen.getAllByText('Not connected').length).toBeGreaterThanOrEqual(3)
+  })
+})
+
+describe('CustomerApproval — the linked estimate itself (estimates.get)', () => {
+  it('shows the real customer, vehicle and server-computed total for the linked estimate', async () => {
+    wire.estimateGet = (id) =>
+      id === 'EST-9010'
+        ? Promise.resolve({
+            _id: 'id-EST-9010',
+            id: 'EST-9010',
+            cust: 'Fatima Al-Zahrani',
+            veh: 'Lexus ES 350',
+            amount: 'SAR 1,437.50',
+            status: 'sent',
+            subtotalHalalas: 125_000,
+            taxHalalas: 18_750,
+            discountHalalas: 0,
+            totalHalalas: 143_750,
+            validUntil: null,
+          })
+        : Promise.reject(new RepositoryError('not_found' as never, `No record with id "${id}".`))
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9010',
+    })
+    expect(await screen.findByText('Fatima Al-Zahrani · Lexus ES 350')).toBeInTheDocument()
+    expect(screen.getByText('Total due')).toBeInTheDocument()
+    expect(screen.getByText(/SAR\s*1,437\.50/)).toBeInTheDocument()
+    // No trace of the "no estimate attached" legacy copy.
+    expect(screen.queryByText(/This link has no estimate attached/)).toBeNull()
+  })
+
+  it('refuses to sign an already-decided estimate, regardless of OTP configuration', async () => {
+    wire.estimateGet = () =>
+      Promise.resolve({
+        _id: 'id-EST-9011',
+        id: 'EST-9011',
+        cust: 'Test Customer',
+        veh: 'Kia Sportage',
+        amount: 'SAR 500.00',
+        status: 'approved',
+        validUntil: null,
+      })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9011',
+    })
+    expect(await screen.findByText('This estimate has already been approved.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Send one-time code/ })).toBeNull()
+  })
+
+  it('refuses to sign an expired estimate', async () => {
+    wire.estimateGet = () =>
+      Promise.resolve({
+        _id: 'id-EST-9012',
+        id: 'EST-9012',
+        cust: 'Test Customer',
+        veh: 'Kia Sportage',
+        amount: 'SAR 500.00',
+        status: 'sent',
+        validUntil: '2020-01-01T00:00:00.000Z',
+      })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9012',
+    })
+    expect(await screen.findByText('This estimate has expired')).toBeInTheDocument()
+    expect(screen.getByText('An expired estimate cannot be signed. Ask your advisor for a current one.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Send one-time code/ })).toBeNull()
+  })
+
+  it('still offers the signature step when the estimate could not be resolved', async () => {
+    wire.estimateGet = (id) => Promise.reject(new RepositoryError('not_found' as never, `No record with id "${id}".`))
+    wire.otpRequest = () => Promise.resolve({ challengeId: 'c1', expiresAt: '2026-08-16', destination: '••• 4471' })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9099',
+    })
+    expect(await screen.findByText('Estimate details are not available here')).toBeInTheDocument()
+    // The signature step is independent of whether the preview loaded — the
+    // server settles it against its own record by id.
+    expect(screen.getByRole('button', { name: /Send one-time code/ })).toBeInTheDocument()
   })
 })

@@ -290,6 +290,12 @@ export const COLLECTIONS: readonly CollectionDef[] = [
         ? new Date(row.customerSignedAt as string | Date).toISOString()
         : null,
       customerSignatureChannel: row.customerSignatureChannel ?? null,
+      /* The column has been on the schema since the estimate router accepted
+       * it on create; `present()` never exposed it, so no screen could refuse
+       * an approval on an expired estimate or show the customer a deadline —
+       * both of which need the date on the wire, not just enforced server-side
+       * on write. Read-only here: nothing changes what a create/patch accepts. */
+      validUntil: row.validUntil ? new Date(row.validUntil as string | Date).toISOString() : null,
     }),
   }),
 

@@ -408,6 +408,19 @@ export function EstimateDetail() {
               </Button>
             </>
           ) : null}
+          {/* Named "Preview", not "Send": there is no automated delivery
+              channel (email/SMS/WhatsApp) that puts this link in front of
+              the customer — an advisor shares it, or walks the customer
+              through it, themselves. Opens the exact record the customer
+              would see: same id, same real total, same line items. */}
+          <Button
+            variant="outline"
+            size="md"
+            onClick={() => window.open(`/customer-approval?estimate=${encodeURIComponent(ref ?? estimate.id)}`, '_blank')}
+          >
+            <Icon name="ExternalLink" size={15} />
+            {t('Preview Customer Approval')}
+          </Button>
           {!isMobile && (
             <Button
               variant="subtle"
