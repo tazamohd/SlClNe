@@ -21,31 +21,30 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 | Measure | Value | Source |
 | --- | --- | --- |
-| Registered capabilities | 427 | `STATUS.json` |
-| Rendering | 427 of 427 | `STATUS.json` |
-| Wired to the API | 99 of 427 | `STATUS.json` |
-| Reading design fixtures | 288 of 427 | `STATUS.json` |
-| End-to-end covered | 427 of 427 | `STATUS.json` |
+| Registered capabilities | 425 | `STATUS.json` |
+| Rendering | 425 of 425 | `STATUS.json` |
+| Wired to the API | 99 of 425 | `STATUS.json` |
+| Reading design fixtures | 286 of 425 | `STATUS.json` |
+| End-to-end covered | 425 of 425 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 79 of 427 | `STATUS.json` |
-| Tablet verified | 4 of 427 | `STATUS.json` |
+| Arabic verified | 82 of 425 | `STATUS.json` |
+| Tablet verified | 4 of 425 | `STATUS.json` |
 | API endpoints | 374 | the route files |
-| Test cases | 2198 | the spec files |
+| Test cases | 2185 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
-| Open blockers | 3 | `BLOCKERS.json` |
+| Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
 | Release gates passing | 8 of 14 | `RELEASE_GATES.json` |
 
 ## The one number that matters most
 
-**288 of 427 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**286 of 425 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-003 | BLOCKER | Three GitHub PATs were exposed in chat and are not confirmed rotated | Rotate, then add secret scanning to CI. Do not reuse the exposed credentials. | 06 |
-| BLK-004 | CRITICAL | 288 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 286 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability. | 18 |
 
 ## Open risks
