@@ -42,6 +42,12 @@ function releases(t: T): readonly EraRow[] {
   ]
 }
 
+/** The current release — compared on the untranslated version number rather
+ *  than re-translating the "You are here" literal and matching it against
+ *  the already-translated status, which only worked by relying on `t()`
+ *  being a pure, referentially-stable lookup for the same input. */
+const CURRENT_VERSION = '1.0.0'
+
 export function ReleaseTimeline({ t }: { t: T }) {
   const rows = releases(t)
   return (
@@ -54,7 +60,7 @@ export function ReleaseTimeline({ t }: { t: T }) {
       />
       <div className="salis-home-timeline">
         {rows.map((row) => (
-          <div key={row.year} className={row.status === t('You are here') ? 'era now rise' : 'era rise'}>
+          <div key={row.year} className={row.year === CURRENT_VERSION ? 'era now rise' : 'era rise'}>
             <div className="yr" dir="ltr">
               {row.year}
               <small>{row.status}</small>

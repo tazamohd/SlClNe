@@ -57,7 +57,7 @@ export function ProofBand({ t }: { t: T }) {
         subtitle="What holds the platform up — the same facts a technical buyer would ask for, shown rather than asserted."
       />
       <StatBand items={stats} />
-      <IconCardGrid items={cards} columns={4} ariaLabel={t('Architecture principles')} />
+      <IconCardGrid items={cards} columns={4} />
       <blockquote className="mx-auto mt-10 max-w-[640px] border-s-4 border-salis-blue ps-5 text-[15px] italic leading-relaxed text-body">
         {t(
           '“The hard part was never the diagnosis. It was that six people wrote the same number into four systems and one of them was wrong by Thursday.”'

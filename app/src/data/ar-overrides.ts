@@ -4471,4 +4471,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Where it stands": "أين وصل",
   "A version number, not a promise": "رقم إصدار، لا وعد",
   "Real releases, in order — including the one still ahead.": "إصدارات حقيقية، بالترتيب — بما في ذلك ما لا يزال قادمًا.",
+  "Functional domains, one tenancy": "مجالات وظيفية، مستأجر واحد",
+  "Roles and permission modules": "الأدوار ووحدات الصلاحيات",
+  "Separation-of-duty pairs, enforced server-side": "أزواج فصل المهام، مُطبَّقة من جانب الخادم",
 }
