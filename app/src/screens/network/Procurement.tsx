@@ -24,12 +24,13 @@ import {
   useZodForm,
 } from '@/components/ui/Form'
 import { Modal, useModal } from '@/components/ui/Modal'
-import { ErrorState, ReadOnlyNotice } from '@/components/ui/States'
+import { ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { useCollection } from '@/data/useCollection'
 import {
   procurement as procurementActions,
   repository,
@@ -1593,8 +1594,16 @@ export function ProcurementPortal() {
   const navigate = useNavigate()
   const { can } = useSession()
 
-  const pending = REQUISITION_ROWS.filter((r) => r.status === 'pending')
-  const pendingValue = pending.reduce((sum, r) => sum + r.amount, 0)
+  const requisitions = useCollection('requisitions', { filter: { status: 'submitted' } })
+  const purchaseOrders = useCollection('purchaseOrders')
+  const suppliers = useCollection('suppliers')
+
+  const pending = ((requisitions.data ?? []) as readonly RequisitionRow[]).map(reqFromRow)
+  const pendingValue = pending.reduce((sum, r) => sum + r.amountHalalas, 0) / 100
+  const openOrders = ((purchaseOrders.data ?? []) as readonly PurchaseOrderRow[]).filter(
+    (po) => po.status === 'sent' || po.status === 'receiving'
+  ).length
+  const supplierCount = suppliers.data?.length ?? 0
 
   // Raising and approving a purchase order are a segregation-of-duties pair.
   // Named from the table so the wording cannot drift from the control.
@@ -1636,8 +1645,8 @@ export function ProcurementPortal() {
             caption: 'Awaiting sign-off',
             tone: 'warning',
           },
-          { label: 'Open Orders', value: 3, caption: 'With suppliers', tone: 'info' },
-          { label: 'Suppliers', value: 156, caption: 'On the network' },
+          { label: 'Open Orders', value: openOrders, caption: 'With suppliers', tone: 'info' },
+          { label: 'Suppliers', value: supplierCount, caption: 'On the network' },
         ]}
       />
 
@@ -1645,30 +1654,48 @@ export function ProcurementPortal() {
         title={t('Approval Queue')}
         subtitle={t('Oldest and highest-value requests first')}
       >
-        <div className="flex flex-col gap-2.5">
-          {pending.map((r) => (
-            <button
-              key={r.id}
-              type="button"
-              onClick={() => navigate('/procurement-portal/requisitions')}
-              className="flex cursor-pointer flex-wrap items-center gap-3 rounded-lg border border-border bg-inset p-3.5 text-start transition-colors duration-150 hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-            >
-              <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2 text-salis-blue">
-                <Icon name="Package" size={16} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[13px] font-semibold text-heading">{t(r.what)}</p>
-                <p className="mt-0.5 text-[11px] text-muted">
-                  <span className="font-mono" dir="ltr">
-                    {r.id}
-                  </span>{' '}
-                  · {t(r.from)} · {t(r.age)}
-                </p>
-              </div>
-              <Money sar={r.amount} className="font-semibold text-heading" />
-            </button>
-          ))}
-        </div>
+        {requisitions.isLoading ? (
+          <Loading label={t('Loading requisitions...')} />
+        ) : requisitions.isError ? (
+          <ErrorState
+            title={t("Couldn't load this")}
+            description={requisitions.error?.message}
+            onRetry={() => void requisitions.refetch()}
+          />
+        ) : pending.length === 0 ? (
+          <EmptyState
+            icon="ClipboardCheck"
+            title={t('Nothing pending')}
+            description={t('No requisitions are waiting for approval right now.')}
+          />
+        ) : (
+          <div className="flex flex-col gap-2.5">
+            {pending.map((r) => (
+              <button
+                key={r.ref}
+                type="button"
+                onClick={() => navigate('/procurement-portal/requisitions')}
+                className="flex cursor-pointer flex-wrap items-center gap-3 rounded-lg border border-border bg-inset p-3.5 text-start transition-colors duration-150 hover:border-salis-blue focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+              >
+                <span className="flex flex-shrink-0 rounded-[10px] bg-salis-blue/[.09] p-2 text-salis-blue">
+                  <Icon name="Package" size={16} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-semibold text-heading">{r.notes || r.code}</p>
+                  <p className="mt-0.5 text-[11px] text-muted">
+                    <span className="font-mono" dir="ltr">
+                      {r.code}
+                    </span>{' '}
+                    · {r.requester}
+                    {r.department ? ` · ${r.department}` : ''}
+                    {r.when ? ` · ${r.when}` : ''}
+                  </p>
+                </div>
+                <Money sar={r.amountHalalas / 100} className="font-semibold text-heading" />
+              </button>
+            ))}
+          </div>
+        )}
         {counterpart ? (
           <p className="flex items-start gap-2 text-[11px] text-muted">
             <Icon name="ShieldCheck" size={13} className="mt-0.5 flex-shrink-0" />

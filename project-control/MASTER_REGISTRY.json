@@ -11,14 +11,14 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 286,
-    "dataBacked": 99,
+    "mockOnly": 281,
+    "dataBacked": 104,
     "e2eCovered": 425,
     "contentAsserted": 425,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 143,
-    "hasErrorState": 111,
-    "hasEmptyState": 169,
+    "hasLoadingState": 146,
+    "hasErrorState": 113,
+    "hasEmptyState": 172,
     "tabletVerified": 4,
     "arabicVerified": 82,
     "rtlHazards": 0,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 98,
+    "crudRead": 103,
     "crudUpdate": 24,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -5524,16 +5524,18 @@
       "responsive": "DONE",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "kbProcedures"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -5558,8 +5560,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -7583,11 +7584,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders",
+        "requisitions",
+        "suppliers"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -7612,8 +7617,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14282,16 +14286,19 @@
       "responsive": "DONE",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoiceLines",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -14315,9 +14322,7 @@
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": [
-        "MOCK_ONLY"
-      ]
+      "flags": []
     },
     {
       "screenId": "D-WorkshopEstimate",
@@ -14356,16 +14361,18 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "estimates"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -14391,8 +14398,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -14670,11 +14676,13 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -14699,8 +14707,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY"
+        "TABLET_MISSING"
       ]
     },
     {

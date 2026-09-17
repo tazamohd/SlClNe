@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-17
 
-187 spec files containing 2185 test cases.
+187 spec files containing 2183 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 111 | 1059 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 111 | 1057 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 181 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 461 |
-| app | 109 | 1347 |
+| app | 109 | 1345 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -182,7 +182,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/contract-rules.test.ts` | CONTRACT | 107 | qc |
 | `app/tests/unit/crm-api-fixture.test.ts` | UNIT_OR_API | 2 | — |
 | `app/tests/unit/crm-api.test.ts` | UNIT_OR_API | 6 | — |
-| `app/tests/unit/derivations.test.ts` | UNIT_OR_API | 15 | owner, advisor, technician, accountant |
+| `app/tests/unit/derivations.test.ts` | UNIT_OR_API | 13 | owner, advisor, technician, accountant |
 | `app/tests/unit/generated-tables.test.ts` | UNIT_OR_API | 42 | owner |
 | `app/tests/unit/money.test.ts` | FINANCIAL_INTEGRITY | 19 | — |
 | `app/tests/unit/page-size-parity.test.ts` | UNIT_OR_API | 3 | — |
