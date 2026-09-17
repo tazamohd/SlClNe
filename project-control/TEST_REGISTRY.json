@@ -852,7 +852,7 @@
         "job cards list loads and search filters client-side",
         "opening \"New Job Card\" takes real customer and vehicle input",
         "check-in records odometer, fuel level and belongings",
-        "estimate totals compute from real line items",
+        "estimate totals read from the real linked estimate, honestly empty here",
         "invoice create recomputes the total when a line is removed",
         "payments screen shows outstanding balances",
         "invoice preview renders the tax invoice with its ZATCA block",
