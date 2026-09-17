@@ -120,7 +120,7 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-17; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-17; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
@@ -134,8 +134,8 @@ Staleness alone would be tolerable. These are direct contradictions — one regi
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 3 |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
 | RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.

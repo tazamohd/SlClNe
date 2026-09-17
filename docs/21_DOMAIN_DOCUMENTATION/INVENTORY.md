@@ -54,8 +54,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/inventory` | inventory:v | generated | — | 11 |
-| POST | `/api/v1/inventory` | inventory:c | generated | — | 11 |
+| GET | `/api/v1/inventory` | inventory:v | generated | — | 10 |
+| POST | `/api/v1/inventory` | inventory:c | generated | — | 10 |
 | DELETE | `/api/v1/inventory/:id` | inventory:d | generated | — | **0** |
 | GET | `/api/v1/inventory/:id` | inventory:v | generated | — | **0** |
 | PATCH | `/api/v1/inventory/:id` | inventory:e | generated | — | **0** |
