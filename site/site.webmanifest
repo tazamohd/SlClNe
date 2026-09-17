@@ -1,0 +1,14 @@
+{
+  "name": "Salisco",
+  "short_name": "Salisco",
+  "description": "Salisco — Riyadh-based technology company. Systems, apps & AI, focused on Automotive (SalisAuto) and Manpower (QHR).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "lang": "en",
+  "icons": [
+    { "src": "/assets/logo.png", "sizes": "any", "type": "image/png" }
+  ]
+}
