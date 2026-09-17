@@ -18,11 +18,11 @@ export function StatBand({ items }: { items: readonly StatItem[] }) {
       {items.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-2xl border border-border bg-card p-6 text-center"
+          className="min-w-0 rounded-2xl border border-border bg-card p-6 text-center"
         >
           <p
             dir="ltr"
-            className="m-0 font-display text-4xl font-black text-salis-blue"
+            className="m-0 font-display text-3xl font-black text-salis-blue lg:text-4xl"
           >
             {t(stat.value)}
           </p>
