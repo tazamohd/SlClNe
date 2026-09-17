@@ -81,18 +81,18 @@ The frontend requires no `.env` file by default. The single controlling variable
 
 | Variable           | Effect When Set                        | Effect When Unset                     |
 |--------------------|----------------------------------------|---------------------------------------|
-| `VITE_API_BASE_URL`| Frontend uses `httpRepository` (REST API with Bearer auth) | Frontend uses `mockRepository` (in-memory fixture data) |
+| `VITE_API_URL`     | Frontend uses `httpRepository` (REST API with Bearer auth) | Frontend uses `mockRepository` (in-memory fixture data) |
 
 Set it inline when starting the dev server:
 
 ```bash
-VITE_API_BASE_URL=http://localhost:3001 npm run dev
+VITE_API_URL=http://localhost:3001/api/v1 npm run dev
 ```
 
 Or create `app/.env.local` (git-ignored):
 
 ```bash
-VITE_API_BASE_URL=http://localhost:3001
+VITE_API_URL=http://localhost:3001/api/v1
 ```
 
 ### 3.2 Backend Environment
@@ -176,10 +176,10 @@ npm run dev                   # Fastify on port 3001 (tsx watch)
 
 ```bash
 cd app
-VITE_API_BASE_URL=http://localhost:3001 npm run dev
+VITE_API_URL=http://localhost:3001/api/v1 npm run dev
 ```
 
-The frontend detects `VITE_API_BASE_URL` and dynamically imports the HTTP client, switching to `httpRepository` with Bearer token authentication.
+The frontend detects `VITE_API_URL` and dynamically imports the HTTP client, switching to `httpRepository` with Bearer token authentication. (`VITE_API_BASE_URL` is a separate, dead variable read only by `app/src/data/auth.ts`, which nothing imports — setting it alone does nothing; verified 2026-09-17.)
 
 ### 4.3 Backend-Only
 
@@ -216,6 +216,22 @@ curl http://localhost:3001/ready    # Readiness probe (tests DB)
 
 ### 5.1 Demo Accounts
 
+> **Verified 2026-09-17, and this section is stale beyond the note below — treat
+> the table as illustrative, not authoritative.** `server/scripts/seed.ts`
+> (`DEMO_USERS`) is the actual source of truth for which accounts exist; it
+> currently seeds 15 accounts (including `test@salisauto.sa`), several under
+> different emails than the table below (e.g. Branch Manager is
+> `manager@salisauto.sa`, not `bm@salisauto.sa`).
+>
+> More importantly: **the seed script deliberately does not set a password
+> hash for any account** — "a seeded password hash in a repository is a
+> credential in a repository" (`seed.ts`, `DEMO_USERS` comment). The
+> `salis1234` password documented here does **not** work against a freshly
+> seeded database; there is currently no seed/setup step that sets one. This
+> was confirmed directly: `POST /auth/login` returns 401 for every seeded
+> account until a password hash is set on the row by some other means (e.g.
+> `@node-rs/argon2`'s `hash()`, matching `server/src/auth/password.ts`).
+
 The seed database includes accounts for all 14 roles. Default password: `salis1234`
 
 | Role            | Email                        |
@@ -231,7 +247,7 @@ The seed database includes accounts for all 14 roles. Default password: `salis12
 | CRM Agent       | crm@salisauto.sa             |
 | Cashier         | cashier@salisauto.sa         |
 
-In mock mode (no `VITE_API_BASE_URL`), all roles are accessible through the login screen's role switcher without credentials.
+In mock mode (no `VITE_API_URL`), all roles are accessible through the login screen's role switcher without credentials.
 
 ### 5.2 Fixture Data
 
