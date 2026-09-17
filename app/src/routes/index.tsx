@@ -424,6 +424,8 @@ export const SCREEN_ENTRIES = composeScreens({
       'PublicPortal.Products',
       'PublicPortal.RequestDemo',
       'PublicPortal.Resources',
+      'PublicPortal.RoiCalculator',
+      'PublicPortal.Security',
       'PublicPortal.Services',
       'PublicPortal.Solutions',
       'PublicPortal.SpareParts',

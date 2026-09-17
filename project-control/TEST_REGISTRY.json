@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 188,
-    "cases": 2213,
+    "suites": 189,
+    "cases": 2228,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1073,
+      "UNIT_OR_API": 1088,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3780,7 +3780,7 @@
         "Tier C legal pages"
       ],
       "cases": [
-        "${page.name} renders signed-out with its h1, meta and template banner",
+        "${page.name} renders signed-out with its h1, meta, effective date and version",
         "renders at 390px with the mobile nav, not the desktop bar",
         "Terms renders in Arabic with the document flipped to RTL"
       ],
@@ -3827,18 +3827,53 @@
         "${page.name} renders signed-out with its designed h1 and page meta",
         "Landing mounts with completely empty storage — the true first visit",
         "Landing renders in Arabic with the document flipped to RTL",
-        "the proof section shows real structural facts, not fabricated metrics",
-        "the release timeline shows real version numbers, including the one still ahead",
-        "closes with a real Request a Demo CTA, not a dead-end banner",
+        "Landing switches its six in-page pages and mirrors the choice to the hash",
+        "Grid's six doors are three real portal links and three informational tiles",
+        "Access names what each plan carries but quotes no price — pricing has one home",
+        "Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere",
+        "the command deck answers a real command with a real fact, entirely client-side",
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
         "Blog and catalogue cards are informational, not links to nowhere"
       ],
-      "caseCount": 13,
+      "caseCount": 15,
+      "touchesPaths": [
+        "/public-portal/customer-portal",
+        "/public-portal/technician-portal",
+        "/public-portal/supplier-portal",
+        "/public-portal/pricing",
+        "/public-portal/book-demo",
+        "/public-portal/contact"
+      ],
+      "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-PUBLIC-REQUEST-DEMO-FORM-TEST-TSX",
+      "file": "app/tests/public-request-demo-form.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Request a Demo form validation",
+        "Request a Demo form delivery — fixture build (no VITE_API_URL)",
+        "Request a Demo form accessibility"
+      ],
+      "cases": [
+        "rejects an empty submission with an accessible error summary and per-field errors",
+        "never pre-selects the consent checkbox",
+        "rejects a malformed email and ties the error to the field",
+        "requires consent even when every other field is valid",
+        "validateRequestDemo accepts a complete, well-formed submission",
+        "a valid submission states requests are not live in this build, with working fallback channels",
+        "never fakes a success state on the fixture build",
+        "every visible field label is programmatically associated with its control",
+        "carries autocomplete hints for the common identity fields",
+        "links consent to the Privacy Policy"
+      ],
+      "caseCount": 10,
       "touchesPaths": [
         "/public-portal/request-demo",
-        "/public-portal/contact"
+        "/privacy-policy"
       ],
       "touchesRoles": []
     },
@@ -3856,10 +3891,15 @@
         "lists every ungated public route the website barrel declares",
         "lists nothing but those public routes — no authenticated URL leaks in",
         "allows the public routes, disallows the rest, and names the sitemap",
-        "sets the document title and meta description, updating in place"
+        "sets the document title and meta description, updating in place",
+        "sets a canonical URL and matching og:url from the current route",
+        "sets Open Graph and Twitter title/description alongside the meta description"
       ],
-      "caseCount": 4,
-      "touchesPaths": [],
+      "caseCount": 6,
+      "touchesPaths": [
+        "/public-portal/landing",
+        "/public-portal/pricing"
+      ],
       "touchesRoles": []
     },
     {
@@ -3872,7 +3912,8 @@
       ],
       "cases": [
         "renders signed out — no session provider anywhere in the tree",
-        "carries the seven design nav links, each to a real public route",
+        "carries the seven primary nav links, each to a real public route",
+        "shows a persistent Request a Demo CTA in the desktop header",
         "links Sign In into the auth chain at /login",
         "switches to Arabic and flips the document to RTL",
         "renders Arabic RTL from a stored preference, signed out",
@@ -3880,15 +3921,16 @@
         "offers a skip link to the main content landmark",
         "footer contains only links with real destinations"
       ],
-      "caseCount": 8,
+      "caseCount": 9,
       "touchesPaths": [
         "/public-portal/landing",
         "/public-portal/about",
-        "/public-portal/services",
-        "/public-portal/parts-accessories",
-        "/public-portal/deals-offers",
+        "/public-portal/industries",
+        "/public-portal/integrations",
+        "/public-portal/security",
+        "/public-portal/pricing",
         "/public-portal/contact",
-        "/public-portal/blog",
+        "/public-portal/request-demo",
         "/login"
       ],
       "touchesRoles": []

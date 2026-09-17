@@ -21,15 +21,19 @@ import { Footer } from '@/screens/public/sections/Footer'
  *
  *  `Marketplace` (Tier A) was retired in favour of two Tier B pages, `Parts &
  *  Accessories` and `Deals & Offers` — both composed from the section system
- *  rather than a `.dc.html` source, same as `Pricing` or `Workshop`. */
+ *  rather than a `.dc.html` source, same as `Pricing` or `Workshop`.
+ *
+ *  "Request a Demo" is the one persistent commercial CTA — present here in
+ *  the desktop bar and the mobile menu, so it never depends on how far a
+ *  visitor has scrolled or which page they landed on. */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
   { label: 'About', to: '/public-portal/about' },
-  { label: 'Services', to: '/public-portal/services' },
-  { label: 'Parts & Accessories', to: '/public-portal/parts-accessories' },
-  { label: 'Deals & Offers', to: '/public-portal/deals-offers' },
+  { label: 'Industries', to: '/public-portal/industries' },
+  { label: 'Integrations', to: '/public-portal/integrations' },
+  { label: 'Security', to: '/public-portal/security' },
+  { label: 'Pricing', to: '/public-portal/pricing' },
   { label: 'Contact', to: '/public-portal/contact' },
-  { label: 'Blog', to: '/public-portal/blog' },
 ] as const
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
@@ -116,6 +120,14 @@ export function PublicShell({ children }: { children: ReactNode }) {
               {language === 'ar' ? 'English' : 'عربي'}
             </span>
           </button>
+          {!isMobile ? (
+            <Link
+              to="/public-portal/request-demo"
+              className="inline-flex h-9 items-center rounded-lg border border-salis-blue px-4 font-action text-[13px] font-semibold text-salis-blue no-underline hover:no-underline"
+            >
+              {t('Request a Demo')}
+            </Link>
+          ) : null}
           <Link
             to="/login"
             className="inline-flex h-9 items-center rounded-lg bg-salis-gradient px-4 font-action text-[13px] font-semibold text-white no-underline hover:no-underline"
@@ -157,6 +169,12 @@ export function PublicShell({ children }: { children: ReactNode }) {
               {t(link.label)}
             </NavLink>
           ))}
+          <Link
+            to="/public-portal/request-demo"
+            className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-salis-gradient px-4 font-action text-[15px] font-semibold text-white no-underline hover:no-underline"
+          >
+            {t('Request a Demo')}
+          </Link>
         </nav>
       ) : null}
 

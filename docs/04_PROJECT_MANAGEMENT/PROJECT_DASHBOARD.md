@@ -21,31 +21,30 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 | Measure | Value | Source |
 | --- | --- | --- |
-| Registered capabilities | 425 | `STATUS.json` |
-| Rendering | 425 of 425 | `STATUS.json` |
-| Wired to the API | 106 of 425 | `STATUS.json` |
-| Reading design fixtures | 279 of 425 | `STATUS.json` |
-| End-to-end covered | 425 of 425 | `STATUS.json` |
+| Registered capabilities | 427 | `STATUS.json` |
+| Rendering | 427 of 427 | `STATUS.json` |
+| Wired to the API | 106 of 427 | `STATUS.json` |
+| Reading design fixtures | 281 of 427 | `STATUS.json` |
+| End-to-end covered | 427 of 427 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 82 of 425 | `STATUS.json` |
-| Tablet verified | 4 of 425 | `STATUS.json` |
+| Arabic verified | 79 of 427 | `STATUS.json` |
+| Tablet verified | 4 of 427 | `STATUS.json` |
 | API endpoints | 374 | the route files |
-| Test cases | 2213 | the spec files |
+| Test cases | 2228 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
-| Open blockers | 2 | `BLOCKERS.json` |
+| Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
 | Release gates passing | 8 of 14 | `RELEASE_GATES.json` |
 
 ## The one number that matters most
 
-**279 of 425 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**281 of 427 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 279 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
-| BLK-010 | MEDIUM | 10 screen files are unreachable from any route | src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts | 02 |
+| BLK-004 | CRITICAL | 281 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 
 ## Open risks
 

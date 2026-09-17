@@ -38,6 +38,8 @@ const PAGES: readonly { name: string; h1: string; title: string }[] = [
     title: 'Services, Parts & Accessories — SALIS AUTO',
   },
   { name: 'PublicPortal.DealsOffers', h1: 'Deals & Offers', title: 'Deals & Offers — SALIS AUTO' },
+  { name: 'PublicPortal.RoiCalculator', h1: 'ROI Calculator', title: 'ROI Calculator — SALIS AUTO' },
+  { name: 'PublicPortal.Security', h1: 'Security & Data', title: 'Security & Data — SALIS AUTO' },
   { name: 'PublicPortal.Insurance', h1: 'Vehicle Insurance', title: 'Vehicle Insurance — SALIS AUTO' },
   { name: 'PublicPortal.Loans', h1: 'Auto Financing', title: 'Auto Financing — SALIS AUTO' },
   { name: 'PublicPortal.Blog', h1: 'Blog', title: 'Blog — SALIS AUTO' },

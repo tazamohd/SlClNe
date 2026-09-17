@@ -1,24 +1,24 @@
 {
   "generatedAt": "2026-09-17",
   "totals": {
-    "capabilities": 425,
-    "product": 385,
+    "capabilities": 427,
+    "product": 387,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 425,
+    "rendered": 427,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 279,
+    "mockOnly": 281,
     "dataBacked": 106,
-    "e2eCovered": 425,
-    "contentAsserted": 425,
+    "e2eCovered": 427,
+    "contentAsserted": 427,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 152,
     "hasErrorState": 119,
     "hasEmptyState": 173,
     "tabletVerified": 4,
-    "arabicVerified": 82,
+    "arabicVerified": 79,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -30,7 +30,7 @@
     "crudUpdate": 24,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 10,
+    "orphanScreenFiles": 0,
     "productionReady": 0
   },
   "bySurface": {
@@ -99,11 +99,11 @@
       "dataBacked": 0
     },
     "public": {
-      "total": 32,
-      "rendered": 32,
+      "total": 34,
+      "rendered": 34,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 32,
+      "e2e": 34,
       "dataBacked": 0
     }
   },
@@ -197,11 +197,11 @@
       "dataBacked": 2
     },
     "website": {
-      "total": 32,
-      "rendered": 32,
+      "total": 34,
+      "rendered": 34,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 32,
+      "e2e": 34,
       "dataBacked": 0
     },
     "procurement": {

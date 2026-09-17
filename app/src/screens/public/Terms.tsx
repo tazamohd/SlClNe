@@ -7,9 +7,10 @@ import { LegalDocument, type LegalClause } from './sections/LegalDocument'
  *
  *  Design-system page: no `TermsConditions.dc.html` exists in the handoff, so
  *  this is composed from the approved public section system and is **not**
- *  design-authoritative (§A25). A plain legal scaffold, clearly marked a
- *  template not reviewed by counsel. Rendered `ungated` in `PublicShell` so a
- *  signed-out visitor can read it before creating an account. */
+ *  design-authoritative (§A25). Open legal-review items are tracked in
+ *  `LEGAL_REVIEW_REQUIRED.md` at the repo root, not surfaced publicly.
+ *  Rendered `ungated` in `PublicShell` so a signed-out visitor can read it
+ *  before creating an account. */
 const CLAUSES: readonly LegalClause[] = [
   {
     heading: 'Acceptance of terms',
@@ -64,7 +65,7 @@ const CLAUSES: readonly LegalClause[] = [
     heading: 'Governing law and changes',
     paragraphs: [
       'These terms are governed by the laws of the Kingdom of Saudi Arabia, and any dispute is subject to the jurisdiction of its competent courts.',
-      'We may update these terms as the platform develops or the law changes. We will post the revised version here and update the date above; continued use after a change means you accept the updated terms.',
+      'We may update these terms as the platform develops or the law changes. We will post the revised version here with an updated effective date and version number; continued use after a change means you accept the updated terms.',
     ],
   },
 ]
@@ -83,7 +84,8 @@ export function PublicTerms() {
     <div className={isMobile ? 'px-1' : ''}>
       <LegalDocument
         title="Terms & Conditions"
-        updated="16 August 2026"
+        updated="16 September 2026"
+        version="1.1"
         intro="These Terms & Conditions govern your access to and use of the SALIS AUTO website and platform. Please read them carefully before using the service."
         clauses={CLAUSES}
       />
