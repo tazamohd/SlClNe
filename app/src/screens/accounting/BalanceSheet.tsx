@@ -1,7 +1,9 @@
+import { useMemo } from 'react'
 import { FeatureHeader, Section, StatRow, type Stat } from '@/components/shell/FeatureScreen'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar } from '@/components/ui/Money'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
@@ -10,43 +12,30 @@ import {
   MobileCardRow,
   MobilePageHeader,
 } from '@/components/shell/MobileShell'
+import { financeReports } from '@/data/repository'
+import { fromHalalas } from '@/screens/finance/money'
+import { AGGREGATE_GAP } from './reporting'
+import { ReportGap, ServerTotalsNote } from './ReportControls'
+import { useTrialBalance } from './useFinanceReports'
 
-/** Balance Sheet screen — spec-only build.
+/** Balance Sheet — Assets, Liabilities and Equity, each account a real row
+ *  from `GET /accounting/reports/trial-balance` (F-028). Every line item is
+ *  one account's own server-computed balance; the section subtotal and the
+ *  identity check are `balanceSheet.assetsHalalas` /
+ *  `liabilitiesPlusEquityHalalas` / `balanced` as the server returned them,
+ *  never re-summed here — the same figure the server confirmed is the figure
+ *  the screen displays, so they cannot drift apart.
  *
- *  Displays the three sections of a balance sheet: Assets, Liabilities
- *  and Equity, each with subtotals. The identity Assets = Liabilities + Equity
- *  is verified visually. */
+ *  This used to be fifteen hand-written line items with a docstring admitting
+ *  "spec-only build." F-008's real imbalance is surfaced honestly, not tied
+ *  off — the same discipline `ReportSuite.tsx`'s `TrialBalancePanel` follows.
+ *  There is no fixture fallback: a build with no API names the gap
+ *  (`ReportGap`) instead. */
 
 interface LineItem {
+  code: string
   name: string
-  amount: number
-}
-
-const ASSETS: readonly LineItem[] = [
-  { name: 'Cash in Hand', amount: 225000 },
-  { name: 'Bank – Al Rajhi', amount: 1620000 },
-  { name: 'Accounts Receivable', amount: 320000 },
-  { name: 'Inventory – Parts', amount: 385000 },
-  { name: 'Fixed Assets', amount: 950000 },
-  { name: 'Prepaid Expenses', amount: 48000 },
-]
-
-const LIABILITIES: readonly LineItem[] = [
-  { name: 'Accounts Payable', amount: 440000 },
-  { name: 'VAT Payable', amount: 143000 },
-  { name: 'Accrued Expenses', amount: 75000 },
-  { name: 'Short-Term Loans', amount: 200000 },
-  { name: 'Long-Term Debt', amount: 450000 },
-]
-
-const EQUITY: readonly LineItem[] = [
-  { name: 'Owner Equity', amount: 1500000 },
-  { name: 'Retained Earnings', amount: 520000 },
-  { name: 'Current Year Earnings', amount: 220000 },
-]
-
-function sumItems(items: readonly LineItem[]): number {
-  return items.reduce((s, i) => s + i.amount, 0)
+  amountHalalas: number
 }
 
 function StatementSection({
@@ -54,41 +43,43 @@ function StatementSection({
   icon,
   items,
   subtotalLabel,
+  subtotalHalalas,
   accentColor,
 }: {
   title: string
   icon: string
   items: readonly LineItem[]
   subtotalLabel: string
+  subtotalHalalas: number
   accentColor: string
 }) {
   const { t } = usePreferences()
-  const total = sumItems(items)
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-2">
-        <span
-          className="flex rounded-lg p-2"
-          style={{ background: `${accentColor}18` }}
-        >
+        <span className="flex rounded-lg p-2" style={{ background: `${accentColor}18` }}>
           <Icon name={icon} size={18} style={{ color: accentColor }} />
         </span>
         <h2 className="font-display text-base font-bold text-heading">{t(title)}</h2>
       </div>
       <div className="flex flex-col">
-        {items.map((item) => (
-          <div
-            key={item.name}
-            className="flex items-center justify-between border-b border-border/50 py-2.5 text-[13px] text-body"
-          >
-            <span>{t(item.name)}</span>
-            <Money sar={item.amount} />
-          </div>
-        ))}
+        {items.length === 0 ? (
+          <p className="py-2.5 text-[13px] text-muted">{t('No accounts of this type')}</p>
+        ) : (
+          items.map((item) => (
+            <div
+              key={item.code}
+              className="flex items-center justify-between border-b border-border/50 py-2.5 text-[13px] text-body"
+            >
+              <span>{t(item.name)}</span>
+              <Money sar={fromHalalas(item.amountHalalas)} />
+            </div>
+          ))
+        )}
         <div className="flex items-center justify-between py-3 text-sm font-bold text-heading">
           <span>{t(subtotalLabel)}</span>
-          <Money sar={total} className="font-bold" />
+          <Money sar={fromHalalas(subtotalHalalas)} className="font-bold" />
         </div>
       </div>
     </div>
@@ -98,28 +89,63 @@ function StatementSection({
 export function BalanceSheet() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const trialBalance = useTrialBalance()
 
-  const totalAssets = sumItems(ASSETS)
-  const totalLiabilities = sumItems(LIABILITIES)
-  const totalEquity = sumItems(EQUITY)
-  const liabPlusEquity = totalLiabilities + totalEquity
-  const balanced = Math.abs(totalAssets - liabPlusEquity) < 0.005
+  const accounts = trialBalance.data?.accounts ?? []
+  const assets = useMemo(
+    () => accounts.filter((a) => a.type === 'Assets').map((a) => ({ code: a.code, name: a.name, amountHalalas: a.debitHalalas })),
+    [accounts],
+  )
+  const liabilities = useMemo(
+    () => accounts.filter((a) => a.type === 'Liabilities').map((a) => ({ code: a.code, name: a.name, amountHalalas: a.creditHalalas })),
+    [accounts],
+  )
+  const equity = useMemo(
+    () => accounts.filter((a) => a.type === 'Equity').map((a) => ({ code: a.code, name: a.name, amountHalalas: a.creditHalalas })),
+    [accounts],
+  )
+
+  const bs = trialBalance.data?.balanceSheet
+  const balanced = bs?.balanced ?? true
 
   const stats: Stat[] = [
-    { label: 'Total Assets', value: formatSar(totalAssets), caption: 'Current period', highlight: true },
-    { label: 'Total Liabilities', value: formatSar(totalLiabilities), caption: 'Current period', tone: 'warning' },
-    { label: 'Total Equity', value: formatSar(totalEquity), caption: 'Current period', tone: 'info' },
-    { label: 'Liab. + Equity', value: formatSar(liabPlusEquity), caption: balanced ? 'Balanced' : 'Unbalanced' },
+    { label: 'Total Assets', value: bs ? formatSar(fromHalalas(bs.assetsHalalas)) : '—', caption: 'Current period', highlight: true },
+    { label: 'Total Liabilities', value: bs ? formatSar(fromHalalas(bs.liabilitiesHalalas)) : '—', caption: 'Current period', tone: 'warning' },
+    { label: 'Total Equity', value: bs ? formatSar(fromHalalas(bs.equityHalalas)) : '—', caption: 'Current period', tone: 'info' },
+    {
+      label: 'Liab. + Equity',
+      value: bs ? formatSar(fromHalalas(bs.liabilitiesPlusEquityHalalas)) : '—',
+      caption: balanced ? 'Balanced' : 'Unbalanced',
+    },
   ]
+
+  if (financeReports === null) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+        <FeatureHeader icon="FileText" title={t('Balance Sheet')} subtitle={t('Assets, liabilities and equity with totals')} />
+        <ReportGap
+          icon="FileText"
+          title={t('Balance Sheet')}
+          collection={AGGREGATE_GAP.ledger}
+          detail={t(
+            'The balance sheet is summed by the server over your whole organization. Connect the API to see it — no figures are estimated here.',
+          )}
+        />
+      </div>
+    )
+  }
+
+  if (trialBalance.isLoading) {
+    return <Loading label={t('Loading the balance sheet…')} />
+  }
+  if (trialBalance.isError || !bs) {
+    return <ErrorState description={trialBalance.error?.message} onRetry={() => void trialBalance.refetch()} />
+  }
 
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader
-          icon="FileText"
-          title={t('Balance Sheet')}
-          subtitle={t('Accounting')}
-        />
+        <MobilePageHeader icon="FileText" title={t('Balance Sheet')} subtitle={t('Accounting')} />
         <div className="grid grid-cols-2 gap-3">
           {stats.map((stat) => (
             <Card key={stat.label} className="rounded-lg p-3">
@@ -128,35 +154,43 @@ export function BalanceSheet() {
             </Card>
           ))}
         </div>
+        <ServerTotalsNote endpoint="GET /accounting/reports/trial-balance" />
         {[
-          { title: 'Assets', items: ASSETS },
-          { title: 'Liabilities', items: LIABILITIES },
-          { title: 'Equity', items: EQUITY },
+          { title: 'Assets', items: assets },
+          { title: 'Liabilities', items: liabilities },
+          { title: 'Equity', items: equity },
         ].map(({ title, items }) => (
           <div key={title} className="flex flex-col gap-2">
             <h2 className="font-display text-sm font-bold text-heading">{t(title)}</h2>
-            {items.map((item) => (
-              <MobileCard key={item.name}>
-                <MobileCardHeader leading={<span className="text-sm font-semibold text-heading">{t(item.name)}</span>} />
-                <MobileCardRow label={t('Amount')}>
-                  <Money sar={item.amount} className="font-semibold text-heading" />
-                </MobileCardRow>
-              </MobileCard>
-            ))}
+            {items.length === 0 ? (
+              <p className="text-[13px] text-muted">{t('No accounts of this type')}</p>
+            ) : (
+              items.map((item) => (
+                <MobileCard key={item.code}>
+                  <MobileCardHeader leading={<span className="text-sm font-semibold text-heading">{t(item.name)}</span>} />
+                  <MobileCardRow label={t('Amount')}>
+                    <Money sar={fromHalalas(item.amountHalalas)} className="font-semibold text-heading" />
+                  </MobileCardRow>
+                </MobileCard>
+              ))
+            )}
           </div>
         ))}
+        {!balanced ? (
+          <div className="flex items-center gap-2 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-4 py-3 text-[13px] text-body">
+            <Icon name="AlertTriangle" size={16} className="flex-shrink-0 text-salis-orange" />
+            {t('Assets do not equal liabilities plus equity.')}
+          </div>
+        ) : null}
       </div>
     )
   }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <FeatureHeader
-        icon="FileText"
-        title={t('Balance Sheet')}
-        subtitle={t('Assets, liabilities and equity with totals')}
-      />
+      <FeatureHeader icon="FileText" title={t('Balance Sheet')} subtitle={t('Assets, liabilities and equity with totals')} />
       <StatRow stats={stats} />
+      <ServerTotalsNote endpoint="GET /accounting/reports/trial-balance" />
 
       {!balanced && (
         <div className="flex items-center gap-2 rounded-lg border border-salis-orange/30 bg-salis-orange/[.06] px-4 py-3 text-[13px] text-body">
@@ -170,23 +204,26 @@ export function BalanceSheet() {
           <StatementSection
             title={t('Assets')}
             icon="Wallet"
-            items={ASSETS}
+            items={assets}
             subtotalLabel={t('Total Assets')}
+            subtotalHalalas={bs.assetsHalalas}
             accentColor="var(--salis-blue)"
           />
           <div className="flex flex-col gap-8">
             <StatementSection
               title={t('Liabilities')}
               icon="CreditCard"
-              items={LIABILITIES}
+              items={liabilities}
               subtotalLabel={t('Total Liabilities')}
+              subtotalHalalas={bs.liabilitiesHalalas}
               accentColor="var(--salis-orange)"
             />
             <StatementSection
               title={t('Equity')}
               icon="Landmark"
-              items={EQUITY}
+              items={equity}
               subtotalLabel={t('Total Equity')}
+              subtotalHalalas={bs.equityHalalas}
               accentColor="var(--salis-navy)"
             />
           </div>

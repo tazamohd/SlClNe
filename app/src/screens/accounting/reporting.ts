@@ -27,6 +27,10 @@ export const AGGREGATE_GAP = {
   tax: 'GET /accounting/tax/return (output VAT for a filing period)',
   /** No endpoint returns a trial balance or P&L roll-up. */
   ledger: 'GET /accounting/reports/trial-balance (debit/credit and P&L roll-up)',
+  /** No endpoint exists, and none could compute one: a journal entry carries
+   *  no operating/investing/financing classification anywhere in the schema
+   *  (`server/src/db/schema.ts`), so there is no cash-flow activity to sum. */
+  cashFlow: 'GET /accounting/reports/cash-flow — no such endpoint exists, and no activity classification exists to compute it from',
 } as const
 
 /* --------------------------------------------------------------- date range */
