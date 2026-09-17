@@ -27,12 +27,12 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Reading design fixtures | 279 of 425 | `STATUS.json` |
 | End-to-end covered | 425 of 425 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 80 of 425 | `STATUS.json` |
+| Arabic verified | 82 of 425 | `STATUS.json` |
 | Tablet verified | 4 of 425 | `STATUS.json` |
 | API endpoints | 374 | the route files |
-| Test cases | 2215 | the spec files |
+| Test cases | 2213 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
-| Open blockers | 1 | `BLOCKERS.json` |
+| Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
 | Release gates passing | 8 of 14 | `RELEASE_GATES.json` |
 
@@ -45,6 +45,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
 | BLK-004 | CRITICAL | 279 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-010 | MEDIUM | 10 screen files are unreachable from any route | src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts | 02 |
 
 ## Open risks
 

@@ -168,9 +168,9 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AppointmentCalendar | `/appointment-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Appointments | `/appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | MISSING | yes |
+| D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | MISSING | yes |
+| D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Estimates | `/estimates` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-JobCardDetail | `/job-card-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-JobCards | `/job-cards` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -178,7 +178,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-OBDDiagnostics | `/obddiagnostics` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopCheckIn | `/workshop-check-in` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-WorkshopDelivery | `/workshop-delivery` | app | yes | yes | — | yes | verified | yes |
-| D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | MISSING | yes |
+| D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopInspection | `/workshop-inspection` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
