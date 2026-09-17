@@ -8,7 +8,7 @@
 
 # Documentation status
 
-**Sources as of:** 2026-09-16
+**Sources as of:** 2026-09-17
 
 ## Coverage
 
@@ -30,13 +30,13 @@
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 69 tables |
 | Relationship catalogue | `server/src/db/schema.ts` | 170 relationships |
 | API reference | the route files | 374 endpoints |
-| RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 420 cells |
+| RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 450 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 18 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 52 policies |
-| Test catalogue | the spec files | 188 suites |
-| Screen registry view | `project-control/MASTER_REGISTRY.json` | 427 screens |
-| Capability map, requirements, traceability | all of the above | 151 requirements |
+| Test catalogue | the spec files | 187 suites |
+| Screen registry view | `project-control/MASTER_REGISTRY.json` | 425 screens |
+| Capability map, requirements, traceability | all of the above | 153 requirements |
 
 `node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
 

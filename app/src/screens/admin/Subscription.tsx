@@ -11,11 +11,29 @@ interface BillingEntry {
   amount: string
 }
 
-const FIXTURE_HISTORY: BillingEntry[] = [
-  { date: 'Jul 20, 2026', amount: 'SAR 499' },
-  { date: 'Jun 20, 2026', amount: 'SAR 499' },
-  { date: 'May 20, 2026', amount: 'SAR 499' },
-]
+const BILLING_DAY = 20
+const MONTH_DAY = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+
+/** Demo billing dates, anchored to *today* rather than a literal string.
+ *
+ *  A hardcoded "Aug 20, 2026" reads as fine the month it's written and as a
+ *  bug — a "next" billing date already in the past — every month after. This
+ *  is fixture data (no live subscription API exists yet, per `isLive`
+ *  below), so it derives the next occurrence of the 20th from the real clock
+ *  and the three before it, which keeps "next" always in the future no
+ *  matter when the demo runs. */
+function billingSchedule(now = new Date()) {
+  const next = new Date(now.getFullYear(), now.getMonth(), BILLING_DAY)
+  if (next <= now) next.setMonth(next.getMonth() + 1)
+
+  const history: BillingEntry[] = []
+  for (let i = 1; i <= 3; i += 1) {
+    const d = new Date(next.getFullYear(), next.getMonth() - i, BILLING_DAY)
+    history.push({ date: MONTH_DAY(d), amount: 'SAR 499' })
+  }
+  return { nextBillingDate: MONTH_DAY(next), history }
+}
 
 const USAGE_STATS = [
   { labelKey: 'Users', value: '8 / 15' },
@@ -27,6 +45,7 @@ export function Subscription() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
+  const { nextBillingDate, history: FIXTURE_HISTORY } = billingSchedule()
 
   return (
     <div className="flex max-w-[800px] animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -40,7 +59,7 @@ export function Subscription() {
           <p className="m-0 text-[13px] opacity-85">{t('Current Plan')}</p>
           <h2 className="m-0 mt-1.5 font-display text-[28px] font-black">PRO</h2>
           <p className="m-0 mt-1.5 text-[13px] opacity-90">
-            {t('Next Billing Date')}: Aug 20, 2026
+            {t('Next Billing Date')}: {nextBillingDate}
           </p>
         </div>
         <Button
@@ -52,6 +71,11 @@ export function Subscription() {
           {t('Manage Plan')}
         </Button>
       </div>
+      {!isLive && (
+        <p className="m-0 text-xs text-muted">
+          {t('No billing API is connected — the plan, usage and history above are simulated demo data.')}
+        </p>
+      )}
 
       {/* Usage stats */}
       <div className={isMobile ? 'flex flex-col gap-4' : 'grid grid-cols-3 gap-5'}>

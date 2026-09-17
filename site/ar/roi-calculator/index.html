@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حاسبة العائد — قدّر أثر ساليس أوتو على وقت ورشتك وإيراداتها · ساليسكو</title>
+  <meta name="description" content="حاسبة شفافة وقابلة للتعديل: أدخل أرقامك الخاصة وشاهد المعادلة خلف كل نتيجة. لا افتراضات مخفية، ولا نتائج مضمونة." />
+  <link rel="canonical" href="https://www.saleisco.com/ar/roi-calculator/" />
+  <link rel="alternate" hreflang="en" href="https://www.saleisco.com/roi-calculator/" />
+  <link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/roi-calculator/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/roi-calculator/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ساليسكو" />
+  <meta property="og:title" content="حاسبة العائد — ساليس أوتو" />
+  <meta property="og:url" content="https://www.saleisco.com/ar/roi-calculator/" />
+  <meta property="og:image" content="https://www.saleisco.com/assets/logo.png" />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/pages.css" />
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://www.saleisco.com/ar/" },
+    { "@type": "ListItem", "position": 2, "name": "حاسبة العائد", "item": "https://www.saleisco.com/ar/roi-calculator/" }
+  ]}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
+  <div class="bg-lite" aria-hidden="true"><div class="aurora aurora--1"></div><div class="aurora aurora--2"></div><div class="bg-grid"></div></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a class="brand" href="/ar/" aria-label="ساليسكو، الصفحة الرئيسية"><img class="brand-logo" src="/assets/logo.png" alt="ساليسكو" /></a>
+    <nav class="nav-links" id="navLinks" aria-label="التنقّل الرئيسي">
+      <a href="/ar/solutions/">الحلول</a>
+      <a href="/ar/industries/">الصناعات</a>
+      <a href="/ar/platform/">المنصّة</a>
+      <a href="/ar/roi-calculator/" aria-current="page">حاسبة العائد</a>
+      <a href="/ar/pricing/">الأسعار</a>
+      <a href="/ar/about/">من نحن</a>
+      <a href="/ar/contact/">تواصل</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-lang-link" href="/roi-calculator/" hreflang="en" lang="en">English</a>
+      <a class="btn btn-primary magnetic" href="/ar/request-demo/" style="padding:.6rem 1.15rem;font-size:.85rem;">اطلب عرضًا تجريبيًا</a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="navLinks">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+  <p class="crumbs"><a href="/ar/">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">حاسبة العائد</span></p>
+
+  <main id="main">
+    <section class="page-hero">
+      <h1>أرقامك، معادلة واضحة، بلا ضمانات</h1>
+      <p class="lede">كل مدخل أدناه قابل للتغيير من قبلك. المعادلة التي تحوّل هذه الأرقام إلى تقدير موضّحة أسفل النتائج — لا شيء مخفيًا، ولا شيء هنا مبنيّ على دراسة حالة نطلب منك تصديقها.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <form id="roiForm" class="calc-grid">
+        <div class="calc-inputs">
+          <h2 style="font-size:1.1rem;margin-bottom:.4rem;">ورشتك</h2>
+          <div class="calc-field">
+            <label for="jobs">المهام المكتملة شهريًا (لكل فرع) <output id="jobs-out">200</output></label>
+            <input type="range" id="jobs" min="10" max="2000" step="10" value="200" />
+          </div>
+          <div class="calc-field">
+            <label for="jobValue">متوسط إيراد المهمة (ريال) <output id="jobValue-out">450</output></label>
+            <input type="range" id="jobValue" min="50" max="3000" step="10" value="450" />
+          </div>
+          <div class="calc-field">
+            <label for="branches">عدد الفروع <output id="branches-out">1</output></label>
+            <input type="range" id="branches" min="1" max="50" step="1" value="1" />
+          </div>
+          <div class="calc-field">
+            <label for="adminHours">ساعات التنسيق الإداري أسبوعيًا لكل فرع (هاتف، واتساب، متابعة موافقات أو قطع) <output id="adminHours-out">15</output></label>
+            <input type="range" id="adminHours" min="0" max="80" step="1" value="15" />
+          </div>
+          <div class="calc-field">
+            <label for="hourlyCost">التكلفة المدمجة لتلك الساعة (ريال/ساعة) <output id="hourlyCost-out">60</output></label>
+            <input type="range" id="hourlyCost" min="10" max="300" step="5" value="60" />
+          </div>
+          <h2 style="font-size:1.1rem;margin:1rem 0 .4rem;">افتراضاتك — عدّل هذه أيضًا</h2>
+          <div class="calc-field">
+            <label for="reductionPct">التخفيض المتوقّع في وقت التنسيق من سير عمل متّصل <output id="reductionPct-out">25%</output></label>
+            <input type="range" id="reductionPct" min="0" max="80" step="5" value="25" />
+          </div>
+          <div class="calc-field">
+            <label for="atRiskPct">الإيراد المعرَّض للخطر شهريًا من النزاعات أو الموافقات الفائتة أو تعارض المخزون <output id="atRiskPct-out">2%</output></label>
+            <input type="range" id="atRiskPct" min="0" max="20" step="0.5" value="2" />
+          </div>
+          <div class="calc-field">
+            <label for="recoveryPct">معدّل الاسترداد المتوقَّع لذلك الإيراد المعرَّض للخطر <output id="recoveryPct-out">50%</output></label>
+            <input type="range" id="recoveryPct" min="0" max="100" step="5" value="50" />
+          </div>
+        </div>
+
+        <div class="calc-results">
+          <h3>الأثر السنوي المقدَّر</h3>
+          <div class="calc-stat"><span class="lbl">ساعات إدارية موفَّرة</span><span class="val" id="res-hours">—</span></div>
+          <div class="calc-stat"><span class="lbl">وفورات الوقت الإداري</span><span class="val" id="res-admin">—</span></div>
+          <div class="calc-stat"><span class="lbl">الإيراد المعرَّض للخطر حاليًا</span><span class="val" id="res-atrisk">—</span></div>
+          <div class="calc-stat"><span class="lbl">الإيراد الذي يمكن استرداده</span><span class="val hi" id="res-recovered">—</span></div>
+          <div class="calc-stat"><span class="lbl"><strong>إجمالي الأثر السنوي المقدَّر</strong></span><span class="val hi" id="res-total">—</span></div>
+          <p class="calc-methodology">
+            <strong>المنهجية:</strong> الساعات الموفَّرة = ساعات التنسيق الأسبوعية × 52 × الفروع × معدّل التخفيض. الوفورات الإدارية (ريال) = الساعات الموفَّرة × تكلفة الساعة. الإيراد المعرَّض للخطر = المهام الشهرية × قيمة المهمة × الفروع × 12 × نسبة الخطر. الإيراد المسترَد = الإيراد المعرَّض للخطر × معدّل الاسترداد. الإجمالي = الوفورات الإدارية + الإيراد المسترَد.<br /><br />
+            <strong>هذا تقدير تخطيطي، لا ضمان.</strong> يعتمد بالكامل على الأرقام والافتراضات التي تدخلها أعلاه — وليس مستمدًا من نتائج مقاسة عبر عملائنا، إذ لا تزال معظم عمليات نشر ساليس أوتو في مراحلها الأولى. عدّل كل حقل ليطابق ورشتك، واعتبر النتيجة نقطة بداية لمحادثة، لا وعدًا.
+          </p>
+        </div>
+      </form>
+    </section>
+
+    <section class="cta-band">
+      <div class="cta-inner"><span class="cta-glow" aria-hidden="true"></span>
+        <p class="kicker">تريد رقمًا مبنيًا على عمليتك الفعلية؟</p><h2>احصل على تقييم مخصَّص</h2>
+        <p>أحضر حجم مهامك الفعلي وعمليتك الحالية — وسنساعدك على بناء افتراضات تثق بها فعلًا.</p>
+        <a class="btn btn-primary magnetic" href="/ar/request-demo/">اطلب عرضًا تجريبيًا</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-cta"><h2>لنبنِ ما هو قادم في المملكة.</h2><a class="btn btn-primary magnetic" href="/ar/request-demo/">تواصل معنا</a></div>
+    <nav class="footer-links" aria-label="روابط الفوتر">
+      <div><h4>الحلول</h4><ul><li><a href="/ar/solutions/workshops/">الورش ومراكز الخدمة</a></li><li><a href="/ar/solutions/vehicle-owners/">ملّاك المركبات</a></li><li><a href="/ar/solutions/parts-suppliers/">قطع الغيار والموردون</a></li><li><a href="/ar/solutions/enterprise/">المنشآت والأساطيل</a></li></ul></div>
+      <div><h4>المنصّة</h4><ul><li><a href="/ar/platform/">نظرة عامة</a></li><li><a href="/ar/platform/security/">الأمن والبيانات</a></li><li><a href="/ar/industries/">الصناعات</a></li><li><a href="/ar/roi-calculator/">حاسبة العائد</a></li></ul></div>
+      <div><h4>الشركة</h4><ul><li><a href="/ar/about/">من نحن</a></li><li><a href="/ar/pricing/">الأسعار</a></li><li><a href="/ar/contact/">تواصل</a></li><li><a href="/roi-calculator/">English</a></li></ul></div>
+      <div><h4>الموارد والقانونية</h4><ul><li><a href="/ar/resources/faq/">الأسئلة الشائعة</a></li><li><a href="/ar/legal/privacy/">سياسة الخصوصية</a></li><li><a href="/ar/legal/terms/">شروط الاستخدام</a></li><li><a href="/ar/legal/cookies/">سياسة ملفات الارتباط</a></li></ul></div>
+    </nav>
+    <div class="footer-meta"><p class="footer-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>الرياض، المملكة العربية السعودية</span></p><p class="footer-copy">© 2026 شركة ساليسكو المحدودة · الرياض، المملكة العربية السعودية</p></div>
+  </footer>
+  <script src="/assets/app.js"></script>
+  <script src="/assets/roi-calculator.js"></script>
+</body>
+</html>

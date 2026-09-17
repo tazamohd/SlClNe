@@ -10,7 +10,7 @@
 
 # API — auth
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 24 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-17 · 24 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

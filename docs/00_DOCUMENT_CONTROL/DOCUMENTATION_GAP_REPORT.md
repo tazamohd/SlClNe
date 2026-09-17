@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Sources as of:** 2026-09-16
+**Sources as of:** 2026-09-17
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 
@@ -26,11 +26,11 @@ This report exists to be read before anything else in the set is relied on. It i
 | Endpoints with a linked test | 101 of 374 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 18 |
-| Screens registered and mapped to a capability | 427 of 427 |
-| Screens wired to the live API | 99 of 427 |
-| Test suites catalogued | 188 containing 2197 cases |
+| Screens registered and mapped to a capability | 425 of 425 |
+| Screens wired to the live API | 99 of 425 |
+| Test suites catalogued | 187 containing 2185 cases |
 | Capabilities with no linked test suite | 5 |
-| Canonical registers at least 3 days behind the newest | 5 of 9 |
+| Canonical registers at least 3 days behind the newest | 6 of 9 |
 | Direct contradictions between registers | 3 |
 
 ## What is not verified
@@ -83,9 +83,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 288 screens read design fixtures rather than the API
+### 5. 286 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 288 of 427 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 286 of 425 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -120,15 +120,16 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-16; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-17; 6 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 36 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 36 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 35 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 14 |
-| `project-control/BASELINE.json` | 2026-09-03 | 13 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 37 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 37 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 36 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 15 |
+| `project-control/BASELINE.json` | 2026-09-03 | 14 |
+| `project-control/BLOCKERS.json` | 2026-09-12 | 5 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
@@ -204,5 +205,5 @@ _None — every required document is present._
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 273 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 288 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 286 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

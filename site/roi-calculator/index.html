@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROI Calculator — Estimate your workshop's time &amp; revenue impact · Salisco</title>
+  <meta name="description" content="An editable, transparent calculator: enter your own numbers and see the formula behind every result. No hidden assumptions, no guaranteed outcomes." />
+  <link rel="canonical" href="https://www.saleisco.com/roi-calculator/" />
+  <link rel="alternate" hreflang="en" href="https://www.saleisco.com/roi-calculator/" />
+  <link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/roi-calculator/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/roi-calculator/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Salisco" />
+  <meta property="og:title" content="ROI Calculator — SalisAuto" />
+  <meta property="og:description" content="An editable, transparent estimate of time and revenue impact for your workshop." />
+  <meta property="og:url" content="https://www.saleisco.com/roi-calculator/" />
+  <meta property="og:image" content="https://www.saleisco.com/assets/logo.png" />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/pages.css" />
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.saleisco.com/" },
+    { "@type": "ListItem", "position": 2, "name": "ROI Calculator", "item": "https://www.saleisco.com/roi-calculator/" }
+  ]}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="bg-lite" aria-hidden="true"><div class="aurora aurora--1"></div><div class="aurora aurora--2"></div><div class="bg-grid"></div></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a class="brand" href="/" aria-label="Salisco home"><img class="brand-logo" src="/assets/logo.png" alt="Salisco" /></a>
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="/solutions/">Solutions</a>
+      <a href="/industries/">Industries</a>
+      <a href="/platform/">Platform</a>
+      <a href="/roi-calculator/" aria-current="page">ROI Calculator</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-lang-link" href="/ar/roi-calculator/" hreflang="ar" lang="ar">العربية</a>
+      <a class="btn btn-primary magnetic" href="/request-demo/" style="padding:.6rem 1.15rem;font-size:.85rem;">Request a Demo</a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+  <p class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">ROI Calculator</span></p>
+
+  <main id="main">
+    <section class="page-hero">
+      <h1>Your numbers, a visible formula, no guarantees</h1>
+      <p class="lede">Every input below is yours to change. The formula that turns them into an estimate is shown underneath the results — nothing is hidden, and nothing here is based on a case study we're asking you to trust.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <form id="roiForm" class="calc-grid">
+        <div class="calc-inputs">
+          <h2 style="font-size:1.1rem;margin-bottom:.4rem;">Your workshop</h2>
+          <div class="calc-field">
+            <label for="jobs">Completed jobs per month (per branch) <output id="jobs-out">200</output></label>
+            <input type="range" id="jobs" min="10" max="2000" step="10" value="200" />
+          </div>
+          <div class="calc-field">
+            <label for="jobValue">Average revenue per job (SAR) <output id="jobValue-out">450</output></label>
+            <input type="range" id="jobValue" min="50" max="3000" step="10" value="450" />
+          </div>
+          <div class="calc-field">
+            <label for="branches">Number of branches <output id="branches-out">1</output></label>
+            <input type="range" id="branches" min="1" max="50" step="1" value="1" />
+          </div>
+          <div class="calc-field">
+            <label for="adminHours">Admin/coordination hours per week, per branch (phone, WhatsApp, chasing approvals or parts) <output id="adminHours-out">15</output></label>
+            <input type="range" id="adminHours" min="0" max="80" step="1" value="15" />
+          </div>
+          <div class="calc-field">
+            <label for="hourlyCost">Blended cost of that time (SAR/hour) <output id="hourlyCost-out">60</output></label>
+            <input type="range" id="hourlyCost" min="10" max="300" step="5" value="60" />
+          </div>
+          <h2 style="font-size:1.1rem;margin:1rem 0 .4rem;">Your assumptions — change these too</h2>
+          <div class="calc-field">
+            <label for="reductionPct">Expected reduction in coordination time from a connected workflow <output id="reductionPct-out">25%</output></label>
+            <input type="range" id="reductionPct" min="0" max="80" step="5" value="25" />
+          </div>
+          <div class="calc-field">
+            <label for="atRiskPct">Revenue currently at risk monthly from disputes, missed approvals or stock mismatches <output id="atRiskPct-out">2%</output></label>
+            <input type="range" id="atRiskPct" min="0" max="20" step="0.5" value="2" />
+          </div>
+          <div class="calc-field">
+            <label for="recoveryPct">Expected recovery rate of that at-risk revenue <output id="recoveryPct-out">50%</output></label>
+            <input type="range" id="recoveryPct" min="0" max="100" step="5" value="50" />
+          </div>
+        </div>
+
+        <div class="calc-results">
+          <h3>Estimated annual impact</h3>
+          <div class="calc-stat"><span class="lbl">Admin hours saved</span><span class="val" id="res-hours">—</span></div>
+          <div class="calc-stat"><span class="lbl">Admin time savings</span><span class="val" id="res-admin">—</span></div>
+          <div class="calc-stat"><span class="lbl">Revenue currently at risk</span><span class="val" id="res-atrisk">—</span></div>
+          <div class="calc-stat"><span class="lbl">Revenue potentially recovered</span><span class="val hi" id="res-recovered">—</span></div>
+          <div class="calc-stat"><span class="lbl"><strong>Total estimated annual impact</strong></span><span class="val hi" id="res-total">—</span></div>
+          <p class="calc-methodology">
+            <strong>Methodology:</strong> Admin hours saved = weekly admin hours × 52 × branches × reduction rate. Admin savings (SAR) = hours saved × hourly cost. Revenue at risk = monthly jobs × job value × branches × 12 × at-risk rate. Revenue recovered = revenue at risk × recovery rate. Total = admin savings + revenue recovered.<br /><br />
+            <strong>This is a planning estimate, not a guarantee.</strong> It runs entirely on the numbers and assumptions you enter above — it isn't drawn from measured results across our customers, since most SalisAuto deployments are still early. Adjust every field to match your own workshop, and treat the result as a starting point for a conversation, not a promise.
+          </p>
+        </div>
+      </form>
+    </section>
+
+    <section class="cta-band">
+      <div class="cta-inner"><span class="cta-glow" aria-hidden="true"></span>
+        <p class="kicker">Want a number built from your actual operation?</p><h2>Get a personalized assessment</h2>
+        <p>Bring your real job volume and current process — we'll help you build assumptions you actually trust.</p>
+        <a class="btn btn-primary magnetic" href="/request-demo/">Request a Demo</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-cta"><h2>Let's build what's next in the Kingdom.</h2><a class="btn btn-primary magnetic" href="/request-demo/">Get in touch</a></div>
+    <nav class="footer-links" aria-label="Footer">
+      <div><h4>Solutions</h4><ul><li><a href="/solutions/workshops/">Workshops &amp; service centers</a></li><li><a href="/solutions/vehicle-owners/">Vehicle owners</a></li><li><a href="/solutions/parts-suppliers/">Parts &amp; suppliers</a></li><li><a href="/solutions/enterprise/">Enterprise &amp; fleets</a></li></ul></div>
+      <div><h4>Platform</h4><ul><li><a href="/platform/">Overview</a></li><li><a href="/platform/security/">Security &amp; data</a></li><li><a href="/industries/">Industries</a></li><li><a href="/roi-calculator/">ROI calculator</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about/">About</a></li><li><a href="/pricing/">Pricing</a></li><li><a href="/contact/">Contact</a></li><li><a href="/ar/roi-calculator/">العربية</a></li></ul></div>
+      <div><h4>Resources &amp; legal</h4><ul><li><a href="/resources/faq/">FAQ</a></li><li><a href="/legal/privacy/">Privacy policy</a></li><li><a href="/legal/terms/">Terms of use</a></li><li><a href="/legal/cookies/">Cookie policy</a></li></ul></div>
+    </nav>
+    <div class="footer-meta"><p class="footer-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Riyadh, Kingdom of Saudi Arabia</span></p><p class="footer-copy">© 2026 Salisco LTD · Riyadh, KSA</p></div>
+  </footer>
+  <script src="/assets/app.js"></script>
+  <script src="/assets/roi-calculator.js"></script>
+</body>
+</html>

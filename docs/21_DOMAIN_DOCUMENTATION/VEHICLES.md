@@ -12,7 +12,7 @@
 
 # Domain — Vehicle management
 
-**Status:** GENERATED · **Capability:** CAP-VEHICLES · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Capability:** CAP-VEHICLES · **Sources as of:** 2026-09-17
 
 ## Purpose and scope
 

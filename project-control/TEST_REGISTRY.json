@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-17",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 188,
-    "cases": 2197,
+    "suites": 187,
+    "cases": 2185,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 181,
-      "SECURITY": 242,
-      "UNIT_OR_API": 1072,
+      "SECURITY": 243,
+      "UNIT_OR_API": 1059,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3752,7 +3752,7 @@
         "Tier C legal pages"
       ],
       "cases": [
-        "${page.name} renders signed-out with its h1, meta, effective date and version",
+        "${page.name} renders signed-out with its h1, meta and template banner",
         "renders at 390px with the mobile nav, not the desktop bar",
         "Terms renders in Arabic with the document flipped to RTL"
       ],
@@ -3821,35 +3821,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-PUBLIC-REQUEST-DEMO-FORM-TEST-TSX",
-      "file": "app/tests/public-request-demo-form.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "Request a Demo form validation",
-        "Request a Demo form delivery — fixture build (no VITE_API_URL)",
-        "Request a Demo form accessibility"
-      ],
-      "cases": [
-        "rejects an empty submission with an accessible error summary and per-field errors",
-        "never pre-selects the consent checkbox",
-        "rejects a malformed email and ties the error to the field",
-        "requires consent even when every other field is valid",
-        "validateRequestDemo accepts a complete, well-formed submission",
-        "a valid submission states requests are not live in this build, with working fallback channels",
-        "never fakes a success state on the fixture build",
-        "every visible field label is programmatically associated with its control",
-        "carries autocomplete hints for the common identity fields",
-        "links consent to the Privacy Policy"
-      ],
-      "caseCount": 10,
-      "touchesPaths": [
-        "/public-portal/request-demo",
-        "/privacy-policy"
-      ],
-      "touchesRoles": []
-    },
-    {
       "id": "TS-APP-TESTS-PUBLIC-SEO-TEST-TSX",
       "file": "app/tests/public-seo.test.tsx",
       "kind": "UNIT_OR_API",
@@ -3863,15 +3834,10 @@
         "lists every ungated public route the website barrel declares",
         "lists nothing but those public routes — no authenticated URL leaks in",
         "allows the public routes, disallows the rest, and names the sitemap",
-        "sets the document title and meta description, updating in place",
-        "sets a canonical URL and matching og:url from the current route",
-        "sets Open Graph and Twitter title/description alongside the meta description"
+        "sets the document title and meta description, updating in place"
       ],
-      "caseCount": 6,
-      "touchesPaths": [
-        "/public-portal/landing",
-        "/public-portal/pricing"
-      ],
+      "caseCount": 4,
+      "touchesPaths": [],
       "touchesRoles": []
     },
     {
@@ -3884,8 +3850,7 @@
       ],
       "cases": [
         "renders signed out — no session provider anywhere in the tree",
-        "carries the seven primary nav links, each to a real public route",
-        "shows a persistent Request a Demo CTA in the desktop header",
+        "carries the seven design nav links, each to a real public route",
         "links Sign In into the auth chain at /login",
         "switches to Arabic and flips the document to RTL",
         "renders Arabic RTL from a stored preference, signed out",
@@ -3893,16 +3858,15 @@
         "offers a skip link to the main content landmark",
         "footer contains only links with real destinations"
       ],
-      "caseCount": 9,
+      "caseCount": 8,
       "touchesPaths": [
         "/public-portal/landing",
         "/public-portal/about",
-        "/public-portal/industries",
-        "/public-portal/integrations",
-        "/public-portal/security",
-        "/public-portal/pricing",
+        "/public-portal/services",
+        "/public-portal/parts-accessories",
+        "/public-portal/deals-offers",
         "/public-portal/contact",
-        "/public-portal/request-demo",
+        "/public-portal/blog",
         "/login"
       ],
       "touchesRoles": []
@@ -3932,7 +3896,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 28 modules",
+        "defines exactly 30 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "every role has required metadata fields",
@@ -4616,10 +4580,10 @@
         "navFor unknown and edge roles"
       ],
       "cases": [
-        "is the documented 15 roles × 28 modules × 5 actions",
+        "is the documented 15 roles × 30 modules × 5 actions",
         "grants no action to a role the module never names",
         "denies an unknown module and an unknown role outright",
-        "agrees with the matrix for all 2,100 role × module × action combinations",
+        "agrees with the matrix for all 2,250 role × module × action combinations",
         "never confers a write without the matching read",
         "uses exactly six grant letters — one more than the Action union declares",
         "confines grant letters to the declared Action union",
@@ -4628,6 +4592,7 @@
         "leaves the ungated screens open to all 14 roles, and none of them is module-mapped",
         "opens an unmapped screen rather than closing it",
         "denies the operational screens to the roles the matrix excludes",
+        "confines the platform/cross-tenant admin screens to owner, superadmin and test",
         "shows a role only what it can open, and drops emptied groups entirely",
         "gives a role with no grant on a module no nav entry for that module",
         "never gives a role more than the owner sees",
@@ -4676,8 +4641,10 @@
         "preserves group ordering from the source nav",
         "never duplicates a nav item within a role"
       ],
-      "caseCount": 59,
+      "caseCount": 60,
       "touchesPaths": [
+        "/super-admin",
+        "/roles-permissions",
         "/supplier-portal",
         "/procurement-portal",
         "/dashboard"
@@ -4689,14 +4656,14 @@
         "technician",
         "accountant",
         "advisor",
+        "test",
+        "manager",
         "supplier",
         "hr",
         "procurement",
         "qc",
         "frontdesk",
-        "callcenter",
-        "manager",
-        "test"
+        "callcenter"
       ]
     },
     {
@@ -5170,8 +5137,8 @@
         "segregation of duties over the audit trail (F-004)"
       ],
       "cases": [
-        "matches on every one of the 420 module × role cells, string for string",
-        "answers every one of the 2,520 role × module × action questions from the table",
+        "matches on every one of the 450 module × role cells, string for string",
+        "answers every one of the 2,700 role × module × action questions from the table",
         "fails closed on an unknown module and an unknown role",
         "is six letters, and x is export while d is delete",
         "names the roles the wrong reading would have handed a delete grant",
@@ -5911,7 +5878,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 28 modules",
+        "defines exactly 30 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "re-exported ROLES/PERMS are the same objects as rbac-data",
@@ -5925,7 +5892,7 @@
         "returns false for an unknown role",
         "returns false for both unknown",
         "returns correct metadata for each role",
-        "falls back to ROLES[0] for unknown id",
+        "fails closed for an unknown id rather than inheriting Owner (F-006 parity)",
         "returns true for all valid role ids",
         "returns false for invalid values",
         "${roleId} limit is ${expected === null ? 'unlimited' : expected}",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-17",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -57,8 +57,10 @@
     "portalsupplier",
     "portalprocure",
     "ai",
+    "aiadmin",
     "admin",
     "settings",
+    "superadmin",
     "audit",
     "network"
   ],
@@ -291,11 +293,11 @@
     }
   ],
   "totals": {
-    "modules": 28,
+    "modules": 30,
     "roles": 15,
-    "cells": 420,
-    "granted": 217,
-    "denied": 203
+    "cells": 450,
+    "granted": 223,
+    "denied": 227
   },
   "matrix": {
     "dashboard": {
@@ -706,6 +708,23 @@
       "customer": "",
       "test": "vcedax"
     },
+    "aiadmin": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
     "admin": {
       "owner": "vcedax",
       "superadmin": "vcedax",
@@ -727,6 +746,23 @@
       "owner": "vcedax",
       "superadmin": "vcedax",
       "manager": "ve",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "superadmin": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "",
       "advisor": "",
       "technician": "",
       "qc": "",
@@ -4056,6 +4092,132 @@
       "denied": false
     },
     {
+      "module": "aiadmin",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "aiadmin",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "aiadmin",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "aiadmin",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
       "module": "admin",
       "role": "owner",
       "grant": "vcedax",
@@ -4300,6 +4462,132 @@
     },
     {
       "module": "settings",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
       "role": "test",
       "grant": "vcedax",
       "actions": [

@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-09-16'
+export const REGISTRY_GENERATED_AT = '2026-09-17'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -78,7 +78,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/agent-registry",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -232,7 +232,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/automation-rules",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -453,7 +453,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/conversation-history",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -1864,7 +1864,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/model-settings",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -2064,7 +2064,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/organizations",
     "surface": "app",
     "shell": "AppShell",
-    "module": "admin",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -2773,7 +2773,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2817,7 +2816,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2968,7 +2966,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2981,50 +2978,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "name": "PublicPortal.Resources",
     "title": "PublicPortal · Resources",
     "route": "/public-portal/resources",
-    "surface": "public",
-    "shell": "PublicShell",
-    "module": null,
-    "category": "PRODUCT",
-    "domain": "website",
-    "owner": "17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": null
-  },
-  {
-    "screenId": "D-PublicPortal.RoiCalculator",
-    "name": "PublicPortal.RoiCalculator",
-    "title": "PublicPortal · RoiCalculator",
-    "route": "/public-portal/roi-calculator",
-    "surface": "public",
-    "shell": "PublicShell",
-    "module": null,
-    "category": "PRODUCT",
-    "domain": "website",
-    "owner": "17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": null
-  },
-  {
-    "screenId": "D-PublicPortal.Security",
-    "name": "PublicPortal.Security",
-    "title": "PublicPortal · Security",
-    "route": "/public-portal/security",
     "surface": "public",
     "shell": "PublicShell",
     "module": null,
@@ -3394,7 +3347,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/roles-permissions",
     "surface": "app",
     "shell": "AppShell",
-    "module": "admin",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -3592,7 +3545,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/super-admin",
     "surface": "app",
     "shell": "AppShell",
-    "module": "settings",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -4534,7 +4487,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/workflow-builder",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
