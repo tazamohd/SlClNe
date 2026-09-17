@@ -8,7 +8,7 @@
 
 # Golden paths
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-17
 
 23 end-to-end journeys, each a browser test that walks the whole path and asserts the content at every step. Status below is the **last recorded run**, from `project-control/GOLDEN_PATHS.json` — it is a measurement, not a claim this documentation makes.
 

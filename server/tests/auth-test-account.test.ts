@@ -128,7 +128,7 @@ describe('the seeded test account', () => {
     for (const grant of Object.values(entitlements.modules) as string[]) {
       expect(grant).toBe('vcedax')
     }
-    expect(Object.keys(entitlements.modules)).toHaveLength(28)
+    expect(Object.keys(entitlements.modules)).toHaveLength(30)
   })
 })
 

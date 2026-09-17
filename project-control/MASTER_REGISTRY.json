@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12",
+  "generatedAt": "2026-09-17",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -250,12 +250,9 @@
       "route": "/agent-registry",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -761,12 +758,9 @@
       "route": "/automation-rules",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -1471,12 +1465,9 @@
       "route": "/conversation-history",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -6050,12 +6041,9 @@
       "route": "/model-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -6695,10 +6683,9 @@
       "route": "/organizations",
       "surface": "app",
       "shell": "AppShell",
-      "module": "admin",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -10573,10 +10560,9 @@
       "route": "/roles-permissions",
       "surface": "app",
       "shell": "AppShell",
-      "module": "admin",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -11181,10 +11167,9 @@
       "route": "/super-admin",
       "surface": "app",
       "shell": "AppShell",
-      "module": "settings",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:ve",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -14119,12 +14104,9 @@
       "route": "/workflow-builder",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],

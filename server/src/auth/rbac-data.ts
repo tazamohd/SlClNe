@@ -531,6 +531,11 @@ export const PERMS = {
     "superadmin": "vcedax",
     "test": "vcedax"
   },
+  "aiadmin": {
+    "owner": "vcedax",
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
   "admin": {
     "owner": "vcedax",
     "manager": "v",
@@ -540,6 +545,11 @@ export const PERMS = {
   "settings": {
     "owner": "vcedax",
     "manager": "ve",
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
+  "superadmin": {
+    "owner": "vcedax",
     "superadmin": "vcedax",
     "test": "vcedax"
   },
@@ -592,7 +602,7 @@ export const SCREEN_MODULE = {
   "SupplierPortal.Orders": "portalsupplier",
   "ProcurementPortal": "portalprocure",
   "ProcurementPortal.Requisitions": "portalprocure",
-  "SuperAdmin": "settings",
+  "SuperAdmin": "superadmin",
   "FinancialStatements": "accounting",
   "Dashboard": "dashboard",
   "JobCards": "jobcards",
@@ -661,17 +671,17 @@ export const SCREEN_MODULE = {
   "AIAssistant": "ai",
   "PromptLibrary": "ai",
   "KnowledgeBase": "ai",
-  "WorkflowBuilder": "ai",
+  "WorkflowBuilder": "aiadmin",
   "AgentDashboard": "ai",
-  "AgentRegistry": "ai",
-  "ConversationHistory": "ai",
-  "ModelSettings": "ai",
+  "AgentRegistry": "aiadmin",
+  "ConversationHistory": "aiadmin",
+  "ModelSettings": "aiadmin",
   "AIAnalytics": "ai",
-  "AutomationRules": "ai",
-  "Organizations": "admin",
+  "AutomationRules": "aiadmin",
+  "Organizations": "superadmin",
   "Branches": "admin",
   "UsersTeams": "admin",
-  "RolesPermissions": "admin",
+  "RolesPermissions": "superadmin",
   "Integrations": "admin",
   "Templates": "admin",
   "Settings": "settings",

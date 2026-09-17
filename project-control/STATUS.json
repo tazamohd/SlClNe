@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12",
+  "generatedAt": "2026-09-17",
   "totals": {
     "capabilities": 425,
     "product": 385,
@@ -231,20 +231,28 @@
       "dataBacked": 0
     },
     "settings": {
-      "total": 7,
-      "rendered": 7,
+      "total": 6,
+      "rendered": 6,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 7,
+      "e2e": 6,
       "dataBacked": 2
     },
     "ai": {
-      "total": 10,
-      "rendered": 10,
+      "total": 5,
+      "rendered": 5,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 10,
-      "dataBacked": 3
+      "e2e": 5,
+      "dataBacked": 1
+    },
+    "aiadmin": {
+      "total": 5,
+      "rendered": 5,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 5,
+      "dataBacked": 2
     },
     "appointments": {
       "total": 2,
@@ -287,11 +295,11 @@
       "dataBacked": 3
     },
     "admin": {
-      "total": 6,
-      "rendered": 6,
+      "total": 4,
+      "rendered": 4,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 6,
+      "e2e": 4,
       "dataBacked": 2
     },
     "callcenter": {
@@ -397,6 +405,14 @@
       "mobileOwed": 0,
       "e2e": 1,
       "dataBacked": 1
+    },
+    "superadmin": {
+      "total": 3,
+      "rendered": 3,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 3,
+      "dataBacked": 0
     },
     "network": {
       "total": 2,

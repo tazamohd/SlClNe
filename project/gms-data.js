@@ -486,8 +486,20 @@ export const PERMS={
  portalsupplier: {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"v",supplier:"vx",superadmin:"v",test:"vcedax"},
  portalprocure:  {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"v",hr:"",frontdesk:"",callcenter:"",procurement:"vx",superadmin:"v",test:"vcedax"},
  ai:             {owner:"vcedax",manager:"vce",advisor:"v",accountant:"v",superadmin:"vcedax",test:"vcedax"},
+ // AI platform administration (model/provider config, agent registry, automation
+ // rules, workflow builder, cross-org conversation history) is a distinct
+ // capability from ordinary AI *use* above. Tenant operational roles — Branch
+ // Manager and Service Advisor included — get "ai" (use an assistant, read a
+ // knowledge base) but never "aiadmin" (configure what the platform runs).
+ aiadmin:        {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
  admin:          {owner:"vcedax",manager:"v",superadmin:"vcedax",test:"vcedax"},
  settings:       {owner:"vcedax",manager:"ve",superadmin:"vcedax",test:"vcedax"},
+ // Platform/cross-tenant administration (Super Admin console, global roles &
+ // permissions, cross-tenant organization management) is not part of "admin" or
+ // "settings" — those two remain tenant-scoped (departments, integrations,
+ // branch settings) and Branch Manager keeps view/edit there. Nobody below
+ // Owner/Super Admin gets any action here, not even view.
+ superadmin:     {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
  audit:          {owner:"vx",manager:"vx",accountant:"vx",superadmin:"vx",test:"vcedax"},
  network:        {owner:"vcedax",manager:"vcedx",parts:"vced",procurement:"vcedax",supplier:"vce",superadmin:"v",test:"vcedax"}
 };
@@ -499,7 +511,7 @@ export const SCREEN_MODULE={
  "CustomerPortal":"portalcustomer","CustomerPortal.Booking":"portalcustomer","KioskCheckIn":"kiosk",
  "SupplierPortal":"portalsupplier","SupplierPortal.Orders":"portalsupplier",
  "ProcurementPortal":"portalprocure","ProcurementPortal.Requisitions":"portalprocure",
- "SuperAdmin":"settings","FinancialStatements":"accounting",
+ "SuperAdmin":"superadmin","FinancialStatements":"accounting",
  "Dashboard":"dashboard","JobCards":"jobcards","JobDetail":"jobcards","JobCardDetail":"jobcards",
  "WorkshopCheckIn":"jobcards","WorkshopInspection":"jobcards","WorkshopEstimate":"estimates","WorkshopQC":"jobcards","WorkshopSignature":"jobcards","WorkshopDelivery":"jobcards",
  "Appointments":"appointments","AppointmentCalendar":"appointments","Estimates":"estimates","EstimateDetail":"estimates",
@@ -511,8 +523,8 @@ export const SCREEN_MODULE={
  "LeadPipeline":"crm","LeadDetail":"crm","Opportunities":"crm","Campaigns":"crm","EmailMarketing":"crm","SMSCampaigns":"crm","WhatsAppCampaigns":"crm","CustomerSegments":"crm","CRMTasks":"crm","CRMCalendar":"crm",
  "CallCenter":"callcenter","CallCenter.Logs":"callcenter",
  "Reports":"reports","ReportsAnalytics":"reports","ExecutiveReports":"execreports","OperationalReports":"reports","WorkshopReports":"reports","InventoryReports":"reports","SalesReports":"execreports","InsuranceReports":"execreports","LoanReports":"execreports","CustomReports":"reports","BIDashboard":"execreports",
- "AIAssistant":"ai","PromptLibrary":"ai","KnowledgeBase":"ai","WorkflowBuilder":"ai","AgentDashboard":"ai","AgentRegistry":"ai","ConversationHistory":"ai","ModelSettings":"ai","AIAnalytics":"ai","AutomationRules":"ai",
- "Organizations":"admin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"admin","Integrations":"admin","Templates":"admin",
+ "AIAssistant":"ai","PromptLibrary":"ai","KnowledgeBase":"ai","WorkflowBuilder":"aiadmin","AgentDashboard":"ai","AgentRegistry":"aiadmin","ConversationHistory":"aiadmin","ModelSettings":"aiadmin","AIAnalytics":"ai","AutomationRules":"aiadmin",
+ "Organizations":"superadmin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"superadmin","Integrations":"admin","Templates":"admin",
  "Settings":"settings","AdvancedSettings":"settings","Backup":"settings","Subscription":"settings","NotificationCenter":"dashboard","GlobalSearch":"dashboard","Profile":"dashboard",
  "AuditLog":"audit","ApprovalInbox":"approvals",
  "CustomerApproval":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings"
