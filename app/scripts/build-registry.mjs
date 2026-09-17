@@ -1309,12 +1309,23 @@ const brandViolations = fs.existsSync(baselinePath)
   ? JSON.parse(read(baselinePath)).forbiddenColours ?? 0
   : 0
 
+// BLK-003 cannot be computed from the registry the way the others are — no
+// repo scan can prove a credential was rotated on GitHub's side. It clears
+// only when project-control/SECRET_ROTATION_LOG.json carries a dated,
+// attributed entry for it, so "cleared" stays an auditable record rather than
+// a line someone quietly deleted.
+const rotationLogPath = path.join(CONTROL, 'SECRET_ROTATION_LOG.json')
+const rotationLog = fs.existsSync(rotationLogPath)
+  ? JSON.parse(read(rotationLogPath)).rotations ?? []
+  : []
+const patsRotationConfirmed = rotationLog.some((r) => r.id === 'BLK-003')
+
 const blockers = [
   totals.placeholder && { id: 'BLK-001', severity: 'BLOCKER', title: `${totals.placeholder} product routes render PendingScreen`,
     detail: 'Violates the no-placeholder rule. Cleared only when every PRODUCT entry renders a real component.', owner: '01', wave: 'W2' },
   !totals.dataBacked && { id: 'BLK-002', severity: 'BLOCKER', title: 'No capability is backed by real data',
     detail: 'No server, database, persistence or server-side authorization exists. Gates the Definition of Done for every screen.', owner: '05', wave: 'W1' },
-  { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
+  !patsRotationConfirmed && { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
     detail: 'Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.', owner: '06', wave: 'W0' },
   totals.mockOnly && { id: 'BLK-004', severity: 'CRITICAL', title: `${totals.mockOnly} rendered capabilities are mock-only`,
     detail: 'They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
