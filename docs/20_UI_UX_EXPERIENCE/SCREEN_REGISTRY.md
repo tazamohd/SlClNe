@@ -20,8 +20,8 @@
 | Reference-only | 28 | 425 |
 | Rendered | 425 | 425 |
 | Placeholder | 0 | 425 |
-| Data-backed (live API) | 104 | 425 |
-| Mock-only (design fixtures) | 281 | 425 |
+| Data-backed (live API) | 108 | 425 |
+| Mock-only (design fixtures) | 277 | 425 |
 | End-to-end covered | 425 | 425 |
 | Content-asserted (not just routed) | 425 | 425 |
 | Has a loading state | 146 | 425 |
@@ -34,16 +34,16 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **281 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **277 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 28 | 0 | 0 |
-| app | 313 | 93 | 78 |
+| app | 313 | 95 | 78 |
 | call-center | 2 | 0 | 2 |
-| customer-app | 11 | 3 | 0 |
+| customer-app | 11 | 5 | 0 |
 | portal | 8 | 7 | 4 |
 | reference | 28 | 0 | 0 |
 | kiosk | 1 | 1 | 1 |
@@ -60,7 +60,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
 | CAP-PROCUREMENT | 1 | 1 | 1 | 1 | 1 | 0 |
 | CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
-| CAP-ACCOUNTING | 7 | 5 | 7 | 7 | 5 | 0 |
+| CAP-ACCOUNTING | 7 | 7 | 7 | 7 | 5 | 0 |
 | CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
 | CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
 | CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |
@@ -70,7 +70,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-PLATFORM | 36 | 5 | 12 | 6 | 16 | 17 |
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 32 | 0 | 0 | 0 | 0 | 22 |
-| CAP-CUSTOMERAPP | 11 | 3 | 11 | 11 | 11 | 0 |
+| CAP-CUSTOMERAPP | 11 | 5 | 11 | 11 | 11 | 0 |
 | CAP-DESIGNSYSTEM | 233 | 24 | 46 | 24 | 72 | 21 |
 
 ## Full registry

@@ -431,15 +431,32 @@ export function CustomerAppNotifications() {
 export function CustomerAppInsurance() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const { data: policies = [], isLoading, isError, error, refetch } = useCollection('insurancePolicies')
+
+  if (isLoading) return <Loading label={t('Loading...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  const policy = policies.find((p) => p.status === 'active') ?? policies[0]
+
   return (
     <>
       <AppSection title={t('Insurance')} />
-      <AppHeroCard icon="Shield" label={t('Active Policy')} value="Tawuniya Comprehensive">
-        <p className="mt-1 text-xs opacity-90">
-          {t('Expires')} · 14 {t('March')} 2027
-        </p>
-      </AppHeroCard>
-      <AppListRow icon="Car" title="Toyota Camry 2022" subtitle="RUH 4821" />
+      {policy ? (
+        <>
+          <AppHeroCard icon="Shield" label={t('Active Policy')} value={t(policy.insurer)}>
+            <p className="mt-1 text-xs opacity-90">
+              {t('Expires')} · {policy.end}
+            </p>
+          </AppHeroCard>
+          <AppListRow icon="Car" title={policy.vehicleLabel} subtitle={policy.policyNumber} />
+        </>
+      ) : (
+        <EmptyState
+          icon="Shield"
+          title={t('No active policy')}
+          description={t('Insurance policies appear here once issued.')}
+        />
+      )}
       <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} onClick={() => navigate('/customer-app/insurance')} />
       <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} onClick={() => navigate('/customer-app/insurance')} />
     </>
@@ -449,14 +466,33 @@ export function CustomerAppInsurance() {
 export function CustomerAppLoans() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const { data: contracts = [], isLoading, isError, error, refetch } = useCollection('loanContracts')
+
+  if (isLoading) return <Loading label={t('Loading...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  const contract = contracts.find((c) => c.status === 'active') ?? contracts[0]
+
   return (
     <>
       <AppSection title={t('Loans')} />
-      <EmptyState
-        icon="Banknote"
-        title={t('No active finance')}
-        description={t('Vehicle finance and instalment plans appear here.')}
-      />
+      {contract ? (
+        <>
+          <AppHeroCard icon="Banknote" label={t('Active Finance')} value={contract.contractNumber}>
+            <p className="mt-1 text-xs opacity-90">
+              {t('Monthly instalment')} · <Money sar={contract.monthlyInstalmentHalalas / 100} bare className="text-white" />
+            </p>
+          </AppHeroCard>
+          <AppListRow icon="Percent" title={`${(contract.rateBps / 100).toFixed(2)}%`} subtitle={t('Rate')} />
+          <AppListRow icon="Calendar" title={`${contract.termMonths} ${t('mo')}`} subtitle={t('Term')} />
+        </>
+      ) : (
+        <EmptyState
+          icon="Banknote"
+          title={t('No active finance')}
+          description={t('Vehicle finance and instalment plans appear here.')}
+        />
+      )}
       <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/loans')}>
         <Icon name="Plus" size={16} />
         {t('Apply for Finance')}
