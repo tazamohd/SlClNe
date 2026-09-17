@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-17",
-  "open": 2,
+  "open": 1,
   "blockers": [
     {
       "id": "BLK-004",
@@ -9,14 +9,6 @@
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
-    },
-    {
-      "id": "BLK-008",
-      "severity": "MEDIUM",
-      "title": "Tablet verification samples 6 screens, not the full inventory",
-      "detail": "e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.",
-      "owner": "18",
-      "wave": "W3"
     }
   ]
 }

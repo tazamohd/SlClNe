@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-17",
   "suites": {
     "unit": {
       "runner": "vitest",
@@ -53,9 +53,9 @@
     "tablet": {
       "runner": "playwright",
       "present": true,
-      "covered": 6,
+      "covered": 427,
       "of": 427,
-      "note": "e2e/tablet.spec.ts — 8 viewports x 6 screens, one per layout family, plus a rotation across the 860px breakpoint"
+      "note": "e2e/tablet.spec.ts — 8 viewports x 427 screens (every registered capability), plus a rotation across the 860px breakpoint"
     },
     "rtl": {
       "runner": "playwright",

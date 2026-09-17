@@ -9,7 +9,6 @@ Computed from the registry. Every line is a query, not an opinion.
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
 | BLK-004 | CRITICAL | 288 rendered capabilities are mock-only | 05 | W2 |
-| BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
 
 ## Flags across the inventory
 

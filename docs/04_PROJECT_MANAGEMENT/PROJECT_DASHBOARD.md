@@ -32,7 +32,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | API endpoints | 374 | the route files |
 | Test cases | 2198 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
-| Open blockers | 2 | `BLOCKERS.json` |
+| Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
 | Release gates passing | 8 of 14 | `RELEASE_GATES.json` |
 
@@ -45,7 +45,6 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
 | BLK-004 | CRITICAL | 288 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
-| BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability. | 18 |
 
 ## Open risks
 
