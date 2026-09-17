@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 189,
-    "cases": 2228,
+    "cases": 2226,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1088,
+      "UNIT_OR_API": 1086,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3827,23 +3827,17 @@
         "${page.name} renders signed-out with its designed h1 and page meta",
         "Landing mounts with completely empty storage — the true first visit",
         "Landing renders in Arabic with the document flipped to RTL",
-        "Landing switches its six in-page pages and mirrors the choice to the hash",
-        "Grid's six doors are three real portal links and three informational tiles",
-        "Access names what each plan carries but quotes no price — pricing has one home",
-        "Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere",
-        "the command deck answers a real command with a real fact, entirely client-side",
+        "the proof section shows real structural facts, not fabricated metrics",
+        "the release timeline shows real version numbers, including the one still ahead",
+        "closes with a real Request a Demo CTA, not a dead-end banner",
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
         "Blog and catalogue cards are informational, not links to nowhere"
       ],
-      "caseCount": 15,
+      "caseCount": 13,
       "touchesPaths": [
-        "/public-portal/customer-portal",
-        "/public-portal/technician-portal",
-        "/public-portal/supplier-portal",
-        "/public-portal/pricing",
-        "/public-portal/book-demo",
+        "/public-portal/request-demo",
         "/public-portal/contact"
       ],
       "touchesRoles": []

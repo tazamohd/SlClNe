@@ -1,0 +1,272 @@
+/* PublicPortal.Landing — the enterprise-SaaS homepage.
+ *
+ * Replaces the permanently-dark "SALIS AUTO 2030" HUD chrome (`landing.css`,
+ * still used by the six-page tour under `landing/pages/`, left in place and
+ * unlinked from the homepage for now — see the doc comment atop
+ * `Landing.tsx`) with a restrained, light-first, theme-aware register: the
+ * app's own `--bg-page`/`--surface-card`/`--text-*` tokens under the real
+ * light/dark toggle, not a locked-dark void. No new hex — every value below
+ * is `var(...)` or `color-mix(...)` onto an existing design token
+ * (`src/styles/tokens/*.css`), same discipline as `landing.css`.
+ *
+ * Kept from that stylesheet, deliberately: the `.rise`/`.era`/`.tilt`/
+ * `[data-count]` class contract that `useRevealMotion.ts` (a generalised
+ * copy of `useLandingMotion.ts`) drives — same reveal-on-scroll, pointer-tilt
+ * and count-up behaviour, restyled onto light-palette tokens instead of the
+ * HUD's void/cyan/ember scheme. Dropped: the void backgrounds, the 76px grid
+ * overlay, the SVG noise texture, glass/blur panels, and corner brackets as
+ * a page-wide default (kept only where `<CornerBrackets>` is deliberately
+ * composed in, the way `Pricing.tsx` already uses it). */
+
+.salis-home {
+  --home-ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --home-gut: clamp(20px, 4vw, 64px);
+  display: block;
+  color: var(--text-body);
+  font-family: var(--font-ui);
+}
+html[lang='ar'] .salis-home {
+  font-family: 'SF Arabic', 'Noto Sans Arabic', 'IBM Plex Sans Arabic', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Reveal / tilt / count-up — same contract as landing.css, restyled ── */
+.salis-home .rise {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--home-ease), transform 0.7s var(--home-ease);
+}
+.salis-home .rise.in {
+  opacity: 1;
+  transform: none;
+}
+.salis-home .era {
+  position: relative;
+  padding: 18px 0 18px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
+  gap: clamp(10px, 3vw, 32px);
+  align-items: start;
+}
+html[dir='rtl'] .salis-home .era {
+  padding-inline: 40px 0;
+}
+.salis-home .era::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 4px;
+  top: 28px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface-card);
+  border: 2px solid var(--border-strong);
+  transition: background 0.4s var(--home-ease), border-color 0.4s var(--home-ease), box-shadow 0.4s var(--home-ease);
+}
+.salis-home .era.in::before {
+  background: var(--salis-blue-bright);
+  border-color: var(--salis-blue-bright);
+  box-shadow: 0 0 12px var(--tint-bright);
+}
+.salis-home .era.now .yr {
+  color: var(--salis-orange);
+}
+.salis-home .era.now::before {
+  border-color: var(--salis-orange);
+}
+.salis-home .era.now.in::before {
+  background: var(--salis-orange);
+  box-shadow: 0 0 12px var(--tint-orange);
+}
+.salis-home .era .yr {
+  font-family: var(--font-mono);
+  font-size: clamp(18px, 2.4vw, 26px);
+  color: var(--text-heading);
+  line-height: 1;
+}
+.salis-home .era .yr small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 6px;
+}
+.salis-home .era h3 {
+  font-size: clamp(15px, 1.6vw, 18px);
+  margin: 0 0 6px;
+  color: var(--text-heading);
+}
+.salis-home .era p {
+  color: var(--text-muted);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.salis-home .tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.3s var(--home-ease);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .salis-home .rise,
+  .salis-home .era {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .salis-home .tilt {
+    transform: none;
+  }
+}
+
+/* ── Hero ── */
+.salis-home-hero {
+  position: relative;
+  padding: clamp(48px, 9vw, 96px) var(--home-gut) clamp(40px, 6vw, 64px);
+  overflow: clip;
+}
+.salis-home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(60% 55% at 82% -6%, var(--tint-bright), transparent 62%),
+    radial-gradient(46% 40% at 6% 4%, var(--tint-blue), transparent 60%);
+}
+.salis-home-hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(28px, 5vw, 56px);
+}
+@media (min-width: 960px) {
+  .salis-home-hero-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    align-items: center;
+  }
+}
+.salis-home-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--salis-blue);
+  margin: 0 0 16px;
+}
+.salis-home-hero h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 5.6vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+  margin: 0 0 18px;
+}
+.salis-home-hero h1 em {
+  font-style: normal;
+  background: var(--salis-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.salis-home-hero-lede {
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 56ch;
+  margin: 0 0 28px;
+}
+.salis-home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Scroll-triggered line-draw for the hero's job-card-flow diagram — reuses
+   the `.rise`/`.in` reveal class `useRevealMotion` already toggles, so no
+   extra JS is needed for this one signature motion moment. */
+.salis-home-flow-path {
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  transition: stroke-dashoffset 1.4s var(--home-ease) 0.15s;
+}
+.salis-home .rise.in .salis-home-flow-path {
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .salis-home-flow-path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}
+
+/* ── Product-UI mockup chrome (job-card kanban, invoice, permissions) ── */
+.salis-home-mockup {
+  position: relative;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.salis-home-mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-inset);
+}
+.salis-home-mockup-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+.salis-home-mockup-bar span {
+  margin-inline-start: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+.salis-home-mockup-body {
+  padding: clamp(14px, 2.4vw, 22px);
+}
+.salis-home-mockup-caption {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ── Timeline (release rail) ── */
+.salis-home-timeline {
+  position: relative;
+}
+.salis-home-timeline::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 9px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--border-default);
+}
+html[dir='rtl'] .salis-home-timeline::before {
+  inset-inline-start: auto;
+  inset-inline-end: 9px;
+}
+
+@media (max-width: 480px) {
+  .salis-home .era {
+    grid-template-columns: 1fr;
+    padding-inline-start: 26px;
+  }
+}
