@@ -78,18 +78,18 @@ _No lifecycle in the contract belongs to this domain._
 | D-AIAssistant | `/aiassistant` | app | **mock** | — | — | — | verified | yes |
 | D-AutomationRules | `/automation-rules` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-ConversationHistory | `/conversation-history` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-KnowledgeBase | `/knowledge-base` | app | **mock** | — | — | — | verified | yes |
+| D-KnowledgeBase | `/knowledge-base` | app | yes | yes | yes | yes | verified | yes |
 | D-ModelSettings | `/model-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-PromptLibrary | `/prompt-library` | app | **mock** | — | — | — | verified | yes |
 | D-WorkflowBuilder | `/workflow-builder` | app | **mock** | — | — | — | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **7 of 10 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **6 of 10 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **6 of 8 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **7 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **6 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

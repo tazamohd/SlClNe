@@ -166,7 +166,7 @@
         "D-WorkshopQC",
         "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 12,
+      "dataBackedScreens": 15,
       "entities": [
         "appointments",
         "diagCopies",
@@ -908,7 +908,7 @@
         "D-TechnicianPortal",
         "D-TechnicianPortal.JobDetail"
       ],
-      "dataBackedScreens": 7,
+      "dataBackedScreens": 8,
       "entities": [],
       "rules": [],
       "roles": [
@@ -964,7 +964,7 @@
         "D-PromptLibrary",
         "D-WorkflowBuilder"
       ],
-      "dataBackedScreens": 3,
+      "dataBackedScreens": 4,
       "entities": [
         "aiAgents",
         "conversations"
@@ -1483,7 +1483,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 24,
+      "dataBackedScreens": 26,
       "entities": [],
       "rules": [],
       "roles": [],

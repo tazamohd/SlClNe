@@ -4474,4 +4474,16 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Functional domains, one tenancy": "مجالات وظيفية، مستأجر واحد",
   "Roles and permission modules": "الأدوار ووحدات الصلاحيات",
   "Separation-of-duty pairs, enforced server-side": "أزواج فصل المهام، مُطبَّقة من جانب الخادم",
+
+  // BLK-004: workshop lifecycle, procurement portal and AI knowledge base wired to live data.
+  "Loading articles...": "جارٍ تحميل المقالات...",
+  "Try a different search term.": "جرّب كلمة بحث مختلفة.",
+  "procedures": "إجراءات",
+  "Loading requisitions...": "جارٍ تحميل طلبات الشراء...",
+  "No requisitions are waiting for approval right now.": "لا توجد طلبات شراء بانتظار الاعتماد حاليًا.",
+  "Nothing pending": "لا شيء معلّق",
+  "No invoice is linked to this job card yet.": "لا توجد فاتورة مرتبطة ببطاقة العمل هذه بعد.",
+  "No invoice yet": "لا توجد فاتورة بعد",
+  "Couldn't approve": "تعذّر الاعتماد",
+  "No estimate is linked to this job card yet.": "لا يوجد عرض سعر مرتبط ببطاقة العمل هذه بعد.",
 }

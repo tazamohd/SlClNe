@@ -7,6 +7,7 @@ import { WorkshopQC } from '@/screens/workshop/WorkshopQC'
 import { WorkshopReports } from '@/screens/workshop/WorkshopReports'
 import { OBDDiagnostics } from '@/screens/workshop/OBDDiagnostics'
 import { CustomerApproval } from '@/screens/workshop/CustomerApproval'
+import { PurchaseAgentPayments } from '@/screens/portals/purchase/PurchaseAgentPayments'
 import { RepositoryError } from '@/data/repository'
 import { renderWithProviders } from '../helpers/render'
 
@@ -32,6 +33,8 @@ const wire = vi.hoisted(() => ({
   otpRequest: null as null | ((id: string) => Promise<unknown>),
   otpVerify: null as null | ((id: string, code: string) => Promise<unknown>),
   estimateRows: null as null | Record<string, unknown>[],
+  estimateGet: null as null | ((id: string) => Promise<unknown>),
+  purchaseOrderRows: null as null | Record<string, unknown>[],
 }))
 
 vi.mock('@/data/repository', async (importOriginal) => {
@@ -65,6 +68,18 @@ vi.mock('@/data/repository', async (importOriginal) => {
                 page: { page: 1, pageSize: 50, total: wire.estimateRows.length, totalPages: 1 },
               })
             : mod.repository.estimates.list(query as never),
+        get: (id: string) =>
+          wire.estimateGet ? wire.estimateGet(id) : mod.repository.estimates.get(id),
+      },
+      purchaseOrders: {
+        ...mod.repository.purchaseOrders,
+        list: (query?: unknown) =>
+          wire.purchaseOrderRows
+            ? Promise.resolve({
+                rows: wire.purchaseOrderRows,
+                page: { page: 1, pageSize: 50, total: wire.purchaseOrderRows.length, totalPages: 1 },
+              })
+            : mod.repository.purchaseOrders.list(query as never),
       },
     },
   }
@@ -393,5 +408,127 @@ describe('CustomerApproval — live OTP e-signature (estimateOtp)', () => {
     renderWithProviders(<CustomerApproval />, { role: 'customer' })
     expect(await screen.findByText('Authorise the work')).toBeInTheDocument()
     expect(screen.getAllByText('Not connected').length).toBeGreaterThanOrEqual(3)
+  })
+})
+
+describe('CustomerApproval — the linked estimate itself (estimates.get)', () => {
+  it('shows the real customer, vehicle and server-computed total for the linked estimate', async () => {
+    wire.estimateGet = (id) =>
+      id === 'EST-9010'
+        ? Promise.resolve({
+            _id: 'id-EST-9010',
+            id: 'EST-9010',
+            cust: 'Fatima Al-Zahrani',
+            veh: 'Lexus ES 350',
+            amount: 'SAR 1,437.50',
+            status: 'sent',
+            subtotalHalalas: 125_000,
+            taxHalalas: 18_750,
+            discountHalalas: 0,
+            totalHalalas: 143_750,
+            validUntil: null,
+          })
+        : Promise.reject(new RepositoryError('not_found' as never, `No record with id "${id}".`))
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9010',
+    })
+    expect(await screen.findByText('Fatima Al-Zahrani · Lexus ES 350')).toBeInTheDocument()
+    expect(screen.getByText('Total due')).toBeInTheDocument()
+    expect(screen.getByText(/SAR\s*1,437\.50/)).toBeInTheDocument()
+    // No trace of the "no estimate attached" legacy copy.
+    expect(screen.queryByText(/This link has no estimate attached/)).toBeNull()
+  })
+
+  it('refuses to sign an already-decided estimate, regardless of OTP configuration', async () => {
+    wire.estimateGet = () =>
+      Promise.resolve({
+        _id: 'id-EST-9011',
+        id: 'EST-9011',
+        cust: 'Test Customer',
+        veh: 'Kia Sportage',
+        amount: 'SAR 500.00',
+        status: 'approved',
+        validUntil: null,
+      })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9011',
+    })
+    expect(await screen.findByText('This estimate has already been approved.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Send one-time code/ })).toBeNull()
+  })
+
+  it('refuses to sign an expired estimate', async () => {
+    wire.estimateGet = () =>
+      Promise.resolve({
+        _id: 'id-EST-9012',
+        id: 'EST-9012',
+        cust: 'Test Customer',
+        veh: 'Kia Sportage',
+        amount: 'SAR 500.00',
+        status: 'sent',
+        validUntil: '2020-01-01T00:00:00.000Z',
+      })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9012',
+    })
+    expect(await screen.findByText('This estimate has expired')).toBeInTheDocument()
+    expect(screen.getByText('An expired estimate cannot be signed. Ask your advisor for a current one.')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Send one-time code/ })).toBeNull()
+  })
+
+  it('still offers the signature step when the estimate could not be resolved', async () => {
+    wire.estimateGet = (id) => Promise.reject(new RepositoryError('not_found' as never, `No record with id "${id}".`))
+    wire.otpRequest = () => Promise.resolve({ challengeId: 'c1', expiresAt: '2026-08-16', destination: '••• 4471' })
+    renderWithProviders(<CustomerApproval />, {
+      role: 'customer',
+      route: '/customer-approval?estimate=EST-9099',
+    })
+    expect(await screen.findByText('Estimate details are not available here')).toBeInTheDocument()
+    // The signature step is independent of whether the preview loaded — the
+    // server settles it against its own record by id.
+    expect(screen.getByRole('button', { name: /Send one-time code/ })).toBeInTheDocument()
+  })
+})
+
+/* ------------------------------------------------------- PurchaseAgentPayments */
+
+describe('PurchaseAgentPayments — live purchase orders (purchaseOrders.list)', () => {
+  it('renders the real supplier, amount and status for an open order', async () => {
+    wire.purchaseOrderRows = [
+      {
+        _id: 'id-PO-9001',
+        id: 'PO-9001',
+        code: 'PO-9001',
+        supplierName: 'Al-Futtaim Auto Parts',
+        status: 'approved',
+        totalHalalas: 480_000,
+      },
+    ]
+    renderWithProviders(<PurchaseAgentPayments />, { role: 'procurement' })
+    expect(await screen.findByText('PO-9001')).toBeInTheDocument()
+    expect(screen.getByText('Al-Futtaim Auto Parts')).toBeInTheDocument()
+    // Appears twice: the "Total on Open Orders" KPI and PO-9001's own row.
+    expect(screen.getAllByText(/SAR\s*4,800\.00/).length).toBe(2)
+    // The honest gap note still names what this order-level total is not.
+    expect(screen.getByText('Supplier payment tracking is not connected')).toBeInTheDocument()
+  })
+
+  it('excludes draft and closed orders from the owed total', async () => {
+    wire.purchaseOrderRows = [
+      { _id: 'id-1', id: 'PO-1', code: 'PO-1', supplierName: 'A', status: 'draft', totalHalalas: 100_000 },
+      { _id: 'id-2', id: 'PO-2', code: 'PO-2', supplierName: 'B', status: 'closed', totalHalalas: 200_000 },
+      { _id: 'id-3', id: 'PO-3', code: 'PO-3', supplierName: 'C', status: 'approved', totalHalalas: 50_000 },
+    ]
+    renderWithProviders(<PurchaseAgentPayments />, { role: 'procurement' })
+    await screen.findByText('PO-3')
+    // PO-1 (draft) and PO-2 (closed) are excluded, so only PO-3's SAR 500
+    // counts toward "Total on Open Orders" — the KPI and PO-3's own row both
+    // read SAR 500.00, and nothing else in the table does.
+    expect(screen.getAllByText('SAR 500.00').length).toBe(2)
+    expect(screen.queryByText('SAR 1,000.00')).toBeNull()
+    expect(screen.queryByText('SAR 2,000.00')).toBeNull()
   })
 })

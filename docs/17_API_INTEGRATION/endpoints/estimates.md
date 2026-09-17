@@ -14,8 +14,8 @@
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/estimates` | estimates:v | token | `estimates` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/estimates` | estimates:c | token | — | — | 7 | `server/src/routes/estimates.ts` |
+| GET | `/api/v1/estimates` | estimates:v | token | `estimates` | — | 8 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/estimates` | estimates:c | token | — | — | 8 | `server/src/routes/estimates.ts` |
 | GET | `/api/v1/estimates/:id` | estimates:v | token | `estimates` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/estimates/:id` | estimates:e | token | — | — | — | `server/src/routes/estimates.ts` |
 | POST | `/api/v1/estimates/:id/approve` | estimates:a | token | — | — | 3 | `server/src/routes/estimates.ts` |

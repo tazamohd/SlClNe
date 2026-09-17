@@ -34,9 +34,9 @@
  *                        today, but icon libraries emit them and a build that
  *                        starts to would otherwise fail silently in production.
  *    connect-src         'self' only. THIS IS THE ONE TO EDIT: when
- *                        VITE_API_BASE_URL points at another origin — which it
- *                        does in every deployment where nginx does not proxy
- *                        the API — that origin must be added here or every
+ *                        VITE_API_URL points at another origin — which it does
+ *                        in every deployment where nginx does not proxy the
+ *                        API — that origin must be added here or every
  *                        request the app makes is blocked.
  *    frame-ancestors     'none' — nothing here is ever meant to be framed, and
  *                        this is the directive that enforces it. X-Frame-Options

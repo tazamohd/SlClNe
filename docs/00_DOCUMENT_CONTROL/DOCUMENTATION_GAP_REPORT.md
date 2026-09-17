@@ -27,8 +27,8 @@ This report exists to be read before anything else in the set is relied on. It i
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 18 |
 | Screens registered and mapped to a capability | 425 of 425 |
-| Screens wired to the live API | 99 of 425 |
-| Test suites catalogued | 187 containing 2183 cases |
+| Screens wired to the live API | 106 of 425 |
+| Test suites catalogued | 188 containing 2215 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
@@ -83,9 +83,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 286 screens read design fixtures rather than the API
+### 5. 279 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 286 of 425 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 279 of 425 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -134,8 +134,8 @@ Staleness alone would be tolerable. These are direct contradictions — one regi
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
 | RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
@@ -204,5 +204,5 @@ _None — every required document is present._
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 273 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 286 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 279 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

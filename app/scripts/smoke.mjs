@@ -1900,19 +1900,24 @@ const failures = []
   }
 }
 
-// The estimate's totals are computed from its line items. Assert the figures
-// match the design's (SAR 1,345 / 201.75 / 1,546.75) so a line-item edit that
-// breaks the arithmetic is caught here.
+// WorkshopEstimate now reads its line items from the real estimate linked to
+// the job card (`GET /estimates/:id/lines`), not two hardcoded arrays — there
+// is no client-side arithmetic left to assert against a fixed figure (§5b).
+// This fixture build has no `jobCardId` linkage a live server would set and
+// the line-item sub-resource always answers "unsupported" without a live API
+// (same as `EstimateDetail`), so the honest, reachable check here is that the
+// screen shows the empty state rather than fabricated numbers.
 {
   const context = await browser.newContext()
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/workshop-estimate', { waitUntil: 'networkidle' })
   const text = await page.locator('body').innerText()
-  const expected = ['SAR 1,345.00', 'SAR 201.75', 'SAR 1,546.75']
-  const missing = expected.filter((value) => !text.includes(value))
-  if (missing.length) failures.push({ route: 'estimate totals', problems: [`missing ${missing.join(', ')}`] })
-  else console.log('  ok  estimate totals derived from line items')
+  if (!text.includes('No line items to show')) {
+    failures.push({ route: 'estimate totals', problems: ['missing the honest empty state when no estimate is linked'] })
+  } else {
+    console.log('  ok  estimate totals: honest empty state without a linked estimate')
+  }
   await context.close()
 }
 
