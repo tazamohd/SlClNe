@@ -177,20 +177,20 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-JobDetail | `/job-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-OBDDiagnostics | `/obddiagnostics` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopCheckIn | `/workshop-check-in` | app | yes | yes | yes | — | PARTIAL | yes |
-| D-WorkshopDelivery | `/workshop-delivery` | app | **mock** | — | — | — | verified | yes |
-| D-WorkshopEstimate | `/workshop-estimate` | app | **mock** | — | — | — | MISSING | yes |
+| D-WorkshopDelivery | `/workshop-delivery` | app | yes | yes | — | yes | verified | yes |
+| D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | MISSING | yes |
 | D-WorkshopInspection | `/workshop-inspection` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-WorkshopSignature | `/workshop-signature` | app | **mock** | — | — | — | verified | yes |
+| D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
 
 ## Known gaps in this domain
 
-- **4 of 16 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **1 of 16 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **63 of 77 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 lifecycles (`appointmentStatus`, `estimateStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **4 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **2 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

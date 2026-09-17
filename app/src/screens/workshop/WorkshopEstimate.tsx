@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
@@ -6,36 +7,35 @@ import { Card } from '@/components/ui/Card'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
-import { DataTable, type Column } from '@/components/ui/DataTable'
+import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { useCollection, type RowOf } from '@/data/useCollection'
 import { StageNotice, stageBusy, stageLabel } from './StageNotice'
 import { useJobStage } from './useJobStage'
+import { fetchEstimateLines, RepositoryError, type EstimateLineRow } from './api'
 
-/** VAT rate for KSA (ZATCA). */
-const VAT_RATE = 0.15
-
-const PARTS = [
-  { desc: 'Oil Filter (Toyota)', qty: 1, unit: 45 },
-  { desc: 'Brake Pads (Front)', qty: 1, unit: 310 },
-  { desc: 'Air Filter (Universal)', qty: 1, unit: 95 },
-  { desc: 'Spark Plug Set', qty: 1, unit: 140 },
-]
-
-const LABOUR = [
-  { desc: 'Maintenance: Diagnostics', hours: 1.5, rate: 150 },
-  { desc: 'Repair: Brakes & Suspension', hours: 2.0, rate: 180 },
-  { desc: 'Inspection: Multi-Point Inspection', hours: 1.0, rate: 170 },
-]
+/** The live estimate row carries the VAT split the server computed from the
+ *  lines (F-029); the fixture row carries only the pre-formatted `amount`, so
+ *  every added field is optional. */
+type Estimate = RowOf<'estimates'> & {
+  _id?: string
+  totalHalalas?: number
+  subtotalHalalas?: number
+  taxHalalas?: number
+}
 
 /** Stage 3 — price the work found during inspection.
  *
- *  Totals are computed from the line items rather than hardcoded, so editing a
- *  line can't leave the footer disagreeing with the table. The design's fixed
- *  figures (1,345 / 201.75 / 1,546.75) fall out of the same arithmetic.
+ *  Parts and labour are the estimate's real line items (`GET
+ *  /estimates/:id/lines`), matched to this job card through `estimates`'
+ *  `jobCardId` filter — the same seam `EstimateDetail` reads. The summary
+ *  shows the subtotal/VAT/total the server computed rather than re-summing
+ *  money in the browser (§5b); a per-row total in the tables is still a
+ *  display-only `qty × unit`, same as every other line-item table in the app.
  *
  *  Approval is bounded by the signed-in role's SAR limit: an advisor (5,000)
  *  can approve this estimate, a technician (0) never can, and anything above a
@@ -48,16 +48,56 @@ export function WorkshopEstimate() {
   const isMobile = useIsMobile()
   const stage = useJobStage()
 
-  const partsTotal = PARTS.reduce((sum, row) => sum + row.qty * row.unit, 0)
-  const labourTotal = LABOUR.reduce((sum, row) => sum + row.hours * row.rate, 0)
-  const subtotal = partsTotal + labourTotal
-  const vat = subtotal * VAT_RATE
-  const grandTotal = subtotal + vat
+  const estimates = useCollection('estimates', { filter: { jobCardId: stage.job?._id ?? '' } })
+  const estimateRows = (estimates.data ?? []) as readonly Estimate[]
+  const estimate = estimateRows[0]
+  const ref = estimate?._id ?? estimate?.id
+
+  /* Line items are a sub-resource, not a collection — fetched directly, same
+   * as `EstimateDetail`. In the fixture build the call throws `unsupported`;
+   * the tables render that as an honest empty state rather than a fabricated
+   * row. */
+  const lines = useQuery<{ rows: EstimateLineRow[] }, RepositoryError>({
+    queryKey: ['estimate-lines', ref],
+    queryFn: () => fetchEstimateLines(ref as string),
+    enabled: Boolean(ref),
+    retry: false,
+  })
+
+  const lineRows = lines.data?.rows ?? []
+  const parts = lineRows.filter((row) => row.kind !== 'labour')
+  const labour = lineRows.filter((row) => row.kind === 'labour')
+
+  const subtotal = estimate?.subtotalHalalas != null ? estimate.subtotalHalalas / 100 : 0
+  const vat = estimate?.taxHalalas != null ? estimate.taxHalalas / 100 : 0
+  const grandTotal = estimate?.totalHalalas != null ? estimate.totalHalalas / 100 : 0
 
   const mayApprove = canApprove(grandTotal)
   const limit = roleMeta.limit
+  const linesLoading = estimates.isLoading || (Boolean(ref) && lines.isLoading)
+  const lineItemsEmpty = (
+    <EmptyState
+      icon="ReceiptText"
+      title={t('No line items to show')}
+      description={
+        !ref
+          ? t('No estimate is linked to this job card yet.')
+          : lines.isError
+            ? t('Line items load from the API. Connect a live server to see them.')
+            : t('This estimate has no line items yet.')
+      }
+    />
+  )
 
   async function approve() {
+    if (!estimate) {
+      toast.show({
+        title: t("Couldn't approve"),
+        description: t('No estimate is linked to this job card yet.'),
+        error: true,
+      })
+      return
+    }
     if (!mayApprove) {
       toast.show({
         title: t('Above your approval limit'),
@@ -76,18 +116,18 @@ export function WorkshopEstimate() {
     })
   }
 
-  const partsColumns: Column<typeof PARTS[number]>[] = [
-    { header: 'Description', cell: (row) => t(row.desc) },
+  const partsColumns: Column<EstimateLineRow>[] = [
+    { header: 'Description', cell: (row) => row.description },
     { header: 'Quantity', cell: (row) => String(row.qty) },
-    { header: 'Unit Price', cell: (row) => <Money sar={row.unit} /> },
-    { header: 'Total', cell: (row) => <Money sar={row.qty * row.unit} className="font-semibold" /> },
+    { header: 'Unit Price', cell: (row) => <Money sar={row.unitPriceHalalas / 100} /> },
+    { header: 'Total', cell: (row) => <Money sar={(row.qty * row.unitPriceHalalas) / 100} className="font-semibold" /> },
   ]
 
-  const labourColumns: Column<typeof LABOUR[number]>[] = [
-    { header: 'Description', cell: (row) => t(row.desc) },
-    { header: 'Hours', cell: (row) => row.hours.toFixed(1) },
-    { header: 'Rate', cell: (row) => <span dir="ltr" className="font-mono">{`SAR ${row.rate}/hr`}</span> },
-    { header: 'Total', cell: (row) => <Money sar={row.hours * row.rate} className="font-semibold" /> },
+  const labourColumns: Column<EstimateLineRow>[] = [
+    { header: 'Description', cell: (row) => row.description },
+    { header: 'Hours', cell: (row) => row.qty.toFixed(1) },
+    { header: 'Rate', cell: (row) => <span dir="ltr" className="font-mono">{`SAR ${(row.unitPriceHalalas / 100).toFixed(2)}/hr`}</span> },
+    { header: 'Total', cell: (row) => <Money sar={(row.qty * row.unitPriceHalalas) / 100} className="font-semibold" /> },
   ]
 
   return (
@@ -119,16 +159,18 @@ export function WorkshopEstimate() {
         <DataTable
           caption="Parts line items"
           columns={partsColumns}
-          rows={PARTS}
-          rowKey={(row) => row.desc}
+          rows={parts}
+          rowKey={(row) => row.id}
+          loading={linesLoading}
+          empty={lineItemsEmpty}
           mobileCard={(row) => (
             <>
               <MobileCardHeader
-                leading={<span className="text-[13px] text-body">{t(row.desc)}</span>}
-                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={row.qty * row.unit} /></span>}
+                leading={<span className="text-[13px] text-body">{row.description}</span>}
+                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={(row.qty * row.unitPriceHalalas) / 100} /></span>}
               />
               <MobileCardRow label={t('Quantity')} value={String(row.qty)} />
-              <MobileCardRow label={t('Unit Price')}><Money sar={row.unit} /></MobileCardRow>
+              <MobileCardRow label={t('Unit Price')}><Money sar={row.unitPriceHalalas / 100} /></MobileCardRow>
             </>
           )}
         />
@@ -138,16 +180,18 @@ export function WorkshopEstimate() {
         <DataTable
           caption="Labour line items"
           columns={labourColumns}
-          rows={LABOUR}
-          rowKey={(row) => row.desc}
+          rows={labour}
+          rowKey={(row) => row.id}
+          loading={linesLoading}
+          empty={lineItemsEmpty}
           mobileCard={(row) => (
             <>
               <MobileCardHeader
-                leading={<span className="text-[13px] text-body">{t(row.desc)}</span>}
-                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={row.hours * row.rate} /></span>}
+                leading={<span className="text-[13px] text-body">{row.description}</span>}
+                trailing={<span className="text-[13px] font-semibold text-heading"><Money sar={(row.qty * row.unitPriceHalalas) / 100} /></span>}
               />
-              <MobileCardRow label={t('Hours')} value={row.hours.toFixed(1)} />
-              <MobileCardRow label={t('Rate')}><span dir="ltr">{`SAR ${row.rate}/hr`}</span></MobileCardRow>
+              <MobileCardRow label={t('Hours')} value={row.qty.toFixed(1)} />
+              <MobileCardRow label={t('Rate')}><span dir="ltr">{`SAR ${(row.unitPriceHalalas / 100).toFixed(2)}/hr`}</span></MobileCardRow>
             </>
           )}
         />
@@ -174,7 +218,7 @@ export function WorkshopEstimate() {
         <Button
           size="lg"
           onClick={() => void approve()}
-          disabled={mayApprove && stageBusy(stage)}
+          disabled={!estimate || (mayApprove && stageBusy(stage))}
           className={isMobile ? 'w-full' : ''}
         >
           <Icon name="CheckCircle" size={18} />

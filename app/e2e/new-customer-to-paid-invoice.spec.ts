@@ -60,13 +60,16 @@ test.describe('New Customer to Paid Invoice (Golden Path 1)', () => {
     await expect(page.getByRole('button', { name: /Complete Check-In/ })).toBeDisabled()
   })
 
-  test('estimate totals compute from real line items', async ({ page }) => {
+  test('estimate totals read from the real linked estimate, honestly empty here', async ({ page }) => {
     await gotoReady(page, '/workshop-estimate')
     const text = await bodyText(page)
     expect(text).toContain('Cost Estimate')
-    expect(text).toContain('SAR 1,345.00')
-    expect(text).toContain('SAR 201.75')
-    expect(text).toContain('SAR 1,546.75')
+    // This build's check-in step above never persisted a job card (BLK-002:
+    // no server yet), so no estimate carries this job card's `jobCardId` —
+    // the same honest gap every other mutating step in this spec asserts,
+    // now true of the totals too, rather than a design-fixture figure.
+    expect(text).toContain('No line items to show')
+    expect(text).toContain('SAR 0.00')
   })
 
   test('invoice create recomputes the total when a line is removed', async ({ browser }) => {
@@ -114,9 +117,11 @@ test.describe('New customer to paid invoice lifecycle', () => {
     await page.getByRole('radio', { name: '1/2' }).click()
     expect(await bodyText(page)).toContain('Vehicle Check-In')
 
-    // 3. The estimate is priced from real line items.
+    // 3. The estimate is priced from real line items when one is linked to
+    //    this job card — this build never persisted the check-in above, so
+    //    there is none, and the screen says so rather than fabricating a total.
     await gotoReady(page, '/workshop-estimate')
-    expect(await bodyText(page)).toContain('SAR 1,546.75')
+    expect(await bodyText(page)).toContain('No line items to show')
 
     // 4. Billing turns the completed work into an invoice; removing a line
     //    recomputes the total live, in the browser, before any save.
