@@ -1187,7 +1187,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/BILLING.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 6973,
+      "bytes": 6972,
       "lines": 132,
       "type": "GENERATED",
       "archived": false,
@@ -1231,7 +1231,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 21454,
+      "bytes": 21469,
       "lines": 299,
       "type": "GENERATED",
       "archived": false,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16347,
-      "lines": 233,
+      "bytes": 16451,
+      "lines": 234,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 60841,
+      "bytes": 60833,
       "lines": 434,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -2144,8 +2144,8 @@
     {
       "path": "developer/local-development.md",
       "section": "developer",
-      "bytes": 12832,
-      "lines": 422,
+      "bytes": 14422,
+      "lines": 451,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,

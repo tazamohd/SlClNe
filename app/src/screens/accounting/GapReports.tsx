@@ -6,11 +6,11 @@ import {
 } from '@/components/shell/MobileShell'
 import { FeatureHeader, Section } from '@/components/shell/FeatureScreen'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
-import { Icon } from '@/components/ui/Icon'
-import { Loading } from '@/components/ui/States'
 import { formatSar } from '@/components/ui/Money'
+import { Loading } from '@/components/ui/States'
 import { productReports } from '@/data/repository'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { Figure, ReportGap } from './ReportControls'
 import { useInsuranceClaimsSummary, useLoansSummary } from './useFinanceReports'
 
 /** The insurance and loan reports.
@@ -26,41 +26,6 @@ import { useInsuranceClaimsSummary, useLoansSummary } from './useFinanceReports'
  *  no API, so the summary hook stays disabled and the screen falls back to the
  *  "connect the API" state — nothing is fetched and no figure is faked.
  */
-
-/** The gap state, shown when there is no API to compute the aggregate. */
-function ReportGap({ icon, title, collection, detail }: {
-  icon: string
-  title: string
-  collection: string
-  detail: string
-}) {
-  const { t } = usePreferences()
-  return (
-    <Section title={t('Connect the API')}>
-      <EmptyState icon={icon} title={t(title)} description={t(detail)} />
-      <p className="flex items-start justify-center gap-1.5 text-[11px] text-muted">
-        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
-        {t('Server aggregate:')}{' '}
-        <span dir="ltr" className="font-mono text-body">{collection}</span>
-      </p>
-    </Section>
-  )
-}
-
-/** A labelled money figure — the server's, displayed, never computed here. */
-function Figure({ label, halalas, accent }: { label: string; halalas: number; accent?: boolean }) {
-  return (
-    <div className="rounded-lg border border-line bg-surface px-4 py-3">
-      <div className="text-[11px] uppercase tracking-wide text-muted">{label}</div>
-      <div
-        dir="ltr"
-        className={`mt-1 font-mono text-lg font-semibold ${accent ? 'text-salis-orange' : 'text-body'}`}
-      >
-        {formatSar(halalas / 100)}
-      </div>
-    </div>
-  )
-}
 
 interface ClaimStatusRow {
   status: string

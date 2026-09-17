@@ -62,4 +62,32 @@ describe('F-029 · the estimate money fields are on the wire', () => {
     const response = await get('/estimates/EST-0230', stranger)
     expect(response.statusCode).toBe(404)
   })
+
+  it('presents validUntil null when the seed set none', async () => {
+    const manager = await harness.token('manager')
+    const response = await get('/estimates/EST-0230', manager)
+    expect((response.json() as { validUntil: string | null }).validUntil).toBeNull()
+  })
+
+  it('presents validUntil for an estimate created with one, unchanged by the round trip', async () => {
+    const advisor = await harness.token('advisor')
+    const validUntil = '2026-12-01T00:00:00.000Z'
+    const created = await harness.app.inject({
+      method: 'POST',
+      url: '/api/v1/estimates',
+      headers: { authorization: `Bearer ${advisor}`, 'content-type': 'application/json' },
+      payload: {
+        customerName: 'Expiry Test Customer',
+        vehicleLabel: 'Toyota Camry 2021',
+        validUntil,
+        lines: [{ description: 'Oil filter', kind: 'part', qty: 1, unitPriceHalalas: 4_500 }],
+      },
+    })
+    expect(created.statusCode, created.body).toBe(201)
+    const row = created.json() as { _id: string; validUntil: string | null }
+    expect(row.validUntil).toBe(validUntil)
+
+    const response = await get(`/estimates/${row._id}`, advisor)
+    expect((response.json() as { validUntil: string | null }).validUntil).toBe(validUntil)
+  })
 })

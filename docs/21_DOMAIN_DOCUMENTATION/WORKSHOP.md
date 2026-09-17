@@ -111,8 +111,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | generated | — | **0** |
-| GET | `/api/v1/estimates` | estimates:v | generated | — | 7 |
-| POST | `/api/v1/estimates` | estimates:c | explicit | — | 7 |
+| GET | `/api/v1/estimates` | estimates:v | generated | — | 8 |
+| POST | `/api/v1/estimates` | estimates:c | explicit | — | 8 |
 | GET | `/api/v1/estimates/:id` | estimates:v | generated | — | **0** |
 | PATCH | `/api/v1/estimates/:id` | estimates:e | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/approve` | estimates:a | explicit | — | 3 |
@@ -168,9 +168,9 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AppointmentCalendar | `/appointment-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Appointments | `/appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | MISSING | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | MISSING | yes |
 | D-Estimates | `/estimates` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-JobCardDetail | `/job-card-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-JobCards | `/job-cards` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -178,7 +178,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-OBDDiagnostics | `/obddiagnostics` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopCheckIn | `/workshop-check-in` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-WorkshopDelivery | `/workshop-delivery` | app | yes | yes | — | yes | verified | yes |
-| D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | MISSING | yes |
 | D-WorkshopInspection | `/workshop-inspection` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
