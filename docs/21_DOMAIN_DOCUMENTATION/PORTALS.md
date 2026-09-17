@@ -67,7 +67,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-KioskCheckIn | `/kiosk-check-in` | kiosk | yes | — | — | yes | PARTIAL | yes |
 | D-Native.Android | `/native/android` | native | **mock** | — | — | — | PARTIAL | yes |
 | D-Native.iOS | `/native/i-os` | native | **mock** | — | — | — | PARTIAL | yes |
-| D-ProcurementPortal | `/procurement-portal` | portal | **mock** | yes | yes | yes | PARTIAL | yes |
+| D-ProcurementPortal | `/procurement-portal` | portal | yes | yes | yes | yes | PARTIAL | yes |
 | D-ProcurementPortal.Requisitions | `/procurement-portal/requisitions` | portal | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-SupplierPortal | `/supplier-portal` | portal | yes | yes | yes | yes | PARTIAL | yes |
 | D-SupplierPortal.Orders | `/supplier-portal/orders` | portal | yes | yes | yes | yes | PARTIAL | yes |
@@ -76,7 +76,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **4 of 11 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **3 of 11 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **3 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence

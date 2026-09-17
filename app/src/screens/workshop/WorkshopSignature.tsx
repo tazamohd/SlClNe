@@ -8,27 +8,49 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Panel, FieldGrid, ReadField } from '@/components/ui/FieldGrid'
-import { formatSar } from '@/components/ui/Money'
+import { formatSar, parseSar } from '@/components/ui/Money'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { useJobStage } from './useJobStage'
+import { StageNotice } from './StageNotice'
 
-const TOTAL_SAR = 1546.75
+/** The live invoice row carries the total the server computed (F-029); the
+ *  fixture row carries only the pre-formatted `amount`. */
+type Invoice = RowOf<'invoices'> & { _id?: string; totalHalalas?: number }
 
 /** Customer e-signature on handover.
  *
  *  The design showed a "tap to sign" placeholder; this captures an actual
  *  signature on a canvas, because a handover record with no signature in it
  *  isn't a handover record. Strokes are kept as paths so the result can be
- *  serialised and stored once file storage exists (README §10). */
+ *  serialised and stored once file storage exists (README §10) — no
+ *  signature-on-delivery endpoint exists yet, so "Confirm Signature" still
+ *  only moves the customer on to `WorkshopDelivery` rather than persisting
+ *  anything. The job summary above it is real: the job card, customer,
+ *  vehicle and service come from `jobs`, and the total from the invoice
+ *  raised for this job card, same as `WorkshopDelivery` reads it. */
 export function WorkshopSignature() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
   const navigate = useNavigate()
+  const stage = useJobStage()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawing = useRef(false)
   const [hasSignature, setHasSignature] = useState(false)
   const [agreed, setAgreed] = useState(false)
+
+  const invoices = useCollection('invoices', { filter: { jobCardId: stage.job?._id ?? '' } })
+  const invoice = ((invoices.data ?? []) as readonly Invoice[])[0]
+  const totalSar = invoice
+    ? invoice.totalHalalas != null
+      ? invoice.totalHalalas / 100
+      : parseSar(invoice.amount)
+    : null
+  const signedAt = new Intl.DateTimeFormat('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
+  }).format(new Date())
 
   function pointFrom(event: React.PointerEvent<HTMLCanvasElement>) {
     const canvas = canvasRef.current
@@ -79,9 +101,9 @@ export function WorkshopSignature() {
   const ready = hasSignature && agreed
 
   function confirm() {
-    if (!ready) return
+    if (!ready || !stage.job) return
     toast.show({ title: t('Signature captured'), description: t('Ready for Delivery') })
-    setTimeout(() => navigate('/workshop-delivery'), 700)
+    setTimeout(() => navigate(`/workshop-delivery?id=${encodeURIComponent(stage.job!.id)}`), 700)
   }
 
   return (
@@ -91,18 +113,24 @@ export function WorkshopSignature() {
       <PageHeader
         icon="PenTool"
         title={t('Customer Signature')}
-        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
+        subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.cust}` : '—'}</span>}
         compact={isMobile}
       />
 
+      <StageNotice stage={stage} />
+
       <Panel icon="FileText" title={t('Job Summary')}>
         <FieldGrid>
-          <ReadField label={t('Job Card')} value="JC-A3F8B2C1" code emphasis />
-          <ReadField label={t('Customer')} value="Ahmed Al-Rashid" emphasis />
-          <ReadField label={t('Vehicle')} value="Toyota Camry 2022" />
-          <ReadField label={t('Service')} value={`${t('Maintenance')} · ${t('Repair')}`} />
-          <ReadField label={t('Total Amount')} value={formatSar(TOTAL_SAR)} code emphasis />
-          <ReadField label={t('Date & Time')} value="Jul 22, 2026 · 2:45 PM" />
+          <ReadField label={t('Job Card')} value={stage.job?.id ?? '—'} code emphasis />
+          <ReadField label={t('Customer')} value={stage.job?.cust ?? '—'} emphasis />
+          <ReadField label={t('Vehicle')} value={stage.job?.veh ?? '—'} />
+          <ReadField label={t('Service')} value={stage.job?.svc ?? '—'} />
+          <ReadField
+            label={t('Total Amount')}
+            value={totalSar != null ? formatSar(totalSar) : t('No invoice yet')}
+            code emphasis
+          />
+          <ReadField label={t('Date & Time')} value={signedAt} />
         </FieldGrid>
       </Panel>
 

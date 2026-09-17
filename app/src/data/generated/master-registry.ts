@@ -1695,8 +1695,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY"
+      "TABLET_MISSING"
     ],
     "inNav": true,
     "designSource": "project/KnowledgeBase.dc.html",
@@ -2363,8 +2362,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/ProcurementPortal.dc.html",
@@ -4537,9 +4535,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "owner": "08",
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
-    "flags": [
-      "MOCK_ONLY"
-    ],
+    "flags": [],
     "inNav": false,
     "designSource": "project/WorkshopDelivery.dc.html",
     "designMobileSource": "project/WorkshopDelivery.Mobile.dc.html",
@@ -4560,8 +4556,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopEstimate.dc.html",
@@ -4646,8 +4641,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopSignature.dc.html",
