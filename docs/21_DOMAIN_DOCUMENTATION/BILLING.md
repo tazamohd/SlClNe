@@ -106,9 +106,9 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| D-InvoiceCreate | `/invoice-create` | app | yes | yes | — | — | MISSING | yes |
+| D-InvoiceCreate | `/invoice-create` | app | yes | yes | — | — | PARTIAL | yes |
 | D-InvoiceDetail | `/invoice-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-InvoicePreview | `/invoice-preview` | app | yes | yes | — | — | MISSING | yes |
+| D-InvoicePreview | `/invoice-preview` | app | yes | yes | — | — | verified | yes |
 | D-Invoices | `/invoices` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Payments | `/payments` | app | yes | yes | yes | yes | verified | yes |
 | D-Receipts | `/receipts` | app | yes | yes | yes | yes | PARTIAL | yes |

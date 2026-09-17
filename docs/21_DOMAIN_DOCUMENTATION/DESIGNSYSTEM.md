@@ -137,7 +137,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-079 | `/purchase-agent-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | MISSING | yes |
+| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-083 | `/purchase-agent-delivery` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-084 | `/purchase-agent-orders` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-085 | `/purchase-agent-suppliers` | app | yes | yes | yes | yes | verified | yes |
@@ -174,7 +174,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-116 | `/client-portal-review-chat` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-118 | `/customer-app-booking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-119 | `/customer-app-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-120 | `/customer-app-payments` | app | yes | yes | yes | yes | MISSING | yes |
+| F-120 | `/customer-app-payments` | app | yes | yes | yes | yes | verified | yes |
 | F-122 | `/portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-123 | `/portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-124 | `/portal-invoices` | app | yes | yes | yes | yes | verified | yes |
@@ -196,11 +196,11 @@ _No lifecycle in the contract belongs to this domain._
 | F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-146 | `/general-ledger` | app | **mock** | yes | yes | yes | MISSING | yes |
-| F-148 | `/trial-balance` | app | **mock** | yes | yes | yes | MISSING | yes |
-| F-149 | `/balance-sheet` | app | **mock** | yes | yes | — | MISSING | yes |
-| F-150 | `/income-statement` | app | **mock** | yes | yes | — | MISSING | yes |
-| F-151 | `/cash-flow-statement` | app | **mock** | — | — | — | MISSING | yes |
+| F-146 | `/general-ledger` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| F-148 | `/trial-balance` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| F-149 | `/balance-sheet` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| F-150 | `/income-statement` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| F-151 | `/cash-flow-statement` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-152 | `/accounts-receivable` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-153 | `/accounts-payable` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-154 | `/bank-account-management` | app | **mock** | — | — | yes | verified | yes |
