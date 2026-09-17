@@ -207,9 +207,13 @@ export function WorkshopEstimate() {
       </Card>
 
       <div className={`flex gap-3 ${isMobile ? 'flex-col' : 'flex-wrap justify-end'}`}>
+        {/* Named "Preview", not "Send": nothing here delivers this to the
+            customer over any channel, and this screen's estimate is not yet
+            a real, savable record (§workshop-estimate — tracked separately),
+            so there is no id to link even in principle. */}
         <Button variant="outline" size="lg" onClick={() => navigate('/customer-approval')} className={isMobile ? 'w-full' : ''}>
-          <Icon name="Send" size={16} />
-          {t('Send to Customer')}
+          <Icon name="ExternalLink" size={16} />
+          {t('Preview Customer Approval')}
         </Button>
         <Button
           size="lg"

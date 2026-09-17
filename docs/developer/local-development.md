@@ -81,18 +81,18 @@ The frontend requires no `.env` file by default. The single controlling variable
 
 | Variable           | Effect When Set                        | Effect When Unset                     |
 |--------------------|----------------------------------------|---------------------------------------|
-| `VITE_API_BASE_URL`| Frontend uses `httpRepository` (REST API with Bearer auth) | Frontend uses `mockRepository` (in-memory fixture data) |
+| `VITE_API_URL`     | Frontend uses `httpRepository` (REST API with Bearer auth) | Frontend uses `mockRepository` (in-memory fixture data) |
 
 Set it inline when starting the dev server:
 
 ```bash
-VITE_API_BASE_URL=http://localhost:3001 npm run dev
+VITE_API_URL=http://localhost:3001/api/v1 npm run dev
 ```
 
 Or create `app/.env.local` (git-ignored):
 
 ```bash
-VITE_API_BASE_URL=http://localhost:3001
+VITE_API_URL=http://localhost:3001/api/v1
 ```
 
 ### 3.2 Backend Environment
@@ -176,10 +176,10 @@ npm run dev                   # Fastify on port 3001 (tsx watch)
 
 ```bash
 cd app
-VITE_API_BASE_URL=http://localhost:3001 npm run dev
+VITE_API_URL=http://localhost:3001/api/v1 npm run dev
 ```
 
-The frontend detects `VITE_API_BASE_URL` and dynamically imports the HTTP client, switching to `httpRepository` with Bearer token authentication.
+The frontend detects `VITE_API_URL` and dynamically imports the HTTP client, switching to `httpRepository` with Bearer token authentication. (`VITE_API_BASE_URL` is a separate, dead variable read only by `app/src/data/auth.ts`, which nothing imports — setting it alone does nothing; verified 2026-09-17.)
 
 ### 4.3 Backend-Only
 
@@ -190,7 +190,12 @@ cd server
 npm run dev
 ```
 
-Test endpoints with curl or Postman:
+Test endpoints with curl or Postman. First set a password on the seeded
+accounts — see §5.1 — or this returns 401:
+
+```bash
+cd server && npm run db:seed:passwords
+```
 
 ```bash
 # Login
@@ -216,6 +221,30 @@ curl http://localhost:3001/ready    # Readiness probe (tests DB)
 
 ### 5.1 Demo Accounts
 
+> **Verified 2026-09-17, and this section is stale beyond the note below — treat
+> the table as illustrative, not authoritative.** `server/scripts/seed.ts`
+> (`DEMO_USERS`) is the actual source of truth for which accounts exist; it
+> currently seeds 15 accounts (including `test@salisauto.sa`), several under
+> different emails than the table below (e.g. Branch Manager is
+> `manager@salisauto.sa`, not `bm@salisauto.sa`).
+>
+> More importantly: **the seed script deliberately does not set a password
+> hash for any account** — "a seeded password hash in a repository is a
+> credential in a repository" (`seed.ts`, `DEMO_USERS` comment). The
+> `salis1234` password documented here does **not** work against a freshly
+> seeded database until you run the dev-only script that sets it:
+>
+> ```bash
+> npm run db:seed:passwords          # sets `salis1234` on every demo account
+> npm run db:seed:passwords -- 'a-longer-password'   # or your own
+> ```
+>
+> `server/scripts/set-demo-passwords.ts` refuses to run with
+> `NODE_ENV=production`, and warns (rather than failing) that `salis1234`
+> itself is two characters short of this app's own password policy
+> (`MIN_PASSWORD_LENGTH = 12`) — a real account could never register with it,
+> but it is what every doc here documents, so the script still sets it.
+
 The seed database includes accounts for all 14 roles. Default password: `salis1234`
 
 | Role            | Email                        |
@@ -231,7 +260,7 @@ The seed database includes accounts for all 14 roles. Default password: `salis12
 | CRM Agent       | crm@salisauto.sa             |
 | Cashier         | cashier@salisauto.sa         |
 
-In mock mode (no `VITE_API_BASE_URL`), all roles are accessible through the login screen's role switcher without credentials.
+In mock mode (no `VITE_API_URL`), all roles are accessible through the login screen's role switcher without credentials.
 
 ### 5.2 Fixture Data
 

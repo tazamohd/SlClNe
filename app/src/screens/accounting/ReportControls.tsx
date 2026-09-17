@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/Button'
+import { EmptyState } from '@/components/ui/DataTable'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
+import { formatSar } from '@/components/ui/Money'
+import { Section } from '@/components/shell/FeatureScreen'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** Controls shared by every reporting surface — the date range, the export and
@@ -145,6 +148,52 @@ export function ServerTotalsNote({ endpoint }: { endpoint: string }) {
             {endpoint}
           </span>
         </p>
+      </div>
+    </div>
+  )
+}
+
+/* ---------------------------------------------------------------- no source */
+
+/** The full-page gap state for a report with no server collection to read at
+ *  all — not a missing period total (`AggregateGapNotice` covers that), but
+ *  nothing behind the screen yet. Shared by every report that reads a
+ *  server-only aggregate (`useFinanceReports.ts`) and has no fixture fallback
+ *  to fall back to, so a build with no API names the gap instead of a mock. */
+export function ReportGap({
+  icon,
+  title,
+  collection,
+  detail,
+}: {
+  icon: string
+  title: string
+  collection: string
+  detail: string
+}) {
+  const { t } = usePreferences()
+  return (
+    <Section title={t('Connect the API')}>
+      <EmptyState icon={icon} title={t(title)} description={t(detail)} />
+      <p className="flex items-start justify-center gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+        {t('Server aggregate:')}{' '}
+        <span dir="ltr" className="font-mono text-body">
+          {collection}
+        </span>
+      </p>
+    </Section>
+  )
+}
+
+/** A labelled money figure — the server's, displayed, never computed here.
+ *  Takes integer halalas, the wire unit every finance-report hook returns. */
+export function Figure({ label, halalas, accent }: { label: string; halalas: number; accent?: boolean }) {
+  return (
+    <div className="rounded-lg border border-line bg-surface px-4 py-3">
+      <div className="text-[11px] uppercase tracking-wide text-muted">{label}</div>
+      <div dir="ltr" className={`mt-1 font-mono text-lg font-semibold ${accent ? 'text-salis-orange' : 'text-body'}`}>
+        {formatSar(halalas / 100)}
       </div>
     </div>
   )

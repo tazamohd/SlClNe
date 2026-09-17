@@ -34,6 +34,12 @@ vi.mock('@/data/repository', async (importOriginal) => {
     get isLive() {
       return flags.live
     },
+    /* Only the null-check matters to the screens under test here — the data
+     * itself comes from the mocked `useFinanceReports` hooks below, never
+     * from a call through this sentinel. */
+    get financeReports() {
+      return flags.live ? ({} as unknown) : null
+    },
   }
 })
 
@@ -109,6 +115,20 @@ const TAX = {
   inputVatHalalas: 0,
   netVatPayableHalalas: 75_000,
 }
+
+/* The individual accounts are a separate fixture (`TRIAL_BALANCE_ACCOUNTS`
+ * below) used only by the GeneralLedger/TrialBalance/BalanceSheet/
+ * IncomeStatement tests; `TRIAL_BALANCE.accounts` stays empty here so the
+ * pre-existing FinancialReports/ReportsAnalytics assertions, which only read
+ * the roll-up totals, are untouched. */
+const TRIAL_BALANCE_ACCOUNTS = [
+  { code: '1001', name: 'Cash in Hand', type: 'Assets', debitHalalas: 100_000_000, creditHalalas: 0 },
+  { code: '1002', name: 'Accounts Receivable', type: 'Assets', debitHalalas: 168_350_000, creditHalalas: 0 },
+  { code: '2001', name: 'Accounts Payable', type: 'Liabilities', debitHalalas: 0, creditHalalas: 200_000_000 },
+  { code: '3001', name: 'Owner Capital', type: 'Equity', debitHalalas: 0, creditHalalas: 94_055_000 },
+  { code: '4001', name: 'Service Revenue', type: 'Revenue', debitHalalas: 0, creditHalalas: 120_000_000 },
+  { code: '5001', name: 'Salaries and Wages', type: 'Expense', debitHalalas: 80_000_000, creditHalalas: 0 },
+]
 
 const TRIAL_BALANCE = {
   accounts: [],
@@ -238,6 +258,161 @@ describe('FinancialReports — trialBalance, F-008 banner stays visible', () => 
     expect(
       screen.getByText(/server confirms assets do not equal liabilities plus equity/),
     ).toBeInTheDocument()
+  })
+
+  it('live: reads the server-computed P&L, not a paginated client sum', async () => {
+    // Regression pin for the page-25 truncation bug: `useLedgerTotals()`
+    // sums only the page of `chartOfAccounts` `useCollection` fetched, and
+    // the default fixture in `beforeEach` carries no Revenue or Expense
+    // accounts at all — a client sum would show SAR 0.00 for both. The fix
+    // reads `useTrialBalance()` instead, so the real trial-balance figures
+    // show through no matter what page of chartOfAccounts happens to be
+    // cached.
+    flags.live = true
+    finance.tb = TRIAL_BALANCE
+    const { FinancialReports } = await import('@/screens/accounting/Reports')
+    renderScreen(FinancialReports, { role: 'accountant' })
+    expect(screen.getAllByText('SAR 1,200,000.00').length).toBeGreaterThan(0) // revenue
+    expect(screen.getAllByText('SAR 800,000.00').length).toBeGreaterThan(0) // expense
+    expect(screen.getAllByText('SAR 400,000.00').length).toBeGreaterThan(0) // net profit
+  })
+
+  it('live: gaps the per-category expense chart instead of a paginated sum', async () => {
+    // The same class of bug, with no server aggregate to fall back on: a
+    // per-category breakdown is a money sum grouped from whatever page of
+    // `expenses` was fetched, and there is no `GET /expenses/summary`. Live
+    // mode must say so rather than chart an undercount that looks complete.
+    flags.live = true
+    finance.tb = TRIAL_BALANCE
+    rows.expenses = [{ category: 'Rent', amount: 'SAR 5,000' }]
+    const { FinancialReports } = await import('@/screens/accounting/Reports')
+    renderScreen(FinancialReports, { role: 'accountant' })
+    expect(screen.getByText(/GET \/expenses\/summary/)).toBeInTheDocument()
+    expect(screen.queryByText('Rent')).not.toBeInTheDocument()
+  })
+})
+
+// ── GeneralLedger / TrialBalance / BalanceSheet / IncomeStatement ───────────
+//
+// All four read `GET /accounting/reports/trial-balance`'s `accounts[]` — one
+// row per chart-of-accounts entry with its balance already placed on its
+// normal debit or credit side. Each used to be a screen full of hand-written
+// rows whose own docstring admitted "spec-only build, all amounts are mock
+// data." There is no fixture fallback: `financeReports === null` renders the
+// honest `ReportGap` state instead.
+
+const TRIAL_BALANCE_WITH_ACCOUNTS = { ...TRIAL_BALANCE, accounts: TRIAL_BALANCE_ACCOUNTS }
+
+describe('GeneralLedger — trialBalance accounts', () => {
+  it('fixture: names the gap, invents no account rows', async () => {
+    const { GeneralLedger } = await import('@/screens/accounting/GeneralLedger')
+    renderScreen(GeneralLedger, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/accounting\/reports\/trial-balance/)).toBeInTheDocument()
+    expect(screen.queryByText('Cash in Hand')).not.toBeInTheDocument()
+    expect(screen.queryByText(/SAR/)).not.toBeInTheDocument()
+  })
+
+  it('live: renders the real chart-of-accounts rows with debit/credit placement', async () => {
+    flags.live = true
+    finance.tb = TRIAL_BALANCE_WITH_ACCOUNTS
+    const { GeneralLedger } = await import('@/screens/accounting/GeneralLedger')
+    renderScreen(GeneralLedger, { role: 'accountant' })
+    expect(screen.queryByText('Connect the API')).not.toBeInTheDocument()
+    expect(screen.getByText('Cash in Hand')).toBeInTheDocument()
+    expect(screen.getByText('Service Revenue')).toBeInTheDocument()
+    // Server totals, not a client re-sum of the account rows shown.
+    expect(screen.getAllByText('SAR 2,683,500.00').length).toBeGreaterThan(0) // total debit
+  })
+})
+
+describe('TrialBalance — trialBalance accounts', () => {
+  it('fixture: names the gap, invents no account rows', async () => {
+    const { TrialBalance } = await import('@/screens/accounting/TrialBalance')
+    renderScreen(TrialBalance, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/accounting\/reports\/trial-balance/)).toBeInTheDocument()
+    expect(screen.queryByText('Owner Equity')).not.toBeInTheDocument()
+  })
+
+  it('live: renders the server debit/credit columns and the honest imbalance', async () => {
+    flags.live = true
+    finance.tb = TRIAL_BALANCE_WITH_ACCOUNTS
+    const { TrialBalance } = await import('@/screens/accounting/TrialBalance')
+    renderScreen(TrialBalance, { role: 'accountant' })
+    expect(screen.getByText('Salaries and Wages')).toBeInTheDocument()
+    expect(
+      screen.getByText('The trial balance does not balance — total debits do not equal total credits.'),
+    ).toBeInTheDocument()
+  })
+})
+
+describe('BalanceSheet — trialBalance accounts', () => {
+  it('fixture: names the gap, invents no line items', async () => {
+    const { BalanceSheet } = await import('@/screens/accounting/BalanceSheet')
+    renderScreen(BalanceSheet, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/accounting\/reports\/trial-balance/)).toBeInTheDocument()
+    expect(screen.queryByText('Fixed Assets')).not.toBeInTheDocument()
+  })
+
+  it('live: sections are real accounts, and the identity is the server’s own balanceSheet block', async () => {
+    flags.live = true
+    finance.tb = TRIAL_BALANCE_WITH_ACCOUNTS
+    const { BalanceSheet } = await import('@/screens/accounting/BalanceSheet')
+    renderScreen(BalanceSheet, { role: 'accountant' })
+    expect(screen.getByText('Cash in Hand')).toBeInTheDocument()
+    expect(screen.getByText('Accounts Payable')).toBeInTheDocument()
+    expect(screen.getByText('Owner Capital')).toBeInTheDocument()
+    // F-008's imbalance, carried by `balanceSheet.balanced`, is surfaced honestly.
+    expect(screen.getByText('Assets do not equal liabilities plus equity.')).toBeInTheDocument()
+    expect(screen.getAllByText('Unbalanced').length).toBeGreaterThan(0)
+  })
+})
+
+describe('IncomeStatement — trialBalance accounts', () => {
+  it('fixture: names the gap, invents no line items', async () => {
+    const { IncomeStatement } = await import('@/screens/accounting/IncomeStatement')
+    renderScreen(IncomeStatement, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.getByText(/accounting\/reports\/trial-balance/)).toBeInTheDocument()
+    expect(screen.queryByText('Parts Sales')).not.toBeInTheDocument()
+  })
+
+  it('live: Revenue and Expense sections are real accounts, totals are the server’s P&L', async () => {
+    flags.live = true
+    finance.tb = TRIAL_BALANCE_WITH_ACCOUNTS
+    const { IncomeStatement } = await import('@/screens/accounting/IncomeStatement')
+    renderScreen(IncomeStatement, { role: 'accountant' })
+    expect(screen.getByText('Service Revenue')).toBeInTheDocument()
+    expect(screen.getByText('Salaries and Wages')).toBeInTheDocument()
+    expect(screen.getAllByText('SAR 1,200,000.00').length).toBeGreaterThan(0) // total revenue
+    expect(screen.getAllByText('SAR 400,000.00').length).toBeGreaterThan(0) // net income
+  })
+})
+
+// ── CashFlowStatement ────────────────────────────────────────────────────────
+//
+// No schema field classifies a journal entry as operating, investing or
+// financing activity, so this is a gap regardless of `isLive` — connecting
+// the API alone cannot fill it in, unlike the other four reports above.
+
+describe('CashFlowStatement — no activity classification exists', () => {
+  it('fixture: names the gap, invents no line items', async () => {
+    const { CashFlowStatement } = await import('@/screens/accounting/CashFlowStatement')
+    renderScreen(CashFlowStatement, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.queryByText('Operating Activities')).not.toBeInTheDocument()
+    expect(screen.queryByText(/SAR/)).not.toBeInTheDocument()
+  })
+
+  it('live: still names the gap — a live API does not create an activity classification', async () => {
+    flags.live = true
+    finance.tb = TRIAL_BALANCE_WITH_ACCOUNTS
+    const { CashFlowStatement } = await import('@/screens/accounting/CashFlowStatement')
+    renderScreen(CashFlowStatement, { role: 'accountant' })
+    expect(screen.getByText('Connect the API')).toBeInTheDocument()
+    expect(screen.queryByText('Operating Activities')).not.toBeInTheDocument()
   })
 })
 

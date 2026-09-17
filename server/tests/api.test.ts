@@ -418,6 +418,69 @@ describe('invoices and payments', () => {
     expect(paid.json().invoice.status).toBe('paid')
   })
 
+  /** The TLV encoding `zatcaQr()` writes: tag, one length byte, then that many
+   *  UTF-8 bytes — decoded independently here rather than trusting the
+   *  function under test to describe its own output. */
+  function decodeZatcaTlv(base64: string): Record<number, string> {
+    const buf = Buffer.from(base64, 'base64')
+    const fields: Record<number, string> = {}
+    let i = 0
+    while (i < buf.length) {
+      const tag = buf[i]
+      const len = buf[i + 1]
+      fields[tag] = buf.subarray(i + 2, i + 2 + len).toString('utf8')
+      i += 2 + len
+    }
+    return fields
+  }
+
+  it('issues with the seller — not the buyer — in the QR, and the org VAT number on the row', async () => {
+    const token = await harness.token('accountant')
+    const invoice = await createInvoice(token)
+
+    const issued = await harness.app.inject({
+      method: 'POST',
+      url: `/api/v1/invoices/${invoice._id}/issue`,
+      ...json(token, {}),
+    })
+    expect(issued.statusCode, issued.body).toBe(200)
+    const body = issued.json() as { qrCode: string; sellerVatNumber: string | null }
+
+    /* Seeded org: SEED.orgId → 'SALIS AUTO Riyadh', vatNumber '300123456700003'. */
+    expect(body.sellerVatNumber).toBe('300123456700003')
+
+    const tlv = decodeZatcaTlv(body.qrCode)
+    expect(tlv[1]).toBe('SALIS AUTO Riyadh')
+    expect(tlv[1]).not.toBe('Ahmed Al-Rashid')
+    expect(tlv[2]).toBe('300123456700003')
+    expect(tlv[4]).toBe('1150.00')
+  })
+
+  it('refuses to issue for an organization with no VAT number on file', async () => {
+    /* SEED.otherOrgId ('Neighbouring Garage') is seeded without one. */
+    const token = await harness.token('accountant', { orgId: SEED.otherOrgId })
+    const created = await harness.app.inject({
+      method: 'POST',
+      url: '/api/v1/invoices',
+      ...json(token, {
+        customerName: 'Neighbour Customer',
+        dueDate: '2026-09-01',
+        lines: [{ description: 'Oil change', kind: 'labour', qty: 1, unitPriceHalalas: 50_000 }],
+      }),
+    })
+    expect(created.statusCode, created.body).toBe(201)
+    const invoiceId = created.json()._id as string
+
+    const issued = await harness.app.inject({
+      method: 'POST',
+      url: `/api/v1/invoices/${invoiceId}/issue`,
+      ...json(token, {}),
+    })
+    expect(issued.statusCode, issued.body).toBe(422)
+    expect(issued.json().error.code).toBe('rule_violated')
+    expect(issued.json().error.message).toMatch(/no VAT registration number/)
+  })
+
   it('refuses a payment larger than the balance', async () => {
     const token = await harness.token('accountant')
     const invoice = await createInvoice(token)

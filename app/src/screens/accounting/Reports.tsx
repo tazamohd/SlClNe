@@ -12,7 +12,8 @@ import { useSession } from '@/providers/SessionProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
 import { fromHalalas } from '@/screens/finance/money'
-import { useTrialBalance } from './useFinanceReports'
+import { AggregateGapNotice } from './ReportControls'
+import { useInvoicesSummary, useTrialBalance } from './useFinanceReports'
 
 /** The reporting screens.
  *
@@ -92,6 +93,54 @@ function useLedgerTotals() {
   return { ...totals, isLoading, isError, error, refetch }
 }
 
+/** The headline money figures, live-safe.
+ *
+ *  `useLedgerTotals` sums whatever page of `chartOfAccounts` / `invoices`
+ *  `useCollection` happened to fetch — exactly right on the fixture build,
+ *  where the mock repository hands back every row when no `pageSize` is
+ *  given, and silently wrong against the live API, whose default page is 25
+ *  rows (`DEFAULT_PAGE_SIZE`, `data/repository.ts`): an organization with
+ *  more than 25 chart-of-accounts rows or invoices would see a real-looking
+ *  revenue, profit or balance-sheet total that is quietly short — the same
+ *  class of bug `MAX_PAGE_SIZE`'s own docstring warns about elsewhere.
+ *  `GET /accounting/reports/trial-balance` and `GET /invoices/summary`
+ *  already compute these same figures in SQL over the whole tenant scope
+ *  (F-028), so live mode reads those instead of re-summing a page. The
+ *  fixture path is untouched — its collections are never paginated, so the
+ *  client sum there is exact.
+ *
+ *  Takes the fixture totals as a parameter rather than calling
+ *  `useLedgerTotals()` itself: `FinancialReports`/`FinancialStatements` fetch
+ *  their three collections with `useCollection` directly in their own body
+ *  (BLK-004's registry detector only recognizes a call written there, not one
+ *  nested inside a wrapper hook), so they build the same shape by hand and
+ *  hand it in; `ExecutiveReports`/`BIDashboard` pass `useLedgerTotals()`
+ *  straight through. */
+function useHeadlineFigures(fixture: ReturnType<typeof useLedgerTotals>) {
+  const tb = useTrialBalance()
+  const invoicesSummary = useInvoicesSummary({})
+
+  if (!isLive) return { ...fixture, live: false as const }
+
+  const p = tb.data?.profitAndLoss
+  const b = tb.data?.balanceSheet
+
+  return {
+    ...fixture,
+    isLoading: fixture.isLoading || tb.isLoading,
+    isError: fixture.isError || tb.isError,
+    error: fixture.error ?? tb.error,
+    revenue: p ? fromHalalas(p.revenueHalalas) : 0,
+    expenseAccounts: p ? fromHalalas(p.expenseHalalas) : 0,
+    profit: p ? fromHalalas(p.netHalalas) : 0,
+    assets: b ? fromHalalas(b.assetsHalalas) : 0,
+    liabilities: b ? fromHalalas(b.liabilitiesHalalas) : 0,
+    equity: b ? fromHalalas(b.equityHalalas) : 0,
+    receivable: invoicesSummary.data ? fromHalalas(invoicesSummary.data.outstandingHalalas) : 0,
+    live: true as const,
+  }
+}
+
 // ── Financial reports ───────────────────────────────────────────────────────
 export function FinancialReports() {
   const { t } = usePreferences()
@@ -99,14 +148,17 @@ export function FinancialReports() {
   const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
   const { data: expenses = [], isLoading: eL } = useCollection('expenses')
   const { data: invoices = [], isLoading: iL } = useCollection('invoices')
-  const isLoading = aL || eL || iL
-  const isError = aE
-  const error = aErr
-  const refetch = aR
-  const totals = useMemo(
+  const fixtureTotals = useMemo(
     () => computeLedgerTotals(accounts, expenses, invoices),
     [accounts, expenses, invoices],
   )
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures({
+    ...fixtureTotals,
+    isLoading: aL || eL || iL,
+    isError: aE,
+    error: aErr,
+    refetch: aR,
+  })
 
   const stats: Stat[] = [
     { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
@@ -115,6 +167,12 @@ export function FinancialReports() {
     { label: 'Receivable', value: formatSar(totals.receivable), caption: 'Outstanding invoices' },
   ]
 
+  /* Live mode: this is a money sum grouped by category, and there is no
+   * `GET /expenses/summary`-style endpoint to compute it over the whole
+   * organization — `totals.expenses` here is only the page `useCollection`
+   * fetched, so the honest state is the gap notice, not a chart that looks
+   * complete and silently is not. The fixture build's collection is never
+   * paginated, so the chart stays real there. */
   const byCategory = useMemo(() => {
     const map = new Map<string, number>()
     for (const expense of totals.expenses) {
@@ -143,7 +201,9 @@ export function FinancialReports() {
           />
         </Section>
         <Section title={t('Expenses by Category')} subtitle={t('Approved and pending claims')}>
-          {byCategory.length ? (
+          {isLive ? (
+            <AggregateGapNotice endpoint="GET /expenses/summary — no endpoint sums expense totals by category" />
+          ) : byCategory.length ? (
             <BarList rows={byCategory} />
           ) : (
             <p className="text-[13px] text-muted">{t('No expenses recorded')}</p>
@@ -187,7 +247,9 @@ export function FinancialReports() {
         </Section>
 
         <Section title={t('Expenses by Category')} subtitle={t('Approved and pending claims')}>
-          {byCategory.length ? (
+          {isLive ? (
+            <AggregateGapNotice endpoint="GET /expenses/summary — no endpoint sums expense totals by category" />
+          ) : byCategory.length ? (
             <BarList rows={byCategory} />
           ) : (
             <p className="text-[13px] text-muted">{t('No expenses recorded')}</p>
@@ -302,14 +364,17 @@ export function FinancialStatements() {
   const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
   const { data: expenses = [], isLoading: eL } = useCollection('expenses')
   const { data: invoices = [], isLoading: iL } = useCollection('invoices')
-  const isLoading = aL || eL || iL
-  const isError = aE
-  const error = aErr
-  const refetch = aR
-  const totals = useMemo(
+  const fixtureTotals = useMemo(
     () => computeLedgerTotals(accounts, expenses, invoices),
     [accounts, expenses, invoices],
   )
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures({
+    ...fixtureTotals,
+    isLoading: aL || eL || iL,
+    isError: aE,
+    error: aErr,
+    refetch: aR,
+  })
 
   const rows: readonly { label: string; value: number; strong?: boolean }[] = [
     { label: 'Revenue', value: totals.revenue },
@@ -380,7 +445,7 @@ export function ExecutiveReports() {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures(useLedgerTotals())
   const { data: jobs = [] } = useCollection('jobs')
   const { data: customers = [] } = useCollection('customers')
 
@@ -542,7 +607,7 @@ export function OperationalReports() {
 export function BIDashboard() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useLedgerTotals()
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures(useLedgerTotals())
   const { data: jobs = [] } = useCollection('jobs')
 
   const bySvc = useMemo(() => {

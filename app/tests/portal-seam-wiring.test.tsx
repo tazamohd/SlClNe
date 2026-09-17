@@ -10,6 +10,8 @@ import { PortalVehicles } from '@/screens/portals/misc/PortalVehicles'
 import { PortalAppointments } from '@/screens/portals/misc/PortalAppointments'
 import { PortalInvoices } from '@/screens/portals/misc/PortalInvoices'
 import { CustomerAppVehicles } from '@/screens/customer-app/CustomerAppVehicles'
+import { CustomerAppPayments } from '@/screens/customer-app/CustomerAppPayments'
+import { PurchaseAgentPayments } from '@/screens/portals/purchase/PurchaseAgentPayments'
 import { VehiclesList } from '@/screens/workshop/VehiclesList'
 
 /** The portal, customer-app and workshop lists moved off hardcoded arrays and
@@ -206,6 +208,50 @@ describe('CustomerAppVehicles reads vehicles', () => {
     // Colour, next service and insurance are not columns of `vehicles`.
     expect(screen.getAllByText('—').length).toBeGreaterThanOrEqual(3)
     expect(screen.getByText('GET /vehicles/summary')).toBeInTheDocument()
+  })
+})
+
+describe('CustomerAppPayments reads invoices', () => {
+  it('renders the invoice the collection returned, at the server amount', async () => {
+    renderScreen(CustomerAppPayments, { role: 'customer' })
+
+    expect(await screen.findByText(INVOICE.id)).toBeInTheDocument()
+    expect(screen.getAllByText(/SAR 1,840\.00/).length).toBeGreaterThan(0)
+  })
+
+  it('GAP: drops the invented transaction history and card numbers', async () => {
+    renderScreen(CustomerAppPayments, { role: 'customer' })
+    await screen.findByText(INVOICE.id)
+
+    // The hardcoded PAYMENTS/METHODS arrays this screen used to render.
+    expect(screen.queryByText('PAY-8401')).toBeNull()
+    expect(screen.queryByText('Oil Change + Filter')).toBeNull()
+    expect(screen.queryByText(/4821/)).toBeNull()
+    expect(screen.queryByText('Apple Pay')).toBeNull()
+    // No card-vaulting integration exists; the screen says so.
+    expect(screen.getByText('Payment Methods')).toBeInTheDocument()
+    expect(screen.getByText(/card-vaulting integration/)).toBeInTheDocument()
+    expect(screen.getByText(/GET \/invoices\/summary/)).toBeInTheDocument()
+  })
+})
+
+describe('PurchaseAgentPayments reads purchase orders', () => {
+  it('names the missing accounts-payable capability rather than inventing one', async () => {
+    renderScreen(PurchaseAgentPayments, { role: 'procurement' })
+
+    expect(await screen.findByText('Supplier payment tracking is not connected')).toBeInTheDocument()
+    // The hardcoded PAYMENTS array this screen used to render.
+    expect(screen.queryByText('PAY-3021')).toBeNull()
+    expect(screen.queryByText('Al-Futtaim Parts')).toBeNull()
+    expect(screen.queryByText('Overdue')).toBeNull()
+    expect(screen.queryByText('Scheduled')).toBeNull()
+  })
+
+  it('shows the honest empty state rather than a fabricated row when there are no orders', async () => {
+    renderScreen(PurchaseAgentPayments, { role: 'procurement' })
+    // The mock `purchaseOrders` collection is seeded empty — see
+    // `workshop-live-wiring.test.tsx` for this screen with live rows mocked.
+    expect(await screen.findByText('No purchase orders yet')).toBeInTheDocument()
   })
 })
 

@@ -138,8 +138,11 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
  *  credentials belong to the authentication module, and a seeded password hash
- *  in a repository is a credential in a repository. */
-const DEMO_USERS: readonly {
+ *  in a repository is a credential in a repository. Exported so
+ *  `scripts/set-demo-passwords.ts` — the dev-only script that actually sets
+ *  one, locally, after this file has run — has one list to work from rather
+ *  than a second copy of these emails that can drift from this one. */
+export const DEMO_USERS: readonly {
   role: string
   email: string
   name: string
@@ -1311,7 +1314,17 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
  *  tenant proves nothing. */
 export async function seedAll(tx: Tx): Promise<void> {
   await tx.insert(s.organizations).values([
-    { id: SEED.orgId, name: 'SALIS AUTO Riyadh', slug: 'salis-riyadh', plan: 'enterprise' },
+    /* vatNumber: issuing an invoice reads this and refuses without one
+     * (routes/invoices.ts) — a real ZATCA-format registration (15 digits,
+     * starting and ending with 3), not the literal the frontend used to
+     * hardcode in its place. */
+    {
+      id: SEED.orgId,
+      name: 'SALIS AUTO Riyadh',
+      slug: 'salis-riyadh',
+      plan: 'enterprise',
+      vatNumber: '300123456700003',
+    },
     { id: SEED.otherOrgId, name: 'Neighbouring Garage', slug: 'neighbour', plan: 'starter' },
   ])
 
