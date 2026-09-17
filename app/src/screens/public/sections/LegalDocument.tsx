@@ -1,13 +1,18 @@
 import { useT } from '@/providers/PreferencesProvider'
 
-/** The shared layout for the Tier C legal pages — Privacy Policy and Terms.
+/** The shared layout for the Tier C legal pages — Privacy Policy, Terms and
+ *  Cookie Policy.
  *
  *  These are **design-system pages**: no `PublicPortal.*.dc.html` exists for
  *  them, so they are composed from the approved public section system, not
- *  presented as design-authoritative (§A25 provenance). Each carries a plain
- *  legal-scaffold body and an explicit banner saying it is a template that has
- *  not been reviewed by counsel — honest about what it is, not passed off as
- *  binding legal text.
+ *  presented as design-authoritative (§A25 provenance).
+ *
+ *  The public copy states the document's version and effective date and
+ *  nothing more — no "not reviewed by counsel" disclaimer, which would make
+ *  the live site look careless, and no claim that legal review has happened,
+ *  which would not be true. Open legal-review items (operating entity name,
+ *  DPO contact, cross-border transfer specifics, etc.) are tracked in
+ *  `LEGAL_REVIEW_REQUIRED.md` at the repo root, not surfaced here.
  *
  *  One `<h1>` (the document title) owned here; every clause is an `<h2>`, so the
  *  heading hierarchy the public-pages test enforces never skips a level. */
@@ -21,28 +26,24 @@ export interface LegalDocumentProps {
   title: string
   /** Human-readable effective date, e.g. "16 August 2026". */
   updated: string
+  /** Document version, e.g. "1.1". */
+  version: string
   /** The lede paragraph under the title, before the first clause. */
   intro: string
   clauses: readonly LegalClause[]
 }
 
-export function LegalDocument({ title, updated, intro, clauses }: LegalDocumentProps) {
+export function LegalDocument({ title, updated, version, intro, clauses }: LegalDocumentProps) {
   const t = useT()
   return (
     <div className="mx-auto max-w-[800px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <h1 className="mb-2 mt-0 font-display text-3xl font-black text-heading md:text-[40px]">
         {t(title)}
       </h1>
-      <p className="mb-6 mt-0 text-[13px] text-muted">
-        {t('Last updated')}: <span dir="ltr">{updated}</span>
-      </p>
-
-      {/* Not a heading, not styled as an error — an honest note about status.
-          Blue (informational/active), never a warning hue. */}
-      <p className="mb-8 mt-0 rounded-[14px] border border-salis-blue bg-salis-blue/[.06] p-4 text-[13px] leading-relaxed text-heading">
-        {t(
-          'This is a plain-language template provided for transparency while the platform is being built. It has not been reviewed by legal counsel and is not a substitute for professional legal advice.'
-        )}
+      <p className="mb-8 mt-0 text-[13px] text-muted">
+        {t('Effective date')}: <span dir="ltr">{updated}</span>
+        {' · '}
+        {t('Version')} <span dir="ltr">{version}</span>
       </p>
 
       <p className="mb-8 mt-0 text-[15px] leading-[1.7] text-body">{t(intro)}</p>

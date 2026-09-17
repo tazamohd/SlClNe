@@ -33,19 +33,26 @@ describe('PublicShell', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 
-  it('carries the seven design nav links, each to a real public route', () => {
+  it('carries the seven primary nav links, each to a real public route', () => {
     renderShell()
     const nav = screen.getAllByRole('navigation', { name: 'Main navigation' })[0]
     const links = Array.from(nav.querySelectorAll('a')).map((a) => a.getAttribute('href'))
     expect(links).toEqual([
       '/public-portal/landing',
       '/public-portal/about',
-      '/public-portal/services',
-      '/public-portal/parts-accessories',
-      '/public-portal/deals-offers',
+      '/public-portal/industries',
+      '/public-portal/integrations',
+      '/public-portal/security',
+      '/public-portal/pricing',
       '/public-portal/contact',
-      '/public-portal/blog',
     ])
+  })
+
+  it('shows a persistent Request a Demo CTA in the desktop header', () => {
+    renderShell()
+    expect(
+      screen.getByRole('link', { name: 'Request a Demo' })
+    ).toHaveAttribute('href', '/public-portal/request-demo')
   })
 
   it('links Sign In into the auth chain at /login', () => {
@@ -82,7 +89,8 @@ describe('PublicShell', () => {
     await user.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     const menu = screen.getByRole('navigation', { name: 'Main navigation' })
-    expect(menu.querySelectorAll('a')).toHaveLength(7)
+    // The seven nav links plus the mobile menu's own Request a Demo CTA.
+    expect(menu.querySelectorAll('a')).toHaveLength(8)
 
     // Navigating closes the panel. (The footer also carries an About link, so
     // scope the query to the menu panel.)

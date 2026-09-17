@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import type { ReactElement } from 'react'
 import fs from 'node:fs'
 import path from 'node:path'
 import { SCREENS } from '@/data/generated/screens'
@@ -55,16 +57,50 @@ describe('usePageMeta', () => {
     return null
   }
 
+  function renderHead(ui: ReactElement, route = '/public-portal/landing') {
+    return render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>)
+  }
+
   it('sets the document title and meta description, updating in place', () => {
-    const { rerender } = render(<Head title="First — SALIS AUTO" description="first description" />)
+    const { rerender } = renderHead(
+      <Head title="First — SALIS AUTO" description="first description" />
+    )
     expect(document.title).toBe('First — SALIS AUTO')
     const tag = () => document.head.querySelector('meta[name="description"]')
     expect(tag()?.getAttribute('content')).toBe('first description')
 
-    rerender(<Head title="Second — SALIS AUTO" description="second description" />)
+    rerender(
+      <MemoryRouter initialEntries={['/public-portal/landing']}>
+        <Head title="Second — SALIS AUTO" description="second description" />
+      </MemoryRouter>
+    )
     expect(document.title).toBe('Second — SALIS AUTO')
     expect(tag()?.getAttribute('content')).toBe('second description')
     // One tag, updated — not a new tag per page.
     expect(document.head.querySelectorAll('meta[name="description"]')).toHaveLength(1)
+  })
+
+  it('sets a canonical URL and matching og:url from the current route', () => {
+    renderHead(<Head title="Pricing — SALIS AUTO" description="d" />, '/public-portal/pricing')
+    const canonical = document.head.querySelector('link[rel="canonical"]')
+    expect(canonical?.getAttribute('href')).toBe('https://salisauto.sa/public-portal/pricing')
+    const ogUrl = document.head.querySelector('meta[property="og:url"]')
+    expect(ogUrl?.getAttribute('content')).toBe('https://salisauto.sa/public-portal/pricing')
+  })
+
+  it('sets Open Graph and Twitter title/description alongside the meta description', () => {
+    renderHead(<Head title="Security — SALIS AUTO" description="Security description" />)
+    expect(
+      document.head.querySelector('meta[property="og:title"]')?.getAttribute('content')
+    ).toBe('Security — SALIS AUTO')
+    expect(
+      document.head.querySelector('meta[property="og:description"]')?.getAttribute('content')
+    ).toBe('Security description')
+    expect(
+      document.head.querySelector('meta[name="twitter:title"]')?.getAttribute('content')
+    ).toBe('Security — SALIS AUTO')
+    expect(
+      document.head.querySelector('meta[name="twitter:description"]')?.getAttribute('content')
+    ).toBe('Security description')
   })
 })

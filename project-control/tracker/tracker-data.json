@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12",
+  "generatedAt": "2026-09-16",
   "domains": [
     {
       "id": "workshop",
@@ -1700,6 +1700,24 @@
         {
           "name": "PublicPortal · Resources",
           "route": "/public-portal/resources",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · RoiCalculator",
+          "route": "/public-portal/roi-calculator",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Security",
+          "route": "/public-portal/security",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -3940,8 +3958,8 @@
     }
   ],
   "totals": {
-    "total": 425,
-    "built": 425,
+    "total": 427,
+    "built": 427,
     "designedMobile": 113
   }
 }

@@ -822,6 +822,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Resources & learning hub"
   },
   {
+    "name": "PublicPortal.RoiCalculator",
+    "route": "/public-portal/roi-calculator",
+    "hasMobile": false,
+    "purpose": "Public website — ROI calculator"
+  },
+  {
+    "name": "PublicPortal.Security",
+    "route": "/public-portal/security",
+    "hasMobile": false,
+    "purpose": "Public website — Security & data"
+  },
+  {
     "name": "PublicPortal.Services",
     "route": "/public-portal/services",
     "hasMobile": false,

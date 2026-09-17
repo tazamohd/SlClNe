@@ -7,67 +7,54 @@ import { cn } from '@/lib/cn'
 
 /** PublicPortal.Pricing — Tier B content page.
  *
- *  Three plan cards in a responsive row. Professional is visually highlighted
- *  with a ring. CTAs point to real destinations — register for free, or
- *  request-demo for paid tiers. */
+ *  No public prices. Configuration (modules, branch count, users, data
+ *  migration, integrations, training, support and SLA requirements) drives
+ *  cost, so every plan routes to a sales conversation rather than a number we
+ *  cannot stand behind — see LEGAL_REVIEW_REQUIRED.md. Professional is
+ *  visually highlighted as the plan most workshops start the conversation
+ *  from, not as a default price tier. */
 interface Plan {
   name: string
-  price: string
-  period?: string
+  tagline: string
   features: readonly string[]
-  cta: string
-  to: string
   highlighted?: boolean
 }
 
 const PLANS: readonly Plan[] = [
   {
-    name: 'Starter',
-    price: 'Free',
+    name: 'Essential',
+    tagline: 'For smaller workshops establishing their digital operation.',
     features: [
-      '1 branch location',
-      'Up to 5 users',
-      'Basic job card management',
-      'Customer database',
+      'Single-branch job card management',
+      'Customer and vehicle records',
       'Standard invoicing',
-      'Email support',
+      'Arabic and English interface',
     ],
-    cta: 'Get Started',
-    to: '/register',
   },
   {
     name: 'Professional',
-    price: 'SAR 499',
-    period: '/mo',
+    tagline:
+      'For growing workshops requiring stronger control over inventory, teams, finance and reporting.',
     features: [
-      'Up to 3 branches',
-      'Up to 25 users',
-      'Full ERP modules',
-      'Inventory management',
+      'Multi-branch job card management',
+      'Inventory and parts control',
       'Financial reporting',
-      'CRM and marketing tools',
-      'API access',
-      'Priority support',
+      'Role-based team permissions',
+      'CRM and customer communication',
     ],
-    cta: 'Request Demo',
-    to: '/public-portal/request-demo',
     highlighted: true,
   },
   {
     name: 'Enterprise',
-    price: 'Contact Sales',
+    tagline:
+      'For multi-branch groups, fleets and organizations requiring tailored integrations, permissions, implementation and support.',
     features: [
-      'Unlimited branches',
-      'Unlimited users',
-      'Dedicated account manager',
-      'Custom integrations',
-      'Advanced analytics',
-      'SLA guarantees',
-      'On-site training',
-      'White-label options',
+      'Unlimited branches and users',
+      'Custom integrations and API access',
+      'Advanced permissions and audit trail',
+      'Dedicated implementation and training',
+      'Negotiated support and SLA terms',
     ],
-    cta: 'Contact Sales',
-    to: '/public-portal/request-demo',
   },
 ]
 
@@ -75,7 +62,9 @@ export function PublicPricing() {
   const t = useT()
   usePageMeta({
     title: t('Pricing — SALIS AUTO'),
-    description: t('Flexible pricing plans for automotive workshops of every size'),
+    description: t(
+      'SALIS AUTO plans are configured to your workshop — modules, branches, users and integrations. Talk to sales for a quote.'
+    ),
   })
 
   return (
@@ -84,7 +73,7 @@ export function PublicPricing() {
         centered
         eyebrow="Three strata"
         title="Pricing Plans"
-        subtitle="Flexible plans that grow with your workshop — start free, scale when ready"
+        subtitle="Every plan is configured to your workshop. Talk to sales for a quote — we don't publish list prices."
       />
       <div className="flex flex-col items-stretch gap-6 md:flex-row md:items-start">
         {PLANS.map((plan) => (
@@ -97,12 +86,7 @@ export function PublicPricing() {
           >
             <CornerBrackets />
             <h2 className="mb-1 mt-0 text-lg font-bold text-heading">{t(plan.name)}</h2>
-            <p className="mb-5 mt-0 text-2xl font-black text-heading">
-              {t(plan.price)}
-              {plan.period ? (
-                <span className="text-base font-normal text-muted">{t(plan.period)}</span>
-              ) : null}
-            </p>
+            <p className="mb-5 mt-0 text-sm leading-[1.6] text-muted">{t(plan.tagline)}</p>
             <ul className="mb-6 mt-0 flex flex-1 flex-col gap-2.5 ps-5">
               {plan.features.map((f) => (
                 <li key={f} className="text-sm text-body">
@@ -111,7 +95,7 @@ export function PublicPricing() {
               ))}
             </ul>
             <Link
-              to={plan.to}
+              to="/public-portal/request-demo"
               className={cn(
                 'block rounded-lg py-2.5 text-center text-sm font-semibold no-underline transition-colors',
                 plan.highlighted
@@ -119,11 +103,16 @@ export function PublicPricing() {
                   : 'border border-default bg-surface text-heading hover:bg-card'
               )}
             >
-              {t(plan.cta)}
+              {t('Talk to Sales')}
             </Link>
           </div>
         ))}
       </div>
+      <p className="mx-auto mt-8 max-w-[720px] text-center text-[13px] leading-relaxed text-muted">
+        {t(
+          'Final configuration and cost depend on the modules you need, the number of branches and users, data migration, integrations, training and your support or service-level requirements. A sales specialist will scope this with you before any commitment.'
+        )}
+      </p>
     </div>
   )
 }
