@@ -25,7 +25,11 @@ function renderPublic(ui: ReactElement, route = '/') {
 }
 
 const PAGES: readonly { name: string; h1: string; title: string }[] = [
-  { name: 'PublicPortal.Landing', h1: 'SALIS AUTO 2030', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
+  {
+    name: 'PublicPortal.Landing',
+    h1: 'One number, entered once, carried everywhere.',
+    title: 'SALIS AUTO — Workshop Management, Saudi Standard',
+  },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
   {
@@ -108,14 +112,19 @@ describe('Tier A public pages', () => {
     window.localStorage.clear()
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    expect(screen.getByRole('heading', { level: 1, name: 'SALIS AUTO 2030' })).toBeInTheDocument()
-    // The Arrival page's hero CTA pair, both with real destinations: one
-    // scrolls to the workshop floor, one to the release rail. Neither is a
-    // decorative dead end, and neither invents a route.
-    expect(screen.getByRole('button', { name: /See the workshop floor/ })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'The road to 1.0' })).toHaveAttribute('href', '#chrono')
-    // The hero's own honesty label, carried over from the source artifact.
-    expect(screen.getByText('Figures on the live panels are sample data.')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 1, name: /One number, entered once, carried everywhere\./ })
+    ).toBeInTheDocument()
+    // The hero CTA pair, both with real destinations: one to the real demo
+    // request route, one an in-page scroll to the proof section. Neither is
+    // a decorative dead end, and neither invents a route.
+    for (const cta of screen.getAllByRole('link', { name: 'Request a Demo' })) {
+      expect(cta).toHaveAttribute('href', '/public-portal/request-demo')
+    }
+    expect(screen.getByRole('link', { name: 'See how it works' })).toHaveAttribute('href', '#home-proof')
+    // Every mockup panel carries its sample-data disclosure, same discipline
+    // as the rest of the honest public copy.
+    expect(screen.getAllByText(/SAMPLE DATA/).length).toBeGreaterThan(0)
   })
 
   it('Landing renders in Arabic with the document flipped to RTL', () => {
@@ -124,115 +133,37 @@ describe('Tier A public pages', () => {
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
     // The hero CTA carries the Arabic translation from `ar-overrides.ts`.
-    expect(screen.getByRole('button', { name: /شاهد أرضية الورشة/ })).toBeInTheDocument()
+    expect(screen.getAllByRole('link', { name: 'اطلب عرضًا توضيحيًا' }).length).toBeGreaterThan(0)
   })
 
-  it('Landing switches its six in-page pages and mirrors the choice to the hash', () => {
-    window.location.hash = ''
+  it('the proof section shows real structural facts, not fabricated metrics', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    // Exactly one <h1> on the Arrival page at rest.
-    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    fireEvent.click(screen.getByRole('button', { name: /^System/ }))
-    expect(screen.getByRole('heading', { level: 1, name: 'The System' })).toBeInTheDocument()
-    // Still exactly one <h1> — the Arrival page's markup is fully unmounted.
-    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    expect(window.location.hash).toBe('#system')
+    // The same figures already used on About/SystemPage — 13 domains, the
+    // 14×28 role/permission matrix, 6 separation-of-duty pairs — not new
+    // numbers invented for the homepage.
+    expect(screen.getByText('13')).toBeInTheDocument()
+    expect(screen.getByText('14 × 28')).toBeInTheDocument()
+    expect(screen.getByText('6')).toBeInTheDocument()
   })
 
-  it("Grid's six doors are three real portal links and three informational tiles", () => {
-    window.location.hash = ''
+  it('the release timeline shows real version numbers, including the one still ahead', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    fireEvent.click(screen.getByRole('button', { name: /^Grid/ }))
-
-    // All six doors from the design are rendered.
-    for (const door of [
-      'The customer door',
-      'The technician door',
-      'The supplier door',
-      'The procurement door',
-      'The kiosk door',
-      'The admin door',
-    ]) {
-      expect(screen.getByRole('heading', { name: door })).toBeInTheDocument()
+    for (const version of ['0.1.0', '1.0.0', '2.0.0']) {
+      expect(screen.getByText(version)).toBeInTheDocument()
     }
-
-    // The three with a public route carry a real link to it.
-    expect(screen.getByRole('link', { name: 'Open the customer portal' })).toHaveAttribute(
-      'href',
-      '/public-portal/customer-portal'
-    )
-    expect(screen.getByRole('link', { name: 'Open the technician portal' })).toHaveAttribute(
-      'href',
-      '/public-portal/technician-portal'
-    )
-    expect(screen.getByRole('link', { name: 'Open the supplier portal' })).toHaveAttribute(
-      'href',
-      '/public-portal/supplier-portal'
-    )
-
-    // The other three say where they live instead of inventing a route: three
-    // tiles, three notes, and no fourth/fifth/sixth link out of this section.
-    expect(
-      screen.getAllByText('Inside the signed-in application — this door has no public page.')
-    ).toHaveLength(3)
-    const doors = screen.getByRole('region', { name: 'Six doors' })
-    expect(doors.querySelectorAll('a')).toHaveLength(3)
+    expect(screen.getByText('You are here')).toBeInTheDocument()
   })
 
-  it('Access names what each plan carries but quotes no price — pricing has one home', () => {
-    window.location.hash = ''
+  it('closes with a real Request a Demo CTA, not a dead-end banner', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    fireEvent.click(screen.getByRole('button', { name: /^Access/ }))
-
-    // The plans are still here, by name and by what they contain.
-    for (const plan of ['Starter', 'Professional', 'Enterprise']) {
-      expect(screen.getAllByText(plan).length).toBeGreaterThan(0)
+    const ctas = screen.getAllByRole('link', { name: 'Request a Demo' })
+    expect(ctas.length).toBeGreaterThan(0)
+    for (const cta of ctas) {
+      expect(cta).toHaveAttribute('href', '/public-portal/request-demo')
     }
-    expect(screen.getByText('1 branch · up to 5 users · 10 GB of documents')).toBeInTheDocument()
-
-    // No plan quotes a figure: the pricing page is the only place a price is
-    // published, so the two can never drift into naming different numbers.
-    // (The FAQ's "SAR 5,000 per invoice" stays — that is ZATCA's penalty, not
-    // ours, which is why this looks at the plans rather than the whole page.)
-    const plans = screen.getByRole('region', { name: 'Three plans' })
-    expect(plans.textContent).not.toMatch(/SAR\s*\d/)
-    expect(plans.textContent).not.toMatch(/\/mo\b/)
-
-    // And it says so with a real link rather than leaving you to hunt.
-    expect(screen.getAllByRole('link', { name: 'See pricing' })[0]).toHaveAttribute(
-      'href',
-      '/public-portal/pricing'
-    )
-  })
-
-  it("Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere", () => {
-    window.location.hash = ''
-    const Page = componentOf('PublicPortal.Landing')
-    renderPublic(<Page />)
-    fireEvent.click(screen.getByRole('button', { name: /^Channel/ }))
-    expect(screen.getByRole('link', { name: /Book a demo/ })).toHaveAttribute('href', '/public-portal/book-demo')
-    expect(screen.getByRole('link', { name: 'Contact SALIS AUTO' })).toHaveAttribute('href', '/public-portal/contact')
-    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
-  })
-
-  it('the command deck answers a real command with a real fact, entirely client-side', () => {
-    const Page = componentOf('PublicPortal.Landing')
-    renderPublic(<Page />)
-    const input = screen.getByPlaceholderText('type a command, or `help`')
-    fireEvent.change(input, { target: { value: 'status' } })
-    fireEvent.submit(input.closest('form') as HTMLFormElement)
-    // `status` answers from this page alone, and says so: its heading names the
-    // sample tenant rather than implying a live reading off somebody's floor.
-    expect(screen.getByText('SAMPLE TENANT — RIYADH')).toBeInTheDocument()
-    expect(screen.getByText('Sample data. No tenant data reaches this page.')).toBeInTheDocument()
-
-    // `lifecycle` states the two real gates on the six-stage job card.
-    fireEvent.change(input, { target: { value: 'lifecycle' } })
-    fireEvent.submit(input.closest('form') as HTMLFormElement)
-    expect(screen.getByText('GATE: never the same technician')).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {

@@ -32,11 +32,22 @@
     "crudUpdate": 24,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 0,
+    "orphanScreenFiles": 10,
     "productionReady": 0
   },
   "unregisteredDesigns": [],
-  "orphanScreenFiles": [],
+  "orphanScreenFiles": [
+    "src/screens/public/landing/CommandDeck.tsx",
+    "src/screens/public/landing/PageNav.tsx",
+    "src/screens/public/landing/homepage/SocialProofBand.tsx",
+    "src/screens/public/landing/pages/AccessPage.tsx",
+    "src/screens/public/landing/pages/ChannelPage.tsx",
+    "src/screens/public/landing/pages/GridPage.tsx",
+    "src/screens/public/landing/pages/IndexPage.tsx",
+    "src/screens/public/landing/pages/OriginPage.tsx",
+    "src/screens/public/landing/pages/SystemPage.tsx",
+    "src/screens/public/landing/useLandingMotion.ts"
+  ],
   "entries": [
     {
       "screenId": "D-AccountLocked",

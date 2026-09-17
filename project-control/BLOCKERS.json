@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-17",
-  "open": 2,
+  "open": 3,
   "blockers": [
     {
       "id": "BLK-004",
@@ -17,6 +17,14 @@
       "detail": "e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability.",
       "owner": "18",
       "wave": "W3"
+    },
+    {
+      "id": "BLK-010",
+      "severity": "MEDIUM",
+      "title": "10 screen files are unreachable from any route",
+      "detail": "src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts",
+      "owner": "02",
+      "wave": "W0"
     }
   ]
 }

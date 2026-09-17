@@ -10,6 +10,7 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|---|---|
 | BLK-004 | CRITICAL | 286 rendered capabilities are mock-only | 05 | W2 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | 18 | W3 |
+| BLK-010 | MEDIUM | 10 screen files are unreachable from any route | 02 | W0 |
 
 ## Flags across the inventory
 
@@ -63,7 +64,16 @@ _None — the registry covers every design file._
 
 ## Screen files no route reaches
 
-_None._
+- `app/src/screens/public/landing/CommandDeck.tsx`
+- `app/src/screens/public/landing/PageNav.tsx`
+- `app/src/screens/public/landing/homepage/SocialProofBand.tsx`
+- `app/src/screens/public/landing/pages/AccessPage.tsx`
+- `app/src/screens/public/landing/pages/ChannelPage.tsx`
+- `app/src/screens/public/landing/pages/GridPage.tsx`
+- `app/src/screens/public/landing/pages/IndexPage.tsx`
+- `app/src/screens/public/landing/pages/OriginPage.tsx`
+- `app/src/screens/public/landing/pages/SystemPage.tsx`
+- `app/src/screens/public/landing/useLandingMotion.ts`
 
 ## Retained as reference, deliberately not routed
 

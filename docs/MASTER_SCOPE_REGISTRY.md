@@ -37,7 +37,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | crud update | 24 |
 | crud delete | 24 |
 | unregistered designs | 0 |
-| orphan screen files | 0 |
+| orphan screen files | 10 |
 | production ready | 0 |
 
 ## By surface
