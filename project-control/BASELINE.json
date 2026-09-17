@@ -33,5 +33,6 @@
     "mobile /customer-portal": 13,
     "mobile /customer-app/home": 1,
     "mobile /kiosk-check-in": 0
-  }
+  },
+  "tabletOverflowRoutes": {}
 }
