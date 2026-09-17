@@ -138,8 +138,11 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
  *  credentials belong to the authentication module, and a seeded password hash
- *  in a repository is a credential in a repository. */
-const DEMO_USERS: readonly {
+ *  in a repository is a credential in a repository. Exported so
+ *  `scripts/set-demo-passwords.ts` — the dev-only script that actually sets
+ *  one, locally, after this file has run — has one list to work from rather
+ *  than a second copy of these emails that can drift from this one. */
+export const DEMO_USERS: readonly {
   role: string
   email: string
   name: string

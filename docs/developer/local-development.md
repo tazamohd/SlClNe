@@ -190,7 +190,12 @@ cd server
 npm run dev
 ```
 
-Test endpoints with curl or Postman:
+Test endpoints with curl or Postman. First set a password on the seeded
+accounts — see §5.1 — or this returns 401:
+
+```bash
+cd server && npm run db:seed:passwords
+```
 
 ```bash
 # Login
@@ -227,10 +232,18 @@ curl http://localhost:3001/ready    # Readiness probe (tests DB)
 > hash for any account** — "a seeded password hash in a repository is a
 > credential in a repository" (`seed.ts`, `DEMO_USERS` comment). The
 > `salis1234` password documented here does **not** work against a freshly
-> seeded database; there is currently no seed/setup step that sets one. This
-> was confirmed directly: `POST /auth/login` returns 401 for every seeded
-> account until a password hash is set on the row by some other means (e.g.
-> `@node-rs/argon2`'s `hash()`, matching `server/src/auth/password.ts`).
+> seeded database until you run the dev-only script that sets it:
+>
+> ```bash
+> npm run db:seed:passwords          # sets `salis1234` on every demo account
+> npm run db:seed:passwords -- 'a-longer-password'   # or your own
+> ```
+>
+> `server/scripts/set-demo-passwords.ts` refuses to run with
+> `NODE_ENV=production`, and warns (rather than failing) that `salis1234`
+> itself is two characters short of this app's own password policy
+> (`MIN_PASSWORD_LENGTH = 12`) — a real account could never register with it,
+> but it is what every doc here documents, so the script still sets it.
 
 The seed database includes accounts for all 14 roles. Default password: `salis1234`
 
