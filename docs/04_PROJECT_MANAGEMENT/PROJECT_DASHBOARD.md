@@ -30,9 +30,9 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Arabic verified | 82 of 425 | `STATUS.json` |
 | Tablet verified | 4 of 425 | `STATUS.json` |
 | API endpoints | 374 | the route files |
-| Test cases | 2185 | the spec files |
+| Test cases | 2183 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
-| Open blockers | 2 | `BLOCKERS.json` |
+| Open blockers | 3 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
 | Release gates passing | 8 of 14 | `RELEASE_GATES.json` |
 
@@ -46,6 +46,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- | --- | --- |
 | BLK-004 | CRITICAL | 286 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 | BLK-008 | MEDIUM | Tablet verification samples 6 screens, not the full inventory | e2e/tablet.spec.ts checks 8 viewports (768/820/834/1024, portrait and landscape) plus a rotation across the 860px breakpoint, against 6 screens chosen one per layout family. It asserts no horizontal overflow, the shell the width implies, and touch-target size. That is a sample, not the inventory: a screen outside those families can still break at tablet width. Cleared when the sweep runs over every registered capability. | 18 |
+| BLK-010 | MEDIUM | 10 screen files are unreachable from any route | src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts | 02 |
 
 ## Open risks
 
