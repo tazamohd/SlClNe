@@ -42,7 +42,13 @@ function KanbanMock({ t }: { t: T }) {
         <i />
         <span>{t('JOB CARDS · SAMPLE DATA')}</span>
       </div>
-      <div className="salis-home-mockup-body overflow-x-auto">
+      <div
+        className="salis-home-mockup-body overflow-x-auto"
+        role="group"
+        aria-label={t('Job card stages')}
+        // A horizontal scroller has to be reachable from the keyboard.
+        tabIndex={0}
+      >
         <div className="flex gap-3">
           {STAGES.map((stage) => (
             <div key={stage.key} className="w-[128px] shrink-0">

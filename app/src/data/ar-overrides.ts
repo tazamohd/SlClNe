@@ -4456,6 +4456,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Design note — the problem the platform was built to end": "ملاحظة تصميم — المشكلة التي بُنيت المنصة لإنهائها",
   "“The hard part was never the diagnosis. It was that six people wrote the same number into four systems and one of them was wrong by Thursday.”": "«لم يكن الجزء الصعب هو التشخيص قط. بل أن ستة أشخاص كتبوا الرقم نفسه في أربعة أنظمة، وكان أحدها خاطئًا بحلول الخميس.»",
   "What workshops running it say": "ماذا تقول الورش التي تستخدمه",
+  "Job card stages": "مراحل بطاقة العمل",
   "An audit row for every write": "سطر تدقيق لكل عملية كتابة",
   "A shared package holds the Zod schemas, permission tables and business rules — one definition is the API type, the server guard and the form validator at once.": "حزمة مشتركة تحمل مخططات Zod، وجداول الصلاحيات، وقواعد العمل — تعريف واحد يكون نوع واجهة البرمجة، وحارس الخادم، ومدقق النموذج في آن واحد.",
   "PostgreSQL row-level security. Every row carries its organisation and branch, and the database decides who may read it — not a forgotten where clause.": "أمان على مستوى الصف في PostgreSQL. كل صف يحمل مؤسسته وفرعه، وقاعدة البيانات هي من تقرر من يجوز له قراءته — لا شرط WHERE منسي.",
