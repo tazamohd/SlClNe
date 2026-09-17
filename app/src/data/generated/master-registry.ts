@@ -2773,6 +2773,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2816,6 +2817,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2966,6 +2968,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2978,6 +2981,50 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "name": "PublicPortal.Resources",
     "title": "PublicPortal · Resources",
     "route": "/public-portal/resources",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.RoiCalculator",
+    "name": "PublicPortal.RoiCalculator",
+    "title": "PublicPortal · RoiCalculator",
+    "route": "/public-portal/roi-calculator",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.Security",
+    "name": "PublicPortal.Security",
+    "title": "PublicPortal · Security",
+    "route": "/public-portal/security",
     "surface": "public",
     "shell": "PublicShell",
     "module": null,
