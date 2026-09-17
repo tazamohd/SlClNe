@@ -8,7 +8,7 @@
 
 # Tenant and branch isolation
 
-**Status:** GENERATED · **Source of truth:** the migrations · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Source of truth:** the migrations · **Sources as of:** 2026-09-17
 
 ## Position
 

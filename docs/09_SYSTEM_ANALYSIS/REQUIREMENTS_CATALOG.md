@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16 · 151 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-17 · 153 requirements
 
 ## What these requirements are, and what they are not
 
@@ -48,8 +48,8 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 5 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 5 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PORTALS-001 | The system provides portals and channels through 11 screens and 0 API endpoints, gated by the `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` permission modules. | CAP-PORTALS | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-AI-001 | The system provides ai and automation through 10 screens and 8 API endpoints, gated by the `ai` permission module. | CAP-AI | 8 | 10 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PLATFORM-001 | The system provides administration and platform through 36 screens and 19 API endpoints, gated by the `admin`, `settings`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 19 | 36 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-AI-001 | The system provides ai and automation through 10 screens and 8 API endpoints, gated by the `ai`, `aiadmin` permission modules. | CAP-AI | 8 | 10 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PLATFORM-001 | The system provides administration and platform through 36 screens and 19 API endpoints, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 19 | 36 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-IDENTITY-001 | The system provides identity and access through 18 screens and 24 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 24 | 18 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-WEBSITE-001 | The system provides public website and acquisition through 32 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 32 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -87,7 +87,7 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | NFR-REL-001 | A replayed Idempotency-Key returns the stored response and creates no second business effect; the same key with a different body is refused. | server/src/http/idempotency.ts + idempotency_keys unique index | CODE_AND_SCHEMA |
 | NFR-REL-002 | Concurrent updates are resolved optimistically on a database-maintained version column; a stale write is refused, not silently applied. | bump_version trigger on every tenant table | DATABASE_CONSTRAINT |
 | NFR-A11Y-001 | Colour-contrast violations do not increase. The axe sweep is ratcheted per route and per viewport. | project-control/BASELINE.json axeColourContrastNodes + app/e2e/a11y.spec.ts | RATCHETED_BASELINE |
-| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 82 of 425, rtlHazards 0 | MEASURED_REGISTRY |
+| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 80 of 425, rtlHazards 0 | MEASURED_REGISTRY |
 | NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 425 of 425 | MEASURED_REGISTRY |
 | NFR-PERF-001 | Bundle size and golden-path timings stay within the recorded ratchet. | app/scripts/check-bundle.mjs, app/scripts/golden-paths.mjs | RATCHETED_BASELINE |
 | NFR-OPS-001 | The service exposes liveness and readiness probes that are reachable without a token. | GET /health, GET /ready (server/src/routes/health.ts) | CODE |
@@ -194,8 +194,10 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | SR-RBAC-PORTALSUPPLIER | Access to `portalsupplier` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PORTALPROCURE | Access to `portalprocure` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-AI | Access to `ai` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-AIADMIN | Access to `aiadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-ADMIN | Access to `admin` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-SETTINGS | Access to `settings` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-SUPERADMIN | Access to `superadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-AUDIT | Access to `audit` is granted to 5 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-NETWORK | Access to `network` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-SOD-001 | "Raise purchase order" and "Approve purchase order" must not be performed by the same person (risk: high). |

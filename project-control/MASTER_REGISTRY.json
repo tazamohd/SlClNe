@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-12",
+  "generatedAt": "2026-09-17",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -11,16 +11,16 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 286,
-    "dataBacked": 99,
+    "mockOnly": 284,
+    "dataBacked": 101,
     "e2eCovered": 425,
     "contentAsserted": 425,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 143,
-    "hasErrorState": 111,
-    "hasEmptyState": 169,
+    "hasLoadingState": 149,
+    "hasErrorState": 117,
+    "hasEmptyState": 170,
     "tabletVerified": 4,
-    "arabicVerified": 82,
+    "arabicVerified": 80,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 98,
+    "crudRead": 100,
     "crudUpdate": 24,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -250,12 +250,9 @@
       "route": "/agent-registry",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -761,12 +758,9 @@
       "route": "/automation-rules",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -1471,12 +1465,9 @@
       "route": "/conversation-history",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -2573,7 +2564,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -2582,7 +2573,8 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "approvalLines"
+        "approvalLines",
+        "estimates"
       ],
       "crud": {
         "create": false,
@@ -3187,7 +3179,7 @@
       "tablet": "DONE",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -3553,7 +3545,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -4846,7 +4838,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -4998,7 +4990,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -5037,7 +5029,8 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING"
+        "TABLET_MISSING",
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -6050,12 +6043,9 @@
       "route": "/model-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -6695,10 +6685,9 @@
       "route": "/organizations",
       "surface": "app",
       "shell": "AppShell",
-      "module": "admin",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -10573,10 +10562,9 @@
       "route": "/roles-permissions",
       "surface": "app",
       "shell": "AppShell",
-      "module": "admin",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -11181,10 +11169,9 @@
       "route": "/super-admin",
       "surface": "app",
       "shell": "AppShell",
-      "module": "settings",
+      "module": "superadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:ve",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -14119,12 +14106,9 @@
       "route": "/workflow-builder",
       "surface": "app",
       "shell": "AppShell",
-      "module": "ai",
+      "module": "aiadmin",
       "permissions": [
         "owner:vcedax",
-        "manager:vce",
-        "advisor:v",
-        "accountant:v",
         "superadmin:vcedax",
         "test:vcedax"
       ],
@@ -14372,7 +14356,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -19230,18 +19214,20 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19268,7 +19254,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21666,18 +21651,20 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -21704,7 +21691,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23130,11 +23116,11 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -23196,11 +23182,11 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -23262,11 +23248,11 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -23327,11 +23313,11 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": false,
@@ -23392,7 +23378,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "VERIFIED",
+      "arabic": "MISSING",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -23429,6 +23415,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]

@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Sources as of:** 2026-09-16 · 408 documents, 139 in the numbered architecture
+**Sources as of:** 2026-09-17 · 409 documents, 139 in the numbered architecture
 
 ## Start here
 
@@ -68,7 +68,7 @@ An executive or an agent should be able to understand the state of this project 
 
 ## Documents outside the numbered architecture
 
-269 documents sit in the pre-existing `docs/` folders (`system/`, `requirements/`, `project-management/`, `knowledge-base/`, `mermaid/`, `visualizations/` and others). They were **not** deleted or bulk-moved: many are accurate, several are the only record of a decision, and a migration that moves 300 files in one commit destroys the ability to review any of them. `DOCUMENTATION_MIGRATION_MANIFEST.md` classifies each one and records where it is going.
+270 documents sit in the pre-existing `docs/` folders (`system/`, `requirements/`, `project-management/`, `knowledge-base/`, `mermaid/`, `visualizations/` and others). They were **not** deleted or bulk-moved: many are accurate, several are the only record of a decision, and a migration that moves 300 files in one commit destroys the ability to review any of them. `DOCUMENTATION_MIGRATION_MANIFEST.md` classifies each one and records where it is going.
 
 | Folder | Documents |
 | --- | --- |
@@ -87,6 +87,7 @@ An executive or an agent should be able to understand the state of this project 
 | `docs/legal/` | 6 |
 | `docs/customer/` | 4 |
 | `docs/testing/` | 4 |
+| `docs/research/` | 1 |
 
 ## Machine-readable registries
 
@@ -97,10 +98,10 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 | `project-control/ENTITY_REGISTRY.json` | 69 tables with every column | `server/src/db/schema.ts` |
 | `project-control/RELATIONSHIP_REGISTRY.json` | 170 relationships, declared versus inferred | `server/src/db/schema.ts` |
 | `project-control/API_REGISTRY.json` | 374 endpoints with guards and scopes | the route files |
-| `project-control/PERMISSION_REGISTRY.json` | 420 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
+| `project-control/PERMISSION_REGISTRY.json` | 450 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
 | `project-control/BUSINESS_RULES.json` | 30 rules, each naming its function | `packages/contract/src/rules/*.ts` |
 | `project-control/STATE_MACHINE_REGISTRY.json` | 18 lifecycles | `packages/contract/src/entities/*.ts` |
-| `project-control/TEST_REGISTRY.json` | 187 suites, 2184 cases | the spec files |
+| `project-control/TEST_REGISTRY.json` | 188 suites, 2217 cases | the spec files |
 | `project-control/CAPABILITY_REGISTRY.json` | 18 capabilities linked to everything below them | modules + screen domains |
 | `project-control/SECURITY_REGISTRY.json` | RLS policies, triggers, unauthenticated surface | `server/drizzle/*.sql` |
 | `project-control/MASTER_REGISTRY.json` | 425 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |

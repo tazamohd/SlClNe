@@ -7,7 +7,7 @@
 
 # Screen registry
 
-**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-16
+**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-17
 
 `project-control/MASTER_REGISTRY.json` is built by `app/scripts/build-registry.mjs` from the screen sources and the design bundle. This document is a reading of it, not a second copy — the numbers below change when that registry is rebuilt, never when someone edits this file.
 
@@ -20,28 +20,28 @@
 | Reference-only | 28 | 425 |
 | Rendered | 425 | 425 |
 | Placeholder | 0 | 425 |
-| Data-backed (live API) | 99 | 425 |
-| Mock-only (design fixtures) | 286 | 425 |
+| Data-backed (live API) | 101 | 425 |
+| Mock-only (design fixtures) | 284 | 425 |
 | End-to-end covered | 425 | 425 |
 | Content-asserted (not just routed) | 425 | 425 |
-| Has a loading state | 143 | 425 |
-| Has an error state | 111 | 425 |
-| Has an empty state | 169 | 425 |
-| Arabic verified | 82 | 425 |
+| Has a loading state | 149 | 425 |
+| Has an error state | 117 | 425 |
+| Has an empty state | 170 | 425 |
+| Arabic verified | 80 | 425 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 425 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **286 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **284 of 425 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 28 | 0 | 0 |
-| app | 313 | 89 | 78 |
+| app | 313 | 91 | 78 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 3 | 0 |
 | portal | 8 | 6 | 4 |
@@ -59,7 +59,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-VEHICLES | 4 | 4 | 4 | 4 | 4 | 0 |
 | CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
 | CAP-PROCUREMENT | 1 | 1 | 1 | 1 | 1 | 0 |
-| CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
+| CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 1 |
 | CAP-ACCOUNTING | 7 | 5 | 7 | 7 | 5 | 0 |
 | CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
 | CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 32 | 0 | 0 | 0 | 0 | 22 |
 | CAP-CUSTOMERAPP | 11 | 3 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 24 | 46 | 24 | 72 | 21 |
+| CAP-DESIGNSYSTEM | 233 | 26 | 52 | 30 | 73 | 20 |
 
 ## Full registry
 

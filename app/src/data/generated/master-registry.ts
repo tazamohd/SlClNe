@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-09-12'
+export const REGISTRY_GENERATED_AT = '2026-09-17'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -78,7 +78,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/agent-registry",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -232,7 +232,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/automation-rules",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -453,7 +453,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/conversation-history",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -1545,7 +1545,8 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING"
+      "TABLET_MISSING",
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -1864,7 +1865,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/model-settings",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -2064,7 +2065,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/organizations",
     "surface": "app",
     "shell": "AppShell",
-    "module": "admin",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -3347,7 +3348,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/roles-permissions",
     "surface": "app",
     "shell": "AppShell",
-    "module": "admin",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -3545,7 +3546,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/super-admin",
     "surface": "app",
     "shell": "AppShell",
-    "module": "settings",
+    "module": "superadmin",
     "category": "PRODUCT",
     "domain": "admin",
     "owner": "—",
@@ -4487,7 +4488,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/workflow-builder",
     "surface": "app",
     "shell": "AppShell",
-    "module": "ai",
+    "module": "aiadmin",
     "category": "PRODUCT",
     "domain": "ai",
     "owner": "15",
@@ -6282,7 +6283,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7154,7 +7154,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7763,6 +7762,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],

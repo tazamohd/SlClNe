@@ -12,7 +12,7 @@
 
 # Domain — Customer management
 
-**Status:** GENERATED · **Capability:** CAP-CUSTOMERS · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Capability:** CAP-CUSTOMERS · **Sources as of:** 2026-09-17
 
 ## Purpose and scope
 
@@ -58,8 +58,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/customers` | customers:v | generated | — | 14 |
-| POST | `/api/v1/customers` | customers:c | generated | — | 14 |
+| GET | `/api/v1/customers` | customers:v | generated | — | 13 |
+| POST | `/api/v1/customers` | customers:c | generated | — | 13 |
 | DELETE | `/api/v1/customers/:id` | customers:d | generated | — | **0** |
 | GET | `/api/v1/customers/:id` | customers:v | generated | — | **0** |
 | PATCH | `/api/v1/customers/:id` | customers:e | generated | — | **0** |

@@ -1161,16 +1161,29 @@ if (staleRetained.length) {
 
 /** What the tablet sweep actually covers, read from the sweep itself.
  *
- *  `e2e/tablet.spec.ts` declares its viewports and its screens as literal
- *  tables, so the numbers reported here are the numbers that ran rather than a
- *  figure typed into this file and left to rot. No spec, no coverage. */
+ *  `e2e/tablet.spec.ts` declares its viewports as a literal table, so the
+ *  viewport count reported here is the count that ran rather than a figure
+ *  typed into this file and left to rot. No spec, no coverage.
+ *
+ *  The screen count used to come the same way — counting `{ path: }` object
+ *  literals in a hand-written `SCREENS` array. BLK-008 was exactly that
+ *  array being a six-screen sample rather than the inventory. The spec now
+ *  builds `SCREENS` from every entry in `src/data/generated/master-registry`
+ *  (`SCREENS = REGISTRY.map(...)`, the same registry `entries` below is
+ *  built from) instead of a literal array, so a literal-counting regex would
+ *  silently read back 1. Detect that shape by the import instead, and read
+ *  the count from `entries.length` — still the numbers that ran, since the
+ *  registry the spec imports at test time is the same one written here. */
 const tabletSpecPath = path.join(APP, 'e2e/tablet.spec.ts')
 const tabletSweep = (() => {
   if (!fs.existsSync(tabletSpecPath)) return { present: false, viewports: 0, screens: 0 }
   const src = read(tabletSpecPath)
   const block = (name) => (new RegExp(`const ${name} = \\[([\\s\\S]*?)\\n\\]`).exec(src) ?? [, ''])[1]
   const portrait = (block('PORTRAIT').match(/\{\s*name:/g) ?? []).length
-  const screens = (block('SCREENS').match(/\{\s*path:/g) ?? []).length
+  const sweepsFullRegistry = /from ['"][^'"]*master-registry['"]/.test(src) && /SCREENS = REGISTRY\b/.test(src)
+  const screens = sweepsFullRegistry
+    ? entries.length
+    : (block('SCREENS').match(/\{\s*path:/g) ?? []).length
   // Landscape is derived from portrait in the spec, so each device is two.
   return { present: portrait > 0, viewports: portrait * 2, screens }
 })()
@@ -1292,7 +1305,11 @@ outputs.push(write(path.join(CONTROL, 'TEST_STATUS.json'), JSON.stringify({
     tablet:      { runner: 'playwright', present: tabletSweep.present,
                    covered: tabletSweep.screens, of: entries.length,
                    note: tabletSweep.present
-                     ? `e2e/tablet.spec.ts — ${tabletSweep.viewports} viewports x ${tabletSweep.screens} screens, one per layout family, plus a rotation across the 860px breakpoint`
+                     ? `e2e/tablet.spec.ts — ${tabletSweep.viewports} viewports x ${tabletSweep.screens} screens` +
+                       (tabletSweep.screens >= entries.length
+                         ? ' (every registered capability)'
+                         : ', one per layout family') +
+                       ', plus a rotation across the 860px breakpoint'
                      : 'W3 — Agent 18' },
     rtl:         { runner: 'playwright', present: false, covered: 0, of: entries.length, note: 'W3 — Agent 19' },
     a11y:        { runner: 'axe',        present: false, covered: 0, of: entries.length, note: 'W3 — Agent 20' },
@@ -1309,12 +1326,23 @@ const brandViolations = fs.existsSync(baselinePath)
   ? JSON.parse(read(baselinePath)).forbiddenColours ?? 0
   : 0
 
+// BLK-003 cannot be computed from the registry the way the others are — no
+// repo scan can prove a credential was rotated on GitHub's side. It clears
+// only when project-control/SECRET_ROTATION_LOG.json carries a dated,
+// attributed entry for it, so "cleared" stays an auditable record rather than
+// a line someone quietly deleted.
+const rotationLogPath = path.join(CONTROL, 'SECRET_ROTATION_LOG.json')
+const rotationLog = fs.existsSync(rotationLogPath)
+  ? JSON.parse(read(rotationLogPath)).rotations ?? []
+  : []
+const patsRotationConfirmed = rotationLog.some((r) => r.id === 'BLK-003')
+
 const blockers = [
   totals.placeholder && { id: 'BLK-001', severity: 'BLOCKER', title: `${totals.placeholder} product routes render PendingScreen`,
     detail: 'Violates the no-placeholder rule. Cleared only when every PRODUCT entry renders a real component.', owner: '01', wave: 'W2' },
   !totals.dataBacked && { id: 'BLK-002', severity: 'BLOCKER', title: 'No capability is backed by real data',
     detail: 'No server, database, persistence or server-side authorization exists. Gates the Definition of Done for every screen.', owner: '05', wave: 'W1' },
-  { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
+  !patsRotationConfirmed && { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
     detail: 'Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.', owner: '06', wave: 'W0' },
   totals.mockOnly && { id: 'BLK-004', severity: 'CRITICAL', title: `${totals.mockOnly} rendered capabilities are mock-only`,
     detail: 'They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
@@ -1331,18 +1359,20 @@ const blockers = [
   (!tabletSweep.present
     ? { id: 'BLK-008', severity: 'HIGH', title: 'No tablet verification anywhere',
         detail: '768/820/834/1024, portrait and landscape, has never been checked.', owner: '18', wave: 'W3' }
-    : {
-        id: 'BLK-008', severity: 'MEDIUM',
-        title: `Tablet verification samples ${tabletSweep.screens} screens, not the full inventory`,
-        detail:
-          `e2e/tablet.spec.ts checks ${tabletSweep.viewports} viewports (768/820/834/1024, portrait ` +
-          `and landscape) plus a rotation across the 860px breakpoint, against ${tabletSweep.screens} ` +
-          'screens chosen one per layout family. It asserts no horizontal overflow, the shell the ' +
-          'width implies, and touch-target size. That is a sample, not the inventory: a screen ' +
-          'outside those families can still break at tablet width. Cleared when the sweep runs ' +
-          'over every registered capability.',
-        owner: '18', wave: 'W3',
-      }),
+    : tabletSweep.screens < entries.length
+      ? {
+          id: 'BLK-008', severity: 'MEDIUM',
+          title: `Tablet verification samples ${tabletSweep.screens} screens, not the full inventory (${entries.length})`,
+          detail:
+            `e2e/tablet.spec.ts checks ${tabletSweep.viewports} viewports (768/820/834/1024, portrait ` +
+            `and landscape) plus a rotation across the 860px breakpoint, against ${tabletSweep.screens} of ` +
+            `${entries.length} registered screens. It asserts no horizontal overflow, the shell the ` +
+            'width implies, and touch-target size. That is a sample, not the inventory: a screen ' +
+            'outside those families can still break at tablet width. Cleared when the sweep runs ' +
+            'over every registered capability.',
+          owner: '18', wave: 'W3',
+        }
+      : false),
   totals.unregisteredDesigns && { id: 'BLK-009', severity: 'MEDIUM', title: `${totals.unregisteredDesigns} designs are not in the registry`,
     detail: `Design files with no SCREEN_MAP entry: ${unregistered.join(', ')}`, owner: '02', wave: 'W0' },
   totals.orphanScreenFiles && { id: 'BLK-010', severity: 'MEDIUM', title: `${totals.orphanScreenFiles} screen files are unreachable from any route`,

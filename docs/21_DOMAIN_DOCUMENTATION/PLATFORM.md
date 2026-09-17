@@ -12,19 +12,19 @@
 
 # Domain — Administration and platform
 
-**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-17
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `dashboard:vx` `network:vcedax` |
-| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `dashboard:vx` `network:v` |
+| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
+| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
 | manager | branch | SAR 50,000 | `admin:v` `settings:ve` `dashboard:vx` `network:vcedx` |
 | advisor | branch | SAR 5,000 | `dashboard:v` |
 | technician | own | may not approve | `dashboard:v` |
@@ -36,7 +36,7 @@ This domain serves the objective **OBJ-CONTROL** (Keep financial control auditab
 | callcenter | all | may not approve | `dashboard:v` |
 | procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
 | supplier | external | may not approve | `network:vce` |
-| test | all | unlimited | `admin:vcedax` `settings:vcedax` `dashboard:vcedax` `network:vcedax` |
+| test | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 
@@ -102,7 +102,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-Backup | `/backup` | app | **mock** | — | — | — | verified | yes |
 | D-Branches | `/branches` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CookiePolicy | `/cookie-policy` | app | **mock** | — | — | — | verified | yes |
-| D-Dashboard | `/dashboard` | app | yes | yes | yes | — | PARTIAL | yes |
+| D-Dashboard | `/dashboard` | app | yes | yes | yes | — | MISSING | yes |
 | D-Error404 | `/error404` | auth | **mock** | — | — | — | verified | yes |
 | D-FlowSpec | `/flow-spec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-GlobalSearch | `/global-search` | app | **mock** | — | — | yes | PARTIAL | yes |

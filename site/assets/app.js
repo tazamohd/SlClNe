@@ -167,11 +167,26 @@ function applyLang(lang) {
   });
   try { localStorage.setItem("salisco-lang", lang); } catch (e) {}
 }
-document.getElementById("langToggle").addEventListener("click", () =>
+document.getElementById("langToggle")?.addEventListener("click", () =>
   applyLang(html.getAttribute("lang") === "ar" ? "en" : "ar"));
 let saved = "en";
 try { saved = localStorage.getItem("salisco-lang") || "en"; } catch (e) {}
-if (saved === "ar") applyLang("ar");
+if (saved === "ar" && document.getElementById("langToggle")) applyLang("ar");
+
+/* ---------- Mobile nav toggle (inner pages) ---------- */
+(function mobileNav() {
+  const btn = document.getElementById("navToggle");
+  const links = document.getElementById("navLinks");
+  if (!btn || !links) return;
+  btn.addEventListener("click", () => {
+    const open = links.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+  });
+  links.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+    links.classList.remove("open");
+    btn.setAttribute("aria-expanded", "false");
+  }));
+})();
 
 /* ---------- Scroll progress + nav state ---------- */
 const nav = document.getElementById("nav");

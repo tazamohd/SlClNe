@@ -8,7 +8,7 @@
 
 # Commercial and financial
 
-**Status:** GENERATED · **Sources as of:** 2026-09-16
+**Status:** GENERATED · **Sources as of:** 2026-09-17
 
 Pricing, revenue and cost model — projections labelled as projections.
 

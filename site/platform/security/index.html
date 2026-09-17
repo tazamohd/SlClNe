@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security &amp; Data — how SalisAuto protects access, tenancy and money · Salisco</title>
+  <meta name="description" content="Row-level tenant isolation enforced by the database, a shared permission matrix, an append-only audit log, and halala-precision money handling." />
+  <link rel="canonical" href="https://www.saleisco.com/platform/security/" />
+  <link rel="alternate" hreflang="en" href="https://www.saleisco.com/platform/security/" />
+  <link rel="alternate" hreflang="ar" href="https://www.saleisco.com/ar/platform/security/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.saleisco.com/platform/security/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Salisco" />
+  <meta property="og:title" content="Security & Data — SalisAuto" />
+  <meta property="og:description" content="Tenant isolation, RBAC, an append-only audit log, and halala-precision money handling." />
+  <meta property="og:url" content="https://www.saleisco.com/platform/security/" />
+  <meta property="og:image" content="https://www.saleisco.com/assets/logo.png" />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/pages.css" />
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.saleisco.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Platform", "item": "https://www.saleisco.com/platform/" },
+    { "@type": "ListItem", "position": 3, "name": "Security & Data", "item": "https://www.saleisco.com/platform/security/" }
+  ]}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="bg-lite" aria-hidden="true"><div class="aurora aurora--1"></div><div class="aurora aurora--2"></div><div class="bg-grid"></div></div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a class="brand" href="/" aria-label="Salisco home"><img class="brand-logo" src="/assets/logo.png" alt="Salisco" /></a>
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="/solutions/">Solutions</a>
+      <a href="/industries/">Industries</a>
+      <a href="/platform/" aria-current="page">Platform</a>
+      <a href="/roi-calculator/">ROI Calculator</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-lang-link" href="/ar/platform/security/" hreflang="ar" lang="ar">العربية</a>
+      <a class="btn btn-primary magnetic" href="/request-demo/" style="padding:.6rem 1.15rem;font-size:.85rem;">Request a Demo</a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+  <p class="crumbs"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/platform/">Platform</a><span aria-hidden="true">/</span><span aria-current="page">Security &amp; Data</span></p>
+
+  <main id="main">
+    <section class="page-hero">
+      <h1>Security enforced by the database, not just by convention</h1>
+      <p class="lede">Every claim on this page describes a mechanism that exists in the system today — not a policy statement or a certification we haven't earned.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="section-head"><p class="kicker">Tenant isolation</p><h2>A workshop's data cannot leak to another tenant</h2></div>
+      <div class="card-grid card-grid--2">
+        <div class="info-card"><h3>Row-level security, fails closed</h3><p>Every table is governed by a row-level-security policy scoped to the organization. A database connection with no request context reads nothing — the default is to see nothing, not everything.</p></div>
+        <div class="info-card"><h3><code>FORCE</code>d, even for the table owner</h3><p>The policy applies even to the database role that owns the table, so a misconfigured admin connection still can't bypass it silently.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><p class="kicker">Access control</p><h2>One permission matrix, read by both sides</h2></div>
+      <div class="card-grid card-grid--2">
+        <div class="info-card"><h3>15 roles across 28 modules</h3><p>The interface and the server read the exact same permission matrix — there's no separate front-end assumption about what a role can do.</p></div>
+        <div class="info-card"><h3>Tested, not just documented</h3><p>An automated test asserts the client and server copies of the matrix are identical, not just similar, so they can't quietly drift apart.</p></div>
+        <div class="info-card"><h3>Segregation of duties</h3><p>The person who raises a financial document is never the one who can approve it — enforced on the documents that move money, not left to office policy.</p></div>
+        <div class="info-card"><h3>Independent quality control</h3><p>A technician cannot pass their own repair through quality control. That's a system rule, not a suggestion.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><p class="kicker">Auditability</p><h2>A trail that can't be quietly edited</h2></div>
+      <div class="card-grid card-grid--2">
+        <div class="info-card"><h3>Append-only, at the grant level</h3><p>The audit log rejects <code>UPDATE</code> and <code>DELETE</code> for every database role — including administrators — not just in application logic that could be bypassed.</p></div>
+        <div class="info-card"><h3>Soft deletion everywhere else</h3><p>Operational and financial records are soft-deleted, never hard-removed, so a mistake doesn't erase the trail that would explain it.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><p class="kicker">Money &amp; compliance</p><h2>Financial data is structurally protected</h2></div>
+      <div class="card-grid card-grid--2">
+        <div class="info-card"><h3>Integers, not floating point</h3><p>Every amount is stored as an integer count of halalas — never a rounded decimal that can drift over thousands of transactions.</p></div>
+        <div class="info-card"><h3>Totals computed server-side</h3><p>A client-supplied total is never trusted; invoice and payment totals are calculated on the server against the source line items.</p></div>
+        <div class="info-card"><h3>ZATCA-aligned VAT</h3><p>Invoicing is built against a configured VAT rate to align with ZATCA e-invoicing requirements, not bolted on as a manual step.</p></div>
+        <div class="info-card"><h3>Authentication</h3><p>Passwords are hashed with Argon2; JSON Web Tokens require a real secret in production — the process refuses to start on a guessable default rather than run insecurely.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="notice">
+        <strong>Where we're honest about gaps.</strong> Not every relationship in the data model is backed by a database foreign-key constraint today — some are naming-convention links, which is a known trade-off we track rather than hide. And roughly two-thirds of the product's screens are still connected to representative fixture data rather than exchanging live traffic with the API under production conditions in a customer's environment. We'll tell you exactly which parts of your workflow are furthest along when we scope a deployment with you.
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="cta-inner"><span class="cta-glow" aria-hidden="true"></span>
+        <p class="kicker">Have a security review to run?</p><h2>Ask us anything — including what isn't finished yet</h2>
+        <a class="btn btn-primary magnetic" href="/contact/">Talk to us</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-cta"><h2>Let's build what's next in the Kingdom.</h2><a class="btn btn-primary magnetic" href="/request-demo/">Get in touch</a></div>
+    <nav class="footer-links" aria-label="Footer">
+      <div><h4>Solutions</h4><ul><li><a href="/solutions/workshops/">Workshops &amp; service centers</a></li><li><a href="/solutions/vehicle-owners/">Vehicle owners</a></li><li><a href="/solutions/parts-suppliers/">Parts &amp; suppliers</a></li><li><a href="/solutions/enterprise/">Enterprise &amp; fleets</a></li></ul></div>
+      <div><h4>Platform</h4><ul><li><a href="/platform/">Overview</a></li><li><a href="/platform/security/">Security &amp; data</a></li><li><a href="/industries/">Industries</a></li><li><a href="/roi-calculator/">ROI calculator</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about/">About</a></li><li><a href="/pricing/">Pricing</a></li><li><a href="/contact/">Contact</a></li><li><a href="/ar/platform/security/">العربية</a></li></ul></div>
+      <div><h4>Resources &amp; legal</h4><ul><li><a href="/resources/faq/">FAQ</a></li><li><a href="/legal/privacy/">Privacy policy</a></li><li><a href="/legal/terms/">Terms of use</a></li><li><a href="/legal/cookies/">Cookie policy</a></li></ul></div>
+    </nav>
+    <div class="footer-meta"><p class="footer-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Riyadh, Kingdom of Saudi Arabia</span></p><p class="footer-copy">© 2026 Salisco LTD · Riyadh, KSA</p></div>
+  </footer>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
