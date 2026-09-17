@@ -5,21 +5,21 @@
       "runner": "vitest",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W1 — Agent 07"
     },
     "component": {
       "runner": "vitest+RTL",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W1 — Agent 07"
     },
     "integration": {
       "runner": "vitest+MSW",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W1 — Agent 07"
     },
     "api": {
@@ -32,8 +32,8 @@
     "routeSmoke": {
       "runner": "playwright",
       "present": true,
-      "covered": 425,
-      "of": 425,
+      "covered": 427,
+      "of": 427,
       "note": "scripts/smoke.mjs — route checks parsed from the spec"
     },
     "goldenPaths": {
@@ -47,35 +47,35 @@
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W3 — Agent 18"
     },
     "tablet": {
       "runner": "playwright",
       "present": true,
-      "covered": 425,
-      "of": 425,
-      "note": "e2e/tablet.spec.ts — 8 viewports x 425 screens (every registered capability), plus a rotation across the 860px breakpoint"
+      "covered": 427,
+      "of": 427,
+      "note": "e2e/tablet.spec.ts — 8 viewports x 427 screens (every registered capability), plus a rotation across the 860px breakpoint"
     },
     "rtl": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W3 — Agent 19"
     },
     "a11y": {
       "runner": "axe",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W3 — Agent 20"
     },
     "visual": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 425,
+      "of": 427,
       "note": "W3 — Agent 23"
     },
     "security": {

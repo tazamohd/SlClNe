@@ -5,7 +5,8 @@ import { LegalDocument, type LegalClause } from './sections/LegalDocument'
 /** PublicPortal.CookiePolicy — Tier C legal page.
  *
  *  Uses the shared LegalDocument scaffold, matching Privacy Policy and Terms.
- *  A plain-language template, clearly marked as not reviewed by counsel. */
+ *  Open legal-review items are tracked in `LEGAL_REVIEW_REQUIRED.md` at the
+ *  repo root, not surfaced publicly. */
 const CLAUSES: readonly LegalClause[] = [
   {
     heading: 'What are cookies',
@@ -39,13 +40,13 @@ const CLAUSES: readonly LegalClause[] = [
   {
     heading: 'Contact',
     paragraphs: [
-      'If you have questions about how we use cookies, please reach out through the Contact page on this website or email us at info@salisauto.sa.',
+      'If you have questions about how we use cookies, please reach out through the Contact page on this website.',
     ],
   },
   {
     heading: 'Changes to this policy',
     paragraphs: [
-      'We may update this Cookie Policy as we introduce new features or as regulations evolve. We will post the revised version here and update the date above.',
+      'We may update this Cookie Policy as we introduce new features or as regulations evolve. We will post the revised version here with an updated effective date and version number.',
     ],
   },
 ]
@@ -62,7 +63,8 @@ export function PublicCookiePolicy() {
   return (
     <LegalDocument
       title="Cookie Policy"
-      updated="16 August 2026"
+      updated="16 September 2026"
+      version="1.1"
       intro="This Cookie Policy explains how SALIS AUTO uses cookies and similar technologies when you visit our website or use our platform. It covers what cookies are, which ones we use, and how you can manage them."
       clauses={CLAUSES}
     />

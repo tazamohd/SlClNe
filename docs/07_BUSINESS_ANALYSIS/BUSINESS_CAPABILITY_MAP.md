@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 425 registered screens and all 374 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 427 registered screens and all 374 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -58,7 +58,7 @@ flowchart LR
   OBJ_CONTROL --> CAP_PLATFORM
   CAP_IDENTITY["Identity and access<br/>18 screens · 24 endpoints"]
   OBJ_CONTROL --> CAP_IDENTITY
-  CAP_WEBSITE["Public website and acquisition<br/>32 screens · 0 endpoints"]
+  CAP_WEBSITE["Public website and acquisition<br/>34 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
@@ -85,7 +85,7 @@ flowchart LR
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 10 | 4 | 8 | 2 | 6 |
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 19 | 4 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
-| CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 32 | 0 | 0 | 0 | 0 |
+| CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 3 | 0 | 0 | 0 |
 | CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 26 | 0 | 0 | 0 |
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-106 of 425 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+106 of 427 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -325,7 +325,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `website` |
-| Screens | 32 (0 data-backed) |
+| Screens | 34 (0 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

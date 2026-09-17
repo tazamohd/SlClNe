@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-425 capabilities · 425 rendering · 0 placeholder · 106 data-backed.
+427 capabilities · 427 rendering · 0 placeholder · 106 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -131,17 +131,19 @@
 | PublicPortal · FAQ | `/public-portal/faq` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Features | `/public-portal/features` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Fleet | `/public-portal/fleet` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PublicPortal · Industries | `/public-portal/industries` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Industries | `/public-portal/industries` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Insurance | `/public-portal/insurance` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PublicPortal · Integrations | `/public-portal/integrations` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Integrations | `/public-portal/integrations` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Landing | `/public-portal/landing` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Loans | `/public-portal/loans` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · MiniERP | `/public-portal/mini-erp` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · PartsAccessories | `/public-portal/parts-accessories` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Pricing | `/public-portal/pricing` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Products | `/public-portal/products` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PublicPortal · RequestDemo | `/public-portal/request-demo` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · RequestDemo | `/public-portal/request-demo` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Resources | `/public-portal/resources` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · RoiCalculator | `/public-portal/roi-calculator` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Security | `/public-portal/security` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Services | `/public-portal/services` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Solutions | `/public-portal/solutions` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · SpareParts | `/public-portal/spare-parts` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
