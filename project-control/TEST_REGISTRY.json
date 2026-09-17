@@ -1281,12 +1281,7 @@
       ],
       "caseCount": 6,
       "touchesPaths": [
-        "/job-cards",
-        "/customers",
-        "/dashboard",
-        "/invoice-create",
-        "/inventory",
-        "/public-portal/landing"
+        "/job-cards"
       ],
       "touchesRoles": [
         "owner"

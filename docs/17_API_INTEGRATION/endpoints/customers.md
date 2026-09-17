@@ -14,8 +14,8 @@
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/customers` | customers:v | token | `customers` | — | 14 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/customers` | customers:c | token | `customers` | — | 14 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/customers` | customers:v | token | `customers` | — | 13 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/customers` | customers:c | token | `customers` | — | 13 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/customers/:id` | customers:d | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customers/:id` | customers:v | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/customers/:id` | customers:e | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

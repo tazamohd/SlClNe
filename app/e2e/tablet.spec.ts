@@ -1,5 +1,8 @@
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { test, expect, type Page, type Browser } from '@playwright/test'
 import { seedRole, gotoReady } from './helpers'
+import { REGISTRY } from '../src/data/generated/master-registry'
 
 /** Tablet verification — BLK-008.
  *
@@ -16,7 +19,25 @@ import { seedRole, gotoReady } from './helpers'
  *  What is asserted is deliberately narrow: no horizontal overflow, the shell
  *  that the width implies, and controls big enough to hit. Those are the
  *  failures a screenshot diff cannot argue with and a human reviewer keeps
- *  missing. Visual fidelity at these widths is a separate, later pass. */
+ *  missing. Visual fidelity at these widths is a separate, later pass.
+ *
+ *  The sweep used to sample one screen per layout family (six of them) rather
+ *  than the inventory — `project-control/BLOCKERS.json` named that gap as
+ *  BLK-008 explicitly: "a screen outside those families can still break at
+ *  tablet width." `SCREENS` below is every entry in the same generated
+ *  `master-registry.ts` that `scripts/smoke.mjs`'s route coverage already
+ *  walks, seeded with the same 'owner' role smoke.mjs uses (view on every
+ *  module, so a redirect means the route is broken rather than forbidden) —
+ *  a capability cannot exist without appearing here.
+ *
+ *  A first full run surfaces genuine, previously-undetected overflow at these
+ *  widths on screens nobody had checked before. Failing the whole suite on
+ *  every one of them would either block on fixing an unbounded backlog in
+ *  this change or get the check disabled within a week; ratcheting the exact
+ *  known set against `project-control/BASELINE.json` (`tabletOverflowRoutes`,
+ *  same convention as the axe colour-contrast ratchet in e2e/a11y.spec.ts)
+ *  keeps the check on and honest: it fails on any *new* overflow, and the
+ *  known ones are visible work items rather than silently swallowed. */
 
 const PORTRAIT = [
   { name: 'iPad mini', width: 768, height: 1024 },
@@ -31,17 +52,20 @@ const LANDSCAPE = PORTRAIT.map((v) => ({
   height: v.width,
 }))
 
-/** One screen per layout family the app actually ships: a data table, a detail
- *  page, a form, a dashboard of cards, and the marketing site, which uses a
- *  different shell entirely. */
-const SCREENS = [
-  { path: '/job-cards', role: 'owner', family: 'table' },
-  { path: '/customers', role: 'owner', family: 'table' },
-  { path: '/dashboard', role: 'owner', family: 'dashboard' },
-  { path: '/invoice-create', role: 'owner', family: 'form' },
-  { path: '/inventory', role: 'owner', family: 'table' },
-  { path: '/public-portal/landing', role: 'owner', family: 'marketing' },
-] as const
+/** Every registered capability, not a hand-picked sample — see BLK-008 above. */
+const SCREENS = REGISTRY.map((entry) => ({ path: entry.route, role: 'owner' as const }))
+
+const BASELINE = fileURLToPath(new URL('../../project-control/BASELINE.json', import.meta.url))
+
+/** The recorded overflow allowance for one viewport × route. A missing entry
+ *  is zero: a screen newly covered by the full sweep starts clean or records
+ *  its backlog explicitly, never inherits an unstated allowance. */
+function overflowCeiling(viewport: string, route: string): number {
+  const baseline = JSON.parse(fs.readFileSync(BASELINE, 'utf8')) as {
+    tabletOverflowRoutes?: Record<string, number>
+  }
+  return baseline.tabletOverflowRoutes?.[`${viewport} ${route}`] ?? 0
+}
 
 /** True when the document is wider than its viewport. One pixel of slack
  *  absorbs sub-pixel rounding; anything more is a real sideways scrollbar. */
@@ -90,10 +114,15 @@ for (const viewport of [...PORTRAIT, ...LANDSCAPE]) {
     for (const screen of SCREENS) {
       test(`${screen.path} fits the viewport`, async ({ browser }) => {
         const { context, page } = await openAt(browser, viewport, screen.role, screen.path)
-        const culprit = await widestOverflowingElement(page)
-        expect(await overflowsHorizontally(page), culprit ?? 'no overflowing element found').toBe(
-          false,
-        )
+        const overflows = await overflowsHorizontally(page)
+        const culprit = overflows ? await widestOverflowingElement(page) : null
+        const ceiling = overflowCeiling(viewport.name, screen.path)
+        expect(
+          overflows ? 1 : 0,
+          `${screen.path} overflows ${viewport.name} (${culprit ?? 'no overflowing element found'}); ` +
+            `the ratchet in project-control/BASELINE.json allows ${ceiling}. ` +
+            'Lower the baseline when it is fixed; never raise it.',
+        ).toBeLessThanOrEqual(ceiling)
         await context.close()
       })
     }
