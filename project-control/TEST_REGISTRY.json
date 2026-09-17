@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 188,
-    "cases": 2198,
+    "cases": 2215,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
-      "FINANCIAL_INTEGRITY": 181,
+      "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1072,
+      "UNIT_OR_API": 1075,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -852,7 +852,7 @@
         "job cards list loads and search filters client-side",
         "opening \"New Job Card\" takes real customer and vehicle input",
         "check-in records odometer, fuel level and belongings",
-        "estimate totals compute from real line items",
+        "estimate totals read from the real linked estimate, honestly empty here",
         "invoice create recomputes the total when a line is removed",
         "payments screen shows outstanding balances",
         "invoice preview renders the tax invoice with its ZATCA block",
@@ -2494,7 +2494,9 @@
         "WorkshopQC — live audit trail (history.job)",
         "WorkshopReports — live analytics (workshopReports.workshop)",
         "OBDDiagnostics — live commands and integration status",
-        "CustomerApproval — live OTP e-signature (estimateOtp)"
+        "CustomerApproval — live OTP e-signature (estimateOtp)",
+        "CustomerApproval — the linked estimate itself (estimates.get)",
+        "PurchaseAgentPayments — live purchase orders (purchaseOrders.list)"
       ],
       "cases": [
         "renders the server rows the unified queue returned",
@@ -2511,15 +2513,22 @@
         "shows the per-device DTC readings from diagnostics.readings",
         "handles the SMS 503 as the honest not-connected state",
         "completes the sign-off when the code verifies",
-        "keeps the Not connected gap when no estimate is linked"
+        "keeps the Not connected gap when no estimate is linked",
+        "shows the real customer, vehicle and server-computed total for the linked estimate",
+        "refuses to sign an already-decided estimate, regardless of OTP configuration",
+        "refuses to sign an expired estimate",
+        "still offers the signature step when the estimate could not be resolved",
+        "renders the real supplier, amount and status for an open order",
+        "excludes draft and closed orders from the owed total"
       ],
-      "caseCount": 15,
+      "caseCount": 21,
       "touchesPaths": [],
       "touchesRoles": [
         "owner",
         "manager",
         "technician",
-        "customer"
+        "customer",
+        "procurement"
       ]
     },
     {
@@ -2759,6 +2768,11 @@
         "TaxManagement — taxReturn",
         "ReportsAnalytics — trialBalance",
         "FinancialReports — trialBalance, F-008 banner stays visible",
+        "GeneralLedger — trialBalance accounts",
+        "TrialBalance — trialBalance accounts",
+        "BalanceSheet — trialBalance accounts",
+        "IncomeStatement — trialBalance accounts",
+        "CashFlowStatement — no activity classification exists",
         "BankReconciliation — bankStatements + match",
         "CustomReports — savedReports persistence"
       ],
@@ -2770,12 +2784,24 @@
         "fixture: discloses the ledger gap",
         "live: renders F-008’s imbalance honestly and drops the gap",
         "live: shows the server trial balance and keeps the imbalance banner",
+        "live: reads the server-computed P&L, not a paginated client sum",
+        "live: gaps the per-category expense chart instead of a paginated sum",
+        "fixture: names the gap, invents no account rows",
+        "live: renders the real chart-of-accounts rows with debit/credit placement",
+        "fixture: names the gap, invents no account rows",
+        "live: renders the server debit/credit columns and the honest imbalance",
+        "fixture: names the gap, invents no line items",
+        "live: sections are real accounts, and the identity is the server’s own balanceSheet block",
+        "fixture: names the gap, invents no line items",
+        "live: Revenue and Expense sections are real accounts, totals are the server’s P&L",
+        "fixture: names the gap, invents no line items",
+        "live: still names the gap — a live API does not create an activity classification",
         "fixture: honest that no statement source is connected",
         "live: renders the imported statement lines with a reconcile action",
         "fixture: honest that saved definitions need a server collection",
         "live: offers the saved-reports panel and drops the gap note"
       ],
-      "caseCount": 11,
+      "caseCount": 23,
       "touchesPaths": [],
       "touchesRoles": [
         "accountant",
@@ -3489,6 +3515,8 @@
         "PortalAppointments reads appointments",
         "PortalInvoices reads invoices",
         "CustomerAppVehicles reads vehicles",
+        "CustomerAppPayments reads invoices",
+        "PurchaseAgentPayments reads purchase orders",
         "VehiclesList reads vehicles"
       ],
       "cases": [
@@ -3507,14 +3535,19 @@
         "GAP: no browser-summed money, and no balance guessed from a fixture row",
         "renders the garage the collection returned",
         "GAP: drops the invented insurance, colours and mileage roll-up",
+        "renders the invoice the collection returned, at the server amount",
+        "GAP: drops the invented transaction history and card numbers",
+        "names the missing accounts-payable capability rather than inventing one",
+        "shows the honest empty state rather than a fabricated row when there are no orders",
         "renders the owner the projection actually carries",
         "counts the contract status vocabulary and the server total"
       ],
-      "caseCount": 17,
+      "caseCount": 21,
       "touchesPaths": [],
       "touchesRoles": [
         "customer",
-        "owner"
+        "owner",
+        "procurement"
       ]
     },
     {
@@ -3747,7 +3780,7 @@
         "Tier C legal pages"
       ],
       "cases": [
-        "${page.name} renders signed-out with its h1, meta, effective date and version",
+        "${page.name} renders signed-out with its h1, meta and template banner",
         "renders at 390px with the mobile nav, not the desktop bar",
         "Terms renders in Arabic with the document flipped to RTL"
       ],
@@ -3816,35 +3849,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-PUBLIC-REQUEST-DEMO-FORM-TEST-TSX",
-      "file": "app/tests/public-request-demo-form.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "Request a Demo form validation",
-        "Request a Demo form delivery — fixture build (no VITE_API_URL)",
-        "Request a Demo form accessibility"
-      ],
-      "cases": [
-        "rejects an empty submission with an accessible error summary and per-field errors",
-        "never pre-selects the consent checkbox",
-        "rejects a malformed email and ties the error to the field",
-        "requires consent even when every other field is valid",
-        "validateRequestDemo accepts a complete, well-formed submission",
-        "a valid submission states requests are not live in this build, with working fallback channels",
-        "never fakes a success state on the fixture build",
-        "every visible field label is programmatically associated with its control",
-        "carries autocomplete hints for the common identity fields",
-        "links consent to the Privacy Policy"
-      ],
-      "caseCount": 10,
-      "touchesPaths": [
-        "/public-portal/request-demo",
-        "/privacy-policy"
-      ],
-      "touchesRoles": []
-    },
-    {
       "id": "TS-APP-TESTS-PUBLIC-SEO-TEST-TSX",
       "file": "app/tests/public-seo.test.tsx",
       "kind": "UNIT_OR_API",
@@ -3858,15 +3862,10 @@
         "lists every ungated public route the website barrel declares",
         "lists nothing but those public routes — no authenticated URL leaks in",
         "allows the public routes, disallows the rest, and names the sitemap",
-        "sets the document title and meta description, updating in place",
-        "sets a canonical URL and matching og:url from the current route",
-        "sets Open Graph and Twitter title/description alongside the meta description"
+        "sets the document title and meta description, updating in place"
       ],
-      "caseCount": 6,
-      "touchesPaths": [
-        "/public-portal/landing",
-        "/public-portal/pricing"
-      ],
+      "caseCount": 4,
+      "touchesPaths": [],
       "touchesRoles": []
     },
     {
@@ -3879,8 +3878,7 @@
       ],
       "cases": [
         "renders signed out — no session provider anywhere in the tree",
-        "carries the seven primary nav links, each to a real public route",
-        "shows a persistent Request a Demo CTA in the desktop header",
+        "carries the seven design nav links, each to a real public route",
         "links Sign In into the auth chain at /login",
         "switches to Arabic and flips the document to RTL",
         "renders Arabic RTL from a stored preference, signed out",
@@ -3888,16 +3886,15 @@
         "offers a skip link to the main content landmark",
         "footer contains only links with real destinations"
       ],
-      "caseCount": 9,
+      "caseCount": 8,
       "touchesPaths": [
         "/public-portal/landing",
         "/public-portal/about",
-        "/public-portal/industries",
-        "/public-portal/integrations",
-        "/public-portal/security",
-        "/public-portal/pricing",
+        "/public-portal/services",
+        "/public-portal/parts-accessories",
+        "/public-portal/deals-offers",
         "/public-portal/contact",
-        "/public-portal/request-demo",
+        "/public-portal/blog",
         "/login"
       ],
       "touchesRoles": []
@@ -4438,6 +4435,27 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-UNIT-DASHBOARD-METRICS-TEST-TS",
+      "file": "app/tests/unit/dashboard-metrics.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "percentChange",
+        "isoDate"
+      ],
+      "cases": [
+        "computes a normal increase and decrease",
+        "is null on a zero base rather than Infinity or NaN",
+        "is null on a negative base rather than a nonsensical sign flip",
+        "is null on non-finite input instead of propagating NaN/Infinity",
+        "never returns a non-finite number",
+        "formats as yyyy-mm-dd"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
       "id": "TS-APP-TESTS-UNIT-DERIVATIONS-TEST-TS",
       "file": "app/tests/unit/derivations.test.ts",
       "kind": "UNIT_OR_API",
@@ -4449,9 +4467,7 @@
         "collections and pipeline"
       ],
       "cases": [
-        "derives the subtotal from the parts and labour lines it renders",
-        "adds 15% ZATCA VAT and carries it into the grand total",
-        "multiplies each labour line by its own hours and rate",
+        "shows the honest empty state and a zero total when no estimate is linked",
         "offers approval to a role within its ceiling and escalation to one below it",
         "drops exactly the removed line from the subtotal, VAT and total",
         "recomputes when a quantity changes, not only when a line goes",
@@ -4465,7 +4481,7 @@
         "weights the pipeline by probability, so the forecast sits below the gross",
         "averages the deal size over the opportunities it actually has"
       ],
-      "caseCount": 15,
+      "caseCount": 13,
       "touchesPaths": [],
       "touchesRoles": [
         "owner",
@@ -4945,6 +4961,8 @@
         "replays a create with the same Idempotency-Key instead of billing twice",
         "refuses the same Idempotency-Key with a different body",
         "refuses a payment against an unissued invoice, then accepts it once issued",
+        "issues with the seller — not the buyer — in the QR, and the org VAT number on the row",
+        "refuses to issue for an organization with no VAT number on file",
         "refuses a payment larger than the balance",
         "takes a duplicate payment submission only once",
         "lets only one of two simultaneous payments take the last of the balance",
@@ -4964,7 +4982,7 @@
         "cannot be edited, deleted or truncated, even by the application role",
         "still accepts the inserts it exists to record"
       ],
-      "caseCount": 43,
+      "caseCount": 45,
       "touchesPaths": [
         "/health",
         "/ready",
@@ -5491,12 +5509,17 @@
       "cases": [
         "presents subtotal, tax, discount and total, summing to the seeded gross",
         "presents the submitter the SOD row check reads",
-        "does not serve another organization's estimate"
+        "does not serve another organization's estimate",
+        "presents validUntil null when the seed set none",
+        "presents validUntil for an estimate created with one, unchanged by the round trip"
       ],
-      "caseCount": 3,
-      "touchesPaths": [],
+      "caseCount": 5,
+      "touchesPaths": [
+        "/api/v1/estimates"
+      ],
       "touchesRoles": [
-        "manager"
+        "manager",
+        "advisor"
       ]
     },
     {

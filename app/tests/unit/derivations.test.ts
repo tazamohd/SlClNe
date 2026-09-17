@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { parseSar } from '@/components/ui/Money'
 import { WorkshopEstimate } from '@/screens/workshop/WorkshopEstimate'
@@ -65,39 +65,27 @@ function lineTotals(table: HTMLTableElement, column = -1): number[] {
 }
 
 describe('estimate totals', () => {
-  it('derives the subtotal from the parts and labour lines it renders', () => {
+  /* WorkshopEstimate used to compute the subtotal/VAT/grand total in the
+   * browser from two hardcoded arrays — the assertions below dated from that.
+   * It now reads the server-computed `estimates` row and its real
+   * `GET /estimates/:id/lines`, so there is no client derivation left to
+   * cross-check (§5b): the total is whatever the server says it is, not a sum
+   * this screen produces. In this fixture-only harness no `estimates` row
+   * carries the `jobCardId` a live server would set, and the line-item
+   * sub-resource always answers "unsupported" without a live API (same as
+   * `EstimateDetail`), so the honest, reachable behaviour here is the empty
+   * state and a zero total — not fabricated numbers. */
+  it('shows the honest empty state and a zero total when no estimate is linked', async () => {
     const { container } = renderScreen(WorkshopEstimate, { role: 'owner' })
-    const tables = [...container.querySelectorAll('table')] as HTMLTableElement[]
-    expect(tables).toHaveLength(2)
+    await waitFor(() =>
+      expect(screen.getAllByText('No line items to show').length).toBeGreaterThan(0)
+    )
 
-    const lines = tables.flatMap((table) => lineTotals(table))
-    expect(lines).toHaveLength(7)
-    expect(lines.every((amount) => amount > 0)).toBe(true)
-
-    const summed = lines.reduce((total, amount) => total + amount, 0)
-    expect(summaryAmount(container, 'Subtotal')).toBeCloseTo(summed, 2)
-  })
-
-  it('adds 15% ZATCA VAT and carries it into the grand total', () => {
-    const { container } = renderScreen(WorkshopEstimate, { role: 'owner' })
-    const subtotal = summaryAmount(container, 'Subtotal')
-    const vat = summaryAmount(container, 'VAT (15%)')
-    const grand = summaryAmount(container, 'Grand Total')
-
-    expect(vat).toBeCloseTo(subtotal * VAT_RATE, 2)
-    expect(grand).toBeCloseTo(subtotal + vat, 2)
-    expect(grand).toBeGreaterThan(subtotal)
-  })
-
-  it('multiplies each labour line by its own hours and rate', () => {
-    const { container } = renderScreen(WorkshopEstimate, { role: 'owner' })
-    const labour = ([...container.querySelectorAll('table')] as HTMLTableElement[])[1]
-    for (const row of labour.querySelectorAll('tbody tr')) {
-      const cells = [...row.children].map((cell) => cell.textContent ?? '')
-      const hours = Number.parseFloat(cells[1])
-      const rate = Number.parseFloat(cells[2].replace(/[^\d.]/g, ''))
-      expect(parseSar(cells[3])).toBeCloseTo(hours * rate, 2)
-    }
+    const rows = [...container.querySelectorAll('tbody tr')]
+    expect(rows.every((row) => row.children.length === 1)).toBe(true) // colSpan empty-state cell only
+    expect(summaryAmount(container, 'Subtotal')).toBe(0)
+    expect(summaryAmount(container, 'VAT (15%)')).toBe(0)
+    expect(summaryAmount(container, 'Grand Total')).toBe(0)
   })
 
   it('offers approval to a role within its ceiling and escalation to one below it', () => {

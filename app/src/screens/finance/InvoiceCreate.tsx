@@ -635,15 +635,20 @@ export function InvoiceCreate() {
                 {t('ZATCA-compliant e-invoice. Scan the QR to verify with the tax authority.')}
               </p>
               <div className="mt-1 flex flex-col gap-1 border-t border-border pt-2 text-[11px]">
-                <div className="flex justify-between">
-                  <span className="text-muted">{t('Seller')}</span>
-                  <span className="text-body">SALIS AUTO</span>
-                </div>
+                {/* The registration a document is actually issued under is
+                    captured from the organization at issue — never a literal
+                    a draft-time screen names on its own. Before that, this
+                    says so rather than showing a number that may not be the
+                    one the QR ends up encoding. */}
                 <div className="flex justify-between">
                   <span className="text-muted">{t('VAT Registration')}</span>
-                  <span className="font-mono text-body" dir="ltr">
-                    300123456700003
-                  </span>
+                  {saved?.sellerVatNumber ? (
+                    <span className="font-mono text-body" dir="ltr">
+                      {saved.sellerVatNumber}
+                    </span>
+                  ) : (
+                    <span className="text-muted">{t('Assigned when issued')}</span>
+                  )}
                 </div>
               </div>
             </Card>

@@ -8,24 +8,24 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Metric | Count |
 |---|---|
-| capabilities | 427 |
-| product | 387 |
+| capabilities | 425 |
+| product | 385 |
 | reference only | 28 |
 | external dependency | 12 |
-| rendered | 427 |
+| rendered | 425 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 288 |
-| data backed | 99 |
-| e2e covered | 427 |
-| content asserted | 427 |
+| mock only | 279 |
+| data backed | 106 |
+| e2e covered | 425 |
+| content asserted | 425 |
 | rendered without assertion | 0 |
-| has loading state | 143 |
-| has error state | 111 |
-| has empty state | 169 |
+| has loading state | 152 |
+| has error state | 119 |
+| has empty state | 173 |
 | tablet verified | 4 |
-| arabic verified | 79 |
+| arabic verified | 80 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 98 |
+| crud read | 105 |
 | crud update | 24 |
 | crud delete | 24 |
 | unregistered designs | 0 |
@@ -52,7 +52,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | reference | 28 | 28 | 0 | 0 | 28 |
 | kiosk | 1 | 1 | 0 | 0 | 1 |
 | native | 2 | 2 | 0 | 0 | 2 |
-| public | 34 | 34 | 0 | 0 | 34 |
+| public | 32 | 32 | 0 | 0 | 32 |
 
 ## By domain
 
@@ -69,7 +69,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Shared UI & reference | 04 | G2 | `████████████████████` 100% | 28 | 28 |
 | HR & payroll | 14 | G8 | `████████████████████` 100% | 1 | 1 |
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
-| Public website | 17 | G11 | `████████████████████` 100% | 34 | 34 |
+| Public website | 17 | G11 | `████████████████████` 100% | 32 | 32 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
 | Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 211 | 211 |
 

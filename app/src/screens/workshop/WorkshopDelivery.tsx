@@ -1,16 +1,19 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Button } from '@/components/ui/Button'
-import { Money, SummaryRow } from '@/components/ui/Money'
+import { Money, SummaryRow, parseSar } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
 import { Checklist, countChecked, type ChecklistItem } from '@/components/ui/Checklist'
+import { EmptyState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { StageNotice, stageBusy } from './StageNotice'
+import { useJobStage } from './useJobStage'
 
 const DELIVERY_CHECKS: ChecklistItem[] = [
   { icon: 'Bell', label: 'Customer Notified' },
@@ -21,29 +24,46 @@ const DELIVERY_CHECKS: ChecklistItem[] = [
   { icon: 'Eye', label: 'Quality Check' },
 ]
 
-const PARTS_SAR = 590
-const LABOUR_SAR = 755
-const VAT_RATE = 0.15
+/** The live invoice row carries the VAT split the server computed from its
+ *  lines (F-029); the fixture row carries only the pre-formatted `amount`. */
+type Invoice = RowOf<'invoices'> & {
+  _id?: string
+  taxHalalas?: number
+  totalHalalas?: number
+}
 
 /** Stage 6 — hand the vehicle back and close the job.
  *
- *  Odometer readings bracket the visit: what came in, what goes out. The
- *  difference is the workshop's own mileage on the vehicle, which is what a
- *  customer queries. */
+ *  The invoice summary is the real invoice raised for this job card —
+ *  `invoices` filtered by `jobCardId`, its lines split into parts and labour
+ *  the same way `WorkshopQC` reads them. The checklist and odometer readings
+ *  have no backing field yet (no delivery-checklist or odometer column
+ *  exists), so they stay local state, same as before. */
 export function WorkshopDelivery() {
   const { t, rtl } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
-  const navigate = useNavigate()
+  const stage = useJobStage()
   const [checked, setChecked] = useState<Record<string, boolean>>({})
+
+  const invoices = useCollection('invoices', { filter: { jobCardId: stage.job?._id ?? '' } })
+  const invoiceRows = (invoices.data ?? []) as readonly Invoice[]
+  const invoice = invoiceRows[0]
+  const lines = useCollection('invoiceLines', { filter: { invoiceId: invoice?._id ?? '' } })
+  const lineRows = (lines.data ?? []) as readonly RowOf<'invoiceLines'>[]
+
+  // `unit` is already SAR (`sarNumber(row.unitPriceHalalas)`), same field
+  // WorkshopQC reads — a per-row total is a display-only `qty × unit`.
+  const partsTotal = lineRows.filter((l) => l.kind !== 'labour').reduce((sum, l) => sum + l.qty * l.unit, 0)
+  const labourTotal = lineRows.filter((l) => l.kind === 'labour').reduce((sum, l) => sum + l.qty * l.unit, 0)
+  const vat = invoice?.taxHalalas != null ? invoice.taxHalalas / 100 : 0
+  const grandTotal = invoice?.totalHalalas != null ? invoice.totalHalalas / 100 : invoice ? parseSar(invoice.amount) : 0
+  const invoiceLoading = invoices.isLoading || (Boolean(invoice) && lines.isLoading)
 
   const done = countChecked(DELIVERY_CHECKS, checked)
   const complete = done === DELIVERY_CHECKS.length
 
-  const vat = (PARTS_SAR + LABOUR_SAR) * VAT_RATE
-  const grandTotal = PARTS_SAR + LABOUR_SAR + vat
-
-  function completeDelivery() {
+  async function completeDelivery() {
     if (!complete) {
       toast.show({
         title: t('Incomplete checklist'),
@@ -52,8 +72,10 @@ export function WorkshopDelivery() {
       })
       return
     }
-    toast.show({ title: t('Delivered'), description: t('Job card closed') })
-    setTimeout(() => navigate('/job-cards'), 700)
+    await stage.advance('invoiced', {
+      reason: 'vehicle delivered to customer',
+      then: '/job-cards',
+    })
   }
 
   return (
@@ -63,11 +85,13 @@ export function WorkshopDelivery() {
       <PageHeader
         icon="Car"
         title={t('Vehicle Delivery')}
-        subtitle={<span dir="ltr">JC-A3F8B2C1 · Ahmed Al-Rashid</span>}
+        subtitle={<span dir="ltr">{stage.job ? `${stage.job.id} · ${stage.job.veh}` : '—'}</span>}
         compact={isMobile}
       />
 
-      <WorkflowStepper current="Delivery" />
+      <WorkflowStepper current={stage.stageLabel} />
+
+      <StageNotice stage={stage} />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <Panel
@@ -88,17 +112,29 @@ export function WorkshopDelivery() {
 
         <div className="flex flex-col gap-5">
           <Panel icon="Receipt" title={t('Invoice Summary')}>
-            <div className="flex flex-col gap-2">
-              <SummaryRow label={t('Parts')} sar={PARTS_SAR} />
-              <SummaryRow label={t('Labor')} sar={LABOUR_SAR} />
-              <SummaryRow label={t('VAT (15%)')} sar={vat} />
-              <div className="flex justify-between border-t border-border pt-2 text-lg font-extrabold text-heading">
-                <span>{t('Grand Total')}</span>
-                <Money sar={grandTotal} className="font-extrabold" />
+            {invoiceLoading ? (
+              <Loading label={t('Loading invoice...')} />
+            ) : !invoice ? (
+              <EmptyState
+                icon="ReceiptText"
+                title={t('No invoice yet')}
+                description={t('No invoice is linked to this job card yet.')}
+              />
+            ) : (
+              <div className="flex flex-col gap-2">
+                <SummaryRow label={t('Parts')} sar={partsTotal} />
+                <SummaryRow label={t('Labor')} sar={labourTotal} />
+                <SummaryRow label={t('VAT (15%)')} sar={vat} />
+                <div className="flex justify-between border-t border-border pt-2 text-lg font-extrabold text-heading">
+                  <span>{t('Grand Total')}</span>
+                  <Money sar={grandTotal} className="font-extrabold" />
+                </div>
               </div>
-            </div>
+            )}
           </Panel>
 
+          {/* No odometer column exists on the job card yet, so these stay
+              local rather than being read from a field that isn't there. */}
           <Panel icon="Gauge" title={t('Final Odometer')}>
             <div className="flex items-center gap-3">
               <div className="flex flex-1 flex-col gap-0.5">
@@ -124,9 +160,9 @@ export function WorkshopDelivery() {
           <Icon name="Printer" size={16} />
           {t('Print Delivery Note')}
         </Button>
-        <Button size="lg" onClick={completeDelivery}>
+        <Button size="lg" onClick={() => void completeDelivery()} disabled={stageBusy(stage)}>
           <Icon name="CheckCircle" size={16} />
-          {t('Complete Delivery')}
+          {stage.status === 'saving' ? t('Saving...') : t('Complete Delivery')}
         </Button>
       </div>
     </div>

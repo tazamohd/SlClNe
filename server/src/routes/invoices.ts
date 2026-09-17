@@ -27,6 +27,7 @@ import {
   invoiceLines,
   invoices,
   jobCards,
+  organizations,
   payments,
   receipts,
 } from '../db/schema'
@@ -462,6 +463,25 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
       const previous = await previousHash(tx, principal.orgId)
       const hashSelf = invoiceHash(before, previous)
 
+      /* The seller identity the QR and the printed document carry from here
+       * on — read from the organization, never a literal in a screen. Issuing
+       * is the moment this invoice becomes a tax document, so it is the
+       * moment the seller's registered VAT number is captured onto the row:
+       * an issued invoice is immutable, and the org's own VAT number is not,
+       * so freezing it here is what makes a later org-settings change not
+       * silently reach back into an invoice already issued. */
+      const [orgRow] = await tx
+        .select({ name: organizations.name, vatNumber: organizations.vatNumber })
+        .from(organizations)
+        .where(eq(organizations.id, principal.orgId))
+        .limit(1)
+      if (!orgRow?.vatNumber) {
+        throw ruleViolated(
+          'This organization has no VAT registration number on file. Set it in organization settings before issuing invoices.',
+        )
+      }
+      const seller = { name: orgRow.name, vatNumber: orgRow.vatNumber }
+
       const [after] = await tx
         .update(invoices)
         .set({
@@ -469,7 +489,8 @@ export function registerInvoiceRoutes(app: FastifyInstance, deps: RouteDeps): vo
           issuedAt: sql`now()`,
           hashPrev: previous,
           hashSelf,
-          qrCode: zatcaQr(before),
+          sellerVatNumber: seller.vatNumber,
+          qrCode: zatcaQr(before, seller),
           updatedBy: principal.userId,
         })
         .where(and(eq(invoices.id, before.id), eq(invoices.version, before.version)))
@@ -779,11 +800,17 @@ function invoiceHash(invoice: InvoiceRow, previous: string | null): string {
 }
 
 /** ZATCA phase-2 TLV payload, base64-encoded — seller, VAT number, timestamp,
- *  total and VAT amount, in that tag order. */
-function zatcaQr(invoice: InvoiceRow): string {
+ *  total and VAT amount, in that tag order.
+ *
+ *  Tag 1 is the *seller's* name. It read `invoice.customerName` until this
+ *  fix — the buyer's name, in the seller's slot, on every QR this endpoint
+ *  ever issued. A verification app trusts this payload over what the printed
+ *  page says, so a wrong tag 1 is not cosmetic: it misidentifies who issued
+ *  the invoice to whatever reads the code. */
+function zatcaQr(invoice: InvoiceRow, seller: { name: string; vatNumber: string }): string {
   const fields: [number, string][] = [
-    [1, invoice.customerName],
-    [2, invoice.sellerVatNumber ?? ''],
+    [1, seller.name],
+    [2, seller.vatNumber],
     [3, new Date().toISOString()],
     [4, (invoice.totalHalalas / 100).toFixed(2)],
     [5, (invoice.taxHalalas / 100).toFixed(2)],

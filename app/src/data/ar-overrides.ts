@@ -4693,4 +4693,16 @@ export const AR_OVERRIDES: Record<string, string> = {
   "workshop operations, parts and inventory, ZATCA-compliant invoicing and": "عمليات الورشة، وقطع الغيار والمخزون، والفوترة المتوافقة مع ZATCA،",
   "“That phone is already in use” beats “Duplicate record detected”. Name the field, the amount, the id — and when something fails, hand over a request id rather than an apology.": "«هذا الهاتف مستخدم بالفعل» أفضل من «تم رصد سجل مكرر». سمِّ الحقل، والمبلغ، والمعرّف — وحين يفشل شيء، سلّم معرّف الطلب لا اعتذارًا.",
   "…and also": "…وأن يقوم كذلك بـ",
+
+  // BLK-004: workshop lifecycle, procurement portal and AI knowledge base wired to live data.
+  "Loading articles...": "جارٍ تحميل المقالات...",
+  "Try a different search term.": "جرّب كلمة بحث مختلفة.",
+  "procedures": "إجراءات",
+  "Loading requisitions...": "جارٍ تحميل طلبات الشراء...",
+  "No requisitions are waiting for approval right now.": "لا توجد طلبات شراء بانتظار الاعتماد حاليًا.",
+  "Nothing pending": "لا شيء معلّق",
+  "No invoice is linked to this job card yet.": "لا توجد فاتورة مرتبطة ببطاقة العمل هذه بعد.",
+  "No invoice yet": "لا توجد فاتورة بعد",
+  "Couldn't approve": "تعذّر الاعتماد",
+  "No estimate is linked to this job card yet.": "لا يوجد عرض سعر مرتبط ببطاقة العمل هذه بعد.",
 }

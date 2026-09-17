@@ -13,6 +13,64 @@ import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
 import { formatSar } from '@/components/ui/Money'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { isLive } from '@/data/repository'
+import { useInvoicesSummary } from '@/screens/accounting/useFinanceReports'
+import { fromHalalas } from '@/screens/finance/money'
+import { AGGREGATE_GAP } from '@/screens/accounting/reporting'
+import { isoDate, percentChange } from '@/screens/dashboard-metrics'
+
+/** Total Revenue KPI: the server-computed period total (§A10 — the server
+ *  sums, the client never adds up a page of invoices), for the current month
+ *  to date versus the prior full month. On a build with no API (`isLive`
+ *  false) there is no aggregate to show, so this says that plainly rather
+ *  than repeating a fixture figure as if it were live. */
+function useRevenueMetric(): { value: string; footer: React.ReactNode } {
+  const { t } = usePreferences()
+  const now = new Date()
+  const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0)
+
+  const thisMonth = useInvoicesSummary({ from: isoDate(startOfThisMonth), to: isoDate(now) })
+  const lastMonth = useInvoicesSummary({ from: isoDate(startOfLastMonth), to: isoDate(endOfLastMonth) })
+
+  if (!isLive) {
+    return {
+      value: '—',
+      footer: (
+        <span className="text-xs text-muted">
+          {t('Not connected')} · <span dir="ltr">{AGGREGATE_GAP.sales}</span>
+        </span>
+      ),
+    }
+  }
+
+  if (thisMonth.isLoading) return { value: '…', footer: null }
+  if (thisMonth.error || !thisMonth.data) {
+    return { value: '—', footer: <span className="text-xs text-danger">{t('Could not load revenue')}</span> }
+  }
+
+  const value = formatSar(fromHalalas(thisMonth.data.invoicedHalalas))
+  const change =
+    lastMonth.data ? percentChange(thisMonth.data.invoicedHalalas, lastMonth.data.invoicedHalalas) : null
+
+  return {
+    value,
+    footer: (
+      <div className="mt-1 flex flex-wrap items-center gap-2">
+        {change !== null ? (
+          <span
+            className={`inline-flex items-center gap-0.5 text-xs font-semibold ${change >= 0 ? 'text-salis-blue' : 'text-danger'}`}
+          >
+            <Icon name={change >= 0 ? 'ArrowUpRight' : 'ArrowDownRight'} size={14} />
+            {Math.abs(change).toFixed(1)}%
+          </span>
+        ) : null}
+        <span className="text-xs text-muted">{t('Month to date')}</span>
+      </div>
+    ),
+  }
+}
 
 /** Role-adaptive KPI home. The reference implementation every other
  *  operational screen follows: PageHeader → metric row → pipeline strip →
@@ -22,6 +80,7 @@ export function Dashboard() {
   const { userName } = useSession()
   const isMobile = useIsMobile()
   const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
+  const revenue = useRevenueMetric()
 
   if (isLoading) return <Loading label="Loading dashboard..." />
   if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
@@ -86,15 +145,10 @@ export function Dashboard() {
             iconTint="var(--tint-blue)"
             iconColor="var(--salis-blue)"
             label={t('Total Revenue')}
-            value={formatSar(128450, { decimals: 0 })}
+            value={revenue.value}
             orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
             orbIcon="TrendingUp"
-            footer={
-              <span className="inline-flex w-fit items-center gap-0.5 text-xs font-semibold text-salis-blue">
-                <Icon name="ArrowUpRight" size={14} />
-                +12%
-              </span>
-            }
+            footer={revenue.footer}
           />
           <MobileMetric
             icon="Wrench"
@@ -272,20 +326,11 @@ export function Dashboard() {
           iconTint="var(--tint-blue)"
           iconColor="var(--salis-blue)"
           label={t('Total Revenue')}
-          value={formatSar(128450, { decimals: 0 })}
+          value={revenue.value}
           orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
           orbIcon="TrendingUp"
           orbShadow="rgba(10,94,215,.2)"
-          footer={
-            <div className="mt-1 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-0.5 text-xs font-semibold text-salis-blue">
-                <Icon name="ArrowUpRight" size={14} />
-                +12%
-              </span>
-              <Sparkline points="0,26 13,22 26,24 40,16 53,18 66,8 80,4" stroke="var(--salis-blue)" />
-            </div>
-          }
-          progress={0.75}
+          footer={revenue.footer}
         />
 
         <MetricCard

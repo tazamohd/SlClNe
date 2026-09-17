@@ -1,189 +1,44 @@
-import { useMemo } from 'react'
-import { Card } from '@/components/ui/Card'
-import { formatSar } from '@/components/ui/Money'
-import { KpiCard } from '@/components/ui/KpiCard'
-import { Icon } from '@/components/ui/Icon'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { FeatureHeader } from '@/components/shell/FeatureScreen'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
-import { PageHeader } from '@/components/ui/PageHeader'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
+import { AGGREGATE_GAP } from './reporting'
+import { ReportGap } from './ReportControls'
 
-interface CashFlowItem {
-  label: string
-  amount: number
-}
-
-interface CashFlowSection {
-  title: string
-  icon: string
-  items: CashFlowItem[]
-}
-
-function useSections(t: (s: string) => string): CashFlowSection[] {
-  return useMemo(
-    () => [
-      {
-        title: t('Operating Activities'),
-        icon: 'Activity',
-        items: [
-          { label: t('Net Income'), amount: 285000 },
-          { label: t('Depreciation'), amount: 42000 },
-          { label: t('Changes in Receivables'), amount: -18500 },
-          { label: t('Changes in Payables'), amount: 12300 },
-          { label: t('Changes in Inventory'), amount: -8700 },
-        ],
-      },
-      {
-        title: t('Investing Activities'),
-        icon: 'TrendingUp',
-        items: [
-          { label: t('Equipment Purchases'), amount: -95000 },
-          { label: t('Tool Acquisitions'), amount: -22000 },
-          { label: t('Asset Disposals'), amount: 8500 },
-        ],
-      },
-      {
-        title: t('Financing Activities'),
-        icon: 'Landmark',
-        items: [
-          { label: t('Loan Proceeds'), amount: 150000 },
-          { label: t('Loan Repayments'), amount: -45000 },
-          { label: t('Owner Drawings'), amount: -30000 },
-        ],
-      },
-    ],
-    [t],
-  )
-}
-
-const fmtSar = (v: number) => formatSar(v, { parens: true })
-
-function SectionCard({
-  section,
-  t,
-}: {
-  section: CashFlowSection
-  t: (s: string) => string
-}) {
-  const subtotal = section.items.reduce((s, i) => s + i.amount, 0)
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <span
-          className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue"
-          aria-hidden
-        >
-          <Icon name={section.icon} size={16} />
-        </span>
-        <h2 className="text-sm font-bold text-heading">{section.title}</h2>
-      </div>
-      <div className="flex flex-col gap-1">
-        {section.items.map((item) => (
-          <div key={item.label} className="flex justify-between py-1 text-[13px]">
-            <span className="text-body">{item.label}</span>
-            <span
-              dir="ltr"
-              className={
-                'font-mono font-medium ' +
-                (item.amount < 0 ? 'text-salis-orange' : 'text-heading')
-              }
-            >
-              {fmtSar(item.amount)}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-between border-t border-border pt-2 text-sm font-semibold">
-        <span className="text-heading">{t('Subtotal')}</span>
-        <span
-          dir="ltr"
-          className={
-            'font-mono ' + (subtotal < 0 ? 'text-salis-orange' : 'text-salis-blue')
-          }
-        >
-          {fmtSar(subtotal)}
-        </span>
-      </div>
-    </div>
-  )
-}
-
+/** Cash Flow Statement — a genuine gap, live or not.
+ *
+ *  A cash-flow statement groups movements into operating, investing and
+ *  financing activities. Nothing in this system classifies a movement that
+ *  way: `journal_entries` (`server/src/db/schema.ts`) carries a debit, a
+ *  credit and an optional `source`/`sourceId` back to the business event that
+ *  produced it, but no activity category, and no endpoint derives one. The
+ *  previous version of this screen invented nine operating/investing/
+ *  financing line items and an opening balance out of nothing — plausible
+ *  numbers with no record behind any of them, which is worse than an empty
+ *  screen because a fabricated statement reads as a real one. This names the
+ *  gap instead, the same way `InsuranceReports` and `LoanReports` did before
+ *  their schema landed (F-035) — and unlike those, connecting the API alone
+ *  will not fill this one in; the activity classification would have to be
+ *  built first. */
 export function CashFlowStatement() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const sections = useSections(t)
-
-  const netChange = sections.reduce(
-    (s, sec) => s + sec.items.reduce((a, i) => a + i.amount, 0),
-    0,
-  )
-  const openingBalance = 320000
-  const closingBalance = openingBalance + netChange
-
-  const kpis = [
-    { label: t('Opening Balance'), value: fmtSar(openingBalance), icon: 'Wallet', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Net Change'), value: fmtSar(netChange), icon: 'ArrowUpDown', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Closing Balance'), value: fmtSar(closingBalance), icon: 'PiggyBank', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
-  ]
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="ArrowUpDown" title={t('Cash Flow Statement')} subtitle={t('Accounting')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <MobileCard key={k.label}>
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden>
-                <Icon name={k.icon} size={14} />
-              </span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p dir="ltr" className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </MobileCard>
-          ))}
-        </div>
-        {sections.map((sec) => (
-          <MobileCard key={sec.title}>
-            <SectionCard section={sec} t={t} />
-          </MobileCard>
-        ))}
-        <MobileCard>
-          <div className="flex justify-between text-base font-bold">
-            <span className="text-heading">{t('Net Cash Change')}</span>
-            <span dir="ltr" className={'font-mono ' + (netChange < 0 ? 'text-salis-orange' : 'text-salis-blue')}>
-              {fmtSar(netChange)}
-            </span>
-          </div>
-        </MobileCard>
-      </div>
-    )
-  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="ArrowUpDown" title={t('Cash Flow Statement')} subtitle={t('Accounting')} />
-
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.label} {...k} mono />
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 gap-5">
-        {sections.map((sec) => (
-          <Card key={sec.title} className="rounded-2xl p-6 shadow-sm">
-            <SectionCard section={sec} t={t} />
-          </Card>
-        ))}
-      </div>
-
-      <Card className="rounded-2xl p-6 shadow-sm">
-        <div className="flex justify-between text-lg font-bold">
-          <span className="text-heading">{t('Net Cash Change')}</span>
-          <span dir="ltr" className={'font-mono ' + (netChange < 0 ? 'text-salis-orange' : 'text-salis-blue')}>
-            {fmtSar(netChange)}
-          </span>
-        </div>
-      </Card>
+      {isMobile ? (
+        <MobilePageHeader icon="ArrowUpDown" title={t('Cash Flow Statement')} subtitle={t('Accounting')} />
+      ) : (
+        <FeatureHeader icon="ArrowUpDown" title={t('Cash Flow Statement')} subtitle={t('Operating, investing and financing activity')} />
+      )}
+      <ReportGap
+        icon="ArrowUpDown"
+        title={t('Cash Flow Statement')}
+        collection={AGGREGATE_GAP.cashFlow}
+        detail={t(
+          'No journal entry in this system is classified as operating, investing or financing activity, so there is nothing to group into a cash-flow statement yet — no figures are estimated here.',
+        )}
+      />
     </div>
   )
 }
