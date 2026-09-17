@@ -18,10 +18,13 @@ const GROUPS: readonly FooterGroup[] = [
     links: [
       { label: 'Features', to: '/public-portal/features' },
       { label: 'Solutions', to: '/public-portal/solutions' },
+      { label: 'Industries', to: '/public-portal/industries' },
       { label: 'Pricing', to: '/public-portal/pricing' },
+      { label: 'Integrations', to: '/public-portal/integrations' },
+      { label: 'Security', to: '/public-portal/security' },
+      { label: 'ROI Calculator', to: '/public-portal/roi-calculator' },
       { label: 'Parts & Accessories', to: '/public-portal/parts-accessories' },
       { label: 'Deals & Offers', to: '/public-portal/deals-offers' },
-      { label: 'Integrations', to: '/public-portal/integrations' },
     ],
   },
   {

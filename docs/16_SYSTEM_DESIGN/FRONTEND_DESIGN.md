@@ -22,10 +22,10 @@ Screens never call HTTP. They call `app/src/data/repository.ts`, which is backed
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Screens reading the live API | 106 | 425 |
-| Screens reading design fixtures | 279 | 425 |
-| Rendering | 425 | 425 |
-| Content-asserted end to end | 425 | 425 |
+| Screens reading the live API | 106 | 427 |
+| Screens reading design fixtures | 281 | 427 |
+| Rendering | 427 | 427 |
+| Content-asserted end to end | 427 | 427 |
 
 ## Screen states
 
@@ -33,19 +33,19 @@ Four states a data-backed screen needs, and the counts that have them:
 
 | State | Screens with it | Why it matters |
 | --- | --- | --- |
-| Loading | 152 of 425 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
-| Error | 119 of 425 | A failed fetch with no error state is a blank screen the user cannot act on |
-| Empty | 173 of 425 | Zero rows is a normal state and needs its own design, not a table with no rows |
+| Loading | 152 of 427 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
+| Error | 119 of 427 | A failed fetch with no error state is a blank screen the user cannot act on |
+| Empty | 173 of 427 | Zero rows is a normal state and needs its own design, not a table with no rows |
 | Permission | enforced by `RequireAccess` | A screen a role may not see must not render and then fail; it must not be reachable |
 
 The gap is real: a fixture-backed screen has no fetch to fail, so it needs no loading or error state — which is exactly why those counts will have to rise as the remaining screens are connected.
 
 ## Arabic and RTL
 
-82 of 425 screens are Arabic-verified and RTL hazards are held at **0**. RTL is treated as a correctness property rather than a styling preference: logical CSS properties are linted (`app/scripts/check-logical-css.mjs`), because a physical `margin-left` is a bug in an RTL layout and will not be caught by eye.
+77 of 427 screens are Arabic-verified and RTL hazards are held at **0**. RTL is treated as a correctness property rather than a styling preference: logical CSS properties are linted (`app/scripts/check-logical-css.mjs`), because a physical `margin-left` is a bug in an RTL layout and will not be caught by eye.
 
 ## Mobile
 
 The same source is packaged for iOS and Android with Capacitor — not a second codebase, and not a web view of a different build. Responsive layout is a property of the screens themselves.
 
-**4 of 425 screens are tablet-verified**, which is the weakest number on this page. A tablet is the primary device on a workshop floor.
+**4 of 427 screens are tablet-verified**, which is the weakest number on this page. A tablet is the primary device on a workshop floor.
