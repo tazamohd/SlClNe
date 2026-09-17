@@ -1545,8 +1545,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -7194,7 +7193,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

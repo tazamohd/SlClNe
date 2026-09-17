@@ -27,7 +27,7 @@
 | Has a loading state | 152 | 427 |
 | Has an error state | 119 | 427 |
 | Has an empty state | 173 | 427 |
-| Arabic verified | 77 | 427 |
+| Arabic verified | 79 | 427 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 427 |
 | Golden paths passing | 23 of 23 | — |
@@ -59,7 +59,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-VEHICLES | 4 | 4 | 4 | 4 | 4 | 0 |
 | CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
 | CAP-PROCUREMENT | 1 | 1 | 1 | 1 | 1 | 0 |
-| CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 1 |
+| CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
 | CAP-ACCOUNTING | 7 | 5 | 7 | 7 | 5 | 0 |
 | CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
 | CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 3 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 26 | 52 | 30 | 73 | 20 |
+| CAP-DESIGNSYSTEM | 233 | 26 | 52 | 30 | 73 | 21 |
 
 ## Full registry
 
