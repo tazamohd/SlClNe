@@ -34,9 +34,17 @@ echo "=== Vault maintenance started $(date -Is) ===" | tee -a "$LOG"
 
 # --permission-mode acceptEdits lets the unattended run write files without
 # interactive prompts, while still blocking anything beyond file edits.
+#
+# Capture claude's exit code explicitly rather than letting `set -e` +
+# `pipefail` kill the script on a non-zero exit: whatever the run already
+# wrote to disk should still get logged and committed below, not lost
+# silently because one unattended run had a bad exit code.
+set +e
 claude -p "$PROMPT" --permission-mode acceptEdits 2>&1 | tee -a "$LOG"
+CLAUDE_EXIT="${PIPESTATUS[0]}"
+set -e
 
-echo "=== Finished $(date -Is) ===" | tee -a "$LOG"
+echo "=== Finished $(date -Is) (exit $CLAUDE_EXIT) ===" | tee -a "$LOG"
 
 # Snapshot the result if the vault is a git repo.
 if [ -d "$VAULT/.git" ]; then

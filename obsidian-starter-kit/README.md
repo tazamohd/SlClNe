@@ -5,13 +5,14 @@ Obsidian vault. Copy the contents of this folder into your vault root:
 
 ```bash
 # macOS/Linux
-cp -r obsidian-starter-kit/CLAUDE.md obsidian-starter-kit/.claude \
-      obsidian-starter-kit/.mcp.json obsidian-starter-kit/scripts /path/to/your/vault/
+cp -r obsidian-starter-kit/CLAUDE.md obsidian-starter-kit/.mcp.json \
+      obsidian-starter-kit/.gitignore obsidian-starter-kit/.claude \
+      obsidian-starter-kit/scripts /path/to/your/vault/
 ```
 
 ```powershell
 # Windows (PowerShell)
-Copy-Item obsidian-starter-kit\CLAUDE.md, obsidian-starter-kit\.mcp.json M:\obo\
+Copy-Item obsidian-starter-kit\CLAUDE.md, obsidian-starter-kit\.mcp.json, obsidian-starter-kit\.gitignore M:\obo\
 Copy-Item -Recurse obsidian-starter-kit\.claude, obsidian-starter-kit\scripts M:\obo\
 ```
 
@@ -43,6 +44,7 @@ claude
 | `scripts/install-maintenance-task.sh` | One-command installer: registers the cron job |
 | `.mcp.json` | Project-scoped Obsidian MCP server (auto-detected by Claude Code) |
 | `.claude/agents/vault-analyst.md` | Read-only subagent for whole-vault analysis (see below) |
+| `.gitignore` | Excludes Obsidian's window-state files and nightly-maintenance run logs from git |
 
 ## The vault-analyst subagent
 
@@ -160,5 +162,6 @@ cd /path/to/your/vault
 git init && git add -A && git commit -m "Initial vault snapshot"
 ```
 
-Add `.obsidian/workspace*.json` to `.gitignore` to avoid noisy diffs from
-Obsidian's window state.
+The kit's `.gitignore` (copied in above) already excludes Obsidian's
+window-state files and the nightly-maintenance run logs, so `git init`
+before or after copying the kit in — either order works.
