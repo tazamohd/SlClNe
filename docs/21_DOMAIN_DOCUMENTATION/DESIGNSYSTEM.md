@@ -134,52 +134,52 @@ _No lifecycle in the contract belongs to this domain._
 | F-071 | `/parts-network-dashboard` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-073 | `/parts-network-my-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-074 | `/parts-network-incoming-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-079 | `/purchase-agent-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-079 | `/purchase-agent-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-083 | `/purchase-agent-delivery` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-084 | `/purchase-agent-orders` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-083 | `/purchase-agent-delivery` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-084 | `/purchase-agent-orders` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-085 | `/purchase-agent-suppliers` | app | yes | yes | yes | yes | verified | yes |
-| F-086 | `/purchase-agent-inventory` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-087 | `/purchase-agent-price-compare` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-088 | `/purchase-agent-tracking` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-089 | `/purchase-agent-reports` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-086 | `/purchase-agent-inventory` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-087 | `/purchase-agent-price-compare` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-088 | `/purchase-agent-tracking` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-089 | `/purchase-agent-reports` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-092 | `/technician-portal-time-clock` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-093 | `/technician-portal-parts` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-094 | `/technician-portal-documentation` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-095 | `/technician-portal-profile` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-096 | `/technician-portal-attendance` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-097 | `/technician-portal-guides` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-098 | `/technician-portal-software` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-092 | `/technician-portal-time-clock` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-093 | `/technician-portal-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-094 | `/technician-portal-documentation` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-095 | `/technician-portal-profile` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-096 | `/technician-portal-attendance` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-097 | `/technician-portal-guides` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-098 | `/technician-portal-software` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-099 | `/technician-management` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-100 | `/technician-leaderboards` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-101 | `/technician-performance` | app | **mock** | — | — | — | verified | yes |
 | F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-103 | `/technician-app-home` | app | **mock** | — | — | — | verified | yes |
+| F-103 | `/technician-app-home` | app | yes | yes | — | yes | verified | yes |
 | F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-105 | `/technician-app-clock` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-106 | `/technician-app-lookup` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-107 | `/technician-app-profile` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-108 | `/client-portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-105 | `/technician-app-clock` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-106 | `/technician-app-lookup` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-107 | `/technician-app-profile` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-108 | `/client-portal-dashboard` | app | yes | yes | — | yes | PARTIAL | yes |
 | F-109 | `/client-portal-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-110 | `/client-portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-111 | `/client-portal-invoices` | app | yes | yes | yes | yes | verified | yes |
-| F-112 | `/client-portal-profile` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-113 | `/client-portal-service-history` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-114 | `/client-portal-live-tracking` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-115 | `/client-portal-reminders` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-116 | `/client-portal-review-chat` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-112 | `/client-portal-profile` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-113 | `/client-portal-service-history` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-114 | `/client-portal-live-tracking` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-115 | `/client-portal-reminders` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-116 | `/client-portal-review-chat` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-118 | `/customer-app-booking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-119 | `/customer-app-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-120 | `/customer-app-payments` | app | yes | yes | yes | yes | verified | yes |
-| F-122 | `/portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-122 | `/portal-dashboard` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-123 | `/portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-124 | `/portal-invoices` | app | yes | yes | yes | yes | verified | yes |
 | F-125 | `/portal-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-126 | `/portal-communications` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-126 | `/portal-communications` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-129 | `/business-intelligence` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-130 | `/business-intelligence-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-131 | `/business-heatmaps` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -284,8 +284,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **201 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **175 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **193 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **167 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 
