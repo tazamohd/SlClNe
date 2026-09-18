@@ -12,7 +12,7 @@
 
 ## The one thing to read first
 
-Of 187 relationships in the model, **66 are backed by a database foreign key** and **121 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 192 relationships in the model, **68 are backed by a database foreign key** and **124 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -74,6 +74,11 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-DELIVERY-SIGNOFFS-ORG-ID | `delivery_signoffs` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-DELIVERY-SIGNOFFS-BRANCH-ID | `delivery_signoffs` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-DELIVERY-SIGNOFFS-JOB-CARD-ID | `delivery_signoffs` | `job_card_id` | `job_cards` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-CANNED-JOBS-ORG-ID | `canned_jobs` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-CANNED-JOBS-BRANCH-ID | `canned_jobs` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-CANNED-JOB-LINES-ORG-ID | `canned_job_lines` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-CANNED-JOB-LINES-BRANCH-ID | `canned_job_lines` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
+| REL-CANNED-JOB-LINES-CANNED-JOB-ID | `canned_job_lines` | `canned_job_id` | `canned_jobs` | many-to-one | mandatory | **INFERRED** | yes |
 | REL-INVOICES-ORG-ID | `invoices` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-INVOICES-BRANCH-ID | `invoices` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-INVOICES-CUSTOMER-ID | `invoices` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |

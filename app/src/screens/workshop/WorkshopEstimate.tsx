@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { BackLink } from '@/components/ui/BackLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Select } from '@/components/ui/Select'
 import { Money, SummaryRow } from '@/components/ui/Money'
 import { Panel } from '@/components/ui/FieldGrid'
 import { WorkflowStepper } from '@/components/ui/WorkflowStepper'
@@ -14,9 +16,10 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { fetchCannedJobLines } from './canned-job-api'
 import { StageNotice, stageBusy, stageLabel } from './StageNotice'
 import { useJobStage } from './useJobStage'
-import { fetchEstimateLines, RepositoryError, type EstimateLineRow } from './api'
+import { fetchEstimateLines, replaceEstimateLines, RepositoryError, type EstimateLineRow } from './api'
 
 /** The live estimate row carries the VAT split the server computed from the
  *  lines (F-029); the fixture row carries only the pre-formatted `amount`, so
@@ -42,11 +45,14 @@ type Estimate = RowOf<'estimates'> & {
  *  role's ceiling routes to the Approval Inbox instead (README §4). */
 export function WorkshopEstimate() {
   const { t } = usePreferences()
-  const { canApprove, roleMeta } = useSession()
+  const { can, canApprove, roleMeta } = useSession()
   const toast = useToast()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
   const stage = useJobStage()
+  const client = useQueryClient()
+  const [selectedCannedJobId, setSelectedCannedJobId] = useState('')
+  const [applying, setApplying] = useState(false)
 
   const estimates = useCollection('estimates', { filter: { jobCardId: stage.job?._id ?? '' } })
   const estimateRows = (estimates.data ?? []) as readonly Estimate[]
@@ -65,6 +71,52 @@ export function WorkshopEstimate() {
   })
 
   const lineRows = lines.data?.rows ?? []
+
+  const cannedJobs = useCollection('cannedJobs')
+  const activeCannedJobs = ((cannedJobs.data ?? []) as readonly RowOf<'cannedJobs'>[]).filter((j) => j.active)
+  const mayEditEstimate = can('estimates', 'e') && Boolean(estimate)
+
+  /** Applies a canned job's lines onto this estimate, through the same
+   *  full-replace `PATCH /estimates/:id` the estimate's own edit flow uses
+   *  (`server/src/routes/estimates.ts`) — the existing lines travel with it,
+   *  since the route replaces the whole set rather than appending. */
+  async function applyCannedJob() {
+    if (!selectedCannedJobId || !estimate || !ref) return
+    setApplying(true)
+    try {
+      const { rows: cannedLines } = await fetchCannedJobLines(selectedCannedJobId)
+      const merged = [
+        ...lineRows.map((row) => ({
+          description: row.description,
+          descriptionAr: row.descriptionAr ?? undefined,
+          kind: row.kind === 'labour' ? ('labour' as const) : ('part' as const),
+          qty: row.qty,
+          unitPriceHalalas: row.unitPriceHalalas,
+          partSku: row.partSku ?? undefined,
+        })),
+        ...cannedLines.map((row) => ({
+          description: row.description,
+          descriptionAr: row.descriptionAr ?? undefined,
+          kind: row.kind === 'labour' ? ('labour' as const) : ('part' as const),
+          qty: row.qty,
+          unitPriceHalalas: row.unitPriceHalalas,
+          partSku: row.partSku ?? undefined,
+        })),
+      ]
+      await replaceEstimateLines(ref, merged)
+      await client.invalidateQueries({ queryKey: ['estimate-lines', ref] })
+      setSelectedCannedJobId('')
+      toast.show({ title: t('Package applied'), description: t('Estimate updated') })
+    } catch (cause) {
+      toast.show({
+        title: t('Could not apply package'),
+        description: cause instanceof RepositoryError ? cause.message : t('Something went wrong. Nothing was saved.'),
+        error: true,
+      })
+    } finally {
+      setApplying(false)
+    }
+  }
   const parts = lineRows.filter((row) => row.kind !== 'labour')
   const labour = lineRows.filter((row) => row.kind === 'labour')
 
@@ -196,6 +248,43 @@ export function WorkshopEstimate() {
           )}
         />
       </Panel>
+
+      {mayEditEstimate ? (
+        <Panel icon="PackagePlus" title={t('Apply a Canned Job')}>
+          {cannedJobs.isLoading ? (
+            <p className="text-[13px] text-muted">{t('Loading packages...')}</p>
+          ) : activeCannedJobs.length === 0 ? (
+            <p className="text-[13px] text-muted">
+              {t('No canned jobs yet. Add one from the Canned Jobs catalog.')}
+            </p>
+          ) : (
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Select
+                value={selectedCannedJobId}
+                onChange={(e) => setSelectedCannedJobId(e.target.value)}
+                aria-label={t('Canned job')}
+                className="min-w-[220px] flex-1"
+              >
+                <option value="">{t('Choose a package...')}</option>
+                {activeCannedJobs.map((job) => (
+                  <option key={job._id} value={job._id}>
+                    {job.name} · SAR {(job.priceHalalas / 100).toFixed(2)}
+                  </option>
+                ))}
+              </Select>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => void applyCannedJob()}
+                disabled={!selectedCannedJobId || applying}
+              >
+                <Icon name="Plus" size={14} />
+                {applying ? t('Applying...') : t('Apply to Estimate')}
+              </Button>
+            </div>
+          )}
+        </Panel>
+      ) : null}
 
       <Card className={`flex flex-col gap-2.5 p-6 ${isMobile ? 'w-full' : 'self-end sm:min-w-[360px]'}`}>
         <SummaryRow label={t('Subtotal')} sar={subtotal} />

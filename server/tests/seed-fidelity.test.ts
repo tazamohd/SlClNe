@@ -99,6 +99,10 @@ const FIXTURES: Record<string, readonly unknown[]> = {
    *  `POST /job-cards/:id/delivery-signoff`, so the collection serves an
    *  empty set until a test or an advisor captures one. */
   deliverySignoffs: [],
+  /** No design fixture — canned jobs are new (build-order item 5). Nothing is
+   *  seeded; every row is born from `POST /canned-jobs`, so the collection
+   *  serves an empty set until a test or an advisor creates a package. */
+  cannedJobs: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and
@@ -174,6 +178,10 @@ describe('the seeded API serves exactly what the fixtures serve', () => {
        * row is born from the bespoke multipart route, never the seed.
        * Exercised end to end in tests/delivery-signoff.test.ts. */
       if (def.key === 'deliverySignoffs') continue
+      /* Same reasoning: cannedJobs starts genuinely empty, and every row is
+       * born from the bespoke create route, never the seed. Exercised end to
+       * end in tests/canned-jobs.test.ts. */
+      if (def.key === 'cannedJobs') continue
       const response = await harness.app.inject({
         method: 'GET',
         url: `/api/v1/${def.path}?pageSize=1`,

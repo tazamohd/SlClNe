@@ -40,7 +40,7 @@
 | GET | `/api/v1/diagnostics/findings/:id` | jobcards:v | token | `diagFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/findings/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/findings/export` | jobcards:x | token | `diagFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/diagnostics/integrations` | jobcards:v | token | — | — | 1 | `server/src/routes/obd.ts` |
+| GET | `/api/v1/diagnostics/integrations` | jobcards:v | token | — | — | 2 | `server/src/routes/obd.ts` |
 | GET | `/api/v1/diagnostics/labour` | jobcards:v | token | `diagLabour` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/labour/:id` | jobcards:v | token | `diagLabour` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/labour/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |

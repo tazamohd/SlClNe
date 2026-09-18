@@ -12,6 +12,8 @@ import { z } from 'zod'
 import {
   appointmentCreate,
   appointmentUpdate,
+  campaignCreate,
+  campaignUpdate,
   crmTaskCreate,
   crmTaskUpdate,
   customerCreate,
@@ -174,6 +176,12 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   opportunities: {
     create: opportunityCreate,
     update: opportunityUpdate,
+    toColumns: passthrough,
+  },
+
+  campaigns: {
+    create: campaignCreate,
+    update: campaignUpdate,
     toColumns: passthrough,
   },
 
