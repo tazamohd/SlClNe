@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 281,
-    "dataBacked": 107,
+    "mockOnly": 277,
+    "dataBacked": 111,
     "e2eCovered": 428,
     "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 106,
+    "crudRead": 110,
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -664,83 +664,6 @@
         "create": false,
         "read": true,
         "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": true,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "D-DeclinedJobs",
-      "name": "DeclinedJobs",
-      "title": "DeclinedJobs",
-      "route": "/declined-jobs",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": "estimates",
-      "permissions": [
-        "owner:vcedax",
-        "manager:vceax",
-        "advisor:vce",
-        "technician:v",
-        "parts:v",
-        "accountant:vx",
-        "frontdesk:v",
-        "callcenter:v",
-        "superadmin:v",
-        "test:vcedax"
-      ],
-      "category": "PRODUCT",
-      "domain": "admin",
-      "owner": "—",
-      "source": [
-        "design"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": null,
-      "mobileType": "B-responsive",
-      "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue",
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "declinedJobs"
-      ],
-      "crud": {
-        "create": false,
-        "read": true,
-        "update": true,
         "delete": false
       },
       "approval": false,
@@ -2120,11 +2043,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insurancePolicies"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2151,7 +2076,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2186,11 +2110,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "loanContracts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2217,7 +2143,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -3309,6 +3234,83 @@
       ]
     },
     {
+      "screenId": "D-DeclinedJobs",
+      "name": "DeclinedJobs",
+      "title": "DeclinedJobs",
+      "route": "/declined-jobs",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "estimates",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vceax",
+        "advisor:vce",
+        "technician:v",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:v",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": true,
+      "dataSource": [
+        "declinedJobs"
+      ],
+      "crud": {
+        "create": false,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING"
+      ]
+    },
+    {
       "screenId": "D-Departments",
       "name": "Departments",
       "title": "Departments",
@@ -3934,11 +3936,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3963,8 +3969,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4004,11 +4009,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4033,8 +4042,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {

@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-191 spec files containing 2240 test cases.
+190 spec files containing 2233 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 115 | 1100 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 114 | 1093 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 36 | 475 |
-| app | 112 | 1388 |
+| app | 111 | 1381 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -88,7 +88,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/e2e/workshop.spec.ts` | E2E | 14 | owner, technician |
 | `app/src/components/ui/icon-registry.test.ts` | UNIT_OR_API | 2 | — |
 | `app/src/data/ar-coverage.test.ts` | UNIT_OR_API | 3 | — |
-| `app/src/data/auth.test.ts` | UNIT_OR_API | 7 | owner |
 | `app/src/data/http/client.test.ts` | UNIT_OR_API | 13 | — |
 | `app/src/data/http/repository.test.ts` | UNIT_OR_API | 19 | — |
 | `app/src/data/repository.test.ts` | UNIT_OR_API | 3 | — |

@@ -203,28 +203,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
-    "screenId": "D-DeclinedJobs",
-    "name": "DeclinedJobs",
-    "title": "DeclinedJobs",
-    "route": "/declined-jobs",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": "estimates",
-    "category": "PRODUCT",
-    "domain": "admin",
-    "owner": "—",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": true,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": null
-  },
-  {
     "screenId": "D-AuditLog",
     "name": "AuditLog",
     "title": "AuditLog",
@@ -1026,6 +1004,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "inNav": true,
     "designSource": "project/Dashboard.dc.html",
     "designMobileSource": "project/Dashboard.Mobile.dc.html",
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-DeclinedJobs",
+    "name": "DeclinedJobs",
+    "title": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "estimates",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
     "featureMapSource": null
   },
   {

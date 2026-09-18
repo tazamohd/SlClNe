@@ -19,6 +19,7 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **Appointments** | `/appointments` | 🖥📱 `Appointments.dc.html` · `Appointments.Mobile.dc.html` | Booking list |
 | **ApprovalInbox** | `/approval-inbox` | 🖥 `ApprovalInbox.dc.html` | Approve/reject items above your delegated limit |
 | **AuditLog** | `/audit-log` | 🖥📱 `AuditLog.dc.html` · `AuditLog.Mobile.dc.html` | System audit trail |
+| **DeclinedJobs** | `/declined-jobs` | 🖥 | Track declined estimate lines for advisor follow-up and recovered revenue |
 | **AutomationRules** | `/automation-rules` | 🖥📱 `AutomationRules.dc.html` · `AutomationRules.Mobile.dc.html` | Trigger-based automations |
 | **Backup** | `/backup` | 🖥📱 `Backup.dc.html` · `Backup.Mobile.dc.html` | Backups & exports |
 | **BankReconciliation** | `/bank-reconciliation` | 🖥📱 `BankReconciliation.dc.html` · `BankReconciliation.Mobile.dc.html` | Bank feed reconciliation |

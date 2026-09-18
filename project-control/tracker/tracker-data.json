@@ -829,15 +829,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "DeclinedJobs",
-          "route": "/declined-jobs",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "AuditLog",
           "route": "/audit-log",
           "status": "built",
@@ -867,6 +858,15 @@
         {
           "name": "CookiePolicy",
           "route": "/cookie-policy",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "DeclinedJobs",
+          "route": "/declined-jobs",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,

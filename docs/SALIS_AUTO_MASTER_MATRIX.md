@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-428 capabilities · 428 rendering · 0 placeholder · 107 data-backed.
+428 capabilities · 428 rendering · 0 placeholder · 111 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -15,7 +15,6 @@
 | AppointmentCalendar | `/appointment-calendar` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | Appointments | `/appointments` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | ApprovalInbox | `/approval-inbox` | app | approvals | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
-| DeclinedJobs | `/declined-jobs` | app | estimates | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | AuditLog | `/audit-log` | app | audit | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | AutomationRules | `/automation-rules` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | Backup | `/backup` | app | settings | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
@@ -35,8 +34,8 @@
 | CustomerApp · Appointments | `/customer-app/appointments` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Garage | `/customer-app/garage` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Home | `/customer-app/home` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Marketplace | `/customer-app/marketplace` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Notifications | `/customer-app/notifications` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Orders | `/customer-app/orders` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -52,6 +51,7 @@
 | CustomerSegments | `/customer-segments` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | CustomReports | `/custom-reports` | app | reports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | Dashboard | `/dashboard` | app | dashboard | DONE | DONE | DONE | PARTIAL | PARTIAL | DONE | 13 roles | route | IMPLEMENTED |
+| DeclinedJobs | `/declined-jobs` | app | estimates | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | Departments | `/departments` | app | hr | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | DiagnosticReport | `/diagnostic-report` | app | jobcards | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | EmailMarketing | `/email-marketing` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
@@ -60,8 +60,8 @@
 | Estimates | `/estimates` | app | estimates | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | ExecutiveReports | `/executive-reports` | app | execreports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | Expenses | `/expenses` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
-| FinancialReports | `/financial-reports` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| FinancialStatements | `/financial-statements` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| FinancialReports | `/financial-reports` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
+| FinancialStatements | `/financial-statements` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | FleetContract | `/fleet-contract` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | FleetManagement | `/fleet-management` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | FlowSpec | `/flow-spec` | reference | ungated | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |

@@ -9,8 +9,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 281,
-    "dataBacked": 107,
+    "mockOnly": 277,
+    "dataBacked": 111,
     "e2eCovered": 428,
     "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 106,
+    "crudRead": 110,
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 314,
-      "dataBacked": 96
+      "dataBacked": 98
     },
     "call-center": {
       "total": 2,
@@ -64,7 +64,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 5
     },
     "portal": {
       "total": 8,
@@ -146,7 +146,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 23,
-      "dataBacked": 19
+      "dataBacked": 21
     },
     "portals": {
       "total": 13,
@@ -170,7 +170,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 5
     },
     "ui": {
       "total": 28,
@@ -270,14 +270,6 @@
       "e2e": 1,
       "dataBacked": 1
     },
-    "estimates": {
-      "total": 5,
-      "rendered": 5,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 5,
-      "dataBacked": 5
-    },
     "audit": {
       "total": 1,
       "rendered": 1,
@@ -292,7 +284,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 7,
-      "dataBacked": 5
+      "dataBacked": 7
     },
     "execreports": {
       "total": 5,
@@ -325,6 +317,14 @@
       "mobileOwed": 0,
       "e2e": 10,
       "dataBacked": 10
+    },
+    "estimates": {
+      "total": 5,
+      "rendered": 5,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 5,
+      "dataBacked": 5
     },
     "customers": {
       "total": 3,
