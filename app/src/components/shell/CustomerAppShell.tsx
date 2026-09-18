@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { hapticSelection } from '@/lib/native'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 
@@ -25,15 +26,15 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
 
   return (
-    <div className="flex min-h-screen justify-center bg-page-alt font-ui">
-      <div className="flex h-screen w-full max-w-[430px] flex-col border-x border-border bg-page">
+    <div className="flex min-h-viewport justify-center bg-page-alt font-ui">
+      <div className="flex h-viewport w-full max-w-[430px] flex-col border-x border-border bg-page">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-salis-blue px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
         >
           {t('Skip to main content')}
         </a>
-        <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border px-4 py-3">
+        <header className="flex flex-shrink-0 items-center gap-2.5 border-b border-border py-3 pt-[calc(0.75rem+var(--safe-top))] ps-[calc(1rem+var(--safe-start))] pe-[calc(1rem+var(--safe-end))]">
           <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-salis-gradient text-white">
             <Icon name="Wrench" size={16} />
           </span>
@@ -59,15 +60,30 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
         </header>
 
         <main id="main-content" className="flex-1 overflow-y-auto">
-          <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3.5 p-4">{children}</div>
+          <div className="flex animate-fade-up motion-reduce:animate-none flex-col gap-3.5 py-4 ps-[calc(1rem+var(--safe-start))] pe-[calc(1rem+var(--safe-end))]">
+            {children}
+          </div>
         </main>
 
-        <nav aria-label={t('App navigation')} className="flex flex-shrink-0 border-t border-border bg-sidebar">
+        {/* `pb-safe-bottom` is what stops the five tabs sitting under the home
+            indicator on any iPhone without a physical home button — the bar is
+            the last thing in the column, so nothing else pushes it clear. */}
+        <nav
+          aria-label={t('App navigation')}
+          /* Hidden while the software keyboard is up: the plugin shortens the
+             web view, which would otherwise leave the bar sitting on top of
+             the keyboard instead of at the bottom of the screen. */
+          data-hide-on-keyboard
+          className="flex flex-shrink-0 border-t border-border bg-sidebar pb-safe-bottom ps-safe-start pe-safe-end"
+        >
           {TABS.map((tab) => (
             <NavLink
               key={tab.to}
               to={tab.to}
               end={'end' in tab ? tab.end : false}
+              /* A tab bar is the one place a phone app is expected to answer
+                 the finger before the screen does. Silent off native. */
+              onClick={hapticSelection}
               className={({ isActive }) =>
                 cn(
                   'flex flex-1 flex-col items-center gap-1 py-2.5 no-underline transition-colors hover:no-underline',

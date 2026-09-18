@@ -630,6 +630,7 @@ const ROLE_ABBR: Record<RoleId, string> = {
   procurement: 'prc',
   supplier: 'spl',
   customer: 'cus',
+  test: 'tst',
 }
 
 const GLYPH: Record<Verdict, string> = { ALLOWED: '✓', DENIED: '·', UNEXPECTED: '✗' }

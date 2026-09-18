@@ -47,6 +47,7 @@ export function sessionPrincipal(claims: {
   orgId: string
   branchId: string | null
   role: RoleId
+  customerId?: string | null
 }): Principal {
   return {
     userId: claims.userId,
@@ -54,5 +55,6 @@ export function sessionPrincipal(claims: {
     branchId: claims.branchId,
     role: claims.role,
     scope: 'own',
+    customerId: claims.customerId ?? null,
   }
 }

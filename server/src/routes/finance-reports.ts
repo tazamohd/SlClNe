@@ -272,10 +272,16 @@ export function registerFinanceReportRoutes(app: FastifyInstance, deps: FinanceR
         where ${chartOfAccounts.deletedAt} is null
       `)
 
-      /* The journal side. Each posted entry balances (debits = credits per
-       * entry, enforced by `checkJournalBalanced`), so this roll-up is expected
-       * to tie — it is reported beside the COA precisely so a reader can see
-       * that the journals balance while the account balances do not. */
+      /* The journal side. Entries the request path posts do balance per entry:
+       * `postJournalEntry` runs `checkJournalBalanced` over their lines before
+       * writing, and refuses the whole transaction if they do not.
+       *
+       * That is a narrower claim than this comment used to make. It asserted
+       * the invariant held of every entry "enforced by `checkJournalBalanced`",
+       * which was true of no code path at all — the rule had no caller. The
+       * seeded entries still carry a header total and no lines, so nothing
+       * checks them; they balance because the fixture says so. The roll-up is
+       * reported beside the COA so a reader can see both sides. */
       const [journal] = await rows<{
         posted_debit: number
         posted_credit: number

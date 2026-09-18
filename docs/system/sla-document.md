@@ -28,7 +28,7 @@ This document defines the Service Level Agreements (SLAs) for the SALIS AUTO pla
 
 | Component                     | Covered by 99.9% SLA | Notes                                    |
 |-------------------------------|----------------------|------------------------------------------|
-| Frontend SPA (Vercel/Netlify) | Yes                  | CDN-backed, multi-region                 |
+| Frontend SPA (Vercel)        | Yes                  | CDN-backed, multi-region                 |
 | Backend API (`/api/v1/*`)     | Yes                  | All 21 collection endpoints              |
 | Authentication service        | Yes                  | Login, refresh, OTP                      |
 | Database (PostgreSQL)         | Yes                  | Primary instance                         |
@@ -169,7 +169,7 @@ This document defines the Service Level Agreements (SLAs) for the SALIS AUTO pla
 
 Standard feature deployments and bug fixes are deployed without maintenance windows:
 
-- Frontend: Vercel/Netlify atomic deployments (zero downtime)
+- Frontend: Vercel atomic deployments (zero downtime)
 - Backend: Rolling restart with health check gates
 - Database: Online schema migrations where possible (Drizzle ORM)
 - Maintenance windows reserved for: major database migrations, infrastructure changes, security patches requiring restart

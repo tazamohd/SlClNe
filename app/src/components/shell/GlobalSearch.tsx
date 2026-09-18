@@ -11,6 +11,7 @@ import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { repository } from '@/data/repository'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
@@ -347,6 +348,9 @@ export function GlobalSearchPalette({
     }
   }, [open])
 
+  /** Android back closes the palette instead of navigating behind it. */
+  useEffect(() => (open ? pushBackHandler(onClose) : undefined), [open, onClose])
+
   /** Scroll active item into view. */
   useEffect(() => {
     if (!listRef.current) return
@@ -427,7 +431,7 @@ export function GlobalSearchPalette({
   return createPortal(
     <div
       role="presentation"
-      className="fixed inset-0 z-[95] flex items-start justify-center bg-salis-navy/[.55] pt-[10vh] sm:pt-[15vh]"
+      className="fixed inset-0 z-[95] flex items-start justify-center bg-salis-navy/[.55] pt-[calc(var(--vh-full)*0.1)] sm:pt-[calc(var(--vh-full)*0.15)]"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -440,8 +444,8 @@ export function GlobalSearchPalette({
         className={cn(
           'flex w-full flex-col overflow-hidden border border-border bg-card shadow-2xl',
           isMobile
-            ? 'h-full rounded-none'
-            : 'max-h-[min(520px,70vh)] max-w-[580px] rounded-2xl',
+            ? 'h-full rounded-none pt-safe-top pb-safe-bottom'
+            : 'max-h-[min(520px,calc(var(--vh-full)*0.7))] max-w-[580px] rounded-2xl',
         )}
         onKeyDown={handleKeyDown}
       >

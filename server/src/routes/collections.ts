@@ -128,6 +128,20 @@ function tenantColumns(def: CollectionDef, principal: Principal) {
   return values
 }
 
+/** The owning customer, for a row a self-scoped principal creates.
+ *
+ *  A customer booking an appointment sends a name, not an id — and must not be
+ *  able to send an id, or one customer could file a booking against another.
+ *  So the server writes the link from the principal, and `r_self`'s WITH CHECK
+ *  refuses the insert if it somehow disagrees. Spread *after* the parsed body,
+ *  so this is the last word on the column rather than a default the request
+ *  could talk over. */
+function selfColumns(def: CollectionDef, principal: Principal) {
+  if (principal.scope !== 'self' || !principal.customerId) return {}
+  const cols = getTableColumns(def.table) as unknown as Record<string, PgColumn>
+  return cols.customerId ? { customerId: principal.customerId } : {}
+}
+
 /** A body that tries to set `orgId`, `version` or `createdBy` is not a
  *  validation slip — it is an attempt to write a column the server owns, and
  *  it is refused rather than quietly stripped, so the caller learns. */
@@ -205,7 +219,18 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
    *  narrow the list) and the *same* `presentRow` as the list route. Field-level
    *  redaction and tenant scoping therefore hold on the CSV byte-for-byte: an
    *  exporter never receives a column their role cannot see on screen, nor a row
-   *  belonging to another org. */
+   *  belonging to another org.
+ *
+ *  **And it is audited** (DF-006). Every other write path in this file records
+ *  itself; export did not, so `audit_log` could not answer "who took the
+ *  customer list, and when" — the one question a bulk-egress control exists to
+ *  answer. The row is written inside the same transaction that gathered the
+ *  rows, so there is no state in which the data left and the record of it did
+ *  not, and it carries the narrowing (`q`, `filter`, `sort`, `includeDeleted`)
+ *  as well as the counts, because *which* rows left is as much the question as
+ *  how many. `entityId` is null: an export is an act on a set, not on a record.
+ *  A refused export writes nothing, which is correct — `requirePermission`
+ *  throws before the transaction opens, and nothing was disclosed. */
   app.get(`${base}/export`, async (request, reply) => {
     const principal = principalOf(request)
     requirePermission(principal, def.module, 'x')
@@ -234,7 +259,33 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
         if (result.rows.length === 0 || page >= result.page.totalPages) break
         page += 1
       }
-      return { rows: gathered, truncated: total > gathered.length, total }
+      const truncated = total > gathered.length
+      /* In the same transaction as the read it records. */
+      await writeAudit(tx, {
+        actor: principal,
+        action: 'export',
+        entity: def.entity,
+        /* An export is an act on a set, not on one record. */
+        entityId: null,
+        after: {
+          collection: def.key,
+          format: 'csv',
+          rowCount: gathered.length,
+          totalInScope: total,
+          truncated,
+          /* What narrowed the set. An export of "every customer" and an export
+           * of one branch's customers are different disclosures, and the log
+           * has to be able to tell them apart. */
+          query: {
+            q: query.q ?? null,
+            sort: query.sort ?? null,
+            filter: query.filter ?? null,
+            includeDeleted: query.includeDeleted ?? false,
+          },
+        },
+        ...metaOf(request),
+      })
+      return { rows: gathered, truncated, total }
     })
 
     const presented = rows.map((row) => presentRow(def, principal, row))
@@ -286,6 +337,7 @@ function registerOne(app: FastifyInstance, deps: RouteDeps, def: CollectionDef):
           id: ulid(),
           ...tenantColumns(def, principal),
           ...columns,
+          ...selfColumns(def, principal),
           createdBy: principal.userId,
           updatedBy: principal.userId,
         } as never)

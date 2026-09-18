@@ -62,6 +62,11 @@ export const estimateRow = appRow({
    *  segregation-of-duties row check reads (F-004 client half). */
   submittedBy: ulid.nullable(),
   approvedBy: ulid.nullable(),
+  /** The customer's OTP e-signature, beside the internal approval and never
+   *  instead of it: this is the customer saying yes, `approvedBy` is the shop
+   *  authorising the spend against the approval ceiling (DF-007). */
+  customerSignedAt: isoDateTime.nullable(),
+  customerSignatureChannel: z.string().nullable(),
 })
 
 export type EstimateRow = z.infer<typeof estimateRow>

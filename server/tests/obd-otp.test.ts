@@ -192,4 +192,96 @@ describe('customer-approval OTP — §40 SMS as EXTERNAL_DEPENDENCY', () => {
     expect(verified.statusCode, verified.body).toBe(200)
     expect((verified.json() as { verified: boolean }).verified).toBe(true)
   })
+
+  /* ------------------------------------------------------ DF-007, join two */
+
+  /** A fresh estimate wired to a customer whose phone no other test in this
+   *  file has used. The OTP module throttles resends per destination, so two
+   *  signature tests sharing one phone would collide on the cooldown rather
+   *  than on anything they mean to prove. */
+  async function estimateWithOwnPhone(offset: number): Promise<{ code: string; phone: string }> {
+    return handle.db.transaction(async (tx) => {
+      await tx.execute(
+        sql`select set_config('app.org_id', ${SEED.orgId}, true), set_config('app.scope', 'all', true), set_config('app.user_id', ${SEED.systemUserId}, true)`,
+      )
+      const customers = await tx.execute(
+        sql`select id, phone from customers where phone is not null and phone <> ${customerPhone}
+            order by id offset ${offset} limit 1`,
+      )
+      const cust = customers[0] as { id: string; phone: string }
+      const estimates = await tx.execute(
+        sql`select code from estimates where code <> ${estimateWithCustomer} order by code offset ${offset} limit 1`,
+      )
+      const code = (estimates[0] as { code: string }).code
+      await tx.execute(sql`update estimates set customer_id = ${cust.id} where code = ${code}`)
+      return { code, phone: cust.phone }
+    })
+  }
+
+  /** The signature columns and the two fields that mean "the shop authorised
+   *  this", read straight from Postgres on the auth plane. */
+  async function signatureOf(code: string) {
+    return handle.db.transaction(async (tx) => {
+      await tx.execute(
+        sql`select set_config('app.org_id', ${SEED.orgId}, true), set_config('app.scope', 'all', true), set_config('app.user_id', ${SEED.systemUserId}, true)`,
+      )
+      const rows = await tx.execute(
+        sql`select status, approved_by, customer_signed_at, customer_signature_channel, customer_signature_challenge_id
+            from estimates where code = ${code}`,
+      )
+      return rows[0] as {
+        status: string
+        approved_by: string | null
+        customer_signed_at: Date | null
+        customer_signature_channel: string | null
+        customer_signature_challenge_id: string | null
+      }
+    })
+  }
+
+  it('writes the verified signature back to the estimate, and leaves its status alone', async () => {
+    const advisor = await tokenFor(mockApp, 'manager', MANAGER)
+    const target = await estimateWithOwnPhone(0)
+    const before = await signatureOf(target.code)
+    expect(before.customer_signed_at).toBeNull()
+
+    const requested = await post(mockApp, `/estimates/${target.code}/request-approval-otp`, advisor)
+    expect(requested.statusCode, requested.body).toBe(202)
+    const code = codes.codeFor(target.phone)
+    const verified = await post(mockApp, `/estimates/${target.code}/verify-approval-otp`, advisor, { code })
+    expect(verified.statusCode, verified.body).toBe(200)
+    const body = verified.json() as {
+      verified: boolean
+      customerSignedAt: string | null
+      estimateStatus: string
+    }
+    expect(body.verified).toBe(true)
+    expect(body.customerSignedAt).toBeTruthy()
+    /* The estimate is still whatever it was. The customer saying yes is not the
+     * shop authorising the spend — that stays behind the ceiling and the
+     * segregation-of-duties check on `/estimates/:id/approve`. */
+    expect(body.estimateStatus).toBe(before.status)
+
+    const after = await signatureOf(target.code)
+    /* The signature is on the record, not only in the audit log. */
+    expect(after.customer_signed_at).not.toBeNull()
+    expect(after.customer_signature_channel).toBe('sms')
+    expect(after.customer_signature_challenge_id).toBeTruthy()
+    /* And nothing that means "authorised" moved. */
+    expect(after.status).toBe(before.status)
+    expect(after.approved_by).toBe(before.approved_by)
+  })
+
+  it('leaves no signature behind when the code is wrong', async () => {
+    const advisor = await tokenFor(mockApp, 'manager', MANAGER)
+    const target = await estimateWithOwnPhone(1)
+
+    const requested = await post(mockApp, `/estimates/${target.code}/request-approval-otp`, advisor)
+    expect(requested.statusCode, requested.body).toBe(202)
+    const refused = await post(mockApp, `/estimates/${target.code}/verify-approval-otp`, advisor, { code: '000000' })
+    expect(refused.statusCode).toBe(401)
+
+    const after = await signatureOf(target.code)
+    expect(after.customer_signed_at).toBeNull()
+  })
 })

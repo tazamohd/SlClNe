@@ -98,6 +98,9 @@ export const jobCardRow = appRow({
   pr: jobPriority,
   stage: jobStage,
   assignedTechId: ulid.nullable(),
+  /** The appointment this job card was opened from, or null for a car that
+   *  arrived at the counter (DF-007). */
+  appointmentId: ulid.nullable(),
 })
 
 export type JobCardRow = z.infer<typeof jobCardRow>

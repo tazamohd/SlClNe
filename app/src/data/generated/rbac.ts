@@ -191,13 +191,27 @@ export const ROLES = [
     "ar": "عميل",
     "icon": "User",
     "demo": {
-      "name": "Khalid Al-Amri",
-      "ar": "خالد العامري",
-      "email": "khalid@example.sa"
+      "name": "Ahmed Al-Rashid",
+      "ar": "أحمد الراشد",
+      "email": "ahmed@example.sa"
     },
     "scope": "self",
     "limit": 0,
     "color": "var(--salis-orange)"
+  },
+  {
+    "id": "test",
+    "label": "Test User",
+    "ar": "مستخدم اختبار",
+    "icon": "FlaskConical",
+    "demo": {
+      "name": "Test User",
+      "ar": "مستخدم اختبار",
+      "email": "test@salisauto.sa"
+    },
+    "scope": "all",
+    "limit": null,
+    "color": "var(--salis-navy)"
   }
 ] as const satisfies readonly Role[]
 
@@ -215,7 +229,8 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "v",
     "callcenter": "v",
     "procurement": "v",
-    "superadmin": "vx"
+    "superadmin": "vx",
+    "test": "vcedax"
   },
   "jobcards": {
     "owner": "vcedax",
@@ -227,7 +242,9 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vx",
     "frontdesk": "vc",
     "callcenter": "v",
-    "superadmin": "v"
+    "customer": "v",
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "appointments": {
     "owner": "vcedax",
@@ -241,7 +258,9 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "vced",
     "callcenter": "vced",
     "procurement": "",
-    "superadmin": "v"
+    "customer": "vc",
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "estimates": {
     "owner": "vcedax",
@@ -253,7 +272,9 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vx",
     "frontdesk": "v",
     "callcenter": "v",
-    "superadmin": "v"
+    "customer": "v",
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "customers": {
     "owner": "vcedax",
@@ -267,7 +288,8 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "vce",
     "callcenter": "vce",
     "procurement": "",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "vehicles": {
     "owner": "vcedax",
@@ -279,7 +301,9 @@ export const PERMS: PermissionMatrix = {
     "accountant": "v",
     "frontdesk": "vce",
     "callcenter": "v",
-    "superadmin": "v"
+    "customer": "v",
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "inventory": {
     "owner": "vcedax",
@@ -290,7 +314,8 @@ export const PERMS: PermissionMatrix = {
     "parts": "vcedax",
     "accountant": "vx",
     "procurement": "vcex",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "procurement": {
     "owner": "vcedax",
@@ -302,7 +327,8 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vax",
     "procurement": "vcedax",
     "supplier": "v",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "invoices": {
     "owner": "vcedax",
@@ -314,7 +340,9 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vcedax",
     "frontdesk": "vc",
     "callcenter": "v",
-    "superadmin": "v"
+    "customer": "v",
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "payments": {
     "owner": "vcedax",
@@ -326,20 +354,23 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vcedax",
     "frontdesk": "vc",
     "callcenter": "",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "accounting": {
     "owner": "vax",
     "manager": "vx",
     "accountant": "vcedax",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "hr": {
     "owner": "vcedax",
     "manager": "vx",
     "hr": "vcedax",
     "accountant": "vx",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "technicians": {
     "owner": "vcedax",
@@ -349,14 +380,16 @@ export const PERMS: PermissionMatrix = {
     "qc": "v",
     "hr": "vcedx",
     "frontdesk": "v",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "crm": {
     "owner": "vcedax",
     "manager": "vcedx",
     "advisor": "vce",
     "callcenter": "vced",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "callcenter": {
     "owner": "vx",
@@ -364,7 +397,8 @@ export const PERMS: PermissionMatrix = {
     "advisor": "v",
     "callcenter": "vcedx",
     "frontdesk": "v",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "reports": {
     "owner": "vx",
@@ -376,7 +410,8 @@ export const PERMS: PermissionMatrix = {
     "accountant": "vx",
     "hr": "vx",
     "procurement": "vx",
-    "superadmin": "vx"
+    "superadmin": "vx",
+    "test": "vcedax"
   },
   "approvals": {
     "owner": "vax",
@@ -392,7 +427,8 @@ export const PERMS: PermissionMatrix = {
     "procurement": "vax",
     "supplier": "",
     "customer": "",
-    "superadmin": "vx"
+    "superadmin": "vx",
+    "test": "vcedax"
   },
   "kiosk": {
     "owner": "v",
@@ -408,7 +444,8 @@ export const PERMS: PermissionMatrix = {
     "procurement": "",
     "supplier": "",
     "customer": "",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "execreports": {
     "owner": "vx",
@@ -422,7 +459,8 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "",
     "callcenter": "",
     "procurement": "",
-    "superadmin": "vx"
+    "superadmin": "vx",
+    "test": "vcedax"
   },
   "portaltech": {
     "owner": "v",
@@ -436,7 +474,8 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "",
     "callcenter": "",
     "procurement": "",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "portalcustomer": {
     "owner": "v",
@@ -451,7 +490,8 @@ export const PERMS: PermissionMatrix = {
     "callcenter": "v",
     "procurement": "",
     "customer": "vx",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "portalsupplier": {
     "owner": "v",
@@ -466,7 +506,8 @@ export const PERMS: PermissionMatrix = {
     "callcenter": "",
     "procurement": "v",
     "supplier": "vx",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "portalprocure": {
     "owner": "v",
@@ -480,30 +521,45 @@ export const PERMS: PermissionMatrix = {
     "frontdesk": "",
     "callcenter": "",
     "procurement": "vx",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   },
   "ai": {
     "owner": "vcedax",
     "manager": "vce",
     "advisor": "v",
     "accountant": "v",
-    "superadmin": "vcedax"
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
+  "aiadmin": {
+    "owner": "vcedax",
+    "superadmin": "vcedax",
+    "test": "vcedax"
   },
   "admin": {
     "owner": "vcedax",
     "manager": "v",
-    "superadmin": "vcedax"
+    "superadmin": "vcedax",
+    "test": "vcedax"
   },
   "settings": {
     "owner": "vcedax",
     "manager": "ve",
-    "superadmin": "vcedax"
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
+  "superadmin": {
+    "owner": "vcedax",
+    "superadmin": "vcedax",
+    "test": "vcedax"
   },
   "audit": {
     "owner": "vx",
     "manager": "vx",
     "accountant": "vx",
-    "superadmin": "vx"
+    "superadmin": "vx",
+    "test": "vcedax"
   },
   "network": {
     "owner": "vcedax",
@@ -511,7 +567,8 @@ export const PERMS: PermissionMatrix = {
     "parts": "vced",
     "procurement": "vcedax",
     "supplier": "vce",
-    "superadmin": "v"
+    "superadmin": "v",
+    "test": "vcedax"
   }
 }
 
@@ -546,7 +603,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "SupplierPortal.Orders": "portalsupplier",
   "ProcurementPortal": "portalprocure",
   "ProcurementPortal.Requisitions": "portalprocure",
-  "SuperAdmin": "settings",
+  "SuperAdmin": "superadmin",
   "FinancialStatements": "accounting",
   "Dashboard": "dashboard",
   "JobCards": "jobcards",
@@ -615,11 +672,11 @@ export const SCREEN_MODULE: Record<string, string> = {
   "AIAssistant": "ai",
   "PromptLibrary": "ai",
   "KnowledgeBase": "ai",
-  "WorkflowBuilder": "ai",
+  "WorkflowBuilder": "aiadmin",
   "AgentDashboard": "ai",
-  "AgentRegistry": "ai",
-  "ConversationHistory": "ai",
-  "ModelSettings": "ai",
+  "AgentRegistry": "aiadmin",
+  "ConversationHistory": "aiadmin",
+  "ModelSettings": "aiadmin",
   "AIAnalytics": "ai",
   "AIAutomation": "ai",
   "AIChatbot": "ai",
@@ -630,11 +687,11 @@ export const SCREEN_MODULE: Record<string, string> = {
   "NeuralNetworkPrediction": "ai",
   "VoiceCommands": "ai",
   "VoiceCommandInterface": "ai",
-  "AutomationRules": "ai",
-  "Organizations": "admin",
+  "AutomationRules": "aiadmin",
+  "Organizations": "superadmin",
   "Branches": "admin",
   "UsersTeams": "admin",
-  "RolesPermissions": "admin",
+  "RolesPermissions": "superadmin",
   "Integrations": "admin",
   "Templates": "admin",
   "Settings": "settings",

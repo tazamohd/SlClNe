@@ -13,7 +13,7 @@
 
 ## 1. Overview
 
-This master index catalogs all 250 documents in the SALIS AUTO documentation
+This master index catalogs all 296 documents in the SALIS AUTO documentation
 library organized by category. Document IDs follow the format
 `SA-[CATEGORY]-[SUBCATEGORY]-[NUMBER]` (see Section 19).
 
@@ -374,7 +374,62 @@ library organized by category. Document IDs follow the format
 
 ---
 
-## 17. Quick Reference
+## 17. Mermaid Diagram Library (46 files)
+
+Plain-text Mermaid charts (`flowchart`, `erDiagram`, `stateDiagram-v2`, `sequenceDiagram`, `gantt`, `journey`) covering the same ground as the Visualizations above plus user scenarios, user flows, and UX journey maps. See [docs/mermaid/README.md](mermaid/README.md) for the category overview.
+
+| # | Filename | ID | Description | Link |
+|---|----------|----|-------------|------|
+| 251 | README.md | SA-MMD-IDX | Mermaid library overview and category index | [Link](mermaid/README.md) |
+| 252 | project/README.md | SA-MMD-PR-IDX | Project charts index | [Link](mermaid/project/README.md) |
+| 253 | system-architecture.md | SA-MMD-PR-001 | Full-stack architecture: SPA → API → ORM → DB → integrations | [Link](mermaid/project/system-architecture.md) |
+| 254 | domain-model.md | SA-MMD-PR-002 | 13 bounded-context domains and their relationships | [Link](mermaid/project/domain-model.md) |
+| 255 | database-er-diagram.md | SA-MMD-PR-003 | Entity-relationship diagram, multi-tenant `org_id` pattern | [Link](mermaid/project/database-er-diagram.md) |
+| 256 | deployment-architecture.md | SA-MMD-PR-004 | Security zones, app tier, DB tier, observability | [Link](mermaid/project/deployment-architecture.md) |
+| 257 | ci-cd-pipeline.md | SA-MMD-PR-005 | GitHub Actions workflow stages | [Link](mermaid/project/ci-cd-pipeline.md) |
+| 258 | org-chart.md | SA-MMD-PR-006 | 14 roles, 8 departments, reporting lines | [Link](mermaid/project/org-chart.md) |
+| 259 | rbac-overview.md | SA-MMD-PR-007 | Role scopes, approval ceilings, full permission matrix | [Link](mermaid/project/rbac-overview.md) |
+| 260 | job-card-state-machine.md | SA-MMD-PR-008 | 8-stage job lifecycle state machine | [Link](mermaid/project/job-card-state-machine.md) |
+| 261 | purchase-order-state-machine.md | SA-MMD-PR-009 | 9-state purchase order lifecycle | [Link](mermaid/project/purchase-order-state-machine.md) |
+| 262 | approval-escalation-ladder.md | SA-MMD-PR-010 | SAR approval escalation chain | [Link](mermaid/project/approval-escalation-ladder.md) |
+| 263 | integration-architecture.md | SA-MMD-PR-011 | Hub-and-spoke external integrations | [Link](mermaid/project/integration-architecture.md) |
+| 264 | release-roadmap.md | SA-MMD-PR-012 | 6-phase release gantt chart | [Link](mermaid/project/release-roadmap.md) |
+| 265 | wbs.md | SA-MMD-PR-013 | Work breakdown structure diagram | [Link](mermaid/project/wbs.md) |
+| 266 | user-scenarios/README.md | SA-MMD-US-IDX | User scenarios index | [Link](mermaid/user-scenarios/README.md) |
+| 267 | journey-owner-ceo.md | SA-MMD-US-001 | Owner/CEO scenario flowchart | [Link](mermaid/user-scenarios/journey-owner-ceo.md) |
+| 268 | journey-branch-manager.md | SA-MMD-US-002 | Branch Manager scenario flowchart | [Link](mermaid/user-scenarios/journey-branch-manager.md) |
+| 269 | journey-service-advisor.md | SA-MMD-US-003 | Service Advisor scenario flowchart | [Link](mermaid/user-scenarios/journey-service-advisor.md) |
+| 270 | journey-technician.md | SA-MMD-US-004 | Technician scenario flowchart | [Link](mermaid/user-scenarios/journey-technician.md) |
+| 271 | journey-qc-inspector.md | SA-MMD-US-005 | QC Inspector scenario flowchart | [Link](mermaid/user-scenarios/journey-qc-inspector.md) |
+| 272 | journey-accountant.md | SA-MMD-US-006 | Accountant scenario flowchart | [Link](mermaid/user-scenarios/journey-accountant.md) |
+| 273 | journey-customer.md | SA-MMD-US-007 | Customer portal scenario flowchart (4 sub-flows) | [Link](mermaid/user-scenarios/journey-customer.md) |
+| 274 | journey-supplier.md | SA-MMD-US-008 | Supplier portal scenario flowchart | [Link](mermaid/user-scenarios/journey-supplier.md) |
+| 275 | user-flows/README.md | SA-MMD-UF-IDX | User flows index | [Link](mermaid/user-flows/README.md) |
+| 276 | job-lifecycle.md | SA-MMD-UF-001 | Job lifecycle process flow | [Link](mermaid/user-flows/job-lifecycle.md) |
+| 277 | estimate-approval.md | SA-MMD-UF-002 | Estimate approval chain flow | [Link](mermaid/user-flows/estimate-approval.md) |
+| 278 | invoice-payment.md | SA-MMD-UF-003 | Invoice & payment (ZATCA) flow | [Link](mermaid/user-flows/invoice-payment.md) |
+| 279 | diagnostic-report.md | SA-MMD-UF-004 | OBD diagnostic report flow | [Link](mermaid/user-flows/diagnostic-report.md) |
+| 280 | onboarding-flows.md | SA-MMD-UF-005 | User/customer onboarding flow | [Link](mermaid/user-flows/onboarding-flows.md) |
+| 281 | how-to-configure-branches.md | SA-MMD-UF-006 | Branch configuration flow | [Link](mermaid/user-flows/how-to-configure-branches.md) |
+| 282 | how-to-customize-workflows.md | SA-MMD-UF-007 | Workflow customization flow | [Link](mermaid/user-flows/how-to-customize-workflows.md) |
+| 283 | how-to-generate-reports.md | SA-MMD-UF-008 | Report generation flow | [Link](mermaid/user-flows/how-to-generate-reports.md) |
+| 284 | how-to-manage-inventory.md | SA-MMD-UF-009 | Inventory management flow | [Link](mermaid/user-flows/how-to-manage-inventory.md) |
+| 285 | how-to-manage-users-roles.md | SA-MMD-UF-010 | User/role management flow | [Link](mermaid/user-flows/how-to-manage-users-roles.md) |
+| 286 | how-to-setup-integrations.md | SA-MMD-UF-011 | Integration setup flow | [Link](mermaid/user-flows/how-to-setup-integrations.md) |
+| 287 | user-experience/README.md | SA-MMD-UX-IDX | User experience index | [Link](mermaid/user-experience/README.md) |
+| 288 | owner-ceo.md | SA-MMD-UX-001 | Owner/CEO UX journey map | [Link](mermaid/user-experience/owner-ceo.md) |
+| 289 | branch-manager.md | SA-MMD-UX-002 | Branch Manager UX journey map | [Link](mermaid/user-experience/branch-manager.md) |
+| 290 | service-advisor.md | SA-MMD-UX-003 | Service Advisor UX journey map | [Link](mermaid/user-experience/service-advisor.md) |
+| 291 | technician.md | SA-MMD-UX-004 | Technician UX journey map | [Link](mermaid/user-experience/technician.md) |
+| 292 | qc-inspector.md | SA-MMD-UX-005 | QC Inspector UX journey map | [Link](mermaid/user-experience/qc-inspector.md) |
+| 293 | accountant.md | SA-MMD-UX-006 | Accountant UX journey map | [Link](mermaid/user-experience/accountant.md) |
+| 294 | customer.md | SA-MMD-UX-007 | Customer UX journey map | [Link](mermaid/user-experience/customer.md) |
+| 295 | supplier.md | SA-MMD-UX-008 | Supplier UX journey map | [Link](mermaid/user-experience/supplier.md) |
+| 296 | cross-role-touchpoints.md | SA-MMD-UX-009 | Cross-role moments-of-truth handoff map | [Link](mermaid/user-experience/cross-role-touchpoints.md) |
+
+---
+
+## 18. Quick Reference
 
 | I need to... | Start Here |
 |--------------|------------|
@@ -399,10 +454,11 @@ library organized by category. Document IDs follow the format
 | Check architecture decisions | [adr-001-react-spa.md](system/adr/adr-001-react-spa.md) |
 | Handle a security incident | [security-breach-response.md](system/runbooks/security-breach-response.md) |
 | View interactive diagrams | [index.html](visualizations/index.html) |
+| Browse Mermaid charts | [mermaid/README.md](mermaid/README.md) |
 
 ---
 
-## 18. Document ID Numbering Scheme
+## 19. Document ID Numbering Scheme
 
 Format: `SA-[CATEGORY]-[SUBCATEGORY]-[NUMBER]`
 
@@ -425,11 +481,12 @@ Format: `SA-[CATEGORY]-[SUBCATEGORY]-[NUMBER]`
 | CST | Customer-Facing Documents | Sequential numbering |
 | VIZ | Visualizations | Sequential numbering |
 | ROOT | Root-Level | Sequential numbering |
+| MMD | Mermaid Diagram Library | PR (Project), US (User Scenarios), UF (User Flows), UX (User Experience), IDX (Index) |
 | DOC | Documentation Meta | IDX (Index) |
 
 ---
 
-## 19. Document Statistics
+## 20. Document Statistics
 
 | Category | Count | Status |
 |----------|-------|--------|
@@ -448,7 +505,8 @@ Format: `SA-[CATEGORY]-[SUBCATEGORY]-[NUMBER]`
 | Customer-Facing Documents | 4 | Complete |
 | Visualizations | 27 | Complete |
 | Root-Level | 26 | Complete |
-| **Total** | **250** | |
+| Mermaid Diagram Library | 46 | Complete |
+| **Total** | **296** | |
 
 ---
 

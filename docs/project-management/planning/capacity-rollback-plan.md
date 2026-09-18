@@ -49,7 +49,7 @@ This document defines the capacity planning strategy, scaling approach, and roll
 | Database           | 2 vCPU, 4GB, 50GB SSD| 4 vCPU, 8GB, 100GB SSD| 8 vCPU, 16GB, 250GB SSD|
 | Redis (cache)      | 1GB                   | 2GB                   | 4GB                   |
 | CDN bandwidth      | 50 GB/month           | 200 GB/month          | 500 GB/month          |
-| Frontend hosting   | Static (Vercel/Netlify free tier -> Pro) | Pro tier  | Enterprise            |
+| Frontend hosting   | Static (Vercel free tier -> Pro)         | Pro tier  | Enterprise            |
 
 ---
 
@@ -174,13 +174,12 @@ Primary (Write)  --->  Replica 1 (Read: Reports)
 
 **Time to rollback:** < 5 minutes.
 
-All three hosting providers support instant rollback:
+Both hosting providers support instant rollback:
 
 | Provider      | Rollback Method                                              |
 |---------------|--------------------------------------------------------------|
 | GitHub Pages  | `git revert` + push to gh-pages branch; or redeploy previous tag |
 | Vercel        | Dashboard -> Deployments -> Promote previous deployment      |
-| Netlify       | Dashboard -> Deploys -> Publish previous deploy              |
 
 ```bash
 # GitHub Pages rollback via CLI
@@ -190,9 +189,6 @@ npx gh-pages -d dist
 
 # Vercel rollback via CLI
 vercel rollback [deployment-url]
-
-# Netlify rollback via CLI
-netlify deploy --prod --dir=dist  # From previous build
 ```
 
 ### 5.3 Backend API Rollback
@@ -241,7 +237,7 @@ pg_restore -d salisauto_prod \
 |------|---------|--------------------------------------------------|-----------|
 | 1    | T+0 min | Decision to rollback communicated                | PM        |
 | 2    | T+1 min | Enable maintenance page                          | DevOps    |
-| 3    | T+2 min | Rollback frontend (Vercel/Netlify instant)       | DevOps    |
+| 3    | T+2 min | Rollback frontend (Vercel instant)              | DevOps    |
 | 4    | T+3 min | Rollback backend API (redeploy previous version) | DevOps    |
 | 5    | T+5 min | Rollback database (if migration involved)        | DBA       |
 | 6    | T+20 min| Verify API health check                          | DevOps    |

@@ -2,7 +2,8 @@
  *
  *  `scripts/rbac-lab.ts` is the diagnostic a human reads; this is the assertion
  *  a pipeline trips over. It boots the same harness the script does, runs the
- *  exact same sweep — every permission-gated surface, all fourteen roles, plus
+ *  exact same sweep — every permission-gated surface, every role in the matrix — the
+ *  all-access `test` account included — plus
  *  the tenant-isolation / IDOR pass — and fails if the server ever disagrees
  *  with the shared RBAC matrix or leaks across a tenant boundary.
  *
@@ -14,6 +15,7 @@
  *  nothing cannot pass by vacuously finding zero disagreements.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { ROLE_IDS } from '@salis/contract'
 import { runRbacLab, startLabHarness, type LabReport } from '../scripts/rbac-lab'
 import type { Harness } from './harness'
 
@@ -34,7 +36,7 @@ describe('RBAC persona lab (§50)', () => {
     // Guards against a vacuous pass: if enumeration broke and nothing ran, the
     // zero-UNEXPECTED assertion below would be meaningless.
     expect(report.surfaces.length).toBeGreaterThan(50)
-    expect(report.cells.length).toBe(report.surfaces.length * 14)
+    expect(report.cells.length).toBe(report.surfaces.length * ROLE_IDS.length)
     expect(report.counts.allowed).toBeGreaterThan(0)
     expect(report.counts.denied).toBeGreaterThan(0)
   })

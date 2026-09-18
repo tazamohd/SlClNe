@@ -18,6 +18,11 @@ export type RoleId =
   | 'procurement'
   | 'supplier'
   | 'customer'
+  /** The all-access QA account. Not a business role: it holds every action on
+   *  every module so one login can walk the whole product, and it is the only
+   *  role allowed to act as another one (`/auth/switch-role`). Every request it
+   *  makes is audited under its own user id. */
+  | 'test'
 
 /** Row-level visibility. Enforced by the DB (Postgres RLS) in production; the
  *  frontend only uses it to explain scope in the UI. */

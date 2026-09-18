@@ -32,6 +32,10 @@ export interface AccessTokenInput {
   role: RoleId
   orgId: string
   branchId: string | null
+  /** The `customers` row a portal login is. Read back from `users` on every
+   *  issue and refresh, so revoking the link takes effect within an access
+   *  token's lifetime rather than a refresh token's. */
+  customerId?: string | null
   name?: string
 }
 
@@ -107,6 +111,10 @@ export function createTokenSigner(config: {
          * trust it: `principalFromClaims` derives scope from the role, so a
          * tampered claim cannot widen what its holder sees. */
         scope: scopeOf(input.role),
+        /* Unlike `scope`, this one is trusted — see `principalFromClaims`. It
+         * only ever narrows, and it is omitted entirely for staff, so a token
+         * that carries no link cannot be told from one whose link is null. */
+        ...(input.customerId ? { customer_id: input.customerId } : {}),
         ...(input.name ? { name: input.name } : {}),
       })
         .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })

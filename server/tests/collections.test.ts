@@ -30,11 +30,12 @@ describe('collection list endpoints — shape parity with the frontend fixtures'
     expect(Array.isArray(res.body.rows)).toBe(true)
     expect(res.body.rows).toHaveLength(T.JOBS.length)
     /* An exact set, not a subset: the point of this test is that no extra
-     * column leaks out of the row presenter. `stage` and `assignedTechId` are
-     * server-side state the fixture has no column for — the stage machine and
-     * the technician assignment — and both are part of the contract shape. */
+     * column leaks out of the row presenter. `stage`, `assignedTechId` and
+     * `appointmentId` are server-side state the fixture has no column for — the
+     * stage machine, the technician assignment, and the appointment this card
+     * was opened from (DF-007) — and all three are part of the contract shape. */
     expect(domainKeys(res.body.rows[0])).toEqual([
-      'assignedTechId', 'cust', 'id', 'pr', 'st', 'stage', 'svc', 'veh',
+      'appointmentId', 'assignedTechId', 'cust', 'id', 'pr', 'st', 'stage', 'svc', 'veh',
     ])
     expect(Object.keys(res.body.rows[0]).filter((k) => k.startsWith('_')).sort()).toEqual(ENVELOPE)
     expect(res.body.rows[0]).toMatchObject({ id: 'A3F8B2C1', cust: 'Ahmed Al-Rashid', svc: 'maintenance', st: 'in_progress', pr: 'medium' })

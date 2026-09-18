@@ -127,7 +127,7 @@ export function MediaGallery({
             <Icon name="X" size={20} />
           </button>
 
-          <div className="relative z-10 max-h-[90vh] max-w-[90vw]">
+          <div className="relative z-10 max-h-[calc(var(--vh-full)*0.9)] max-w-[90vw]">
             {lightbox.type === 'video' ? (
               <div className="flex h-64 w-96 items-center justify-center rounded-lg bg-salis-navy/20 text-white">
                 <Icon name="Play" size={48} />
@@ -136,7 +136,7 @@ export function MediaGallery({
               <img
                 src={lightbox.src}
                 alt={lightbox.alt ?? ''}
-                className="max-h-[85vh] max-w-full rounded-lg object-contain"
+                className="max-h-[calc(var(--vh-full)*0.85)] max-w-full rounded-lg object-contain"
               />
             )}
             {lightbox.caption ? (

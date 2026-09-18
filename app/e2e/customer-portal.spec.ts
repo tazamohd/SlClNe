@@ -10,7 +10,12 @@ test.describe('Customer Portal (Golden Path 19)', () => {
     test('customer portal dashboard loads with the active job and the garage', async ({ page }) => {
       await gotoReady(page, '/customer-portal')
       const text = await bodyText(page)
-      expect(text).toContain('Khalid Al-Amri')
+      /* The demo customer is Ahmed Al-Rashid, and the active job below is his:
+       * `A3F8B2C1` is the Toyota Camry the design's board has in the workshop.
+       * They agree on purpose — the login used to be a Khalid who matched no
+       * `customers` row, so the portal greeted one person and showed another's
+       * car. */
+      expect(text).toContain('Ahmed Al-Rashid')
       expect(text).toContain('Active Service')
       expect(text).toContain('A3F8B2C1')
       expect(text).toContain('My Vehicles')

@@ -31,7 +31,6 @@ This document defines the procurement strategy for third-party tools, services, 
 | Tool              | Purpose                          | Contract Type   | Est. Monthly Cost (SAR) |
 |-------------------|----------------------------------|-----------------|-------------------------|
 | Vercel Pro         | Primary frontend hosting (SPA)  | SaaS / per-seat | SAR 75/seat             |
-| Netlify Pro        | Failover frontend hosting       | SaaS / flat     | SAR 75/month            |
 | Cloud PostgreSQL   | Production database (managed)   | Usage-based     | SAR 750--1,500/month    |
 
 ### 2.3 Monitoring and Error Tracking
@@ -166,13 +165,13 @@ All vendors are evaluated against the following weighted criteria:
 
 | Category                  | Estimated Monthly (SAR) | Annual (SAR)   |
 |---------------------------|-------------------------|----------------|
-| Hosting & infrastructure  | 2,400                   | 28,800         |
+| Hosting & infrastructure  | 2,325                   | 27,900         |
 | Development tools         | 3,200                   | 38,400         |
 | Third-party APIs          | 1,500 (variable)        | 18,000         |
 | Monitoring & logging      | 615                     | 7,380          |
 | Design tools              | 255                     | 3,060          |
 | Licensing & compliance    | 500                     | 6,000          |
-| **Total tools/services**  | **8,470**               | **101,640**    |
+| **Total tools/services**  | **8,395**               | **100,740**    |
 
 ### 8.2 Cost Review Process
 

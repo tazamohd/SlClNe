@@ -21,7 +21,7 @@ import type { Action, RoleId } from '../src/data/types'
 const ALL_ROLE_IDS: RoleId[] = [
   'owner', 'superadmin', 'manager', 'advisor', 'technician', 'qc',
   'parts', 'accountant', 'hr', 'frontdesk', 'callcenter', 'procurement',
-  'supplier', 'customer',
+  'supplier', 'customer', 'test',
 ]
 
 const ALL_MODULES = [
@@ -29,8 +29,8 @@ const ALL_MODULES = [
   'vehicles', 'inventory', 'procurement', 'invoices', 'payments',
   'accounting', 'hr', 'technicians', 'crm', 'callcenter', 'reports',
   'approvals', 'kiosk', 'execreports', 'portaltech', 'portalcustomer',
-  'portalsupplier', 'portalprocure', 'ai', 'admin', 'settings',
-  'audit', 'network',
+  'portalsupplier', 'portalprocure', 'ai', 'aiadmin', 'admin', 'settings',
+  'superadmin', 'audit', 'network',
 ]
 
 const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
@@ -40,12 +40,12 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 // ---------------------------------------------------------------------------
 
 describe('RBAC data integrity', () => {
-  it('defines exactly 14 roles', () => {
-    expect(ROLES).toHaveLength(14)
+  it('defines exactly 15 roles', () => {
+    expect(ROLES).toHaveLength(15)
   })
 
-  it('defines exactly 28 modules', () => {
-    expect(Object.keys(PERMS)).toHaveLength(28)
+  it('defines exactly 30 modules', () => {
+    expect(Object.keys(PERMS)).toHaveLength(30)
   })
 
   it('ROLES ids match the expected list', () => {
@@ -306,8 +306,12 @@ describe('fieldHidden()', () => {
     }
   })
 
-  it('Employee salary is hidden from 9 roles, visible to owner/manager/accountant/hr/superadmin', () => {
-    const visible = ['owner', 'manager', 'accountant', 'hr', 'superadmin']
+  it('Employee salary is hidden from 9 roles, visible to owner/manager/accountant/hr/superadmin and the test account', () => {
+    /* The redaction list names the roles a field is hidden *from*, so a role it
+     * never names sees the value. `test` is not on any of the seven lists,
+     * deliberately: an account that exists to check what a screen renders is
+     * useless if the screens redact for it. */
+    const visible = ['owner', 'manager', 'accountant', 'hr', 'superadmin', 'test']
     const hidden = ALL_ROLE_IDS.filter((r) => !visible.includes(r))
     for (const r of visible) {
       expect(fieldHidden('Employee salary', r), `should be visible to ${r}`).toBe(false)
@@ -569,10 +573,10 @@ describe('no role inheritance', () => {
 // ---------------------------------------------------------------------------
 
 describe('critical permission boundaries', () => {
-  it('only owner and superadmin can fully administer admin module', () => {
+  it('only owner, superadmin and the test account can fully administer admin module', () => {
     for (const action of ['c', 'e', 'x'] as Action[]) {
       for (const roleId of ALL_ROLE_IDS) {
-        if (roleId === 'owner' || roleId === 'superadmin') {
+        if (roleId === 'owner' || roleId === 'superadmin' || roleId === 'test') {
           expect(can('admin', action, roleId), `${roleId} should ${action} admin`).toBe(true)
         } else {
           expect(can('admin', action, roleId), `${roleId} should not ${action} admin`).toBe(false)
@@ -611,21 +615,47 @@ describe('critical permission boundaries', () => {
     }
   })
 
-  it('customer can only access portalcustomer, approvals, and estimates modules', () => {
+  it('customer holds exactly the modules its portal reads, and nothing more', () => {
+    /* `portalcustomer` is the portal itself. The other five are the collections
+     * `CustomerPortal` and `CustomerPortal.Booking` fetch — vehicles,
+     * appointments, invoices, jobs (and the service catalogue, also `jobcards`)
+     * and estimates. Until these grants existed each of those reads answered
+     * 403 and the portal rendered error alerts to the only audience it has.
+     *
+     * The grant says which module, never which rows: `drizzle/0014`'s `r_self`
+     * policies are what keep a customer to their own, and `canScreen` is what
+     * keeps them off the workshop's screens for the same modules. Adding a
+     * module here without checking both is how this becomes a leak. */
+    const expected = new Set([
+      'portalcustomer',
+      'vehicles',
+      'appointments',
+      'invoices',
+      'jobcards',
+      'estimates',
+    ])
     for (const mod of ALL_MODULES) {
       const grant = PERMS[mod]?.['customer'] ?? ''
       if (grant) {
-        expect(
-          ['portalcustomer', 'approvals', 'estimates', 'kiosk'].includes(mod),
-          `customer has unexpected access to "${mod}"`,
-        ).toBe(true)
+        expect(expected.has(mod), `customer has unexpected access to "${mod}"`).toBe(true)
       }
+    }
+    /* Read-only but for booking, which is the one thing the portal creates. */
+    for (const mod of expected) {
+      const grant = PERMS[mod]?.['customer'] ?? ''
+      expect(grant, `customer grant on "${mod}"`).not.toBe('')
+      const writes = [...grant].filter((letter) => 'ceda'.includes(letter))
+      expect(writes, `customer write actions on "${mod}"`).toEqual(
+        mod === 'appointments' ? ['c'] : [],
+      )
     }
   })
 
-  it('audit module is limited to owner, manager, accountant, superadmin', () => {
+  it('audit module is limited to owner, manager, accountant, superadmin — and the test account', () => {
     const auditRoles = Object.keys(PERMS['audit']!)
-    expect(auditRoles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin'])
+    /* `test` reads the audit log because reading it is part of what the account
+     * is for: the log is where its own activity shows up. */
+    expect(auditRoles.sort()).toEqual(['accountant', 'manager', 'owner', 'superadmin', 'test'])
   })
 })
 

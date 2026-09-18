@@ -17,6 +17,14 @@ export interface Principal {
   branchId: string | null
   role: RoleId
   scope: DataScope
+  /** The `customers` row this principal *is*, for a portal login.
+   *
+   *  Only the `self` scope reads it, and it is the only thing that scope
+   *  narrows by: `drizzle/0014`'s `r_self` policies compare `customer_id`
+   *  against `app_customer()`. Null for staff, and null for a self-scoped
+   *  account with no link — which sees nothing rather than everything, because
+   *  NULL matches no row. */
+  customerId?: string | null
   /** Display name, used for audit readability only. */
   name?: string
 }
@@ -36,7 +44,8 @@ export async function applyTenantContext(tx: Tx, principal: Principal): Promise<
       set_config('app.org_id',    ${principal.orgId},          true),
       set_config('app.branch_id', ${principal.branchId ?? ''}, true),
       set_config('app.user_id',   ${principal.userId},         true),
-      set_config('app.scope',     ${principal.scope},          true)
+      set_config('app.scope',     ${principal.scope},          true),
+      set_config('app.customer_id', ${principal.customerId ?? ''}, true)
   `)
 }
 

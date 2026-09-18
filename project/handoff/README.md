@@ -61,7 +61,7 @@ The RBAC engine is real code in `design/gms-data.js`. Study `ROLES`, `PERMS`, `S
 | `callcenter` | Call Center Agent | موظف مركز الاتصال | `calls@salisauto.sa` | all | — |
 | `procurement` | Procurement Agent | وكيل المشتريات | `procurement@salisauto.sa` | all | 20,000 |
 | `supplier` | Supplier | مورّد | `supplier@aljazira.sa` | external | — |
-| `customer` | Customer | عميل | `khalid@example.sa` | self | — |
+| `customer` | Customer | عميل | `ahmed@example.sa` | self | — |
 
 
 **28 permission modules:**
@@ -257,9 +257,9 @@ New tables that back the existing SuperAdmin/PlatformAdmin surfaces:
 
 Customers sign up **against a specific garage** — the URL, the QR at reception, or the app carries the `garageId`.
 
-- `POST /public/customers/register` — body: `{ garageId, name, phone, email?, password }`. Creates a pending user with `userType='customer'` and `garageId` set; sends an OTP.
-- `POST /public/customers/verify-otp` — body: `{ phone, otp }`. Marks the user active.
-- `POST /public/customers/resend-otp` — throttled 60s.
+- `POST /public/customers/register` — body: `{ garageId, name, phone, email, password }`, `.strict()`. Creates the `customers` row, a `pending` user with `role='customer'` and `users.customer_id` linking them, in one transaction; sends an OTP to the phone. Answers `202` with no id and no token. **`email` is required**, not optional as written previously: it is the login identifier and `users.email` is `NOT NULL`, so an account without one could be created and never signed into. There is no `userType` column — the role is `customer`, fixed by the handler, and the body has no field to ask for another.
+- `POST /public/customers/verify-otp` — body: `{ phone, code }`. Marks the user active. Answers a number nobody registered exactly as it answers a wrong code.
+- `POST /public/customers/resend-otp` — throttled by the OTP cooldown, and always `202` whether or not the number has a pending account.
 
 Wire these into the existing `RegionSelection.dc.html` → `Register.dc.html` → `OTPVerification.dc.html` chain (all designed, all mobile-mirrored).
 

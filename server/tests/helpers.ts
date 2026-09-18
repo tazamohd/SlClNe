@@ -120,6 +120,7 @@ export const EMAILS = {
   technician: 'tech@salisauto.sa',
   accountant: 'finance@salisauto.sa',
   advisor: 'advisor@salisauto.sa',
+  test: 'test@salisauto.sa',
 }
 
 const ROLE_BY_EMAIL: Record<string, string> = {
@@ -127,4 +128,5 @@ const ROLE_BY_EMAIL: Record<string, string> = {
   [EMAILS.technician]: 'technician',
   [EMAILS.accountant]: 'accountant',
   [EMAILS.advisor]: 'advisor',
+  [EMAILS.test]: 'test',
 }

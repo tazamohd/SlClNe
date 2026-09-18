@@ -118,6 +118,7 @@ import {
   Filter,
   FilterX,
   Fingerprint,
+  FlaskConical,
   Folder,
   FolderOpen,
   Fuel,
@@ -309,8 +310,8 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-/** The 309 icon names referenced by the design bundle and the app,
- *  mapped to the 305 lucide exports behind them, so data-driven
+/** The 310 icon names referenced by the design bundle and the app,
+ *  mapped to the 306 lucide exports behind them, so data-driven
  *  lookups work without importing all ~1500. Names lucide has since renamed
  *  appear under the name the data uses. */
 export const ICONS: Record<string, LucideIcon> = {
@@ -430,6 +431,7 @@ export const ICONS: Record<string, LucideIcon> = {
   Filter,
   FilterX,
   Fingerprint,
+  FlaskConical,
   Folder,
   FolderOpen,
   Fuel,

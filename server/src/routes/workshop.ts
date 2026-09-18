@@ -5,10 +5,19 @@
  */
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import type { FastifyInstance } from 'fastify'
-import { jobAssignBody, jobTransitionBody, type JobStage } from '@salis/contract'
+import { ulid } from 'ulid'
+import { z } from 'zod'
+import {
+  jobAssignBody,
+  jobPriority,
+  jobService,
+  jobTransitionBody,
+  type JobStage,
+} from '@salis/contract'
 import { checkQcIndependence, checkStageTransition } from '@salis/contract/rules'
 import { writeAudit } from '../audit/audit'
-import { jobCards, technicians } from '../db/schema'
+import { appointments, jobCards, technicians } from '../db/schema'
+import { jobCode } from '../writers'
 import { withTenant, type Tx } from '../db/tenant'
 import { badRequest, conflict, forbidden, notFound, ruleViolated } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
@@ -155,7 +164,148 @@ export function registerWorkshopRoutes(app: FastifyInstance, deps: RouteDeps): v
       return presentRow(def(), principal, after as Record<string, unknown>)
     })
   })
+
+  /** `POST /appointments/:id/job-card` — the third of the joins DF-007 names.
+   *
+   *  The customer arrives for a booking and the counter opens a job card. Until
+   *  now that meant retyping the customer, the vehicle and the plate from the
+   *  appointment into a new job card, with nothing recording that the two were
+   *  the same visit — so "how many of yesterday's bookings became work?" had no
+   *  answer, and a mistyped plate had nothing to be caught against.
+   *
+   *  What it does and does not decide:
+   *
+   *  - **A kept appointment only.** `cancelled` and `no-show` are refused: they
+   *    are the states that say the car did not arrive. Everything else —
+   *    `confirmed`, `awaiting` — is a booking that can be walked in.
+   *  - **Once.** `job_cards.appointment_id` carries a partial unique index, so a
+   *    second attempt loses to the database even if two counters race.
+   *  - **The customer, vehicle and plate are copied from the appointment**, not
+   *    from the request. That is the whole point of the join.
+   *  - **`service` is still asked for.** An appointment carries a free-text
+   *    `serviceLabel` ("Full service — 40k km"); a job card carries one of eight
+   *    enum values. There is no mapping between them, and guessing one would be
+   *    inventing a business rule, so the counter picks it and the label travels
+   *    into the job card's `complaint` where it can still be read.
+   *  - **The appointment moves to `completed`.** In this status set that is the
+   *    only "the booking was kept" state; the work itself is now tracked on the
+   *    job card, which is where the stage machine lives.
+   *
+   *  The job card lands at `checkin`/`pending` — the stage machine's start —
+   *  because opening one is not a transition and this route must not become a
+   *  way to enter the workflow part-way through it.
+   */
+  app.post('/appointments/:id/job-card', async (request, reply) => {
+    const principal = principalOf(request)
+    /* Creating a job card, and editing the appointment it closes out. Both,
+     * because this route does both. */
+    requirePermission(principal, 'jobcards', 'c')
+    requirePermission(principal, 'appointments', 'e')
+    const parsed = appointmentJobCardBody.safeParse(request.body ?? {})
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]
+      throw badRequest(issue?.message ?? 'Invalid request.', issue?.path.join('.'))
+    }
+    const { id } = request.params as { id: string }
+
+    const created = await withTenant(deps.db, principal, async (tx) => {
+      const [appointment] = await tx
+        .select()
+        .from(appointments)
+        .where(and(eq(appointments.id, id), isNull(appointments.deletedAt)))
+        .limit(1)
+        .for('update')
+      if (!appointment) throw notFound('Appointment')
+
+      if (appointment.status === 'cancelled' || appointment.status === 'no-show') {
+        throw ruleViolated(
+          `A ${appointment.status} appointment was not kept, so no job card can be opened from it.`,
+          'status',
+        )
+      }
+
+      const [existing] = await tx
+        .select({ code: jobCards.code })
+        .from(jobCards)
+        .where(and(eq(jobCards.appointmentId, appointment.id), isNull(jobCards.deletedAt)))
+        .limit(1)
+      if (existing) {
+        throw conflict(`This appointment already opened job card ${existing.code}.`)
+      }
+
+      const jobId = ulid()
+      const [job] = await tx
+        .insert(jobCards)
+        .values({
+          id: jobId,
+          orgId: principal.orgId,
+          branchId: appointment.branchId ?? principal.branchId,
+          code: jobCode(),
+          appointmentId: appointment.id,
+          customerId: appointment.customerId,
+          customerName: appointment.customerName,
+          vehicleId: appointment.vehicleId,
+          vehicleLabel: appointment.vehicleLabel,
+          service: parsed.data.service,
+          /* The start of the stage machine, always. */
+          status: 'pending',
+          stage: 'checkin',
+          priority: parsed.data.priority ?? 'medium',
+          /* The booked technician carries over when there was one. */
+          assignedTechId: appointment.technicianId,
+          /* The appointment's own words, kept where a technician will read
+           * them, since they cannot be mapped into `service`. */
+          complaint: parsed.data.complaint ?? appointment.serviceLabel,
+          createdBy: principal.userId,
+          updatedBy: principal.userId,
+        })
+        .returning()
+      if (!job) throw notFound('Job card')
+
+      /* The booking is done; the work is now the job card's to track. */
+      const [closed] = await tx
+        .update(appointments)
+        .set({ status: 'completed', updatedBy: principal.userId })
+        .where(and(eq(appointments.id, appointment.id), eq(appointments.version, appointment.version)))
+        .returning({ status: appointments.status })
+      if (!closed) throw conflict('This appointment changed since you loaded it.')
+
+      await writeAudit(tx, {
+        actor: principal,
+        action: 'create',
+        entity: 'job_card',
+        entityId: jobId,
+        after: job,
+        reason: `opened from appointment ${appointment.plate} ${appointment.timeLabel}`,
+        ...metaOf(request),
+      })
+      await writeAudit(tx, {
+        actor: principal,
+        action: 'transition',
+        entity: 'appointment',
+        entityId: appointment.id,
+        before: { status: appointment.status, jobCardId: null },
+        after: { status: closed.status, jobCardId: jobId, jobCardCode: job.code },
+        reason: 'kept — job card opened',
+        ...metaOf(request),
+      })
+      return presentRow(def(), principal, job as Record<string, unknown>)
+    })
+
+    reply.code(201)
+    return created
+  })
 }
+
+/** What opening a job card from an appointment still needs from the caller.
+ *  Everything else is copied from the appointment. `service` is here because an
+ *  appointment's free-text `serviceLabel` cannot be mapped to the job-card enum
+ *  without inventing a mapping. */
+const appointmentJobCardBody = z.object({
+  service: jobService,
+  priority: jobPriority.optional(),
+  complaint: z.string().max(4000).optional(),
+})
 
 type JobRow = typeof jobCards.$inferSelect
 

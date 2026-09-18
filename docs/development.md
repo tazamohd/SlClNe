@@ -259,15 +259,6 @@ Configuration in `vercel.json`:
 - SPA fallback: all routes rewrite to `/index.html`
 - Framework: Vite
 
-### Netlify
-
-Configuration in `netlify.toml`:
-
-- Build base: `app/`
-- Build command: `npm run build`
-- Publish directory: `dist`
-- SPA fallback: `/* → /index.html` (200 redirect)
-
 ### Production Considerations
 
 - Set `JWT_SECRET` to a strong random value (never use the default)

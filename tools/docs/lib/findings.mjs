@@ -1,0 +1,133 @@
+/** Implementation findings surfaced by writing the documentation.
+ *
+ *  Documenting a system end to end is an unusually good way to find things
+ *  wrong with it, because it forces someone to follow every chain to its end
+ *  rather than to the point where it stops being interesting. These are the
+ *  findings that came out of that, and each one was verified against the
+ *  source before it was written down — the command that confirms it is in
+ *  `verifiedBy`, so a reader can re-run it rather than take this on trust.
+ *
+ *  They are kept here, in a registry this toolchain owns, rather than being
+ *  written into `project-control/FINDINGS.json`. That register belongs to
+ *  engineering. Appending to someone else's register from a documentation
+ *  generator would make its provenance unclear and its regeneration
+ *  destructive.
+ */
+export const DOCUMENTATION_FINDINGS = [
+  {
+    id: 'DF-001',
+    severity: 'HIGH',
+    area: 'accounting',
+    title: 'No API path writes to the general ledger',
+    detail:
+      'Nothing in server/src/routes inserts into journal_entries or chart_of_accounts. Not invoice issue, not payment capture, not payroll posting, not procurement. The trial balance and the VAT return read rows that exist only because the seed put them there, so both report on seed data rather than on trading activity.',
+    consequence:
+      'The accounting module presents figures that no business event has ever produced. A user reading a trial balance would reasonably assume it reflects their invoices; it does not.',
+    verifiedBy: "grep -rn 'journalEntries' server/src — reads in routes/finance-reports.ts, a write only in db/seed.ts",
+    status: 'RESOLVED',
+    resolution:
+      'server/src/accounting/posting.ts posts through one function, and three events now call it: invoice issue (Dr receivables, Cr revenue, Cr VAT payable), payment capture (Dr cash, Cr receivables) and goods receipt (Dr inventory and operating expenses, Cr accounts payable). Account balances move with the lines, inside the same transaction as the business write. Migration 0015 adds the journal_lines table the ledger needed to be double-entry at all. Payroll posting is still absent — it has no route that completes a run.',
+  },
+  {
+    id: 'DF-002',
+    severity: 'HIGH',
+    area: 'workshop / billing',
+    title: 'checkInvoiceable is never called by the server',
+    detail:
+      'packages/contract/src/rules/workshop.ts defines checkInvoiceable — "a job must reach delivery before it can be invoiced". Its only callers are unit tests. routes/invoices.ts does not call it.',
+    consequence:
+      'An invoice can be raised against a job card at any stage, or against no job card at all. The rule exists, is tested, and does not run in production.',
+    verifiedBy: "grep -rn 'checkInvoiceable' server packages app — defined once, called only from app/tests/unit/contract-rules.test.ts",
+    status: 'RESOLVED',
+    resolution:
+      'routes/invoices.ts calls it when an invoice names a job card, refusing one raised against a job that has not reached delivery.',
+    remaining:
+      'Only half the rule. It cannot run when no job card is named, and jobCardId is optional in the contract and nullable in the schema. An invoice with no job card behind it — a parts-only sale, a fee — is a real case, so requiring one is a product decision rather than a bug fix, and is left open deliberately rather than closed quietly.',
+  },
+  {
+    id: 'DF-003',
+    severity: 'HIGH',
+    area: 'accounting',
+    title: 'checkJournalBalanced is never called by the server',
+    detail:
+      'The double-entry balance guard in packages/contract/src/rules/money.ts has no caller outside tests. A comment in routes/finance-reports.ts describes the invariant as "enforced by checkJournalBalanced", which is not true of any code path.',
+    consequence:
+      'Nothing would refuse an unbalanced journal entry. The comment makes the gap harder to notice, not easier.',
+    verifiedBy: "grep -rn 'checkJournalBalanced' server packages app — defined in money.ts, called only from test files",
+    status: 'RESOLVED',
+    resolution:
+      'postJournalEntry runs it over the lines before writing anything and fails the transaction when they do not balance. The rule needed lines to be called with at all, which is why migration 0015 had to come first. The misleading comment in routes/finance-reports.ts now states the narrower claim that is actually true: posted entries are checked, the seeded ones have no lines and are not.',
+  },
+  {
+    id: 'DF-004',
+    severity: 'HIGH',
+    area: 'inventory / procurement',
+    title: 'Goods receipt does not move stock',
+    detail:
+      'routes/procurement.ts updates purchase_order_lines.received_qty and never touches parts.on_hand — the string "onHand" does not appear in that file. Stock is moved only by routes/inventory.ts. The two are independent ledgers with nothing reconciling them.',
+    consequence:
+      'Receiving a purchase order does not increase stock on hand. A storekeeper who receives goods still has to record a separate inventory movement, and nothing detects if they do not.',
+    verifiedBy: "grep -c 'onHand' server/src/routes/procurement.ts → 0; writes appear only in server/src/routes/inventory.ts",
+    status: 'RESOLVED',
+    resolution:
+      'Receiving now locks the part by SKU, raises on_hand and writes an inventory_movements row referencing the purchase order. The route header had recorded a deliberate decision not to do this, on the grounds that booking stock for the lines that resolve and silently skipping the rest would be half-wired — a fair objection. It is answered by making the skip loud rather than by leaving stock unmoved: every received line comes back as stocked, with the part and new on-hand, or notStocked, with the reason, in both the response and the audit row.',
+  },
+  {
+    id: 'DF-005',
+    severity: 'MEDIUM',
+    area: 'governance',
+    title: 'The approval inbox carries estimates only',
+    detail:
+      "routes/approvals.ts types ApprovalItem.kind as the literal 'estimate'. Requisitions, purchase orders, insurance claims and payroll runs all have approval semantics and approval ceilings, and none of them appears in the approvals queue.",
+    consequence:
+      'An approver cannot see everything awaiting their decision in one place, so the approval ceiling is enforced per endpoint but not surfaced as a workload.',
+    verifiedBy: "grep -n 'kind' server/src/routes/approvals.ts — kind: 'estimate' is the only variant",
+    status: 'RESOLVED',
+    resolution:
+      "routes/approvals.ts carries four sources: estimates ('sent'), requisitions ('submitted'), purchase orders ('draft') and insurance claims ('submitted'/'under_review') — every document with a ceiling-gated approve endpoint behind it. Each source folds in only when the caller holds view on that source's own module, each row carries the caller's standing computed server-side, and each names the endpoint that decides it (approvePath / rejectPath), so a mixed queue cannot post a requisition to /estimates/:id/approve. A byKind roll-up sits beside byModule, because requisitions and purchase orders share the procurement module. The ApprovalInbox screen renders the mixed queue and actions each row against its own path.",
+    remaining:
+      "Payroll runs are deliberately not a source, and the finding named them. POST /payroll/runs/:id/post is gated on hr:e and documented in routes/payroll.ts as 'an edit of the run, not an approval against a ceiling'. There is no approve endpoint, no ceiling and no submitter check, so a payroll row would carry an approval standing the server does not enforce and an action the client could not take. Modelling payroll posting as an approval is a product decision, not a bug fix; a test pins the absence so it stays a decision.",
+  },
+  {
+    id: 'DF-006',
+    severity: 'MEDIUM',
+    area: 'audit / privacy',
+    title: 'Bulk export is not audited',
+    detail:
+      'The generated export route in routes/collections.ts writes no audit row, while the create, update, delete and bulk routes in the same file all call writeAudit.',
+    consequence:
+      '"Who exported the customer list, and when" cannot be answered from audit_log. For a system holding customer contact details under Saudi privacy expectations, export is the operation most worth recording.',
+    verifiedBy: 'The export handler in server/src/routes/collections.ts contains no writeAudit call; the write handlers below it do',
+    status: 'RESOLVED',
+    resolution:
+      "The export route writes an audit row with action 'export', inside the same transaction that gathered the rows, so there is no state in which the data left and the record of it did not. It records the actor, the collection, the row count that actually left, the total in scope, whether the egress cap truncated it, and the narrowing (q, sort, filter, includeDeleted) — because which rows left is as much the question as how many. entityId is null: an export acts on a set, not a record. A refused export writes nothing, which is correct — requirePermission throws before the transaction opens and nothing was disclosed.",
+  },
+  {
+    id: 'DF-007',
+    severity: 'MEDIUM',
+    area: 'workshop',
+    title: 'The document chain is broken at three joins',
+    detail:
+      'There is no endpoint that creates an invoice from an approved estimate, none that writes a verified customer OTP signature back to estimates.status, and none that opens a job card from a kept appointment.',
+    consequence:
+      'Each join is manual re-keying, which is where transcription errors enter a financial document chain.',
+    verifiedBy: 'No route in server/src/routes performs these transitions; see project-control/API_REGISTRY.json',
+    status: 'RESOLVED',
+    resolution:
+      "All three joins are endpoints, and migration 0016 adds the columns they write. POST /estimates/:id/invoice raises a draft invoice from an approved estimate, copying the lines from the database rather than the request, recomputing the totals with the same function the estimate used and refusing when they no longer match what was approved; invoices.estimate_id carries a partial unique index, so one estimate bills once even under a race. POST /estimates/:id/verify-approval-otp now writes the verified signature back to the estimate (customer_signed_at, channel, challenge id). POST /appointments/:id/job-card opens a job card from a kept appointment, copying the customer, vehicle and booked technician across and closing the booking out; job_cards.appointment_id carries the same kind of partial unique index.",
+    remaining:
+      "The OTP verification deliberately does NOT move estimates.status to 'approved', which is what the finding's wording asked for. 'approved' means the shop authorised the spend, and POST /estimates/:id/approve gates that on the role's SAR ceiling and on segregation of duties. A code typed from a customer's phone must not route around either, so the customer's acceptance is persisted as its own first-class fact on the row beside the internal decision rather than as a substitute for it. That makes the signature readable without trawling audit_log, which was the gap, without weakening an approval gate. Separately, the CustomerApproval screen is still not wired to these endpoints.",
+  },
+  {
+    id: 'DF-008',
+    severity: 'MEDIUM',
+    area: 'documentation toolchain',
+    title: 'The API registry under-reported the surface by 69 endpoints',
+    detail:
+      'tools/docs/lib/extract-api.mjs matched only quoted route path arguments, so app.get(base, …) and app.post(base, …) in routes/collections.ts were never seen. Every collection list route and every generated create route was missing.',
+    consequence:
+      'Fixed. Recorded because it is the failure mode this toolchain exists to prevent, and because it shows the limit of the approach: a parser reports what it can match, and what it cannot match is invisible rather than flagged. The Mermaid, capability-coverage and schema-completeness checks in docs:check exist for that reason.',
+    verifiedBy: 'The registry went from 303 endpoints to 372 (241 generated, 131 explicit) with no change to the server',
+    status: 'RESOLVED',
+  },
+]

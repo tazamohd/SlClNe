@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { pushBackHandler } from '@/lib/back-stack'
 import { cn } from '@/lib/cn'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { Icon } from './Icon'
@@ -78,6 +79,10 @@ export function Drawer({
     }
   }, [open, handleKeyDown])
 
+  /* Android back closes the drawer before it navigates — the same thing
+   * Escape does above. */
+  useEffect(() => (open ? pushBackHandler(onClose) : undefined), [open, onClose])
+
   if (!open) return null
 
   return createPortal(
@@ -98,7 +103,10 @@ export function Drawer({
           'relative flex flex-col bg-card shadow-xl',
           width,
           'max-h-full overflow-y-auto',
-          side === 'end' ? 'ms-auto' : 'me-auto',
+          // `fixed inset-0` now spans under the notch and the home indicator,
+          // and the panel is flush against whichever edge it slides in from.
+          'pt-safe-top pb-safe-bottom',
+          side === 'end' ? 'ms-auto pe-safe-end' : 'me-auto ps-safe-start',
           'animate-fade-up motion-reduce:animate-none',
           className,
         )}

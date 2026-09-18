@@ -23,7 +23,6 @@ salis-auto/
   docs/                 # Documentation -- architecture, system, developer guides
   .github/              # CI/CD workflows (GitHub Actions)
   vercel.json           # Vercel deployment config
-  netlify.toml          # Netlify deployment config
 ```
 
 - **`app/`** is the primary workspace for frontend developers. This is where screens, components, hooks, and the data layer live.

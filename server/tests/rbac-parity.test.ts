@@ -35,8 +35,8 @@ describe('RBAC parity between the client and the server', () => {
     expect([...MODULE_IDS].sort()).toEqual(Object.keys(APP_PERMS).sort())
   })
 
-  it('agrees on data scope and approval ceiling for all 14 roles', () => {
-    expect(ROLE_IDS.length).toBe(14)
+  it('agrees on data scope and approval ceiling for all 15 roles', () => {
+    expect(ROLE_IDS.length).toBe(15)
     for (const role of APP_ROLES) {
       const server = ROLE_META[role.id as (typeof ROLE_IDS)[number]]
       expect(server, `role ${role.id} is missing on the server`).toBeDefined()

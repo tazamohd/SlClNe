@@ -16,7 +16,14 @@
  */
 import { z } from 'zod'
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { PERMS, ROLE_META, type ModuleId } from '@salis/contract'
+import {
+  PERMS,
+  ROLE_META,
+  publicCustomerRegister,
+  publicCustomerResend,
+  publicCustomerVerify,
+  type ModuleId,
+} from '@salis/contract'
 import { badRequest } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { GRANT_ACTIONS, describeAction } from '../security/actions'
@@ -24,10 +31,18 @@ import { ceilingHalalas } from '../security/approvals'
 import type { AuthConfig } from './config'
 import { ProviderNotConfigured, providerStatus, type Providers } from './providers'
 import { ResendTooSoon, TransportUnavailable } from './otp'
-import { AuthFailure, LockedOut, type AuthService, type RequestFacts } from './service'
+import {
+  AuthFailure,
+  LockedOut,
+  RegistrationRefused,
+  RoleSwitchRefused,
+  type AuthService,
+  type RequestFacts,
+} from './service'
 
 const PUBLIC_AUTH_PATHS = [
   '/auth/login',
+  '/auth/register',
   '/auth/refresh',
   '/auth/logout',
   '/auth/forgot-password',
@@ -41,6 +56,14 @@ const PUBLIC_AUTH_PATHS = [
   '/auth/sso/start',
   '/auth/sso/callback',
   '/auth/providers',
+  /* Customer self-registration. These are `/public/…` rather than `/auth/…`
+   * because that is the path `handoff/README.md` publishes, but they are
+   * listed here because the handlers are in this file and this list is the one
+   * that sits beside them. A route not named here is authenticated, which is
+   * how these three were caught the first time they ran. */
+  '/public/customers/register',
+  '/public/customers/verify-otp',
+  '/public/customers/resend-otp',
 ] as const
 
 const PUBLIC_AUTH_PREFIXES = ['/auth/social/'] as const
@@ -65,6 +88,18 @@ const loginBody = z.object({
    *  organizations — the unique index is `(org_id, email)`. */
   orgSlug: z.string().trim().min(1).max(80).optional(),
 })
+
+const registerBody = z.object({
+  name: z.string().trim().min(1, 'Please enter your name.').max(200),
+  email: z.string().trim().min(3).max(254).email('Please enter a valid email address.'),
+  password: z.string().min(1).max(200),
+  /* Collected by the form and recorded in the audit entry; the user row has no
+   * column for it, so it is not stored as though it were one. */
+  phone: z.string().trim().min(3).max(40).optional(),
+  organizationName: z.string().trim().min(1).max(200).optional(),
+})
+
+const switchRoleBody = z.object({ role: z.string().trim().min(1).max(32) })
 
 const refreshBody = z.object({ refreshToken: z.string().min(10).max(4096) })
 const forgotBody = z.object({ email: z.string().trim().min(3).max(254) })
@@ -146,6 +181,35 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
         user: presentUser(user),
       })
     } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/auth/register', veryStrictLimit, async (request, reply) => {
+    const body = parse(registerBody, request.body)
+    try {
+      const { tokens, user } = await service.register(body, facts(request))
+      return reply.code(201).send({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        expiresIn: tokens.expiresIn,
+        tokenType: tokens.tokenType,
+        user: presentUser(user),
+      })
+    } catch (error) {
+      if (error instanceof RegistrationRefused) {
+        /* 409 for a taken address, 400 for a password the policy refuses: the
+         * first is a state of the world the caller cannot fix by editing the
+         * request, the second is exactly that. */
+        return reply.code(error.code === 'email_taken' ? 409 : 400).send({
+          error: {
+            code: error.code === 'email_taken' ? 'conflict' : 'bad_request',
+            message: error.message,
+            field: error.field,
+            requestId: request.id,
+          },
+        })
+      }
       return authFailureReply(reply, request, error)
     }
   })
@@ -246,6 +310,91 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     })
   })
 
+  /* ------------------------------------------- customer self-registration */
+
+  /* These three sit on `/public/…` rather than `/auth/…` because that is what
+   * `handoff/README.md` publishes and what the sign-up screens call. They live
+   * in this file, not `routes/public.ts`, because they need the auth service,
+   * the OTP transport and the rate limiters that are already here — and
+   * because everything that opens a session or issues a credential belongs in
+   * `src/auth/**`, which is the boundary `tests/isolation-plane.test.ts`
+   * enforces.
+   *
+   * The security posture is `routes/public.ts`'s, with one deliberate
+   * widening: the caller names a tenant. `publicCustomerRegister` in the
+   * contract says why that is safe and what bounds it. */
+
+  app.post('/public/customers/register', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerRegister, request.body)
+    try {
+      const result = await service.registerCustomer(body, facts(request))
+      /* 202, not 201: the account exists but cannot be used yet. The response
+       * carries no id, no token and nothing about the organization — a public
+       * caller learns only that a code is on its way. */
+      return reply.code(202).send({
+        status: result.status,
+        message: 'A one-time code has been sent to that number.',
+        expiresAt: result.expiresAt.toISOString(),
+      })
+    } catch (error) {
+      if (error instanceof RegistrationRefused) {
+        const conflict = error.code === 'email_taken'
+        return reply.code(conflict ? 409 : 400).send({
+          error: {
+            code: conflict ? 'conflict' : 'bad_request',
+            message: error.message,
+            field: error.field,
+            requestId: request.id,
+          },
+        })
+      }
+      if (error instanceof ResendTooSoon) {
+        reply.header('retry-after', String(error.retryAfterSeconds))
+        return reply.code(429).send({
+          error: { code: 'rate_limited', message: error.message, requestId: request.id },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        /* No SMS provider configured. The account was written and the code
+         * issued; saying "sent" would be the fiction §40 exists to prevent. */
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/public/customers/verify-otp', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerVerify, request.body)
+    try {
+      await service.verifyCustomer(body.phone, body.code, facts(request))
+      return reply.code(200).send({ verified: true })
+    } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/public/customers/resend-otp', veryStrictLimit, async (request, reply) => {
+    const body = parse(publicCustomerResend, request.body)
+    try {
+      await service.resendCustomerCode(body.phone)
+      /* Always 202, whether or not that number has a pending account: a
+       * different answer for a number nobody registered would make this an
+       * oracle for which customers a workshop has. */
+      return reply.code(202).send({ message: 'If that number is awaiting verification, a new code has been sent.' })
+    } catch (error) {
+      if (error instanceof ResendTooSoon) {
+        reply.header('retry-after', String(error.retryAfterSeconds))
+        return reply.code(429).send({
+          error: { code: 'rate_limited', message: error.message, requestId: request.id },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      throw error
+    }
+  })
+
   /* ------------------------------------- unconfigured external providers */
 
   app.get('/auth/providers', async () => ({ providers: providerStatus(config) }))
@@ -318,6 +467,29 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
   })
 
+  app.post('/auth/switch-role', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(switchRoleBody, request.body)
+    try {
+      const { tokens, user } = await service.switchRole(principal, body.role, facts(request))
+      return reply.code(200).send({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        expiresIn: tokens.expiresIn,
+        tokenType: tokens.tokenType,
+        user: presentUser(user),
+        entitlements: entitlementsFor(user.role),
+      })
+    } catch (error) {
+      if (error instanceof RoleSwitchRefused) {
+        return reply.code(403).send({
+          error: { code: 'forbidden', message: error.message, requestId: request.id },
+        })
+      }
+      return authFailureReply(reply, request, error)
+    }
+  })
+
   app.get('/auth/sessions', async (request) => {
     const principal = principalOf(request)
     return { sessions: await service.sessions(principal) }
@@ -354,6 +526,7 @@ function presentUser(user: {
   email: string
   name: string
   role: string
+  baseRole?: string
   orgId: string
   branchId: string | null
 }) {
@@ -362,6 +535,11 @@ function presentUser(user: {
     email: user.email,
     name: user.name,
     role: user.role,
+    /* The account's own role, beside the one it is acting as. The client needs
+     * both: the effective role drives what it renders, and the base role is
+     * what tells it whether to offer the role switcher at all. They are equal
+     * for every account that has never switched. */
+    baseRole: user.baseRole ?? user.role,
     orgId: user.orgId,
     branchId: user.branchId,
   }

@@ -28,7 +28,7 @@ import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
 /** The permission engine, exercised across the whole matrix rather than at a
- *  handful of hand-picked points: 14 roles × 28 modules × 5 actions, generated
+ *  handful of hand-picked points: 15 roles × 30 modules × 5 actions, generated
  *  from `PERMS` so a module or role added to the design bundle is covered the
  *  day it lands.
  *
@@ -47,9 +47,9 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 const UNLIMITED: RoleId[] = ['owner', 'superadmin']
 
 describe('matrix shape', () => {
-  it('is the documented 14 roles × 28 modules × 5 actions', () => {
-    expect(ROLE_IDS).toHaveLength(14)
-    expect(MODULES).toHaveLength(28)
+  it('is the documented 15 roles × 30 modules × 5 actions', () => {
+    expect(ROLE_IDS).toHaveLength(15)
+    expect(MODULES).toHaveLength(30)
     expect(ACTIONS).toHaveLength(5)
     expect(new Set(ROLE_IDS).size).toBe(ROLE_IDS.length)
   })
@@ -74,7 +74,7 @@ describe('matrix shape', () => {
 })
 
 describe('can()', () => {
-  it('agrees with the matrix for all 1,960 role × module × action combinations', () => {
+  it('agrees with the matrix for all 2,250 role × module × action combinations', () => {
     let checked = 0
     for (const module of MODULES) {
       for (const role of ROLE_IDS) {
@@ -87,7 +87,7 @@ describe('can()', () => {
         }
       }
     }
-    expect(checked).toBe(14 * 28 * 5)
+    expect(checked).toBe(15 * 30 * 5)
   })
 
   it('never confers a write without the matching read', () => {
@@ -135,11 +135,36 @@ describe('can()', () => {
 
 describe('canScreen()', () => {
   it('gates every mapped screen on its module and lets no role past the module check', () => {
+    /* The module check is necessary for every role and sufficient for all but
+     * the `self`-scoped ones, which are confined to their own portal on top of
+     * it — see `canScreen`. Stated as an implication in both directions rather
+     * than as equality, so the confinement cannot quietly become a way *past*
+     * the module gate. */
     for (const [screen, module] of Object.entries(SCREEN_MODULE)) {
       for (const role of ROLE_IDS) {
-        expect(canScreen(screen, role), `${role} on ${screen}`).toBe(can(module, 'v', role))
+        const allowed = canScreen(screen, role)
+        if (allowed) expect(can(module, 'v', role), `${role} on ${screen}`).toBe(true)
+        if (roleMeta(role).scope !== 'self') {
+          expect(allowed, `${role} on ${screen}`).toBe(can(module, 'v', role))
+        }
       }
     }
+  })
+
+  it('confines a self-scoped role to its portal, whatever the matrix grants it', () => {
+    /* The customer portal reads five operational modules, so the role holds `v`
+     * on them; before that grant existed the portal rendered error alerts to
+     * its only audience. Holding the module is what makes the *data* load — it
+     * must not also open the workshop's own screen for that module. */
+    expect(can('jobcards', 'v', 'customer')).toBe(true)
+    expect(canScreen('JobCards', 'customer')).toBe(false)
+    expect(canScreen('Invoices', 'customer')).toBe(false)
+    expect(canScreen('CustomerPortal', 'customer')).toBe(true)
+    expect(canScreen('CustomerPortal.Booking', 'customer')).toBe(true)
+
+    /* `own` and `external` are not confined: a technician works job cards and a
+     * supplier works purchase orders, both on the operational screens. */
+    expect(canScreen('JobCards', 'technician')).toBe(can('jobcards', 'v', 'technician'))
   })
 
   it('leaves the ungated screens open to all 14 roles, and none of them is module-mapped', () => {
@@ -164,6 +189,40 @@ describe('canScreen()', () => {
     expect(canScreen('HRPayroll', 'advisor')).toBe(false)
     expect(canScreen('ExecutiveReports', 'advisor')).toBe(false)
     expect(canScreen('ExecutiveReports', 'owner')).toBe(true)
+  })
+
+  /* Regression for the Branch Manager privilege-escalation report: `manager`
+   * held `v` on the coarse `settings` and `admin` modules, and SuperAdmin,
+   * RolesPermissions and Organizations were mapped to those same modules —
+   * so a manager who typed `/super-admin` or `/roles-permissions` into the
+   * address bar passed the guard. The fix splits a dedicated `superadmin`
+   * module (and `aiadmin` for AI platform configuration) off from the
+   * tenant-scoped modules, granted only to owner/superadmin/test. Pin every
+   * non-privileged role here so the split cannot silently regress. */
+  it('confines the platform/cross-tenant admin screens to owner, superadmin and test', () => {
+    const PLATFORM_SCREENS = ['SuperAdmin', 'RolesPermissions', 'Organizations']
+    const AI_ADMIN_SCREENS = [
+      'ModelSettings',
+      'AgentRegistry',
+      'AutomationRules',
+      'WorkflowBuilder',
+      'ConversationHistory',
+    ]
+    const PRIVILEGED: RoleId[] = ['owner', 'superadmin', 'test']
+
+    for (const screen of [...PLATFORM_SCREENS, ...AI_ADMIN_SCREENS]) {
+      for (const role of ROLE_IDS) {
+        expect(canScreen(screen, role), `${role} on ${screen}`).toBe(PRIVILEGED.includes(role))
+      }
+    }
+
+    // The named report: Branch Manager, specifically, on the two named routes.
+    expect(canScreen('SuperAdmin', 'manager')).toBe(false)
+    expect(canScreen('RolesPermissions', 'manager')).toBe(false)
+    // Service Advisor keeps day-to-day AI assistance without AI administration.
+    expect(canScreen('AIAssistant', 'advisor')).toBe(true)
+    expect(canScreen('ModelSettings', 'advisor')).toBe(false)
+    expect(canScreen('AgentRegistry', 'advisor')).toBe(false)
   })
 })
 
@@ -324,9 +383,14 @@ describe('field-level redaction', () => {
       )
       if (reachable.length) live[rule.field] = reachable
     }
+    /* `customer` joined these two when the role was granted the modules its
+     * portal reads. The rules named it all along and could not fire, because
+     * the role reached none of the modules they guard; now that it does, they
+     * do. Nothing customer-facing serialises a part cost or a labour rate
+     * today — the redaction is what keeps that true if one ever starts to. */
     expect(live).toEqual({
-      'Part cost / margin': ['advisor', 'technician', 'qc', 'frontdesk', 'callcenter'],
-      'Labour cost rate': ['technician', 'qc', 'frontdesk', 'callcenter'],
+      'Part cost / margin': ['advisor', 'technician', 'qc', 'frontdesk', 'callcenter', 'customer'],
+      'Labour cost rate': ['technician', 'qc', 'frontdesk', 'callcenter', 'customer'],
       'Supplier purchase price': ['advisor', 'technician'],
       'Customer contact details': ['technician', 'qc'],
       'Bank account details': ['advisor', 'frontdesk'],
@@ -350,6 +414,9 @@ describe('approval ceilings', () => {
     procurement: 20_000,
     supplier: 0,
     customer: 0,
+    /* The all-access test account: unlimited, like the owner, because approving
+     * is one of the things it exists to exercise. */
+    test: null,
   }
 
   it('reports the ceiling the design assigns each role', () => {
@@ -480,12 +547,19 @@ describe('segregation of duties', () => {
     // repair/QC pair is genuinely separated — and `WorkshopQC` enforces it with
     // a literal `role === 'technician'` check rather than from this table, so
     // the other five pairs are enforced nowhere.
+    // `test` appears in every pair, and that is the point of it rather than a
+    // finding: an account that holds every action on every module holds both
+    // sides of every duty. Segregation of duties is a control over *people*
+    // (`sodViolation` reads the audit trail for who did what), and the one
+    // identity that deliberately opts out of the role half of it is the QA
+    // account. It is listed here rather than filtered out so that nobody reads
+    // this expectation as saying the matrix separates duties for it.
     expect(conflicts).toEqual({
-      'Raise purchase order + Approve purchase order': ['owner', 'manager', 'procurement'],
-      'Create supplier + Approve supplier payment': ['owner', 'manager'],
-      'Post journal entry + Approve journal entry': ['accountant'],
-      'Perform repair + Pass quality check': ['owner', 'manager', 'advisor'],
-      'Create employee + Approve payroll run': ['owner', 'hr'],
+      'Raise purchase order + Approve purchase order': ['owner', 'manager', 'procurement', 'test'],
+      'Create supplier + Approve supplier payment': ['owner', 'manager', 'test'],
+      'Post journal entry + Approve journal entry': ['accountant', 'test'],
+      'Perform repair + Pass quality check': ['owner', 'manager', 'advisor', 'test'],
+      'Create employee + Approve payroll run': ['owner', 'hr', 'test'],
     })
   })
 

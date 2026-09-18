@@ -869,9 +869,18 @@ export function AgentDashboard() {
 
   const active = agents.filter((a) => a.status === 'active')
   const totalTasks = agents.reduce((sum, a) => sum + a.tasks, 0)
-  const avgSuccess = agents.length
-    ? Math.round(agents.reduce((sum, a) => sum + parseInt(a.success, 10), 0) / agents.length)
-    : 0
+  // `success` is a display string ("96%", or "—" for an agent with no runs
+  // yet, e.g. a draft automation with 0 tasks). Averaging every row —
+  // including the "—" ones, where `parseInt` returns NaN — poisoned the sum
+  // and rendered "NaN%". Average only the agents that have a real rate, and
+  // say so rather than showing NaN/Infinity when none do.
+  const successRates = agents
+    .map((a) => parseInt(a.success, 10))
+    .filter((n) => Number.isFinite(n))
+  const avgSuccess = successRates.length
+    ? Math.round(successRates.reduce((sum, n) => sum + n, 0) / successRates.length)
+    : null
+  const avgSuccessLabel = avgSuccess === null ? t('No data') : `${avgSuccess}%`
 
   if (isMobile) {
     return (
@@ -915,7 +924,7 @@ export function AgentDashboard() {
         stats={[
           { label: 'Active Agents', value: active.length, caption: `${t('of')} ${agents.length}`, highlight: true },
           { label: 'Tasks Handled', value: totalTasks.toLocaleString('en-US'), caption: 'All time', tone: 'info' },
-          { label: 'Avg Success Rate', value: `${avgSuccess}%`, caption: 'Across agents' },
+          { label: 'Avg Success Rate', value: avgSuccessLabel, caption: 'Across agents' },
           {
             label: 'Paused',
             value: agents.filter((a) => a.status === 'paused').length,

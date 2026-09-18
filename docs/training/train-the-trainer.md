@@ -65,7 +65,7 @@ All demo accounts use password: `Demo@1234`
 | Call Center  | Turki Al-Anazi      | calls@salisauto.sa      | All      | 0          |
 | Procurement  | Bandar Al-Subaie    | procurement@salisauto.sa| All      | 20,000     |
 | Supplier     | Al-Jazira Parts Co. | supplier@aljazira.sa    | External | 0          |
-| Customer     | Khalid Al-Amri      | khalid@example.sa       | Self     | 0          |
+| Customer     | Ahmed Al-Rashid     | ahmed@example.sa        | Self     | 0          |
 
 ### 3.3 Pre-Session Setup Checklist
 

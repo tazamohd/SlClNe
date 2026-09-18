@@ -1,0 +1,62 @@
+name: Deploy company site to Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/deploy-hostinger.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: true
+
+jobs:
+  # Salisco company site (site/) is a separate static page — no build step,
+  # and deployed to its own subpath so it never touches the SalisAuto
+  # app's files at the domain root. Override HOSTINGER_SITE_SERVER_DIR
+  # (repo/org variable) if it should live somewhere else, e.g. a
+  # different subdomain's document root.
+  #
+  # The SalisAuto app itself (app/) is deployed via Vercel (project
+  # sl-cl-ne, auto-deploying on push to main) — not through this
+  # workflow. It used to have its own job here, but that duplicated
+  # Vercel's existing, working deployment.
+  deploy-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # TEMPORARY — the FTP upload below keeps failing with
+      # "getaddrinfo EAI_AGAIN" (DNS resolution failure for the FTP
+      # hostname) even after the HOSTINGER_FTP_SERVER secret was
+      # reportedly updated twice. GitHub masks the secret's literal
+      # value in logs, so this reports only length/shape signals plus
+      # whether the runner's own resolver can actually resolve it —
+      # the same DNS step Node.js performs — without ever printing the
+      # value itself. Remove once the upload succeeds.
+      - name: Debug — inspect FTP server hostname shape and resolvability
+        run: |
+          v="${{ secrets.HOSTINGER_FTP_SERVER }}"
+          echo "length: ${#v} chars"
+          echo "dot count: $(echo -n "$v" | tr -cd '.' | wc -c)"
+          echo "starts with http:// or https://: $(echo "$v" | grep -qi '^https\?://' && echo yes || echo no)"
+          echo "contains whitespace: $(echo "$v" | grep -q '[[:space:]]' && echo yes || echo no)"
+          echo "contains a slash: $(echo "$v" | grep -q '/' && echo yes || echo no)"
+          if getent hosts "$v" > /dev/null 2>&1; then
+            echo "getent hosts resolution: SUCCESS"
+          else
+            echo "getent hosts resolution: FAILED (exit $?)"
+          fi
+
+      - name: Upload site/ to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ${{ vars.HOSTINGER_FTP_PROTOCOL || 'ftps' }}
+          local-dir: site/
+          server-dir: ${{ vars.HOSTINGER_SITE_SERVER_DIR || '/public_html/company/' }}
+          dangerous-clean-slate: false

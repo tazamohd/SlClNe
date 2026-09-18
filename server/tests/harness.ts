@@ -42,6 +42,10 @@ export interface TokenOverrides {
   orgId: string
   branchId: string | null
   name: string
+  /** The `customers` row a portal token claims to be. Omitted for staff. A
+   *  `customer` token without one is the fail-closed case: `app_customer()` is
+   *  NULL and every `r_self` predicate matches nothing. */
+  customerId: string | null
 }
 
 /** Drops and recreates the test database, applies the committed migrations and
@@ -137,6 +141,7 @@ export async function startHarness(): Promise<Harness> {
         org_id: overrides.orgId ?? SEED.orgId,
         branch_id: overrides.branchId === undefined ? SEED.mainBranchId : overrides.branchId,
         name: overrides.name ?? `${role} tester`,
+        ...(overrides.customerId ? { customer_id: overrides.customerId } : {}),
         /* Deliberately claims the widest scope. The server derives scope from
          * the role instead, so this claim must have no effect — which is what
          * `tenancy.test.ts` checks. */

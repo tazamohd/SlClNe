@@ -22,6 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Deep links. Without this the app is never the target of a
+                 com.salisauto.app:// intent, so the `appUrlOpen` listener in
+                 src/providers/NativeProvider.tsx can never fire. BROWSABLE
+                 means any web page can fire it, which is why the handler
+                 validates the URL before navigating. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/custom_url_scheme" />
+            </intent-filter>
+
         </activity>
 
         <provider

@@ -6,6 +6,8 @@ import { ModalProvider } from '@/components/ui/Modal'
 import { ToastProvider } from '@/components/ui/Toast'
 import { RepositoryProvider } from '@/providers/RepositoryProvider'
 import { AppRoutes } from '@/routes'
+import { TestRoleBar } from '@/components/shell/TestRoleBar'
+import { NativeBridge } from '@/providers/NativeProvider'
 
 // Mock data never goes stale, and won't once it's real either — the screens
 // here are dashboards and registries, not tickers.
@@ -22,7 +24,17 @@ export function App() {
             <ToastProvider>
               <ModalProvider>
                 <BrowserRouter basename={import.meta.env.BASE_URL}>
+                  {/* Splash, status bar, Android back, keyboard and deep
+                      links. Renders nothing, and every call it makes is inert
+                      off native — inside the router because back is a
+                      navigation decision. */}
+                  <NativeBridge />
                   <AppRoutes />
+                  {/* Renders nothing unless the signed-in account is the
+                      all-access test identity. Mounted here rather than in a
+                      shell because the roles it can act as span three of
+                      them. */}
+                  <TestRoleBar />
                 </BrowserRouter>
               </ModalProvider>
             </ToastProvider>

@@ -11,6 +11,7 @@ import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { formatSar } from '@/components/ui/Money'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
 /** Role-adaptive KPI home. The reference implementation every other
@@ -85,7 +86,7 @@ export function Dashboard() {
             iconTint="var(--tint-blue)"
             iconColor="var(--salis-blue)"
             label={t('Total Revenue')}
-            value="$128,450"
+            value={formatSar(128450, { decimals: 0 })}
             orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
             orbIcon="TrendingUp"
             footer={
@@ -271,7 +272,7 @@ export function Dashboard() {
           iconTint="var(--tint-blue)"
           iconColor="var(--salis-blue)"
           label={t('Total Revenue')}
-          value="$128,450"
+          value={formatSar(128450, { decimals: 0 })}
           orbGradient="linear-gradient(135deg,var(--salis-blue),var(--salis-blue-bright))"
           orbIcon="TrendingUp"
           orbShadow="rgba(10,94,215,.2)"

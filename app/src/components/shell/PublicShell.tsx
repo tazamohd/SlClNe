@@ -6,10 +6,10 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { cn } from '@/lib/cn'
 import { Footer } from '@/screens/public/sections/Footer'
 
-/** The marketing chrome all ten `PublicPortal.*.dc.html` designs share: a
- *  64px sticky header — logo, centred nav, theme toggle, sign-in — and the
- *  shared footer. Rendered `ungated`, entirely outside `RequireAccess`: a
- *  visitor with no session must see every page in this shell.
+/** The marketing chrome the nine remaining `PublicPortal.*.dc.html` designs
+ *  share: a 64px sticky header — logo, centred nav, theme toggle, sign-in —
+ *  and the shared footer. Rendered `ungated`, entirely outside `RequireAccess`:
+ *  a visitor with no session must see every page in this shell.
  *
  *  Two deliberate additions over the design source, both required by the
  *  product brief rather than drawn in the handoff:
@@ -18,12 +18,16 @@ import { Footer } from '@/screens/public/sections/Footer'
  *  - a mobile pattern — the designs ship no `PublicPortal.*.Mobile.dc.html`,
  *    so below the app's 860px breakpoint the centred nav becomes a hamburger
  *    disclosure panel. That pattern is this shell's own, not the handoff's.
- */
+ *
+ *  `Marketplace` (Tier A) was retired in favour of two Tier B pages, `Parts &
+ *  Accessories` and `Deals & Offers` — both composed from the section system
+ *  rather than a `.dc.html` source, same as `Pricing` or `Workshop`. */
 const NAV_LINKS = [
   { label: 'Home', to: '/public-portal/landing' },
   { label: 'About', to: '/public-portal/about' },
   { label: 'Services', to: '/public-portal/services' },
-  { label: 'Marketplace', to: '/public-portal/marketplace' },
+  { label: 'Parts & Accessories', to: '/public-portal/parts-accessories' },
+  { label: 'Deals & Offers', to: '/public-portal/deals-offers' },
   { label: 'Contact', to: '/public-portal/contact' },
   { label: 'Blog', to: '/public-portal/blog' },
 ] as const
@@ -48,7 +52,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
   }, [pathname])
 
   return (
-    <div className="flex min-h-screen flex-col bg-page font-ui">
+    <div className="flex min-h-viewport flex-col bg-page font-ui">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only fixed start-4 top-2 z-[100] inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-salis-blue px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-salis-blue focus:ring-offset-2"
@@ -56,7 +60,10 @@ export function PublicShell({ children }: { children: ReactNode }) {
         {t('Skip to main content')}
       </a>
 
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-sidebar px-4 md:px-10">
+      {/* The bar sticks to the top of a page that now paints under the status
+          bar, so it pads itself clear of the inset and grows by the same amount
+          rather than losing 16px of its 64px row. */}
+      <header className="sticky top-0 z-10 flex h-[calc(4rem+var(--safe-top))] items-center gap-4 border-b border-border bg-sidebar pt-safe-top ps-[calc(1rem+var(--safe-start))] pe-[calc(1rem+var(--safe-end))] md:ps-[calc(2.5rem+var(--safe-start))] md:pe-[calc(2.5rem+var(--safe-end))]">
         <Link
           to="/public-portal/landing"
           className="flex items-center gap-2 no-underline hover:no-underline"
@@ -134,7 +141,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
         <nav
           id="public-mobile-menu"
           aria-label={t('Main navigation')}
-          className="sticky top-16 z-10 flex flex-col border-b border-border bg-sidebar px-4 py-2"
+          className="sticky top-[calc(4rem+var(--safe-top))] z-10 flex flex-col border-b border-border bg-sidebar py-2 ps-[calc(1rem+var(--safe-start))] pe-[calc(1rem+var(--safe-end))]"
         >
           {NAV_LINKS.map((link) => (
             <NavLink

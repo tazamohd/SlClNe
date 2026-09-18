@@ -29,6 +29,11 @@ export type AuditAction =
   | 'reserve'
   | 'release'
   | 'command'
+  /** Bulk egress: the whole scoped set of a collection left as a file. Not a
+   *  mutation, and audited all the same — it is the disclosure the export grant
+   *  (`x`) exists to control, and the log is where "who took the customer list"
+   *  is answered (DF-006). */
+  | 'export'
   | 'seed'
 
 export interface AuditInput {

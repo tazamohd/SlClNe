@@ -9,6 +9,16 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
 
+/** The chat pane is the one screen that sizes itself to the viewport rather
+ *  than to its content, so the composer stays pinned while the transcript
+ *  scrolls. `--vh-full` is `100dvh` where supported, which is what keeps the
+ *  composer above Safari's collapsing toolbar instead of behind it; the mobile
+ *  height also gives back the status-bar and home-indicator insets the shell
+ *  now pads itself by. */
+const CHAT_HEIGHT_DESKTOP = 'calc(var(--vh-full) - var(--h-topbar))'
+const CHAT_HEIGHT_MOBILE =
+  'calc(var(--vh-full) - var(--h-topbar) - var(--safe-top) - var(--safe-bottom))'
+
 interface Message {
   id: number
   role: 'user' | 'assistant'
@@ -114,7 +124,7 @@ export function AIAssistant() {
 
   if (isMobile) {
     return (
-      <div className="flex animate-fade-up flex-col motion-reduce:animate-none" style={{ height: 'calc(100dvh - 56px)' }}>
+      <div className="flex animate-fade-up flex-col motion-reduce:animate-none" style={{ height: CHAT_HEIGHT_MOBILE }}>
         <MobilePageHeader
           icon="Sparkles"
           title="SALIS AI"
@@ -163,7 +173,7 @@ export function AIAssistant() {
   }
 
   return (
-    <div className="flex animate-fade-up flex-col motion-reduce:animate-none" style={{ height: 'calc(100vh - 56px)' }}>
+    <div className="flex animate-fade-up flex-col motion-reduce:animate-none" style={{ height: CHAT_HEIGHT_DESKTOP }}>
       <div className="flex items-center gap-2 border-b border-border bg-card px-6 py-3">
         <span className="flex rounded-lg bg-salis-gradient p-1.5 text-white">
           <Icon name="Sparkles" size={16} />

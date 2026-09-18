@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
+import { CornerBrackets } from './sections/CornerBrackets'
 import { cn } from '@/lib/cn'
 
 /** PublicPortal.Pricing — Tier B content page.
@@ -81,6 +82,7 @@ export function PublicPricing() {
     <div className="mx-auto max-w-[1100px] animate-fade-up motion-reduce:animate-none px-5 py-10 md:px-10 md:py-[60px]">
       <SectionIntro
         centered
+        eyebrow="Three strata"
         title="Pricing Plans"
         subtitle="Flexible plans that grow with your workshop — start free, scale when ready"
       />
@@ -89,10 +91,11 @@ export function PublicPricing() {
           <div
             key={plan.name}
             className={cn(
-              'flex flex-1 flex-col rounded-2xl border border-default bg-card p-6',
+              'relative flex flex-1 flex-col rounded-2xl border border-default bg-card p-6',
               plan.highlighted && 'ring-2 ring-salis-blue'
             )}
           >
+            <CornerBrackets />
             <h2 className="mb-1 mt-0 text-lg font-bold text-heading">{t(plan.name)}</h2>
             <p className="mb-5 mt-0 text-2xl font-black text-heading">
               {t(plan.price)}

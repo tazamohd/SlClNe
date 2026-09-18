@@ -18,10 +18,22 @@ export function AuthLayout({
   controls?: boolean
 }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-page font-ui">
+    <div className="relative flex min-h-viewport items-center justify-center overflow-hidden bg-page font-ui">
       <AuthBackdrop />
       {controls ? <AuthControls /> : null}
-      <main id="main-content" className={cn('relative z-[1] w-full animate-fade-up motion-reduce:animate-none p-4', className)}>{children}</main>
+      {/* The auth chain is the one place a full-bleed page has no chrome of its
+          own to pad it, so the 16px gutter folds the insets in directly. */}
+      <main
+        id="main-content"
+        className={cn(
+          'relative z-[1] w-full animate-fade-up motion-reduce:animate-none',
+          'pt-[calc(1rem+var(--safe-top))] pb-[calc(1rem+var(--safe-bottom))]',
+          'ps-[calc(1rem+var(--safe-start))] pe-[calc(1rem+var(--safe-end))]',
+          className
+        )}
+      >
+        {children}
+      </main>
     </div>
   )
 }
@@ -41,7 +53,7 @@ function AuthBackdrop() {
 export function AuthControls() {
   const { t, theme, toggleTheme, rtl, toggleLanguage } = usePreferences()
   return (
-    <div className="absolute end-4 top-4 z-50 flex gap-2">
+    <div className="absolute end-[calc(1rem+var(--safe-end))] top-[calc(1rem+var(--safe-top))] z-50 flex gap-2">
       <button
         type="button"
         onClick={toggleLanguage}

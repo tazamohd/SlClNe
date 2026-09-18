@@ -12,13 +12,29 @@ export interface SectionIntroProps {
   subtitle: string
   centered?: boolean
   as?: 'h1' | 'h2'
+  /** A small mono, uppercase, letter-spaced label above the heading — the
+   *  "signal tag" read borrowed from the SALIS AUTO 2030 design study's
+   *  section headers (`.tag`). Optional: most pages don't carry one. It is
+   *  not a heading, so it never affects the page's heading hierarchy. */
+  eyebrow?: string
 }
 
-export function SectionIntro({ title, subtitle, centered = false, as = 'h1' }: SectionIntroProps) {
+export function SectionIntro({
+  title,
+  subtitle,
+  centered = false,
+  as = 'h1',
+  eyebrow,
+}: SectionIntroProps) {
   const t = useT()
   const Heading = as as 'h1' | 'h2'
   return (
     <div className={cn(centered && 'text-center')}>
+      {eyebrow ? (
+        <p className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-[.28em] text-salis-blue">
+          {t(eyebrow)}
+        </p>
+      ) : null}
       <Heading className="mb-2 mt-0 font-display text-3xl font-black text-heading md:text-[40px]">
         {t(title)}
       </Heading>

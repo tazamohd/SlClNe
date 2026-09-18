@@ -1,213 +1,131 @@
+import { useEffect, useRef, useState } from 'react'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
-import { Hero } from './sections/Hero'
-import { IconCardGrid, type IconCardItem } from './sections/IconCardGrid'
-import { TrustBand } from './sections/TrustBand'
-import { ValueProposition, type ValuePropItem } from './sections/ValueProposition'
-import { StatBand, type StatItem } from './sections/StatBand'
-import { HowItWorks, type Step } from './sections/HowItWorks'
-import { Testimonials, type Testimonial } from './sections/Testimonials'
-import { PartnerLogos } from './sections/PartnerLogos'
-import { FaqList, type FaqItem } from './sections/FaqList'
-import { CtaBanner } from './sections/CtaBanner'
-import { SectionIntro } from './sections/SectionIntro'
+import { useLandingMotion } from './landing/useLandingMotion'
+import { PageNav } from './landing/PageNav'
+import { IndexPage } from './landing/pages/IndexPage'
+import { SystemPage } from './landing/pages/SystemPage'
+import { GridPage } from './landing/pages/GridPage'
+import { AccessPage } from './landing/pages/AccessPage'
+import { OriginPage } from './landing/pages/OriginPage'
+import { ChannelPage } from './landing/pages/ChannelPage'
+import { isPageKey, type PageKey } from './landing/types'
+import './landing/landing.css'
 
-/** PublicPortal.Landing — `project/PublicPortal.Landing.dc.html`.
+/** PublicPortal.Landing — a six-page tour of SALIS AUTO (Arrival / System /
+ *  Grid / Access / Origin / Channel), styled as a dark, futuristic HUD. It is
+ *  a faithful port of the "SALIS AUTO 2030" design artifact: that artifact's
+ *  own six pages, section for section, with its own copy — the six-stage job
+ *  card and its two gates, the thirteen domains in English and Arabic, the
+ *  fourteen roles and their approval ceilings, the six separated duty pairs,
+ *  the parts flow from requisition to issue, the six portal doors, the three
+ *  plans and the comparison matrix, the principles and dispatches, and the
+ *  ways to reach a person.
  *
- *  Full marketing landing page composed from reusable sections (§32):
- *  Hero → Trust → Value Proposition → Features → Statistics → How It Works
- *  → Testimonials → Partners → FAQ → CTA. */
+ *  Every figure on a "live" panel — the bay board, the meters, the throughput
+ *  bars, the activity and store-floor streams, the order stream, the branch
+ *  roll-call, the invoice — is the artifact's own sample data, and is labelled
+ *  as sample data wherever it is shown, exactly as the artifact labels it. The
+ *  artifact re-rolls those figures from a seeded RNG on a timer; here they are
+ *  frozen at one representative reading, because a number that moves on its
+ *  own reads as live telemetry and there is no tenant behind this page.
+ *
+ *  The artifact was a standalone six-document site with its own header, nav,
+ *  language toggle, skip link and boot sequence. All of that is dropped —
+ *  PublicShell already supplies the site's real header, footer, nav and
+ *  language toggle. What is kept is the six pages' visual identity and
+ *  structure, plus a lightweight in-page tab nav (`PageNav`) for moving
+ *  between them, since PublicShell's own nav does not know about pages that
+ *  live inside one screen.
+ *
+ *  One route (`/public-portal/landing`), six pages as React state rather
+ *  than six routes, so exactly one page's markup is ever mounted — which is
+ *  what keeps this screen down to one `<h1>` and one clean heading
+ *  hierarchy, same as every other Tier A public page (`tests/public-pages
+ *  .test.tsx` checks for both on every one of them). The active page is
+ *  mirrored to `location.hash` (`#index`, `#system`, `#grid`, `#access`,
+ *  `#origin`, `#channel`) with `history.replaceState`, not a navigation, so
+ *  back/forward and shared links work without adding six entries to the
+ *  browser history for one visit.
+ *
+ *  The artifact's canvas/WebGL scenes (a hand-rolled 3D service vehicle, the
+ *  branch map with animated transfer arcs, the supply-mesh flow, the spinning
+ *  diagnostic orb, the carrier signal) are reimplemented as static SVG drawn
+ *  at rest — see the doc comment at the top of `landing/landing.css`. Two
+ *  content departures, both for the same reason: the artifact's six portal
+ *  doors become three real `<Link>`s and three informational tiles, because
+ *  only customer, technician and supplier have a public route; and the
+ *  Channel page's deliberately-local contact form is dropped, because a form
+ *  that reads your text back and throws it away is honest inside a design
+ *  document and a dead end inside the real application. Every remaining CTA
+ *  is a real destination: an in-page scroll, an in-page page switch, or a
+ *  `<Link>` to a route that already exists.
+ *
+ *  `IndexPage`'s bay-board mock also carries `<CornerBrackets>`, the same
+ *  instrument-panel corner accent other public pages borrowed from this
+ *  design study — see `sections/CornerBrackets.tsx`. */
 
-const FEATURES: readonly IconCardItem[] = [
-  {
-    icon: 'ClipboardList',
-    title: 'Job Card Management',
-    description: 'Complete workflow from check-in to delivery with real-time tracking.',
-    tint: 'blue',
-  },
-  {
-    icon: 'Package',
-    title: 'Inventory Control',
-    description: 'Smart parts management with auto-reorder and supplier integration.',
-    tint: 'bright',
-  },
-  {
-    icon: 'Receipt',
-    title: 'ZATCA E-Invoicing',
-    description: 'Fully compliant Saudi electronic invoicing with QR codes.',
-    tint: 'orange',
-  },
-  {
-    icon: 'Truck',
-    title: 'Fleet Management',
-    description: 'Multi-vehicle accounts with contract tracking and SLA monitoring.',
-    tint: 'navy',
-  },
-  {
-    icon: 'Sparkles',
-    title: 'AI Assistant',
-    description: 'Intelligent insights, automated reports, and smart scheduling.',
-    tint: 'blue',
-  },
-  {
-    icon: 'MapPin',
-    title: 'Multi-Branch',
-    description: 'Centralized management across all your workshop locations.',
-    tint: 'bright',
-  },
-]
+const PANEL_ID = 'salis-landing-panel'
 
-const VALUE_PROPS: readonly ValuePropItem[] = [
-  {
-    icon: '\u{1F6E0}',
-    title: 'Built for Workshops',
-    description: 'Every feature is designed around how Saudi automotive workshops actually operate — not adapted from generic software.',
-  },
-  {
-    icon: '\u{1F4CA}',
-    title: 'Real-Time Visibility',
-    description: 'See every job, every bay and every technician in one dashboard. Know where your business stands at any moment.',
-  },
-  {
-    icon: '\u{1F512}',
-    title: 'Saudi Compliance',
-    description: 'ZATCA e-invoicing, VAT calculations, and financial reporting built in — stay compliant without extra work.',
-  },
-]
-
-const STATS: readonly StatItem[] = [
-  { value: '500+', label: 'Workshops served' },
-  { value: '50K+', label: 'Vehicles managed' },
-  { value: '99.9%', label: 'Platform uptime' },
-]
-
-const STEPS: readonly Step[] = [
-  { number: 1, title: 'Sign Up', description: 'Create your account and configure your workshop in minutes.' },
-  { number: 2, title: 'Set Up', description: 'Import your customer and vehicle data, or start fresh.' },
-  { number: 3, title: 'Go Live', description: 'Check in your first vehicle and let SALIS AUTO handle the rest.' },
-  { number: 4, title: 'Grow', description: 'Add branches, technicians and integrations as your business scales.' },
-]
-
-const TESTIMONIALS: readonly Testimonial[] = [
-  {
-    quote: 'SALIS AUTO replaced three separate systems we were using. Now everything is in one place and our team actually uses it.',
-    author: 'Ahmed K.',
-    role: 'Workshop Owner',
-    company: 'Al-Riyadh Auto Services',
-  },
-  {
-    quote: 'The inventory alerts alone saved us from running out of brake pads twice in the first month. Worth every riyal.',
-    author: 'Fahad M.',
-    role: 'Operations Manager',
-    company: 'Jeddah Motor Works',
-  },
-  {
-    quote: 'Our customers love the live tracking. They can see exactly where their car is in the process — no more phone calls.',
-    author: 'Saad R.',
-    role: 'Service Advisor',
-    company: 'Eastern Province Auto Care',
-  },
-]
-
-const PARTNERS: readonly string[] = [
-  'Mada', 'HyperPay', 'Unifonic', 'ZATCA', 'Bosch', 'Denso',
-  'Continental', 'Shell Lubricants',
-]
-
-const FAQ_ITEMS: readonly FaqItem[] = [
-  {
-    question: 'How long does it take to get started?',
-    answer: 'Most workshops are up and running within a day. Our onboarding team helps you import existing data and configure your workflow.',
-  },
-  {
-    question: 'Do I need to install any software?',
-    answer: 'No. SALIS AUTO runs entirely in your browser — on desktop, tablet and phone. There is nothing to install or update.',
-  },
-  {
-    question: 'Is my data secure?',
-    answer: 'Yes. We use industry-standard encryption, role-based access control, and tenant isolation to keep your workshop data private and safe.',
-  },
-  {
-    question: 'Can I try it for free?',
-    answer: 'Absolutely. The Starter plan is free for a single branch with up to five users — no credit card required.',
-  },
-]
+function pageFromHash(): PageKey {
+  const hash = window.location.hash.replace(/^#/, '')
+  return isPageKey(hash) ? hash : 'index'
+}
 
 export function PublicLanding() {
   const t = useT()
+  const root = useRef<HTMLDivElement>(null)
+  const [page, setPage] = useState<PageKey>(() => pageFromHash())
+  useLandingMotion(root, [page])
+
+  // Deep-linkable via hash: a direct load or a paste of `#system` etc. opens
+  // straight to that page, and switching pages updates the hash in place
+  // (no new history entry) so the browser's back button still means "leave
+  // this screen", not "walk backward through the six pages".
+  useEffect(() => {
+    const onHashChange = () => setPage(pageFromHash())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  function selectPage(next: PageKey): void {
+    setPage(next)
+    const url = `${window.location.pathname}${window.location.search}#${next}`
+    window.history.replaceState(null, '', url)
+    document.getElementById(PANEL_ID)?.scrollIntoView?.({ block: 'start' })
+  }
+
   usePageMeta({
-    title: t('SALIS AUTO — Workshop Management for Saudi Arabia'),
-    description: t(
-      'SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks.'
-    ),
+    title: t('SALIS AUTO — Workshop Management, Saudi Standard'),
+    description: t('One platform runs the workshop from check-in to invoice, in Arabic and English, with ZATCA e-invoicing built in and one audit trail.'),
     structuredData: {
       '@context': 'https://schema.org',
-      '@type': 'Organization',
+      '@type': 'SoftwareApplication',
       name: 'SALIS AUTO',
-      url: 'https://salisauto.sa',
-      description: 'All-in-one garage management system built for Saudi automotive workshops.',
-      contactPoint: { '@type': 'ContactPoint', email: 'info@salisauto.sa', contactType: 'sales' },
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      inLanguage: ['ar', 'en'],
+      description:
+        'Workshop management platform for Saudi automotive workshops: ZATCA Phase 2 e-invoicing, Arabic and English, one audit trail.',
       areaServed: { '@type': 'Country', name: 'Saudi Arabia' },
+      publisher: {
+        '@type': 'Organization',
+        name: 'SALIS AUTO',
+        email: 'info@salisauto.sa',
+        address: { '@type': 'PostalAddress', addressLocality: 'Riyadh', addressCountry: 'SA' },
+      },
     },
   })
 
   return (
-    <>
-      <Hero
-        badge="Automotive ERP for Saudi Arabia"
-        title="Manage Your Workshop with Confidence"
-        description="SALIS AUTO is the all-in-one garage management system built for Saudi workshops — from single bays to franchise networks."
-        primaryCta={{ label: 'Get Started', to: '/register' }}
-        secondaryCta={{ label: 'Book a Demo', to: '/public-portal/contact' }}
-      />
-
-      <TrustBand
-        headline="Trusted by leading workshops across Saudi Arabia"
-        logos={['Al-Riyadh Auto', 'Jeddah Motor Works', 'Eastern Province Auto', 'Dammam Workshop Group', 'Madinah Service Center']}
-      />
-
-      <ValueProposition items={VALUE_PROPS} />
-
-      <section
-        aria-label={t('Platform features')}
-        className="mx-auto max-w-[1100px] px-5 py-10 md:px-10 md:py-[60px]"
-      >
-        <SectionIntro
-          as="h2"
-          centered
-          title="Everything Your Workshop Needs"
-          subtitle="A complete platform covering operations, finance, CRM, and more"
-        />
-        <IconCardGrid items={FEATURES} columns={3} />
-      </section>
-
-      <div className="mx-auto max-w-[960px] px-5 md:px-10">
-        <StatBand items={STATS} />
-      </div>
-
-      <HowItWorks title="How It Works" steps={STEPS} />
-
-      <Testimonials title="What Our Customers Say" items={TESTIMONIALS} />
-
-      <PartnerLogos
-        title="Integrations & Partners"
-        subtitle="Connect with the payment, compliance and parts providers you already use"
-        partners={PARTNERS}
-      />
-
-      <section className="mx-auto max-w-[800px] px-5 py-14 md:px-10 md:py-20">
-        <h2 className="mb-8 mt-0 text-center font-display text-3xl font-black text-heading md:text-[36px]">
-          {t('Frequently Asked Questions')}
-        </h2>
-        <FaqList items={FAQ_ITEMS} />
-      </section>
-
-      <CtaBanner
-        title="Ready to Transform Your Workshop?"
-        description="Join hundreds of Saudi workshops already running smarter with SALIS AUTO."
-        primaryCta={{ label: 'Get Started Free', to: '/register' }}
-        secondaryCta={{ label: 'Schedule a Demo', to: '/public-portal/contact' }}
-      />
-    </>
+    <div className="salis-landing" ref={root} id={PANEL_ID}>
+      <PageNav page={page} onSelect={selectPage} t={t} />
+      {page === 'index' ? <IndexPage t={t} /> : null}
+      {page === 'system' ? <SystemPage t={t} /> : null}
+      {page === 'grid' ? <GridPage t={t} /> : null}
+      {page === 'access' ? <AccessPage t={t} /> : null}
+      {page === 'origin' ? <OriginPage t={t} /> : null}
+      {page === 'channel' ? <ChannelPage t={t} /> : null}
+    </div>
   )
 }

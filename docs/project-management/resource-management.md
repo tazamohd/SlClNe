@@ -31,7 +31,7 @@ This document defines the team structure, skill requirements, resource allocatio
 | Senior Backend Dev  | 2     | Fastify/Express, Drizzle ORM, RBAC middleware, ZATCA integration      |
 | Mid Backend Dev     | 1     | API endpoints, PGlite test harness, data migration scripts            |
 | Full-Stack Dev      | 2     | Cross-cutting features (auth, notifications, portals)                  |
-| DevOps Engineer     | 1     | CI/CD (GitHub Actions), Vercel/Netlify config, monitoring              |
+| DevOps Engineer     | 1     | CI/CD (GitHub Actions), Vercel config, monitoring                      |
 | QA Engineer         | 2     | Vitest unit, supertest integration, Playwright E2E, RTL/RBAC testing  |
 | UI/UX Designer      | 1     | Figma screens, Arabic typography, RTL layout validation                |
 | Arabic Linguist     | 1     | Translation review, AR content QA, cultural appropriateness (part-time)|

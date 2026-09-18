@@ -153,6 +153,42 @@ export function rejectEstimate(ref: string, reason: string): Promise<Record<stri
   return post(`estimates/${encodeURIComponent(ref)}/reject`, { reason })
 }
 
+/** Approves one row of the unified approval queue.
+ *
+ *  The queue is mixed — estimates, requisitions, purchase orders and insurance
+ *  claims — and each source has its own approve route. The server names the
+ *  right one per row (`approvePath`), so the client posts to the endpoint that
+ *  actually decides that document instead of re-deriving it from `kind`; the
+ *  first version of this screen posted every decision to
+ *  `/estimates/:id/approve`, which is a 404 for three of the four sources.
+ *
+ *  The path is validated before use. It comes from our own API, but it is
+ *  interpolated into a URL, so anything that could escape the API root — a
+ *  scheme, a leading slash, a `..` segment — is refused rather than fetched. */
+export function approveQueueItem(path: string, reason?: string): Promise<Record<string, unknown>> {
+  return post(requireApiPath(path), reason ? { reason } : {})
+}
+
+/** Rejects one row of the queue. Every source that has a reject route requires
+ *  a reason; a row whose `rejectPath` is null has no reject route at all and
+ *  must not reach here. */
+export function rejectQueueItem(path: string, reason: string): Promise<Record<string, unknown>> {
+  return post(requireApiPath(path), { reason })
+}
+
+/** A relative, single-rooted API path: no scheme, no host, no leading slash and
+ *  no parent segment. */
+export function requireApiPath(path: string): string {
+  const ok =
+    /^[A-Za-z0-9][A-Za-z0-9\-_/.]*$/.test(path) &&
+    !path.includes('//') &&
+    !path.split('/').includes('..')
+  if (!ok) {
+    throw new RepositoryError('unsupported', `The server named an action path this client will not call: ${path}`)
+  }
+  return path
+}
+
 /** The estimate's line items, from `GET /estimates/:id/lines`. */
 export function fetchEstimateLines(ref: string): Promise<{ rows: EstimateLineRow[] }> {
   return get(`estimates/${encodeURIComponent(ref)}/lines`)

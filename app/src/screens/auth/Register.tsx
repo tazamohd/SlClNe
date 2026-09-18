@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
@@ -7,10 +7,17 @@ import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { useSession } from '@/providers/SessionProvider'
+import { destinationFor } from '@/data/rbac'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/** The server's `MIN_PASSWORD_LENGTH`. Checked here so the form refuses what
+ *  the API would refuse, rather than sending it and translating a 400 back into
+ *  the field it came from. The server checks again regardless — this is a
+ *  courtesy, not the rule. */
+const MIN_PASSWORD_LENGTH = 12
 
 interface FieldErrors {
   name?: string
@@ -35,18 +42,33 @@ export function validateRegister(values: {
   else if (!EMAIL_RE.test(values.email.trim())) errors.email = 'Please enter a valid email address.'
   if (!values.phone.trim()) errors.phone = 'Please enter your phone number.'
   if (!values.password) errors.password = 'Please enter a password.'
-  else if (values.password.length < 8) errors.password = 'Password must be at least 8 characters.'
+  else if (values.password.length < MIN_PASSWORD_LENGTH)
+    errors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`
   if (!values.confirmPassword) errors.confirmPassword = 'Please confirm your password.'
   else if (values.password && values.confirmPassword !== values.password) errors.confirmPassword = 'Passwords do not match.'
   if (!values.agreed) errors.agreed = 'You must agree to the Terms & Privacy Policy.'
   return errors
 }
 
-/** Registration form — name, email, phone, password. */
+/** Registration form — name, email, phone, password.
+ *
+ *  It creates an account for real, in both modes. Live, it posts
+ *  `/auth/register`, which creates an organization, its main branch and one
+ *  `owner` — the registrant owns the workshop they just created and nothing
+ *  else. In mock mode there is no server to own any of that, so the identity is
+ *  kept in `localStorage` (see `data/demo-accounts.ts`) and signs in with the
+ *  shared demo password, which the screen says rather than implies.
+ *
+ *  Either way the form signs the new account in and lands it on the role's own
+ *  destination, because a sign-up that ends by asking you to sign in is two
+ *  flows wearing one coat. */
 export function Register() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
+  const navigate = useNavigate()
+  const { register, live } = useSession()
+  const [busy, setBusy] = useState(false)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -58,21 +80,34 @@ export function Register() {
   const [agreed, setAgreed] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault()
     const found = validateRegister({ name, email, phone, password, confirmPassword, agreed })
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    if (!isLive) {
-      toast.show({
-        title: t('Registration is not available yet'),
-        description: t('Please use the demo login to explore the application.'),
-      })
+    setBusy(true)
+    const result = await register({ name, email, password, phone })
+    setBusy(false)
+
+    if (!result.ok) {
+      /* A refusal the server attributes to a field is shown *on* that field;
+       * anything else is a toast, because there is nowhere better for it. */
+      if (result.field === 'email' || result.field === 'password') {
+        setErrors({ [result.field]: result.message })
+        return
+      }
+      toast.show({ title: t('Registration failed'), description: result.message, error: true })
       return
     }
 
-    toast.show({ title: t('Registration submitted') })
+    toast.show({
+      title: t('Account created'),
+      description: live
+        ? t('You are signed in as the owner of your new workshop.')
+        : t('Signed in. Your demo account uses the shared demo password.'),
+    })
+    navigate(destinationFor(result.role), { replace: true })
   }
 
   return (
@@ -83,7 +118,7 @@ export function Register() {
           <h2 className={`font-display font-bold text-heading ${isMobile ? 'text-lg' : 'text-xl'}`}>{t('Create Account')}</h2>
         </div>
 
-        <form onSubmit={submit} className={`flex flex-col gap-3.5 ${isMobile ? 'p-4' : 'p-6'}`}>
+        <form onSubmit={(event) => void submit(event)} className={`flex flex-col gap-3.5 ${isMobile ? 'p-4' : 'p-6'}`}>
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="reg-name"
@@ -234,8 +269,8 @@ export function Register() {
           </button>
           {errors.agreed && <p className="text-xs text-salis-orange">{t(errors.agreed)}</p>}
 
-          <Button type="submit" size="lg" className="w-full">
-            {t('Register')}
+          <Button type="submit" size="lg" className="w-full" disabled={busy}>
+            {busy ? t('Creating your account…') : t('Register')}
           </Button>
 
           <p className="text-center font-action text-sm text-muted">

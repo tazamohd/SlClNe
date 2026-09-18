@@ -456,39 +456,52 @@ export const ROLES=[
  {id:"callcenter",  label:"Call Center Agent",  ar:"موظف مركز الاتصال",        icon:"PhoneCall",  demo:{name:"Turki Al-Anazi",     ar:"تركي العنزي",     email:"calls@salisauto.sa"},      scope:"all",     limit:0,      color:"#0BB3FF"},
  {id:"procurement", label:"Procurement Agent",  ar:"وكيل المشتريات",           icon:"ShoppingCart",demo:{name:"Bandar Al-Subaie",  ar:"بندر السبيعي",    email:"procurement@salisauto.sa"},scope:"all",     limit:20000,  color:"#0A5ED7"},
  {id:"supplier",    label:"Supplier",           ar:"مورّد",                    icon:"Truck",      demo:{name:"Al-Jazira Parts Co.",ar:"شركة الجزيرة للقطع",email:"supplier@aljazira.sa"},  scope:"external",limit:0,      color:"#F97316"},
- {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Khalid Al-Amri",     ar:"خالد العامري",    email:"khalid@example.sa"},       scope:"self",    limit:0,      color:"#F97316"}
+ {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Ahmed Al-Rashid",    ar:"أحمد الراشد",     email:"ahmed@example.sa"},       scope:"self",    limit:0,      color:"#F97316"},
+ {id:"test",        label:"Test User",          ar:"مستخدم اختبار",            icon:"FlaskConical",demo:{name:"Test User",        ar:"مستخدم اختبار",   email:"test@salisauto.sa"},       scope:"all",     limit:null,   color:"#0B1F3B"}
 ];
 
 // module -> allowed actions per role. "" = no access (nav item hidden entirely)
 export const PERMS={
- dashboard:      {owner:"vx",manager:"vx",advisor:"v",technician:"v",qc:"v",parts:"v",accountant:"vx",hr:"v",frontdesk:"v",callcenter:"v",procurement:"v",superadmin:"vx"},
- jobcards:       {owner:"vcedax",manager:"vcedax",advisor:"vcea",technician:"ve",qc:"va",parts:"v",accountant:"vx",frontdesk:"vc",callcenter:"v",superadmin:"v"},
- appointments:   {owner:"vcedax",manager:"vcedax",advisor:"vced",technician:"v",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vced",callcenter:"vced",procurement:"",superadmin:"v"},
- estimates:      {owner:"vcedax",manager:"vceax",advisor:"vce",technician:"v",qc:"",parts:"v",accountant:"vx",frontdesk:"v",callcenter:"v",superadmin:"v"},
- customers:      {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"",parts:"",accountant:"vx",hr:"",frontdesk:"vce",callcenter:"vce",procurement:"",superadmin:"v"},
- vehicles:       {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"v",parts:"",accountant:"v",frontdesk:"vce",callcenter:"v",superadmin:"v"},
- inventory:      {owner:"vcedax",manager:"vcedax",advisor:"v",technician:"v",qc:"",parts:"vcedax",accountant:"vx",procurement:"vcex",superadmin:"v"},
- procurement:    {owner:"vcedax",manager:"vcax",advisor:"",technician:"",qc:"",parts:"vc",accountant:"vax",procurement:"vcedax",supplier:"v",superadmin:"v"},
- invoices:       {owner:"vcedax",manager:"vceax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"v",superadmin:"v"},
- payments:       {owner:"vcedax",manager:"vcax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"",superadmin:"v"},
- accounting:     {owner:"vax",manager:"vx",accountant:"vcedax",superadmin:"v"},
- hr:             {owner:"vcedax",manager:"vx",hr:"vcedax",accountant:"vx",superadmin:"v"},
- technicians:    {owner:"vcedax",manager:"vcedax",advisor:"v",technician:"v",qc:"v",hr:"vcedx",frontdesk:"v",superadmin:"v"},
- crm:            {owner:"vcedax",manager:"vcedx",advisor:"vce",callcenter:"vced",superadmin:"v"},
- callcenter:     {owner:"vx",manager:"vx",advisor:"v",callcenter:"vcedx",frontdesk:"v",superadmin:"v"},
- reports:        {owner:"vx",manager:"vx",advisor:"v",technician:"",qc:"v",parts:"vx",accountant:"vx",hr:"vx",procurement:"vx",superadmin:"vx"},
- approvals:      {owner:"vax",manager:"vax",advisor:"va",technician:"",qc:"",parts:"va",accountant:"vax",hr:"va",frontdesk:"",callcenter:"",procurement:"vax",supplier:"",customer:"",superadmin:"vx"},
- kiosk:          {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vcex",callcenter:"v",procurement:"",supplier:"",customer:"",superadmin:"v"},
- execreports:    {owner:"vx",manager:"vx",advisor:"",technician:"",qc:"",parts:"",accountant:"vx",hr:"",frontdesk:"",callcenter:"",procurement:"",superadmin:"vx"},
- portaltech:     {owner:"v",manager:"v",advisor:"v",technician:"vx",qc:"vx",parts:"",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"",superadmin:"v"},
- portalcustomer: {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"v",callcenter:"v",procurement:"",customer:"vx",superadmin:"v"},
- portalsupplier: {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"v",supplier:"vx",superadmin:"v"},
- portalprocure:  {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"v",hr:"",frontdesk:"",callcenter:"",procurement:"vx",superadmin:"v"},
- ai:             {owner:"vcedax",manager:"vce",advisor:"v",accountant:"v",superadmin:"vcedax"},
- admin:          {owner:"vcedax",manager:"v",superadmin:"vcedax"},
- settings:       {owner:"vcedax",manager:"ve",superadmin:"vcedax"},
- audit:          {owner:"vx",manager:"vx",accountant:"vx",superadmin:"vx"},
- network:        {owner:"vcedax",manager:"vcedx",parts:"vced",procurement:"vcedax",supplier:"vce",superadmin:"v"}
+ dashboard:      {owner:"vx",manager:"vx",advisor:"v",technician:"v",qc:"v",parts:"v",accountant:"vx",hr:"v",frontdesk:"v",callcenter:"v",procurement:"v",superadmin:"vx",test:"vcedax"},
+ jobcards:       {owner:"vcedax",manager:"vcedax",advisor:"vcea",technician:"ve",qc:"va",parts:"v",accountant:"vx",frontdesk:"vc",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
+ appointments:   {owner:"vcedax",manager:"vcedax",advisor:"vced",technician:"v",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vced",callcenter:"vced",procurement:"",customer:"vc",superadmin:"v",test:"vcedax"},
+ estimates:      {owner:"vcedax",manager:"vceax",advisor:"vce",technician:"v",qc:"",parts:"v",accountant:"vx",frontdesk:"v",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
+ customers:      {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"",parts:"",accountant:"vx",hr:"",frontdesk:"vce",callcenter:"vce",procurement:"",superadmin:"v",test:"vcedax"},
+ vehicles:       {owner:"vcedax",manager:"vcedx",advisor:"vce",technician:"v",qc:"v",parts:"",accountant:"v",frontdesk:"vce",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
+ inventory:      {owner:"vcedax",manager:"vcedax",advisor:"v",technician:"v",qc:"",parts:"vcedax",accountant:"vx",procurement:"vcex",superadmin:"v",test:"vcedax"},
+ procurement:    {owner:"vcedax",manager:"vcax",advisor:"",technician:"",qc:"",parts:"vc",accountant:"vax",procurement:"vcedax",supplier:"v",superadmin:"v",test:"vcedax"},
+ invoices:       {owner:"vcedax",manager:"vceax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"v",customer:"v",superadmin:"v",test:"vcedax"},
+ payments:       {owner:"vcedax",manager:"vcax",advisor:"vc",technician:"",qc:"",parts:"",accountant:"vcedax",frontdesk:"vc",callcenter:"",superadmin:"v",test:"vcedax"},
+ accounting:     {owner:"vax",manager:"vx",accountant:"vcedax",superadmin:"v",test:"vcedax"},
+ hr:             {owner:"vcedax",manager:"vx",hr:"vcedax",accountant:"vx",superadmin:"v",test:"vcedax"},
+ technicians:    {owner:"vcedax",manager:"vcedax",advisor:"v",technician:"v",qc:"v",hr:"vcedx",frontdesk:"v",superadmin:"v",test:"vcedax"},
+ crm:            {owner:"vcedax",manager:"vcedx",advisor:"vce",callcenter:"vced",superadmin:"v",test:"vcedax"},
+ callcenter:     {owner:"vx",manager:"vx",advisor:"v",callcenter:"vcedx",frontdesk:"v",superadmin:"v",test:"vcedax"},
+ reports:        {owner:"vx",manager:"vx",advisor:"v",technician:"",qc:"v",parts:"vx",accountant:"vx",hr:"vx",procurement:"vx",superadmin:"vx",test:"vcedax"},
+ approvals:      {owner:"vax",manager:"vax",advisor:"va",technician:"",qc:"",parts:"va",accountant:"vax",hr:"va",frontdesk:"",callcenter:"",procurement:"vax",supplier:"",customer:"",superadmin:"vx",test:"vcedax"},
+ kiosk:          {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"vcex",callcenter:"v",procurement:"",supplier:"",customer:"",superadmin:"v",test:"vcedax"},
+ execreports:    {owner:"vx",manager:"vx",advisor:"",technician:"",qc:"",parts:"",accountant:"vx",hr:"",frontdesk:"",callcenter:"",procurement:"",superadmin:"vx",test:"vcedax"},
+ portaltech:     {owner:"v",manager:"v",advisor:"v",technician:"vx",qc:"vx",parts:"",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"",superadmin:"v",test:"vcedax"},
+ portalcustomer: {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"v",callcenter:"v",procurement:"",customer:"vx",superadmin:"v",test:"vcedax"},
+ portalsupplier: {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"v",supplier:"vx",superadmin:"v",test:"vcedax"},
+ portalprocure:  {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"v",hr:"",frontdesk:"",callcenter:"",procurement:"vx",superadmin:"v",test:"vcedax"},
+ ai:             {owner:"vcedax",manager:"vce",advisor:"v",accountant:"v",superadmin:"vcedax",test:"vcedax"},
+ // AI platform administration (model/provider config, agent registry, automation
+ // rules, workflow builder, cross-org conversation history) is a distinct
+ // capability from ordinary AI *use* above. Tenant operational roles — Branch
+ // Manager and Service Advisor included — get "ai" (use an assistant, read a
+ // knowledge base) but never "aiadmin" (configure what the platform runs).
+ aiadmin:        {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
+ admin:          {owner:"vcedax",manager:"v",superadmin:"vcedax",test:"vcedax"},
+ settings:       {owner:"vcedax",manager:"ve",superadmin:"vcedax",test:"vcedax"},
+ // Platform/cross-tenant administration (Super Admin console, global roles &
+ // permissions, cross-tenant organization management) is not part of "admin" or
+ // "settings" — those two remain tenant-scoped (departments, integrations,
+ // branch settings) and Branch Manager keeps view/edit there. Nobody below
+ // Owner/Super Admin gets any action here, not even view.
+ superadmin:     {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
+ audit:          {owner:"vx",manager:"vx",accountant:"vx",superadmin:"vx",test:"vcedax"},
+ network:        {owner:"vcedax",manager:"vcedx",parts:"vced",procurement:"vcedax",supplier:"vce",superadmin:"v",test:"vcedax"}
 };
 
 // screen -> module
@@ -498,7 +511,7 @@ export const SCREEN_MODULE={
  "CustomerPortal":"portalcustomer","CustomerPortal.Booking":"portalcustomer","KioskCheckIn":"kiosk",
  "SupplierPortal":"portalsupplier","SupplierPortal.Orders":"portalsupplier",
  "ProcurementPortal":"portalprocure","ProcurementPortal.Requisitions":"portalprocure",
- "SuperAdmin":"settings","FinancialStatements":"accounting",
+ "SuperAdmin":"superadmin","FinancialStatements":"accounting",
  "Dashboard":"dashboard","JobCards":"jobcards","JobDetail":"jobcards","JobCardDetail":"jobcards",
  "WorkshopCheckIn":"jobcards","WorkshopInspection":"jobcards","WorkshopEstimate":"estimates","WorkshopQC":"jobcards","WorkshopSignature":"jobcards","WorkshopDelivery":"jobcards",
  "Appointments":"appointments","AppointmentCalendar":"appointments","Estimates":"estimates","EstimateDetail":"estimates",
@@ -510,8 +523,8 @@ export const SCREEN_MODULE={
  "LeadPipeline":"crm","LeadDetail":"crm","Opportunities":"crm","Campaigns":"crm","EmailMarketing":"crm","SMSCampaigns":"crm","WhatsAppCampaigns":"crm","CustomerSegments":"crm","CRMTasks":"crm","CRMCalendar":"crm",
  "CallCenter":"callcenter","CallCenter.Logs":"callcenter",
  "Reports":"reports","ReportsAnalytics":"reports","ExecutiveReports":"execreports","OperationalReports":"reports","WorkshopReports":"reports","InventoryReports":"reports","SalesReports":"execreports","InsuranceReports":"execreports","LoanReports":"execreports","CustomReports":"reports","BIDashboard":"execreports",
- "AIAssistant":"ai","PromptLibrary":"ai","KnowledgeBase":"ai","WorkflowBuilder":"ai","AgentDashboard":"ai","AgentRegistry":"ai","ConversationHistory":"ai","ModelSettings":"ai","AIAnalytics":"ai","AutomationRules":"ai",
- "Organizations":"admin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"admin","Integrations":"admin","Templates":"admin",
+ "AIAssistant":"ai","PromptLibrary":"ai","KnowledgeBase":"ai","WorkflowBuilder":"aiadmin","AgentDashboard":"ai","AgentRegistry":"aiadmin","ConversationHistory":"aiadmin","ModelSettings":"aiadmin","AIAnalytics":"ai","AutomationRules":"aiadmin",
+ "Organizations":"superadmin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"superadmin","Integrations":"admin","Templates":"admin",
  "Settings":"settings","AdvancedSettings":"settings","Backup":"settings","Subscription":"settings","NotificationCenter":"dashboard","GlobalSearch":"dashboard","Profile":"dashboard",
  "AuditLog":"audit","ApprovalInbox":"approvals",
  "CustomerApproval":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings"

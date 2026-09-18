@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import type { ComponentType, ReactElement } from 'react'
 import { PreferencesProvider } from '@/providers/PreferencesProvider'
@@ -25,10 +25,15 @@ function renderPublic(ui: ReactElement, route = '/') {
 }
 
 const PAGES: readonly { name: string; h1: string; title: string }[] = [
-  { name: 'PublicPortal.Landing', h1: 'Manage Your Workshop with Confidence', title: 'SALIS AUTO — Workshop Management for Saudi Arabia' },
+  { name: 'PublicPortal.Landing', h1: 'SALIS AUTO 2030', title: 'SALIS AUTO — Workshop Management, Saudi Standard' },
   { name: 'PublicPortal.About', h1: 'About SALIS AUTO', title: 'About — SALIS AUTO' },
   { name: 'PublicPortal.Services', h1: 'Our Services', title: 'Services — SALIS AUTO' },
-  { name: 'PublicPortal.Marketplace', h1: 'Parts Marketplace', title: 'Parts Marketplace — SALIS AUTO' },
+  {
+    name: 'PublicPortal.PartsAccessories',
+    h1: 'Services, Parts & Accessories',
+    title: 'Services, Parts & Accessories — SALIS AUTO',
+  },
+  { name: 'PublicPortal.DealsOffers', h1: 'Deals & Offers', title: 'Deals & Offers — SALIS AUTO' },
   { name: 'PublicPortal.Insurance', h1: 'Vehicle Insurance', title: 'Vehicle Insurance — SALIS AUTO' },
   { name: 'PublicPortal.Loans', h1: 'Auto Financing', title: 'Auto Financing — SALIS AUTO' },
   { name: 'PublicPortal.Blog', h1: 'Blog', title: 'Blog — SALIS AUTO' },
@@ -73,6 +78,12 @@ describe('website domain barrel', () => {
 })
 
 describe('Tier A public pages', () => {
+  // Landing mirrors its active page to `location.hash`; reset it before every
+  // test in this file so one test's page switch never leaks into the next.
+  beforeEach(() => {
+    window.location.hash = ''
+  })
+
   for (const page of PAGES) {
     it(`${page.name} renders signed-out with its designed h1 and page meta`, () => {
       const Page = componentOf(page.name)
@@ -97,15 +108,14 @@ describe('Tier A public pages', () => {
     window.localStorage.clear()
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Manage Your Workshop with Confidence' })
-    ).toBeInTheDocument()
-    // The design's CTA pair, both with real destinations.
-    expect(screen.getByRole('link', { name: 'Get Started' })).toHaveAttribute('href', '/register')
-    expect(screen.getByRole('link', { name: 'Book a Demo' })).toHaveAttribute(
-      'href',
-      '/public-portal/contact'
-    )
+    expect(screen.getByRole('heading', { level: 1, name: 'SALIS AUTO 2030' })).toBeInTheDocument()
+    // The Arrival page's hero CTA pair, both with real destinations: one
+    // scrolls to the workshop floor, one to the release rail. Neither is a
+    // decorative dead end, and neither invents a route.
+    expect(screen.getByRole('button', { name: /See the workshop floor/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'The road to 1.0' })).toHaveAttribute('href', '#chrono')
+    // The hero's own honesty label, carried over from the source artifact.
+    expect(screen.getByText('Figures on the live panels are sample data.')).toBeInTheDocument()
   })
 
   it('Landing renders in Arabic with the document flipped to RTL', () => {
@@ -113,8 +123,116 @@ describe('Tier A public pages', () => {
     const Page = componentOf('PublicPortal.Landing')
     renderPublic(<Page />)
     expect(document.documentElement.dir).toBe('rtl')
-    // "Get Started" has an Arabic key in the generated dictionary.
-    expect(screen.getByRole('link', { name: 'البدء' })).toBeInTheDocument()
+    // The hero CTA carries the Arabic translation from `ar-overrides.ts`.
+    expect(screen.getByRole('button', { name: /شاهد أرضية الورشة/ })).toBeInTheDocument()
+  })
+
+  it('Landing switches its six in-page pages and mirrors the choice to the hash', () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    // Exactly one <h1> on the Arrival page at rest.
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: /^System/ }))
+    expect(screen.getByRole('heading', { level: 1, name: 'The System' })).toBeInTheDocument()
+    // Still exactly one <h1> — the Arrival page's markup is fully unmounted.
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    expect(window.location.hash).toBe('#system')
+  })
+
+  it("Grid's six doors are three real portal links and three informational tiles", () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Grid/ }))
+
+    // All six doors from the design are rendered.
+    for (const door of [
+      'The customer door',
+      'The technician door',
+      'The supplier door',
+      'The procurement door',
+      'The kiosk door',
+      'The admin door',
+    ]) {
+      expect(screen.getByRole('heading', { name: door })).toBeInTheDocument()
+    }
+
+    // The three with a public route carry a real link to it.
+    expect(screen.getByRole('link', { name: 'Open the customer portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/customer-portal'
+    )
+    expect(screen.getByRole('link', { name: 'Open the technician portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/technician-portal'
+    )
+    expect(screen.getByRole('link', { name: 'Open the supplier portal' })).toHaveAttribute(
+      'href',
+      '/public-portal/supplier-portal'
+    )
+
+    // The other three say where they live instead of inventing a route: three
+    // tiles, three notes, and no fourth/fifth/sixth link out of this section.
+    expect(
+      screen.getAllByText('Inside the signed-in application — this door has no public page.')
+    ).toHaveLength(3)
+    const doors = screen.getByRole('region', { name: 'Six doors' })
+    expect(doors.querySelectorAll('a')).toHaveLength(3)
+  })
+
+  it('Access names what each plan carries but quotes no price — pricing has one home', () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Access/ }))
+
+    // The plans are still here, by name and by what they contain.
+    for (const plan of ['Starter', 'Professional', 'Enterprise']) {
+      expect(screen.getAllByText(plan).length).toBeGreaterThan(0)
+    }
+    expect(screen.getByText('1 branch · up to 5 users · 10 GB of documents')).toBeInTheDocument()
+
+    // No plan quotes a figure: the pricing page is the only place a price is
+    // published, so the two can never drift into naming different numbers.
+    // (The FAQ's "SAR 5,000 per invoice" stays — that is ZATCA's penalty, not
+    // ours, which is why this looks at the plans rather than the whole page.)
+    const plans = screen.getByRole('region', { name: 'Three plans' })
+    expect(plans.textContent).not.toMatch(/SAR\s*\d/)
+    expect(plans.textContent).not.toMatch(/\/mo\b/)
+
+    // And it says so with a real link rather than leaving you to hunt.
+    expect(screen.getAllByRole('link', { name: 'See pricing' })[0]).toHaveAttribute(
+      'href',
+      '/public-portal/pricing'
+    )
+  })
+
+  it("Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere", () => {
+    window.location.hash = ''
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    fireEvent.click(screen.getByRole('button', { name: /^Channel/ }))
+    expect(screen.getByRole('link', { name: /Book a demo/ })).toHaveAttribute('href', '/public-portal/book-demo')
+    expect(screen.getByRole('link', { name: 'Contact SALIS AUTO' })).toHaveAttribute('href', '/public-portal/contact')
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+  })
+
+  it('the command deck answers a real command with a real fact, entirely client-side', () => {
+    const Page = componentOf('PublicPortal.Landing')
+    renderPublic(<Page />)
+    const input = screen.getByPlaceholderText('type a command, or `help`')
+    fireEvent.change(input, { target: { value: 'status' } })
+    fireEvent.submit(input.closest('form') as HTMLFormElement)
+    // `status` answers from this page alone, and says so: its heading names the
+    // sample tenant rather than implying a live reading off somebody's floor.
+    expect(screen.getByText('SAMPLE TENANT — RIYADH')).toBeInTheDocument()
+    expect(screen.getByText('Sample data. No tenant data reaches this page.')).toBeInTheDocument()
+
+    // `lifecycle` states the two real gates on the six-stage job card.
+    fireEvent.change(input, { target: { value: 'lifecycle' } })
+    fireEvent.submit(input.closest('form') as HTMLFormElement)
+    expect(screen.getByText('GATE: never the same technician')).toBeInTheDocument()
   })
 
   it('pages render at 390px without the desktop nav', () => {
@@ -143,15 +261,19 @@ describe('Tier A public pages', () => {
     }
   })
 
-  it('Blog and Marketplace cards are informational, not links to nowhere', () => {
+  it('Blog and catalogue cards are informational, not links to nowhere', () => {
     const Blog = componentOf('PublicPortal.Blog')
     const { unmount } = renderPublic(<Blog />)
     // Six post cards, none of them anchors.
     expect(screen.getAllByRole('article')).toHaveLength(6)
     unmount()
 
-    const Marketplace = componentOf('PublicPortal.Marketplace')
-    renderPublic(<Marketplace />)
-    expect(screen.getAllByRole('article')).toHaveLength(8)
+    const PartsAccessories = componentOf('PublicPortal.PartsAccessories')
+    renderPublic(<PartsAccessories />)
+    // Six services + eight parts + six accessories, each a plain tile.
+    expect(screen.getAllByRole('article')).toHaveLength(20)
+    expect(screen.getByRole('region', { name: 'Services' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Parts' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Accessories' })).toBeInTheDocument()
   })
 })

@@ -128,7 +128,7 @@ All training uses a dedicated demo environment with pre-configured accounts.
 | Call Center  | Turki Al-Anazi      | calls@salisauto.sa      | Demo@1234   |
 | Procurement  | Bandar Al-Subaie    | procurement@salisauto.sa| Demo@1234   |
 | Supplier     | Al-Jazira Parts Co. | supplier@aljazira.sa    | Demo@1234   |
-| Customer     | Khalid Al-Amri      | khalid@example.sa       | Demo@1234   |
+| Customer     | Ahmed Al-Rashid     | ahmed@example.sa        | Demo@1234   |
 
 Demo environment is reset nightly at 02:00 AST. Trainers may request ad-hoc resets via the admin portal.
 
