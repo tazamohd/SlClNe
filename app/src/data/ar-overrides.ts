@@ -4986,4 +4986,15 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Super Admin has no data source yet": "لا يوجد مصدر بيانات للمشرف العام بعد",
   "Templates has no data source yet": "لا يوجد مصدر بيانات للقوالب بعد",
   "Users & Teams has no data source yet": "لا يوجد مصدر بيانات للمستخدمين والفرق بعد",
+
+  // Wave 7 — accounting cluster live wiring (Accounts Receivable, Equity
+  // Management, Expense Tracking, Sales Management).
+  "Loading receivables…": "جارٍ تحميل الذمم المدينة…",
+  "No outstanding invoices": "لا توجد فواتير مستحقة",
+  "Total Invoiced": "إجمالي المفوتر",
+  "Loading equity accounts…": "جارٍ تحميل حسابات حقوق الملكية…",
+  "No equity accounts found": "لم يتم العثور على حسابات حقوق ملكية",
+  "ID, category or vendor": "المعرّف أو الفئة أو المورد",
+  "Loading expenses…": "جارٍ تحميل المصروفات…",
+  "Loading sales…": "جارٍ تحميل المبيعات…",
 }

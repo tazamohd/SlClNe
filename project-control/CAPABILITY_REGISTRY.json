@@ -865,7 +865,7 @@
         "D-SalesReports",
         "D-WorkshopReports"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 11,
       "entities": [],
       "rules": [],
       "roles": [
@@ -1535,7 +1535,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 40,
+      "dataBackedScreens": 48,
       "entities": [],
       "rules": [],
       "roles": [],

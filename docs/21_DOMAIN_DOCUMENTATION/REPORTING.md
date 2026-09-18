@@ -61,9 +61,9 @@ _No lifecycle in the contract belongs to this domain._
 | D-BIDashboard | `/bidashboard` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-CustomReports | `/custom-reports` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-ExecutiveReports | `/executive-reports` | app | yes | yes | yes | — | PARTIAL | yes |
-| D-InsuranceReports | `/insurance-reports` | app | **mock** | yes | — | yes | PARTIAL | yes |
+| D-InsuranceReports | `/insurance-reports` | app | yes | yes | — | yes | PARTIAL | yes |
 | D-InventoryReports | `/inventory-reports` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-LoanReports | `/loan-reports` | app | **mock** | yes | — | yes | PARTIAL | yes |
+| D-LoanReports | `/loan-reports` | app | yes | yes | — | yes | PARTIAL | yes |
 | D-OperationalReports | `/operational-reports` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Reports | `/reports` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-ReportsAnalytics | `/reports-analytics` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -72,7 +72,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **2 of 11 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+_None identified by the generated checks. That is not the same as none existing — the checks look for absent tests, absent states, unguarded lifecycles and unenforced integrity, and cannot see a rule that was never written down._
 
 ## Evidence
 
