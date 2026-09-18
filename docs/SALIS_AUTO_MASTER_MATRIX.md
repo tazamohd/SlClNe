@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-429 capabilities · 429 rendering · 0 placeholder · 125 data-backed.
+430 capabilities · 430 rendering · 0 placeholder · 127 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -16,6 +16,7 @@
 | Appointments | `/appointments` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | ApprovalInbox | `/approval-inbox` | app | approvals | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | DeclinedJobs | `/declined-jobs` | app | estimates | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
+| CannedJobs | `/canned-jobs` | app | estimates | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | HealthCheckReport | `/customer-portal/health-check-report` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 11 roles | route | IMPLEMENTED |
 | AuditLog | `/audit-log` | app | audit | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | AutomationRules | `/automation-rules` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
@@ -370,7 +371,7 @@
 | Expense Tracking | `/expense-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Expenses Management | `/expenses-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Sales Management | `/sales-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Accounting Integration | `/accounting-integration` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Accounting Integration | `/accounting-integration` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Financial Settings | `/financial-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Warranty Management | `/warranty-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Contract Management | `/contract-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
