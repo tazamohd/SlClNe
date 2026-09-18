@@ -1,0 +1,7 @@
+# Obsidian app state — noisy, per-device, not worth diffing
+.obsidian/workspace*.json
+
+# Nightly maintenance run logs — durable summary lives in maintenance-log.md,
+# which stays tracked; these per-run logs don't need to be, or they'd
+# accumulate one committed file per night forever.
+maintenance-logs/
