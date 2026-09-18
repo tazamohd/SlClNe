@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-18",
   "domains": [
     {
       "id": "workshop",
@@ -825,6 +825,15 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "DeclinedJobs",
+          "route": "/declined-jobs",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -3958,8 +3967,8 @@
     }
   ],
   "totals": {
-    "total": 427,
-    "built": 427,
+    "total": 428,
+    "built": 428,
     "designedMobile": 113
   }
 }

@@ -8,7 +8,7 @@
 
 # Testing and validation
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Strategy, catalogue, coverage and the requirement-to-test trace.
 

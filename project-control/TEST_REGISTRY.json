@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 189,
-    "cases": 2228,
+    "suites": 191,
+    "cases": 2240,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1088,
+      "UNIT_OR_API": 1100,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2383,6 +2383,26 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-declined-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "DeclinedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the honest empty state instead of a fabricated row",
+        "states the revenue summary is unavailable without a live API, not a fabricated number",
+        "shows the open-follow-ups count as zero rather than omitting it",
+        "offers the status filter chips"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-DETAIL-TEST-TSX",
       "file": "app/tests/component/workshop-estimate-detail.test.tsx",
       "kind": "UNIT_OR_API",
@@ -3827,23 +3847,17 @@
         "${page.name} renders signed-out with its designed h1 and page meta",
         "Landing mounts with completely empty storage — the true first visit",
         "Landing renders in Arabic with the document flipped to RTL",
-        "Landing switches its six in-page pages and mirrors the choice to the hash",
-        "Grid's six doors are three real portal links and three informational tiles",
-        "Access names what each plan carries but quotes no price — pricing has one home",
-        "Channel's handshake leads to a real demo booking and a real contact page, not a form that goes nowhere",
-        "the command deck answers a real command with a real fact, entirely client-side",
+        "the proof section shows real structural facts, not fabricated metrics",
+        "the release timeline shows real version numbers, including the one still ahead",
+        "closes with a real Request a Demo CTA, not a dead-end banner",
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
         "Blog and catalogue cards are informational, not links to nowhere"
       ],
-      "caseCount": 15,
+      "caseCount": 13,
       "touchesPaths": [
-        "/public-portal/customer-portal",
-        "/public-portal/technician-portal",
-        "/public-portal/supplier-portal",
-        "/public-portal/pricing",
-        "/public-portal/book-demo",
+        "/public-portal/request-demo",
         "/public-portal/contact"
       ],
       "touchesRoles": []
@@ -5465,6 +5479,42 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS",
+      "file": "server/tests/declined-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "declining an estimate line",
+        "rejecting a whole estimate fans out one declined job per line",
+        "the follow-up lifecycle",
+        "tenant isolation",
+        "GET /reports/declined-jobs"
+      ],
+      "cases": [
+        "creates a tracked declined job carrying the line value and reason",
+        "refuses a second decline of the same line while the first is still active",
+        "advisor — who lacks estimates:a — cannot decline a line",
+        "refuses a line id that does not belong to the estimate",
+        "declines every line, skipping one already tracked",
+        "moves through PATCH and derives resolvedAt from status",
+        "cannot be created directly through the generic collection route",
+        "does not serve another organization's declined job",
+        "a customer-scoped principal sees none of it, even with estimates:v",
+        "sums lost and recovered revenue server-side"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/estimates",
+        "/declined-jobs",
+        "/reports/declined-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
       "file": "server/tests/document-chain.test.ts",
       "kind": "UNIT_OR_API",
@@ -6229,7 +6279,9 @@
         "carries an addressable id and version on every object row"
       ],
       "caseCount": 3,
-      "touchesPaths": [],
+      "touchesPaths": [
+        "/reject"
+      ],
       "touchesRoles": [
         "owner"
       ]

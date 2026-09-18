@@ -10,7 +10,7 @@
 
 # API — vehicles
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 9 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 9 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

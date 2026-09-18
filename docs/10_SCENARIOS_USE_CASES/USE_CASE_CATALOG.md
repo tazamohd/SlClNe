@@ -11,11 +11,11 @@
 
 # Use case catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-61 behavioural use cases.
+62 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -46,6 +46,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-PATCH-ESTIMATES-ID | PATCH /estimates/:id | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-APPROVE | POST /estimates/:id/approve | owner, manager, test | estimates:a | yes | — | — | yes | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-INVOICE | POST /estimates/:id/invoice | owner, manager, advisor, accountant, frontdesk +1 | invoices:c | — | — | — | yes | `server/src/routes/invoices.ts` |
+| UC-POST-ESTIMATES-ID-LINES-LINEID-DECLINE | POST /estimates/:id/lines/:lineId/decline | owner, manager, test | estimates:a | — | — | — | yes | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-REJECT | POST /estimates/:id/reject | owner, manager, test | estimates:a | — | — | — | — | `server/src/routes/estimates.ts` |
 | UC-POST-ESTIMATES-ID-REQUEST-APPROVAL-OTP | POST /estimates/:id/request-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | — | `server/src/routes/estimate-otp.ts` |
 | UC-POST-ESTIMATES-ID-VERIFY-APPROVAL-OTP | POST /estimates/:id/verify-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimate-otp.ts` |

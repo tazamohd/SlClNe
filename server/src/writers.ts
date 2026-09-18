@@ -16,6 +16,8 @@ import {
   crmTaskUpdate,
   customerCreate,
   customerUpdate,
+  declinedJobCreate,
+  declinedJobUpdate,
   employeeCreate,
   employeeUpdate,
   feedbackCreate,
@@ -313,7 +315,28 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       return value
     },
   },
+
+  /* Declined Job Tracking & Follow-Up (Sprint 1, P0). `create` is `z.never()`
+   * (see `registry.ts`) — every row is born from an estimate decline action,
+   * never a generic `POST`. `PATCH` carries only the follow-up lifecycle, and
+   * `resolvedAt` is server-derived from `status` rather than accepted as
+   * input: a job cannot be marked resolved by typing a date, and moving it
+   * back to an active status (a customer who "approved later" changes their
+   * mind again) clears it, rather than leaving a stale resolution behind. */
+  declinedJobs: {
+    create: declinedJobCreate,
+    update: declinedJobUpdate,
+    async toColumns(input) {
+      const value = { ...input } as Record<string, unknown>
+      if ('status' in value) {
+        value.resolvedAt = RESOLVED_DECLINED_JOB_STATUSES.has(value.status as string) ? new Date() : null
+      }
+      return value
+    },
+  },
 }
+
+const RESOLVED_DECLINED_JOB_STATUSES = new Set(['approved_later', 'permanently_declined', 'expired'])
 
 /** The next `SUP-0001` within the tenant. Counted, not a placeholder, so two
  *  suppliers never collide on the unique `(org_id, code)` index. */

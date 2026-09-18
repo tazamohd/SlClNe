@@ -21,6 +21,7 @@ export type AuditAction =
   | 'assign'
   | 'approve'
   | 'reject'
+  | 'decline'
   | 'post'
   | 'issue'
   | 'pay'

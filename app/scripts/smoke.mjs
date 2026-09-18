@@ -1503,6 +1503,7 @@ const EXPECTED_TEXT = {
   '/quantum-computing': "Quantum Computing",
   '/public-portal/roi-calculator': "PublicPortal · RoiCalculator",
   '/public-portal/security': "PublicPortal · Security",
+  '/declined-jobs': "DeclinedJobs",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────

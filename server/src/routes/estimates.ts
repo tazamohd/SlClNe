@@ -5,14 +5,14 @@
  *  segregation of duties — and an estimate that is already approved is a 409
  *  rather than a second approval on the same record.
  */
-import { and, eq, isNull, sql } from 'drizzle-orm'
-import type { FastifyInstance } from 'fastify'
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm'
+import type { FastifyInstance, FastifyRequest } from 'fastify'
 import { ulid } from 'ulid'
-import { estimateApproveBody, estimateCreate, estimateUpdate } from '@salis/contract'
+import { declinedJobDeclineBody, estimateApproveBody, estimateCreate, estimateUpdate } from '@salis/contract'
 import { checkEstimateFresh, computeInvoiceTotals } from '@salis/contract/rules'
 import { writeAudit } from '../audit/audit'
-import { estimateLines, estimates } from '../db/schema'
-import { withTenant, type Tx } from '../db/tenant'
+import { declinedJobs, estimateLines, estimates } from '../db/schema'
+import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { badRequest, conflict, notFound, ruleViolated } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { collectionByKey } from '../registry'
@@ -26,6 +26,12 @@ import { presentRow, type RouteDeps } from './collections'
 function def() {
   const found = collectionByKey('estimates')
   if (!found) throw new Error('collection "estimates" is not registered')
+  return found
+}
+
+function declinedJobsDef() {
+  const found = collectionByKey('declinedJobs')
+  if (!found) throw new Error('collection "declinedJobs" is not registered')
   return found
 }
 
@@ -262,9 +268,155 @@ export function registerEstimateRoutes(app: FastifyInstance, deps: RouteDeps): v
         reason,
         ...metaOf(request),
       })
+
+      /* Declined Job Tracking (Sprint 1, P0): a whole-estimate rejection
+       * declines every line on it. One row per line, skipping any line a
+       * per-line decline already tracks (the unique index would refuse the
+       * duplicate anyway; checking first keeps this a clean no-op rather than
+       * a swallowed conflict). */
+      const lines = await tx
+        .select()
+        .from(estimateLines)
+        .where(and(eq(estimateLines.estimateId, before.id), isNull(estimateLines.deletedAt)))
+      const alreadyTracked = await activeDeclinedLineIds(tx, before.orgId, lines.map((l) => l.id))
+      for (const line of lines) {
+        if (alreadyTracked.has(line.id)) continue
+        await insertDeclinedJob(tx, principal, request, {
+          estimate: after as EstimateRow,
+          line,
+          reasonCategory: 'other',
+          reasonNotes: reason,
+          safetySeverity: 'monitor',
+          followUpDate: null,
+        })
+      }
+
       return presentRow(def(), principal, after as Record<string, unknown>)
     })
   })
+
+  app.post('/estimates/:id/lines/:lineId/decline', async (request, reply) => {
+    const principal = principalOf(request)
+    requirePermission(principal, 'estimates', 'a')
+    const parsed = declinedJobDeclineBody.safeParse(request.body ?? {})
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]
+      throw badRequest(issue?.message ?? 'Invalid decline.', issue?.path.join('.'))
+    }
+    const { id, lineId } = request.params as { id: string; lineId: string }
+
+    const created = await withTenant(deps.db, principal, async (tx) => {
+      const estimate = await loadEstimate(tx, id)
+      if (estimate.status === 'approved') {
+        throw conflict('An approved estimate’s lines cannot be declined.')
+      }
+      const [line] = await tx
+        .select()
+        .from(estimateLines)
+        .where(
+          and(
+            eq(estimateLines.id, lineId),
+            eq(estimateLines.estimateId, estimate.id),
+            isNull(estimateLines.deletedAt),
+          ),
+        )
+        .limit(1)
+      if (!line) throw notFound('Estimate line')
+
+      const alreadyTracked = await activeDeclinedLineIds(tx, estimate.orgId, [line.id])
+      if (alreadyTracked.has(line.id)) {
+        throw conflict('This line is already tracked as declined.')
+      }
+
+      return insertDeclinedJob(tx, principal, request, {
+        estimate,
+        line,
+        reasonCategory: parsed.data.reasonCategory,
+        reasonNotes: parsed.data.reasonNotes ?? null,
+        safetySeverity: parsed.data.safetySeverity,
+        followUpDate: parsed.data.followUpDate ?? null,
+      })
+    })
+
+    reply.code(201)
+    return presentRow(declinedJobsDef(), principal, created as Record<string, unknown>)
+  })
+}
+
+/** Line ids among `lineIds` that already carry an *active* (`status =
+ *  'declined'`) tracking row — the same predicate the partial unique index
+ *  enforces, read back before the insert so a duplicate is a clean skip or a
+ *  friendly 409 rather than a raw constraint violation. */
+async function activeDeclinedLineIds(tx: Tx, orgId: string, lineIds: readonly string[]): Promise<Set<string>> {
+  if (lineIds.length === 0) return new Set()
+  const rows = await tx
+    .select({ estimateLineId: declinedJobs.estimateLineId })
+    .from(declinedJobs)
+    .where(
+      and(
+        eq(declinedJobs.orgId, orgId),
+        eq(declinedJobs.status, 'declined'),
+        isNull(declinedJobs.deletedAt),
+        inArray(declinedJobs.estimateLineId, lineIds),
+      ),
+    )
+  return new Set(rows.map((r) => r.estimateLineId).filter((v): v is string => v !== null))
+}
+
+type EstimateLineRow = typeof estimateLines.$inferSelect
+
+async function insertDeclinedJob(
+  tx: Tx,
+  principal: Principal,
+  request: FastifyRequest,
+  input: {
+    estimate: EstimateRow
+    line: EstimateLineRow
+    reasonCategory: string
+    reasonNotes: string | null
+    safetySeverity: string
+    followUpDate: string | null
+  },
+): Promise<Record<string, unknown>> {
+  const { estimate, line } = input
+  const id = ulid()
+  const [row] = await tx
+    .insert(declinedJobs)
+    .values({
+      id,
+      orgId: estimate.orgId,
+      branchId: estimate.branchId,
+      estimateId: estimate.id,
+      estimateLineId: line.id,
+      jobCardId: estimate.jobCardId ?? null,
+      customerId: estimate.customerId ?? null,
+      customerName: estimate.customerName,
+      vehicleId: estimate.vehicleId ?? null,
+      vehicleLabel: estimate.vehicleLabel,
+      advisorId: principal.userId,
+      description: line.description,
+      reasonCategory: input.reasonCategory,
+      reasonNotes: input.reasonNotes,
+      safetySeverity: input.safetySeverity,
+      valueHalalas: Math.round(line.qty * line.unitPriceHalalas),
+      status: 'declined',
+      followUpDate: input.followUpDate,
+      createdBy: principal.userId,
+      updatedBy: principal.userId,
+    })
+    .returning()
+  if (!row) throw notFound('Declined job')
+
+  await writeAudit(tx, {
+    actor: principal,
+    action: 'decline',
+    entity: 'declined_job',
+    entityId: id,
+    after: row,
+    reason: input.reasonNotes,
+    ...metaOf(request),
+  })
+  return row as Record<string, unknown>
 }
 
 type EstimateRow = typeof estimates.$inferSelect

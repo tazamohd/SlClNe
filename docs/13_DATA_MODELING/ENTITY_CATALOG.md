@@ -8,9 +8,9 @@
 
 # Entity catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-69 tables. 64 are tenant-scoped (carry `org_id`) and 65 have row-level security enabled and forced.
+70 tables. 65 are tenant-scoped (carry `org_id`) and 66 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -36,6 +36,7 @@
 | ENT-APPOINTMENTS | `appointments` | 23 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-ESTIMATES | `estimates` | 28 | yes | yes | yes | yes | yes | yes | 4 | 3 |
 | ENT-ESTIMATE-LINES | `estimate_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
+| ENT-DECLINED-JOBS | `declined_jobs` | 27 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-INVOICES | `invoices` | 29 | yes | yes | yes | yes | yes | yes | 5 | 3 |
 | ENT-INVOICE-LINES | `invoice_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-PAYMENTS | `payments` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |

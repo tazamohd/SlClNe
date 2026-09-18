@@ -3,7 +3,18 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 214 screens. */
+ *  handoff/SCREEN_MAP.md — 214 screens.
+ *
+ *  One entry, `DeclinedJobs`, is hand-added rather than ported: Declined Job
+ *  Tracking & Follow-Up (Sprint 1, P0) has no design source, so there was
+ *  nothing for `port-design-data.mjs` to port. `npm run registry`
+ *  (`build-registry.mjs`) still discovers it correctly from this route plus
+ *  `src/screens/workshop/DeclinedJobs.tsx`; leaving it here rather than
+ *  inventing a `.dc.html` source is the honest choice (§3, §A25 — provenance
+ *  is never misrepresented). A future design-bundle regeneration should fold
+ *  this in properly. The array below must stay valid JSON (`build-registry.mjs`
+ *  parses it with `JSON.parse`, not a JS evaluator), so this note lives here
+ *  rather than as an inline comment next to the entry itself. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -58,6 +69,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/approval-inbox",
     "hasMobile": false,
     "purpose": "Approve/reject items above your delegated limit"
+  },
+  {
+    "name": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "hasMobile": false,
+    "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue"
   },
   {
     "name": "AuditLog",

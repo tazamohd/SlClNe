@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 374,
-    "generated": 241,
-    "explicit": 133,
+    "endpoints": 385,
+    "generated": 249,
+    "explicit": 136,
     "unauthenticated": 6,
-    "withPermissionGuard": 347,
+    "withPermissionGuard": 358,
     "idempotent": 2,
-    "withTests": 101
+    "withTests": 108
   },
   "collections": [
     {
@@ -244,6 +244,38 @@
         "dir": "asc"
       },
       "writable": false
+    },
+    {
+      "key": "declinedJobs",
+      "path": "declined-jobs",
+      "table": "declinedJobs",
+      "module": "estimates",
+      "entity": "declined_job",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "codeColumn": null,
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "writable": true
     },
     {
       "key": "invoices",
@@ -5621,6 +5653,375 @@
       ]
     },
     {
+      "id": "API-DECLINEDJOBS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/declined-jobs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "List the collection with search, sort, filter and pagination — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-DECLINEDJOBS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/declined-jobs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Create one row — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-DECLINEDJOBS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/declined-jobs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Soft-delete one row — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DECLINEDJOBS-GETID",
+      "method": "GET",
+      "path": "/api/v1/declined-jobs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Read one row by ULID or business code — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DECLINEDJOBS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/declined-jobs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Update one row (optimistic concurrency on version) — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-GET-DECLINED-JOBS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/declined-jobs/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "estimates",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "estimates",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DECLINEDJOBS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/declined-jobs/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Soft-delete many rows — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DECLINEDJOBS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/declined-jobs/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Apply one patch to many rows — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DECLINEDJOBS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/declined-jobs/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "estimates",
+      "purpose": "Export the filtered collection as a file — declined_job.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "estimates",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "declined_job",
+      "table": "declinedJobs",
+      "search": [
+        "customerName",
+        "vehicleLabel",
+        "description"
+      ],
+      "sortable": [
+        "declinedAt",
+        "followUpDate",
+        "valueHalalas",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "estimateId",
+        "reasonCategory",
+        "safetySeverity",
+        "advisorId"
+      ],
+      "defaultSort": {
+        "column": "declinedAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGCOPIES-GET-LIST",
       "method": "GET",
       "path": "/api/v1/diagnostics/copies",
@@ -6986,6 +7387,7 @@
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS",
         "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-ESTIMATE-MONEY-TEST-TS",
         "TS-SERVER-TESTS-HISTORY-READ-TEST-TS"
@@ -7016,6 +7418,7 @@
         "TS-SERVER-TESTS-API-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
+        "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS",
         "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
         "TS-SERVER-TESTS-ESTIMATE-MONEY-TEST-TS",
         "TS-SERVER-TESTS-HISTORY-READ-TEST-TS"
@@ -7171,6 +7574,27 @@
       "tests": []
     },
     {
+      "id": "API-POST-ESTIMATES-ID-LINES-LINEID-DECLINE",
+      "method": "POST",
+      "path": "/api/v1/estimates/:id/lines/:lineId/decline",
+      "source": "server/src/routes/estimates.ts",
+      "kind": "EXPLICIT",
+      "domain": "estimates",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "estimates",
+      "permissionAction": "a",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-POST-ESTIMATES-ID-REJECT",
       "method": "POST",
       "path": "/api/v1/estimates/:id/reject",
@@ -7189,7 +7613,9 @@
       "transactional": false,
       "validates": false,
       "capability": "CAP-WORKSHOP",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-SEED-FIDELITY-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-ESTIMATES-ID-REQUEST-APPROVAL-OTP",
@@ -7832,7 +8258,9 @@
       "transactional": false,
       "validates": false,
       "capability": "CAP-ACCOUNTING",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-SEED-FIDELITY-TEST-TS"
+      ]
     },
     {
       "id": "API-INSURANCECLAIMS-GETEXPORT",
@@ -10159,7 +10587,9 @@
       "transactional": false,
       "validates": false,
       "capability": "CAP-HR",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-SEED-FIDELITY-TEST-TS"
+      ]
     },
     {
       "id": "API-LEAVEREQUESTS-POSTBULK-DELETE",
@@ -11839,7 +12269,9 @@
       "transactional": false,
       "validates": false,
       "capability": "CAP-PROCUREMENT",
-      "tests": []
+      "tests": [
+        "TS-SERVER-TESTS-SEED-FIDELITY-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-PROCUREMENT-REQUISITIONS-ID-SUBMIT",
@@ -12499,6 +12931,29 @@
       "audited": true,
       "capability": "CAP-BILLING",
       "tests": []
+    },
+    {
+      "id": "API-GET-REPORTS-DECLINED-JOBS",
+      "method": "GET",
+      "path": "/api/v1/reports/declined-jobs",
+      "source": "server/src/routes/declined-jobs-report.ts",
+      "kind": "EXPLICIT",
+      "domain": "estimates",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "estimates",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS"
+      ]
     },
     {
       "id": "API-GET-REPORTS-WORKSHOP",

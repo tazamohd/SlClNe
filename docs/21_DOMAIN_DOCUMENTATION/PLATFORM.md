@@ -12,7 +12,7 @@
 
 # Domain — Administration and platform
 
-**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Capability:** CAP-PLATFORM · **Sources as of:** 2026-09-18
 
 ## Purpose and scope
 
@@ -102,7 +102,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-Backup | `/backup` | app | **mock** | — | — | — | verified | yes |
 | D-Branches | `/branches` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CookiePolicy | `/cookie-policy` | app | **mock** | — | — | — | verified | yes |
-| D-Dashboard | `/dashboard` | app | yes | yes | yes | — | MISSING | yes |
+| D-Dashboard | `/dashboard` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Error404 | `/error404` | auth | **mock** | — | — | — | verified | yes |
 | D-FlowSpec | `/flow-spec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-GlobalSearch | `/global-search` | app | **mock** | — | — | yes | PARTIAL | yes |

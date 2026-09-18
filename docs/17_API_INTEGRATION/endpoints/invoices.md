@@ -10,7 +10,7 @@
 
 # API — invoices
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 14 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 14 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

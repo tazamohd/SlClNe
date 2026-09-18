@@ -9,13 +9,13 @@
 
 # Business capability map
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 18 capabilities
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 18 capabilities
 
 ## How capabilities are defined here
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 427 registered screens and all 374 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 428 registered screens and all 385 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -28,7 +28,7 @@ flowchart LR
   OBJ_CAPACITY["Use technician capacity well"]
   OBJ_VISIBILITY["Give owners operational visibility"]
   OBJ_CONTROL["Keep financial control auditable"]
-  CAP_WORKSHOP["Workshop operations<br/>16 screens · 77 endpoints"]
+  CAP_WORKSHOP["Workshop operations<br/>17 screens · 88 endpoints"]
   OBJ_THROUGHPUT --> CAP_WORKSHOP
   CAP_CUSTOMERS["Customer management<br/>3 screens · 19 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERS
@@ -70,13 +70,13 @@ flowchart LR
 
 | Capability | Name | Objective | Permission modules | Screens | Data-backed | Endpoints | Entities | Roles with access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 16 | 15 | 77 | 13 | 12 |
+| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 17 | 16 | 88 | 14 | 12 |
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 3 | 3 | 19 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 4 | 4 | 9 | 1 | 11 |
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 7 | 1 | 13 | 1 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 7 | 50 | 9 | 5 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 5 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
@@ -86,7 +86,7 @@ flowchart LR
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 19 | 4 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
-| CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 5 | 0 | 0 | 0 |
+| CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 3 | 0 | 0 | 0 |
 | CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 26 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-110 of 427 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+107 of 428 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -115,9 +115,9 @@ flowchart LR
 | --- | --- |
 | Permission modules | `jobcards`, `appointments`, `estimates` |
 | Screen domains | `workshop` |
-| Screens | 16 (15 data-backed) |
-| Endpoints | 77 |
-| Entities | `appointments`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
+| Screens | 17 (16 data-backed) |
+| Endpoints | 88 |
+| Entities | `appointments`, `declinedJobs`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, frontdesk, callcenter, customer, test |
 | Rule guards | — |
 
@@ -199,7 +199,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `accounting` |
 | Screen domains | — |
-| Screens | 7 (7 data-backed) |
+| Screens | 7 (5 data-backed) |
 | Endpoints | 50 |
 | Entities | `chartOfAccounts`, `expenses`, `journalEntries`, `bankStatements`, `insuranceClaims`, `insurancePolicies`, `loanContracts`, `loanRepayments`, `savedReports` |
 | Roles with any grant | owner, superadmin, manager, accountant, test |
@@ -339,7 +339,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `customerapp` |
-| Screens | 11 (5 data-backed) |
+| Screens | 11 (3 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

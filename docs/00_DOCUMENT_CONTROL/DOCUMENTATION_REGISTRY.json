@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/control.mjs",
   "statusValues": [
     "MISSING",
@@ -296,7 +296,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 17929,
+      "bytes": 17925,
       "lines": 209,
       "type": "GENERATED",
       "archived": false,
@@ -461,8 +461,8 @@
     {
       "path": "04_PROJECT_MANAGEMENT/PROJECT_DASHBOARD.md",
       "section": "04_PROJECT_MANAGEMENT",
-      "bytes": 7182,
-      "lines": 88,
+      "bytes": 7739,
+      "lines": 89,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -505,7 +505,7 @@
     {
       "path": "07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md",
       "section": "07_BUSINESS_ANALYSIS",
-      "bytes": 14422,
+      "bytes": 14438,
       "lines": 361,
       "type": "GENERATED",
       "archived": false,
@@ -549,8 +549,8 @@
     {
       "path": "09_SYSTEM_ANALYSIS/REQUIREMENTS_CATALOG.md",
       "section": "09_SYSTEM_ANALYSIS",
-      "bytes": 24823,
-      "lines": 209,
+      "bytes": 24949,
+      "lines": 210,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -604,8 +604,8 @@
     {
       "path": "10_SCENARIOS_USE_CASES/USE_CASE_CATALOG.md",
       "section": "10_SCENARIOS_USE_CASES",
-      "bytes": 11162,
-      "lines": 97,
+      "bytes": 11342,
+      "lines": 98,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -681,8 +681,8 @@
     {
       "path": "12_UML_BPMN_MODELS/STATE_MACHINES.md",
       "section": "12_UML_BPMN_MODELS",
-      "bytes": 7357,
-      "lines": 191,
+      "bytes": 7732,
+      "lines": 199,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -692,8 +692,8 @@
     {
       "path": "13_DATA_MODELING/DATA_DICTIONARY.md",
       "section": "13_DATA_MODELING",
-      "bytes": 87815,
-      "lines": 1750,
+      "bytes": 90532,
+      "lines": 1790,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -703,8 +703,8 @@
     {
       "path": "13_DATA_MODELING/ENTITY_CATALOG.md",
       "section": "13_DATA_MODELING",
-      "bytes": 8617,
-      "lines": 111,
+      "bytes": 8706,
+      "lines": 112,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -725,8 +725,8 @@
     {
       "path": "13_DATA_MODELING/RELATIONSHIP_CATALOG.md",
       "section": "13_DATA_MODELING",
-      "bytes": 22870,
-      "lines": 212,
+      "bytes": 23802,
+      "lines": 220,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -780,8 +780,8 @@
     {
       "path": "16_SYSTEM_DESIGN/DATA_ACCESS_DESIGN.md",
       "section": "16_SYSTEM_DESIGN",
-      "bytes": 6368,
-      "lines": 110,
+      "bytes": 6434,
+      "lines": 111,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -835,7 +835,7 @@
     {
       "path": "17_API_INTEGRATION/API_OVERVIEW.md",
       "section": "17_API_INTEGRATION",
-      "bytes": 3841,
+      "bytes": 3843,
       "lines": 72,
       "type": "GENERATED",
       "archived": false,
@@ -956,8 +956,8 @@
     {
       "path": "17_API_INTEGRATION/endpoints/estimates.md",
       "section": "17_API_INTEGRATION",
-      "bytes": 2372,
-      "lines": 36,
+      "bytes": 4300,
+      "lines": 48,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1077,8 +1077,8 @@
     {
       "path": "18_DATABASE/DATABASE_DESIGN.md",
       "section": "18_DATABASE",
-      "bytes": 8154,
-      "lines": 130,
+      "bytes": 8437,
+      "lines": 134,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1132,8 +1132,8 @@
     {
       "path": "19_SECURITY/TENANT_ISOLATION.md",
       "section": "19_SECURITY",
-      "bytes": 12396,
-      "lines": 143,
+      "bytes": 12857,
+      "lines": 147,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1165,8 +1165,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/ACCOUNTING.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 8834,
-      "lines": 155,
+      "bytes": 8979,
+      "lines": 156,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1187,7 +1187,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/BILLING.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 6972,
+      "bytes": 6973,
       "lines": 132,
       "type": "GENERATED",
       "archived": false,
@@ -1209,7 +1209,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/CUSTOMERAPP.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 3474,
+      "bytes": 3484,
       "lines": 76,
       "type": "GENERATED",
       "archived": false,
@@ -1231,7 +1231,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 21469,
+      "bytes": 21470,
       "lines": 299,
       "type": "GENERATED",
       "archived": false,
@@ -1264,7 +1264,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/HR.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 8341,
+      "bytes": 8337,
       "lines": 155,
       "type": "GENERATED",
       "archived": false,
@@ -1319,7 +1319,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PROCUREMENT.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 6770,
+      "bytes": 6766,
       "lines": 121,
       "type": "GENERATED",
       "archived": false,
@@ -1374,8 +1374,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/WORKSHOP.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 13040,
-      "lines": 204,
+      "bytes": 14284,
+      "lines": 220,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16524,
-      "lines": 235,
+      "bytes": 16697,
+      "lines": 237,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1869,8 +1869,8 @@
     {
       "path": "MASTER_GAP_REPORT.md",
       "section": "(root)",
-      "bytes": 3660,
-      "lines": 78,
+      "bytes": 4283,
+      "lines": 88,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -1902,7 +1902,7 @@
     {
       "path": "MASTER_SCOPE_REGISTRY.md",
       "section": "(root)",
-      "bytes": 3314,
+      "bytes": 3315,
       "lines": 111,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1946,8 +1946,8 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61133,
-      "lines": 436,
+      "bytes": 61288,
+      "lines": 437,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,

@@ -8,7 +8,7 @@
 
 # Product
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Product requirements, personas, journeys, product capability model.
 

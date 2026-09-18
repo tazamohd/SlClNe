@@ -12,7 +12,7 @@
 
 # Domain — HR and payroll
 
-**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-18
 
 ## Purpose and scope
 
@@ -80,7 +80,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | PATCH | `/api/v1/leave-requests/:id` | hr:e | generated | — | **0** |
 | POST | `/api/v1/leave-requests/:id/approve` | hr:a | explicit | — | 1 |
 | GET | `/api/v1/leave-requests/:id/history` | hr:v | explicit | — | **0** |
-| POST | `/api/v1/leave-requests/:id/reject` | hr:a | explicit | — | **0** |
+| POST | `/api/v1/leave-requests/:id/reject` | hr:a | explicit | — | 1 |
 | POST | `/api/v1/leave-requests/bulk-delete` | hr:d | generated | — | **0** |
 | POST | `/api/v1/leave-requests/bulk-update` | hr:e | generated | — | **0** |
 | GET | `/api/v1/leave-requests/export` | hr:x | generated | — | **0** |
@@ -140,7 +140,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **44 of 52 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **43 of 52 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **6 of 9 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 
 ## Evidence
