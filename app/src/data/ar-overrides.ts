@@ -4858,4 +4858,6 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Parts Network has no data source yet": "شبكة قطع الغيار ليس لها مصدر بيانات بعد",
   "Requests from other network members would live in a partsNetworkIncomingRequests collection the API does not serve yet, so none are shown rather than fabricated ones.": "الطلبات الواردة من أعضاء الشبكة الآخرين كانت ستكون ضمن مجموعة بيانات partsNetworkIncomingRequests التي لا تقدمها واجهة البرمجة بعد، لذا لا تُعرض أي طلبات بدلاً من اختلاقها.",
   "Requests sent to other network members would live in a partsNetworkRequests collection the API does not serve yet, so none are shown rather than fabricated ones.": "الطلبات المُرسلة إلى أعضاء الشبكة الآخرين كانت ستكون ضمن مجموعة بيانات partsNetworkRequests التي لا تقدمها واجهة البرمجة بعد، لذا لا تُعرض أي طلبات بدلاً من اختلاقها.",
+  "Compare quotes received from the network": "قارن العروض الواردة من الشبكة",
+  "Call logs have no data source yet": "سجلات المكالمات ليس لها مصدر بيانات بعد",
 }

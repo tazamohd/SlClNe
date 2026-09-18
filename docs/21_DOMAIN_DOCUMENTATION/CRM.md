@@ -122,7 +122,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| D-CallCenter | `/call-center` | call-center | **mock** | — | — | yes | MISSING | yes |
+| D-CallCenter | `/call-center` | call-center | **mock** | — | — | yes | PARTIAL | yes |
 | D-CallCenter.Logs | `/call-center/logs` | call-center | **mock** | — | — | yes | PARTIAL | yes |
 | D-Campaigns | `/campaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CRMCalendar | `/crmcalendar` | app | yes | yes | yes | yes | PARTIAL | yes |
