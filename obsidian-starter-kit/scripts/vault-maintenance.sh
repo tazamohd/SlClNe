@@ -32,15 +32,22 @@ Do the following:
 
 echo "=== Vault maintenance started $(date -Is) ===" | tee -a "$LOG"
 
-# --permission-mode acceptEdits lets the unattended run write files without
-# interactive prompts, while still blocking anything beyond file edits.
+# --permission-mode acceptEdits auto-approves file edits, but on its own it
+# does NOT confine the run to file edits — a Bash call is still governed by
+# whatever's already allow-listed in this machine's global/project Claude
+# Code settings, which an unattended nightly job should not silently inherit.
+# --allowedTools pins the actual tool surface: reading, editing/writing notes,
+# and the `mv`/`mkdir` needed to file inbox captures into folders — nothing
+# that can reach the network or run arbitrary commands.
 #
 # Capture claude's exit code explicitly rather than letting `set -e` +
 # `pipefail` kill the script on a non-zero exit: whatever the run already
 # wrote to disk should still get logged and committed below, not lost
 # silently because one unattended run had a bad exit code.
 set +e
-claude -p "$PROMPT" --permission-mode acceptEdits 2>&1 | tee -a "$LOG"
+claude -p "$PROMPT" --permission-mode acceptEdits \
+  --allowedTools "Read,Edit,Write,Glob,Grep,Bash(mv *),Bash(mkdir *)" \
+  2>&1 | tee -a "$LOG"
 CLAUDE_EXIT="${PIPESTATUS[0]}"
 set -e
 
