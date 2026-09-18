@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-191 spec files containing 2216 test cases.
+191 spec files containing 2214 test cases.
 
 ## What this document claims, and what it does not
 
@@ -26,7 +26,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
-| SECURITY | 11 | 215 | Permission grants, tenant isolation, segregation of duties, session handling |
+| SECURITY | 11 | 213 | Permission grants, tenant isolation, segregation of duties, session handling |
 | CONTRACT | 3 | 182 | The shared rule functions both sides depend on |
 | DATA_FIDELITY | 2 | 15 | That the seeded data matches what the design bundle carried |
 | ACCESSIBILITY | 1 | 2 | Axe sweeps, ratcheted per route and viewport |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 447 |
-| app | 113 | 1392 |
+| app | 113 | 1390 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -175,7 +175,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/public-request-demo-form.test.tsx` | UNIT_OR_API | 10 | — |
 | `app/tests/public-seo.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/public-shell.test.tsx` | UNIT_OR_API | 9 | — |
-| `app/tests/rbac-matrix.test.ts` | SECURITY | 64 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
+| `app/tests/rbac-matrix.test.ts` | SECURITY | 62 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
 | `app/tests/route-smoke.test.tsx` | UNIT_OR_API | 1 | owner |
 | `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 11 | owner, accountant |
 | `app/tests/service-worker-registration.test.ts` | UNIT_OR_API | 6 | — |
