@@ -15,8 +15,8 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | Flag | Count | Meaning |
 |---|---|---|
-| ARABIC_MISSING | 349 | Arabic not certified: an untranslated key, or keys built dynamically |
-| TABLET_MISSING | 307 | no md:/lg: layout in the source — nothing written for 768–1024 |
+| ARABIC_MISSING | 350 | Arabic not certified: an untranslated key, or keys built dynamically |
+| TABLET_MISSING | 308 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | MOCK_ONLY | 274 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 219 | no RBAC module maps to this screen |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
