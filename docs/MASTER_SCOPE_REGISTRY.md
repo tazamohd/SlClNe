@@ -59,7 +59,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `████████████████████` 100% | 20 | 20 |
+| Administration | 25 | G9 | `████████████████████` 100% | 20 | 20 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
