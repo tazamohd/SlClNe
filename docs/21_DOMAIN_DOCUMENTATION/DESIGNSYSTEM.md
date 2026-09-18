@@ -196,26 +196,26 @@ _No lifecycle in the contract belongs to this domain._
 | F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-146 | `/general-ledger` | app | **mock** | yes | yes | yes | PARTIAL | yes |
-| F-148 | `/trial-balance` | app | **mock** | yes | yes | yes | PARTIAL | yes |
-| F-149 | `/balance-sheet` | app | **mock** | yes | yes | — | PARTIAL | yes |
-| F-150 | `/income-statement` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| F-146 | `/general-ledger` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-148 | `/trial-balance` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-149 | `/balance-sheet` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-150 | `/income-statement` | app | yes | yes | yes | — | PARTIAL | yes |
 | F-151 | `/cash-flow-statement` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-152 | `/accounts-receivable` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-152 | `/accounts-receivable` | app | yes | yes | yes | yes | MISSING | yes |
 | F-153 | `/accounts-payable` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-154 | `/bank-account-management` | app | **mock** | — | — | yes | verified | yes |
 | F-155 | `/budget-management` | app | **mock** | — | — | yes | verified | yes |
 | F-156 | `/capital-management` | app | **mock** | — | — | yes | verified | yes |
 | F-157 | `/assets-management` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-158 | `/liabilities-management` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-159 | `/equity-management` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-159 | `/equity-management` | app | yes | yes | yes | yes | MISSING | yes |
 | F-160 | `/retained-earnings` | app | **mock** | — | — | yes | verified | yes |
 | F-161 | `/cost-centers` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-162 | `/loss-account` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-163 | `/partners-current-account` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-164 | `/expense-tracking` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-164 | `/expense-tracking` | app | yes | yes | yes | yes | MISSING | yes |
 | F-165 | `/expenses-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-166 | `/sales-management` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-166 | `/sales-management` | app | yes | yes | yes | yes | MISSING | yes |
 | F-167 | `/accounting-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-168 | `/financial-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-169 | `/warranty-management` | app | **mock** | — | — | yes | PARTIAL | yes |
@@ -284,8 +284,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **193 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **167 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **185 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **163 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 
