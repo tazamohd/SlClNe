@@ -15,33 +15,33 @@
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Registered capabilities | 429 | — |
-| Product screens | 366 | 429 |
-| Reference-only | 28 | 429 |
-| Rendered | 429 | 429 |
-| Placeholder | 0 | 429 |
-| Data-backed (live API) | 139 | 429 |
-| Mock-only (design fixtures) | 227 | 429 |
-| End-to-end covered | 429 | 429 |
-| Content-asserted (not just routed) | 429 | 429 |
-| Has a loading state | 175 | 429 |
-| Has an error state | 139 | 429 |
-| Has an empty state | 216 | 429 |
-| Arabic verified | 74 | 429 |
+| Registered capabilities | 430 | — |
+| Product screens | 367 | 430 |
+| Reference-only | 28 | 430 |
+| Rendered | 430 | 430 |
+| Placeholder | 0 | 430 |
+| Data-backed (live API) | 143 | 430 |
+| Mock-only (design fixtures) | 225 | 430 |
+| End-to-end covered | 430 | 430 |
+| Content-asserted (not just routed) | 430 | 430 |
+| Has a loading state | 179 | 430 |
+| Has an error state | 143 | 430 |
+| Has an empty state | 220 | 430 |
+| Arabic verified | 74 | 430 |
 | RTL hazards | 0 | — |
-| Tablet verified | 4 | 429 |
+| Tablet verified | 4 | 430 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **227 of 429 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **225 of 430 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 314 | 124 | 79 |
+| app | 315 | 128 | 79 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 7 | 4 |
@@ -54,7 +54,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 
 | Capability | Screens | Data-backed | Loading | Error | Empty | Arabic verified |
 | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | 18 | 17 | 17 | 16 | 14 | 2 |
+| CAP-WORKSHOP | 19 | 18 | 18 | 17 | 15 | 2 |
 | CAP-CUSTOMERS | 3 | 3 | 3 | 3 | 3 | 0 |
 | CAP-VEHICLES | 4 | 4 | 4 | 4 | 4 | 0 |
 | CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 48 | 70 | 46 | 106 | 21 |
+| CAP-DESIGNSYSTEM | 233 | 51 | 73 | 49 | 109 | 21 |
 
 ## Full registry
 

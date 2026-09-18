@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-19",
+  "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 429,
-    "product": 366,
+    "capabilities": 430,
+    "product": 367,
     "referenceOnly": 28,
     "externalDependency": 35,
-    "rendered": 429,
+    "rendered": 430,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 227,
-    "dataBacked": 139,
-    "e2eCovered": 429,
-    "contentAsserted": 429,
+    "mockOnly": 225,
+    "dataBacked": 143,
+    "e2eCovered": 430,
+    "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 175,
-    "hasErrorState": 139,
-    "hasEmptyState": 216,
+    "hasLoadingState": 179,
+    "hasErrorState": 143,
+    "hasEmptyState": 220,
     "tabletVerified": 4,
     "arabicVerified": 74,
     "rtlHazards": 0,
@@ -26,11 +26,11 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 131,
+    "crudRead": 135,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 10,
+    "orphanScreenFiles": 0,
     "productionReady": 0
   },
   "bySurface": {
@@ -43,12 +43,12 @@
       "dataBacked": 1
     },
     "app": {
-      "total": 314,
-      "rendered": 314,
+      "total": 315,
+      "rendered": 315,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 314,
-      "dataBacked": 124
+      "e2e": 315,
+      "dataBacked": 128
     },
     "call-center": {
       "total": 2,
@@ -117,12 +117,12 @@
       "dataBacked": 1
     },
     "admin": {
-      "total": 19,
-      "rendered": 19,
+      "total": 20,
+      "rendered": 20,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 19,
-      "dataBacked": 6
+      "e2e": 20,
+      "dataBacked": 7
     },
     "ai": {
       "total": 10,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 48
+      "dataBacked": 51
     }
   },
   "byModule": {
@@ -271,12 +271,12 @@
       "dataBacked": 1
     },
     "estimates": {
-      "total": 5,
-      "rendered": 5,
+      "total": 6,
+      "rendered": 6,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 5,
-      "dataBacked": 5
+      "e2e": 6,
+      "dataBacked": 6
     },
     "jobcards": {
       "total": 11,
