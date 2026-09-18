@@ -330,6 +330,9 @@ describe('field-level redaction', () => {
     'Bank account details': ['accounting', 'payments'],
     // Reports.tsx (ExecutiveReports).
     'Branch P&L': ['execreports'],
+    // WorkshopInspection.tsx (technician-only field) and the generic
+    // inspection-findings collection, both gated on jobcards.
+    'Inspection internal notes': ['jobcards'],
   }
 
   it('hides a field from exactly the roles its rule names', () => {
@@ -394,6 +397,10 @@ describe('field-level redaction', () => {
       'Supplier purchase price': ['advisor', 'technician'],
       'Customer contact details': ['technician', 'qc'],
       'Bank account details': ['advisor', 'frontdesk'],
+      /* `supplier` holds no grant on `jobcards` at all, so only `customer` —
+       * who reads their own job card's findings — ever reaches a screen this
+       * rule would need to redact on. */
+      'Inspection internal notes': ['customer'],
     })
   })
 })
@@ -737,9 +744,9 @@ describe('fieldRuleIsLive()', () => {
     }
   })
 
-  it('reports the five live rules as live', () => {
+  it('reports the six live rules as live', () => {
     const liveFields = FIELD_RULES.filter((r) => !DEFENCE_IN_DEPTH_FIELDS.includes(r.field))
-    expect(liveFields.length).toBe(5)
+    expect(liveFields.length).toBe(6)
     for (const rule of liveFields) {
       expect(fieldRuleIsLive(rule.field), `${rule.field} should be live`).toBe(true)
     }

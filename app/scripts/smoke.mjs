@@ -1504,6 +1504,7 @@ const EXPECTED_TEXT = {
   '/public-portal/roi-calculator': "PublicPortal · RoiCalculator",
   '/public-portal/security': "PublicPortal · Security",
   '/declined-jobs': "DeclinedJobs",
+  '/customer-portal/health-check-report': "HealthCheckReport",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────

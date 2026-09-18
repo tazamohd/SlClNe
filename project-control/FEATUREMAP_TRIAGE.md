@@ -152,20 +152,165 @@ real, un-shortcut-able feature work for a future wave; each would need
 its own scoped design/backend/UI pass, not a registry classification
 change.
 
+## Wave 3 — duplicate reconciliation (2026-09-18)
+
+Verified each "likely duplicate" group above file-by-file, per the
+recommended next step below. Two corrections to this document's own
+earlier claims, found in the process — recorded rather than silently
+edited away:
+
+- **General Ledger / Trial Balance / Balance Sheet / Income Statement /
+  Cash Flow Statement / Accounts Receivable / Accounts Payable were never
+  duplicates.** The claim above ("none of these exact paths are
+  registered in `app/src/routes/index.tsx`") was true but the conclusion
+  drawn from it was wrong — these routes ARE registered, dynamically,
+  through the `SPEC_SCREENS.filter((spec) => !spec.designScreen).map(...)`
+  loop in `routes/index.tsx`, which a literal grep for the route string
+  doesn't find. Their components (`app/src/screens/accounting/
+  GeneralLedger.tsx` etc.) are real, already correctly wired to
+  `useTrialBalance()` and the other repository-aggregate hooks in
+  `useFinanceReports.ts`, and already registered by exact name in
+  `app/src/screens/domains/accounting.ts`'s `SCREEN_ENTRIES`. They still
+  show `MOCK_ONLY`/`dataBacked: false` in the registry — but that's a
+  registry-generator blind spot, not a missing feature: `dataBackedScreens`
+  in `build-registry.mjs` only recognises a screen calling
+  `useCollection`/`useEntity`/etc. directly by name; it doesn't follow into
+  a custom hook (`useTrialBalance()`) defined in a sibling file, the same
+  way it already follows one level of *component* delegation
+  (`WRAPPER_TARGET`) but not *hook* delegation. Not fixed in this pass —
+  it's a shared, generator-level change that needs its own careful,
+  validated pass across the whole registry, not a duplicate cleanup. Left
+  as a follow-up.
+- **Suppliers and Purchase Orders were genuine duplicates, and were fixed.**
+  `app/src/screens/parts/SuppliersList.tsx` and `PurchaseOrdersList.tsx`
+  had their own hardcoded fixture rows (eight invented suppliers with a
+  Rating/Category/Orders-count no schema field backs; seven invented
+  purchase orders with an invented item count) — real BLK-004 violations,
+  sitting beside `app/src/screens/portals/purchase/
+  PurchaseAgentSuppliers.tsx`, which already reads the same real
+  `suppliers` collection and is honest about exactly those same missing
+  columns. Rewired both to `useCollection('suppliers')` /
+  `useCollection('purchaseOrders')`, dropped the columns/stats with no
+  real field behind them, and matched the server's own status vocabulary
+  (`draft/approved/sent/receiving/received/closed`) instead of the
+  design's unrelated one. `npm run registry`: BLK-004 251 → 249.
+- **Parts Network Dashboard / My Requests / Incoming Requests were
+  genuine duplicates, and were fixed** the simpler way: they had their own
+  second copy of the exact fixture rows `PartsNetwork.tsx` already had
+  (converted to an honest gap state in wave 1). Deleted
+  `app/src/screens/parts/PartsNetworkDashboardSpec.tsx`, `PartsNetworkMyRequests.tsx`, `PartsNetworkIncomingRequests.tsx`
+  and pointed `app/src/screens/domains/parts.ts`'s `SCREEN_ENTRIES` at
+  `PartsNetwork.tsx`'s own `PartsNetworkDashboard`/`PartsNetworkRequests`/
+  `PartsNetworkIncoming` exports instead of maintaining two copies.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8), `npx vitest run`
+(107 files / 3905 tests), a full local `smoke.mjs` run (428/428 routes)
+and the `parts-procurement` e2e spec (10/10) all clean.
+
+**Not yet done** — Purchase Agent (9), Technician Portal/App (11), Client
+Portal (6) and Portal Dashboard/Communications (2) still need the same
+file-by-file check; nothing about them was verified beyond a route-name
+guess.
+
+## Wave 4 — Purchase Agent / Technician Portal-App / Client Portal / Portal misc (2026-09-18)
+
+Verified the four remaining groups file-by-file. One correction to this
+document's own count: the actual scope was 36 screens, not the ~28
+estimated in wave 2 — every one of them already resolves to its own
+dedicated component in `app/src/screens/domains/portals.ts`'s
+`SCREEN_ENTRIES` (the same "already real, not a spec-renderer duplicate"
+situation wave 3 found for the accounting-statements group), so this was
+never actually a duplicate-reconciliation problem in the wave-3 sense.
+What it turned out to be instead: 28 of the 36 fabricate hardcoded fixture
+data (invented names, IDs, dates, costs) with no honest hedging — a
+straightforward BLK-004 violation, just mislabeled "duplicate" from a
+route-name guess.
+
+Fixed all 28, using two treatments depending on whether a real collection
+exists for the concept:
+
+- **Honest GAP state (17 screens)** — no collection backs the content at
+  all (time clock, attendance, parts requests, documentation, repair
+  guides, diagnostic software licenses, purchasing tasks, quotations,
+  deliveries/shipment tracking, price comparison, procurement reports,
+  service reminders, reviews/chat, a cross-portal activity feed and a
+  messages inbox). Converted to the same `EmptyState` + "Connect the API"
+  pattern `CallCenterLogs.tsx` established in wave 1:
+  `TechnicianPortalTimeClock/Documentation/Attendance/Guides/Software/Parts.tsx`,
+  `TechnicianAppClock.tsx`,
+  `ClientPortalReminders/ReviewChat.tsx`,
+  `PurchaseAgentTasks/Quotations/Delivery/PriceCompare/Tracking/Reports.tsx`,
+  `PortalDashboard.tsx`, `PortalCommunications.tsx`.
+- **Wired to real data (11 screens)** — a real collection or the
+  signed-in session already carries this. `TechnicianPortalProfile.tsx`
+  and `TechnicianAppProfile.tsx` now show the technician's own real name/
+  role/email from `useSession()` (gap-noted for employee ID, certs,
+  performance stats — none of which exist anywhere). `TechnicianAppHome.tsx`
+  reuses `TechnicianPortal.tsx`'s own real jobs/appointments stats (and
+  drops the exact invented "6.5h logged" figure that screen's own comment
+  says was deliberately excluded). `TechnicianAppLookup.tsx` and
+  `PurchaseAgentInventory.tsx` now read the real `parts` collection
+  `Inventory.tsx` already reads. `PurchaseAgentDashboard.tsx` and
+  `PurchaseAgentOrders.tsx` read the real `purchaseOrders`/`suppliers`/
+  `requisitions` collections `ProcurementPortal` and `PurchaseOrdersList.tsx`
+  already read, using the server's real status vocabulary rather than the
+  design's invented one. `ClientPortalDashboard.tsx`,
+  `ClientPortalServiceHistory.tsx` and `ClientPortalLiveTracking.tsx` read
+  the real `vehicles`/`appointments`/`invoices`/`jobs` collections
+  `CustomerPortal.tsx` already reads (`LiveTracking` reuses the hub's own
+  `railIndexFor` stage-progress calculation instead of two invented
+  percentages). `ClientPortalProfile.tsx` shows the real signed-in
+  customer's name/email, gap-noted for the rest (no national ID, loyalty
+  tier or visit-count field or collection exists).
+
+**Deliberately left alone (8 screens)** — already real and honest, no
+fabrication to fix: `TechnicianPortalDashboard/MyJobs.tsx`,
+`TechnicianAppJobs.tsx` (real `jobs` data, honestly drops unbacked
+columns), `ClientPortalVehicles/Appointments/Invoices.tsx` (real
+collections, `derived()` for genuinely unprojected fields, an explicit
+`UNKNOWN` rather than a dishonest client-side sum on Invoices),
+`PurchaseAgentPayments.tsx` and `PurchaseAgentSuppliers.tsx` (real
+`purchaseOrders`/`suppliers` data with an explicit gap notice for columns
+the collection doesn't carry). Several of these duplicate a hub screen's
+*concept* (e.g. `PurchaseAgentSuppliers.tsx` and
+`app/src/screens/parts/SuppliersList.tsx` both show the real supplier
+list) — matching this project's own precedent from earlier in this wave
+and from wave 3, duplication of concept across personas is not itself a
+violation as long as every copy is honestly wired; only fabricated
+duplicates get fixed.
+
+`npm run registry`: BLK-004 mock-only 249 → 241 (the 8 screens that
+gained a direct `useCollection` call the generator's `dataBackedScreens`
+detector recognises; the 17 GAP-state and 3 session-only conversions stay
+flagged `MOCK_ONLY` — correctly, since "not wired to a live collection" is
+still true for an honest empty state).
+
+Verified: `npm run typecheck`, `npm run gates` (8/8), `npx vitest run`
+(111 files / 3918 tests), a full local `smoke.mjs` run (429/429 routes)
+and a manual Playwright spot-check of 13 of the rewired routes (real data
+rendering, zero console errors) all clean. `node tools/docs/check.mjs`:
+passes, no drift.
+
+This closes the duplicate-reconciliation backlog opened in wave 2 — all
+four flagged groups (accounting statements in wave 3; Suppliers/Purchase-
+Orders/Parts-Network in wave 3; Purchase Agent/Technician Portal-App/
+Client Portal/Portal misc here) have now been verified file-by-file.
+
 ## Recommended next steps (not done here)
 
-1. **Duplicate reconciliation** — verify each "likely duplicate" above
-   file-by-file (does a real screen already cover it? does the featuremap
-   route need to redirect, or does the persona genuinely differ?) and
-   apply the same wire-or-delete treatment `SUPERSEDED_SCREENS.md` used
-   for the BLK-010 orphan-file pass. This is the highest-value remaining
-   slice of the featuremap bucket — it could close 20+ more without
-   building anything new, just pointing at what already exists.
-2. **Admin domain ownership gap** — 14 screens (`AuditLog`, `Settings`,
+1. ~~**Duplicate reconciliation**~~ — done as of wave 4: every group this
+   document flagged has been verified file-by-file (waves 3 and 4).
+2. **Registry `dataBackedScreens` blind spot** — flagged in wave 3, still
+   open: the generator only recognises a screen calling
+   `useCollection`/`useEntity` directly, not through a custom hook
+   (`useTrialBalance()` et al.) the way it already follows one level of
+   component delegation. A shared, generator-level fix, not a per-screen
+   one — needs its own validated pass across the whole registry.
+3. **Admin domain ownership gap** — 14 screens (`AuditLog`, `Settings`,
    `RolesPermissions`, etc.) have no owner in `project-control/
    OWNERSHIP.json`'s product-agent list at all; needs an ownership
    decision before further wiring.
-3. **`website` (34) and `auth` (28) domains** — need the same "is
+4. **`website` (34) and `auth` (28) domains** — need the same "is
    `dataBacked` even the right bar for this screen" judgment call
    `SOURCE_RECONCILIATION.md` flagged; many are legitimately static
    marketing pages or terminal/status screens.

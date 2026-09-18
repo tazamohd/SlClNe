@@ -290,6 +290,14 @@
         "supplier",
         "customer"
       ]
+    },
+    {
+      "field": "Inspection internal notes",
+      "fieldAr": "ملاحظات الفحص الداخلية",
+      "hiddenFrom": [
+        "customer",
+        "supplier"
+      ]
     }
   ],
   "totals": {

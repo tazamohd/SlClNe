@@ -105,3 +105,4 @@ The grant says *which module*. The scope says *which rows*, and it is enforced b
 | Customer contact details | بيانات اتصال العميل | technician, qc, supplier |
 | Bank account details | بيانات الحساب البنكي | advisor, technician, qc, parts, frontdesk, callcenter, hr, procurement, supplier, customer |
 | Branch P&L | أرباح وخسائر الفرع | advisor, technician, qc, parts, frontdesk, callcenter, procurement, supplier, customer |
+| Inspection internal notes | ملاحظات الفحص الداخلية | customer, supplier |

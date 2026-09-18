@@ -18,12 +18,18 @@ import {
   customerUpdate,
   declinedJobCreate,
   declinedJobUpdate,
+  deliverySignoffCreate,
+  deliverySignoffUpdate,
   employeeCreate,
   employeeUpdate,
   feedbackCreate,
   feedbackUpdate,
   fleetCreate,
   fleetUpdate,
+  inspectionFindingCreate,
+  inspectionFindingUpdate,
+  inspectionMediaCreate,
+  inspectionMediaUpdate,
   jobCardCreate,
   jobCardUpdate,
   leadCreate,
@@ -332,6 +338,42 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
         value.resolvedAt = RESOLVED_DECLINED_JOB_STATUSES.has(value.status as string) ? new Date() : null
       }
       return value
+    },
+  },
+
+  /* Digital Vehicle Health Check (Sprint 2, P0). `create` is `z.never()` for
+   * both — a finding is born from `POST /job-cards/:id/inspection-findings`,
+   * media from the multipart upload route (`server/src/routes/inspection.ts`)
+   * — never a generic `POST`, because neither the finding's `jobCardId` nor a
+   * file's bytes belong in a JSON body the generic writer would trust as-is. */
+  inspectionFindings: {
+    create: inspectionFindingCreate,
+    update: inspectionFindingUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
+
+  inspectionMedia: {
+    create: inspectionMediaCreate,
+    update: inspectionMediaUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
+
+  /* Customer sign-off at delivery (Sprint 2, P0). `create` is `z.never()` —
+   * a row is born from `POST /job-cards/:id/delivery-signoff`
+   * (`server/src/routes/delivery.ts`), never a generic `POST`, because
+   * neither the job card nor a signature image's bytes belong in a JSON body
+   * the generic writer would trust as-is. `update` only ever carries the
+   * checklist and the odometer reading; the signature, who signed and when
+   * are fixed at creation. */
+  deliverySignoffs: {
+    create: deliverySignoffCreate,
+    update: deliverySignoffUpdate,
+    async toColumns(input) {
+      return { ...input }
     },
   },
 }

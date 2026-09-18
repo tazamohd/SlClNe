@@ -373,6 +373,85 @@ export const declinedJobs = pgTable(
   }),
 )
 
+/** Digital Vehicle Health Check — inspection findings (Sprint 2, P0). One row
+ *  per checklist point on one job card; see `packages/contract/src/entities/inspection.ts`
+ *  for why `internalNote` and `customerNote` are kept apart. */
+export const inspectionFindings = pgTable(
+  'inspection_findings',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    category: varchar('category', { length: 64 }).notNull(),
+    categoryAr: varchar('category_ar', { length: 64 }),
+    item: varchar('item', { length: 120 }).notNull(),
+    itemAr: varchar('item_ar', { length: 120 }),
+    /** The DVHC ladder: ok, monitor, attention, urgent, unsafe. */
+    severity: varchar('severity', { length: 16 }).notNull().default('ok'),
+    internalNote: text('internal_note'),
+    customerNote: text('customer_note'),
+    /** The estimate line this finding was priced onto, once one exists. */
+    estimateLineId: varchar('estimate_line_id', { length: ULID_LENGTH }),
+    recordedBy: varchar('recorded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byJob: index('inspection_findings_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Photo/video evidence attached to an inspection finding. The bytes live on
+ *  disk (`server/src/storage/media.ts`); `storageKey` is the only pointer to
+ *  them a row carries — it is never returned to a client, which instead reads
+ *  `GET /inspection-media/:id/file`. */
+export const inspectionMedia = pgTable(
+  'inspection_media',
+  {
+    ...tenant,
+    findingId: varchar('finding_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the finding so RLS and queries never need the join
+     *  just to know which job card a piece of evidence belongs to. */
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    kind: varchar('kind', { length: 8 }).notNull(),
+    stage: varchar('stage', { length: 8 }).notNull().default('before'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+    /** Arrow/box/text overlays, in the media's own 0–1 fractional coordinates. */
+    annotations: jsonb('annotations').notNull().default(sql`'[]'::jsonb`),
+    uploadedBy: varchar('uploaded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byFinding: index('inspection_media_finding_idx').on(t.orgId, t.findingId),
+    byJob: index('inspection_media_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Customer sign-off at delivery (Sprint 2, P0). One row per job card — the
+ *  signature image lives on disk (`server/src/storage/media.ts`), `storageKey`
+ *  is the only pointer to it a row carries, and it is served only through
+ *  `GET /delivery-signoffs/:id/signature`. */
+export const deliverySignoffs = pgTable(
+  'delivery_signoffs',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the job card at creation time, not trusted from the
+     *  request — the person signing on the shared device is a customer, not
+     *  the staff principal making the call. */
+    signedByName: varchar('signed_by_name', { length: 200 }).notNull(),
+    agreedAt: timestamp('agreed_at', { withTimezone: true }).notNull(),
+    /** `customerNotified`/`keysReturned`/`documentsReady`/`invoiceAttached`/
+     *  `cleaned`/`qualityCheck` — filled in once the advisor has walked it. */
+    checklist: jsonb('checklist').notNull().default(sql`'{}'::jsonb`),
+    odometerOut: integer('odometer_out'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+  },
+  (t) => ({
+    byJob: index('delivery_signoffs_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
 export const invoices = pgTable(
   'invoices',
   {
