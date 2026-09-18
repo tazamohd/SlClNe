@@ -572,7 +572,7 @@
         "D-JournalEntries",
         "D-TaxManagement"
       ],
-      "dataBackedScreens": 5,
+      "dataBackedScreens": 7,
       "entities": [
         "chartOfAccounts",
         "expenses",
@@ -1231,7 +1231,7 @@
         "D-CustomerApp.ServiceTracking",
         "D-CustomerApp.Wallet"
       ],
-      "dataBackedScreens": 3,
+      "dataBackedScreens": 5,
       "entities": [],
       "rules": [],
       "roles": [],
