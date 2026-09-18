@@ -16,12 +16,12 @@
 | Measure | Count | Of |
 | --- | --- | --- |
 | Registered capabilities | 428 | — |
-| Product screens | 388 | 428 |
+| Product screens | 365 | 428 |
 | Reference-only | 28 | 428 |
 | Rendered | 428 | 428 |
 | Placeholder | 0 | 428 |
 | Data-backed (live API) | 114 | 428 |
-| Mock-only (design fixtures) | 274 | 428 |
+| Mock-only (design fixtures) | 251 | 428 |
 | End-to-end covered | 428 | 428 |
 | Content-asserted (not just routed) | 428 | 428 |
 | Has a loading state | 157 | 428 |
@@ -34,7 +34,7 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **274 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **251 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
