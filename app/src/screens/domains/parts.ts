@@ -21,9 +21,11 @@ import { AutomatedReordering } from '../parts/AutomatedReordering'
 import { BarcodeScanner } from '../parts/BarcodeScanner'
 import { Interactive3DParts } from '../parts/Interactive3DParts'
 import { PurchaseOrdersList } from '../parts/PurchaseOrdersList'
-import { PartsNetworkDashboardSpec } from '../parts/PartsNetworkDashboardSpec'
-import { PartsNetworkMyRequests } from '../parts/PartsNetworkMyRequests'
-import { PartsNetworkIncomingRequests } from '../parts/PartsNetworkIncomingRequests'
+import {
+  PartsNetworkDashboard,
+  PartsNetworkRequests,
+  PartsNetworkIncoming,
+} from '../network/PartsNetwork'
 
 export const SCREENS: DomainScreens = {
   InventoryReports,
@@ -37,7 +39,13 @@ export const SCREENS: DomainScreens = {
   'Barcode-Scanner': BarcodeScanner,
   'Interactive-3D-Parts': Interactive3DParts,
   'Purchase-Orders': PurchaseOrdersList,
-  'Parts-Network-Dashboard': PartsNetworkDashboardSpec,
-  'Parts-Network-My-Requests': PartsNetworkMyRequests,
-  'Parts-Network-Incoming-Requests': PartsNetworkIncomingRequests,
+  // These three feature-map routes duplicated PartsNetwork.tsx's own
+  // dashboard/requests/incoming screens under a second, spec-only path —
+  // right down to a second copy of the same fabricated fixture rows
+  // PartsNetwork.tsx already had converted to an honest gap state
+  // (project-control/SOURCE_RECONCILIATION.md, BLK-004 wave 1). Point them
+  // at the real, already-fixed components instead of maintaining two.
+  'Parts-Network-Dashboard': PartsNetworkDashboard,
+  'Parts-Network-My-Requests': PartsNetworkRequests,
+  'Parts-Network-Incoming-Requests': PartsNetworkIncoming,
 }
