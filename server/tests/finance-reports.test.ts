@@ -191,7 +191,7 @@ describe('GET /accounting/tax/return', () => {
 })
 
 describe('GET /accounting/reports/trial-balance', () => {
-  it('surfaces F-008: the seeded ledger is out by SAR 257,050 and is not forced to balance', async () => {
+  it('the balance sheet identity holds (F-008 fixed); the full trial balance still carries the period\'s unclosed net income, honestly', async () => {
     const accountant = await harness.token('accountant')
     const res = await harness.app.inject({
       method: 'GET',
@@ -218,19 +218,22 @@ describe('GET /accounting/reports/trial-balance', () => {
     /* The balance-sheet identity, from the seeded chart of accounts. */
     expect(tb.balanceSheet.assetsHalalas).toBe(268350000) // SAR 2,683,500
     expect(tb.balanceSheet.liabilitiesHalalas).toBe(14055000) // SAR 140,550
-    expect(tb.balanceSheet.equityHalalas).toBe(280000000) // SAR 2,800,000
-    expect(tb.balanceSheet.liabilitiesPlusEquityHalalas).toBe(294055000) // SAR 2,940,550
+    expect(tb.balanceSheet.equityHalalas).toBe(254295000) // SAR 2,542,950
+    expect(tb.balanceSheet.liabilitiesPlusEquityHalalas).toBe(268350000) // SAR 2,683,500
 
-    /* F-008, surfaced as a real number: assets − (liabilities + equity) =
-     * −SAR 257,050. Not zero, not hidden. */
-    expect(tb.balanceSheet.differenceHalalas).toBe(-25705000)
-    expect(tb.balanceSheet.balanced).toBe(false)
+    /* F-008 fixed: the Owner's Equity seed row was a typo-grade fixture value
+     * (SAR 2,800,000) that didn't satisfy assets = liabilities + equity.
+     * Corrected to SAR 2,542,950, the identity now holds exactly. */
+    expect(tb.balanceSheet.differenceHalalas).toBe(0)
+    expect(tb.balanceSheet.balanced).toBe(true)
 
-    /* The full trial balance is likewise reported honestly — debit and credit
-     * columns do not tie, and `balanced` says so rather than being coerced. */
+    /* The full trial balance (all five account types) still doesn't tie —
+     * that's not F-008, it's this fixture never running a period-close: the
+     * residual is exactly the period's net income, sitting in P&L rather than
+     * folded into equity yet. Reported honestly rather than forced to zero. */
     expect(tb.totals.debitHalalas).toBe(364110000) // assets + expense
-    expect(tb.totals.creditHalalas).toBe(422505000) // liabilities + equity + revenue
-    expect(tb.totals.differenceHalalas).toBe(-58395000)
+    expect(tb.totals.creditHalalas).toBe(396800000) // liabilities + equity + revenue
+    expect(tb.totals.differenceHalalas).toBe(-32690000) // == -netHalalas, i.e. unclosed net income
     expect(tb.balanced).toBe(false)
 
     /* The P&L roll-up. */

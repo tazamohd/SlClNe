@@ -14,6 +14,10 @@
 // estimate = عرض سعر. Brand names, env vars and units (SALIS AUTO, SAR,
 // VITE_API_URL, YYYY-MM, ZATCA, OBD, IFRS, API) are left verbatim.
 export const AR_OVERRIDES: Record<string, string> = {
+  // ── Demo-environment badge (2026-09) ───────────────────────────────────────
+  "Demo": "تجريبي",
+  "Demo environment — no real data": "بيئة تجريبية — لا توجد بيانات حقيقية",
+
   // ── Public-website truth & conversion overhaul (2026-09) ──────────────────
   // "Functional domains" and "Permission modules" are already covered further
   // down (generated-dictionary corrections); only "Operational roles" is new.

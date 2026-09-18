@@ -94,14 +94,16 @@
     },
     {
       "id": "F-008",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "The seeded chart of accounts does not balance",
       "detail": "Assets are out against liabilities plus equity by SAR 257,050. FinancialReports already says so on screen, and a test now pins that honesty.",
       "why": "The seed becomes the database. An unbalanced ledger seeded into Postgres makes every financial-integrity test meaningless.",
       "foundBy": "07",
-      "verified": "reported",
+      "verified": "confirmed — root-caused to a single typo-grade fixture value (Owner's Equity), not a posting/schema bug; corrected and re-verified the identity now holds",
       "owner": "05",
-      "wave": "W1"
+      "wave": "W1",
+      "status": "fixed",
+      "resolution": "project/gms-data.js's ACCOUNTS_COA 3000 Owner's Equity row was a static SAR 2,800,000 that never satisfied assets = liabilities + equity. Corrected to SAR 2,542,950 (the value that balances against the other seeded rows) and re-ported to server/src/db/seed-data.ts and app/src/data/generated/tables.ts via `npm run port-design`. The full trial balance (all five account types) legitimately still doesn't tie — this fixture has no period-close entries, so the residual now equals exactly the period's unclosed net income, which is correct, not a bug. Pinning tests updated: server/tests/seed-coherence.test.ts, server/tests/finance-reports.test.ts, app/tests/finance-integrity.test.ts."
     },
     {
       "id": "F-009",
@@ -118,7 +120,7 @@
     },
     {
       "id": "F-010",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "23 icon names resolve to no glyph",
       "detail": "lucide renamed a family in v0.4xx (AlertTriangle to TriangleAlert, CheckCircle to CircleCheckBig, Home to House). The design bundle still asks for the old names and port-design-data.mjs intersects against lucide's current keys, dropping the misses silently. Its scanner also never collected single-letter names, so the close X on every toast rendered blank.",
       "why": "User-visible in shipped screens — the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
@@ -126,7 +128,7 @@
       "verified": "confirmed — orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
       "owner": "02",
       "wave": "W1",
-      "status": "worked around, durable fix outstanding"
+      "status": "RESOLVED — the remaining 6 misses (ArrowDownCircle, ArrowUpCircle, BarChart2, Columns, FormInput, PlusCircle) were lucide deprecated-alias exports absent from lucide-react's `icons` registry object, which is what the generator's `known` set was built from, even though they still resolve as top-level named exports. Added their canonical current names (CircleArrowDown, CircleArrowUp, ChartNoAxesColumn, Columns2, RectangleEllipsis, CirclePlus) to LUCIDE_RENAMES in scripts/port-design-data.mjs. `npm run port-design` now reports 0 unresolved names."
     },
     {
       "id": "F-011",
@@ -434,6 +436,18 @@
       "wave": "W3",
       "status": "fixed",
       "resolution": "InsuranceReports and LoanReports read productReports.insuranceClaimsSummary/loansSummary on the live path and keep the honest gap on the fixture build. No client-side aggregate."
+    },
+    {
+      "id": "F-036",
+      "severity": "MEDIUM",
+      "title": "Three generated files (nav.ts, rbac.ts, badges.ts) were hand-patched past what the generator now produces, so a routine `npm run port-design` silently reverts real fixes",
+      "detail": "Running port-design-data.mjs to fix F-008/F-010 also (a) dropped ~9 real AI/automation and voice nav entries from NAV that exist as routed screens in app/src but were never added to handoff/SCREEN_MAP.md, and (b) reverted rbac.ts's and badges.ts's role/status colors from theme-aware CSS custom properties (`var(--salis-blue)`, `var(--tint-orange)`, etc. — needed for dark-mode support) back to hardcoded hex/rgba literals, because whoever added dark-mode theming patched the generated output directly instead of the generator's color-emission logic or its design-bundle source. Caught before committing by diffing every regenerated file rather than trusting `npm run gates` alone (gates don't check for a theming regression). nav.ts, rbac.ts and badges.ts were reverted to their pre-regeneration content this pass; only screens.ts (2 legitimate SCREEN_MAP.md rows added: PublicPortal.RoiCalculator, PublicPortal.Security — themselves a smaller instance of the same problem) and tables.ts (F-008's balance fix) were kept from the regeneration.",
+      "why": "The repo's stated contract is 'generated files are never edited by hand — the generator is the only writer.' That contract has been broken at least twice (nav/colors, and the two public-site screens) without anyone re-running the generator to notice, so the generator now actively fights recent real fixes instead of reproducing them. The next person who runs `npm run port-design` for an unrelated reason will hit the same silent regression unless this is fixed at the generator/source level.",
+      "foundBy": "this session",
+      "verified": "confirmed by diffing every file port-design-data.mjs rewrote against HEAD before committing; reverted the two destructive files, kept the two safe ones, all tests/gates/build still pass",
+      "owner": "02",
+      "wave": "unassigned",
+      "status": "worked around this session (reverted the regression before commit); durable fix outstanding — port-design-data.mjs's NAV/color emission and project/handoff/SCREEN_MAP.md need to be brought in line with what the app actually ships, or the generator's promise (\"safe to re-run any time\") is false"
     }
   ]
 }

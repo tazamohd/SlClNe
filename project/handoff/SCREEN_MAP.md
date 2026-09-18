@@ -187,6 +187,8 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **PublicPortal.Products** | `/public-portal/products` | 🖥 | Public website — Product suite overview |
 | **PublicPortal.RequestDemo** | `/public-portal/request-demo` | 🖥 | Public website — Request a demo form |
 | **PublicPortal.Resources** | `/public-portal/resources` | 🖥 | Public website — Resources & learning hub |
+| **PublicPortal.RoiCalculator** | `/public-portal/roi-calculator` | 🖥 | Public website — ROI calculator |
+| **PublicPortal.Security** | `/public-portal/security` | 🖥 | Public website — Security & data |
 | **PublicPortal.Services** | `/public-portal/services` | 🖥 `PublicPortal.Services.dc.html` | Public website — Services |
 | **PublicPortal.Solutions** | `/public-portal/solutions` | 🖥 | Public website — Solutions overview |
 | **PublicPortal.SpareParts** | `/public-portal/spare-parts` | 🖥 | Public website — Spare Parts product page |

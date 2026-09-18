@@ -6,6 +6,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { DemoBadge } from './DemoBadge'
 
 /** The chrome for a single-audience portal — technician, customer, and later
  *  supplier and procurement.
@@ -209,6 +210,8 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           ) : null}
 
           <span className="flex-1" />
+
+          <DemoBadge />
 
           <button
             type="button"

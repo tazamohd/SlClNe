@@ -387,7 +387,7 @@ export const ACCOUNTS_COA=[
  {code:"1300",name:"Fixed Assets",type:"Assets",balance:"SAR 1,450,000",children:5},
  {code:"2000",name:"Accounts Payable",type:"Liabilities",balance:"SAR 98,400",children:2},
  {code:"2100",name:"VAT Payable",type:"Liabilities",balance:"SAR 42,150",children:1},
- {code:"3000",name:"Owner's Equity",type:"Equity",balance:"SAR 2,800,000",children:2},
+ {code:"3000",name:"Owner's Equity",type:"Equity",balance:"SAR 2,542,950",children:2},
  {code:"4000",name:"Service Revenue",type:"Revenue",balance:"SAR 1,284,500",children:6},
  {code:"5000",name:"Cost of Services",type:"Expense",balance:"SAR 645,200",children:8},
  {code:"6000",name:"Operating Expenses",type:"Expense",balance:"SAR 312,400",children:10}

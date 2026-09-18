@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { DemoBadge } from './DemoBadge'
 import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
 
 /** 56px desktop header: search, command palette hint, theme, notifications,
@@ -13,6 +14,7 @@ export function Topbar() {
 
   return (
     <header className="relative z-[5] flex h-topbar flex-shrink-0 items-center gap-3 border-b border-border bg-sidebar px-6 shadow-sm">
+      <DemoBadge />
       <div className="flex-1" />
 
       <span className="relative hidden items-center sm:flex">
