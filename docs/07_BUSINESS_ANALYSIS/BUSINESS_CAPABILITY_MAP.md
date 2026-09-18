@@ -79,7 +79,7 @@ flowchart LR
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 7 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
-| CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
+| CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 10 | 4 | 8 | 2 | 6 |
@@ -87,7 +87,7 @@ flowchart LR
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 40 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 48 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-128 of 429 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+138 of 429 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -241,7 +241,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `reports`, `execreports` |
 | Screen domains | — |
-| Screens | 11 (9 data-backed) |
+| Screens | 11 (11 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | owner, superadmin, manager, advisor, qc, parts, accountant, hr, procurement, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 233 (40 data-backed) |
+| Screens | 233 (48 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

@@ -505,7 +505,7 @@
     {
       "path": "07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md",
       "section": "07_BUSINESS_ANALYSIS",
-      "bytes": 14502,
+      "bytes": 14504,
       "lines": 361,
       "type": "GENERATED",
       "archived": false,
@@ -1154,7 +1154,7 @@
     {
       "path": "20_UI_UX_EXPERIENCE/SCREEN_REGISTRY.md",
       "section": "20_UI_UX_EXPERIENCE",
-      "bytes": 3206,
+      "bytes": 3207,
       "lines": 79,
       "type": "GENERATED",
       "archived": false,
@@ -1231,7 +1231,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 21518,
+      "bytes": 21494,
       "lines": 299,
       "type": "GENERATED",
       "archived": false,
@@ -1242,7 +1242,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DOMAIN_INDEX.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 2352,
+      "bytes": 2353,
       "lines": 39,
       "type": "GENERATED",
       "archived": false,
@@ -1341,7 +1341,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/REPORTING.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 3475,
+      "bytes": 3555,
       "lines": 86,
       "type": "GENERATED",
       "archived": false,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61579,
+      "bytes": 61549,
       "lines": 438,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

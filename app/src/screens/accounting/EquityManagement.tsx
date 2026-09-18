@@ -3,70 +3,85 @@ import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScr
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
   MobileCardHeader,
   MobileCardRow,
 } from '@/components/shell/MobileShell'
+import { financeReports } from '@/data/repository'
+import { fromHalalas } from '@/screens/finance/money'
+import { AGGREGATE_GAP } from './reporting'
+import { ReportGap, ServerTotalsNote } from './ReportControls'
+import { useTrialBalance } from './useFinanceReports'
 
-interface EquityEntry {
+/** Equity Management — the equity accounts from
+ *  `GET /accounting/reports/trial-balance` (F-028), the same source
+ *  `BalanceSheet.tsx`'s equity section reads. Each row is one account's own
+ *  server-computed balance; the total is `balanceSheet.equityHalalas` as the
+ *  server returned it, never re-summed here.
+ *
+ *  This used to show a "Paid-in Capital / Retained Earnings / Reserves /
+ *  Drawings" sub-classification per account. `chartOfAccounts` carries no
+ *  such column — only a top-level `type` (Assets/Liabilities/Equity/Revenue/
+ *  Expense) — so that breakdown was invented, and is dropped along with the
+ *  KPI tiles that summed by it. There is no fixture fallback: a build with
+ *  no API names the gap (`ReportGap`) instead. */
+
+interface EquityRow {
   code: string
   name: string
-  type: string
-  balance: number
-  lastUpdated: string
-}
-
-const MOCK_EQUITY: readonly EquityEntry[] = [
-  { code: 'EQ-001', name: 'Share Capital', type: 'Paid-in Capital', balance: 1000000_00, lastUpdated: '2026-01-01' },
-  { code: 'EQ-002', name: 'Retained Earnings', type: 'Retained Earnings', balance: 485000_00, lastUpdated: '2026-07-31' },
-  { code: 'EQ-003', name: 'Legal Reserve', type: 'Reserves', balance: 100000_00, lastUpdated: '2026-01-01' },
-  { code: 'EQ-004', name: 'Owner Drawings', type: 'Drawings', balance: -75000_00, lastUpdated: '2026-08-10' },
-  { code: 'EQ-005', name: 'Revaluation Surplus', type: 'Other', balance: 120000_00, lastUpdated: '2026-06-30' },
-]
-
-const TYPE_PALETTE: Record<string, readonly [string, string]> = {
-  'Paid-in Capital': ['var(--tint-blue)', 'var(--salis-blue)'],
-  'Retained Earnings': ['var(--tint-bright)', 'var(--salis-blue-bright)'],
-  Reserves: ['var(--tint-navy)', 'var(--salis-navy)'],
-  Drawings: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Other: ['var(--tint-neutral)', 'var(--text-muted)'],
+  balanceHalalas: number
 }
 
 export function EquityManagement() {
   const { t } = usePreferences()
+  const trialBalance = useTrialBalance()
 
-  const totals = useMemo(() => {
-    let total = 0
-    let paidIn = 0
-    let retained = 0
-    let reserves = 0
-    for (const e of MOCK_EQUITY) {
-      total += e.balance
-      if (e.type === 'Paid-in Capital') paidIn += e.balance
-      if (e.type === 'Retained Earnings') retained += e.balance
-      if (e.type === 'Reserves') reserves += e.balance
-    }
-    return { total, paidIn, retained, reserves }
-  }, [])
+  const rows: readonly EquityRow[] = useMemo(
+    () =>
+      (trialBalance.data?.accounts ?? [])
+        .filter((a) => a.type === 'Equity')
+        .map((a) => ({ code: a.code, name: a.name, balanceHalalas: a.creditHalalas })),
+    [trialBalance.data],
+  )
+
+  const bs = trialBalance.data?.balanceSheet
 
   const stats: Stat[] = [
-    { label: 'Total Equity', value: formatSar(totals.total), caption: 'Net worth', highlight: true },
-    { label: 'Paid-in Capital', value: formatSar(totals.paidIn), caption: 'Invested capital' },
-    { label: 'Retained Earnings', value: formatSar(totals.retained), caption: 'Accumulated profit' },
-    { label: 'Reserves', value: formatSar(totals.reserves), caption: 'Legal and statutory', tone: 'info' },
+    { label: 'Total Equity', value: bs ? formatSar(fromHalalas(bs.equityHalalas)) : '—', caption: 'Net worth', highlight: true },
+    { label: 'Equity Accounts', value: rows.length, caption: 'In the chart of accounts' },
   ]
 
-  const columns: Column<EquityEntry>[] = [
+  const columns: Column<EquityRow>[] = [
     { header: 'Code', cell: (e) => e.code, code: true },
     { header: 'Name', cell: (e) => t(e.name) },
-    { header: 'Type', cell: (e) => {
-      const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
-      return <Badge background={bg} color={fg}>{t(e.type)}</Badge>
-    } },
-    { header: 'Balance', cell: (e) => <Money sar={e.balance} className="font-semibold" />, className: 'text-end' },
-    { header: 'Last Updated', cell: (e) => <span dir="ltr" className="text-muted">{e.lastUpdated}</span> },
+    { header: 'Type', cell: () => <Badge background="var(--tint-navy)" color="var(--salis-navy)">{t('Equity')}</Badge> },
+    { header: 'Balance', cell: (e) => <Money sar={fromHalalas(e.balanceHalalas)} className="font-semibold" />, className: 'text-end' },
   ]
+
+  if (financeReports === null) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
+        <FeatureHeader icon="PiggyBank" title={t('Equity Management')} subtitle={t('Owner equity accounts and reserves')} />
+        <ReportGap
+          icon="PiggyBank"
+          title={t('Equity Management')}
+          collection={AGGREGATE_GAP.ledger}
+          detail={t(
+            'Equity accounts are summed by the server over your whole organization. Connect the API to see it — no figures are estimated here.',
+          )}
+        />
+      </div>
+    )
+  }
+
+  if (trialBalance.isLoading) {
+    return <Loading label={t('Loading equity accounts…')} />
+  }
+  if (trialBalance.isError || !trialBalance.data) {
+    return <ErrorState description={trialBalance.error?.message} onRetry={() => void trialBalance.refetch()} />
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -76,23 +91,21 @@ export function EquityManagement() {
         subtitle={t('Owner equity accounts and reserves')}
       />
       <StatRow stats={stats} />
+      <ServerTotalsNote endpoint="GET /accounting/reports/trial-balance" />
 
       <DataTable
         caption="Equity accounts"
         columns={columns}
-        rows={MOCK_EQUITY as EquityEntry[]}
+        rows={rows as EquityRow[]}
         rowKey={(e) => e.code}
-        mobileCard={(e) => {
-          const [bg, fg] = TYPE_PALETTE[e.type] ?? TYPE_PALETTE.Other
-          return (
-            <>
-              <MobileCardHeader title={e.code} code trailing={<Badge background={bg} color={fg}>{t(e.type)}</Badge>} />
-              <MobileCardRow>{t(e.name)}</MobileCardRow>
-              <MobileCardRow label={t('Balance')}><Money sar={e.balance} className="font-semibold text-heading" /></MobileCardRow>
-            </>
-          )
-        }}
-        empty={<EmptyState icon="PiggyBank" title={t('No equity entries found')} />}
+        mobileCard={(e) => (
+          <>
+            <MobileCardHeader title={e.code} code trailing={<Badge background="var(--tint-navy)" color="var(--salis-navy)">{t('Equity')}</Badge>} />
+            <MobileCardRow>{t(e.name)}</MobileCardRow>
+            <MobileCardRow label={t('Balance')}><Money sar={fromHalalas(e.balanceHalalas)} className="font-semibold text-heading" /></MobileCardRow>
+          </>
+        )}
+        empty={<EmptyState icon="PiggyBank" title={t('No equity accounts found')} />}
       />
     </div>
   )
