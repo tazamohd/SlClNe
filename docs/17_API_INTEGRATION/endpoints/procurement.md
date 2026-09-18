@@ -10,7 +10,7 @@
 
 # API — procurement
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 28 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 28 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
