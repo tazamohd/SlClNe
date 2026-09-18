@@ -104,4 +104,4 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 | `project-control/TEST_REGISTRY.json` | 202 suites, 2291 cases | the spec files |
 | `project-control/CAPABILITY_REGISTRY.json` | 18 capabilities linked to everything below them | modules + screen domains |
 | `project-control/SECURITY_REGISTRY.json` | RLS policies, triggers, unauthenticated surface | `server/drizzle/*.sql` |
-| `project-control/MASTER_REGISTRY.json` | 429 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |
+| `project-control/MASTER_REGISTRY.json` | 430 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |

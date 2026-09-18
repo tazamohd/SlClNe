@@ -48,8 +48,8 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 429,
-    "screensTotal": 429,
+    "screensMapped": 430,
+    "screensTotal": 430,
     "endpointsMapped": 431,
     "endpointsTotal": 431
   },
@@ -198,11 +198,12 @@
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 18,
+      "screenCount": 19,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
         "D-DeclinedJobs",
+        "D-CannedJobs",
         "D-HealthCheckReport",
         "D-CustomerApproval",
         "D-DiagnosticReport",
@@ -219,7 +220,7 @@
         "D-WorkshopQC",
         "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 17,
+      "dataBackedScreens": 18,
       "entities": [
         "appointments",
         "cannedJobs",
@@ -1549,7 +1550,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 48,
+      "dataBackedScreens": 51,
       "entities": [],
       "rules": [],
       "roles": [],

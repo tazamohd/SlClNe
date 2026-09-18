@@ -296,7 +296,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 17923,
+      "bytes": 17925,
       "lines": 209,
       "type": "GENERATED",
       "archived": false,
@@ -1231,7 +1231,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 21494,
+      "bytes": 21497,
       "lines": 299,
       "type": "GENERATED",
       "archived": false,
@@ -1374,8 +1374,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/WORKSHOP.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 17847,
-      "lines": 265,
+      "bytes": 17927,
+      "lines": 266,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
