@@ -5052,12 +5052,10 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading sales…": "جارٍ تحميل المبيعات…",
 
   // Wave 9 — honest-gap and fake-success fixes for the ai domain screens.
-  "Automation Rules has no data source yet": "لا يوجد مصدر بيانات لقواعد الأتمتة بعد",
-  "Workflow Builder has no data source yet": "لا يوجد مصدر بيانات لمنشئ سير العمل بعد",
+  // (AutomationRules/WorkflowBuilder/PromptLibrary's own titles are
+  // already covered above by PR 152's independently-converted versions
+  // of those screens, which merged into main first and superseded this
+  // wave's ModelSettings.tsx rewrite — see FEATUREMAP_TRIAGE.md wave 9.)
   "AI Analytics has no data source yet": "لا يوجد مصدر بيانات لتحليلات الذكاء الاصطناعي بعد",
   "AI Assistant is not available on this deployment yet": "مساعد الذكاء الاصطناعي غير متاح في هذا الإصدار حاليًا",
-  "AI settings are not available on this deployment yet": "إعدادات الذكاء الاصطناعي غير متاحة في هذا الإصدار حاليًا",
-  "Token consumption and cost have no collection this API serves.": "استهلاك الرموز والتكلفة ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه.",
-  "Usage has no data source yet": "لا يوجد مصدر بيانات للاستخدام بعد",
-  "Prompt Library has no data source yet": "لا يوجد مصدر بيانات لمكتبة التوجيهات بعد",
 }

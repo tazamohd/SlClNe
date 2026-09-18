@@ -539,3 +539,14 @@ honest toast with no fake transcript entry added, and
 instead of the old fabricated numbers and fake success — zero console
 errors throughout. `node tools/docs/generate.mjs` + `check.mjs`: clean,
 no drift.
+
+**Post-merge note**: while this wave's PR was open, a concurrent
+session independently reached the same conclusion for
+`AutomationRules.tsx`, `WorkflowBuilder.tsx`, `ModelSettings.tsx` and
+`PromptLibrary.tsx` and merged its own honest-GAP fix for all four as
+[PR #152](https://github.com/tazamohd/SlClNe/pull/152) before this
+wave's PR merged. Rather than re-diverge four already-fixed screens,
+this wave's branch took PR #152's versions of those four files on its
+next `main` merge and kept only its own unique work:
+`AIAnalytics.tsx`'s GAP conversion and `AIAssistant.tsx`'s
+fake-success fix, neither of which PR #152 touched.
