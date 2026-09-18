@@ -2152,6 +2152,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4773,8 +4774,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkspaceSelection.dc.html",

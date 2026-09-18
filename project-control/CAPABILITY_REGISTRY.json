@@ -1222,7 +1222,7 @@
         "D-TwoFactorVerification",
         "D-WorkspaceSelection"
       ],
-      "dataBackedScreens": 0,
+      "dataBackedScreens": 1,
       "entities": [],
       "rules": [],
       "roles": [],

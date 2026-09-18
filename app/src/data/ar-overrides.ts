@@ -5062,4 +5062,16 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Mark as Claimed": "وضع علامة كمطالَب به",
   "Updating...": "جارٍ التحديث...",
   "Warranty marked as claimed": "تم وضع علامة على الضمان كمطالَب به",
+
+  // Wave 8 — honest-gap, real-wire and fake-success fixes for the auth domain screens.
+  "You've been invited to join a workspace.": "لقد تمت دعوتك للانضمام إلى مساحة عمل.",
+  "Accepting invites online is not available on this deployment yet — ask whoever invited you for another way to join.": "قبول الدعوات عبر الإنترنت غير متاح في هذا الإصدار حاليًا — اطلب من الشخص الذي دعاك طريقة أخرى للانضمام.",
+  "Change these anytime from Settings — this step only shows your current choices.": "يمكنك تغيير هذه الخيارات في أي وقت من الإعدادات — هذه الخطوة تعرض اختياراتك الحالية فقط.",
+  "This deployment does not save organization, branch or profile setup yet — nothing you entered was stored. You can configure your workshop from the Settings page once it is available.": "هذا الإصدار لا يحفظ إعداد المؤسسة أو الفرع أو الملف الشخصي بعد — لم يُحفظ أي مما أدخلته. يمكنك إعداد ورشتك من صفحة الإعدادات عند توفرها.",
+  "Organization selection has no data source yet": "لا يوجد مصدر بيانات لاختيار المؤسسة بعد",
+  "sign-in is not available on this deployment yet": "تسجيل الدخول غير متاح في هذا الإصدار حاليًا",
+  "We don’t track lockout details (reference, attempt count, unlock time) for this deployment yet. Contact support to unlock your account.": "لا نتتبع تفاصيل القفل (الرقم المرجعي وعدد المحاولات ووقت إلغاء القفل) في هذا الإصدار حاليًا. تواصل مع الدعم لإلغاء قفل حسابك.",
+  "Loading workspaces...": "جارٍ تحميل مساحات العمل...",
+  "No branches are set up on this account yet.": "لم يتم إعداد أي فروع لهذا الحساب بعد.",
+  "No workspaces yet": "لا توجد مساحات عمل بعد",
 }

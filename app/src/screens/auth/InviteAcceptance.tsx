@@ -3,17 +3,22 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** Accept (or decline) an invitation to join a workspace. */
+/** Accept (or decline) an invitation to join a workspace.
+ *
+ *  Previously showed a hardcoded org name ("Al-Amri Auto Center") as if
+ *  decoded from the invite — its own comment admitted it was "a
+ *  placeholder that matches the design prototype." No invite endpoint
+ *  exists anywhere in the API contract to decode a token or accept an
+ *  invite, live or not, so "Accept Invite" now stays honestly disabled
+ *  unconditionally (it previously enabled itself when `isLive`, which
+ *  would have looked like a real action with nowhere for it to go), and
+ *  the org name is a generic placeholder rather than an invented real
+ *  one. */
 export function InviteAcceptance() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-
-  /** In a real flow the invite token would carry the org name; this is a
-   *  placeholder that matches the design prototype. */
-  const orgName = 'Al-Amri Auto Center'
 
   return (
     <AuthLayout className={isMobile ? 'mx-auto max-w-full' : 'mx-auto max-w-[420px]'}>
@@ -27,8 +32,10 @@ export function InviteAcceptance() {
           {t('Invitation')}
         </h2>
         <p className="mt-2 mb-5 font-action text-sm text-muted">
-          {t("You've been invited to join")}{' '}
-          <span className="font-semibold text-heading">{orgName}</span>
+          {t("You've been invited to join a workspace.")}
+        </p>
+        <p className="mb-5 text-xs text-faint">
+          {t('Accepting invites online is not available on this deployment yet — ask whoever invited you for another way to join.')}
         </p>
 
         <div className="flex gap-2.5">
@@ -38,7 +45,7 @@ export function InviteAcceptance() {
           >
             {t('Decline')}
           </Link>
-          <Button size="md" className="flex-1" disabled={!isLive}>
+          <Button size="md" className="flex-1" disabled>
             {t('Accept Invite')}
           </Button>
         </div>

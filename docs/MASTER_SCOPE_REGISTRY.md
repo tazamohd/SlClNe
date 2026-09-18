@@ -16,16 +16,16 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 225 |
-| data backed | 143 |
+| mock only | 224 |
+| data backed | 144 |
 | e2e covered | 430 |
 | content asserted | 430 |
 | rendered without assertion | 0 |
-| has loading state | 179 |
-| has error state | 143 |
-| has empty state | 222 |
+| has loading state | 180 |
+| has error state | 144 |
+| has empty state | 224 |
 | tablet verified | 4 |
-| arabic verified | 76 |
+| arabic verified | 75 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 33 |
-| crud read | 135 |
+| crud read | 136 |
 | crud update | 28 |
 | crud delete | 25 |
 | unregistered designs | 0 |

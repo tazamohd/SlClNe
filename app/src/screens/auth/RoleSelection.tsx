@@ -14,7 +14,6 @@ interface RoleOption {
   labelAr: string
   description: string
   descriptionAr: string
-  users: string
 }
 
 const ROLE_OPTIONS: RoleOption[] = [
@@ -25,7 +24,6 @@ const ROLE_OPTIONS: RoleOption[] = [
     labelAr: 'مالك الورشة',
     description: 'Full workshop & team management',
     descriptionAr: 'إدارة كاملة للورشة والفريق',
-    users: '248',
   },
   {
     id: 'advisor',
@@ -34,7 +32,6 @@ const ROLE_OPTIONS: RoleOption[] = [
     labelAr: 'مستشار الخدمة',
     description: 'Customer intake & service orders',
     descriptionAr: 'استقبال العملاء وإدارة الطلبات',
-    users: '1.2K',
   },
   {
     id: 'technician',
@@ -43,7 +40,6 @@ const ROLE_OPTIONS: RoleOption[] = [
     labelAr: 'فني',
     description: 'Execute jobs & update status',
     descriptionAr: 'تنفيذ الأعمال وتحديث الحالة',
-    users: '3.4K',
   },
   {
     id: 'manager',
@@ -52,11 +48,17 @@ const ROLE_OPTIONS: RoleOption[] = [
     labelAr: 'مدير',
     description: 'Reports, oversight & permissions',
     descriptionAr: 'التقارير والإشراف والصلاحيات',
-    users: '680',
   },
 ]
 
-/** Role selection — pick your role after signup. */
+/** Role selection — pick your role after signup.
+ *
+ *  Each option previously showed a fabricated "Users" population count
+ *  (248, 1.2K, 3.4K, 680) as if pulled from a real accounts system —
+ *  there is no `users` collection anywhere this API serves (system
+ *  accounts have no backing collection at all, same conclusion as
+ *  UsersTeams.tsx in the admin domain). The roles themselves are real
+ *  RBAC roles, so the picker stays — only the invented stat is gone. */
 export function RoleSelection() {
   const { t, rtl } = usePreferences()
   const isMobile = useIsMobile()
@@ -112,12 +114,6 @@ export function RoleSelection() {
                 <p className="text-xs leading-[1.4] opacity-75">
                   {rtl ? role.descriptionAr : t(role.description)}
                 </p>
-                <div className="flex items-center gap-1.5 text-[11px] opacity-60">
-                  <Icon name="Users" size={12} />
-                  <span>
-                    {role.users} {t('Users')}
-                  </span>
-                </div>
               </button>
             )
           })}
