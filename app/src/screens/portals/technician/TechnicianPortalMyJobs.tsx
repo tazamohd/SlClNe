@@ -1,74 +1,84 @@
-import { Badge } from '@/components/ui/Badge'
+import { useNavigate } from 'react-router-dom'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface Job {
-  workOrder: string
-  vehicle: string
-  plate: string
-  service: string
-  priority: 'High' | 'Normal' | 'Low'
-  status: 'In Progress' | 'Queued' | 'Waiting Parts' | 'Completed'
-  estimatedHours: number
-  bay: string
-}
+type Job = RowOf<'jobs'>
 
-const JOBS: Job[] = [
-  { workOrder: 'WO-8830', vehicle: '2021 Honda Accord', plate: 'KSA 7193', service: 'Full Brake Service', priority: 'High', status: 'In Progress', estimatedHours: 3, bay: 'Bay 3' },
-  { workOrder: 'WO-8831', vehicle: '2022 Toyota Camry', plate: 'RJD 4821', service: 'Engine Tune-up', priority: 'Normal', status: 'Queued', estimatedHours: 2.5, bay: 'Bay 3' },
-  { workOrder: 'WO-8832', vehicle: '2023 Hyundai Tucson', plate: 'DMM 2856', service: 'AC Recharge', priority: 'Normal', status: 'Queued', estimatedHours: 1, bay: 'Bay 5' },
-  { workOrder: 'WO-8833', vehicle: '2020 Nissan Altima', plate: 'JED 5034', service: 'Transmission Flush', priority: 'Low', status: 'Waiting Parts', estimatedHours: 2, bay: 'Bay 3' },
-  { workOrder: 'WO-8834', vehicle: '2019 Toyota Hilux', plate: 'RYD 9012', service: 'Suspension Repair', priority: 'High', status: 'Queued', estimatedHours: 4, bay: 'Bay 7' },
-  { workOrder: 'WO-8825', vehicle: '2022 Kia Sportage', plate: 'MKH 3344', service: 'Oil Change', priority: 'Normal', status: 'Completed', estimatedHours: 1, bay: 'Bay 3' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-}
-
-const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-}
-
+/** My Jobs — a technician's own work queue, `TechnicianPortal.MyJobs.dc.html`.
+ *
+ *  `useCollection('jobs')` needs no client-side filter to "my" jobs: the
+ *  server's row-level security narrows a `technician`-scoped principal
+ *  (`ROLE_META.technician.scope === 'own'`) to the job cards whose
+ *  `assigned_tech_id` is theirs before the row ever reaches this screen
+ *  (`0002_own_scope_tech.sql`). What the design invented — bay, estimated
+ *  hours, a plate column — has no backing column on the presented row
+ *  (`registry.ts`'s `present()` for `jobs` carries id/customer/vehicle/
+ *  service/priority/status/stage only), so this shows exactly those fields,
+ *  the same set `workshop/JobCards.tsx` shows the front desk. Opening a row
+ *  goes to `TechnicianPortal.JobDetail`, which is where the real stage
+ *  actions — start repair, mark complete, hand to QC — already live. */
 export function TechnicianPortalMyJobs() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
+
+  const open = (job: Job) => navigate(`/technician-portal/job-detail?id=${encodeURIComponent(job.id)}`)
 
   const columns: Column<Job>[] = [
-    { header: t('Work Order'), cell: (j) => j.workOrder },
-    { header: t('Vehicle'), cell: (j) => j.vehicle },
-    { header: t('Plate'), cell: (j) => j.plate },
-    { header: t('Service'), cell: (j) => j.service },
-    { header: t('Bay'), cell: (j) => j.bay },
-    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
-    { header: t('Est. Hours'), cell: (j) => j.estimatedHours },
-    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+    { header: t('Job Card'), cell: (j) => j.id, code: true },
+    { header: t('Vehicle'), cell: (j) => j.veh },
+    { header: t('Customer'), cell: (j) => j.cust },
+    {
+      header: t('Service'),
+      cell: (j) => <ServiceBadge value={j.svc} label={t((j.svc ?? '').replace(/_/g, ' '))} />,
+    },
+    { header: t('Priority'), cell: (j) => <PriorityBadge value={j.pr} label={t(j.pr)} /> },
+    {
+      header: t('Status'),
+      cell: (j) => <StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />,
+    },
   ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Clipboard" title={t('My Jobs')} subtitle={t('Assigned work orders and status')} />
 
-      <DataTable
-        caption="Technician assigned work orders"
-        columns={columns}
-        rows={JOBS}
-        rowKey={(j) => j.workOrder}
-        mobileCard={(j) => (
-          <>
-            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
-            <MobileCardRow label={t('Vehicle')}>{j.vehicle} - {j.plate}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Bay')}>{j.bay}</MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState title={t("Couldn't load this")} description={error?.message} onRetry={() => void refetch()} />
+      ) : isLoading ? (
+        <Loading label={t('Loading job cards...')} inline />
+      ) : jobs.length === 0 ? (
+        <EmptyState
+          icon="Clipboard"
+          title={t('No jobs assigned')}
+          description={t('Work assigned to you shows up here as soon as an advisor hands it to your bay.')}
+        />
+      ) : (
+        <DataTable
+          caption="Technician assigned work orders"
+          columns={columns}
+          rows={jobs}
+          rowKey={(j) => j.id}
+          onRowClick={open}
+          mobileCard={(j) => (
+            <>
+              <MobileCardHeader
+                title={j.id}
+                code
+                trailing={<StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />}
+              />
+              <MobileCardRow label={t('Vehicle')}>{j.veh}</MobileCardRow>
+              <MobileCardRow label={t('Customer')}>{j.cust}</MobileCardRow>
+              <MobileCardRow label={t('Priority')}><PriorityBadge value={j.pr} label={t(j.pr)} /></MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }
