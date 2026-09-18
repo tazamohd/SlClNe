@@ -144,6 +144,40 @@ export interface FeedbackRow extends EntityMeta {
  *  was gapped in the prototype — so the shape is declared here rather than
  *  inferred from `generated/tables.ts`, like `BranchRow`. Read-only through the
  *  collection; the reconciling write is `POST /bank-statements/:id/match`. */
+/** A declined job, as `GET /declined-jobs` presents it (Sprint 1, P0). No
+ *  design fixture — the capability is new — so the shape is declared here
+ *  rather than inferred, like `BankStatementRow`. Read-only through the
+ *  collection except for the follow-up lifecycle (`status`, `followUpDate`,
+ *  `followUpNotes`), which the server accepts on `PATCH`; every other field,
+ *  including creation itself, is server-owned and only ever set by
+ *  `POST /estimates/:id/lines/:lineId/decline` or a whole-estimate reject. */
+export interface DeclinedJobRow extends EntityMeta {
+  estimateId: string
+  estimateLineId: string | null
+  jobCardId: string | null
+  customer: string
+  vehicle: string
+  advisorId: string | null
+  description: string
+  reasonCategory: 'cost' | 'timing' | 'second_opinion' | 'not_urgent' | 'trust' | 'other'
+  reasonNotes: string | null
+  safetySeverity: 'monitor' | 'attention' | 'urgent' | 'unsafe'
+  value: string
+  valueHalalas: number
+  status:
+    | 'declined'
+    | 'follow_up_scheduled'
+    | 'contacted'
+    | 'reconsidering'
+    | 'approved_later'
+    | 'permanently_declined'
+    | 'expired'
+  followUpDate: string | null
+  followUpNotes: string | null
+  declinedAt: string | null
+  resolvedAt: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -429,6 +463,7 @@ export interface Repository {
   jobs: Collection<(typeof T.JOBS)[number]>
   appointments: Collection<(typeof T.APPOINTMENTS)[number]>
   estimates: Collection<(typeof T.ESTIMATES)[number]>
+  declinedJobs: Collection<DeclinedJobRow>
   customers: Collection<(typeof T.CUSTOMERS)[number]>
   fleets: Collection<(typeof T.FLEETS)[number]>
   parts: Collection<(typeof T.PARTS)[number]>
@@ -489,6 +524,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   jobs: 'jobs',
   appointments: 'appointments',
   estimates: 'estimates',
+  declinedJobs: 'declined-jobs',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -719,6 +755,12 @@ export const mockRepository: Repository = {
   jobs: fixture(T.JOBS),
   appointments: fixture(T.APPOINTMENTS),
   estimates: fixture(T.ESTIMATES),
+  /* No design fixture — declined job tracking is new (Sprint 1, P0). An empty
+   * read-only mock is the honest fixture: every row is born from an estimate
+   * decline action, which the fixture repository cannot perform (`isLive` is
+   * false), so there is nothing to seed here. The live API serves rows once a
+   * line has actually been declined. */
+  declinedJobs: fixture<DeclinedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),

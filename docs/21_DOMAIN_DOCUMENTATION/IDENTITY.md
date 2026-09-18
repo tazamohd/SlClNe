@@ -77,7 +77,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-BiometricSetup | `/biometric-setup` | auth | **mock** | — | — | — | verified | yes |
 | D-CreatePIN | `/create-pin` | auth | **mock** | — | — | — | verified | yes |
 | D-ForgotPassword | `/forgot-password` | auth | **mock** | — | — | — | verified | yes |
-| D-InviteAcceptance | `/invite-acceptance` | auth | **mock** | — | — | — | verified | yes |
+| D-InviteAcceptance | `/invite-acceptance` | auth | **mock** | — | — | — | PARTIAL | yes |
 | D-LanguageSelection | `/language-selection` | auth | **mock** | — | — | — | verified | yes |
 | D-LogoutConfirmation | `/logout-confirmation` | auth | **mock** | — | — | — | verified | yes |
 | D-Onboarding | `/onboarding` | auth | **mock** | — | — | — | verified | yes |

@@ -33,6 +33,7 @@ import { registerProductReportRoutes } from './routes/product-reports'
 import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
 import { registerWorkshopReportRoutes } from './routes/workshop-reports'
+import { registerDeclinedJobsReportRoutes } from './routes/declined-jobs-report'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
 import type { OtpTransport } from './auth'
@@ -358,6 +359,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerHistoryRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })
+      registerDeclinedJobsReportRoutes(api, { db: deps.db, env: deps.env })
       registerObdRoutes(api, { db: deps.db, bridge: obdBridge, config: integrationConfig })
       registerEstimateOtpRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })

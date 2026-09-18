@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1151 in total.
+Every column of every table, 1178 in total.
 
 ## `organizations`
 
@@ -341,6 +341,46 @@ Organizations sit above tenancy — a row *is* the tenant.
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `estimate_lines_estimate_idx` | no | orgId, estimateId |
+
+## `declined_jobs`
+
+Declined Job Tracking & Follow-Up (Sprint 1, P0). A row per estimate line — or per whole estimate when the customer declines the job outright — a customer said no to. Deliberately its own table rather than a status on `estimate_lines`: a decline starts a sales follow-up lifecycle (contacted, reconsidering, expired…) that has nothing to do with the estimate's own document lifecycle, and recording it separately means an estimate's money totals are never at risk of a follow-up-workflow bug. `estimateLineId` is null when the whole estimate was declined rather than one line of it.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `estimate_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `estimate_line_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `job_card_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `customer_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `customer_name` | varchar(200) | NOT NULL | — | — | — |
+| `vehicle_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `vehicle_label` | varchar(160) | NOT NULL | — | — | presentation string from the design bundle |
+| `advisor_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `description` | varchar(300) | NOT NULL | — | — | — |
+| `reason_category` | varchar(32) | NOT NULL | — | 'other' | — |
+| `reason_notes` | text | nullable | — | — | — |
+| `safety_severity` | varchar(16) | NOT NULL | — | 'monitor' | — |
+| `value_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `status` | varchar(24) | NOT NULL | — | 'declined' | — |
+| `follow_up_date` | date | nullable | — | — | — |
+| `follow_up_notes` | text | nullable | — | — | — |
+| `declined_at` | timestamptz | NOT NULL | — | now() | — |
+| `resolved_at` | timestamptz | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `declined_jobs_org_idx` | no | orgId, branchId, status |
+| `declined_jobs_estimate_idx` | no | orgId, estimateId |
+| `declined_jobs_line_once_idx` | yes | orgId, estimateLineId |
 
 ## `invoices`
 

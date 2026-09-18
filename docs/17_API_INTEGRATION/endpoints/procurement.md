@@ -30,7 +30,7 @@
 | POST | `/api/v1/procurement/requisitions/:id/approve` | procurement:a | token | — | — | 1 | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/requisitions/:id/history` | procurement:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/procurement/requisitions/:id/lines` | procurement:v | token | — | — | — | `server/src/routes/procurement.ts` |
-| POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | token | — | — | — | `server/src/routes/procurement.ts` |
+| POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | token | — | — | 1 | `server/src/routes/procurement.ts` |
 | POST | `/api/v1/procurement/requisitions/:id/submit` | procurement:e | token | — | — | — | `server/src/routes/procurement.ts` |
 | GET | `/api/v1/procurement/requisitions/export` | procurement:x | token | `requisitions` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/procurement/suppliers` | procurement:v | token | `suppliers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

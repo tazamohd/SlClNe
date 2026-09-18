@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 427,
-    "product": 387,
+    "capabilities": 428,
+    "product": 388,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 427,
+    "rendered": 428,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 281,
-    "dataBacked": 106,
-    "e2eCovered": 427,
-    "contentAsserted": 427,
+    "mockOnly": 277,
+    "dataBacked": 111,
+    "e2eCovered": 428,
+    "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 152,
-    "hasErrorState": 119,
-    "hasEmptyState": 173,
+    "hasLoadingState": 157,
+    "hasErrorState": 124,
+    "hasEmptyState": 178,
     "tabletVerified": 4,
-    "arabicVerified": 77,
+    "arabicVerified": 78,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -28,15 +28,26 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 105,
-    "crudUpdate": 24,
+    "crudRead": 110,
+    "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 0,
+    "orphanScreenFiles": 10,
     "productionReady": 0
   },
   "unregisteredDesigns": [],
-  "orphanScreenFiles": [],
+  "orphanScreenFiles": [
+    "src/screens/public/landing/CommandDeck.tsx",
+    "src/screens/public/landing/PageNav.tsx",
+    "src/screens/public/landing/homepage/SocialProofBand.tsx",
+    "src/screens/public/landing/pages/AccessPage.tsx",
+    "src/screens/public/landing/pages/ChannelPage.tsx",
+    "src/screens/public/landing/pages/GridPage.tsx",
+    "src/screens/public/landing/pages/IndexPage.tsx",
+    "src/screens/public/landing/pages/OriginPage.tsx",
+    "src/screens/public/landing/pages/SystemPage.tsx",
+    "src/screens/public/landing/useLandingMotion.ts"
+  ],
   "entries": [
     {
       "screenId": "D-AccountLocked",
@@ -653,6 +664,83 @@
         "create": false,
         "read": true,
         "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING"
+      ]
+    },
+    {
+      "screenId": "D-DeclinedJobs",
+      "name": "DeclinedJobs",
+      "title": "DeclinedJobs",
+      "route": "/declined-jobs",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "estimates",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vceax",
+        "advisor:vce",
+        "technician:v",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:v",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": true,
+      "dataSource": [
+        "declinedJobs"
+      ],
+      "crud": {
+        "create": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -2564,7 +2652,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -3179,7 +3267,7 @@
       "tablet": "DONE",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -3545,7 +3633,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -3554,6 +3642,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "declinedJobs",
         "estimates"
       ],
       "crud": {
@@ -4765,7 +4854,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -4802,6 +4891,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -4838,7 +4928,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -4990,7 +5080,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "MISSING",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -5029,8 +5119,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -14492,7 +14581,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -19352,7 +19441,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -19882,16 +19971,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19918,7 +20009,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19948,16 +20038,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19984,7 +20076,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20672,16 +20763,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20708,7 +20801,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20803,16 +20895,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20839,7 +20933,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21789,7 +21882,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -21828,7 +21921,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23254,7 +23346,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -23320,7 +23412,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "DONE",
@@ -23386,7 +23478,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -23451,7 +23543,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
       "emptyState": "MISSING",
@@ -23516,7 +23608,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "MISSING",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",

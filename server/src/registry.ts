@@ -299,6 +299,45 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Declined Job Tracking & Follow-Up (Sprint 1, P0). Read + follow-up-`PATCH`
+   * only — `writable: true` is what turns `PATCH` on at all (§`registerOne`),
+   * and `WRITERS.declinedJobs.create` is `z.never()`, so a direct
+   * `POST /declined-jobs` always 400s: every row is created by
+   * `POST /estimates/:id/lines/:lineId/decline` or the whole-estimate
+   * `/reject` fan-out, never by the generic collection route. */
+  define({
+    key: 'declinedJobs',
+    path: 'declined-jobs',
+    table: s.declinedJobs,
+    module: 'estimates',
+    entity: 'declined_job',
+    search: ['customerName', 'vehicleLabel', 'description'],
+    sortable: ['declinedAt', 'followUpDate', 'valueHalalas', 'status', 'createdAt'],
+    filterable: ['status', 'estimateId', 'reasonCategory', 'safetySeverity', 'advisorId'],
+    defaultSort: { column: 'declinedAt', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      estimateId: row.estimateId,
+      estimateLineId: row.estimateLineId ?? null,
+      jobCardId: row.jobCardId ?? null,
+      customer: row.customerName,
+      vehicle: row.vehicleLabel,
+      advisorId: row.advisorId ?? null,
+      description: row.description,
+      reasonCategory: row.reasonCategory,
+      reasonNotes: row.reasonNotes ?? null,
+      safetySeverity: row.safetySeverity,
+      value: sarString(row.valueHalalas),
+      valueHalalas: count(row.valueHalalas),
+      status: row.status,
+      followUpDate: row.followUpDate ?? null,
+      followUpNotes: row.followUpNotes ?? null,
+      declinedAt: row.declinedAt ? new Date(row.declinedAt as string | Date).toISOString() : null,
+      resolvedAt: row.resolvedAt ? new Date(row.resolvedAt as string | Date).toISOString() : null,
+    }),
+  }),
+
   /* ------------------------------------------------------------- invoicing */
   define({
     key: 'invoices',

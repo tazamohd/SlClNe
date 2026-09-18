@@ -1,99 +1,45 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useT } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
-import { useLandingMotion } from './landing/useLandingMotion'
-import { PageNav } from './landing/PageNav'
-import { IndexPage } from './landing/pages/IndexPage'
-import { SystemPage } from './landing/pages/SystemPage'
-import { GridPage } from './landing/pages/GridPage'
-import { AccessPage } from './landing/pages/AccessPage'
-import { OriginPage } from './landing/pages/OriginPage'
-import { ChannelPage } from './landing/pages/ChannelPage'
-import { isPageKey, type PageKey } from './landing/types'
-import './landing/landing.css'
+import { useRevealMotion } from './landing/useRevealMotion'
+import { Hero } from './landing/homepage/Hero'
+import { ProofBand } from './landing/homepage/ProofBand'
+import { ProductMockups } from './landing/homepage/ProductMockups'
+import { ReleaseTimeline } from './landing/homepage/ReleaseTimeline'
+import './landing/homepage.css'
 
-/** PublicPortal.Landing — a six-page tour of SALIS AUTO (Arrival / System /
- *  Grid / Access / Origin / Channel), styled as a dark, futuristic HUD. It is
- *  a faithful port of the "SALIS AUTO 2030" design artifact: that artifact's
- *  own six pages, section for section, with its own copy — the six-stage job
- *  card and its two gates, the thirteen domains in English and Arabic, the
- *  fourteen roles and their approval ceilings, the six separated duty pairs,
- *  the parts flow from requisition to issue, the six portal doors, the three
- *  plans and the comparison matrix, the principles and dispatches, and the
- *  ways to reach a person.
+/** PublicPortal.Landing — the homepage, redesigned onto a restrained,
+ *  light-first enterprise-SaaS visual system (Stripe/Linear/Vercel
+ *  register) in place of the previous "SALIS AUTO 2030" HUD tour.
  *
- *  Every figure on a "live" panel — the bay board, the meters, the throughput
- *  bars, the activity and store-floor streams, the order stream, the branch
- *  roll-call, the invoice — is the artifact's own sample data, and is labelled
- *  as sample data wherever it is shown, exactly as the artifact labels it. The
- *  artifact re-rolls those figures from a seeded RNG on a timer; here they are
- *  frozen at one representative reading, because a number that moves on its
- *  own reads as live telemetry and there is no tenant behind this page.
+ *  That tour — a faithful, section-for-section port of a separate dark
+ *  sci-fi design artifact (`app/public/2030/`) with its own canvas/WebGL
+ *  scenes already downgraded to static SVG when ported — read as flashy
+ *  HUD chrome rather than the clean, data-forward register the product
+ *  owner asked for, and never followed the app's own light/dark toggle.
+ *  Its content was strong and honest; only the skin was wrong. This
+ *  rewrite keeps that discipline (every figure on a mockup panel is
+ *  labelled as sample data, exactly as the tour's own panels were) and
+ *  re-presents it as a single-scroll homepage: an outcome-first hero, a
+ *  credibility section built from real structural facts, three labelled
+ *  product-UI mockups, and a real version-numbered release timeline.
  *
- *  The artifact was a standalone six-document site with its own header, nav,
- *  language toggle, skip link and boot sequence. All of that is dropped —
- *  PublicShell already supplies the site's real header, footer, nav and
- *  language toggle. What is kept is the six pages' visual identity and
- *  structure, plus a lightweight in-page tab nav (`PageNav`) for moving
- *  between them, since PublicShell's own nav does not know about pages that
- *  live inside one screen.
+ *  The tour's six pages (`landing/pages/{System,Grid,Access,Origin,
+ *  Channel}Page.tsx`, plus `PageNav`/`CommandDeck`) are left in the
+ *  codebase untouched and unlinked from here — by the product owner's
+ *  explicit decision, remapping that content onto redesigned pages is a
+ *  later cascade-phase task, not part of this homepage rewrite. This
+ *  screen introduces no new route/screen name, so the registry's
+ *  three-place routing registration does not apply here.
  *
- *  One route (`/public-portal/landing`), six pages as React state rather
- *  than six routes, so exactly one page's markup is ever mounted — which is
- *  what keeps this screen down to one `<h1>` and one clean heading
- *  hierarchy, same as every other Tier A public page (`tests/public-pages
- *  .test.tsx` checks for both on every one of them). The active page is
- *  mirrored to `location.hash` (`#index`, `#system`, `#grid`, `#access`,
- *  `#origin`, `#channel`) with `history.replaceState`, not a navigation, so
- *  back/forward and shared links work without adding six entries to the
- *  browser history for one visit.
- *
- *  The artifact's canvas/WebGL scenes (a hand-rolled 3D service vehicle, the
- *  branch map with animated transfer arcs, the supply-mesh flow, the spinning
- *  diagnostic orb, the carrier signal) are reimplemented as static SVG drawn
- *  at rest — see the doc comment at the top of `landing/landing.css`. Two
- *  content departures, both for the same reason: the artifact's six portal
- *  doors become three real `<Link>`s and three informational tiles, because
- *  only customer, technician and supplier have a public route; and the
- *  Channel page's deliberately-local contact form is dropped, because a form
- *  that reads your text back and throws it away is honest inside a design
- *  document and a dead end inside the real application. Every remaining CTA
- *  is a real destination: an in-page scroll, an in-page page switch, or a
- *  `<Link>` to a route that already exists.
- *
- *  `IndexPage`'s bay-board mock also carries `<CornerBrackets>`, the same
- *  instrument-panel corner accent other public pages borrowed from this
- *  design study — see `sections/CornerBrackets.tsx`. */
-
-const PANEL_ID = 'salis-landing-panel'
-
-function pageFromHash(): PageKey {
-  const hash = window.location.hash.replace(/^#/, '')
-  return isPageKey(hash) ? hash : 'index'
-}
-
+ *  Still exactly one `<h1>` (in `Hero`) and a clean heading hierarchy —
+ *  the same constraint `tests/public-pages.test.tsx` enforces on every
+ *  Tier A public page. */
 export function PublicLanding() {
   const t = useT()
   const root = useRef<HTMLDivElement>(null)
-  const [page, setPage] = useState<PageKey>(() => pageFromHash())
-  useLandingMotion(root, [page])
-
-  // Deep-linkable via hash: a direct load or a paste of `#system` etc. opens
-  // straight to that page, and switching pages updates the hash in place
-  // (no new history entry) so the browser's back button still means "leave
-  // this screen", not "walk backward through the six pages".
-  useEffect(() => {
-    const onHashChange = () => setPage(pageFromHash())
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
-  }, [])
-
-  function selectPage(next: PageKey): void {
-    setPage(next)
-    const url = `${window.location.pathname}${window.location.search}#${next}`
-    window.history.replaceState(null, '', url)
-    document.getElementById(PANEL_ID)?.scrollIntoView?.({ block: 'start' })
-  }
+  useRevealMotion(root)
 
   usePageMeta({
     title: t('SALIS AUTO — Workshop Management, Saudi Standard'),
@@ -118,14 +64,26 @@ export function PublicLanding() {
   })
 
   return (
-    <div className="salis-landing" ref={root} id={PANEL_ID}>
-      <PageNav page={page} onSelect={selectPage} t={t} />
-      {page === 'index' ? <IndexPage t={t} /> : null}
-      {page === 'system' ? <SystemPage t={t} /> : null}
-      {page === 'grid' ? <GridPage t={t} /> : null}
-      {page === 'access' ? <AccessPage t={t} /> : null}
-      {page === 'origin' ? <OriginPage t={t} /> : null}
-      {page === 'channel' ? <ChannelPage t={t} /> : null}
+    <div className="salis-home" ref={root}>
+      <Hero t={t} />
+      <ProofBand t={t} />
+      <ProductMockups t={t} />
+      <ReleaseTimeline t={t} />
+
+      <section className="mx-auto max-w-[900px] px-5 py-14 text-center md:px-10 md:py-20">
+        <h2 className="mb-3 font-display text-2xl font-black text-heading md:text-3xl">
+          {t('Talk to sales, not a script')}
+        </h2>
+        <p className="mx-auto mb-6 max-w-[52ch] text-sm text-muted">
+          {t('Every plan is configured to your workshop — modules, branches, users and integrations. A specialist scopes it with you before any commitment.')}
+        </p>
+        <Link
+          to="/public-portal/request-demo"
+          className="inline-flex h-11 items-center rounded-lg bg-salis-gradient px-7 text-sm font-semibold text-white no-underline hover:no-underline"
+        >
+          {t('Request a Demo')}
+        </Link>
+      </section>
     </div>
   )
 }

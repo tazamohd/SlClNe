@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-09-17'
+export const REGISTRY_GENERATED_AT = '2026-09-18'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -199,6 +199,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     ],
     "inNav": true,
     "designSource": "project/ApprovalInbox.dc.html",
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-DeclinedJobs",
+    "name": "DeclinedJobs",
+    "title": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "estimates",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING"
+    ],
+    "inNav": true,
+    "designSource": null,
     "designMobileSource": null,
     "featureMapSource": null
   },
@@ -1480,6 +1502,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1545,8 +1568,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/InvoicePreview.dc.html",
@@ -6512,7 +6534,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6536,7 +6557,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6798,7 +6818,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6845,7 +6864,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7194,7 +7212,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

@@ -137,7 +137,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-079 | `/purchase-agent-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | MISSING | yes |
+| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-083 | `/purchase-agent-delivery` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-084 | `/purchase-agent-orders` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-085 | `/purchase-agent-suppliers` | app | yes | yes | yes | yes | verified | yes |
@@ -145,8 +145,8 @@ _No lifecycle in the contract belongs to this domain._
 | F-087 | `/purchase-agent-price-compare` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-088 | `/purchase-agent-tracking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-089 | `/purchase-agent-reports` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-090 | `/technician-portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-091 | `/technician-portal-my-jobs` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-092 | `/technician-portal-time-clock` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-093 | `/technician-portal-parts` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-094 | `/technician-portal-documentation` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -157,9 +157,9 @@ _No lifecycle in the contract belongs to this domain._
 | F-099 | `/technician-management` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-100 | `/technician-leaderboards` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-101 | `/technician-performance` | app | **mock** | — | — | — | verified | yes |
-| F-102 | `/technician-mobile` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-103 | `/technician-app-home` | app | **mock** | — | — | — | verified | yes |
-| F-104 | `/technician-app-jobs` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-105 | `/technician-app-clock` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-106 | `/technician-app-lookup` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-107 | `/technician-app-profile` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -174,7 +174,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-116 | `/client-portal-review-chat` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-118 | `/customer-app-booking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-119 | `/customer-app-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-120 | `/customer-app-payments` | app | yes | yes | yes | yes | MISSING | yes |
+| F-120 | `/customer-app-payments` | app | yes | yes | yes | yes | verified | yes |
 | F-122 | `/portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-123 | `/portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-124 | `/portal-invoices` | app | yes | yes | yes | yes | verified | yes |
@@ -196,11 +196,11 @@ _No lifecycle in the contract belongs to this domain._
 | F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-146 | `/general-ledger` | app | **mock** | yes | yes | yes | MISSING | yes |
-| F-148 | `/trial-balance` | app | **mock** | yes | yes | yes | MISSING | yes |
-| F-149 | `/balance-sheet` | app | **mock** | yes | yes | — | MISSING | yes |
-| F-150 | `/income-statement` | app | **mock** | yes | yes | — | MISSING | yes |
-| F-151 | `/cash-flow-statement` | app | **mock** | — | — | — | MISSING | yes |
+| F-146 | `/general-ledger` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| F-148 | `/trial-balance` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| F-149 | `/balance-sheet` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| F-150 | `/income-statement` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| F-151 | `/cash-flow-statement` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-152 | `/accounts-receivable` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-153 | `/accounts-payable` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-154 | `/bank-account-management` | app | **mock** | — | — | yes | verified | yes |
@@ -284,8 +284,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **207 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **181 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **203 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **177 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

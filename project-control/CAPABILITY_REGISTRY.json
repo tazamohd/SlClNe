@@ -48,10 +48,10 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 427,
-    "screensTotal": 427,
-    "endpointsMapped": 379,
-    "endpointsTotal": 379
+    "screensMapped": 428,
+    "screensTotal": 428,
+    "endpointsMapped": 390,
+    "endpointsTotal": 390
   },
   "capabilities": [
     {
@@ -67,7 +67,7 @@
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
-      "endpointCount": 77,
+      "endpointCount": 88,
       "endpoints": [
         "API-APPOINTMENTS-GET-LIST",
         "API-APPOINTMENTS-POST-LIST",
@@ -79,6 +79,15 @@
         "API-APPOINTMENTS-POSTBULK-DELETE",
         "API-APPOINTMENTS-POSTBULK-UPDATE",
         "API-APPOINTMENTS-GETEXPORT",
+        "API-DECLINEDJOBS-GET-LIST",
+        "API-DECLINEDJOBS-POST-LIST",
+        "API-DECLINEDJOBS-DELETEID",
+        "API-DECLINEDJOBS-GETID",
+        "API-DECLINEDJOBS-PATCHID",
+        "API-GET-DECLINED-JOBS-ID-HISTORY",
+        "API-DECLINEDJOBS-POSTBULK-DELETE",
+        "API-DECLINEDJOBS-POSTBULK-UPDATE",
+        "API-DECLINEDJOBS-GETEXPORT",
         "API-DIAGCOPIES-GET-LIST",
         "API-DIAGCOPIES-GETID",
         "API-GET-DIAGNOSTICS-COPIES-ID-HISTORY",
@@ -118,6 +127,7 @@
         "API-POST-ESTIMATES-ID-APPROVE",
         "API-GET-ESTIMATES-ID-HISTORY",
         "API-GET-ESTIMATES-ID-LINES",
+        "API-POST-ESTIMATES-ID-LINES-LINEID-DECLINE",
         "API-POST-ESTIMATES-ID-REJECT",
         "API-POST-ESTIMATES-ID-REQUEST-APPROVAL-OTP",
         "API-POST-ESTIMATES-ID-VERIFY-APPROVAL-OTP",
@@ -141,16 +151,18 @@
         "API-KBPROCEDURES-GETID",
         "API-GET-KB-PROCEDURES-ID-HISTORY",
         "API-KBPROCEDURES-GETEXPORT",
+        "API-GET-REPORTS-DECLINED-JOBS",
         "API-GET-REPORTS-WORKSHOP",
         "API-SERVICES-GET-LIST",
         "API-SERVICES-GETID",
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 16,
+      "screenCount": 17,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
+        "D-DeclinedJobs",
         "D-CustomerApproval",
         "D-DiagnosticReport",
         "D-EstimateDetail",
@@ -166,9 +178,10 @@
         "D-WorkshopQC",
         "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 15,
+      "dataBackedScreens": 16,
       "entities": [
         "appointments",
+        "declinedJobs",
         "diagCopies",
         "obdDevices",
         "diagFindings",
@@ -1490,7 +1503,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 26,
+      "dataBackedScreens": 30,
       "entities": [],
       "rules": [],
       "roles": [],
