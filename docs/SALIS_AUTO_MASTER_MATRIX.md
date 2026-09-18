@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-428 capabilities · 428 rendering · 0 placeholder · 107 data-backed.
+428 capabilities · 428 rendering · 0 placeholder · 111 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -35,8 +35,8 @@
 | CustomerApp · Appointments | `/customer-app/appointments` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Garage | `/customer-app/garage` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Home | `/customer-app/home` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Marketplace | `/customer-app/marketplace` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Notifications | `/customer-app/notifications` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Orders | `/customer-app/orders` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -60,8 +60,8 @@
 | Estimates | `/estimates` | app | estimates | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | ExecutiveReports | `/executive-reports` | app | execreports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | Expenses | `/expenses` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
-| FinancialReports | `/financial-reports` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
-| FinancialStatements | `/financial-statements` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| FinancialReports | `/financial-reports` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
+| FinancialStatements | `/financial-statements` | app | accounting | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | FleetContract | `/fleet-contract` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | FleetManagement | `/fleet-management` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | FlowSpec | `/flow-spec` | reference | ungated | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |

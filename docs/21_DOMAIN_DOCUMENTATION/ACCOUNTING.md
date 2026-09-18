@@ -131,14 +131,13 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-BankReconciliation | `/bank-reconciliation` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-ChartOfAccounts | `/chart-of-accounts` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Expenses | `/expenses` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-FinancialReports | `/financial-reports` | app | **mock** | yes | yes | — | PARTIAL | yes |
-| D-FinancialStatements | `/financial-statements` | app | **mock** | yes | yes | — | PARTIAL | yes |
+| D-FinancialReports | `/financial-reports` | app | yes | yes | yes | — | PARTIAL | yes |
+| D-FinancialStatements | `/financial-statements` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-JournalEntries | `/journal-entries` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-TaxManagement | `/tax-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **2 of 7 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **36 of 50 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`insurancePolicyStatus`, `insuranceClaimStatus`, `loanContractStatus`, `loanRepaymentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
