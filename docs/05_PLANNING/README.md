@@ -8,7 +8,7 @@
 
 # Planning
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Roadmap, work breakdown, milestones, dependencies, release plan.
 

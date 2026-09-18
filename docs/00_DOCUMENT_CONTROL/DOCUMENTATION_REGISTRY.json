@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/control.mjs",
   "statusValues": [
     "MISSING",
@@ -318,7 +318,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_REGISTRY.json",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 133207,
+      "bytes": 133208,
       "lines": 4786,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -4179,8 +4179,8 @@
     {
       "path": "system/architecture/supplier-tenancy-design.md",
       "section": "system",
-      "bytes": 9695,
-      "lines": 83,
+      "bytes": 14542,
+      "lines": 93,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -4707,7 +4707,7 @@
     {
       "path": "user-documentation/portals/supplier-portal-guide.md",
       "section": "user-documentation",
-      "bytes": 9117,
+      "bytes": 9125,
       "lines": 276,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -4773,7 +4773,7 @@
     {
       "path": "user-documentation/workflows/onboarding-flows.md",
       "section": "user-documentation",
-      "bytes": 16585,
+      "bytes": 16593,
       "lines": 361,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

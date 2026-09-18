@@ -10,7 +10,7 @@
 
 # API — platform
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 3 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 3 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

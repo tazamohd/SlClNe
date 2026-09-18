@@ -8,7 +8,7 @@
 
 # Archive
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Superseded material, retained for history. Never current truth.
 
