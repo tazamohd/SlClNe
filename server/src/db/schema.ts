@@ -1103,6 +1103,37 @@ export const loanRepayments = pgTable(
   }),
 )
 
+/** Equipment warranties — cover on the shop's own tools and fixed assets
+ *  (a lift, a scanner, a paint booth), not a customer's vehicle. Writable
+ *  through the generic router — `accounting:c/e/d` — same as `suppliers`:
+ *  a flat directory with one lifecycle move (`active` → `claimed`), not a
+ *  document with lines. `claimedAt` is server-derived from the status
+ *  transition (`writers.ts`), the same discipline `declined_jobs.resolvedAt`
+ *  uses, so a claim date can never be typed in rather than recorded when it
+ *  actually happened. */
+export const equipmentWarranties = pgTable(
+  'equipment_warranties',
+  {
+    ...tenant,
+    warrantyNumber: varchar('warranty_number', { length: 32 }).notNull(),
+    itemName: varchar('item_name', { length: 200 }).notNull(),
+    provider: varchar('provider', { length: 200 }).notNull(),
+    /** `full` · `limited` · `extended`. */
+    coverage: varchar('coverage', { length: 24 }).notNull().default('full'),
+    startDate: date('start_date').notNull(),
+    endDate: date('end_date').notNull(),
+    /** `active` · `claimed` · `expired`. */
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    claimedAt: timestamp('claimed_at', { withTimezone: true }),
+    claimNotes: text('claim_notes'),
+    notes: text('notes'),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('equipment_warranties_org_number_idx').on(t.orgId, t.warrantyNumber),
+    byOrg: index('equipment_warranties_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
 /* ------------------------------------------------------------------- HR */
 
 /** Employees — a member of staff who belongs to a department (the existing

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
@@ -11,13 +11,13 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 226,
-    "dataBacked": 142,
+    "mockOnly": 225,
+    "dataBacked": 143,
     "e2eCovered": 430,
     "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 178,
-    "hasErrorState": 142,
+    "hasLoadingState": 179,
+    "hasErrorState": 143,
     "hasEmptyState": 218,
     "tabletVerified": 4,
     "arabicVerified": 77,
@@ -27,10 +27,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 32,
-    "crudRead": 134,
-    "crudUpdate": 27,
-    "crudDelete": 24,
+    "crudCreate": 33,
+    "crudRead": 135,
+    "crudUpdate": 28,
+    "crudDelete": 25,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -24970,8 +24970,14 @@
       "route": "/warranty-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "accounting",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24989,18 +24995,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "equipmentWarranties"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -25024,9 +25032,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {

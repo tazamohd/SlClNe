@@ -44,6 +44,7 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   chartOfAccounts: '/accounting/coa',
   journalEntries: '/accounting/journal-entries',
   expenses: '/accounting/expenses',
+  equipmentWarranties: '/equipment-warranties',
 
   // ─── AI platform and knowledge base ──────────────────────────────────────
   aiAgents: '/ai/agents',

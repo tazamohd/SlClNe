@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1269 in total.
+Every column of every table, 1288 in total.
 
 ## `organizations`
 
@@ -1330,6 +1330,37 @@ Loan repayments — the month-by-month schedule a contract's instalment implies.
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `loan_repayments_contract_idx` | no | orgId, loanContractId, sequence |
+
+## `equipment_warranties`
+
+Equipment warranties — cover on the shop's own tools and fixed assets (a lift, a scanner, a paint booth), not a customer's vehicle. Writable through the generic router — `accounting:c/e/d` — same as `suppliers`: a flat directory with one lifecycle move (`active` → `claimed`), not a document with lines. `claimedAt` is server-derived from the status transition (`writers.ts`), the same discipline `declined_jobs.resolvedAt` uses, so a claim date can never be typed in rather than recorded when it actually happened.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `warranty_number` | varchar(32) | NOT NULL | — | — | — |
+| `item_name` | varchar(200) | NOT NULL | — | — | — |
+| `provider` | varchar(200) | NOT NULL | — | — | — |
+| `coverage` | varchar(24) | NOT NULL | — | 'full' | — |
+| `start_date` | date | NOT NULL | — | — | — |
+| `end_date` | date | NOT NULL | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `claimed_at` | timestamptz | nullable | — | — | — |
+| `claim_notes` | text | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
+| `equipment_warranties_org_idx` | no | orgId, branchId, status |
 
 ## `employees`
 

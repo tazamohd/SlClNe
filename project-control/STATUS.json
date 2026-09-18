@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "totals": {
     "capabilities": 430,
     "product": 367,
@@ -9,13 +9,13 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 226,
-    "dataBacked": 142,
+    "mockOnly": 225,
+    "dataBacked": 143,
     "e2eCovered": 430,
     "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 178,
-    "hasErrorState": 142,
+    "hasLoadingState": 179,
+    "hasErrorState": 143,
     "hasEmptyState": 218,
     "tabletVerified": 4,
     "arabicVerified": 77,
@@ -25,10 +25,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 32,
-    "crudRead": 134,
-    "crudUpdate": 27,
-    "crudDelete": 24,
+    "crudCreate": 33,
+    "crudRead": 135,
+    "crudUpdate": 28,
+    "crudDelete": 25,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 315,
-      "dataBacked": 128
+      "dataBacked": 129
     },
     "call-center": {
       "total": 2,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 51
+      "dataBacked": 52
     }
   },
   "byModule": {
@@ -295,12 +295,12 @@
       "dataBacked": 0
     },
     "accounting": {
-      "total": 7,
-      "rendered": 7,
+      "total": 8,
+      "rendered": 8,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 7,
-      "dataBacked": 7
+      "e2e": 8,
+      "dataBacked": 8
     },
     "execreports": {
       "total": 5,

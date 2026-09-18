@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 430,
     "screensTotal": 430,
-    "endpointsMapped": 431,
-    "endpointsTotal": 431
+    "endpointsMapped": 440,
+    "endpointsTotal": 440
   },
   "capabilities": [
     {
@@ -568,7 +568,7 @@
       ],
       "objective": "OBJ-CASH",
       "objectiveName": "Shorten the cash cycle",
-      "endpointCount": 50,
+      "endpointCount": 59,
       "endpoints": [
         "API-CHARTOFACCOUNTS-GET-LIST",
         "API-CHARTOFACCOUNTS-GETID",
@@ -589,6 +589,15 @@
         "API-GET-BANK-STATEMENTS-ID-HISTORY",
         "API-POST-BANK-STATEMENTS-ID-MATCH",
         "API-BANKSTATEMENTS-GETEXPORT",
+        "API-EQUIPMENTWARRANTIES-GET-LIST",
+        "API-EQUIPMENTWARRANTIES-POST-LIST",
+        "API-EQUIPMENTWARRANTIES-DELETEID",
+        "API-EQUIPMENTWARRANTIES-GETID",
+        "API-EQUIPMENTWARRANTIES-PATCHID",
+        "API-GET-EQUIPMENT-WARRANTIES-ID-HISTORY",
+        "API-EQUIPMENTWARRANTIES-POSTBULK-DELETE",
+        "API-EQUIPMENTWARRANTIES-POSTBULK-UPDATE",
+        "API-EQUIPMENTWARRANTIES-GETEXPORT",
         "API-INSURANCECLAIMS-GET-LIST",
         "API-POST-INSURANCE-CLAIMS",
         "API-INSURANCECLAIMS-GETID",
@@ -621,7 +630,7 @@
         "API-SAVEDREPORTS-POSTBULK-UPDATE",
         "API-SAVEDREPORTS-GETEXPORT"
       ],
-      "screenCount": 7,
+      "screenCount": 8,
       "screens": [
         "D-BankReconciliation",
         "D-ChartOfAccounts",
@@ -629,14 +638,16 @@
         "D-FinancialReports",
         "D-FinancialStatements",
         "D-JournalEntries",
-        "D-TaxManagement"
+        "D-TaxManagement",
+        "F-169"
       ],
-      "dataBackedScreens": 7,
+      "dataBackedScreens": 8,
       "entities": [
         "chartOfAccounts",
         "expenses",
         "journalEntries",
         "bankStatements",
+        "equipmentWarranties",
         "insuranceClaims",
         "insurancePolicies",
         "loanContracts",
@@ -1314,7 +1325,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 233,
+      "screenCount": 232,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1486,7 +1497,6 @@
         "F-166",
         "F-167",
         "F-168",
-        "F-169",
         "F-170",
         "F-171",
         "F-172",

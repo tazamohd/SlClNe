@@ -155,6 +155,13 @@
       "when": 1789739388709,
       "tag": "0021_campaign_messaging",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1789999000000,
+      "tag": "0022_equipment_warranties",
+      "breakpoints": true
     }
   ]
 }

@@ -5038,4 +5038,16 @@ export const AR_OVERRIDES: Record<string, string> = {
   "ID, category or vendor": "المعرّف أو الفئة أو المورد",
   "Loading expenses…": "جارٍ تحميل المصروفات…",
   "Loading sales…": "جارٍ تحميل المبيعات…",
+
+  // Equipment warranties (BLK-004) — a real writable directory replacing
+  // WarrantyManagement.tsx's fabricated "Connected" mock rows.
+  "Delete Warranty?": "هل تريد حذف الضمان؟",
+  "Hydraulic Lift #1": "رافعة هيدروليكية رقم ١",
+  "LiftMaster Co": "شركة ليفت ماستر",
+  "Only used once the status is Claimed.": "تُستخدم فقط عند أن تكون الحالة \"مُطالَب به\".",
+  "Warranty deleted": "تم حذف الضمان",
+  "Could not update warranty": "تعذر تحديث الضمان",
+  "Mark as Claimed": "وضع علامة كمطالَب به",
+  "Updating...": "جارٍ التحديث...",
+  "Warranty marked as claimed": "تم وضع علامة على الضمان كمطالَب به",
 }

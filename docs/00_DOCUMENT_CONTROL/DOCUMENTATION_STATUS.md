@@ -27,16 +27,16 @@
 
 | Area | Derived from | Count |
 | --- | --- | --- |
-| Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 75 tables |
-| Relationship catalogue | `server/src/db/schema.ts` | 192 relationships |
-| API reference | the route files | 431 endpoints |
+| Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 76 tables |
+| Relationship catalogue | `server/src/db/schema.ts` | 194 relationships |
+| API reference | the route files | 440 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 450 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
-| State machines | `packages/contract/src/entities/*.ts` | 20 lifecycles |
-| Isolation and policies | `server/drizzle/*.sql` | 73 policies |
-| Test catalogue | the spec files | 202 suites |
+| State machines | `packages/contract/src/entities/*.ts` | 21 lifecycles |
+| Isolation and policies | `server/drizzle/*.sql` | 76 policies |
+| Test catalogue | the spec files | 204 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 430 screens |
-| Capability map, requirements, traceability | all of the above | 159 requirements |
+| Capability map, requirements, traceability | all of the above | 160 requirements |
 
 `node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
 
