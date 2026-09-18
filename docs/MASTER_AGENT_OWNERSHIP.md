@@ -31,7 +31,7 @@ Open a request in BLOCKERS.json rather than editing directly. Agent 01 batches t
 | 03 | Integration & Release Manager | command | — | `.github/workflows/**`<br>`docs/MASTER_RELEASE_PLAN.md` |
 | 04 | UI Foundation | foundation | 25 | `app/src/components/ui/**`<br>`app/src/components/shell/**`<br>`app/src/styles/**`<br>`app/scripts/check-tokens.mjs` |
 | 05 | Backend & Data | foundation | — | `server/**`<br>`packages/contract/**`<br>`app/src/data/repository.ts`<br>`app/src/data/useCollection.ts` |
-| 06 | Auth & Security Foundation | foundation | 28 | `server/src/auth/**`<br>`app/src/providers/SessionProvider.tsx`<br>`app/src/routes/RequireAccess.tsx`<br>`app/src/screens/auth/**` |
+| 06 | Auth & Security Foundation | foundation | 29 | `server/src/auth/**`<br>`app/src/providers/SessionProvider.tsx`<br>`app/src/routes/RequireAccess.tsx`<br>`app/src/screens/auth/**` |
 | 07 | Test Infrastructure | foundation | — | `app/vitest.config.ts`<br>`app/tests/**`<br>`app/scripts/smoke.mjs`<br>`app/scripts/check-no-fake.mjs` |
 | 08 | Workshop / Mini ERP | product | 22 | `app/src/screens/workshop/**`<br>`app/src/screens/domains/workshop.ts` |
 | 09 | Customers / CRM | product | 17 | `app/src/screens/registry/**`<br>`app/src/screens/crm/**`<br>`app/src/screens/domains/crm.ts`<br>`app/src/components/shell/DetailPage.tsx` *(granted)* |

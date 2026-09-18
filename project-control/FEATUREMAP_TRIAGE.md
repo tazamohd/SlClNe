@@ -323,14 +323,65 @@ Client Portal/Portal misc here) have now been verified file-by-file.
    `node tools/docs/check.mjs` — all clean, and the "Administration" row
    in `MASTER_SCOPE_REGISTRY.md`'s by-domain table now reads agent `25`
    instead of `—`.
-4. **Admin domain BLK-004 fixing** — now unblocked by wave 5. Of the 20
-   admin screens, 14 carry `MOCK_ONLY`: `AdvancedSettings`, `AuditLog`,
-   `Backup`, `CookiePolicy`, `GlobalSearch`, `NotificationCenter`,
-   `Organizations`, `Profile`, `RolesPermissions`, `Settings`,
-   `Subscription`, `SuperAdmin`, `Templates`, `UsersTeams`. Needs the same
-   file-by-file "real data, honest gap, or already fine" triage waves 1
-   and 4 used elsewhere — not done here, since this wave's scope was the
-   ownership decision itself.
+4. ~~**Admin domain BLK-004 fixing**~~ — done in wave 6 (2026-09-18).
+   Triaged all 14 `MOCK_ONLY` admin screens file-by-file. One correction
+   first: `CookiePolicy` was never actually an admin screen — it's a
+   static legal document at `app/src/screens/public/CookiePolicy.tsx`,
+   caught by `build-registry.mjs`'s `classify()` falling through to its
+   `admin` default because `CookiePolicy` was missing from the same
+   regex its siblings `PrivacyPolicy`/`TermsConditions` already match.
+   Added it to that regex; it now classifies as `auth`, matching its
+   siblings (all three still carry the same pre-existing `MOCK_ONLY`
+   false-positive for having no `useCollection` call — static legal
+   prose needs none — left alone, same as `RolesPermissions.tsx` below).
+
+   Of the real 13:
+   - **Honest GAP state (10 screens)** — no collection exists for the
+     concept at all: `AdvancedSettings`, `Backup`, `NotificationCenter`,
+     `Organizations`, `Settings`, `Subscription`, `SuperAdmin`,
+     `Templates`, `UsersTeams` (system *user accounts* — logins, roles,
+     sessions — have no `users` collection; the adjacent *employment*
+     data is real and already honestly covered by
+     `app/src/screens/hr/StaffDirectory.tsx`, so this screen was left a
+     gap rather than becoming a second, drifting copy of that one), and
+     `AuditLog` (already had an honest offline branch, but its "live"
+     branch still rendered `FIXTURE_ENTRIES` — now an unconditional gap,
+     since no general audit-log collection exists either way;
+     `history` is a per-record trail only).
+   - **Wired to real data (1 screen)** — `GlobalSearch.tsx`: a genuine
+     cross-entity search across the real `customers`/`vehicles`/`jobs`/
+     `invoices`/`parts` collections, using the same `{ q }` substring
+     filter (`Repository`'s `matchesSearch`) every other screen's list
+     view already supports. The fabricated "Recent searches" list was
+     dropped rather than kept (no query-history collection exists).
+   - **Already honest, left alone (2 screens)** — `Profile.tsx` (real
+     session identity via `useSession()`) and `RolesPermissions.tsx`
+     (the real, generated RBAC config, not fixture data).
+
+   A regression surfaced mid-wave and was caught before commit: the
+   first honest-gap pass for the 9 screens above dropped their
+   `useIsMobile()`/`MobilePageHeader` branch along with the fabricated
+   content, which `npm run gates` caught as a fresh `BLK-006` ("9 built
+   screens owe their designed mobile layout") — each of those 9 has a
+   real `.Mobile.dc.html` design file on record, so the mobile branch is
+   a real requirement, not leftover cruft. Re-added a lightweight mobile
+   header branch (same `EmptyState` content, `MobilePageHeader` instead
+   of the desktop header) to all 9; `BLK-006` cleared back to 0 mobile
+   owed.
+
+   `npm run registry`: BLK-004 mock-only 241 → 240 (GlobalSearch is the
+   only one that gained a real `useCollection` call the generator
+   recognises; the 10 GAP-state screens correctly stay flagged
+   `MOCK_ONLY` — "not wired to a live collection" is still true of an
+   honest empty state).
+
+   Verified: `npm run typecheck`, `npm run gates` (8/8, including the
+   `BLK-006` regression check), `npx vitest run` (111 files / 3918
+   tests), a full local `smoke.mjs` run (429/429 routes), a manual
+   Playwright check of `GlobalSearch.tsx`'s live cross-entity results
+   (real grouped matches across all 5 collections) and three of the
+   GAP-state screens at a 390px mobile viewport — all clean, zero
+   console errors. `node tools/docs/check.mjs`: passes, no drift.
 5. **`website` (34) and `auth` (28) domains** — need the same "is
    `dataBacked` even the right bar for this screen" judgment call
    `SOURCE_RECONCILIATION.md` flagged; many are legitimately static

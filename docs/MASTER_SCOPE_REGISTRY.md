@@ -16,16 +16,16 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 239 |
-| data backed | 127 |
+| mock only | 238 |
+| data backed | 128 |
 | e2e covered | 429 |
 | content asserted | 429 |
 | rendered without assertion | 0 |
-| has loading state | 169 |
+| has loading state | 170 |
 | has error state | 134 |
-| has empty state | 208 |
+| has empty state | 214 |
 | tablet verified | 4 |
-| arabic verified | 79 |
+| arabic verified | 75 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 126 |
+| crud read | 127 |
 | crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
@@ -44,8 +44,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 28 | 0 | 0 | 28 |
-| app | 315 | 315 | 0 | 0 | 315 |
+| auth | 29 | 29 | 0 | 0 | 29 |
+| app | 314 | 314 | 0 | 0 | 314 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
@@ -58,8 +58,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
-| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | 25 | G9 | `████████████████████` 100% | 20 | 20 |
+| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 29 | 29 |
+| Administration | 25 | G9 | `████████████████████` 100% | 19 | 19 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |

@@ -69,7 +69,7 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-ApprovalInbox | `/approval-inbox` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-AuditLog | `/audit-log` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-AuditLog | `/audit-log` | app | **mock** | — | — | yes | verified | yes |
 
 ## Known gaps in this domain
 

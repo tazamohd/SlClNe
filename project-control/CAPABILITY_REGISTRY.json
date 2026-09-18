@@ -1072,13 +1072,12 @@
         "API-GET-HEALTH",
         "API-GET-READY"
       ],
-      "screenCount": 36,
+      "screenCount": 35,
       "screens": [
         "D-AccountLocked",
         "D-AdvancedSettings",
         "D-Backup",
         "D-Branches",
-        "D-CookiePolicy",
         "D-Dashboard",
         "D-Error404",
         "D-FlowSpec",
@@ -1111,7 +1110,7 @@
         "D-UsersTeams",
         "D-Welcome"
       ],
-      "dataBackedScreens": 5,
+      "dataBackedScreens": 6,
       "entities": [
         "departments",
         "branches",
@@ -1175,9 +1174,10 @@
         "API-POST-PUBLIC-CUSTOMERS-RESEND-OTP",
         "API-POST-PUBLIC-CUSTOMERS-VERIFY-OTP"
       ],
-      "screenCount": 18,
+      "screenCount": 19,
       "screens": [
         "D-BiometricSetup",
+        "D-CookiePolicy",
         "D-CreatePIN",
         "D-ForgotPassword",
         "D-InviteAcceptance",
