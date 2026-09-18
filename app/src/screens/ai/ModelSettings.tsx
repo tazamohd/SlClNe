@@ -3,12 +3,12 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Toggle } from '@/components/ui/Toggle'
+import { EmptyState } from '@/components/ui/States'
 import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
 import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { isLive } from '@/data/repository'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 interface ModelOption {
@@ -38,6 +38,15 @@ const BEHAVIOR_TOGGLES: BehaviorToggle[] = [
 
 
 
+/** Previously, "Save Changes" fired a fake "Settings saved" toast
+ *  whenever `isLive`, with no API call at all — there is no AI
+ *  settings-persistence endpoint anywhere in the contract, live or not.
+ *  The "Usage" card also showed fabricated token/cost figures ("2.4M /
+ *  5M", "SAR 1,840") with no backing collection. Both are now honest:
+ *  Save always says so instead of only when offline, and Usage is a
+ *  GAP state instead of invented numbers. The model/parameter/behavior
+ *  controls above stay locally editable — they're real form state, just
+ *  with nowhere to persist to yet. */
 export function ModelSettings() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -175,7 +184,6 @@ export function ModelSettings() {
                 rows={4}
                 value={systemPrompt}
                 onChange={(e) => setSystemPrompt(e.target.value)}
-                disabled={!isLive}
                 aria-label={t('System Prompt')}
                 className="text-[13px] leading-relaxed"
               />
@@ -191,28 +199,16 @@ export function ModelSettings() {
         </MobileCard>
 
         <MobileCard>
-          <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h2>
-          <div className="flex flex-col gap-3">
-            <div>
-              <div className="mb-1 flex justify-between text-xs">
-                <span className="text-muted">{t('Tokens Used')}</span>
-                <span className="font-mono text-body">2.4M / 5M</span>
-              </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
-                <div className="h-full w-[48%] rounded-full bg-salis-gradient" />
-              </div>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-muted">{t('Estimated Cost')}</span>
-              <span dir="ltr" className="font-mono font-semibold text-heading">SAR 1,840</span>
-            </div>
-          </div>
+          <EmptyState
+            icon="Gauge"
+            title={t('Usage has no data source yet')}
+            description={t('Token consumption and cost have no collection this API serves.')}
+          />
         </MobileCard>
 
         <Button
           className="w-full"
-          onClick={() => toast.show({ title: t('Settings saved') })}
-          disabled={!isLive}
+          onClick={() => toast.show({ title: t('AI settings are not available on this deployment yet') })}
         >
           {t('Save Changes')}
         </Button>
@@ -277,7 +273,6 @@ export function ModelSettings() {
                   rows={4}
                   value={systemPrompt}
                   onChange={(e) => setSystemPrompt(e.target.value)}
-                  disabled={!isLive}
                   aria-label={t('System Prompt')}
                   className="text-[13px] leading-relaxed"
                 />
@@ -295,28 +290,16 @@ export function ModelSettings() {
           </Card>
 
           <Card className="rounded-2xl p-5 shadow-sm">
-            <h2 className="mb-3 text-[15px] font-bold text-heading">{t('Usage')}</h2>
-            <div className="flex flex-col gap-3">
-              <div>
-                <div className="mb-1 flex justify-between text-xs">
-                  <span className="text-muted">{t('Tokens Used')}</span>
-                  <span className="font-mono text-body">2.4M / 5M</span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-salis-blue/[.08]">
-                  <div className="h-full w-[48%] rounded-full bg-salis-gradient" />
-                </div>
-              </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-muted">{t('Estimated Cost')}</span>
-                <span dir="ltr" className="font-mono font-semibold text-heading">SAR 1,840</span>
-              </div>
-            </div>
+            <EmptyState
+              icon="Gauge"
+              title={t('Usage has no data source yet')}
+              description={t('Token consumption and cost have no collection this API serves.')}
+            />
           </Card>
 
           <Button
             className="h-11 w-full shadow-[0_4px_12px_rgba(10,94,215,.25)]"
-            onClick={() => toast.show({ title: t('Settings saved') })}
-            disabled={!isLive}
+            onClick={() => toast.show({ title: t('AI settings are not available on this deployment yet') })}
           >
             {t('Save Changes')}
           </Button>

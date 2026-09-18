@@ -7,7 +7,7 @@
 
 # Exception scenarios
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Every refusal the system can produce from a business rule, derived from the guard functions rather than imagined. Each is a scenario somebody has to design a screen for: a user who hits it needs to know what happened and what to do next.
 

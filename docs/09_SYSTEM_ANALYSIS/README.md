@@ -8,7 +8,7 @@
 
 # System analysis
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Requirements catalogue with IDs, and the traceability matrix.
 

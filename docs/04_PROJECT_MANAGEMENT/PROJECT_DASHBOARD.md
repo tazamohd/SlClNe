@@ -13,7 +13,7 @@
 
 # Project dashboard
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 A view over the canonical registers. Nothing here is entered by hand; if a number looks wrong, the register is wrong.
 
@@ -27,7 +27,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Reading design fixtures | 228 of 429 | `STATUS.json` |
 | End-to-end covered | 429 of 429 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 75 of 429 | `STATUS.json` |
+| Arabic verified | 73 of 429 | `STATUS.json` |
 | Tablet verified | 4 of 429 | `STATUS.json` |
 | API endpoints | 418 | the route files |
 | Test cases | 2251 | the spec files |

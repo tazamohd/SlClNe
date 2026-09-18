@@ -382,7 +382,82 @@ Client Portal/Portal misc here) have now been verified file-by-file.
    (real grouped matches across all 5 collections) and three of the
    GAP-state screens at a 390px mobile viewport — all clean, zero
    console errors. `node tools/docs/check.mjs`: passes, no drift.
-5. **`website` (34) and `auth` (28) domains** — need the same "is
-   `dataBacked` even the right bar for this screen" judgment call
-   `SOURCE_RECONCILIATION.md` flagged; many are legitimately static
-   marketing pages or terminal/status screens.
+5. ~~**`website` domain (34)**~~ — triaged in wave 7 (2026-09-18, PR
+   #148). ~~**`auth` domain (29)**~~ — triaged in wave 8 (2026-09-18,
+   PR #150), same judgment call. ~~**`ai` domain (6, plus 2 related
+   screens registered under `admin`)**~~ — triaged in wave 9
+   (2026-09-18), see below.
+
+## Wave 9 — ai domain (2026-09-18)
+
+Triaged the 6 `MOCK_ONLY` screens under `app/src/screens/ai/`
+(`AIAnalytics`, `AIAssistant`, `ModelSettings`, `PromptLibrary`) plus
+two screens the registry groups into the same "AI Platform" surface
+despite living under `app/src/screens/admin/`
+(`AutomationRules`, `WorkflowBuilder`). Confirmed no AI/chat, automation,
+workflow, settings-persistence or usage-tracking endpoint exists
+anywhere in `packages/contract/src/entities/` — the one AI-adjacent
+collection that does exist, `aiAgents`, backs an unrelated screen
+(`Crm.tsx`'s agent-monitoring panel), not any of these six.
+
+Of the 6:
+- **Honest GAP state (4 screens)** — content presented as real with no
+  backing collection:
+  - `AIAnalytics.tsx`: fabricated KPIs ("4,821" queries, "96.4%"
+    satisfaction, "2.4M" tokens), a fabricated topic breakdown and a
+    fabricated usage-over-time chart, all replaced with an honest
+    `EmptyState` naming the missing `aiAnalytics` collection.
+  - `AutomationRules.tsx`: five fixture rules ("Low Stock Alert", "Auto
+    Invoice", ...) with hardcoded active/inactive state, replaced the
+    same way, naming `automationRules`.
+  - `WorkflowBuilder.tsx`: four fixture workflows ("Job Card
+    Lifecycle", ...) with invented run counts ("1,248 runs", "2 min
+    ago"), replaced the same way, naming `workflows`.
+  - `PromptLibrary.tsx`: nine fabricated saved prompts with invented
+    usage counts and favorited state, replaced the same way, naming
+    `promptLibrary`.
+- **Fake-success/silent-failure fixes (2 screens)**:
+  - `AIAssistant.tsx`: previously, sending a message while `isLive`
+    added the user's own chat bubble and then silently did nothing —
+    no assistant reply was ever generated, with no error or
+    explanation shown, and messages/transcript state that could never
+    actually hold a real reply. Simplified to never add a message it
+    can't answer: sending now always shows an honest "AI Assistant is
+    not available on this deployment yet" toast, and the dead
+    transcript-rendering branch (which could only ever be reached by
+    fabricating an assistant reply) was removed along with it.
+  - `ModelSettings.tsx`: two separate issues on one screen. Its "Usage"
+    card showed fabricated token/cost figures ("2.4M / 5M", "SAR
+    1,840") with no backing collection — replaced with an `EmptyState`
+    naming the missing usage-tracking data. Its "Save Changes" button
+    fired a fake "Settings saved" toast whenever `isLive` with no API
+    call at all — no settings-persistence endpoint exists, live or
+    not — now shows the same honest "not available" message
+    unconditionally. The model/parameter/behavior controls above stay
+    locally editable, since they're real form state with nowhere to
+    persist to yet, not fabricated data.
+
+`npm run registry`: BLK-004 mock-only count unchanged at 228 (measured
+before this wave's own commit; the count moves only on a real
+`useCollection` wire, and none of these six screens had a plausible
+collection to wire to) — same expected blind spot as every wave-6/7/8
+GAP screen. `node tools/docs/check.mjs` also surfaced that
+`project-control/BLOCKERS.json` now holds only 1 open blocker (BLK-004)
+— BLK-010 (the 10 orphan landing-page files) was resolved separately by
+PR #147 while this wave was in progress, unrelated to this wave's own
+work.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed — no
+`.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3918 tests, no existing test referenced the fabricated AI
+content), `npm run check-i18n` (3900/3900 covered, 8 new keys), a full
+local `smoke.mjs` run (429/429 routes), and a manual Playwright check
+of all 6 changed screens (seeding `salis-role` in `localStorage`, since
+these are gated internal-app screens unlike waves 7/8's public/auth
+surfaces) — the 4 GAP screens render their honest content with the old
+fabricated strings gone, `AIAssistant.tsx`'s suggestion click shows the
+honest toast with no fake transcript entry added, and
+`ModelSettings.tsx` shows its honest Usage gap and honest Save message
+instead of the old fabricated numbers and fake success — zero console
+errors throughout. `node tools/docs/generate.mjs` + `check.mjs`: clean,
+no drift.
