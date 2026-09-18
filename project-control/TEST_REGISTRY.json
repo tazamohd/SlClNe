@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 192,
-    "cases": 2242,
+    "cases": 2244,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1102,
+      "UNIT_OR_API": 1104,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -4180,11 +4180,13 @@
         "falls back to the cached shell when a navigation is offline",
         "reports failure rather than a blank page when offline with nothing cached",
         "answers a font from cache immediately and refreshes it behind",
+        "serves a hashed asset the cache refused to store, rather than failing the import",
+        "serves the fresh shell when the cache refuses to store it, not the older one",
         "never stores a response the server marked no-store",
         "never stores an error response",
         "drops its own stale caches and leaves other apps on the origin alone"
       ],
-      "caseCount": 15,
+      "caseCount": 17,
       "touchesPaths": [
         "/api/invoices",
         "/auth/refresh",
