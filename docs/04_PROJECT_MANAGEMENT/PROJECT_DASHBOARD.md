@@ -23,11 +23,11 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 430 | `STATUS.json` |
 | Rendering | 430 of 430 | `STATUS.json` |
-| Wired to the API | 131 of 430 | `STATUS.json` |
-| Reading design fixtures | 237 of 430 | `STATUS.json` |
+| Wired to the API | 142 of 430 | `STATUS.json` |
+| Reading design fixtures | 226 of 430 | `STATUS.json` |
 | End-to-end covered | 430 of 430 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 79 of 430 | `STATUS.json` |
+| Arabic verified | 75 of 430 | `STATUS.json` |
 | Tablet verified | 4 of 430 | `STATUS.json` |
 | API endpoints | 431 | the route files |
 | Test cases | 2291 | the spec files |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**237 of 430 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**226 of 430 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 237 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 226 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 | BLK-010 | MEDIUM | 10 screen files are unreachable from any route | src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts | 02 |
 
 ## Open risks

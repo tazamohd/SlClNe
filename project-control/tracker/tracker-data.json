@@ -883,15 +883,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "CookiePolicy",
-          "route": "/cookie-policy",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "GlobalSearch",
           "route": "/global-search",
           "status": "built",
@@ -977,7 +968,7 @@
           "route": "/super-admin",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1031,6 +1022,15 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "CookiePolicy",
+          "route": "/cookie-policy",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },

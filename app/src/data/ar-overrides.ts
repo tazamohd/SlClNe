@@ -5002,4 +5002,30 @@ export const AR_OVERRIDES: Record<string, string> = {
   "No messaging provider configured": "لا يوجد مزوّد رسائل مهيأ",
   "This deployment has no live SMS/WhatsApp provider.": "لا تحتوي هذه النسخة على مزوّد رسائل نصية أو واتساب فعلي.",
   "Message Log has no data source yet": "لا يوجد مصدر بيانات لسجل الرسائل بعد",
+
+  // Wave 6 — honest-gap and real-search fixes for the admin domain screens.
+  "Advanced Settings has no data source yet": "لا يوجد مصدر بيانات للإعدادات المتقدمة بعد",
+  "Audit Log has no data source yet": "لا يوجد مصدر بيانات لسجل التدقيق بعد",
+  "System actions, login events and data changes have no collection this API serves. Nothing is shown here rather than invented entries.": "إجراءات النظام وأحداث تسجيل الدخول وتغييرات البيانات ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق إدخالات.",
+  "Backup & Export has no data source yet": "لا يوجد مصدر بيانات للنسخ الاحتياطي والتصدير بعد",
+  "Searching...": "جارٍ البحث...",
+  "Type at least 2 characters to search": "اكتب حرفين على الأقل للبحث",
+  "Notification Center has no data source yet": "لا يوجد مصدر بيانات لمركز الإشعارات بعد",
+  "Organizations has no data source yet": "لا يوجد مصدر بيانات للمؤسسات بعد",
+  "Settings has no data source yet": "لا يوجد مصدر بيانات للإعدادات بعد",
+  "Subscription has no data source yet": "لا يوجد مصدر بيانات للاشتراك بعد",
+  "Super Admin has no data source yet": "لا يوجد مصدر بيانات للمشرف العام بعد",
+  "Templates has no data source yet": "لا يوجد مصدر بيانات للقوالب بعد",
+  "Users & Teams has no data source yet": "لا يوجد مصدر بيانات للمستخدمين والفرق بعد",
+
+  // Wave 7 — accounting cluster live wiring (Accounts Receivable, Equity
+  // Management, Expense Tracking, Sales Management).
+  "Loading receivables…": "جارٍ تحميل الذمم المدينة…",
+  "No outstanding invoices": "لا توجد فواتير مستحقة",
+  "Total Invoiced": "إجمالي المفوتر",
+  "Loading equity accounts…": "جارٍ تحميل حسابات حقوق الملكية…",
+  "No equity accounts found": "لم يتم العثور على حسابات حقوق ملكية",
+  "ID, category or vendor": "المعرّف أو الفئة أو المورد",
+  "Loading expenses…": "جارٍ تحميل المصروفات…",
+  "Loading sales…": "جارٍ تحميل المبيعات…",
 }

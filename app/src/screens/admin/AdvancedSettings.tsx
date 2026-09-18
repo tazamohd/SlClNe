@@ -1,136 +1,47 @@
-import { useState } from 'react'
-import { useIsMobile } from '@/lib/useMediaQuery'
-import { MobilePageHeader } from '@/components/shell/MobileShell'
-import { Badge } from '@/components/ui/Badge'
-import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
-import { Toggle } from '@/components/ui/Toggle'
 import { Icon } from '@/components/ui/Icon'
-import { useToast } from '@/components/ui/Toast'
+import { EmptyState } from '@/components/ui/States'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
 
-
-
-interface SettingItem {
-  label: string
-  desc: string
-  kind: 'toggle' | 'value' | 'badge'
-  toggleKey?: string
-  value?: string
-  badgeLabel?: string
-  badgeBg?: string
-  badgeColor?: string
-}
-
-interface SettingSection {
-  icon: string
-  title: string
-  items: SettingItem[]
-}
-
+/* This screen was MOCK_ONLY (BLK-004): every setting item was a hardcoded
+ * literal — the workshop's own name ("Al-Amri Auto Center"), VAT rate,
+ * business hours, security toggle states, and integration connection
+ * statuses ("ZATCA E-Invoice: Connected", "Accounting Software:
+ * Disconnected") — none of it read from anywhere, all of it fake and
+ * un-savable (`Save Changes` only fires a toast).
+ *
+ * There is no settings/workshop-profile collection in Repository
+ * (app/src/data/repository.ts) or API_REGISTRY.json. Rather than invent a
+ * configuration state, this is an honest GAP state, following
+ * CallCenterLogs.tsx's pattern. */
 export function AdvancedSettings() {
-  const { t, rtl } = usePreferences()
+  const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const toast = useToast()
 
-  const [toggles, setToggles] = useState<Record<string, boolean>>({
-    twoFa: true,
-    emailNotif: true,
-    smsAlert: false,
-    autoBackup: true,
-    auditLog: true,
-  })
-
-  const flip = (key: string) =>
-    setToggles((prev) => ({ ...prev, [key]: !prev[key] }))
-
-  const sections: SettingSection[] = [
-    {
-      icon: 'Building2',
-      title: t('Workshop Information'),
-      items: [
-        { label: t('Workshop Name'), desc: 'Al-Amri Auto Center', kind: 'value', value: 'Al-Amri Auto Center' },
-        { label: t('VAT Rate'), desc: t('Tax Settings'), kind: 'value', value: '15%' },
-        { label: t('Business Hours'), desc: rtl ? 'السبت-الخميس' : 'Sat–Thu, 8 AM – 6 PM', kind: 'value', value: '8–18' },
-      ],
-    },
-    {
-      icon: 'Shield',
-      title: t('Security Settings'),
-      items: [
-        { label: t('Two-Factor Authentication'), desc: rtl ? 'طبقة أمان إضافية' : 'Extra layer of security', kind: 'toggle', toggleKey: 'twoFa' },
-        { label: t('Session Timeout'), desc: rtl ? 'انتهاء تلقائي بعد' : 'Auto-expire after inactivity', kind: 'value', value: '30 min' },
-        { label: t('Audit Log'), desc: rtl ? 'تتبع جميع الإجراءات' : 'Track all system actions', kind: 'toggle', toggleKey: 'auditLog' },
-      ],
-    },
-    {
-      icon: 'Bell',
-      title: t('Notifications Preferences'),
-      items: [
-        { label: t('Email Notifications'), desc: rtl ? 'إشعارات البريد الإلكتروني' : 'Receive email alerts', kind: 'toggle', toggleKey: 'emailNotif' },
-        { label: t('SMS Alerts'), desc: rtl ? 'تنبيهات الرسائل النصية' : 'SMS for critical alerts', kind: 'toggle', toggleKey: 'smsAlert' },
-      ],
-    },
-    {
-      icon: 'Plug',
-      title: t('Integrations'),
-      items: [
-        { label: 'ZATCA E-Invoice', desc: rtl ? 'ربط الفوترة الإلكترونية' : 'Saudi e-invoicing integration', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
-        { label: 'WhatsApp Business', desc: rtl ? 'إشعارات العملاء' : 'Customer notifications', kind: 'badge', badgeLabel: t('Connected'), badgeBg: 'var(--tint-blue)', badgeColor: 'var(--salis-blue)' },
-        { label: t('Accounting Software'), desc: rtl ? 'تصدير البيانات المالية' : 'Financial data export', kind: 'badge', badgeLabel: t('Disconnected'), badgeBg: 'var(--tint-orange)', badgeColor: 'var(--salis-orange)' },
-      ],
-    },
-    {
-      icon: 'Database',
-      title: t('Data Management'),
-      items: [
-        { label: t('Auto Backup'), desc: rtl ? 'نسخ احتياطي يومي' : 'Daily automatic backup', kind: 'toggle', toggleKey: 'autoBackup' },
-        { label: t('Retention Period'), desc: rtl ? 'مدة الاحتفاظ بالبيانات' : 'How long to keep data', kind: 'value', value: t('1 year') },
-      ],
-    },
-  ]
+  const gap = (
+    <Card className="p-4">
+      <EmptyState
+        icon="Settings"
+        title={t('Advanced Settings has no data source yet')}
+        description={t(
+          'Workshop profile, VAT rate, security preferences and integration status have no collection this API serves. Nothing is shown here rather than invented settings.',
+        )}
+      />
+      <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="flex-shrink-0 text-salis-blue" />
+        {t('Connect the API — no data source yet:')}{' '}
+        <span dir="ltr" className="font-mono text-body">workshopSettings</span>
+      </p>
+    </Card>
+  )
 
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
         <MobilePageHeader icon="Settings" title={t('Advanced Settings')} subtitle={t('Configure your system')} />
-        {sections.map((sec) => (
-          <Card key={sec.title} className="flex flex-col gap-3 rounded-xl p-4">
-            <div className="flex items-center gap-2.5">
-              <span className="flex rounded-[10px] bg-tint-blue p-2 text-salis-blue">
-                <Icon name={sec.icon} size={16} />
-              </span>
-              <h2 className="text-[14px] font-bold text-heading">{sec.title}</h2>
-            </div>
-            {sec.items.map((item) => (
-              <div
-                key={item.label}
-                className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="m-0 text-[13px] font-medium text-body">{item.label}</p>
-                  <p className="m-0 mt-0.5 text-[11px] text-muted">{item.desc}</p>
-                </div>
-                {item.kind === 'toggle' && item.toggleKey && (
-                  <Toggle on={toggles[item.toggleKey]} onToggle={() => flip(item.toggleKey!)} label={item.label} disabled={!isLive} />
-                )}
-                {item.kind === 'value' && (
-                  <span className="flex-shrink-0 rounded-md border border-border bg-inset px-2 py-1 text-[12px] font-medium text-heading">{item.value}</span>
-                )}
-                {item.kind === 'badge' && (
-                  <Badge background={item.badgeBg!} color={item.badgeColor!}>{item.badgeLabel}</Badge>
-                )}
-              </div>
-            ))}
-          </Card>
-        ))}
-        <div className="flex justify-end">
-          <Button onClick={() => toast.show({ title: t('Settings saved') })} disabled={!isLive}>
-            <Icon name="Save" size={16} />
-            {t('Save Changes')}
-          </Button>
-        </div>
+        {gap}
       </div>
     )
   }
@@ -142,71 +53,12 @@ export function AdvancedSettings() {
           <Icon name="Settings" size={28} />
         </span>
         <div>
-          <h1 className="font-display text-[26px] font-black text-heading">
-            {t('Advanced Settings')}
-          </h1>
-          <p className="mt-0.5 text-sm text-muted">
-            {t('Configure your system')}
-          </p>
+          <h1 className="font-display text-[26px] font-black text-heading">{t('Advanced Settings')}</h1>
+          <p className="mt-0.5 text-sm text-muted">{t('Configure your system')}</p>
         </div>
       </div>
 
-      {sections.map((sec) => (
-        <Card key={sec.title} className="flex flex-col gap-4 rounded-xl p-5">
-          <div className="flex items-center gap-2.5">
-            <span className="flex rounded-[10px] bg-tint-blue p-2 text-salis-blue">
-              <Icon name={sec.icon} size={18} />
-            </span>
-            <h2 className="text-[15px] font-bold text-heading">{sec.title}</h2>
-          </div>
-
-          {sec.items.map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center gap-3 border-b border-border pb-3 last:border-0 last:pb-0"
-            >
-              <div className="min-w-0 flex-1">
-                <p className="m-0 text-sm font-medium text-body">{item.label}</p>
-                <p className="m-0 mt-0.5 text-xs text-muted">{item.desc}</p>
-              </div>
-
-              {item.kind === 'toggle' && item.toggleKey && (
-                <Toggle
-                  on={toggles[item.toggleKey]}
-                  onToggle={() => flip(item.toggleKey!)}
-                  label={item.label}
-                  disabled={!isLive}
-                />
-              )}
-
-              {item.kind === 'value' && (
-                <span className="flex-shrink-0 rounded-md border border-border bg-inset px-3 py-1.5 text-[13px] font-medium text-heading">
-                  {item.value}
-                </span>
-              )}
-
-              {item.kind === 'badge' && (
-                <Badge
-                  background={item.badgeBg!}
-                  color={item.badgeColor!}
-                >
-                  {item.badgeLabel}
-                </Badge>
-              )}
-            </div>
-          ))}
-        </Card>
-      ))}
-
-      <div className="flex justify-end">
-        <Button
-          onClick={() => toast.show({ title: t('Settings saved') })}
-          disabled={!isLive}
-        >
-          <Icon name="Save" size={16} />
-          {t('Save Changes')}
-        </Button>
-      </div>
+      {gap}
     </div>
   )
 }

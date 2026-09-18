@@ -16,16 +16,16 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 237 |
-| data backed | 131 |
+| mock only | 226 |
+| data backed | 142 |
 | e2e covered | 430 |
 | content asserted | 430 |
 | rendered without assertion | 0 |
-| has loading state | 173 |
-| has error state | 138 |
-| has empty state | 212 |
+| has loading state | 178 |
+| has error state | 142 |
+| has empty state | 218 |
 | tablet verified | 4 |
-| arabic verified | 79 |
+| arabic verified | 75 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 130 |
+| crud read | 134 |
 | crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
@@ -44,8 +44,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 28 | 0 | 0 | 28 |
-| app | 316 | 316 | 0 | 0 | 316 |
+| auth | 29 | 29 | 0 | 0 | 29 |
+| app | 315 | 315 | 0 | 0 | 315 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
@@ -58,8 +58,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
-| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | 25 | G9 | `████████████████████` 100% | 21 | 21 |
+| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 29 | 29 |
+| Administration | 25 | G9 | `████████████████████` 100% | 20 | 20 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |

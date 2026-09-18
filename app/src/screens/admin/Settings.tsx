@@ -1,125 +1,55 @@
-import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Input } from '@/components/ui/Input'
-import { Toggle } from '@/components/ui/Toggle'
-import { Button } from '@/components/ui/Button'
-import { MobileCardHeader } from '@/components/shell/MobileShell'
-import { useToast } from '@/components/ui/Toast'
-import { usePreferences } from '@/providers/PreferencesProvider'
+import { EmptyState } from '@/components/ui/States'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { isLive } from '@/data/repository'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
-
-
+/* This screen was MOCK_ONLY (BLK-004): the workshop name and phone number
+ * were literal `useState` defaults ("Al-Amri Auto Center", a fake phone
+ * number), the notification toggles had no backing state, and "Current
+ * Plan: PRO" duplicated Subscription.tsx's own fabrication — none of it
+ * read from anywhere, none of it saved anywhere (`Save Changes` only
+ * fires a toast).
+ *
+ * There is no settings/workshop-profile collection in Repository
+ * (app/src/data/repository.ts) or API_REGISTRY.json, the same gap as
+ * AdvancedSettings.tsx. Rather than invent a configuration state, this is
+ * an honest GAP state, following CallCenterLogs.tsx's pattern. */
 export function Settings() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const toast = useToast()
 
-  const [wsName, setWsName] = useState('Al-Amri Auto Center')
-  const [phone, setPhone] = useState('+966 55 123 4567')
-  const [emailNotif, setEmailNotif] = useState(true)
-  const [smsAlerts, setSmsAlerts] = useState(false)
-  const [twoFactor, setTwoFactor] = useState(true)
+  const gap = (
+    <Card className="p-6">
+      <EmptyState
+        icon="Settings"
+        title={t('Settings has no data source yet')}
+        description={t(
+          'Workshop profile, notification preferences and billing plan have no collection this API serves. Nothing is shown here rather than invented settings.',
+        )}
+      />
+      <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="flex-shrink-0 text-salis-blue" />
+        {t('Connect the API — no data source yet:')}{' '}
+        <span dir="ltr" className="font-mono text-body">workshopSettings</span>
+      </p>
+    </Card>
+  )
 
-  const notifRows = [
-    { label: t('Email Notifications'), on: emailNotif, toggle: () => setEmailNotif((v) => !v) },
-    { label: t('SMS Alerts'), on: smsAlerts, toggle: () => setSmsAlerts((v) => !v) },
-    { label: t('Two-Factor Authentication'), on: twoFactor, toggle: () => setTwoFactor((v) => !v) },
-  ]
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Settings" title={t('Settings')} />
+        {gap}
+      </div>
+    )
+  }
 
   return (
     <div className="flex max-w-[760px] animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <h1 className="font-display text-[30px] font-black text-heading">
-        {t('Settings')}
-      </h1>
-
-      <Card className="flex flex-col gap-4 rounded-2xl p-6">
-        <h2 className="text-[17px] font-bold text-heading">{t('Workshop Profile')}</h2>
-        <div className={isMobile ? 'flex flex-col gap-4' : 'grid grid-cols-2 gap-4'}>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="workshop-name" className="font-action text-xs font-medium text-primary">
-              {t('Workshop Name')}
-            </label>
-            <Input
-              id="workshop-name"
-              inputSize="md"
-              value={wsName}
-              onChange={(e) => setWsName(e.target.value)}
-              disabled={!isLive}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="settings-phone" className="font-action text-xs font-medium text-primary">
-              {t('Phone')}
-            </label>
-            <Input
-              id="settings-phone"
-              inputSize="md"
-              dir="ltr"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              disabled={!isLive}
-              className="font-mono"
-            />
-          </div>
-        </div>
-      </Card>
-
-      <Card className="flex flex-col gap-3.5 rounded-2xl p-6">
-        <h2 className="text-[17px] font-bold text-heading">
-          {t('Notifications Preferences')}
-        </h2>
-        {isMobile ? (
-          <div className="flex flex-col divide-y divide-border">
-            {notifRows.map((row) => (
-              <div key={row.label} className="py-3 first:pt-0 last:pb-0">
-                <MobileCardHeader
-                  leading={
-                    <span className="text-sm text-body">{row.label}</span>
-                  }
-                  trailing={
-                    <Toggle on={row.on} onToggle={row.toggle} label={row.label} />
-                  }
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          notifRows.map((row) => (
-            <div
-              key={row.label}
-              className="flex items-center justify-between"
-            >
-              <span className="text-sm text-body">{row.label}</span>
-              <Toggle on={row.on} onToggle={row.toggle} label={row.label} />
-            </div>
-          ))
-        )}
-      </Card>
-
-      <Card className="flex items-center justify-between gap-4 rounded-2xl p-6">
-        <div>
-          <h2 className="text-[17px] font-bold text-heading">
-            {t('Billing & Subscription')}
-          </h2>
-          <p className="mt-1 text-[13px] text-muted">
-            {t('Current Plan')}:{' '}
-            <span className="font-semibold text-salis-blue">PRO</span>
-          </p>
-        </div>
-        <Button variant="outline" size="sm">
-          {t('Billing & Subscription')}
-        </Button>
-      </Card>
-
-      <div className="flex justify-end">
-        <Button onClick={() => toast.show({ title: t('Settings saved') })} disabled={!isLive}>
-          <Icon name="Check" size={16} />
-          {t('Save Changes')}
-        </Button>
-      </div>
+      <h1 className="font-display text-[30px] font-black text-heading">{t('Settings')}</h1>
+      {gap}
     </div>
   )
 }

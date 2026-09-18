@@ -1,132 +1,38 @@
-import { useMemo } from 'react'
 import { Card } from '@/components/ui/Card'
-import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
-import { DataTable, type Column } from '@/components/ui/DataTable'
-import { useIsMobile } from '@/lib/useMediaQuery'
+import { EmptyState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
 
-interface Tenant {
-  id: string
-  name: string
-  plan: string
-  branches: number
-  users: number
-  status: string
-  region: string
-}
-
-function useTenants(t: (s: string) => string): Tenant[] {
-  return useMemo(
-    () => [
-      { id: 'ORG-001', name: t('SALIS Auto Workshop'), plan: t('Enterprise'), branches: 4, users: 28, status: t('Active'), region: t('Riyadh') },
-      { id: 'ORG-002', name: t('Gulf Motors'), plan: t('Professional'), branches: 2, users: 12, status: t('Active'), region: t('Jeddah') },
-      { id: 'ORG-003', name: t('Al-Jazeera Auto'), plan: t('Starter'), branches: 1, users: 5, status: t('Active'), region: t('Dammam') },
-      { id: 'ORG-004', name: t('Desert Star Garage'), plan: t('Professional'), branches: 2, users: 9, status: t('Suspended'), region: t('Riyadh') },
-      { id: 'ORG-005', name: t('Platinum Auto Care'), plan: t('Enterprise'), branches: 3, users: 18, status: t('Active'), region: t('Jeddah') },
-    ],
-    [t],
-  )
-}
-
+/* This screen was MOCK_ONLY (BLK-004): every KPI and every tenant row
+ * ("SALIS Auto Workshop", "Gulf Motors", "Al-Jazeera Auto", ...) was a
+ * hardcoded fixture, with no `isLive` check at all.
+ *
+ * Same gap as its sibling Organizations.tsx: there is no multi-tenant
+ * organizations collection in Repository (app/src/data/repository.ts) or
+ * API_REGISTRY.json. Rather than invent a platform-wide tenant list, this
+ * is an honest GAP state, following CallCenterLogs.tsx's pattern. */
 export function SuperAdmin() {
   const { t } = usePreferences()
-  const isMobile = useIsMobile()
-  const tenants = useTenants(t)
-
-  const activeTenants = tenants.filter((o) => o.status === t('Active')).length
-  const totalBranches = tenants.reduce((s, o) => s + o.branches, 0)
-  const totalUsers = tenants.reduce((s, o) => s + o.users, 0)
-
-  const kpis = [
-    { label: t('Organizations'), value: String(tenants.length), icon: 'Building2', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Active'), value: String(activeTenants), icon: 'CheckCircle', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Total Branches'), value: String(totalBranches), icon: 'MapPin', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Total Users'), value: String(totalUsers), icon: 'Users', bg: 'var(--tint-navy)', fg: 'var(--text-heading)' },
-  ]
-
-  function statusBadge(status: string) {
-    if (status === t('Active')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{status}</Badge>
-    if (status === t('Suspended')) return <Badge background="var(--tint-orange)" color="var(--salis-orange)">{status}</Badge>
-    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{status}</Badge>
-  }
-
-  function planBadge(plan: string) {
-    if (plan === t('Enterprise')) return <Badge background="var(--tint-blue)" color="var(--salis-blue)">{plan}</Badge>
-    if (plan === t('Professional')) return <Badge background="var(--tint-bright)" color="var(--salis-blue-bright)">{plan}</Badge>
-    return <Badge background="var(--tint-navy)" color="var(--text-heading)">{plan}</Badge>
-  }
-
-  const columns: Column<Tenant>[] = [
-    { header: 'ID', cell: (o) => o.id, code: true },
-    { header: 'Organization', cell: (o) => <span className="font-medium text-heading">{o.name}</span> },
-    { header: 'Region', cell: (o) => o.region },
-    { header: 'Plan', cell: (o) => planBadge(o.plan) },
-    { header: 'Branches', cell: (o) => <span className="font-mono text-heading" dir="ltr">{o.branches}</span> },
-    { header: 'Users', cell: (o) => <span className="font-mono text-heading" dir="ltr">{o.users}</span> },
-    { header: 'Status', cell: (o) => statusBadge(o.status) },
-  ]
-
-  const table = (
-    <DataTable
-      caption="Organizations"
-      columns={columns}
-      rows={tenants}
-      rowKey={(o) => o.id}
-      mobileCard={(o) => (
-        <>
-          <MobileCardHeader
-            leading={
-              <div className="flex items-center gap-2">
-                <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Building2" size={14} /></span>
-                <div>
-                  <p className="text-[13px] font-semibold text-heading">{o.name}</p>
-                  <p className="text-xs text-muted">{o.region} · {o.branches} {t('branches')} · {o.users} {t('users')}</p>
-                </div>
-              </div>
-            }
-          />
-          <div className="mt-1.5 flex items-center justify-between">
-            {planBadge(o.plan)}
-            {statusBadge(o.status)}
-          </div>
-        </>
-      )}
-    />
-  )
-
-  if (isMobile) {
-    return (
-      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Shield" title={t('Super Admin')} subtitle={t('Platform Control')} />
-        <div className="grid grid-cols-2 gap-3">
-          {kpis.map((k) => (
-            <Card key={k.label} className="rounded-xl p-3 shadow-sm">
-              <span className="flex rounded-lg p-1.5" style={{ background: k.bg, color: k.fg }} aria-hidden><Icon name={k.icon} size={14} /></span>
-              <p className="mt-1.5 text-[11px] text-muted">{k.label}</p>
-              <p className="font-mono text-sm font-bold text-heading">{k.value}</p>
-            </Card>
-          ))}
-        </div>
-        {table}
-      </div>
-    )
-  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Shield" title={t('Super Admin')} subtitle={t('Platform Control')} />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map((k) => (
-          <KpiCard key={k.label} {...k} />
-        ))}
-      </div>
-
-      {table}
+      <Card className="p-4">
+        <EmptyState
+          icon="Shield"
+          title={t('Super Admin has no data source yet')}
+          description={t(
+            'Platform-wide tenants, their plans and usage have no collection this API serves. Nothing is shown here rather than invented tenants.',
+          )}
+        />
+        <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">
+          <Icon name="Info" size={12} className="flex-shrink-0 text-salis-blue" />
+          {t('Connect the API — no data source yet:')}{' '}
+          <span dir="ltr" className="font-mono text-body">organizations</span>
+        </p>
+      </Card>
     </div>
   )
 }

@@ -27,12 +27,12 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 7 of 7 |
 | HR and payroll | [CAP-HR](HR.md) | 5 | 52 | 6 | 5 of 5 |
 | CRM and sales | [CAP-CRM](CRM.md) | 12 | 51 | 6 | 10 of 12 |
-| Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 9 of 11 |
+| Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 11 of 11 |
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 5 | 1 | 1 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
 | AI and automation | [CAP-AI](AI.md) | 10 | 8 | 2 | 4 of 10 |
-| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 36 | 19 | 4 | 5 of 36 |
-| Identity and access | [CAP-IDENTITY](IDENTITY.md) | 18 | 24 | 0 | 0 of 18 |
+| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 19 | 4 | 6 of 35 |
+| Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 24 | 0 | 0 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 34 | 0 | 0 | 0 of 34 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 43 of 233 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 51 of 233 |

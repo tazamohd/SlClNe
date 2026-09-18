@@ -429,6 +429,25 @@ const SEAM_CALL =
   /\buse(PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
 const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
 
+/** The other way through the seam: `screens/accounting/useFinanceReports.ts`'s
+ *  hooks read a server-computed aggregate (`financeReports.trialBalance()` and
+ *  siblings) rather than a collection, so they carry no `CollectionKey` for
+ *  `SEAM_CALL` to capture — a screen that calls only `useTrialBalance()` swept
+ *  the MOCK_ONLY floor the same way `FinancialReports` did before it called
+ *  `useCollection` in its own body. The label recorded in its place is the
+ *  endpoint the hook actually reads, for the same reason `dataSource` records
+ *  a collection name elsewhere: so the registry says what a screen is backed
+ *  by, not just that it is. */
+const REPORT_HOOK_CALL = /\buse(TrialBalance|InvoicesSummary|TaxReturn|InsuranceClaimsSummary|LoansSummary)\s*\(/g
+const REPORT_HOOK_ANY = /\buse(?:TrialBalance|InvoicesSummary|TaxReturn|InsuranceClaimsSummary|LoansSummary)\b/
+const REPORT_HOOK_ENDPOINT = {
+  TrialBalance: 'accounting/reports/trial-balance',
+  InvoicesSummary: 'invoices/summary',
+  TaxReturn: 'accounting/tax/return',
+  InsuranceClaimsSummary: 'insurance/claims/summary',
+  LoansSummary: 'loans/summary',
+}
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -497,11 +516,12 @@ const dataBackedScreens = (() => {
     const direct = new Map()
     for (const [name, body] of exportBodies(src)) {
       const calls = [...body.matchAll(SEAM_CALL)]
-      direct.set(name, {
-        body,
-        keys: [...new Set(calls.map((c) => c[2]))].sort(),
-        crud: crudFrom(calls, body),
-      })
+      const reportCalls = [...body.matchAll(REPORT_HOOK_CALL)]
+      const keys = new Set(calls.map((c) => c[2]))
+      for (const call of reportCalls) keys.add(REPORT_HOOK_ENDPOINT[call[1]])
+      const crud = crudFrom(calls, body)
+      if (reportCalls.length) crud.read = true
+      direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
      * for itself — the three Campaigns wrappers are exactly this — is backed by
@@ -530,7 +550,7 @@ const dataBackedScreens = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        if (!SEAM_ANY.test(src)) continue
+        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
           const prev = map.get(name)
@@ -848,7 +868,7 @@ const SURFACE_RULES = [
   [/^CallCenter/,               'call-center',  'AppShell',          'portals',     '16'],
   [/^(CustomerPortal|TechnicianPortal|SupplierPortal|ProcurementPortal)/, 'portal', 'PortalShell', 'portals', '16'],
   [/^CustomerApp\./,            'customer-app', 'CustomerAppShell',  'customerapp', '16'],
-  [/^(Splash|Welcome|LanguageSelection|RegionSelection|Login|Register|SSOLogin|SocialLogin|ForgotPassword|ResetPassword|OTPVerification|TwoFactorVerification|CreatePIN|BiometricSetup|RoleSelection|WorkspaceSelection|OrganizationSelection|ProfileCompletion|InviteAcceptance|Onboarding|TermsConditions|PrivacyPolicy|Maintenance|Error404|Unauthorized|SessionExpired|AccountLocked|LogoutConfirmation)$/,
+  [/^(Splash|Welcome|LanguageSelection|RegionSelection|Login|Register|SSOLogin|SocialLogin|ForgotPassword|ResetPassword|OTPVerification|TwoFactorVerification|CreatePIN|BiometricSetup|RoleSelection|WorkspaceSelection|OrganizationSelection|ProfileCompletion|InviteAcceptance|Onboarding|TermsConditions|PrivacyPolicy|CookiePolicy|Maintenance|Error404|Unauthorized|SessionExpired|AccountLocked|LogoutConfirmation)$/,
                                 'auth',         'AuthLayout',        'auth',        '06'],
   [/^(Dashboard|JobCards|JobDetail|JobCardDetail|Workshop|Appointments|AppointmentCalendar|OBDDiagnostics|DiagnosticReport|TechnicianKB|TechnicianSchedule|Technicians|Estimates|EstimateDetail|ApprovalInbox|CustomerApproval|WorkshopReports)/,
                                 'app',          'AppShell',          'workshop',    '08'],
