@@ -3,9 +3,10 @@
  *  plus one login account per role. Idempotent: skips a table that already has
  *  rows, so repeated `npm run dev` starts don't duplicate data. */
 import { sql } from 'drizzle-orm'
+import { ROLE_IDS, ROLE_META } from '@salis/contract'
 import type { Db } from './index.js'
 import * as schema from './schema.js'
-import { ROLES } from '../auth/rbac.js'
+import { DEMO_USERS } from './seed-demo-users.js'
 import { hashPassword } from '../auth/jwt.js'
 import { env } from '../env.js'
 import * as T from './seed-data.js'
@@ -24,22 +25,21 @@ async function seedTable(db: Db, table: any, rows: readonly any[]): Promise<void
 export async function seed(db: Db): Promise<void> {
   // Login accounts — one per role, sharing the demo password (dev convenience).
   if (await isEmpty(db, schema.users)) {
-    const roles = ROLES as unknown as ReadonlyArray<{
-      id: string
-      scope: string
-      demo: { name: string; ar: string; email: string }
-    }>
     const passwordHash = hashPassword(env.DEMO_PASSWORD)
     await db.insert(schema.users).values(
-      roles.map((r) => ({
-        id: `user-${r.id}`,
-        email: r.demo.email,
-        passwordHash,
-        role: r.id,
-        name: r.demo.name,
-        ar: r.demo.ar,
-        scope: r.scope,
-      })),
+      ROLE_IDS.map((id) => {
+        const user = DEMO_USERS.find((u) => u.id === id)
+        if (!user) throw new Error(`No demo seed data for role "${id}".`)
+        return {
+          id: `user-${id}`,
+          email: user.demo.email,
+          passwordHash,
+          role: id,
+          name: user.demo.name,
+          ar: user.demo.ar,
+          scope: ROLE_META[id].scope,
+        }
+      }),
     )
   }
 

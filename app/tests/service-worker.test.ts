@@ -248,6 +248,35 @@ describe('service worker — strategies', () => {
     expect(sw.fetchMock).toHaveBeenCalledTimes(1) // the revalidation
   })
 
+  it('serves a hashed asset the cache refused to store, rather than failing the import', async () => {
+    /* The put is what fails here, not the fetch: quota is full, or site data
+     * was cleared mid-flight. The response is already in hand and correct, so
+     * an unguarded put would turn a working chunk into
+     * `Failed to fetch dynamically imported module` — a blank route, with no
+     * retry, for a request the network answered. */
+    const fresh = response(200)
+    sw.fetchMock.mockResolvedValueOnce(fresh)
+    sw.cache.put.mockRejectedValueOnce(new Error('QuotaExceededError'))
+
+    const { responded } = sw.fetchEvent({ url: `${ORIGIN}/assets/Reports-Zz99Yy88.js` })
+    await expect(responded).resolves.toBe(fresh)
+  })
+
+  it('serves the fresh shell when the cache refuses to store it, not the older one', async () => {
+    /* Worse than a blank page: the throw used to land in the offline branch,
+     * which answers from cache — pinning the visitor to the build they first
+     * saw at the exact moment the new one arrived, which is the failure
+     * network-first exists to prevent. */
+    const stale = response(200)
+    sw.stored.set('/index.html', stale)
+    const fresh = response(200)
+    sw.fetchMock.mockResolvedValueOnce(fresh)
+    sw.cache.put.mockRejectedValueOnce(new Error('QuotaExceededError'))
+
+    const { responded } = sw.fetchEvent({ url: `${ORIGIN}/dashboard`, mode: 'navigate' })
+    await expect(responded).resolves.toBe(fresh)
+  })
+
   it('never stores a response the server marked no-store', async () => {
     sw.fetchMock.mockResolvedValueOnce(response(200, { 'Cache-Control': 'no-store' }))
     const { responded } = sw.fetchEvent({ url: `${ORIGIN}/assets/Thing-Z9y8X7w6.js` })
