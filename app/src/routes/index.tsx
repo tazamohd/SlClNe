@@ -226,6 +226,7 @@ export const SCREEN_ENTRIES = composeScreens({
     'JobCardDetail',
     'ApprovalInbox',
     'DeclinedJobs',
+    'CannedJobs',
     'EstimateDetail',
     'AppointmentCalendar',
     'TechnicianSchedule',

@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-197 spec files containing 2251 test cases.
+200 spec files containing 2268 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 122 | 1141 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 125 | 1158 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 37 | 472 |
-| app | 117 | 1402 |
+| server | 38 | 484 |
+| app | 119 | 1407 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -123,9 +123,11 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/WorkflowStepper.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/component/workshop-approval-gaps.test.tsx` | UNIT_OR_API | 5 | owner, advisor, customer, technician |
 | `app/tests/component/workshop-approval-inbox.test.tsx` | UNIT_OR_API | 6 | owner, advisor |
+| `app/tests/component/workshop-canned-jobs.test.tsx` | UNIT_OR_API | 3 | advisor |
 | `app/tests/component/workshop-declined-jobs.test.tsx` | UNIT_OR_API | 4 | owner |
 | `app/tests/component/workshop-delivery.test.tsx` | UNIT_OR_API | 4 | advisor |
 | `app/tests/component/workshop-estimate-detail.test.tsx` | UNIT_OR_API | 6 | owner, advisor |
+| `app/tests/component/workshop-estimate.test.tsx` | UNIT_OR_API | 2 | advisor |
 | `app/tests/component/workshop-inspection.test.tsx` | UNIT_OR_API | 3 | technician |
 | `app/tests/component/workshop-job-card-detail.test.tsx` | UNIT_OR_API | 9 | technician |
 | `app/tests/component/workshop-job-cards.test.tsx` | UNIT_OR_API | 5 | owner, technician |
@@ -209,6 +211,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/auth.test.ts` | UNIT_OR_API | 31 | owner, manager, technician, frontdesk |
 | `server/tests/authz-matrix.test.ts` | SECURITY | 20 | owner, accountant, manager, superadmin, qc, technician |
 | `server/tests/authz-sod.test.ts` | SECURITY | 7 | manager, qc, parts |
+| `server/tests/canned-jobs.test.ts` | UNIT_OR_API | 12 | advisor, manager, technician, customer |
 | `server/tests/collections.test.ts` | UNIT_OR_API | 16 | — |
 | `server/tests/crm-fleet.test.ts` | UNIT_OR_API | 13 | advisor, technician, manager, owner |
 | `server/tests/customer-registration.test.ts` | UNIT_OR_API | 14 | customer, owner |

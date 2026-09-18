@@ -1505,6 +1505,7 @@ const EXPECTED_TEXT = {
   '/public-portal/security': "PublicPortal · Security",
   '/declined-jobs': "DeclinedJobs",
   '/customer-portal/health-check-report': "HealthCheckReport",
+  '/canned-jobs': "CannedJobs",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────

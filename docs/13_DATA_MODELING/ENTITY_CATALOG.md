@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-73 tables. 68 are tenant-scoped (carry `org_id`) and 69 have row-level security enabled and forced.
+75 tables. 70 are tenant-scoped (carry `org_id`) and 71 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -40,6 +40,8 @@
 | ENT-INSPECTION-FINDINGS | `inspection_findings` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-INSPECTION-MEDIA | `inspection_media` | 18 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-DELIVERY-SIGNOFFS | `delivery_signoffs` | 17 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-CANNED-JOBS | `canned_jobs` | 16 | yes | yes | yes | yes | yes | yes | 1 | 0 |
+| ENT-CANNED-JOB-LINES | `canned_job_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-INVOICES | `invoices` | 29 | yes | yes | yes | yes | yes | yes | 5 | 3 |
 | ENT-INVOICE-LINES | `invoice_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-PAYMENTS | `payments` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |

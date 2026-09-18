@@ -838,6 +838,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "CannedJobs",
+          "route": "/canned-jobs",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "HealthCheckReport",
           "route": "/customer-portal/health-check-report",
           "status": "built",
@@ -3976,8 +3985,8 @@
     }
   ],
   "totals": {
-    "total": 429,
-    "built": 429,
+    "total": 430,
+    "built": 430,
     "designedMobile": 114
   }
 }

@@ -225,6 +225,27 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-CannedJobs",
+    "name": "CannedJobs",
+    "title": "CannedJobs",
+    "route": "/canned-jobs",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "estimates",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-HealthCheckReport",
     "name": "HealthCheckReport",
     "title": "HealthCheckReport",

@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 157 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 159 requirements
 
 ## What these requirements are, and what they are not
 
@@ -36,7 +36,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 
 | ID | Statement | Capability | Endpoints | Screens | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| FR-WORKSHOP-001 | The system provides workshop operations through 18 screens and 121 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 121 | 18 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-WORKSHOP-001 | The system provides workshop operations through 19 screens and 128 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 128 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERS-001 | The system provides customer management through 3 screens and 19 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 19 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-VEHICLES-001 | The system provides vehicle management through 4 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-INVENTORY-001 | The system provides parts and inventory through 7 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -87,8 +87,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | NFR-REL-001 | A replayed Idempotency-Key returns the stored response and creates no second business effect; the same key with a different body is refused. | server/src/http/idempotency.ts + idempotency_keys unique index | CODE_AND_SCHEMA |
 | NFR-REL-002 | Concurrent updates are resolved optimistically on a database-maintained version column; a stale write is refused, not silently applied. | bump_version trigger on every tenant table | DATABASE_CONSTRAINT |
 | NFR-A11Y-001 | Colour-contrast violations do not increase. The axe sweep is ratcheted per route and per viewport. | project-control/BASELINE.json axeColourContrastNodes + app/e2e/a11y.spec.ts | RATCHETED_BASELINE |
-| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 79 of 429, rtlHazards 0 | MEASURED_REGISTRY |
-| NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 429 of 429 | MEASURED_REGISTRY |
+| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 79 of 430, rtlHazards 0 | MEASURED_REGISTRY |
+| NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 430 of 430 | MEASURED_REGISTRY |
 | NFR-PERF-001 | Bundle size and golden-path timings stay within the recorded ratchet. | app/scripts/check-bundle.mjs, app/scripts/golden-paths.mjs | RATCHETED_BASELINE |
 | NFR-OPS-001 | The service exposes liveness and readiness probes that are reachable without a token. | GET /health, GET /ready (server/src/routes/health.ts) | CODE |
 
@@ -112,6 +112,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-INSPECTION-FINDINGS | `inspection_findings` holds 19 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-INSPECTION-MEDIA | `inspection_media` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-DELIVERY-SIGNOFFS | `delivery_signoffs` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-CANNED-JOBS | `canned_jobs` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-CANNED-JOB-LINES | `canned_job_lines` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-INVOICES | `invoices` holds 29 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-INVOICE-LINES | `invoice_lines` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-PAYMENTS | `payments` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |

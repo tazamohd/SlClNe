@@ -2,10 +2,11 @@
 // Source: project/gms-data.js (the design bundle's source of truth).
 //
 // Exception: the "Inspection internal notes" entry in FIELD_RULES below, and
-// the "HealthCheckReport": "jobcards" entry in SCREEN_MODULE, were
-// added by hand alongside the matching FIELD_RULES entry in
-// project/gms-data.js (DVHC, Sprint 2, P0 — the screen itself has no design
-// source, same reasoning as "DeclinedJobs" already in this file) — a full
+// the "HealthCheckReport": "jobcards" / "CannedJobs": "estimates" entries in
+// SCREEN_MODULE, were added by hand alongside the matching FIELD_RULES entry
+// in project/gms-data.js (DVHC, Sprint 2, P0; Canned Jobs, build-order item
+// 5 — neither screen has a design source, same reasoning as "DeclinedJobs"
+// already in this file) — a full
 // `node scripts/port-design-data.mjs` run also touched
 // nav.ts/screens.ts/badges.ts/icon-registry.ts with unrelated drift this
 // change did not intend to carry, so only the entries this feature needs
@@ -715,6 +716,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "AuditLog": "audit",
   "ApprovalInbox": "approvals",
   "DeclinedJobs": "estimates",
+  "CannedJobs": "estimates",
   "HealthCheckReport": "jobcards",
   "CustomerApproval": "estimates",
   "OBDDiagnostics": "jobcards",

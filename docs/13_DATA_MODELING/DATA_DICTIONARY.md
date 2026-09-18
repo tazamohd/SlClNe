@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1232 in total.
+Every column of every table, 1265 in total.
 
 ## `organizations`
 
@@ -469,6 +469,61 @@ Customer sign-off at delivery (Sprint 2, P0). One row per job card — the signa
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `delivery_signoffs_job_idx` | no | orgId, jobCardId |
+
+## `canned_jobs`
+
+Canned Jobs — predefined, priced service packages (build-order item 5). `priceHalalas`/`lineCount` are stored, computed at write time from `lines` the same way `estimates.subtotalHalalas` is computed from `estimate_lines` — never derived from a join at read time.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `name` | varchar(160) | NOT NULL | — | — | — |
+| `name_ar` | varchar(160) | nullable | — | — | — |
+| `category` | varchar(64) | nullable | — | — | — |
+| `description` | text | nullable | — | — | — |
+| `active` | boolean | NOT NULL | — | true | — |
+| `price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `line_count` | integer | NOT NULL | — | 0 | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `canned_jobs_org_idx` | no | orgId, branchId, active |
+
+## `canned_job_lines`
+
+One line of a canned job's bundle — the same shape `estimate_lines` carries, copied verbatim into an estimate when the package is applied (never referenced live, so a later catalog price change cannot silently move an estimate someone already priced from it).
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `canned_job_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `description` | varchar(300) | NOT NULL | — | — | — |
+| `description_ar` | varchar(300) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | — | — |
+| `qty` | double precision | NOT NULL | — | — | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
+| `part_sku` | varchar(64) | nullable | — | — | — |
+| `sort` | integer | NOT NULL | — | 0 | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `canned_job_lines_job_idx` | no | orgId, cannedJobId |
 
 ## `invoices`
 

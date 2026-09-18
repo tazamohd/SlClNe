@@ -20,7 +20,7 @@ Covers: the collection registry, the generic router, query contract, presentatio
 
 ## One description, many routes
 
-`server/src/registry.ts` describes each of the 56 collections once. `server/src/routes/collections.ts` generates 273 endpoints from those descriptions — list, export, detail, and for the 21 writable ones create, update, delete, bulk-update and bulk-delete.
+`server/src/registry.ts` describes each of the 57 collections once. `server/src/routes/collections.ts` generates 276 endpoints from those descriptions — list, export, detail, and for the 21 writable ones create, update, delete, bulk-update and bulk-delete.
 
 The argument is about people rather than elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. One description means the filter and the check exist once.
 
@@ -49,7 +49,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 
 ## Soft delete
 
-`DELETE` sets `deleted_at`; the row stays. 66 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
+`DELETE` sets `deleted_at`; the row stays. 68 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
 
 ## Collections
 
@@ -63,6 +63,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | jobs | `/jobs` | jobcards | yes | 3 | 5 | 5 |
 | appointments | `/appointments` | appointments | yes | 5 | 5 | 4 |
 | estimates | `/estimates` | estimates | read-only | 3 | 5 | 2 |
+| cannedJobs | `/canned-jobs` | estimates | read-only | 2 | 3 | 2 |
 | declinedJobs | `/declined-jobs` | estimates | yes | 3 | 5 | 5 |
 | inspectionFindings | `/inspection-findings` | jobcards | yes | 2 | 2 | 3 |
 | inspectionMedia | `/inspection-media` | jobcards | yes | 0 | 1 | 4 |

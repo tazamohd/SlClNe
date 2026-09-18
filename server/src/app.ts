@@ -38,6 +38,7 @@ import { registerWorkshopRoutes } from './routes/workshop'
 import { registerWorkshopReportRoutes } from './routes/workshop-reports'
 import { registerDeclinedJobsReportRoutes } from './routes/declined-jobs-report'
 import { registerDeliveryRoutes } from './routes/delivery'
+import { registerCannedJobRoutes } from './routes/canned-jobs'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
 import type { OtpTransport } from './auth'
@@ -375,6 +376,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerWorkshopRoutes(api, { db: deps.db })
       registerInspectionRoutes(api, { db: deps.db, mediaStore })
       registerDeliveryRoutes(api, { db: deps.db, mediaStore })
+      registerCannedJobRoutes(api, { db: deps.db })
       registerHistoryRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })

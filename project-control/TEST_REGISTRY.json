@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 197,
-    "cases": 2251,
+    "suites": 200,
+    "cases": 2268,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1141,
+      "UNIT_OR_API": 1158,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2421,6 +2421,25 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-CANNED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-canned-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "CannedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the real, empty catalog rather than a fabricated one",
+        "states honestly that the catalog cannot be saved without a live API",
+        "offers no \"New Package\" action with no live API to save one to"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
       "file": "app/tests/component/workshop-declined-jobs.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2480,6 +2499,24 @@
       "touchesPaths": [],
       "touchesRoles": [
         "owner",
+        "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-TEST-TSX",
+      "file": "app/tests/component/workshop-estimate.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopEstimate — applying a canned job (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job",
+        "offers no canned-job picker without a linked estimate to apply one to"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
         "advisor"
       ]
     },
@@ -5389,6 +5426,41 @@
         "manager",
         "qc",
         "parts"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-CANNED-JOBS-TEST-TS",
+      "file": "server/tests/canned-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "creating a canned job",
+        "updating a canned job",
+        "reading canned jobs"
+      ],
+      "cases": [
+        "lets an advisor create a package and prices it from the lines",
+        "lets a manager create one too",
+        "refuses a role that can only view estimates",
+        "rejects a body with no lines",
+        "rejects a body missing a name",
+        "changes a field without touching the price",
+        "replaces the lines and reprices when a new lines array is sent",
+        "can retire a package without touching its lines",
+        "refuses a role that can only view estimates",
+        "lists a created package through the generic collection route",
+        "returns the bundle lines",
+        "shows no canned jobs to a customer"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [
+        "/canned-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "technician",
+        "customer"
       ]
     },
     {
