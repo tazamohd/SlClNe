@@ -134,8 +134,8 @@ Staleness alone would be tolerable. These are direct contradictions — one regi
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
 | RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.

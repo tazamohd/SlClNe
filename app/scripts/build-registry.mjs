@@ -1161,19 +1161,35 @@ const { all: screenFiles, reached } = reachableScreenFiles()
 
 /** Unreachable on purpose, and reviewed as such.
  *
- *  Each file here is the pre-kit implementation of feature-map routes that
- *  render the generic `FeatureScreenView` today, kept as the reference for
- *  building the real screen. It stays unwired deliberately: routing one would
- *  put a legacy screen back in front of users. Removing an entry is how that
- *  reference retires; adding one needs the same argument, or this list becomes
- *  where dead code hides. Every other unreachable file is a bug.
+ *  A file here carries its own doc comment disclosing that it is deliberately
+ *  unwired, not forgotten. Remove an entry once that disclosure is retired —
+ *  the work it deferred lands, or the file is deleted; add one only with the
+ *  same kind of disclosure written at the file itself, or this list becomes
+ *  where dead code hides silently. Every other unreachable file is a bug.
  *
- *  Empty since the merge with main: the three files this list protected —
- *  admin/SystemScreens, emerging/EmergingTechScreens, enterprise/
- *  EnterpriseScreens — were deleted on main, which is the retirement the
- *  paragraph above describes. The mechanism stays for the next one.
+ *  - `landing/{CommandDeck,PageNav,useLandingMotion}` and `landing/pages/*`
+ *    (9 files) — the six-page "SALIS AUTO 2030" HUD tour the homepage
+ *    redesign replaced. `public/Landing.tsx`'s own doc comment: left in the
+ *    codebase, unlinked, "by the product owner's explicit decision" —
+ *    remapping that content onto the redesigned pages is a later
+ *    cascade-phase task, not an abandoned rewrite's leftovers.
+ *  - `landing/homepage/SocialProofBand.tsx` — a reserved social-proof
+ *    section with no real testimonials or logos to fill it yet. Its own doc
+ *    comment: "Phase 1 omits this section... not composed into Landing.tsx
+ *    yet for that reason."
  */
-const RETAINED_REFERENCE = [].map((f) => path.normalize(f))
+const RETAINED_REFERENCE = [
+  'src/screens/public/landing/CommandDeck.tsx',
+  'src/screens/public/landing/PageNav.tsx',
+  'src/screens/public/landing/useLandingMotion.ts',
+  'src/screens/public/landing/pages/AccessPage.tsx',
+  'src/screens/public/landing/pages/ChannelPage.tsx',
+  'src/screens/public/landing/pages/GridPage.tsx',
+  'src/screens/public/landing/pages/IndexPage.tsx',
+  'src/screens/public/landing/pages/OriginPage.tsx',
+  'src/screens/public/landing/pages/SystemPage.tsx',
+  'src/screens/public/landing/homepage/SocialProofBand.tsx',
+].map((f) => path.normalize(f))
 
 const unreached = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
 const retainedFiles = unreached.filter((f) => RETAINED_REFERENCE.includes(f))
