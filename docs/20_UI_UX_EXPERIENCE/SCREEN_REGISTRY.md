@@ -20,13 +20,13 @@
 | Reference-only | 28 | 428 |
 | Rendered | 428 | 428 |
 | Placeholder | 0 | 428 |
-| Data-backed (live API) | 114 | 428 |
-| Mock-only (design fixtures) | 251 | 428 |
+| Data-backed (live API) | 116 | 428 |
+| Mock-only (design fixtures) | 249 | 428 |
 | End-to-end covered | 428 | 428 |
 | Content-asserted (not just routed) | 428 | 428 |
-| Has a loading state | 157 | 428 |
-| Has an error state | 124 | 428 |
-| Has an empty state | 178 | 428 |
+| Has a loading state | 159 | 428 |
+| Has an error state | 126 | 428 |
+| Has an empty state | 182 | 428 |
 | Arabic verified | 79 | 428 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 428 |
@@ -34,14 +34,14 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **251 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **249 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 28 | 0 | 0 |
-| app | 314 | 100 | 79 |
+| app | 314 | 102 | 79 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 7 | 4 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 30 | 56 | 34 | 77 | 21 |
+| CAP-DESIGNSYSTEM | 233 | 32 | 58 | 36 | 81 | 21 |
 
 ## Full registry
 

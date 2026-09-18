@@ -9,14 +9,14 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 251,
-    "dataBacked": 114,
+    "mockOnly": 249,
+    "dataBacked": 116,
     "e2eCovered": 428,
     "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 157,
-    "hasErrorState": 124,
-    "hasEmptyState": 178,
+    "hasLoadingState": 159,
+    "hasErrorState": 126,
+    "hasEmptyState": 182,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 113,
+    "crudRead": 115,
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 314,
-      "dataBacked": 100
+      "dataBacked": 102
     },
     "call-center": {
       "total": 2,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 30
+      "dataBacked": 32
     }
   },
   "byModule": {

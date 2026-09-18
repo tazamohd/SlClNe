@@ -1,71 +1,84 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { Money } from '@/components/ui/Money'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { Loading, ErrorState } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface PurchaseOrder {
-  id: string
-  supplier: string
-  items: number
-  total: string
-  date: string
-  expectedDelivery: string
-  status: 'Pending' | 'Approved' | 'Shipped' | 'Delivered' | 'Cancelled'
+/** All purchase orders raised against the workshop's own suppliers (BLK-004):
+ *  read through the repository seam from `purchaseOrders` — the same
+ *  `GET /procurement/purchase-orders` collection `Procurement.tsx` raises and
+ *  receives orders against — rather than the seven fictional orders (with an
+ *  invented item count and delivery date) this screen carried before.
+ *
+ *  The server's own status vocabulary (draft/approved/sent/receiving/
+ *  received/closed) is used as-is rather than the design's unrelated one
+ *  (Pending/Shipped/Cancelled, none of which the lifecycle in Procurement.tsx
+ *  actually has). There is no per-line item count on this collection without
+ *  a second request per order, so "Items" is dropped rather than shown as 1
+ *  or guessed at; the order total is the server's own subtotal + VAT. */
+
+type PurchaseOrder = RowOf<'purchaseOrders'>
+
+const STATUS_STYLES: Record<PurchaseOrder['status'], { bg: string; fg: string }> = {
+  draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  sent: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
+  receiving: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  received: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  closed: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
-const PURCHASE_ORDERS: PurchaseOrder[] = [
-  { id: 'PO-2041', supplier: 'Al-Rajhi Auto Parts', items: 12, total: 'SAR 8,450', date: 'Aug 18, 2026', expectedDelivery: 'Aug 22, 2026', status: 'Pending' },
-  { id: 'PO-2040', supplier: 'Gulf Parts Trading', items: 8, total: 'SAR 5,200', date: 'Aug 17, 2026', expectedDelivery: 'Aug 21, 2026', status: 'Approved' },
-  { id: 'PO-2039', supplier: 'Toyota Genuine Parts', items: 5, total: 'SAR 12,800', date: 'Aug 16, 2026', expectedDelivery: 'Aug 25, 2026', status: 'Shipped' },
-  { id: 'PO-2038', supplier: 'Hyundai Parts Center', items: 15, total: 'SAR 6,340', date: 'Aug 15, 2026', expectedDelivery: 'Aug 18, 2026', status: 'Delivered' },
-  { id: 'PO-2037', supplier: 'National Auto Supplies', items: 3, total: 'SAR 1,890', date: 'Aug 14, 2026', expectedDelivery: 'Aug 17, 2026', status: 'Delivered' },
-  { id: 'PO-2036', supplier: 'Al-Rajhi Auto Parts', items: 6, total: 'SAR 3,120', date: 'Aug 13, 2026', expectedDelivery: 'Aug 16, 2026', status: 'Cancelled' },
-  { id: 'PO-2035', supplier: 'Honda Parts Warehouse', items: 9, total: 'SAR 7,650', date: 'Aug 12, 2026', expectedDelivery: 'Aug 15, 2026', status: 'Delivered' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Shipped: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
-  Delivered: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+const STATUS_LABEL: Record<PurchaseOrder['status'], string> = {
+  draft: 'Draft',
+  approved: 'Approved',
+  sent: 'Sent',
+  receiving: 'Receiving',
+  received: 'Received',
+  closed: 'Closed',
 }
 
 export function PurchaseOrdersList() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const { data: orders = [], isLoading, isError, error, refetch } = useCollection('purchaseOrders')
 
   const columns: Column<PurchaseOrder>[] = [
-    { header: 'PO Number', cell: (po) => po.id, code: true },
-    { header: 'Supplier', cell: (po) => po.supplier },
-    { header: 'Items', cell: (po) => po.items },
-    { header: 'Total', cell: (po) => <span className="font-medium text-heading">{po.total}</span> },
-    { header: 'Order Date', cell: (po) => <span className="text-muted">{po.date}</span> },
-    { header: 'Expected Delivery', cell: (po) => <span className="text-muted">{po.expectedDelivery}</span> },
-    { header: 'Status', cell: (po) => <Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge> },
+    { header: 'PO Number', cell: (po) => po.code, code: true },
+    { header: 'Supplier', cell: (po) => po.supplierName },
+    { header: 'Total', cell: (po) => <Money sar={po.totalHalalas / 100} className="font-medium text-heading" /> },
+    { header: 'Ordered', cell: (po) => <span className="text-muted">{po.orderedAt ?? '—'}</span> },
+    { header: 'Expected', cell: (po) => <span className="text-muted">{po.expectedAt ?? '—'}</span> },
+    { header: 'Status', cell: (po) => <Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(STATUS_LABEL[po.status])}</Badge> },
   ]
+
+  if (isLoading) return <Loading label={t('Loading purchase orders...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   const table = (
     <DataTable
       caption="All Purchase Orders"
       columns={columns}
-      rows={PURCHASE_ORDERS}
+      rows={orders}
       rowKey={(po) => po.id}
+      empty={<p className="py-8 text-center text-sm text-muted">{t('No purchase orders found')}</p>}
       mobileCard={(po) => (
         <>
           <MobileCardHeader
-            title={po.id}
+            title={po.code}
             code
-            trailing={<Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(po.status)}</Badge>}
+            trailing={<Badge background={STATUS_STYLES[po.status].bg} color={STATUS_STYLES[po.status].fg}>{t(STATUS_LABEL[po.status])}</Badge>}
           />
-          <MobileCardRow label={t('Supplier')} value={po.supplier} />
-          <MobileCardRow label={t('Items')} value={po.items} />
-          <MobileCardRow label={t('Total')} value={po.total} />
-          <MobileCardRow label={t('Delivery')} value={po.expectedDelivery} />
+          <MobileCardRow label={t('Supplier')} value={po.supplierName} />
+          <MobileCardRow label={t('Total')}>
+            <Money sar={po.totalHalalas / 100} />
+          </MobileCardRow>
+          <MobileCardRow label={t('Expected')} value={po.expectedAt ?? '—'} />
         </>
       )}
     />
@@ -86,10 +99,10 @@ export function PurchaseOrdersList() {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {[
-          { label: 'Total Orders', value: PURCHASE_ORDERS.length.toString(), icon: 'ShoppingCart' },
-          { label: 'Pending', value: PURCHASE_ORDERS.filter((p) => p.status === 'Pending').length.toString(), icon: 'Clock' },
-          { label: 'In Transit', value: PURCHASE_ORDERS.filter((p) => p.status === 'Shipped').length.toString(), icon: 'Truck' },
-          { label: 'Delivered', value: PURCHASE_ORDERS.filter((p) => p.status === 'Delivered').length.toString(), icon: 'PackageCheck' },
+          { label: 'Total Orders', value: orders.length.toString(), icon: 'ShoppingCart' },
+          { label: 'Approved', value: orders.filter((p) => p.status === 'approved').length.toString(), icon: 'Clock' },
+          { label: 'Receiving', value: orders.filter((p) => p.status === 'receiving').length.toString(), icon: 'Truck' },
+          { label: 'Received', value: orders.filter((p) => p.status === 'received').length.toString(), icon: 'PackageCheck' },
         ].map((stat) => (
           <Card key={stat.label} className="rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
