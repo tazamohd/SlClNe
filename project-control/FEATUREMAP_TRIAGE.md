@@ -382,9 +382,87 @@ Client Portal/Portal misc here) have now been verified file-by-file.
    (real grouped matches across all 5 collections) and three of the
    GAP-state screens at a 390px mobile viewport — all clean, zero
    console errors. `node tools/docs/check.mjs`: passes, no drift.
-5. **`website` domain (34)** — triaged in wave 7 (2026-09-18, PR #148).
-   ~~**`auth` domain (29)**~~ — triaged in wave 8 (2026-09-18), same
-   judgment call.
+5. ~~**`website` domain (34)**~~ — triaged in wave 7 (2026-09-18, PR
+   #148). ~~**`auth` domain (29)**~~ — triaged in wave 8 (2026-09-18),
+   same judgment call.
+
+## Wave 7 — website domain (2026-09-18)
+
+Triaged all 34 `MOCK_ONLY` screens under `app/src/screens/public/`
+(the `PublicPortal.*` marketing site) file-by-file, applying the same
+"is `dataBacked` even the right bar for this screen" judgment call this
+document flagged in wave 2. Repository (`app/src/data/repository.ts`)
+has no `blogPosts`, `testimonials`, `caseStudies`, `demoRequests`,
+`contactSubmissions`, or public "careers/positions" collection, so a
+real-wire fix wasn't possible for any of them — every fix here is an
+honest-content change or a real-submission wire to the one relevant
+endpoint that does exist (`POST /public/leads`, F-025).
+
+Of the 34:
+- **Already honest, left alone (30 screens)** — generic marketing copy
+  with no claim of live/dynamic data (feature grids, pricing tiers that
+  explicitly refuse to publish a number, FAQ content, etc.), or already
+  correctly wired: `Contact.tsx` and `RequestDemo.tsx` both already
+  submit to the real `POST /public/leads` endpoint from an earlier
+  "truth-and-conversion overhaul (2026-09)" pass — they stay flagged
+  `MOCK_ONLY` only because the registry's `dataBackedScreens` detector
+  recognises `useCollection`/`useEntity` calls, not a raw `fetch` POST
+  (the same generator blind spot recorded as item 2 above).
+- **Honest GAP state (2 screens)** — content presented as real/current
+  with no plausible backing collection:
+  - `Blog.tsx`: six fabricated posts ("5 Signs Your Brakes Need
+    Attention", dated "Jul 20, 2026", "4 min read") replaced with an
+    honest "No posts published yet" state routing to Contact, following
+    `DealsOffers.tsx`'s established idiom for this site (say plainly
+    what isn't here yet, route to a real channel).
+  - `Careers.tsx`: four fabricated job openings ("Senior Full-Stack
+    Engineer — Riyadh — Full-time") replaced with an honest "No open
+    positions listed right now" state, same idiom. The "Why SALIS
+    AUTO?" benefits section above it is generic culture copy — left
+    alone.
+  - `Insurance.tsx`'s two plan cards also lost their fabricated fixed
+    annual premiums ("SAR 2,400", "SAR 850" — no consumer
+    insurance-pricing collection exists) in favour of a coverage
+    feature list, following `Pricing.tsx`'s "no number we can't stand
+    behind, route to a quote conversation" precedent. The CTAs already
+    routed to Contact honestly, so this wasn't counted as a third GAP
+    screen, just a pricing-claim fix on an otherwise-fine page.
+- **Wired to real data (1 screen)** — `BookDemo.tsx`: previously the
+  worst offender on this list — its own code comment admitted "No
+  backend endpoint exists yet," and `submit()` fired a fake "Demo
+  booked successfully" toast unconditionally with zero backend call.
+  Rewritten to submit through the same real `POST /public/leads`
+  endpoint `Contact.tsx`/`RequestDemo.tsx` already use, folding the
+  date/time slot this page collects into the bounded `message` field
+  (the lead contract doesn't model them, same technique
+  `RequestDemo.tsx` uses for its own extra qualification fields), with
+  the same two honest non-success states (fixture build: "have not
+  launched yet"; live error: mapped server message).
+
+`npm run registry`: BLK-004 mock-only count unchanged at 238 — expected,
+per the same generator blind spot noted above: an honest GAP state and
+a `fetch`-based real submission both still read as "no
+`useCollection` call" to the detector, the same as every wave-6 GAP
+screen and as `Contact.tsx`/`RequestDemo.tsx` already did before this
+wave. The actual violation fixed here (fabricated content and a
+completely fake form) doesn't show up in that count, only in the diff.
+
+A test in `tests/public-pages.test.tsx` asserted the old Blog.tsx's six
+fake article cards; updated to assert the new honest empty state
+instead, and split the shared assertion it was bundled with
+(`PartsAccessories`'s catalogue-cards check) into its own test.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed — no
+`.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3919 tests, after the one test update above),
+`npm run check-i18n` (3936/3936 covered, 8 new keys added), a full
+local `smoke.mjs` run (429/429 routes), and a manual Playwright check
+of all four changed screens: Blog/Careers/Insurance render the new
+honest content with the old fabricated strings gone, and submitting
+`BookDemo.tsx`'s form in a fixture build shows the honest "have not
+launched yet" state instead of a fake success toast — zero console
+errors throughout. `node tools/docs/generate.mjs` +
+`node tools/docs/check.mjs`: clean, no drift.
 
 ## Wave 8 — auth domain (2026-09-18)
 

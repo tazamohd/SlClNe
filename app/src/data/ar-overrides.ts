@@ -5018,8 +5018,18 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Templates has no data source yet": "لا يوجد مصدر بيانات للقوالب بعد",
   "Users & Teams has no data source yet": "لا يوجد مصدر بيانات للمستخدمين والفرق بعد",
 
-  // Accounting cluster live wiring (Accounts Receivable, Equity
-  // Management, Expense Tracking, Sales Management).
+  // Wave 7 — honest-gap and real-lead-submission fixes for the website domain.
+  "No posts published yet": "لا توجد مقالات منشورة بعد",
+  "We haven't published any articles here yet. For product updates and workshop insights in the meantime, ": "لم ننشر أي مقالات هنا حتى الآن. للاطلاع على تحديثات المنتج ورؤى الورشة في هذه الأثناء، ",
+  "Book a demo form": "نموذج حجز عرض توضيحي",
+  "Thank you — a member of our sales team will confirm your demo time shortly.": "شكرًا لك — سيتواصل معك أحد أعضاء فريق المبيعات لتأكيد موعد العرض التوضيحي قريبًا.",
+  " and tell us about yourself.": " وأخبرنا عن نفسك.",
+  "Get in touch": "تواصل معنا",
+  "No open positions listed right now": "لا توجد وظائف شاغرة معلنة حاليًا",
+  "Think you would be a good fit anyway? ": "تعتقد أنك مناسب رغم ذلك؟ ",
+
+  // Accounting cluster live wiring (Accounts Receivable, Equity Management,
+  // Expense Tracking, Sales Management) — merged from a concurrent branch.
   "Loading receivables…": "جارٍ تحميل الذمم المدينة…",
   "No outstanding invoices": "لا توجد فواتير مستحقة",
   "Total Invoiced": "إجمالي المفوتر",
