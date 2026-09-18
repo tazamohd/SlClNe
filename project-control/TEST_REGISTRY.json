@@ -188,7 +188,7 @@
       "describes": [
         "Call Center (Golden Path 22)",
         "Call center lifecycle",
-        "Call centre — the live queue"
+        "Call centre — no telephony backend"
       ],
       "cases": [
         "Call Center (Golden Path 22)",
@@ -196,8 +196,8 @@
         "call center logs page loads",
         "Call center lifecycle",
         "call center → call logs",
-        "Call centre — the live queue",
-        "the queue names every caller waiting, and this build cannot answer them"
+        "Call centre — no telephony backend",
+        "the console says plainly that it has no data source, rather than showing an invented queue"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -318,9 +318,9 @@
         "customer app garage loads",
         "customer app appointments loads",
         "customer app service tracking loads",
-        "customer app wallet loads with balance",
-        "customer app orders loads",
-        "customer app notifications loads",
+        "customer app wallet has no data source yet",
+        "customer app orders has no data source yet",
+        "customer app notifications has no data source yet",
         "customer app profile loads",
         "customer approval page loads with real approval lines",
         "Customer portal lifecycle",
@@ -951,11 +951,11 @@
       "cases": [
         "Parts Procurement (Golden Path 6)",
         "parts network requests page loads",
-        "quotations re-sort by rating when the sort chip is picked",
+        "quotations screen is an honest gap state, not invented supplier rows",
         "parts network orders page loads",
         "the purchase order is a real form whose number the server assigns",
         "Parts procurement lifecycle",
-        "raise request → compare quotations by rating → confirm the PO"
+        "raise request → honest quotations gap → confirm the PO"
       ],
       "caseCount": 7,
       "touchesPaths": [
