@@ -26,7 +26,7 @@
 | Content-asserted (not just routed) | 428 | 428 |
 | Has a loading state | 157 | 428 |
 | Has an error state | 124 | 428 |
-| Has an empty state | 178 | 428 |
+| Has an empty state | 179 | 428 |
 | Arabic verified | 79 | 428 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 428 |
@@ -67,7 +67,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
 | CAP-AI | 19 | 4 | 4 | 4 | 4 | 4 |
-| CAP-PLATFORM | 36 | 5 | 12 | 6 | 16 | 17 |
+| CAP-PLATFORM | 36 | 5 | 12 | 6 | 17 | 17 |
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 5 | 11 | 11 | 11 | 0 |

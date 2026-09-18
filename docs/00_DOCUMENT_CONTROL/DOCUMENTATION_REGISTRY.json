@@ -1297,7 +1297,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PLATFORM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 9097,
+      "bytes": 9099,
       "lines": 154,
       "type": "GENERATED",
       "archived": false,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16530,
-      "lines": 236,
+      "bytes": 16727,
+      "lines": 237,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,

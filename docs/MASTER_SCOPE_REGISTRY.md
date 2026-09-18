@@ -23,7 +23,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | rendered without assertion | 0 |
 | has loading state | 157 |
 | has error state | 124 |
-| has empty state | 178 |
+| has empty state | 179 |
 | tablet verified | 4 |
 | arabic verified | 79 |
 | rtl hazards | 0 |

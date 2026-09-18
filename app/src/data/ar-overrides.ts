@@ -4840,4 +4840,29 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Work assigned to you shows up here as soon as an advisor hands it to your bay.": "تظهر هنا الأعمال المُسندة إليك بمجرد أن يُحيلها المستشار إلى خليجك.",
   "No active jobs": "لا توجد مهام نشطة",
   "Work in inspection, estimate, repair or QC shows up here.": "تظهر هنا الأعمال قيد الفحص أو عرض السعر أو الإصلاح أو فحص الجودة.",
+
+  // Role-adaptive dashboards (2026-09) — Manager/Advisor/Technician/QC/Parts/
+  // Accountant/HR/Frontdesk/CallCenter/Procurement each get their own KPIs
+  // and a MiniList of what needs attention, in place of the one dashboard
+  // every role used to see.
+  "Active Job Cards": "بطاقات العمل النشطة",
+  "Awaiting Check-In": "بانتظار الاستلام",
+  "Declined — Needs Follow-up": "مرفوض — يحتاج متابعة",
+  "Estimates Awaiting Approval": "عروض أسعار بانتظار الموافقة",
+  "Jobs In Progress": "أعمال قيد التنفيذ",
+  "No appointments scheduled": "لا توجد مواعيد مجدولة",
+  "No estimates awaiting a decision": "لا توجد عروض أسعار بانتظار قرار",
+  "No leave requests awaiting a decision": "لا توجد طلبات إجازة بانتظار قرار",
+  "No new leads": "لا يوجد عملاء محتملون جدد",
+  "No requisitions awaiting action": "لا توجد طلبات شراء بانتظار إجراء",
+  "Nothing below its reorder level": "لا توجد أصناف دون حد إعادة الطلب",
+  "Nothing in progress": "لا يوجد شيء قيد التنفيذ",
+  "Nothing outstanding": "لا توجد مستحقات",
+  "Open Opportunities": "الفرص المفتوحة",
+  "Open Requisitions": "طلبات الشراء المفتوحة",
+  "Pending Estimates": "عروض أسعار معلقة",
+  "Pending Leave Requests": "طلبات إجازة معلقة",
+  "Purchase Orders In Transit": "أوامر شراء قيد الشحن",
+  "Scheduled Appointments": "المواعيد المجدولة",
+  "Total Leads": "إجمالي العملاء المحتملين",
 }

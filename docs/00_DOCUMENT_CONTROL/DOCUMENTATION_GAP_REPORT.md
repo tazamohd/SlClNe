@@ -28,7 +28,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Lifecycles with a declared transition table | 1 of 19 |
 | Screens registered and mapped to a capability | 428 of 428 |
 | Screens wired to the live API | 115 of 428 |
-| Test suites catalogued | 190 containing 2207 cases |
+| Test suites catalogued | 191 containing 2219 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 4 of 9 |
 | Direct contradictions between registers | 0 |

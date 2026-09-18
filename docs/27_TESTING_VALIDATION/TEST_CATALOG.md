@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-190 spec files containing 2207 test cases.
+191 spec files containing 2219 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 115 | 1097 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 116 | 1109 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 447 |
-| app | 112 | 1383 |
+| app | 113 | 1395 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -106,6 +106,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/crm-lead-fleet-detail.test.tsx` | UNIT_OR_API | 18 | owner |
 | `app/tests/component/crm-vehicles.test.tsx` | UNIT_OR_API | 7 | owner, qc |
 | `app/tests/component/crm-write-gaps.test.tsx` | UNIT_OR_API | 5 | owner |
+| `app/tests/component/dashboard-role-adaptive.test.tsx` | UNIT_OR_API | 12 | owner, superadmin, test, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement |
 | `app/tests/component/DataTable.test.tsx` | UNIT_OR_API | 14 | — |
 | `app/tests/component/detail-page.test.tsx` | UNIT_OR_API | 16 | — |
 | `app/tests/component/Drawer.test.tsx` | UNIT_OR_API | 12 | — |

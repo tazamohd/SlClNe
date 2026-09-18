@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 190,
-    "cases": 2207,
+    "suites": 191,
+    "cases": 2219,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1097,
+      "UNIT_OR_API": 1109,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1980,6 +1980,46 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-DASHBOARD-ROLE-ADAPTIVE-TEST-TSX",
+      "file": "app/tests/component/dashboard-role-adaptive.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Dashboard — role-adaptive"
+      ],
+      "cases": [
+        "owner sees the full operational-and-financial overview",
+        "superadmin and test fall back to the same operational overview as owner",
+        "manager sees branch operations, not the revenue KPI",
+        "advisor sees the customer-facing queue: estimates, appointments, declined jobs",
+        "technician sees only their own job queue — real job codes, no revenue",
+        "qc sees the job queue by real status, never a fabricated \"awaiting QC\" count",
+        "parts sees stock health, not revenue or customers",
+        "accountant sees receivables and revenue — the two things this role holds",
+        "hr sees headcount and leave requests, never a pay figure",
+        "frontdesk sees the front-of-house queue",
+        "callcenter sees leads and opportunities, not a call-log figure no collection backs",
+        "procurement sees requisitions and purchase orders"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "superadmin",
+        "test",
+        "manager",
+        "advisor",
+        "technician",
+        "qc",
+        "parts",
+        "accountant",
+        "hr",
+        "frontdesk",
+        "callcenter",
+        "procurement"
       ]
     },
     {
