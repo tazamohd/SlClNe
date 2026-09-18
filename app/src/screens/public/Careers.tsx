@@ -1,13 +1,20 @@
 import { Link } from 'react-router-dom'
 import { useT } from '@/providers/PreferencesProvider'
+import { Icon } from '@/components/ui/Icon'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { IconCardGrid, type IconCardItem } from './sections/IconCardGrid'
 
 /** PublicPortal.Careers — Tier B content page.
  *
- *  Two sections: "Why SALIS AUTO?" benefit cards (IconCardGrid) and a manually
- *  laid out "Open Positions" list that links each role to the Contact page. */
+ *  Two sections: "Why SALIS AUTO?" benefit cards (IconCardGrid, generic
+ *  culture copy, left as is) and "Open Positions". The latter previously
+ *  listed four fabricated roles ("Senior Full-Stack Engineer — Riyadh —
+ *  Full-time") as if currently open. There is no careers/positions
+ *  collection anywhere in Repository or API_REGISTRY.json — the internal
+ *  `employees`/`jobs` collections are unrelated workshop HR/repair-job
+ *  entities, not public job postings. Rather than invent openings, this is
+ *  an honest state, following DealsOffers.tsx's pattern for this site. */
 const BENEFITS: readonly IconCardItem[] = [
   {
     icon: 'Lightbulb',
@@ -35,40 +42,6 @@ const BENEFITS: readonly IconCardItem[] = [
   },
 ]
 
-interface Position {
-  title: string
-  location: string
-  type: string
-  description: string
-}
-
-const POSITIONS: readonly Position[] = [
-  {
-    title: 'Senior Full-Stack Engineer',
-    location: 'Riyadh',
-    type: 'Full-time',
-    description: 'Build and scale core ERP modules powering automotive workshops across KSA',
-  },
-  {
-    title: 'Product Designer',
-    location: 'Remote',
-    type: 'Full-time',
-    description: 'Design intuitive interfaces for complex workshop management workflows',
-  },
-  {
-    title: 'DevOps Engineer',
-    location: 'Riyadh',
-    type: 'Full-time',
-    description: 'Manage cloud infrastructure, CI/CD pipelines and platform reliability',
-  },
-  {
-    title: 'Sales Manager',
-    location: 'Jeddah',
-    type: 'Full-time',
-    description: 'Drive enterprise adoption and build lasting client relationships in the Western Region',
-  },
-]
-
 export function PublicCareers() {
   const t = useT()
   usePageMeta({
@@ -88,25 +61,18 @@ export function PublicCareers() {
       <IconCardGrid items={BENEFITS} columns={4} centered iconSize={22} />
 
       <h2 className="mb-5 mt-12 text-xl font-bold text-heading">{t('Open Positions')}</h2>
-      <div className="flex flex-col gap-4">
-        {POSITIONS.map((pos) => (
-          <Link
-            key={pos.title}
-            to="/public-portal/contact"
-            className="flex flex-col gap-2 rounded-2xl border border-default bg-card p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:border-salis-blue/[.3] hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div>
-              <h2 className="m-0 text-[15px] font-bold text-heading">{t(pos.title)}</h2>
-              <p className="m-0 mt-1 text-[13px] text-muted">{t(pos.description)}</p>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              <span className="text-[13px] text-muted">{t(pos.location)}</span>
-              <span className="rounded-full bg-salis-blue/[.08] px-2.5 py-0.5 text-xs font-medium text-salis-blue">
-                {t(pos.type)}
-              </span>
-            </div>
+      <div className="mx-auto flex max-w-[560px] flex-col items-center gap-3 rounded-2xl border border-default bg-card p-8 text-center">
+        <span className="flex rounded-2xl bg-salis-gradient p-3 text-white">
+          <Icon name="Briefcase" size={22} />
+        </span>
+        <h3 className="m-0 text-[15px] font-bold text-heading">{t('No open positions listed right now')}</h3>
+        <p className="m-0 text-[13px] leading-normal text-muted">
+          {t('Think you would be a good fit anyway? ')}
+          <Link to="/public-portal/contact" className="text-salis-blue">
+            {t('Get in touch')}
           </Link>
-        ))}
+          {t(' and tell us about yourself.')}
+        </p>
       </div>
     </div>
   )
