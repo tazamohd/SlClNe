@@ -29,7 +29,7 @@
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
     "crudRead": 114,
-    "crudUpdate": 26,
+    "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 10,
@@ -14599,13 +14599,14 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "deliverySignoffs",
         "invoiceLines",
         "invoices"
       ],
       "crud": {
         "create": false,
         "read": true,
-        "update": false,
+        "update": true,
         "delete": false
       },
       "approval": false,

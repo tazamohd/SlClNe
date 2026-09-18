@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 18 screens, 110 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 18 screens, 121 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -88,6 +88,16 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/declined-jobs/bulk-delete` | estimates:d | generated | — | **0** |
 | POST | `/api/v1/declined-jobs/bulk-update` | estimates:e | generated | — | **0** |
 | GET | `/api/v1/declined-jobs/export` | estimates:x | generated | — | **0** |
+| GET | `/api/v1/delivery-signoffs` | jobcards:v | generated | — | 1 |
+| POST | `/api/v1/delivery-signoffs` | jobcards:c | generated | — | 1 |
+| DELETE | `/api/v1/delivery-signoffs/:id` | jobcards:d | generated | — | **0** |
+| GET | `/api/v1/delivery-signoffs/:id` | jobcards:v | generated | — | **0** |
+| PATCH | `/api/v1/delivery-signoffs/:id` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/delivery-signoffs/:id/history` | jobcards:v | explicit | — | **0** |
+| GET | `/api/v1/delivery-signoffs/:id/signature` | jobcards:v | explicit | — | **0** |
+| POST | `/api/v1/delivery-signoffs/bulk-delete` | jobcards:d | generated | — | **0** |
+| POST | `/api/v1/delivery-signoffs/bulk-update` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/delivery-signoffs/export` | jobcards:x | generated | — | **0** |
 | GET | `/api/v1/diagnostics/copies` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/copies/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/copies/:id/history` | jobcards:v | explicit | — | **0** |
@@ -152,6 +162,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/inspection-media/bulk-delete` | jobcards:d | generated | — | **0** |
 | POST | `/api/v1/inspection-media/bulk-update` | jobcards:e | generated | — | **0** |
 | GET | `/api/v1/inspection-media/export` | jobcards:x | generated | — | **0** |
+| POST | `/api/v1/job-cards/:id/delivery-signoff` | jobcards:e | explicit | — | **0** |
 | POST | `/api/v1/job-cards/:id/inspection-findings` | jobcards:e | explicit | — | 1 |
 | GET | `/api/v1/jobs` | jobcards:v | generated | — | 7 |
 | POST | `/api/v1/jobs` | jobcards:c | generated | — | 7 |
@@ -229,7 +240,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **1 of 18 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **89 of 110 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **98 of 121 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`, `inspectionMediaStage`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
@@ -240,7 +251,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/workshop.ts`, `server/src/routes/obd.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/workshop.ts`, `server/src/routes/delivery.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

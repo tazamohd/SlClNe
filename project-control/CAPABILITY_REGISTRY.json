@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 429,
     "screensTotal": 429,
-    "endpointsMapped": 407,
-    "endpointsTotal": 407
+    "endpointsMapped": 418,
+    "endpointsTotal": 418
   },
   "capabilities": [
     {
@@ -67,7 +67,7 @@
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
-      "endpointCount": 110,
+      "endpointCount": 121,
       "endpoints": [
         "API-APPOINTMENTS-GET-LIST",
         "API-APPOINTMENTS-POST-LIST",
@@ -88,6 +88,16 @@
         "API-DECLINEDJOBS-POSTBULK-DELETE",
         "API-DECLINEDJOBS-POSTBULK-UPDATE",
         "API-DECLINEDJOBS-GETEXPORT",
+        "API-DELIVERYSIGNOFFS-GET-LIST",
+        "API-DELIVERYSIGNOFFS-POST-LIST",
+        "API-DELIVERYSIGNOFFS-DELETEID",
+        "API-DELIVERYSIGNOFFS-GETID",
+        "API-DELIVERYSIGNOFFS-PATCHID",
+        "API-GET-DELIVERY-SIGNOFFS-ID-HISTORY",
+        "API-GET-DELIVERY-SIGNOFFS-ID-SIGNATURE",
+        "API-DELIVERYSIGNOFFS-POSTBULK-DELETE",
+        "API-DELIVERYSIGNOFFS-POSTBULK-UPDATE",
+        "API-DELIVERYSIGNOFFS-GETEXPORT",
         "API-DIAGCOPIES-GET-LIST",
         "API-DIAGCOPIES-GETID",
         "API-GET-DIAGNOSTICS-COPIES-ID-HISTORY",
@@ -152,6 +162,7 @@
         "API-INSPECTIONMEDIA-POSTBULK-DELETE",
         "API-INSPECTIONMEDIA-POSTBULK-UPDATE",
         "API-INSPECTIONMEDIA-GETEXPORT",
+        "API-POST-JOB-CARDS-ID-DELIVERY-SIGNOFF",
         "API-POST-JOB-CARDS-ID-INSPECTION-FINDINGS",
         "API-JOBS-GET-LIST",
         "API-JOBS-POST-LIST",
@@ -205,6 +216,7 @@
       "entities": [
         "appointments",
         "declinedJobs",
+        "deliverySignoffs",
         "diagCopies",
         "obdDevices",
         "diagFindings",

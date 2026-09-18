@@ -408,6 +408,37 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Customer sign-off at delivery (Sprint 2, P0). Read + `PATCH` (checklist,
+   * odometer) through the generic router; `WRITERS.deliverySignoffs.create`
+   * is `z.never()` — every row is born from
+   * `POST /job-cards/:id/delivery-signoff` (`server/src/routes/delivery.ts`),
+   * the multipart route that is the only place a signature image's bytes can
+   * arrive. `url` never exposes the on-disk `storageKey`; it points at the
+   * gated streaming route instead, same convention as `inspectionMedia`. */
+  define({
+    key: 'deliverySignoffs',
+    path: 'delivery-signoffs',
+    table: s.deliverySignoffs,
+    module: 'jobcards',
+    entity: 'delivery_signoff',
+    search: [],
+    sortable: ['createdAt'],
+    filterable: ['jobCardId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      jobCardId: row.jobCardId,
+      signedByName: row.signedByName,
+      agreedAt: row.agreedAt ? new Date(row.agreedAt as string | Date).toISOString() : null,
+      checklist: row.checklist ?? {},
+      odometerOut: row.odometerOut ?? null,
+      mimeType: row.mimeType,
+      sizeBytes: row.sizeBytes,
+      url: `delivery-signoffs/${row.id}/signature`,
+    }),
+  }),
+
   /* ------------------------------------------------------------- invoicing */
   define({
     key: 'invoices',
