@@ -8,22 +8,22 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Metric | Count |
 |---|---|
-| capabilities | 430 |
-| product | 367 |
+| capabilities | 429 |
+| product | 366 |
 | reference only | 28 |
 | external dependency | 35 |
-| rendered | 430 |
+| rendered | 429 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 248 |
-| data backed | 119 |
-| e2e covered | 430 |
-| content asserted | 430 |
+| mock only | 241 |
+| data backed | 125 |
+| e2e covered | 429 |
+| content asserted | 429 |
 | rendered without assertion | 0 |
-| has loading state | 163 |
-| has error state | 130 |
-| has empty state | 185 |
+| has loading state | 169 |
+| has error state | 134 |
+| has empty state | 208 |
 | tablet verified | 4 |
 | arabic verified | 79 |
 | rtl hazards | 0 |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 118 |
+| crud read | 124 |
 | crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
@@ -45,7 +45,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 28 | 28 | 0 | 0 | 28 |
-| app | 316 | 316 | 0 | 0 | 316 |
+| app | 315 | 315 | 0 | 0 | 315 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
@@ -59,7 +59,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `████████████████████` 100% | 21 | 21 |
+| Administration | — | G9 | `████████████████████` 100% | 20 | 20 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
@@ -88,7 +88,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | crm | 10 | 10 |
 | customers | 3 | 3 |
 | dashboard | 4 | 4 |
-| estimates | 6 | 6 |
+| estimates | 5 | 5 |
 | execreports | 5 | 5 |
 | hr | 2 | 2 |
 | inventory | 1 | 1 |

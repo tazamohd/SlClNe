@@ -48,10 +48,10 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 430,
-    "screensTotal": 430,
-    "endpointsMapped": 425,
-    "endpointsTotal": 425
+    "screensMapped": 429,
+    "screensTotal": 429,
+    "endpointsMapped": 418,
+    "endpointsTotal": 418
   },
   "capabilities": [
     {
@@ -67,7 +67,7 @@
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
-      "endpointCount": 128,
+      "endpointCount": 121,
       "endpoints": [
         "API-APPOINTMENTS-GET-LIST",
         "API-APPOINTMENTS-POST-LIST",
@@ -79,13 +79,6 @@
         "API-APPOINTMENTS-POSTBULK-DELETE",
         "API-APPOINTMENTS-POSTBULK-UPDATE",
         "API-APPOINTMENTS-GETEXPORT",
-        "API-CANNEDJOBS-GET-LIST",
-        "API-POST-CANNED-JOBS",
-        "API-CANNEDJOBS-GETID",
-        "API-PATCH-CANNED-JOBS-ID",
-        "API-GET-CANNED-JOBS-ID-HISTORY",
-        "API-GET-CANNED-JOBS-ID-LINES",
-        "API-CANNEDJOBS-GETEXPORT",
         "API-DECLINEDJOBS-GET-LIST",
         "API-DECLINEDJOBS-POST-LIST",
         "API-DECLINEDJOBS-DELETEID",
@@ -198,12 +191,11 @@
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 19,
+      "screenCount": 18,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
         "D-DeclinedJobs",
-        "D-CannedJobs",
         "D-HealthCheckReport",
         "D-CustomerApproval",
         "D-DiagnosticReport",
@@ -220,10 +212,9 @@
         "D-WorkshopQC",
         "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 18,
+      "dataBackedScreens": 17,
       "entities": [
         "appointments",
-        "cannedJobs",
         "declinedJobs",
         "deliverySignoffs",
         "diagCopies",
@@ -1544,7 +1535,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 33,
+      "dataBackedScreens": 40,
       "entities": [],
       "rules": [],
       "roles": [],

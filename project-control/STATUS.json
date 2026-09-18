@@ -1,22 +1,22 @@
 {
   "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 430,
-    "product": 367,
+    "capabilities": 429,
+    "product": 366,
     "referenceOnly": 28,
     "externalDependency": 35,
-    "rendered": 430,
+    "rendered": 429,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 248,
-    "dataBacked": 119,
-    "e2eCovered": 430,
-    "contentAsserted": 430,
+    "mockOnly": 241,
+    "dataBacked": 125,
+    "e2eCovered": 429,
+    "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 163,
-    "hasErrorState": 130,
-    "hasEmptyState": 185,
+    "hasLoadingState": 169,
+    "hasErrorState": 134,
+    "hasEmptyState": 208,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 118,
+    "crudRead": 124,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -43,12 +43,12 @@
       "dataBacked": 0
     },
     "app": {
-      "total": 316,
-      "rendered": 316,
+      "total": 315,
+      "rendered": 315,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 316,
-      "dataBacked": 105
+      "e2e": 315,
+      "dataBacked": 111
     },
     "call-center": {
       "total": 2,
@@ -117,12 +117,12 @@
       "dataBacked": 0
     },
     "admin": {
-      "total": 21,
-      "rendered": 21,
+      "total": 20,
+      "rendered": 20,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 21,
-      "dataBacked": 6
+      "e2e": 20,
+      "dataBacked": 5
     },
     "ai": {
       "total": 10,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 33
+      "dataBacked": 40
     }
   },
   "byModule": {
@@ -271,12 +271,12 @@
       "dataBacked": 1
     },
     "estimates": {
-      "total": 6,
-      "rendered": 6,
+      "total": 5,
+      "rendered": 5,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 6,
-      "dataBacked": 6
+      "e2e": 5,
+      "dataBacked": 5
     },
     "jobcards": {
       "total": 11,
