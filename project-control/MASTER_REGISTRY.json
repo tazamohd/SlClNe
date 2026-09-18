@@ -3,22 +3,22 @@
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 430,
-    "product": 367,
+    "capabilities": 429,
+    "product": 366,
     "referenceOnly": 28,
     "externalDependency": 35,
-    "rendered": 430,
+    "rendered": 429,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 251,
-    "dataBacked": 116,
-    "e2eCovered": 430,
-    "contentAsserted": 430,
+    "mockOnly": 249,
+    "dataBacked": 117,
+    "e2eCovered": 429,
+    "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 160,
-    "hasErrorState": 127,
-    "hasEmptyState": 180,
+    "hasLoadingState": 161,
+    "hasErrorState": 128,
+    "hasEmptyState": 183,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 115,
+    "crudRead": 116,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -765,82 +765,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "D-CannedJobs",
-      "name": "CannedJobs",
-      "title": "CannedJobs",
-      "route": "/canned-jobs",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": "estimates",
-      "permissions": [
-        "owner:vcedax",
-        "manager:vceax",
-        "advisor:vce",
-        "technician:v",
-        "parts:v",
-        "accountant:vx",
-        "frontdesk:v",
-        "callcenter:v",
-        "superadmin:v",
-        "test:vcedax"
-      ],
-      "category": "PRODUCT",
-      "domain": "admin",
-      "owner": "—",
-      "source": [
-        "design"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": null,
-      "mobileType": "B-responsive",
-      "purpose": "Maintain predefined, priced service packages and apply one to an estimate",
-      "desktop": "DONE",
-      "tablet": "PARTIAL",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "cannedJobs"
-      ],
-      "crud": {
-        "create": false,
-        "read": true,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
         "ARABIC_MISSING"
       ]
     },
@@ -14751,7 +14675,6 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "cannedJobs",
         "estimates"
       ],
       "crud": {
@@ -19013,16 +18936,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "suppliers"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19049,7 +18974,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19079,16 +19003,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19115,7 +19041,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19206,13 +19131,13 @@
       "mobileType": "B-responsive",
       "purpose": "Overview of B2B parts network activity.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19245,7 +19170,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19272,13 +19196,13 @@
       "mobileType": "B-responsive",
       "purpose": "Tracking sent requests and received quotes.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19311,7 +19235,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19338,13 +19261,13 @@
       "mobileType": "B-responsive",
       "purpose": "Managing requests from other network members.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19377,7 +19300,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"

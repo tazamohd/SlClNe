@@ -128,12 +128,12 @@ _No lifecycle in the contract belongs to this domain._
 | F-065 | `/parts-marketplace` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-066 | `/dynamic-pricing` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-067 | `/intelligent-price-optimizer` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-068 | `/suppliers` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-069 | `/purchase-orders` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-068 | `/suppliers` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-069 | `/purchase-orders` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-070 | `/vendor-supplier-portal` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-071 | `/parts-network-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-073 | `/parts-network-my-requests` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-074 | `/parts-network-incoming-requests` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-071 | `/parts-network-dashboard` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-073 | `/parts-network-my-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-074 | `/parts-network-incoming-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-079 | `/purchase-agent-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -284,8 +284,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **203 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **177 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **201 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **175 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

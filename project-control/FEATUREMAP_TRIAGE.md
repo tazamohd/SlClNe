@@ -152,6 +152,66 @@ real, un-shortcut-able feature work for a future wave; each would need
 its own scoped design/backend/UI pass, not a registry classification
 change.
 
+## Wave 3 — duplicate reconciliation (2026-09-18)
+
+Verified each "likely duplicate" group above file-by-file, per the
+recommended next step below. Two corrections to this document's own
+earlier claims, found in the process — recorded rather than silently
+edited away:
+
+- **General Ledger / Trial Balance / Balance Sheet / Income Statement /
+  Cash Flow Statement / Accounts Receivable / Accounts Payable were never
+  duplicates.** The claim above ("none of these exact paths are
+  registered in `app/src/routes/index.tsx`") was true but the conclusion
+  drawn from it was wrong — these routes ARE registered, dynamically,
+  through the `SPEC_SCREENS.filter((spec) => !spec.designScreen).map(...)`
+  loop in `routes/index.tsx`, which a literal grep for the route string
+  doesn't find. Their components (`app/src/screens/accounting/
+  GeneralLedger.tsx` etc.) are real, already correctly wired to
+  `useTrialBalance()` and the other repository-aggregate hooks in
+  `useFinanceReports.ts`, and already registered by exact name in
+  `app/src/screens/domains/accounting.ts`'s `SCREEN_ENTRIES`. They still
+  show `MOCK_ONLY`/`dataBacked: false` in the registry — but that's a
+  registry-generator blind spot, not a missing feature: `dataBackedScreens`
+  in `build-registry.mjs` only recognises a screen calling
+  `useCollection`/`useEntity`/etc. directly by name; it doesn't follow into
+  a custom hook (`useTrialBalance()`) defined in a sibling file, the same
+  way it already follows one level of *component* delegation
+  (`WRAPPER_TARGET`) but not *hook* delegation. Not fixed in this pass —
+  it's a shared, generator-level change that needs its own careful,
+  validated pass across the whole registry, not a duplicate cleanup. Left
+  as a follow-up.
+- **Suppliers and Purchase Orders were genuine duplicates, and were fixed.**
+  `app/src/screens/parts/SuppliersList.tsx` and `PurchaseOrdersList.tsx`
+  had their own hardcoded fixture rows (eight invented suppliers with a
+  Rating/Category/Orders-count no schema field backs; seven invented
+  purchase orders with an invented item count) — real BLK-004 violations,
+  sitting beside `app/src/screens/portals/purchase/
+  PurchaseAgentSuppliers.tsx`, which already reads the same real
+  `suppliers` collection and is honest about exactly those same missing
+  columns. Rewired both to `useCollection('suppliers')` /
+  `useCollection('purchaseOrders')`, dropped the columns/stats with no
+  real field behind them, and matched the server's own status vocabulary
+  (`draft/approved/sent/receiving/received/closed`) instead of the
+  design's unrelated one. `npm run registry`: BLK-004 251 → 249.
+- **Parts Network Dashboard / My Requests / Incoming Requests were
+  genuine duplicates, and were fixed** the simpler way: they had their own
+  second copy of the exact fixture rows `PartsNetwork.tsx` already had
+  (converted to an honest gap state in wave 1). Deleted
+  `app/src/screens/parts/PartsNetworkDashboardSpec.tsx`, `PartsNetworkMyRequests.tsx`, `PartsNetworkIncomingRequests.tsx`
+  and pointed `app/src/screens/domains/parts.ts`'s `SCREEN_ENTRIES` at
+  `PartsNetwork.tsx`'s own `PartsNetworkDashboard`/`PartsNetworkRequests`/
+  `PartsNetworkIncoming` exports instead of maintaining two copies.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8), `npx vitest run`
+(107 files / 3905 tests), a full local `smoke.mjs` run (428/428 routes)
+and the `parts-procurement` e2e spec (10/10) all clean.
+
+**Not yet done** — Purchase Agent (9), Technician Portal/App (11), Client
+Portal (6) and Portal Dashboard/Communications (2) still need the same
+file-by-file check; nothing about them was verified beyond a route-name
+guess.
+
 ## Recommended next steps (not done here)
 
 1. **Duplicate reconciliation** — verify each "likely duplicate" above

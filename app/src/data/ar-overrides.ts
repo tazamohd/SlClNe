@@ -4910,6 +4910,9 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Requests sent to other network members would live in a partsNetworkRequests collection the API does not serve yet, so none are shown rather than fabricated ones.": "الطلبات المُرسلة إلى أعضاء الشبكة الآخرين كانت ستكون ضمن مجموعة بيانات partsNetworkRequests التي لا تقدمها واجهة البرمجة بعد، لذا لا تُعرض أي طلبات بدلاً من اختلاقها.",
   "Compare quotes received from the network": "قارن العروض الواردة من الشبكة",
   "Call logs have no data source yet": "سجلات المكالمات ليس لها مصدر بيانات بعد",
+  "Loading purchase orders...": "جارٍ تحميل أوامر الشراء...",
+  "No purchase orders found": "لا توجد أوامر شراء",
+  "Loading suppliers...": "جارٍ تحميل الموردين...",
 
   // Customer sign-off at delivery — WorkshopSignature/WorkshopDelivery (Sprint 2, P0 backlog item 4)
   "Signature not saved": "لم يتم حفظ التوقيع",
