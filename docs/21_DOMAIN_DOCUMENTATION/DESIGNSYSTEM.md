@@ -216,12 +216,12 @@ _No lifecycle in the contract belongs to this domain._
 | F-164 | `/expense-tracking` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-165 | `/expenses-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-166 | `/sales-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-167 | `/accounting-integration` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-167 | `/accounting-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-168 | `/financial-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-169 | `/warranty-management` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-170 | `/contract-management` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-171 | `/insurance-claims` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-172 | `/marketing-hub` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-172 | `/marketing-hub` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-173 | `/marketing-automation` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-174 | `/email-marketing-campaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-175 | `/social-media-integration` | app | **mock** | — | — | — | verified | yes |
@@ -279,13 +279,13 @@ _No lifecycle in the contract belongs to this domain._
 | F-231 | `/task-management` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-232 | `/tools` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-233 | `/dashboard-widgets` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-234 | `/sms-integration` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-234 | `/sms-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-235 | `/sales-guide` | app | **mock** | — | — | — | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **182 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **160 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **185 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **163 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

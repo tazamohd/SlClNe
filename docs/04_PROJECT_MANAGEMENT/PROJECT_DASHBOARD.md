@@ -29,8 +29,8 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 73 of 429 | `STATUS.json` |
 | Tablet verified | 4 of 429 | `STATUS.json` |
-| API endpoints | 418 | the route files |
-| Test cases | 2251 | the spec files |
+| API endpoints | 431 | the route files |
+| Test cases | 2291 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
@@ -44,7 +44,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 228 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 226 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 
 ## Open risks
 

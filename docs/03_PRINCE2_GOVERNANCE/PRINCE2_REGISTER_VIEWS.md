@@ -91,8 +91,8 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 
 | Quality criterion | Method | Result |
 | --- | --- | --- |
-| Every capability renders | Registry build + e2e | 430 of 430 |
-| Content asserted, not just routed | e2e content assertions | 430 of 430 |
+| Every capability renders | Registry build + e2e | 429 of 429 |
+| Content asserted, not just routed | e2e content assertions | 429 of 429 |
 | Golden paths pass | Playwright | 23 of 23 |
 | Permission matrix enforced server-side | `server/tests/authz-matrix.test.ts` | suite present |
 | Frontend and server matrices identical | `server/tests/rbac-parity.test.ts` | suite present |
