@@ -12,13 +12,13 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 193,
-    "cases": 2231,
+    "cases": 2229,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
-      "SECURITY": 215,
+      "SECURITY": 213,
       "UNIT_OR_API": 1119,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
@@ -4024,8 +4024,7 @@
         "isRoleId()",
         "SOD (Separation of Duties)",
         "no role inheritance",
-        "critical permission boundaries",
-        "client ↔ server data consistency"
+        "critical permission boundaries"
       ],
       "cases": [
         "defines exactly 15 roles",
@@ -4089,11 +4088,9 @@
         "external roles (supplier, customer) have minimal access",
         "technician can only delete on portaltech (own portal)",
         "customer holds exactly the modules its portal reads, and nothing more",
-        "audit module is limited to owner, manager, accountant, superadmin — and the test account",
-        "server PERMS is structurally identical to client PERMS",
-        "server ROLES match client ROLES"
+        "audit module is limited to owner, manager, accountant, superadmin — and the test account"
       ],
-      "caseCount": 64,
+      "caseCount": 62,
       "touchesPaths": [
         "/dashboard",
         "/super-admin",
