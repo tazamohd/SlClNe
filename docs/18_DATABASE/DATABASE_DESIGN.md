@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-PostgreSQL, accessed through Drizzle ORM. 75 tables, 1265 columns, 22 migrations.
+PostgreSQL, accessed through Drizzle ORM. 75 tables, 1269 columns, 23 migrations.
 
 ## Migrations
 
@@ -38,6 +38,7 @@ PostgreSQL, accessed through Drizzle ORM. 75 tables, 1265 columns, 22 migrations
 | `server/drizzle/0018_inspection_findings.sql` | — |
 | `server/drizzle/0019_delivery_signoff.sql` | — |
 | `server/drizzle/0020_canned_jobs.sql` | — |
+| `server/drizzle/0021_campaign_messaging.sql` | — |
 
 ## Structural guarantees
 

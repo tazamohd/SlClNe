@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 425,
-    "generated": 276,
-    "explicit": 149,
+    "endpoints": 431,
+    "generated": 281,
+    "explicit": 150,
     "unauthenticated": 6,
-    "withPermissionGuard": 398,
+    "withPermissionGuard": 404,
     "idempotent": 2,
-    "withTests": 115
+    "withTests": 116
   },
   "collections": [
     {
@@ -637,7 +637,7 @@
         "column": "createdAt",
         "dir": "asc"
       },
-      "writable": false
+      "writable": true
     },
     {
       "key": "segments",
@@ -3967,8 +3967,87 @@
       "capability": "CAP-CRM",
       "tests": [
         "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
-        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS"
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS"
       ]
+    },
+    {
+      "id": "API-CAMPAIGNS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/crm/campaigns",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Create one row — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": [
+        "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
+        "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-CAMPAIGNS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/crm/campaigns/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Soft-delete one row — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": []
     },
     {
       "id": "API-CAMPAIGNS-GETID",
@@ -4008,6 +4087,43 @@
       "tests": []
     },
     {
+      "id": "API-CAMPAIGNS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/crm/campaigns/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Update one row (optimistic concurrency on version) — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": []
+    },
+    {
       "id": "API-GET-CRM-CAMPAIGNS-ID-HISTORY",
       "method": "GET",
       "path": "/api/v1/crm/campaigns/:id/history",
@@ -4025,6 +4141,101 @@
       "audited": false,
       "transactional": false,
       "validates": false,
+      "capability": "CAP-CRM",
+      "tests": []
+    },
+    {
+      "id": "API-POST-CRM-CAMPAIGNS-ID-SEND",
+      "method": "POST",
+      "path": "/api/v1/crm/campaigns/:id/send",
+      "source": "server/src/routes/crm.ts",
+      "kind": "EXPLICIT",
+      "domain": "crm",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "crm",
+      "permissionAction": "e",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-CRM",
+      "tests": []
+    },
+    {
+      "id": "API-CAMPAIGNS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/crm/campaigns/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Soft-delete many rows — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-CRM",
+      "tests": []
+    },
+    {
+      "id": "API-CAMPAIGNS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/crm/campaigns/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "crm",
+      "purpose": "Apply one patch to many rows — campaign.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "crm",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "campaign",
+      "table": "campaigns",
+      "search": [
+        "name"
+      ],
+      "sortable": [
+        "name",
+        "reach",
+        "conversions",
+        "createdAt"
+      ],
+      "filterable": [
+        "type",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
       "capability": "CAP-CRM",
       "tests": []
     },
@@ -7081,6 +7292,7 @@
       "validates": false,
       "capability": "CAP-WORKSHOP",
       "tests": [
+        "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS",
         "TS-SERVER-TESTS-OBD-OTP-TEST-TS"
       ]
     },

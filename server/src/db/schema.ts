@@ -790,12 +790,21 @@ export const campaigns = pgTable('campaigns', {
   name: varchar('name', { length: 200 }).notNull(),
   type: varchar('type', { length: 24 }).notNull(),
   status: varchar('status', { length: 24 }).notNull(),
+  startDate: date('start_date'),
+  endDate: date('end_date'),
   reach: integer('reach').notNull().default(0),
   opens: integer('opens').notNull().default(0),
   clicks: integer('clicks').notNull().default(0),
   conversions: integer('conversions').notNull().default(0),
   budgetHalalas: money('budget_halalas').notNull().default(0),
   spentHalalas: money('spent_halalas').notNull().default(0),
+  /** When `POST /crm/campaigns/:id/send` last dispatched this campaign to its
+   *  provider, and whether that dispatch came from the mock transport. Neither
+   *  column claims a recipient was reached — this deployment resolves no
+   *  audience for a campaign, so a dispatch confirms the provider accepted the
+   *  request, nothing about delivery. */
+  lastDispatchedAt: timestamp('last_dispatched_at', { withTimezone: true }),
+  lastDispatchMock: boolean('last_dispatch_mock'),
 })
 
 export const segments = pgTable('segments', {

@@ -120,7 +120,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/diagnostics/findings/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/findings/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/findings/export` | jobcards:x | generated | — | **0** |
-| GET | `/api/v1/diagnostics/integrations` | jobcards:v | explicit | — | 1 |
+| GET | `/api/v1/diagnostics/integrations` | jobcards:v | explicit | — | 2 |
 | GET | `/api/v1/diagnostics/labour` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id/history` | jobcards:v | explicit | — | **0** |

@@ -15,7 +15,7 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-67 behavioural use cases.
+68 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -41,6 +41,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-BANK-STATEMENTS-ID-MATCH | POST /bank-statements/:id/match | accountant, test | accounting:e | — | — | — | yes | `server/src/routes/bank.ts` |
 | UC-POST-CANNED-JOBS | POST /canned-jobs | owner, manager, advisor, test | estimates:c | — | — | — | yes | `server/src/routes/canned-jobs.ts` |
 | UC-PATCH-CANNED-JOBS-ID | PATCH /canned-jobs/:id | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/canned-jobs.ts` |
+| UC-POST-CRM-CAMPAIGNS-ID-SEND | POST /crm/campaigns/:id/send | owner, manager, advisor, callcenter, test | crm:e | — | — | — | — | `server/src/routes/crm.ts` |
 | UC-POST-CRM-LEADS-ID-CONVERT | POST /crm/leads/:id/convert | owner, manager, advisor, callcenter, test | crm:c | — | — | — | yes | `server/src/routes/crm.ts` |
 | UC-POST-DIAGNOSTICS-DEVICES-ID-CLEAR-CODES | POST /diagnostics/devices/:id/clear-codes | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/obd.ts` |
 | UC-POST-DIAGNOSTICS-DEVICES-ID-RESCAN | POST /diagnostics/devices/:id/rescan | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/obd.ts` |

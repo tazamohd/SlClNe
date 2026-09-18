@@ -148,6 +148,13 @@
       "when": 1789963839174,
       "tag": "0020_canned_jobs",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1789739388709,
+      "tag": "0021_campaign_messaging",
+      "breakpoints": true
     }
   ]
 }

@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1265 in total.
+Every column of every table, 1269 in total.
 
 ## `organizations`
 
@@ -945,12 +945,16 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `type` | varchar(24) | NOT NULL | — | — | — |
 | `status` | varchar(24) | NOT NULL | — | — | — |
+| `start_date` | date | nullable | — | — | — |
+| `end_date` | date | nullable | — | — | — |
 | `reach` | integer | NOT NULL | — | 0 | — |
 | `opens` | integer | NOT NULL | — | 0 | — |
 | `clicks` | integer | NOT NULL | — | 0 | — |
 | `conversions` | integer | NOT NULL | — | 0 | — |
 | `budget_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `spent_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `last_dispatched_at` | timestamptz | nullable | — | — | — |
+| `last_dispatch_mock` | boolean | nullable | — | — | — |
 
 ## `segments`
 

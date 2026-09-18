@@ -20,7 +20,7 @@ Covers: the collection registry, the generic router, query contract, presentatio
 
 ## One description, many routes
 
-`server/src/registry.ts` describes each of the 57 collections once. `server/src/routes/collections.ts` generates 276 endpoints from those descriptions — list, export, detail, and for the 21 writable ones create, update, delete, bulk-update and bulk-delete.
+`server/src/registry.ts` describes each of the 57 collections once. `server/src/routes/collections.ts` generates 281 endpoints from those descriptions — list, export, detail, and for the 22 writable ones create, update, delete, bulk-update and bulk-delete.
 
 The argument is about people rather than elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. One description means the filter and the check exist once.
 
@@ -77,7 +77,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | departments | `/admin/departments` | admin | read-only | 3 | 3 | 0 |
 | leads | `/crm/leads` | crm | yes | 3 | 5 | 2 |
 | opportunities | `/crm/opportunities` | crm | yes | 3 | 5 | 1 |
-| campaigns | `/crm/campaigns` | crm | read-only | 1 | 4 | 2 |
+| campaigns | `/crm/campaigns` | crm | yes | 1 | 4 | 2 |
 | segments | `/crm/segments` | crm | read-only | 2 | 3 | 0 |
 | crmTasks | `/crm/tasks` | crm | yes | 2 | 5 | 3 |
 | feedback | `/customer-feedback` | crm | yes | 2 | 2 | 3 |

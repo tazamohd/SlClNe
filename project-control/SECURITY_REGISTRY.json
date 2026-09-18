@@ -1037,7 +1037,8 @@
       "server/drizzle/0017_declined_jobs.sql",
       "server/drizzle/0018_inspection_findings.sql",
       "server/drizzle/0019_delivery_signoff.sql",
-      "server/drizzle/0020_canned_jobs.sql"
+      "server/drizzle/0020_canned_jobs.sql",
+      "server/drizzle/0021_campaign_messaging.sql"
     ]
   },
   "authenticationSurface": [

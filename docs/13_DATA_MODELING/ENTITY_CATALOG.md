@@ -57,7 +57,7 @@
 | ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 3 |
 | ENT-LEADS | `leads` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-OPPORTUNITIES | `opportunities` | 16 | yes | yes | yes | yes | yes | yes | 1 | 8 |
-| ENT-CAMPAIGNS | `campaigns` | 18 | yes | yes | yes | yes | yes | yes | 2 | 3 |
+| ENT-CAMPAIGNS | `campaigns` | 22 | yes | yes | yes | yes | yes | yes | 2 | 8 |
 | ENT-SEGMENTS | `segments` | 13 | yes | yes | yes | yes | yes | yes | — | 3 |
 | ENT-CRM-TASKS | `crm_tasks` | 15 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-PUBLIC-LEADS | `public_leads` | 16 | yes | yes | yes | yes | yes | yes | — | 0 |

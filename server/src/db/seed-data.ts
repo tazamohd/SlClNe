@@ -1269,7 +1269,7 @@ export const SYS_INTEGRATIONS = [
     "ar": "واتساب للأعمال",
     "cat": "Messaging",
     "icon": "MessageCircle",
-    "status": "connected",
+    "status": "available",
     "detail": "Approvals, reminders, invoices",
     "ar_detail": "الاعتمادات والتذكيرات والفواتير"
   },
@@ -1278,7 +1278,7 @@ export const SYS_INTEGRATIONS = [
     "ar": "يونيفونيك للرسائل",
     "cat": "Messaging",
     "icon": "MessageSquare",
-    "status": "connected",
+    "status": "available",
     "detail": "OTP & transactional SMS",
     "ar_detail": "رموز التحقق والرسائل التشغيلية"
   }

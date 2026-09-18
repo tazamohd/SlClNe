@@ -15,7 +15,7 @@
     "audited": 67,
     "withMoneyColumns": 34,
     "rlsEnabled": 71,
-    "columns": 1265
+    "columns": 1269
   },
   "entities": [
     {
@@ -11475,6 +11475,36 @@
           "presentational": false
         },
         {
+          "property": "startDate",
+          "column": "start_date",
+          "type": "date",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "endDate",
+          "column": "end_date",
+          "type": "date",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
           "property": "reach",
           "column": "reach",
           "type": "integer",
@@ -11563,6 +11593,36 @@
           "references": null,
           "money": true,
           "presentational": false
+        },
+        {
+          "property": "lastDispatchedAt",
+          "column": "last_dispatched_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "lastDispatchMock",
+          "column": "last_dispatch_mock",
+          "type": "boolean",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
         }
       ],
       "indexes": [],
@@ -11590,7 +11650,12 @@
       "missingUniversal": [],
       "endpoints": [
         "API-CAMPAIGNS-GET-LIST",
+        "API-CAMPAIGNS-POST-LIST",
+        "API-CAMPAIGNS-DELETEID",
         "API-CAMPAIGNS-GETID",
+        "API-CAMPAIGNS-PATCHID",
+        "API-CAMPAIGNS-POSTBULK-DELETE",
+        "API-CAMPAIGNS-POSTBULK-UPDATE",
         "API-CAMPAIGNS-GETEXPORT"
       ],
       "collection": "campaigns",
@@ -11602,6 +11667,8 @@
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
+        "TS-APP-TESTS-CRM-GAPS-TEST-TS",
+        "TS-APP-TESTS-SCREEN-SEAM-WIRING-TEST-TSX",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS"
       ]
     },

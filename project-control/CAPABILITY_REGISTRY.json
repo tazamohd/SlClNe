@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 430,
     "screensTotal": 430,
-    "endpointsMapped": 425,
-    "endpointsTotal": 425
+    "endpointsMapped": 431,
+    "endpointsTotal": 431
   },
   "capabilities": [
     {
@@ -763,11 +763,17 @@
       ],
       "objective": "OBJ-RETENTION",
       "objectiveName": "Retain customers",
-      "endpointCount": 45,
+      "endpointCount": 51,
       "endpoints": [
         "API-CAMPAIGNS-GET-LIST",
+        "API-CAMPAIGNS-POST-LIST",
+        "API-CAMPAIGNS-DELETEID",
         "API-CAMPAIGNS-GETID",
+        "API-CAMPAIGNS-PATCHID",
         "API-GET-CRM-CAMPAIGNS-ID-HISTORY",
+        "API-POST-CRM-CAMPAIGNS-ID-SEND",
+        "API-CAMPAIGNS-POSTBULK-DELETE",
+        "API-CAMPAIGNS-POSTBULK-UPDATE",
         "API-CAMPAIGNS-GETEXPORT",
         "API-LEADS-GET-LIST",
         "API-LEADS-POST-LIST",
@@ -1544,7 +1550,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 41,
+      "dataBackedScreens": 43,
       "entities": [],
       "rules": [],
       "roles": [],

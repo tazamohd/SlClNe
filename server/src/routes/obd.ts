@@ -26,10 +26,12 @@ import {
   type ObdCommand,
 } from '../integrations/obd'
 import type { IntegrationConfig } from '../integrations/config'
+import { messagingStatus, type MessagingTransport } from '../integrations/messaging'
 import { presentRow, type RouteDeps } from './collections'
 
 export interface ObdRouteDeps extends RouteDeps {
   bridge: ObdBridge
+  messaging: MessagingTransport
   config: IntegrationConfig
 }
 
@@ -185,7 +187,9 @@ export function registerObdRoutes(app: FastifyInstance, deps: ObdRouteDeps): voi
     const principal = principalOf(request)
     requirePermission(principal, 'jobcards', 'v')
     const otp = otpStatus(app)
-    return { integrations: [obdStatus(deps.config, deps.bridge), otp] }
+    return {
+      integrations: [obdStatus(deps.config, deps.bridge), otp, messagingStatus(deps.config, deps.messaging)],
+    }
   })
 }
 

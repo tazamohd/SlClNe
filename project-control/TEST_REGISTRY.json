@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 200,
-    "cases": 2270,
+    "suites": 202,
+    "cases": 2291,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1160,
+      "UNIT_OR_API": 1181,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1857,6 +1857,26 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-CRM-CAMPAIGN-SEND-TEST-TSX",
+      "file": "app/tests/component/crm-campaign-send.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Campaigns — Send action (fixture build)"
+      ],
+      "cases": [
+        "offers Send only for an sms/whatsapp campaign that is not completed",
+        "a click does not fabricate a status change with no fixture row id to dispatch",
+        "hides Send from a role with no crm edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "technician"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-CRM-CUSTOMERS-TEST-TSX",
       "file": "app/tests/component/crm-customers.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2777,6 +2797,7 @@
       "surface": "app",
       "describes": [
         "CRM collections are writable server-side (F-027 landed)",
+        "campaign CRUD and dispatch are real server-side (build-order item 7, landed)",
         "customer feedback has a home server-side (F-027 landed)",
         "fleet contracts carry terms and are joinable (F-027 landed)"
       ],
@@ -2785,13 +2806,15 @@
         "LANDED: `opportunities` is writable and a lead→opportunity conversion route exists — LeadDetail can offer Convert to Opportunity",
         "LANDED: `crmTasks` is writable — POST /crm/tasks backs CRMCalendar New Task",
         "GAP: there is no lead activity or lead notes collection — GET/POST /crm/leads/:id/activity and /crm/leads/:id/notes are all missing, so LeadDetail shows honest empty rails",
+        "LANDED: `campaigns` is writable — POST/PATCH/DELETE /crm/campaigns back CampaignFormModal",
+        "LANDED: a campaign send route exists, refusing honestly rather than faking delivery",
         "LANDED: a `feedback` collection is registered at customer-feedback — POST /customer-feedback backs the capture form",
         "LANDED: the schema carries a customer_feedback table — storage and endpoint both exist",
         "LANDED: the fleets table has contract-term columns — type, value, dates and contact, so FleetContract can render them",
         "LANDED: `fleets` is writable and a renew-contract route exists — FleetContract can offer Renew",
         "LANDED: customers present `fleetId`, so a fleet can be joined to its vehicles client-side — FleetContract can list assigned vehicles"
       ],
-      "caseCount": 9,
+      "caseCount": 11,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -4222,6 +4245,8 @@
         "OEM Integrations reads oemTools",
         "System Integrations reads integrations",
         "Accounting Integrations reads integrations, filtered to ERP",
+        "Marketing Hub reads campaigns",
+        "SMS Integration reads integrations, filtered to Messaging",
         "Expenses Management reads expenses",
         "Email Marketing Campaigns reads campaigns",
         "the reports hub reads savedReports"
@@ -4233,6 +4258,11 @@
         "GAP: shows no adapter version or last-activity clock, and names the read",
         "renders the real ERP connectors, none of them fabricated as Connected",
         "GAP: shows no last-sync clock or record count, and names the read",
+        "renders the real campaigns, with totals computed from the rows",
+        "GAP: invents no hardcoded KPI tiles the old array used to print",
+        "renders the real messaging connectors, none of them fabricated as Connected",
+        "GAP: shows no sent-today or delivery-rate figure, and names the read",
+        "GAP: shows no fabricated message log, and names the missing data source",
         "shows each expense with the amount the server formatted",
         "GAP: invents no budget, and names the aggregate that would supply one",
         "counts records rather than summing money",
@@ -4241,7 +4271,7 @@
         "lists what the server holds, and says so honestly when it holds none",
         "keeps the report links, which are navigation rather than data"
       ],
-      "caseCount": 13,
+      "caseCount": 18,
       "touchesPaths": [
         "/sales-reports"
       ],
@@ -5520,6 +5550,39 @@
         "/api/v1/kb/procedures"
       ],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS",
+      "file": "server/tests/crm-campaigns.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "campaign CRUD — the write route the generic router was missing",
+        "POST /crm/campaigns/:id/send — messaging as EXTERNAL_DEPENDENCY",
+        "GET /diagnostics/integrations — messaging reported honestly"
+      ],
+      "cases": [
+        "creates a campaign through the generic collection route",
+        "updates a field without touching the others",
+        "deletes a campaign",
+        "refuses an empty name",
+        "refuses a role with no crm grant",
+        "the default transport refuses with a 503 naming the missing config",
+        "the mock transport dispatches, flips draft to running, and flags the response mock",
+        "refuses an email campaign — there is no email provider to dispatch to here",
+        "refuses to re-send a completed campaign",
+        "refuses a role with no crm edit grant",
+        "lists the messaging transport alongside OBD and OTP, unconfigured by default"
+      ],
+      "caseCount": 11,
+      "touchesPaths": [
+        "/crm/campaigns",
+        "/diagnostics/integrations"
+      ],
+      "touchesRoles": [
+        "manager",
+        "technician"
+      ]
     },
     {
       "id": "TS-SERVER-TESTS-CRM-FLEET-TEST-TS",

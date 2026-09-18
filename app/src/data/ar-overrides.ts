@@ -4995,4 +4995,11 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Work Details & Certifications has no data source yet": "لا يوجد مصدر بيانات لتفاصيل العمل والشهادات بعد",
   "Diagnostic Software has no data source yet": "لا يوجد مصدر بيانات لبرامج التشخيص بعد",
   "Time Clock has no data source yet": "لا يوجد مصدر بيانات لساعة الدوام بعد",
+
+  // Campaign dispatch — Crm.tsx / SMSIntegration.tsx (build-order item 7)
+  "Campaign dispatched": "تم إرسال الحملة",
+  "Could not dispatch campaign": "تعذر إرسال الحملة",
+  "No messaging provider configured": "لا يوجد مزوّد رسائل مهيأ",
+  "This deployment has no live SMS/WhatsApp provider.": "لا تحتوي هذه النسخة على مزوّد رسائل نصية أو واتساب فعلي.",
+  "Message Log has no data source yet": "لا يوجد مصدر بيانات لسجل الرسائل بعد",
 }

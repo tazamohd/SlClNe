@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-430 capabilities · 430 rendering · 0 placeholder · 129 data-backed.
+430 capabilities · 430 rendering · 0 placeholder · 131 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -376,7 +376,7 @@
 | Warranty Management | `/warranty-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Contract Management | `/contract-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Insurance Claims | `/insurance-claims` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| Marketing Hub | `/marketing-hub` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Marketing Hub | `/marketing-hub` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Marketing Automation | `/marketing-automation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Email Marketing Campaigns | `/email-marketing-campaigns` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Social Media Integration | `/social-media-integration` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
@@ -434,5 +434,5 @@
 | Task Management | `/task-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Tools | `/tools` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dashboard Widgets | `/dashboard-widgets` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| SMS Integration | `/sms-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
+| SMS Integration | `/sms-integration` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | EXTERNAL_DEPENDENCY |
 | Sales Guide | `/sales-guide` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

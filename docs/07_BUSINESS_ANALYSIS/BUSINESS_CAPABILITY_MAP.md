@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 430 registered screens and all 425 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 430 registered screens and all 431 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -44,7 +44,7 @@ flowchart LR
   OBJ_CASH --> CAP_ACCOUNTING
   CAP_HR["HR and payroll<br/>5 screens · 52 endpoints"]
   OBJ_CAPACITY --> CAP_HR
-  CAP_CRM["CRM and sales<br/>12 screens · 45 endpoints"]
+  CAP_CRM["CRM and sales<br/>12 screens · 51 endpoints"]
   OBJ_RETENTION --> CAP_CRM
   CAP_REPORTING["Reporting and analytics<br/>11 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_REPORTING
@@ -78,7 +78,7 @@ flowchart LR
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 7 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
-| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
+| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
@@ -87,7 +87,7 @@ flowchart LR
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 41 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 43 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-129 of 430 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+131 of 430 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -228,7 +228,7 @@ flowchart LR
 | Permission modules | `crm`, `callcenter` |
 | Screen domains | — |
 | Screens | 12 (10 data-backed) |
-| Endpoints | 45 |
+| Endpoints | 51 |
 | Entities | `campaigns`, `leads`, `opportunities`, `segments`, `crmTasks`, `customerFeedback` |
 | Roles with any grant | owner, superadmin, manager, advisor, frontdesk, callcenter, test |
 | Rule guards | — |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 233 (41 data-backed) |
+| Screens | 233 (43 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |
