@@ -146,6 +146,32 @@ self.addEventListener('fetch', (event) => {
   }
 })
 
+/** Put a response in the cache, and never let that failure become the
+ *  request's failure.
+ *
+ *  The response is already in hand and correct; the cache is an optimisation
+ *  on top of it. `cache.put` rejects for reasons that have nothing to do with
+ *  this response — the origin's storage quota is full, the user cleared site
+ *  data mid-flight, the browser is evicting under pressure — and on a
+ *  cache-first asset an unguarded put turns a successful fetch into
+ *  `Failed to fetch dynamically imported module`, which the page renders as a
+ *  blank route with no retry.
+ *
+ *  On a navigation the same throw was worse than a blank: it fell into the
+ *  offline branch and served the *cached* shell, pinning the visitor to an
+ *  older build at the one moment the fresh one had arrived.
+ *
+ *  Not caching this time costs the next visit one network request. */
+async function store(key, response) {
+  if (!isCacheable(response)) return
+  try {
+    const cache = await caches.open(CACHE_NAME)
+    await cache.put(key, response.clone())
+  } catch {
+    /* Uncached, and the caller still gets its response. */
+  }
+}
+
 /** Navigations are network-first.
  *
  *  `index.html` is not hashed, so it is how a new deploy is discovered at all;
@@ -156,10 +182,7 @@ self.addEventListener('fetch', (event) => {
 async function handleNavigation(request) {
   try {
     const response = await fetch(request)
-    if (isCacheable(response)) {
-      const cache = await caches.open(CACHE_NAME)
-      await cache.put(SHELL_URL, response.clone())
-    }
+    await store(SHELL_URL, response)
     return response
   } catch {
     const cached = (await caches.match(SHELL_URL)) || (await caches.match(request))
@@ -173,10 +196,7 @@ async function cacheFirst(request) {
   const cached = await caches.match(request)
   if (cached) return cached
   const response = await fetch(request)
-  if (isCacheable(response)) {
-    const cache = await caches.open(CACHE_NAME)
-    await cache.put(request, response.clone())
-  }
+  await store(request, response)
   return response
 }
 
@@ -185,10 +205,7 @@ async function staleWhileRevalidate(request) {
   const cached = await caches.match(request)
   const network = fetch(request)
     .then(async (response) => {
-      if (isCacheable(response)) {
-        const cache = await caches.open(CACHE_NAME)
-        await cache.put(request, response.clone())
-      }
+      await store(request, response)
       return response
     })
     .catch(() => null)
