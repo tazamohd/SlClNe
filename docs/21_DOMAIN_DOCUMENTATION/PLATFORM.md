@@ -113,7 +113,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-NotificationCenter | `/notification-center` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-OEMIntegrations | `/oemintegrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Organizations | `/organizations` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork | `/parts-network` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-PartsNetwork | `/parts-network` | app | **mock** | — | — | yes | MISSING | yes |
 | D-PartsSupplyNetwork | `/parts-supply-network` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-PrivacyPolicy | `/privacy-policy` | auth | **mock** | — | — | — | verified | yes |
 | D-Profile | `/profile` | app | **mock** | — | — | — | verified | yes |

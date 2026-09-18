@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-192 spec files containing 2244 test cases.
+191 spec files containing 2216 test cases.
 
 ## What this document claims, and what it does not
 
@@ -26,7 +26,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
-| SECURITY | 12 | 243 | Permission grants, tenant isolation, segregation of duties, session handling |
+| SECURITY | 11 | 215 | Permission grants, tenant isolation, segregation of duties, session handling |
 | CONTRACT | 3 | 182 | The shared rule functions both sides depend on |
 | DATA_FIDELITY | 2 | 15 | That the seeded data matches what the design bundle carried |
 | ACCESSIBILITY | 1 | 2 | Axe sweeps, ratcheted per route and viewport |
@@ -35,7 +35,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 36 | 475 |
+| server | 35 | 447 |
 | app | 113 | 1392 |
 | browser | 43 | 377 |
 
@@ -224,7 +224,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |
-| `server/tests/rbac-matrix.test.ts` | SECURITY | 28 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
 | `server/tests/rbac-parity.test.ts` | SECURITY | 4 | — |
 | `server/tests/report-collections.test.ts` | UNIT_OR_API | 8 | accountant, technician, manager, owner |
 | `server/tests/repository-swap.test.ts` | UNIT_OR_API | 6 | owner, technician |

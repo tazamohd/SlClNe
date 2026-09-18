@@ -87,11 +87,11 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-Inventory | `/inventory` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-PartsNetwork.Incoming | `/parts-network/incoming` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork.Members | `/parts-network/members` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork.Orders | `/parts-network/orders` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-PartsNetwork.Incoming | `/parts-network/incoming` | app | **mock** | — | — | yes | MISSING | yes |
+| D-PartsNetwork.Members | `/parts-network/members` | app | **mock** | — | — | yes | MISSING | yes |
+| D-PartsNetwork.Orders | `/parts-network/orders` | app | **mock** | — | — | yes | MISSING | yes |
 | D-PartsNetwork.Quotations | `/parts-network/quotations` | app | **mock** | yes | yes | yes | PARTIAL | yes |
-| D-PartsNetwork.Requests | `/parts-network/requests` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-PartsNetwork.Requests | `/parts-network/requests` | app | **mock** | — | — | yes | MISSING | yes |
 | D-PartsNetwork.SendRequest | `/parts-network/send-request` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain

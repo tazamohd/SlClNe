@@ -9,8 +9,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 277,
-    "dataBacked": 111,
+    "mockOnly": 274,
+    "dataBacked": 114,
     "e2eCovered": 428,
     "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 110,
+    "crudRead": 113,
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -64,7 +64,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "portal": {
       "total": 8,
@@ -170,7 +170,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "ui": {
       "total": 28,
