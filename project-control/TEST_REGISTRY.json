@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 197,
-    "cases": 2251,
+    "cases": 2252,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1141,
+      "UNIT_OR_API": 1142,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3949,9 +3949,10 @@
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
-        "Blog and catalogue cards are informational, not links to nowhere"
+        "catalogue cards are informational, not links to nowhere",
+        "Blog has no fabricated posts — an honest empty state instead"
       ],
-      "caseCount": 13,
+      "caseCount": 14,
       "touchesPaths": [
         "/public-portal/request-demo",
         "/public-portal/contact"

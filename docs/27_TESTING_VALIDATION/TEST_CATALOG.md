@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-197 spec files containing 2251 test cases.
+197 spec files containing 2252 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 122 | 1141 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 122 | 1142 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 37 | 472 |
-| app | 117 | 1402 |
+| app | 117 | 1403 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -175,7 +175,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/public-contact-live.test.tsx` | UNIT_OR_API | 4 | — |
 | `app/tests/public-legal.test.tsx` | UNIT_OR_API | 3 | — |
 | `app/tests/public-loan-calculator.test.tsx` | UNIT_OR_API | 5 | — |
-| `app/tests/public-pages.test.tsx` | UNIT_OR_API | 13 | — |
+| `app/tests/public-pages.test.tsx` | UNIT_OR_API | 14 | — |
 | `app/tests/public-request-demo-form.test.tsx` | UNIT_OR_API | 10 | — |
 | `app/tests/public-seo.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/public-shell.test.tsx` | UNIT_OR_API | 9 | — |
