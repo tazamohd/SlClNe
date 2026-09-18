@@ -5018,6 +5018,18 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Templates has no data source yet": "لا يوجد مصدر بيانات للقوالب بعد",
   "Users & Teams has no data source yet": "لا يوجد مصدر بيانات للمستخدمين والفرق بعد",
 
+  // Honest-gap fixes for the AI Platform screens (BLK-004): Prompt Library,
+  // Model Settings, Workflow Builder and Automation Rules all rendered
+  // fabricated fixture data with no backing collection.
+  "Prompt Library has no data source yet": "لا يوجد مصدر بيانات لمكتبة الأوامر بعد",
+  "Saved AI prompts, their categories and use counts have no collection this API serves. Nothing is shown here rather than invented prompts.": "أوامر الذكاء الاصطناعي المحفوظة وفئاتها وعدد مرات استخدامها ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق أوامر.",
+  "Model Settings has no data source yet": "لا يوجد مصدر بيانات لإعدادات النموذج بعد",
+  "AI model choice, parameters and usage/cost have no collection this API serves. Nothing is shown here rather than invented settings.": "اختيار نموذج الذكاء الاصطناعي ومعاييره واستخدامه/تكلفته ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق إعدادات.",
+  "Workflow Builder has no data source yet": "لا يوجد مصدر بيانات لمنشئ سير العمل بعد",
+  "Automated workflows, their steps and run history have no collection this API serves. Nothing is shown here rather than invented workflows.": "سير العمل الآلي وخطواته وسجل تشغيله ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق مسارات عمل.",
+  "Automation Rules has no data source yet": "لا يوجد مصدر بيانات لقواعد الأتمتة بعد",
+  "Trigger-based automation rules have no collection this API serves. Nothing is shown here rather than invented rules.": "قواعد الأتمتة المُشغَّلة بأحداث ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق قواعد.",
+
   // Wave 7 — honest-gap and real-lead-submission fixes for the website domain.
   "No posts published yet": "لا توجد مقالات منشورة بعد",
   "We haven't published any articles here yet. For product updates and workshop insights in the meantime, ": "لم ننشر أي مقالات هنا حتى الآن. للاطلاع على تحديثات المنتج ورؤى الورشة في هذه الأثناء، ",
