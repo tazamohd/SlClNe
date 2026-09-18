@@ -2,7 +2,7 @@
 
 This guide explains the SALIS AUTO Supplier Portal -- the interface for external parts suppliers to manage orders, submit invoices, respond to quote requests, and track deliveries.
 
-> **🟡 Planned, not live.** There is currently no way to create a `supplier`-role account, no application form, and no approval queue — [Onboarding Flows: Path C](../workflows/onboarding-flows.md#path-c-supplier-onboarding-planned) has the detail, and [Supplier Tenancy Design (SYS-ARCH-006)](../../system/architecture/supplier-tenancy-design.md) has the proposed architecture. This guide describes the intended portal once that path ships; nothing below can be exercised against the running application yet. What exists today, unrelated to logging in, is a garage's own **Inventory > Suppliers** vendor list for its own purchasing.
+> **🟡 Planned, not live.** There is currently no way to create a `supplier`-role account, no application form, and no approval queue — [Onboarding Flows: Path C](../workflows/onboarding-flows.md#path-c-supplier-onboarding-planned) has the detail, and [External-Partner Tenancy Design (SYS-ARCH-006)](../../system/architecture/supplier-tenancy-design.md) has the proposed architecture. This guide describes the intended portal once that path ships; nothing below can be exercised against the running application yet. What exists today, unrelated to logging in, is a garage's own **Inventory > Suppliers** vendor list for its own purchasing.
 
 ---
 
