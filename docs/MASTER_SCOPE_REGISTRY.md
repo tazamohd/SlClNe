@@ -25,7 +25,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | has error state | 142 |
 | has empty state | 223 |
 | tablet verified | 4 |
-| arabic verified | 73 |
+| arabic verified | 75 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |

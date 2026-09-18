@@ -20,7 +20,7 @@
     "hasErrorState": 142,
     "hasEmptyState": 223,
     "tabletVerified": 4,
-    "arabicVerified": 73,
+    "arabicVerified": 75,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -8438,7 +8438,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8474,7 +8474,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -8566,7 +8565,7 @@
       "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -8602,7 +8601,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
