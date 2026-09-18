@@ -39,7 +39,7 @@
 | POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | token | — | — | 1 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | token | — | — | — | `server/src/routes/insurance-claims.ts` |
-| POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | token | — | — | — | `server/src/routes/insurance-claims.ts` |
+| POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | token | — | — | 1 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/export` | accounting:x | token | `insuranceClaims` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance-policies` | accounting:v | token | `insurancePolicies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance-policies/:id` | accounting:v | token | `insurancePolicies` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

@@ -12,7 +12,7 @@
 
 ## What is and is not declared
 
-18 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 17 declare a set of states with no table of legal moves.
+19 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 18 declare a set of states with no table of legal moves.
 
 That distinction matters more than it looks. Where a transition table exists, an illegal move is refused by a single guard that every caller goes through. Where only a state enum exists, the legal moves are whatever the route handlers happen to check — which may be complete, may be partial, and cannot be verified by reading one file. Drawing a confident diagram for those would assert a guarantee the code does not make, so this document shows their states and names what actually guards them.
 
@@ -66,6 +66,14 @@ Guarded by: `overlaps` (packages/contract/src/rules/workshop.ts).
 **STATE SET ONLY** · `packages/contract/src/entities/crm.ts`
 
 States: `todo` · `in_progress` · `done`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
+
+### declined-job — `declinedJobStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/declined-job.ts`
+
+States: `declined` · `follow_up_scheduled` · `contacted` · `reconsidering` · `approved_later` · `permanently_declined` · `expired`
 
 No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
 

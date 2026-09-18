@@ -72,7 +72,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/procurement/requisitions/:id/approve` | procurement:a | explicit | — | 1 |
 | GET | `/api/v1/procurement/requisitions/:id/history` | procurement:v | explicit | — | **0** |
 | GET | `/api/v1/procurement/requisitions/:id/lines` | procurement:v | explicit | — | **0** |
-| POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | explicit | — | **0** |
+| POST | `/api/v1/procurement/requisitions/:id/reject` | procurement:a | explicit | — | 1 |
 | POST | `/api/v1/procurement/requisitions/:id/submit` | procurement:e | explicit | — | **0** |
 | GET | `/api/v1/procurement/requisitions/export` | procurement:x | generated | — | **0** |
 | GET | `/api/v1/procurement/suppliers` | procurement:v | generated | — | **0** |
@@ -106,7 +106,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **22 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **21 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **2 of 4 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 
 ## Evidence

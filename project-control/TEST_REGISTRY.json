@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 188,
-    "cases": 2219,
+    "suites": 191,
+    "cases": 2240,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1079,
+      "UNIT_OR_API": 1100,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1497,6 +1497,33 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-SRC-DATA-AUTH-TEST-TS",
+      "file": "app/src/data/auth.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "demoPassword",
+        "authenticate — mock mode (no API base URL)",
+        "authenticate — API mode (base URL set)"
+      ],
+      "cases": [
+        "is the design demo password in mock mode",
+        "is the backend's seeded password in API mode",
+        "signs in a demo role with the shared password",
+        "rejects a wrong password with an AuthError",
+        "rejects an unknown email with an AuthError",
+        "posts to /auth/login and returns the server session",
+        "surfaces a 401 as an ApiError"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/dashboard"
+      ],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
       "id": "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
       "file": "app/src/data/http/client.test.ts",
       "kind": "UNIT_OR_API",
@@ -2356,6 +2383,26 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-declined-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "DeclinedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the honest empty state instead of a fabricated row",
+        "states the revenue summary is unavailable without a live API, not a fabricated number",
+        "shows the open-follow-ups count as zero rather than omitting it",
+        "offers the status filter chips"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-DETAIL-TEST-TSX",
       "file": "app/tests/component/workshop-estimate-detail.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2658,7 +2705,7 @@
         "books an invoice as receivable, revenue and output VAT, and it balances",
         "books a payment as cash against receivable, and it balances",
         "every seeded journal entry balances",
-        "F-008 fixed · the seeded chart of accounts balances",
+        "F-008 · the seeded chart of accounts does not balance, and stays visible",
         "reports revenue and expense as the ledger holds them, without netting them off",
         "reads every seeded invoice amount as a finite, non-negative figure",
         "DEFECT · the detail invoice’s header disagrees with its own line items",
@@ -4479,7 +4526,7 @@
         "sums debits and credits from the entries and reports the batch balanced",
         "reports the report and the ledger the same revenue figure",
         "derives receivable from the invoices that are not paid",
-        "F-008 fixed: the seeded balance sheet balances, and shows no warning",
+        "says out loud that the seeded balance sheet does not balance",
         "splits outstanding from collected using the invoice status, not a fixed figure",
         "weights the pipeline by probability, so the forecast sits below the gross",
         "averages the deal size over the opportunities it actually has"
@@ -5432,6 +5479,42 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS",
+      "file": "server/tests/declined-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "declining an estimate line",
+        "rejecting a whole estimate fans out one declined job per line",
+        "the follow-up lifecycle",
+        "tenant isolation",
+        "GET /reports/declined-jobs"
+      ],
+      "cases": [
+        "creates a tracked declined job carrying the line value and reason",
+        "refuses a second decline of the same line while the first is still active",
+        "advisor — who lacks estimates:a — cannot decline a line",
+        "refuses a line id that does not belong to the estimate",
+        "declines every line, skipping one already tracked",
+        "moves through PATCH and derives resolvedAt from status",
+        "cannot be created directly through the generic collection route",
+        "does not serve another organization's declined job",
+        "a customer-scoped principal sees none of it, even with estimates:v",
+        "sums lost and recovered revenue server-side"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/estimates",
+        "/declined-jobs",
+        "/reports/declined-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
       "file": "server/tests/document-chain.test.ts",
       "kind": "UNIT_OR_API",
@@ -5577,7 +5660,7 @@
         "refuses a role without the invoices grant",
         "reports output VAT as the sum of charged VAT, at the configured rate",
         "does not include another tenant in the return, and is accounting-gated",
-        "the balance sheet identity holds (F-008 fixed); the full trial balance still carries the period\\'s unclosed net income, honestly",
+        "surfaces F-008: the seeded ledger is out by SAR 257,050 and is not forced to balance",
         "is tenant-scoped: a tenant with no chart of accounts gets zeros, not ours",
         "refuses a role without the accounting grant"
       ],
@@ -6162,7 +6245,7 @@
         "no receipt is an orphan",
         "INV-2026-0142 agrees with itself",
         "F-030 — appointments reconcile with the technician roster",
-        "F-008 resolved: the chart of accounts balances"
+        "F-008 stays visible"
       ],
       "cases": [
         "gives every estimate a job card that exists",
@@ -6176,7 +6259,7 @@
         "gives every appointment a technician_id that resolves to a real technician row",
         "links each appointment to the technician whose name it shows",
         "groups the whole schedule under the roster, leaving no appointment unassigned",
-        "holds assets = liabilities + equity on the seeded chart of accounts"
+        "does not balance the chart of accounts on the sly"
       ],
       "caseCount": 12,
       "touchesPaths": [],
@@ -6196,7 +6279,9 @@
         "carries an addressable id and version on every object row"
       ],
       "caseCount": 3,
-      "touchesPaths": [],
+      "touchesPaths": [
+        "/reject"
+      ],
       "touchesRoles": [
         "owner"
       ]

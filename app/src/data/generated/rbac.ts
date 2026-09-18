@@ -703,6 +703,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "Profile": "dashboard",
   "AuditLog": "audit",
   "ApprovalInbox": "approvals",
+  "DeclinedJobs": "estimates",
   "CustomerApproval": "estimates",
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",

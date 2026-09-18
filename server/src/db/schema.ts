@@ -18,7 +18,7 @@
  *  They are seeded verbatim so a rebuilt screen renders exactly what the
  *  prototype rendered; where a machine value exists it sits beside them.
  */
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   bigint,
   boolean,
@@ -325,6 +325,52 @@ export const estimateLines = pgTable(
     sort: integer('sort').notNull().default(0),
   },
   (t) => ({ byEstimate: index('estimate_lines_estimate_idx').on(t.orgId, t.estimateId) }),
+)
+
+/** Declined Job Tracking & Follow-Up (Sprint 1, P0). A row per estimate line —
+ *  or per whole estimate when the customer declines the job outright — a
+ *  customer said no to. Deliberately its own table rather than a status on
+ *  `estimate_lines`: a decline starts a sales follow-up lifecycle (contacted,
+ *  reconsidering, expired…) that has nothing to do with the estimate's own
+ *  document lifecycle, and recording it separately means an estimate's money
+ *  totals are never at risk of a follow-up-workflow bug. `estimateLineId` is
+ *  null when the whole estimate was declined rather than one line of it. */
+export const declinedJobs = pgTable(
+  'declined_jobs',
+  {
+    ...tenant,
+    estimateId: varchar('estimate_id', { length: ULID_LENGTH }).notNull(),
+    estimateLineId: varchar('estimate_line_id', { length: ULID_LENGTH }),
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }),
+    customerId: varchar('customer_id', { length: ULID_LENGTH }),
+    customerName: varchar('customer_name', { length: 200 }).notNull(),
+    vehicleId: varchar('vehicle_id', { length: ULID_LENGTH }),
+    vehicleLabel: varchar('vehicle_label', { length: 160 }).notNull(),
+    advisorId: varchar('advisor_id', { length: ULID_LENGTH }),
+    description: varchar('description', { length: 300 }).notNull(),
+    reasonCategory: varchar('reason_category', { length: 32 }).notNull().default('other'),
+    reasonNotes: text('reason_notes'),
+    /** OK is never stored here — a declined job is by definition not OK; the
+     *  scale mirrors the DVHC severity ladder so a report can line the two up. */
+    safetySeverity: varchar('safety_severity', { length: 16 }).notNull().default('monitor'),
+    valueHalalas: money('value_halalas').notNull().default(0),
+    status: varchar('status', { length: 24 }).notNull().default('declined'),
+    followUpDate: date('follow_up_date'),
+    followUpNotes: text('follow_up_notes'),
+    declinedAt: timestamp('declined_at', { withTimezone: true }).notNull().defaultNow(),
+    resolvedAt: timestamp('resolved_at', { withTimezone: true }),
+  },
+  (t) => ({
+    byOrg: index('declined_jobs_org_idx').on(t.orgId, t.branchId, t.status),
+    byEstimate: index('declined_jobs_estimate_idx').on(t.orgId, t.estimateId),
+    /* One active tracking row per line — re-declining an already-tracked line
+     * is a follow-up update, not a second record. Partial so a resolved line
+     * can be declined again on a future visit, and a whole-estimate decline
+     * (`estimate_line_id` null) is never constrained by this index. */
+    oncePerLine: uniqueIndex('declined_jobs_line_once_idx')
+      .on(t.orgId, t.estimateLineId)
+      .where(sql`${t.estimateLineId} is not null and ${t.status} = 'declined' and ${t.deletedAt} is null`),
+  }),
 )
 
 export const invoices = pgTable(

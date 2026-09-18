@@ -21,6 +21,7 @@
       "crm_tasks",
       "customer_feedback",
       "customers",
+      "declined_jobs",
       "departments",
       "diag_copies",
       "diag_findings",
@@ -88,6 +89,7 @@
       "crm_tasks",
       "customer_feedback",
       "customers",
+      "declined_jobs",
       "departments",
       "diag_copies",
       "diag_findings",
@@ -610,6 +612,33 @@
         "predicate": "app_scope() <> 'self'",
         "purpose": null,
         "file": "server/drizzle/0015_journal_lines.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "declined_jobs",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0017_declined_jobs.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "declined_jobs",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0017_declined_jobs.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "declined_jobs",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0017_declined_jobs.sql"
       }
     ],
     "triggers": [
@@ -763,6 +792,12 @@
         "table": "journal_lines",
         "function": "bump_version",
         "file": "server/drizzle/0015_journal_lines.sql"
+      },
+      {
+        "name": "declined_jobs_bump_version",
+        "table": "declined_jobs",
+        "function": "bump_version",
+        "file": "server/drizzle/0017_declined_jobs.sql"
       }
     ],
     "contextFunctions": [
@@ -772,9 +807,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 64,
-      "rlsEnabled": 65,
-      "forced": 65,
+      "tenantScopedTables": 65,
+      "rlsEnabled": 66,
+      "forced": 66,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -796,7 +831,8 @@
       "server/drizzle/0013_users_acting_role.sql",
       "server/drizzle/0014_customer_id_link.sql",
       "server/drizzle/0015_journal_lines.sql",
-      "server/drizzle/0016_document_chain.sql"
+      "server/drizzle/0016_document_chain.sql",
+      "server/drizzle/0017_declined_jobs.sql"
     ]
   },
   "authenticationSurface": [

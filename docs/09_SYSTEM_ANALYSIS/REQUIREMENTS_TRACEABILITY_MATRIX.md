@@ -26,14 +26,14 @@ Every link below is derived from a real identifier — a permission module, a ta
 
 | Objective | Capability | Requirement | Entities | Endpoints | Permissioned roles | Screens | Rules | Linked test suites |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 13 | 77 | 12 | 16 | 0 | 19 |
+| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 14 | 88 | 12 | 17 | 0 | 21 |
 | OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 3 | 0 | 14 |
 | OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 8 |
 | OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 11 |
-| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | 2 |
+| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | 3 |
 | OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 25 | 9 | 6 | 0 | 13 |
-| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 11 |
-| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 7 |
+| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 7 | 0 | 12 |
+| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 8 |
 | OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 12 | 0 | 6 |
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
 | OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
@@ -74,7 +74,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
-### Endpoints with no linked test (273 of 374)
+### Endpoints with no linked test (277 of 385)
 
 Linkage here is by path match between a spec file and a route. A test that exercises an endpoint indirectly — through a helper, or through a golden path — will not match, so this over-reports. It is still the right number to drive down.
 
@@ -141,7 +141,7 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/crm/segments/:id/history` | crm:v |
 | GET | `/api/v1/crm/segments/export` | crm:x |
 
-_…and 213 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
+_…and 217 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
 
 ### Rule guards with no test naming them (2 of 17)
 
