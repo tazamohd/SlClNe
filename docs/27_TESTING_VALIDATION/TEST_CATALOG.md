@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-192 spec files containing 2244 test cases.
+190 spec files containing 2209 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,11 +22,11 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 116 | 1104 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 115 | 1097 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
-| SECURITY | 12 | 243 | Permission grants, tenant isolation, segregation of duties, session handling |
+| SECURITY | 11 | 215 | Permission grants, tenant isolation, segregation of duties, session handling |
 | CONTRACT | 3 | 182 | The shared rule functions both sides depend on |
 | DATA_FIDELITY | 2 | 15 | That the seeded data matches what the design bundle carried |
 | ACCESSIBILITY | 1 | 2 | Axe sweeps, ratcheted per route and viewport |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 36 | 475 |
-| app | 113 | 1392 |
+| server | 35 | 447 |
+| app | 112 | 1385 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -88,7 +88,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/e2e/workshop.spec.ts` | E2E | 14 | owner, technician |
 | `app/src/components/ui/icon-registry.test.ts` | UNIT_OR_API | 2 | — |
 | `app/src/data/ar-coverage.test.ts` | UNIT_OR_API | 3 | — |
-| `app/src/data/auth.test.ts` | UNIT_OR_API | 7 | owner |
 | `app/src/data/http/client.test.ts` | UNIT_OR_API | 13 | — |
 | `app/src/data/http/repository.test.ts` | UNIT_OR_API | 19 | — |
 | `app/src/data/repository.test.ts` | UNIT_OR_API | 3 | — |
@@ -224,7 +223,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |
-| `server/tests/rbac-matrix.test.ts` | SECURITY | 28 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
 | `server/tests/rbac-parity.test.ts` | SECURITY | 4 | — |
 | `server/tests/report-collections.test.ts` | UNIT_OR_API | 8 | accountant, technician, manager, owner |
 | `server/tests/repository-swap.test.ts` | UNIT_OR_API | 6 | owner, technician |
