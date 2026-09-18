@@ -2619,7 +2619,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2663,7 +2662,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
