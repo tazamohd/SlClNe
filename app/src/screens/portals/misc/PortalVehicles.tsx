@@ -24,11 +24,8 @@ import { derived, UNKNOWN } from '@/screens/registry/writes'
  *  count of the page. "New This Month" is a cross-record aggregate no endpoint
  *  computes, so it shows the em dash and the note names what would supply it.
  */
-type Vehicle = RowOf<'vehicles'> & {
-  _id?: string
-  /** API-only; the design fixtures carry no VIN. */
-  vin?: string | null
-}
+/** `vin` and entity metadata are typed on `Repository` itself now (F-020). */
+type Vehicle = RowOf<'vehicles'>
 
 export function PortalVehicles() {
   const { t } = usePreferences()

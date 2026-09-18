@@ -44,12 +44,9 @@ import { derived, rowId } from './writes'
  *  than rendered blank. **That is presentation, not protection** — the server
  *  still sends both fields to those roles today, which is recorded as a finding
  *  rather than papered over here. */
-type Customer = RowOf<'customers'> & {
-  email?: string | null
-  type?: string
-  _id?: string
-  _createdAt?: string
-}
+/** `email`/`type` and entity metadata are typed on `Repository` itself now
+ *  (F-020), so `RowOf<'customers'>` already carries them. */
+type Customer = RowOf<'customers'>
 type Vehicle = RowOf<'vehicles'>
 type Job = RowOf<'jobs'>
 

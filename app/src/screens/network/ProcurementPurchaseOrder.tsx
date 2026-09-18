@@ -97,20 +97,15 @@ export function checkReceive(args: {
 
 /* ─────────────────────────────────────────────────────── reading a part row */
 
-interface PartExtras {
-  _id?: string
-  priceHalalas?: number
-  costHalalas?: number | null
-}
-
-const extras = (part: Part): PartExtras => part as Part & PartExtras
+/** `priceHalalas`/`costHalalas` and entity metadata are typed on `Repository`
+ *  itself now (F-020). */
 
 /** The purchase cost to prefill: the recorded cost where the role may see it,
  *  the sell price otherwise — clearly editable either way. */
 function defaultUnitCostHalalas(part: Part, costHidden: boolean): number {
-  const cost = extras(part).costHalalas
+  const cost = part.costHalalas
   if (!costHidden && typeof cost === 'number') return cost
-  const price = extras(part).priceHalalas
+  const price = part.priceHalalas
   if (typeof price === 'number') return price
   return Math.round(parseSar(part.price) * 100)
 }

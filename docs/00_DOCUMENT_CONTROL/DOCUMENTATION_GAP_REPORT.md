@@ -124,9 +124,9 @@ The registries under `project-control/` are each generated at their own time by 
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
-| `project-control/BASELINE.json` | 2026-09-03 | 15 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 39 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
+| `project-control/BASELINE.json` | 2026-09-03 | 16 |
 
 _No cross-register contradictions detected._
 

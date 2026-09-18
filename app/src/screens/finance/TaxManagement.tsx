@@ -65,7 +65,7 @@ export function TaxManagement() {
       .filter((invoice) =>
         needle ? [invoice.id, invoice.cust].some((v) => String(v).toLowerCase().includes(needle)) : true,
       )
-      .filter((invoice) => inDateRange(rowDateIso(invoice as Record<string, unknown>, 'issuedAt'), from, to))
+      .filter((invoice) => inDateRange(rowDateIso(invoice as unknown as Record<string, unknown>, 'issuedAt'), from, to))
   }, [invoices, query, from, to])
 
   const exportRows = () => {

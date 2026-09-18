@@ -641,16 +641,12 @@ interface SharedProps {
   hideContact: boolean
 }
 
-/** The API adds columns the design fixtures never had (`email`, `vin`, entity
- *  metadata). Both shapes reach this screen, so the extras are optional. */
-type CustomerRow = RowOf<'customers'> & { email?: string | null; _id?: string }
-type VehicleRow = RowOf<'vehicles'> & { vin?: string | null; _id?: string }
-type TechnicianRow = RowOf<'technicians'> & { _id?: string }
-type InvoiceRow = RowOf<'invoices'> & {
-  _id?: string
-  jobCardId?: string | null
-  subtotalHalalas?: number
-  taxHalalas?: number
-  totalHalalas?: number
-}
-type LineRow = RowOf<'invoiceLines'> & { _id?: string; invoiceId?: string }
+/** `customers`/`vehicles`/`technicians`/`invoices` now carry the columns the
+ *  design fixtures never had directly on `Repository` (F-020); `invoiceId` on
+ *  a line is the one survivor here, since `invoiceLines` has no per-entity
+ *  extras declared there yet. */
+type CustomerRow = RowOf<'customers'>
+type VehicleRow = RowOf<'vehicles'>
+type TechnicianRow = RowOf<'technicians'>
+type InvoiceRow = RowOf<'invoices'>
+type LineRow = RowOf<'invoiceLines'> & { invoiceId?: string }

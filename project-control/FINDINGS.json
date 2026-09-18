@@ -249,14 +249,16 @@
     },
     {
       "id": "F-020",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "The client Repository is typed against fixtures, not the contract",
       "detail": "Repository row types come from data/generated/tables.ts, so contract fields the API really returns — email, type, vin, mileageKm, totalSpentHalalas, costHalalas, _createdAt — are invisible to TypeScript. Agents 09, 10 and 12 each widened the type by hand in their own files.",
       "why": "Every action-endpoint and detail screen casts around the type system, so a real field-name mismatch would not be caught by the compiler.",
       "foundBy": "09 and 10 and 12",
       "verified": "reported independently by three agents",
       "owner": "05",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Repository's collection types for vehicles, customers, parts, appointments, invoices and estimates were `(typeof T.TABLE)[number]` — the literal shape of the mock JSON fixture in generated/tables.ts — which carries no entity metadata (`_id`, `_createdAt`, ...) and none of the extra columns the live API actually returns (vin, mileageKm, customerId; email, type, totalSpentHalalas; costHalalas/reserved/available/priceHalalas/backorderable; scheduledDate, startMinute; the VAT/document-chain columns on invoices and estimates). 15+ screens each independently re-widened `RowOf<'vehicles'>`/`RowOf<'customers'>`/etc. by hand to work around this, with inconsistent field sets and duplicated `& { _id?: string }` guesses per file — exactly the three-agents-independently-hit-the-same-wall pattern this finding names. Fixed at the source: repository.ts now declares a `WithMeta<TRow>` helper (the design shape plus `EntityMeta`, still optional since a mock seed row genuinely may not carry it — same reasoning the file already used for BranchRow/FeedbackRow/etc.) and applies it to every fixture-backed collection in the `Repository` interface; vehicles/customers/parts/appointments/invoices/estimates additionally get the named extra columns as new exported types (VehicleRow, CustomerRow, PartRow, AppointmentRow, InvoiceRow, EstimateRow), verified field-by-field against packages/contract's `vehicleRow`/`customerRow`/`partRow`/`appointmentRow`/`invoiceRow`/`estimateRow`. Every one of the 15+ screens' hand-widened types was then simplified to the plain `RowOf<'x'>` (or a smaller intersection for the handful of fields — Fleet.contractType, Customer.fleetId, Vehicle.color — that are real but still have no Repository-level typing of their own, so remain local). The two `PartExtras`/`extras()` workaround helpers in Inventory.tsx and ProcurementPurchaseOrder.tsx were deleted outright since `Part` now carries every field they existed to smuggle in. Fixing the Repository types surfaced 10 call sites (GlobalSearch, ReportSuite, DashboardHome, DashboardMain, BankReconciliation, TaxManagement) doing a single-step `row as Record<string, unknown>` cast that the stricter (intersection) row types no longer satisfy directly (TS2352, insufficient overlap) — fixed with the double `as unknown as` cast already established elsewhere in the codebase (CustomersList.tsx) for exactly this situation. tsc, 3941/3941 vitest tests, all gates, smoke 433/433 and golden paths 23/23 (306/306 Playwright) clean throughout."
     },
     {
       "id": "F-021",

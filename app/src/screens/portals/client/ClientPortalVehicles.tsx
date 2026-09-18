@@ -24,10 +24,8 @@ import { derived } from '@/screens/registry/writes'
  *  `derived()` uses for "this record does not know", rather than a value made up
  *  to fill it. If the API grows the field the cell fills itself.
  */
+/** `vin` and entity metadata are typed on `Repository` itself now (F-020). */
 type Vehicle = RowOf<'vehicles'> & {
-  _id?: string
-  /** API-only; the design fixtures carry no VIN. */
-  vin?: string | null
   /** Not projected by any build today — see the note above. */
   color?: string | null
 }

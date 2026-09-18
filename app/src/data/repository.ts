@@ -462,30 +462,102 @@ export interface RequisitionLineRow {
   sort: number
 }
 
+/** A fixture-backed collection's row: the design shape (`generated/tables.ts`,
+ *  literally the JSON the `.dc.html` prototypes carried) plus the entity
+ *  metadata every real record has. `EntityMeta`'s fields are optional, same as
+ *  `BranchRow`/`FeedbackRow`/every other hand-declared row below, because the
+ *  mock's seed rows do not carry them either — only `create`/`update` mint one
+ *  (F-020: this used to be missing project-wide, so most screens re-declared
+ *  `& { _id?: string }` themselves, one guess per file). */
+type WithMeta<TRow> = TRow & EntityMeta
+
+/** Columns `GET /vehicles` serves that the design fixture never carried
+ *  (F-020) — every screen reading vehicles used to widen `RowOf<'vehicles'>`
+ *  with its own copy of this. */
+export type VehicleRow = WithMeta<(typeof T.VEHICLES)[number]> & {
+  vin?: string | null
+  mileageKm?: number
+  customerId?: string | null
+}
+
+/** Columns `GET /customers` serves that the design fixture never carried
+ *  (F-020), same story as `VehicleRow`. `totalSpentHalalas` is the halalas
+ *  figure `spent` is formatted from — see `customerRow` in
+ *  `packages/contract`. */
+export type CustomerRow = WithMeta<(typeof T.CUSTOMERS)[number]> & {
+  email?: string | null
+  type?: 'individual' | 'fleet'
+  totalSpentHalalas?: number
+}
+
+/** `costHalalas` is redacted (null) for a role the margin field rule hides it
+ *  from, and every column here is absent entirely from the design fixture
+ *  either way (F-020) — `Inventory.tsx` and `ProcurementPurchaseOrder.tsx`
+ *  each re-declared this same set by hand as a local `PartExtras`. */
+export type PartRow = WithMeta<(typeof T.PARTS)[number]> & {
+  reserved?: number
+  available?: number
+  priceHalalas?: number
+  costHalalas?: number | null
+  backorderable?: boolean
+}
+
+/** `scheduledDate`/`startMinute` are the machine values `timeLabel` is
+ *  rendered from; the design fixture carries only the label (F-020). */
+export type AppointmentRow = WithMeta<(typeof T.APPOINTMENTS)[number]> & {
+  scheduledDate?: string | null
+  startMinute?: number
+}
+
+/** The VAT breakdown and document chain `GET /invoices` serves beside the
+ *  design's `amount`/`due` strings (F-029, F-020). */
+export type InvoiceRow = WithMeta<(typeof T.INVOICES)[number]> & {
+  subtotalHalalas?: number
+  taxHalalas?: number
+  discountHalalas?: number
+  totalHalalas?: number
+  paidHalalas?: number
+  balanceHalalas?: number
+  jobCardId?: string | null
+  estimateId?: string | null
+}
+
+/** The VAT breakdown and approval chain `GET /estimates` serves beside the
+ *  design's `amount` string (F-029, F-020). */
+export type EstimateRow = WithMeta<(typeof T.ESTIMATES)[number]> & {
+  subtotalHalalas?: number
+  taxHalalas?: number
+  discountHalalas?: number
+  totalHalalas?: number
+  jobCardId?: string | null
+  submittedBy?: string | null
+  approvedBy?: string | null
+}
+
 export interface Repository {
   branches: Collection<BranchRow>
-  vehicles: Collection<(typeof T.VEHICLES)[number]>
-  invoices: Collection<(typeof T.INVOICES)[number]>
-  invoiceLines: Collection<(typeof T.INVOICE_LINES)[number]>
-  invoicePayments: Collection<(typeof T.INVOICE_PAYMENTS)[number]>
-  jobs: Collection<(typeof T.JOBS)[number]>
-  appointments: Collection<(typeof T.APPOINTMENTS)[number]>
-  estimates: Collection<(typeof T.ESTIMATES)[number]>
+  vehicles: Collection<VehicleRow>
+  invoices: Collection<InvoiceRow>
+  invoiceLines: Collection<WithMeta<(typeof T.INVOICE_LINES)[number]>>
+  invoicePayments: Collection<WithMeta<(typeof T.INVOICE_PAYMENTS)[number]>>
+  jobs: Collection<WithMeta<(typeof T.JOBS)[number]>>
+  appointments: Collection<AppointmentRow>
+  estimates: Collection<EstimateRow>
   declinedJobs: Collection<DeclinedJobRow>
-  customers: Collection<(typeof T.CUSTOMERS)[number]>
-  fleets: Collection<(typeof T.FLEETS)[number]>
-  parts: Collection<(typeof T.PARTS)[number]>
-  technicians: Collection<(typeof T.TECHS)[number]>
-  services: Collection<(typeof T.SERVICES)[number]>
-  leads: Collection<(typeof T.LEADS)[number]>
-  opportunities: Collection<(typeof T.OPPORTUNITIES)[number]>
-  campaigns: Collection<(typeof T.CAMPAIGNS)[number]>
-  segments: Collection<(typeof T.SEGMENTS)[number]>
-  crmTasks: Collection<(typeof T.CRM_TASKS)[number]>
+  customers: Collection<CustomerRow>
+  fleets: Collection<WithMeta<(typeof T.FLEETS)[number]>>
+  parts: Collection<PartRow>
+  technicians: Collection<WithMeta<(typeof T.TECHS)[number]>>
+  services: Collection<WithMeta<(typeof T.SERVICES)[number]>>
+  leads: Collection<WithMeta<(typeof T.LEADS)[number]>>
+  opportunities: Collection<WithMeta<(typeof T.OPPORTUNITIES)[number]>>
+  campaigns: Collection<WithMeta<(typeof T.CAMPAIGNS)[number]>>
+  segments: Collection<WithMeta<(typeof T.SEGMENTS)[number]>>
+  crmTasks: Collection<WithMeta<(typeof T.CRM_TASKS)[number]>>
   feedback: Collection<FeedbackRow>
-  chartOfAccounts: Collection<(typeof T.ACCOUNTS_COA)[number]>
-  journalEntries: Collection<(typeof T.JOURNAL_ENTRIES)[number]>
-  expenses: Collection<(typeof T.EXPENSES_DATA)[number]>
+  chartOfAccounts: Collection<WithMeta<(typeof T.ACCOUNTS_COA)[number]>>
+  journalEntries: Collection<WithMeta<(typeof T.JOURNAL_ENTRIES)[number]>>
+  expenses: Collection<WithMeta<(typeof T.EXPENSES_DATA)[number]>>
   bankStatements: Collection<BankStatementRow>
   savedReports: Collection<SavedReportRow>
   insurancePolicies: Collection<InsurancePolicyRow>
@@ -500,22 +572,22 @@ export interface Repository {
   suppliers: Collection<SupplierRow>
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
-  receipts: Collection<(typeof T.RECEIPTS)[number]>
-  departments: Collection<(typeof T.DEPARTMENTS)[number]>
-  aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
-  conversations: Collection<(typeof T.CONVERSATIONS)[number]>
-  obdDevices: Collection<(typeof T.OBD_DEVICES)[number]>
+  receipts: Collection<WithMeta<(typeof T.RECEIPTS)[number]>>
+  departments: Collection<WithMeta<(typeof T.DEPARTMENTS)[number]>>
+  aiAgents: Collection<WithMeta<(typeof T.AI_AGENTS)[number]>>
+  conversations: Collection<WithMeta<(typeof T.CONVERSATIONS)[number]>>
+  obdDevices: Collection<WithMeta<(typeof T.OBD_DEVICES)[number]>>
   obdReadings: Collection<ObdReadingRow>
-  dtcCodes: Collection<(typeof T.DTC_CODES)[number]>
-  oemTools: Collection<(typeof T.OEM_TOOLS)[number]>
-  integrations: Collection<(typeof T.SYS_INTEGRATIONS)[number]>
-  kbProcedures: Collection<(typeof T.KB_PROCEDURES)[number]>
-  approvalLines: Collection<(typeof T.APPROVAL_LINES)[number]>
-  diagStages: Collection<(typeof T.DIAG_STAGES)[number]>
-  diagFindings: Collection<(typeof T.DIAG_FINDINGS)[number]>
-  diagParts: Collection<(typeof T.DIAG_PARTS)[number]>
-  diagLabour: Collection<(typeof T.DIAG_LABOUR)[number]>
-  diagCopies: Collection<(typeof T.DIAG_COPIES)[number]>
+  dtcCodes: Collection<WithMeta<(typeof T.DTC_CODES)[number]>>
+  oemTools: Collection<WithMeta<(typeof T.OEM_TOOLS)[number]>>
+  integrations: Collection<WithMeta<(typeof T.SYS_INTEGRATIONS)[number]>>
+  kbProcedures: Collection<WithMeta<(typeof T.KB_PROCEDURES)[number]>>
+  approvalLines: Collection<WithMeta<(typeof T.APPROVAL_LINES)[number]>>
+  diagStages: Collection<WithMeta<(typeof T.DIAG_STAGES)[number]>>
+  diagFindings: Collection<WithMeta<(typeof T.DIAG_FINDINGS)[number]>>
+  diagParts: Collection<WithMeta<(typeof T.DIAG_PARTS)[number]>>
+  diagLabour: Collection<WithMeta<(typeof T.DIAG_LABOUR)[number]>>
+  diagCopies: Collection<WithMeta<(typeof T.DIAG_COPIES)[number]>>
 }
 
 export type CollectionKey = keyof Repository
