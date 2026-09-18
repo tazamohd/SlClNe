@@ -439,7 +439,7 @@
     },
     {
       "id": "F-036",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "Three generated files (nav.ts, rbac.ts, badges.ts) were hand-patched past what the generator now produces, so a routine `npm run port-design` silently reverts real fixes",
       "detail": "Running port-design-data.mjs to fix F-008/F-010 also (a) dropped ~9 real AI/automation and voice nav entries from NAV that exist as routed screens in app/src but were never added to handoff/SCREEN_MAP.md, and (b) reverted rbac.ts's and badges.ts's role/status colors from theme-aware CSS custom properties (`var(--salis-blue)`, `var(--tint-orange)`, etc. — needed for dark-mode support) back to hardcoded hex/rgba literals, because whoever added dark-mode theming patched the generated output directly instead of the generator's color-emission logic or its design-bundle source. Caught before committing by diffing every regenerated file rather than trusting `npm run gates` alone (gates don't check for a theming regression). nav.ts, rbac.ts and badges.ts were reverted to their pre-regeneration content this pass; only screens.ts (2 legitimate SCREEN_MAP.md rows added: PublicPortal.RoiCalculator, PublicPortal.Security — themselves a smaller instance of the same problem) and tables.ts (F-008's balance fix) were kept from the regeneration.",
       "why": "The repo's stated contract is 'generated files are never edited by hand — the generator is the only writer.' That contract has been broken at least twice (nav/colors, and the two public-site screens) without anyone re-running the generator to notice, so the generator now actively fights recent real fixes instead of reproducing them. The next person who runs `npm run port-design` for an unrelated reason will hit the same silent regression unless this is fixed at the generator/source level.",
@@ -447,7 +447,8 @@
       "verified": "confirmed by diffing every file port-design-data.mjs rewrote against HEAD before committing; reverted the two destructive files, kept the two safe ones, all tests/gates/build still pass",
       "owner": "02",
       "wave": "unassigned",
-      "status": "worked around this session (reverted the regression before commit); durable fix outstanding — port-design-data.mjs's NAV/color emission and project/handoff/SCREEN_MAP.md need to be brought in line with what the app actually ships, or the generator's promise (\"safe to re-run any time\") is false"
+      "status": "fixed",
+      "resolution": "project/gms-data.js's ROLES colors and SVC_BADGE/ST_BADGE/PR_BADGE tint/color pairs were rewritten from literal hex/rgba to the CSS custom properties (var(--salis-blue), var(--tint-orange), etc.) the hand-patch had added for dark-mode support — 10 mappings, ~41 occurrences. The 10 screens missing from NAV/SCREEN_MAP.md/SCREEN_MODULE (DeclinedJobs and 9 AI/voice screens) were added to project/handoff/SCREEN_MAP.md and gms-data.js's NAV/SCREEN_MODULE, using the hyphenated screen names (\"AI-Automation\", \"Voice-Commands\", etc.) that RequireAccess actually checks for spec-screen-routed screens — the PascalCase form the original hand-patch (and this fix's first draft) used was a dead SCREEN_MODULE key, which meant those 9 screens, including the 2 already shipped (Voice-Commands, Voice-Command-Interface), were reachable by every role regardless of the \"ai\" module grant. `node scripts/port-design-data.mjs` now reproduces nav.ts/rbac.ts/badges.ts byte-for-byte against what previously required a hand-patch (0 git diff on badges.ts/ar.ts/tables.ts after regeneration). 3914/3914 app tests, 554/554 server tests (incl. rbac-parity.test.ts), tsc and all gates clean."
     }
   ]
 }
