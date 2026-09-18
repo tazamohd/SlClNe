@@ -53,7 +53,7 @@ describe('httpRepository serves what mockRepository serves', () => {
       expect(fromApi.rows).toHaveLength(fromMock.rows.length + (SEED_COHERENCE_EXTRAS[key] ?? 0))
 
       fromMock.rows.forEach((expected: unknown, index) => {
-        const row = fromApi.rows[index] as Record<string, unknown>
+        const row = fromApi.rows[index] as unknown as Record<string, unknown>
         if (Array.isArray(expected)) {
           expect(row).toEqual(expected)
           return
