@@ -10,7 +10,10 @@ notes, so this skill always plans first and applies only with approval.
 
 1. Collect every tag in the vault: frontmatter `tags:` entries and inline
    `#tag` occurrences in note bodies (skip code blocks, `templates/`, and
-   `.obsidian/`). Count uses per tag.
+   `.obsidian/`). Exclude `#` that's part of a URL or link target (a
+   markdown link's `#fragment` anchor, or a bare URL with one) — those
+   aren't vault tags and will otherwise flood the audit with junk entries.
+   Count uses per tag.
 2. Flag problems:
    - **Near-duplicates**: singular/plural (`#book`/`#books`), abbreviations
      (`#proj`/`#project`), spelling variants, synonyms used interchangeably.

@@ -16,7 +16,8 @@ How to work:
   `templates/`, and `maintenance-logs/`. Use Grep for vault-wide passes
   (wikilinks `\[\[[^\]]+\]\]`, tags, frontmatter keys) instead of reading
   every file; read individual notes only when the analysis needs their
-  content.
+  content. When counting tags, exclude `#` that's part of a URL or markdown
+  link fragment — it isn't a vault tag.
 - Resolve wikilinks against both filenames and frontmatter `aliases:`
   before calling a link broken or a note orphaned.
 - Distinguish note types when judging structure: daily notes — files
