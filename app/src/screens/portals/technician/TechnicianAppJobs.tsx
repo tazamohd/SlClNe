@@ -1,74 +1,77 @@
-import { Badge } from '@/components/ui/Badge'
+import { useNavigate } from 'react-router-dom'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface AppJob {
-  workOrder: string
-  vehicle: string
-  plate: string
-  service: string
-  bay: string
-  priority: 'Urgent' | 'Normal' | 'Low'
-  status: 'In Progress' | 'Queued' | 'On Hold' | 'Done'
-  startTime: string
-}
+type Job = RowOf<'jobs'>
 
-const JOBS: AppJob[] = [
-  { workOrder: 'WO-8830', vehicle: '2021 Honda Accord', plate: 'KSA 7193', service: 'Full Brake Service', bay: 'Bay 3', priority: 'Urgent', status: 'In Progress', startTime: '08:15 AM' },
-  { workOrder: 'WO-8831', vehicle: '2022 Toyota Camry', plate: 'RJD 4821', service: 'Engine Tune-up', bay: 'Bay 3', priority: 'Normal', status: 'Queued', startTime: '11:00 AM' },
-  { workOrder: 'WO-8832', vehicle: '2023 Hyundai Tucson', plate: 'DMM 2856', service: 'AC Recharge', bay: 'Bay 5', priority: 'Normal', status: 'Queued', startTime: '01:30 PM' },
-  { workOrder: 'WO-8833', vehicle: '2020 Nissan Altima', plate: 'JED 5034', service: 'Transmission Flush', bay: 'Bay 3', priority: 'Low', status: 'On Hold', startTime: '03:00 PM' },
-  { workOrder: 'WO-8825', vehicle: '2022 Kia Sportage', plate: 'MKH 3344', service: 'Oil Change', bay: 'Bay 3', priority: 'Normal', status: 'Done', startTime: '07:30 AM' },
-  { workOrder: 'WO-8826', vehicle: '2021 Toyota Hilux', plate: 'RYD 9012', service: 'Air Filter Replacement', bay: 'Bay 3', priority: 'Low', status: 'Done', startTime: '08:00 AM' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  'On Hold': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Done: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-}
-
-const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Urgent: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-}
-
+/** The technician mobile app's own jobs list — `Technician-App-Jobs`, a
+ *  feature-map screen over the same `jobs` collection `TechnicianPortalMyJobs`
+ *  reads. Kept as its own screen (the two surfaces are routed and navigated
+ *  separately), but backed by the same real, row-level-security-scoped data
+ *  rather than a second, disagreeing set of fixture rows — a bay, a start
+ *  time and a plate column had no backing field on the presented row and are
+ *  dropped rather than invented. Opens the same real job detail screen the
+ *  portal uses; there is only one. */
 export function TechnicianAppJobs() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
 
-  const columns: Column<AppJob>[] = [
-    { header: t('Work Order'), cell: (j) => j.workOrder },
-    { header: t('Vehicle'), cell: (j) => j.vehicle },
-    { header: t('Plate'), cell: (j) => j.plate },
-    { header: t('Service'), cell: (j) => j.service },
-    { header: t('Bay'), cell: (j) => j.bay },
-    { header: t('Start'), cell: (j) => j.startTime },
-    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
-    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+  const open = (job: Job) => navigate(`/technician-portal/job-detail?id=${encodeURIComponent(job.id)}`)
+
+  const columns: Column<Job>[] = [
+    { header: t('Job Card'), cell: (j) => j.id, code: true },
+    { header: t('Vehicle'), cell: (j) => j.veh },
+    {
+      header: t('Service'),
+      cell: (j) => <ServiceBadge value={j.svc} label={t((j.svc ?? '').replace(/_/g, ' '))} />,
+    },
+    { header: t('Priority'), cell: (j) => <PriorityBadge value={j.pr} label={t(j.pr)} /> },
+    {
+      header: t('Status'),
+      cell: (j) => <StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />,
+    },
   ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="Clipboard" title={t('Jobs')} subtitle={t('Today\'s assigned work orders')} />
+      <PageHeader icon="Clipboard" title={t('Jobs')} subtitle={t("Today's assigned work orders")} />
 
-      <DataTable
-        caption="Technician app jobs"
-        columns={columns}
-        rows={JOBS}
-        rowKey={(j) => j.workOrder}
-        mobileCard={(j) => (
-          <>
-            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
-            <MobileCardRow label={t('Vehicle')}>{j.vehicle}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge></MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState title={t("Couldn't load this")} description={error?.message} onRetry={() => void refetch()} />
+      ) : isLoading ? (
+        <Loading label={t('Loading job cards...')} inline />
+      ) : jobs.length === 0 ? (
+        <EmptyState
+          icon="Clipboard"
+          title={t('No jobs assigned')}
+          description={t('Work assigned to you shows up here as soon as an advisor hands it to your bay.')}
+        />
+      ) : (
+        <DataTable
+          caption="Technician app jobs"
+          columns={columns}
+          rows={jobs}
+          rowKey={(j) => j.id}
+          onRowClick={open}
+          mobileCard={(j) => (
+            <>
+              <MobileCardHeader
+                title={j.svc ? t((j.svc).replace(/_/g, ' ')) : j.id}
+                trailing={<StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />}
+              />
+              <MobileCardRow label={t('Vehicle')}>{j.veh}</MobileCardRow>
+              <MobileCardRow label={t('Job Card')}>{j.id}</MobileCardRow>
+              <MobileCardRow label={t('Priority')}><PriorityBadge value={j.pr} label={t(j.pr)} /></MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }

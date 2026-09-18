@@ -145,8 +145,8 @@ _No lifecycle in the contract belongs to this domain._
 | F-087 | `/purchase-agent-price-compare` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-088 | `/purchase-agent-tracking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-089 | `/purchase-agent-reports` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-090 | `/technician-portal-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-091 | `/technician-portal-my-jobs` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-092 | `/technician-portal-time-clock` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-093 | `/technician-portal-parts` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-094 | `/technician-portal-documentation` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -157,9 +157,9 @@ _No lifecycle in the contract belongs to this domain._
 | F-099 | `/technician-management` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-100 | `/technician-leaderboards` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-101 | `/technician-performance` | app | **mock** | — | — | — | verified | yes |
-| F-102 | `/technician-mobile` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-103 | `/technician-app-home` | app | **mock** | — | — | — | verified | yes |
-| F-104 | `/technician-app-jobs` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-105 | `/technician-app-clock` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-106 | `/technician-app-lookup` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-107 | `/technician-app-profile` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -284,8 +284,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **207 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **181 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **203 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **177 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

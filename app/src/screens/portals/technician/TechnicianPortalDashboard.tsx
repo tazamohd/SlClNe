@@ -1,82 +1,99 @@
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { PriorityBadge, ServiceBadge, StatusBadge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection } from '@/data/useCollection'
+import type { JobRow } from '@/screens/workshop/stages'
 
-interface Job {
-  workOrder: string
-  vehicle: string
-  service: string
-  priority: 'High' | 'Normal' | 'Low'
-  status: 'In Progress' | 'Queued' | 'Waiting Parts'
-  estimatedHours: number
-}
+type Job = JobRow
 
-const ASSIGNED_JOBS: Job[] = [
-  { workOrder: 'WO-8830', vehicle: '2021 Honda Accord', service: 'Full Brake Service', priority: 'High', status: 'In Progress', estimatedHours: 3 },
-  { workOrder: 'WO-8831', vehicle: '2022 Toyota Camry', service: 'Engine Tune-up', priority: 'Normal', status: 'Queued', estimatedHours: 2.5 },
-  { workOrder: 'WO-8832', vehicle: '2023 Hyundai Tucson', service: 'AC Recharge', priority: 'Normal', status: 'Queued', estimatedHours: 1 },
-  { workOrder: 'WO-8833', vehicle: '2020 Nissan Altima', service: 'Transmission Flush', priority: 'Low', status: 'Waiting Parts', estimatedHours: 2 },
-  { workOrder: 'WO-8834', vehicle: '2019 Toyota Hilux', service: 'Suspension Repair', priority: 'High', status: 'Queued', estimatedHours: 4 },
-]
+const FINISHED_STAGES = new Set(['delivery', 'invoiced', 'closed'])
 
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  'In Progress': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Queued: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-  'Waiting Parts': { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-}
-
-const PRIORITY_STYLES: Record<string, { bg: string; fg: string }> = {
-  High: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Normal: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Low: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
-}
-
+/** Technician dashboard — `TechnicianPortal.Dashboard.dc.html`, over the
+ *  technician's own row-level-security-scoped job cards.
+ *
+ *  The design's KPI strip invented two figures no collection backs — hours
+ *  logged today, parts pending — so they are absent here rather than shown as
+ *  round numbers nobody computed. "Assigned" and "Completed" are both real
+ *  counts over the same rows the table below renders, which is what keeps
+ *  the two from ever disagreeing with each other. */
 export function TechnicianPortalDashboard() {
   const { t } = usePreferences()
+  const navigate = useNavigate()
+  const { data, isLoading, isError, error, refetch } = useCollection('jobs')
+  const jobs = (data ?? []) as readonly JobRow[]
+
+  const open = (job: Job) => navigate(`/technician-portal/job-detail?id=${encodeURIComponent(job.id)}`)
+
+  const { assignedCount, completedCount } = useMemo(() => {
+    const completed = jobs.filter((j) => FINISHED_STAGES.has(j.stage ?? '')).length
+    return { assignedCount: jobs.length, completedCount: completed }
+  }, [jobs])
 
   const kpis = [
-    { label: t('Assigned Jobs'), value: '5', icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Hours Today'), value: '6.5', icon: 'Clock', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Parts Pending'), value: '2', icon: 'Package', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Completed Today'), value: '3', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Assigned Jobs'), value: String(assignedCount), icon: 'Clipboard', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Completed'), value: String(completedCount), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
   const columns: Column<Job>[] = [
-    { header: t('Work Order'), cell: (j) => j.workOrder },
-    { header: t('Vehicle'), cell: (j) => j.vehicle },
-    { header: t('Service'), cell: (j) => j.service },
-    { header: t('Priority'), cell: (j) => <Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge> },
-    { header: t('Est. Hours'), cell: (j) => j.estimatedHours },
-    { header: t('Status'), cell: (j) => <Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge> },
+    { header: t('Job Card'), cell: (j) => j.id, code: true },
+    { header: t('Vehicle'), cell: (j) => j.veh },
+    {
+      header: t('Service'),
+      cell: (j) => <ServiceBadge value={j.svc} label={t((j.svc ?? '').replace(/_/g, ' '))} />,
+    },
+    { header: t('Priority'), cell: (j) => <PriorityBadge value={j.pr} label={t(j.pr)} /> },
+    {
+      header: t('Status'),
+      cell: (j) => <StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />,
+    },
   ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
-      <PageHeader icon="LayoutDashboard" title={t('Technician Dashboard')} subtitle={t('Today\'s work overview')} />
+      <PageHeader icon="LayoutDashboard" title={t('Technician Dashboard')} subtitle={t("Today's work overview")} />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {kpis.map((k) => (
           <KpiCard key={k.label} {...k} />
         ))}
       </div>
 
-      <DataTable
-        caption="Technician assigned jobs"
-        columns={columns}
-        rows={ASSIGNED_JOBS}
-        rowKey={(j) => j.workOrder}
-        mobileCard={(j) => (
-          <>
-            <MobileCardHeader title={j.service} trailing={<Badge background={STATUS_STYLES[j.status].bg} color={STATUS_STYLES[j.status].fg}>{t(j.status)}</Badge>} />
-            <MobileCardRow label={t('Vehicle')}>{j.vehicle}</MobileCardRow>
-            <MobileCardRow label={t('Work Order')}>{j.workOrder}</MobileCardRow>
-            <MobileCardRow label={t('Priority')}><Badge background={PRIORITY_STYLES[j.priority].bg} color={PRIORITY_STYLES[j.priority].fg}>{t(j.priority)}</Badge></MobileCardRow>
-          </>
-        )}
-      />
+      {isError ? (
+        <ErrorState title={t("Couldn't load this")} description={error?.message} onRetry={() => void refetch()} />
+      ) : isLoading ? (
+        <Loading label={t('Loading job cards...')} inline />
+      ) : jobs.length === 0 ? (
+        <EmptyState
+          icon="Clipboard"
+          title={t('No jobs assigned')}
+          description={t('Work assigned to you shows up here as soon as an advisor hands it to your bay.')}
+        />
+      ) : (
+        <DataTable
+          caption="Technician assigned jobs"
+          columns={columns}
+          rows={jobs}
+          rowKey={(j) => j.id}
+          onRowClick={open}
+          mobileCard={(j) => (
+            <>
+              <MobileCardHeader
+                title={j.svc ? t((j.svc).replace(/_/g, ' ')) : j.id}
+                trailing={<StatusBadge value={j.st} label={t((j.st ?? '').replace(/_/g, ' '))} />}
+              />
+              <MobileCardRow label={t('Vehicle')}>{j.veh}</MobileCardRow>
+              <MobileCardRow label={t('Job Card')}>{j.id}</MobileCardRow>
+              <MobileCardRow label={t('Priority')}><PriorityBadge value={j.pr} label={t(j.pr)} /></MobileCardRow>
+            </>
+          )}
+        />
+      )}
     </div>
   )
 }
