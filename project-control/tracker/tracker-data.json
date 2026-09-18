@@ -2260,7 +2260,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Vehicle Storage",
@@ -2287,7 +2287,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Tire Management",
@@ -2332,7 +2332,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Vehicle Walkaround",
@@ -2350,7 +2350,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Diagnostics OBD Hub",
@@ -2431,7 +2431,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Video Estimates",
@@ -2449,7 +2449,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Stripe Payment Processing",
@@ -2458,7 +2458,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Refund Management",
@@ -3466,7 +3466,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Social Media Monitoring",
@@ -3475,7 +3475,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Google My Business",
@@ -3484,7 +3484,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Chat",
@@ -3628,7 +3628,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "AI Chatbot Assistant",
@@ -3637,7 +3637,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "AI Service Advisor",
@@ -3646,7 +3646,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Voice Commands",
@@ -3673,7 +3673,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "ML Fraud Detection",
@@ -3682,7 +3682,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Neural Network Prediction",
@@ -3691,7 +3691,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Emerging Technologies",
@@ -3718,7 +3718,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Edge Computing",
@@ -3727,7 +3727,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Twin Viewer",
@@ -3736,7 +3736,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Drone Inspection",
@@ -3808,7 +3808,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Signage",
@@ -3835,7 +3835,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Document Management",
@@ -3853,7 +3853,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Data Import Export",
@@ -3961,7 +3961,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Sales Guide",

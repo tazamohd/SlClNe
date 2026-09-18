@@ -1,22 +1,22 @@
 {
   "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 429,
-    "product": 389,
+    "capabilities": 428,
+    "product": 365,
     "referenceOnly": 28,
-    "externalDependency": 12,
-    "rendered": 429,
+    "externalDependency": 35,
+    "rendered": 428,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 274,
-    "dataBacked": 115,
-    "e2eCovered": 429,
-    "contentAsserted": 429,
+    "mockOnly": 251,
+    "dataBacked": 114,
+    "e2eCovered": 428,
+    "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 159,
-    "hasErrorState": 126,
-    "hasEmptyState": 179,
+    "hasLoadingState": 157,
+    "hasErrorState": 124,
+    "hasEmptyState": 178,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -26,8 +26,8 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 114,
-    "crudUpdate": 26,
+    "crudRead": 113,
+    "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 10,
@@ -43,12 +43,12 @@
       "dataBacked": 0
     },
     "app": {
-      "total": 315,
-      "rendered": 315,
+      "total": 314,
+      "rendered": 314,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 315,
-      "dataBacked": 101
+      "e2e": 314,
+      "dataBacked": 100
     },
     "call-center": {
       "total": 2,
@@ -117,11 +117,11 @@
       "dataBacked": 0
     },
     "admin": {
-      "total": 20,
-      "rendered": 20,
+      "total": 19,
+      "rendered": 19,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 20,
+      "e2e": 19,
       "dataBacked": 5
     },
     "ai": {
@@ -138,7 +138,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 22,
-      "dataBacked": 22
+      "dataBacked": 21
     },
     "accounting": {
       "total": 23,
@@ -278,14 +278,6 @@
       "e2e": 5,
       "dataBacked": 5
     },
-    "jobcards": {
-      "total": 11,
-      "rendered": 11,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 11,
-      "dataBacked": 10
-    },
     "audit": {
       "total": 1,
       "rendered": 1,
@@ -373,6 +365,14 @@
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
+    },
+    "jobcards": {
+      "total": 10,
+      "rendered": 10,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 10,
+      "dataBacked": 9
     },
     "vehicles": {
       "total": 4,
