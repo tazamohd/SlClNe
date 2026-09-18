@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- All public, crawlable routes: Tier A (9 design-authoritative), Tier B (21
+<!-- All public, crawlable routes: Tier A (9 design-authoritative), Tier B (26
      design-system — including Parts & Accessories and Deals & Offers, which
-     replaced the Tier A Marketplace page, plus ROI Calculator and Security),
+     replaced the Tier A Marketplace page, ROI Calculator and Security, and
+     the five pages cascaded from the "SALIS AUTO 2030" design study's six-
+     page tour: Platform Architecture, Supply Chain, Compare Plans, Our
+     Story and Getting Started — see PlatformArchitecture.tsx's docstring),
      and Tier C (7 content/SEO) pages, rendered ungated with no
      session. Kept in step with the website barrel — the SEO test asserts every
      ungated public route appears here. Base origin https://salisauto.sa is
@@ -39,6 +42,11 @@
   <url><loc>https://salisauto.sa/public-portal/deals-offers</loc><lastmod>2026-09-16</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/roi-calculator</loc><lastmod>2026-09-16</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/security</loc><lastmod>2026-09-16</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/platform</loc><lastmod>2026-09-18</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/supply-chain</loc><lastmod>2026-09-18</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/compare-plans</loc><lastmod>2026-09-18</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/story</loc><lastmod>2026-09-18</lastmod></url>
+  <url><loc>https://salisauto.sa/public-portal/getting-started</loc><lastmod>2026-09-18</lastmod></url>
   <!-- Tier C — content/SEO pages -->
   <url><loc>https://salisauto.sa/public-portal/pricing</loc><lastmod>2026-09-16</lastmod></url>
   <url><loc>https://salisauto.sa/public-portal/request-demo</loc><lastmod>2026-08-21</lastmod></url>

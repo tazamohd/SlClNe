@@ -1,4 +1,6 @@
-import { useT } from '@/providers/PreferencesProvider'
+import { Link } from 'react-router-dom'
+import { Icon } from '@/components/ui/Icon'
+import { useT, usePreferences } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { StatBand } from './sections/StatBand'
 import { CornerBrackets } from './sections/CornerBrackets'
@@ -25,6 +27,8 @@ const STATS = [
 
 export function PublicAbout() {
   const t = useT()
+  const { language } = usePreferences()
+  const rtl = language === 'ar'
   usePageMeta({
     title: t('About — SALIS AUTO'),
     description: t(
@@ -50,11 +54,18 @@ export function PublicAbout() {
         <StatBand items={STATS} />
       </div>
       <h2 className="mb-4 mt-0 text-2xl font-bold text-heading">{t('Our Mission')}</h2>
-      <p className="m-0 text-[15px] leading-[1.7] text-body">
+      <p className="mb-8 mt-0 text-[15px] leading-[1.7] text-body">
         {t(
           'To give every automotive workshop in Saudi Arabia a single, controlled operational record — from check-in to ZATCA invoice — instead of scattered spreadsheets, paper job cards and disconnected tools.'
         )}
       </p>
+      <Link
+        to="/public-portal/story"
+        className="inline-flex items-center gap-1 text-sm font-semibold text-salis-blue no-underline hover:underline"
+      >
+        {t('Read the fuller story')}
+        <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
+      </Link>
     </div>
   )
 }

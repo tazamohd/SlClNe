@@ -1635,6 +1635,24 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · CompanyStory",
+          "route": "/public-portal/story",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · ComparePlans",
+          "route": "/public-portal/compare-plans",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Contact",
           "route": "/public-portal/contact",
           "status": "built",
@@ -1698,6 +1716,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "PublicPortal · GettingStarted",
+          "route": "/public-portal/getting-started",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "PublicPortal · Industries",
           "route": "/public-portal/industries",
           "status": "built",
@@ -1754,6 +1781,15 @@
         {
           "name": "PublicPortal · PartsAccessories",
           "route": "/public-portal/parts-accessories",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · Platform",
+          "route": "/public-portal/platform",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1844,6 +1880,15 @@
         {
           "name": "PublicPortal · SupplierPortal",
           "route": "/public-portal/supplier-portal",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "PublicPortal · SupplyChain",
+          "route": "/public-portal/supply-chain",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -3967,8 +4012,8 @@
     }
   ],
   "totals": {
-    "total": 428,
-    "built": 428,
+    "total": 433,
+    "built": 433,
     "designedMobile": 113
   }
 }

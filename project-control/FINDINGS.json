@@ -1,6 +1,6 @@
 {
   "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently — an agent's report is a claim, not a verification.",
-  "updatedAt": "2026-08-12",
+  "updatedAt": "2026-09-18",
   "findings": [
     {
       "id": "F-001",
@@ -382,14 +382,16 @@
     },
     {
       "id": "F-031",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Four Tier C public pages have no registry route to build against",
       "detail": "Agent 17 built Privacy and Terms, but Pricing, Request/Book Demo, Careers and Cookie Policy do not exist in the generated screen registry, and AppRoutes only renders registry entries. A website agent cannot add them from within its boundary — the screen names/routes must be added to the generator source first.",
       "why": "Part 5.3 lists these as Tier C, but the design bundle never carried them as routes; the registry reflects the bundle. Building them needs an orchestrator/generator change, then a website agent declares them like Privacy/Terms.",
       "foundBy": "17",
       "verified": "reported by agent 17",
       "owner": "02",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Pricing, Book/Request Demo, Careers and Cookie Policy all carry real SCREEN_MAP.md routes and render live today (confirmed while investigating BLK-010/F-037) — this finding predates that fix and was never closed out. The generator/registry gap it described no longer exists."
     },
     {
       "id": "F-032",
@@ -449,6 +451,19 @@
       "wave": "unassigned",
       "status": "fixed",
       "resolution": "project/gms-data.js's ROLES colors and SVC_BADGE/ST_BADGE/PR_BADGE tint/color pairs were rewritten from literal hex/rgba to the CSS custom properties (var(--salis-blue), var(--tint-orange), etc.) the hand-patch had added for dark-mode support — 10 mappings, ~41 occurrences. The 10 screens missing from NAV/SCREEN_MAP.md/SCREEN_MODULE (DeclinedJobs and 9 AI/voice screens) were added to project/handoff/SCREEN_MAP.md and gms-data.js's NAV/SCREEN_MODULE, using the hyphenated screen names (\"AI-Automation\", \"Voice-Commands\", etc.) that RequireAccess actually checks for spec-screen-routed screens — the PascalCase form the original hand-patch (and this fix's first draft) used was a dead SCREEN_MODULE key, which meant those 9 screens, including the 2 already shipped (Voice-Commands, Voice-Command-Interface), were reachable by every role regardless of the \"ai\" module grant. `node scripts/port-design-data.mjs` now reproduces nav.ts/rbac.ts/badges.ts byte-for-byte against what previously required a hand-patch (0 git diff on badges.ts/ar.ts/tables.ts after regeneration). 3914/3914 app tests, 554/554 server tests (incl. rbac-parity.test.ts), tsc and all gates clean."
+    },
+    {
+      "id": "F-037",
+      "severity": "RESOLVED",
+      "status": "fixed",
+      "title": "Ten public-website screen files were unreachable from any route (BLK-010)",
+      "detail": "The \"SALIS AUTO 2030\" design study shipped a six-page tour (Arrival, System, Grid, Access, Origin, Channel) plus its own nav shell (PageNav, CommandDeck) — complete, working React, never linked into the site. Landing.tsx's 2026-09-16 rewrite superseded Arrival with a new homepage and explicitly deferred the other five as \"a later cascade-phase task\".",
+      "why": "BLK-010 in project-control/BLOCKERS.json flagged all 10 files as orphaned. Real, already-written product content (domain architecture, supply chain, plan comparison, company story, onboarding) sitting dead in the repo.",
+      "foundBy": "principal-engineer-session",
+      "verified": "fixed and tested this session",
+      "owner": "02",
+      "wave": "W3",
+      "resolution": "The five content pages were rewritten onto the site's light-first design system (matching Pricing/Features/About) and given real routes: PublicPortal.Platform (/public-portal/platform), .SupplyChain (/public-portal/supply-chain), .ComparePlans (/public-portal/compare-plans), .CompanyStory (/public-portal/story) and .GettingStarted (/public-portal/getting-started) — wired into SCREEN_MAP.md, the website.ts barrel, sitemap.xml and the Footer, with cross-links from About.tsx and Pricing.tsx. One material correction made along the way: the study's Access page published a numeric plan-comparison matrix (branch/user ceilings, SLA hours, uptime percentages) and a \"Starter\" plan name found nowhere else in the codebase, contradicting Pricing.tsx's deliberate no-published-numbers policy, and one FAQ answer's blanket data-export promise contradicted the already-shipped Security.tsx. ComparePlans.tsx and CompanyStory.tsx use Pricing.tsx's real plan names and keep every differentiation qualitative — see those files' docstrings. The old six-page tour's dead scaffolding (CommandDeck.tsx, PageNav.tsx, IndexPage.tsx, landing.css, useLandingMotion.ts) was deleted; types.ts and landingData.ts were trimmed to their still-live exports. BLK-010 now lists one file — SocialProofBand.tsx — which is a deliberate, documented reservation for future testimonials, not orphaned debt."
     }
   ]
 }

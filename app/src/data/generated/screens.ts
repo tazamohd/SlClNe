@@ -3,7 +3,7 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 226 screens. */
+ *  handoff/SCREEN_MAP.md — 231 screens. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -756,6 +756,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Careers"
   },
   {
+    "name": "PublicPortal.CompanyStory",
+    "route": "/public-portal/story",
+    "hasMobile": false,
+    "purpose": "Public website — Our Story (company origin, principles, dispatches)"
+  },
+  {
+    "name": "PublicPortal.ComparePlans",
+    "route": "/public-portal/compare-plans",
+    "hasMobile": false,
+    "purpose": "Public website — Compare plans in detail"
+  },
+  {
     "name": "PublicPortal.Contact",
     "route": "/public-portal/contact",
     "hasMobile": false,
@@ -798,6 +810,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Fleet Management product page"
   },
   {
+    "name": "PublicPortal.GettingStarted",
+    "route": "/public-portal/getting-started",
+    "hasMobile": false,
+    "purpose": "Public website — Getting started, onboarding walkthrough"
+  },
+  {
     "name": "PublicPortal.Industries",
     "route": "/public-portal/industries",
     "hasMobile": false,
@@ -838,6 +856,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/public-portal/parts-accessories",
     "hasMobile": false,
     "purpose": "Public website — Services, Parts & Accessories"
+  },
+  {
+    "name": "PublicPortal.Platform",
+    "route": "/public-portal/platform",
+    "hasMobile": false,
+    "purpose": "Public website — Platform architecture deep-dive"
   },
   {
     "name": "PublicPortal.Pricing",
@@ -898,6 +922,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/public-portal/supplier-portal",
     "hasMobile": false,
     "purpose": "Public website — Supplier Portal product page"
+  },
+  {
+    "name": "PublicPortal.SupplyChain",
+    "route": "/public-portal/supply-chain",
+    "hasMobile": false,
+    "purpose": "Public website — Supply chain, requisition to issue"
   },
   {
     "name": "PublicPortal.Support",

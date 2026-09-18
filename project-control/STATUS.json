@@ -1,24 +1,24 @@
 {
   "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 428,
-    "product": 390,
+    "capabilities": 433,
+    "product": 395,
     "referenceOnly": 28,
     "externalDependency": 10,
-    "rendered": 428,
+    "rendered": 433,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 275,
+    "mockOnly": 280,
     "dataBacked": 115,
-    "e2eCovered": 428,
-    "contentAsserted": 428,
+    "e2eCovered": 433,
+    "contentAsserted": 433,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 157,
     "hasErrorState": 124,
     "hasEmptyState": 179,
     "tabletVerified": 4,
-    "arabicVerified": 79,
+    "arabicVerified": 81,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -30,7 +30,7 @@
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 10,
+    "orphanScreenFiles": 1,
     "productionReady": 0
   },
   "bySurface": {
@@ -99,11 +99,11 @@
       "dataBacked": 0
     },
     "public": {
-      "total": 34,
-      "rendered": 34,
+      "total": 39,
+      "rendered": 39,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 34,
+      "e2e": 39,
       "dataBacked": 0
     }
   },
@@ -197,11 +197,11 @@
       "dataBacked": 2
     },
     "website": {
-      "total": 34,
-      "rendered": 34,
+      "total": 39,
+      "rendered": 39,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 34,
+      "e2e": 39,
       "dataBacked": 0
     },
     "procurement": {

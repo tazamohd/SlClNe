@@ -16,10 +16,13 @@ const GROUPS: readonly FooterGroup[] = [
   {
     heading: 'Product',
     links: [
+      { label: 'Platform Architecture', to: '/public-portal/platform' },
+      { label: 'Supply Chain', to: '/public-portal/supply-chain' },
       { label: 'Features', to: '/public-portal/features' },
       { label: 'Solutions', to: '/public-portal/solutions' },
       { label: 'Industries', to: '/public-portal/industries' },
       { label: 'Pricing', to: '/public-portal/pricing' },
+      { label: 'Compare Plans', to: '/public-portal/compare-plans' },
       { label: 'Integrations', to: '/public-portal/integrations' },
       { label: 'Security', to: '/public-portal/security' },
       { label: 'ROI Calculator', to: '/public-portal/roi-calculator' },
@@ -31,6 +34,7 @@ const GROUPS: readonly FooterGroup[] = [
     heading: 'Company',
     links: [
       { label: 'About', to: '/public-portal/about' },
+      { label: 'Our Story', to: '/public-portal/story' },
       { label: 'Careers', to: '/public-portal/careers' },
       { label: 'Blog', to: '/public-portal/blog' },
       { label: 'Contact', to: '/public-portal/contact' },
@@ -39,6 +43,7 @@ const GROUPS: readonly FooterGroup[] = [
   {
     heading: 'Support',
     links: [
+      { label: 'Getting Started', to: '/public-portal/getting-started' },
       { label: 'Help Center', to: '/public-portal/support' },
       { label: 'FAQ', to: '/public-portal/faq' },
       { label: 'Request Demo', to: '/public-portal/request-demo' },

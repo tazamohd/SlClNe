@@ -33,6 +33,7 @@ import {
   BookMarked,
   BookOpen,
   BookOpenCheck,
+  BookUser,
   Bot,
   Box,
   Boxes,
@@ -100,6 +101,7 @@ import {
   Disc,
   Disc3,
   DollarSign,
+  DoorOpen,
   Download,
   Droplets,
   Ellipsis,
@@ -150,6 +152,7 @@ import {
   History,
   Hourglass,
   House,
+  IdCard,
   Image,
   ImagePlus,
   Import,
@@ -318,8 +321,8 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-/** The 318 icon names referenced by the design bundle and the app,
- *  mapped to the 314 lucide exports behind them, so data-driven
+/** The 321 icon names referenced by the design bundle and the app,
+ *  mapped to the 317 lucide exports behind them, so data-driven
  *  lookups work without importing all ~1500. Names lucide has since renamed
  *  appear under the name the data uses. */
 export const ICONS: Record<string, LucideIcon> = {
@@ -361,6 +364,7 @@ export const ICONS: Record<string, LucideIcon> = {
   BookMarked,
   BookOpen,
   BookOpenCheck,
+  BookUser,
   Bot,
   Box,
   Boxes,
@@ -420,6 +424,7 @@ export const ICONS: Record<string, LucideIcon> = {
   Disc,
   Disc3,
   DollarSign,
+  DoorOpen,
   Download,
   Droplets,
   Edit: Pencil,
@@ -472,6 +477,7 @@ export const ICONS: Record<string, LucideIcon> = {
   History,
   Home: House,
   Hourglass,
+  IdCard,
   Image,
   ImagePlus,
   Import,

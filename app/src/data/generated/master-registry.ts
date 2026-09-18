@@ -2765,6 +2765,49 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-PublicPortal.CompanyStory",
+    "name": "PublicPortal.CompanyStory",
+    "title": "PublicPortal · CompanyStory",
+    "route": "/public-portal/story",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.ComparePlans",
+    "name": "PublicPortal.ComparePlans",
+    "title": "PublicPortal · ComparePlans",
+    "route": "/public-portal/compare-plans",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-PublicPortal.Contact",
     "name": "PublicPortal.Contact",
     "title": "PublicPortal · Contact",
@@ -2906,6 +2949,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.GettingStarted",
+    "name": "PublicPortal.GettingStarted",
+    "title": "PublicPortal · GettingStarted",
+    "route": "/public-portal/getting-started",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3058,6 +3123,27 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.Platform",
+    "name": "PublicPortal.Platform",
+    "title": "PublicPortal · Platform",
+    "route": "/public-portal/platform",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3273,6 +3359,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.SupplyChain",
+    "name": "PublicPortal.SupplyChain",
+    "title": "PublicPortal · SupplyChain",
+    "route": "/public-portal/supply-chain",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,

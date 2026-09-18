@@ -35,7 +35,7 @@
 | State machines | `packages/contract/src/entities/*.ts` | 19 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 55 policies |
 | Test catalogue | the spec files | 191 suites |
-| Screen registry view | `project-control/MASTER_REGISTRY.json` | 428 screens |
+| Screen registry view | `project-control/MASTER_REGISTRY.json` | 433 screens |
 | Capability map, requirements, traceability | all of the above | 154 requirements |
 
 `node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.

@@ -1504,6 +1504,11 @@ const EXPECTED_TEXT = {
   '/public-portal/roi-calculator': "PublicPortal · RoiCalculator",
   '/public-portal/security': "PublicPortal · Security",
   '/declined-jobs': "DeclinedJobs",
+  '/public-portal/story': "PublicPortal · CompanyStory",
+  '/public-portal/compare-plans': "PublicPortal · ComparePlans",
+  '/public-portal/getting-started': "PublicPortal · GettingStarted",
+  '/public-portal/platform': "PublicPortal · Platform",
+  '/public-portal/supply-chain': "PublicPortal · SupplyChain",
 }
 
 // ── Overrides for registry titles that don't match rendered text ──────────────
@@ -1581,6 +1586,11 @@ Object.assign(EXPECTED_TEXT, {
   '/public-portal/support': 'Support',
   '/public-portal/technician-portal': 'Technician Portal',
   '/public-portal/workshop': 'Workshop Management',
+  '/public-portal/story': 'Our Story',
+  '/public-portal/compare-plans': 'Compare Plans',
+  '/public-portal/getting-started': 'Getting Started',
+  '/public-portal/platform': 'Platform Architecture',
+  '/public-portal/supply-chain': 'Supply Chain',
   // UI reference pages render the component name, not the dotted path
   '/ui/activity-feed': 'ActivityFeed',
   '/ui/advanced-filters': 'AdvancedFilters',

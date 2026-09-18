@@ -41,7 +41,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 19 | 0 | 1 |
 | OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 16 |
-| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 34 | 0 | **0** |
+| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 39 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
 | OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 224 | 0 | **0** |
 
@@ -68,7 +68,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 | --- | --- | --- |
 | CAP-REPORTING | 0 | 11 |
 | CAP-PORTALS | 0 | 11 |
-| CAP-WEBSITE | 0 | 34 |
+| CAP-WEBSITE | 0 | 39 |
 | CAP-CUSTOMERAPP | 0 | 11 |
 | CAP-DESIGNSYSTEM | 0 | 224 |
 

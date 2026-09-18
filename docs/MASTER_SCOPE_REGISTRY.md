@@ -8,24 +8,24 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Metric | Count |
 |---|---|
-| capabilities | 428 |
-| product | 390 |
+| capabilities | 433 |
+| product | 395 |
 | reference only | 28 |
 | external dependency | 10 |
-| rendered | 428 |
+| rendered | 433 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 275 |
+| mock only | 280 |
 | data backed | 115 |
-| e2e covered | 428 |
-| content asserted | 428 |
+| e2e covered | 433 |
+| content asserted | 433 |
 | rendered without assertion | 0 |
 | has loading state | 157 |
 | has error state | 124 |
 | has empty state | 179 |
 | tablet verified | 4 |
-| arabic verified | 79 |
+| arabic verified | 81 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -37,7 +37,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | crud update | 25 |
 | crud delete | 24 |
 | unregistered designs | 0 |
-| orphan screen files | 10 |
+| orphan screen files | 1 |
 | production ready | 0 |
 
 ## By surface
@@ -52,7 +52,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | reference | 28 | 28 | 0 | 0 | 28 |
 | kiosk | 1 | 1 | 0 | 0 | 1 |
 | native | 2 | 2 | 0 | 0 | 2 |
-| public | 34 | 34 | 0 | 0 | 34 |
+| public | 39 | 39 | 0 | 0 | 39 |
 
 ## By domain
 
@@ -69,7 +69,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Shared UI & reference | 04 | G2 | `████████████████████` 100% | 28 | 28 |
 | HR & payroll | 14 | G8 | `████████████████████` 100% | 1 | 1 |
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
-| Public website | 17 | G11 | `████████████████████` 100% | 34 | 34 |
+| Public website | 17 | G11 | `████████████████████` 100% | 39 | 39 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
 | Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 202 | 202 |
 

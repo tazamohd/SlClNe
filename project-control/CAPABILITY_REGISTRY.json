@@ -48,8 +48,8 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 428,
-    "screensTotal": 428,
+    "screensMapped": 433,
+    "screensTotal": 433,
     "endpointsMapped": 385,
     "endpointsTotal": 385
   },
@@ -1185,7 +1185,7 @@
       "objectiveName": "Retain customers",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 34,
+      "screenCount": 39,
       "screens": [
         "D-PublicPortal.About",
         "D-PublicPortal.Accounting",
@@ -1194,6 +1194,8 @@
         "D-PublicPortal.Blog",
         "D-PublicPortal.BookDemo",
         "D-PublicPortal.Careers",
+        "D-PublicPortal.CompanyStory",
+        "D-PublicPortal.ComparePlans",
         "D-PublicPortal.Contact",
         "D-PublicPortal.CRM",
         "D-PublicPortal.CustomerPortal",
@@ -1201,6 +1203,7 @@
         "D-PublicPortal.FAQ",
         "D-PublicPortal.Features",
         "D-PublicPortal.Fleet",
+        "D-PublicPortal.GettingStarted",
         "D-PublicPortal.Industries",
         "D-PublicPortal.Insurance",
         "D-PublicPortal.Integrations",
@@ -1208,6 +1211,7 @@
         "D-PublicPortal.Loans",
         "D-PublicPortal.MiniERP",
         "D-PublicPortal.PartsAccessories",
+        "D-PublicPortal.Platform",
         "D-PublicPortal.Pricing",
         "D-PublicPortal.Products",
         "D-PublicPortal.RequestDemo",
@@ -1218,6 +1222,7 @@
         "D-PublicPortal.Solutions",
         "D-PublicPortal.SpareParts",
         "D-PublicPortal.SupplierPortal",
+        "D-PublicPortal.SupplyChain",
         "D-PublicPortal.Support",
         "D-PublicPortal.TechnicianPortal",
         "D-PublicPortal.Workshop"

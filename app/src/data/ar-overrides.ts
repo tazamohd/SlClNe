@@ -4865,4 +4865,192 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Purchase Orders In Transit": "أوامر شراء قيد الشحن",
   "Scheduled Appointments": "المواعيد المجدولة",
   "Total Leads": "إجمالي العملاء المحتملين",
+
+  // Public website page cascade (2026-09): five content pages ported from the
+  // "SALIS AUTO 2030" design study's unlinked six-page tour onto real routes
+  // in the light-first design system — Platform Architecture, Supply Chain,
+  // Compare Plans, Our Story, Getting Started — plus a few new cross-links
+  // added from About.tsx and Pricing.tsx. See PlatformArchitecture.tsx's
+  // docstring for the full context.
+  "Read the fuller story": "اقرأ القصة الكاملة",
+  "Compare what each plan carries, line by line": "قارن ما تحمله كل باقة، بندًا ببند",
+
+  // CompanyStory.tsx
+  "How SALIS AUTO came to be built, six things the team holds regardless of deadline, and notes from engineering, finance, design, compliance and policy.":
+    "كيف تم بناء ساليس أوتو، وست قواعد يلتزم بها الفريق بصرف النظر عن الموعد النهائي، وملاحظات من الهندسة والمالية والتصميم والامتثال والسياسات.",
+  "Leaving is a real feature, not a threat": "المغادرة ميزة حقيقية، لا تهديد",
+  "Our Story": "قصتنا",
+  "Our Story — SALIS AUTO": "قصتنا — ساليس أوتو",
+  "See the platform architecture": "استعرض بنية المنصة",
+  "See who we build for": "تعرّف على من نبنيه لأجلهم",
+  "Six pairs of duties are split and stay split: the technician who did the repair cannot pass its quality check, and nobody approves their own requisition.":
+    "ست أزواج من المهام مفصولة وتبقى مفصولة: الفني الذي نفّذ الإصلاح لا يمكنه اعتماد فحص جودته، ولا أحد يعتمد طلب الشراء الخاص به.",
+  "Structured export of your customers, vehicles, job cards, invoices and journals is part of how an enterprise implementation is scoped — set up on the way in, not improvised on the way out.":
+    "تصدير منظّم لعملائك ومركباتك وبطاقات العمل والفواتير والقيود جزء من كيفية تحديد نطاق تنفيذ خطة المؤسسات — يُعدّ عند البداية، لا يُرتجل عند المغادرة.",
+  "The constraint that shaped more of this interface than any other: a technician holding a part, in gloves, in the desert heat, who needs the next instruction in three words and cannot scroll.":
+    "القيد الذي شكّل هذه الواجهة أكثر من أي شيء آخر: فني يحمل قطعة غيار، بقفازين، في حرّ الصحراء، يحتاج التعليمة التالية في ثلاث كلمات ولا يمكنه التمرير.",
+  "The same shape as the product’s own release history, told from the company’s side: what each phase forced us to decide, and what it cost to decide it that way.":
+    "نفس شكل سجل إصدارات المنتج، لكن من جهة الشركة: ما الذي أجبرتنا كل مرحلة على قراره، وما الذي كلّفنا اتخاذ القرار على هذا النحو.",
+  "There is no third signal colour, and green and red are deliberately absent — severity is carried by weight, position and wording, which also makes the interface work for readers who are colour-blind.":
+    "لا يوجد لون إشارة ثالث، والأخضر والأحمر غائبان عمدًا — تُنقل الخطورة عبر الوزن والموضع والصياغة، وهو ما يجعل الواجهة تعمل أيضًا لمن يعانون من عمى الألوان.",
+  "This did not start as a moonshot. It started with an accountant re-typing the same invoice into a fourth system on a Thursday evening, and with a simple observation: the hard part of running a workshop is not the repair. It is that one number has to survive several people, several systems and a regulator without changing.":
+    "لم يبدأ هذا كمشروع طموح كبير. بدأ بمحاسب يعيد كتابة الفاتورة نفسها في نظام رابع مساء يوم خميس، وبملاحظة بسيطة: الجزء الصعب في إدارة الورشة ليس الإصلاح. إنه أن رقمًا واحدًا يجب أن يصمد أمام عدة أشخاص وعدة أنظمة وجهة تنظيمية دون أن يتغيّر.",
+  "UBL 2.1, TLV QR, a hash chain, a digital signature, Fatoora clearance. Compliance becomes a property of the invoice rather than a project in the last week of the quarter.":
+    "UBL 2.1، ورمز QR من نوع TLV، وسلسلة تجزئة، وتوقيع رقمي، وتخليص عبر فاتورة. يصبح الامتثال خاصية للفاتورة نفسها لا مشروعًا في آخر أسبوع من الربع.",
+  "Who is doing this, and why": "من يقوم بهذا، ولماذا",
+
+  // ComparePlans.tsx
+  "Compare Plans": "قارن الباقات",
+  "Compare Plans — SALIS AUTO": "قارن الباقات — ساليس أوتو",
+  "Enterprise includes API and custom-integration access. The contract exposed is the same one the product uses internally — the schemas, permission tables and business rules are one shared package rather than a second interface maintained beside the first.":
+    "تشمل باقة المؤسسات واجهة برمجة التطبيقات والوصول للتكاملات المخصصة. العقد المكشوف هو نفسه الذي يستخدمه المنتج داخليًا — المخططات وجداول الصلاحيات وقواعد العمل حزمة واحدة مشتركة لا واجهة ثانية تُصان إلى جانب الأولى.",
+  "Essential is one workshop finding its feet. Professional is a group of branches that has to add up as one business. Enterprise is for an operator who needs the API, negotiated terms, and dedicated implementation.":
+    "الأساسية لورشة واحدة تثبّت أقدامها. والاحترافية لمجموعة فروع يجب أن تتجمع كعمل واحد. والمؤسسات لمشغّل يحتاج واجهة برمجة التطبيقات وشروطًا تفاوضية وتنفيذًا مخصصًا.",
+  "Every invoice goes through the Phase 2 pipeline: UBL 2.1 XML, a TLV QR code, a hash chained to the invoice before it, a digital signature, and the Fatoora API — standard invoices cleared in real time, simplified invoices reported. VAT is computed on the server and never accepted from the browser, and records are retained for the period Saudi tax regulation requires.":
+    "تمر كل فاتورة عبر مسار المرحلة الثانية: XML بصيغة UBL 2.1، ورمز QR من نوع TLV، وتجزئة مرتبطة بالفاتورة السابقة لها، وتوقيع رقمي، وواجهة فاتورة. الفواتير القياسية تُخلَّص فورًا، والمبسّطة تُبلَّغ. تُحسب ضريبة القيمة المضافة على الخادم ولا تُقبل أبدًا من المتصفح، وتُحفظ السجلات للمدة التي تتطلبها الأنظمة الضريبية السعودية.",
+  "Every plan carries the whole product — the thirteen domains, the fourteen roles, Arabic and English, and ZATCA Phase 2 e-invoicing. What changes is scale and support. Figures live on the pricing page, so there is one place for them to be right.":
+    "كل باقة تحمل المنتج بأكمله — المجالات الثلاثة عشر، والأدوار الأربعة عشر، والعربية والإنجليزية، والفوترة الإلكترونية بالمرحلة الثانية من هيئة الزكاة والضريبة والجمارك. ما يتغيّر هو الحجم والدعم. الأرقام موجودة في صفحة التسعير، فهناك مكان واحد لتكون صحيحة فيه.",
+  "Everything in Essential": "كل ما في الأساسية",
+  "For growing workshops adding branches and needing tighter control": "للورش النامية التي تضيف فروعًا وتحتاج تحكمًا أدق",
+  "For multi-branch groups, fleets and organisations needing tailored terms": "لمجموعات الفروع المتعددة والأساطيل والمؤسسات التي تحتاج شروطًا مخصصة",
+  "For smaller workshops establishing their digital operation": "للورش الصغيرة التي تؤسس عملياتها الرقمية",
+  "Never rationed by tier, because a permission model or a compliance pipeline sold in pieces is a marketing surface rather than a boundary.":
+    "لا يُقسَّم أبدًا حسب الفئة، لأن نموذج صلاحيات أو مسار امتثال يُباع على أجزاء هو واجهة تسويقية لا حدّ فعلي.",
+  "No, and it never has been. Arabic and English are both first-class, right to left included — the same component set, two themes, two reading directions, on every plan.":
+    "لا، ولم تكن كذلك يومًا. العربية والإنجليزية كلتاهما من الدرجة الأولى، بما في ذلك الاتجاه من اليمين لليسار — مجموعة المكونات نفسها، وسمتان، واتجاها قراءة، في كل باقة.",
+  "No. The fourteen roles and the twenty-eight permission modules are identical on every plan. What scales with the plan is branches, users and support response — never the boundary.":
+    "لا. الأدوار الأربعة عشر ووحدات الصلاحيات الثمانية والعشرون متطابقة في كل باقة. ما يتوسع مع الباقة هو الفروع والمستخدمون واستجابة الدعم — لا الحدود أبدًا.",
+  "Reminders fire off the vehicle’s own service history, so the returning customer stops being a function of who remembered to call.":
+    "تنطلق التذكيرات من سجل صيانة المركبة نفسه، فيتوقف عودة العميل عن كونه رهينًا بمن تذكّر الاتصال.",
+  "Signed from the customer’s phone, in the language they read, before the car reaches the gate.": "تُوقَّع من هاتف العميل، باللغة التي يقرأها، قبل أن تصل السيارة إلى البوابة.",
+  "Standard invoicing, ZATCA Phase 2": "فوترة قياسية، المرحلة الثانية لهيئة الزكاة والضريبة والجمارك",
+  "Structured data export is available as part of enterprise implementation and offboarding — talk to sales about the format and scope your organisation needs. Your operational history is not held back as a negotiating tactic.":
+    "تصدير البيانات المنظّم متاح كجزء من تنفيذ باقة المؤسسات وإنهاء الاشتراك — تحدث مع المبيعات عن الصيغة والنطاق اللذين تحتاجهما مؤسستك. سجل عملياتك ليس أداة ضغط تفاوضية.",
+  "The argument was never that this is cheap. It is that things a workshop already pays for — in hours, in write-offs, in fines — stop existing.":
+    "لم تكن الحجة يومًا أن هذا رخيص. بل إن أشياء تدفع الورشة ثمنها أصلًا — بالساعات، وبالشطب، وبالغرامات — تتوقف عن الوجود.",
+  "The invoice is written once and the journal is posted from it. Nobody re-keys anything into a spreadsheet at day’s end, so nobody reconciles a difference at month’s end.":
+    "تُكتب الفاتورة مرة واحدة ويُرحَّل القيد منها. لا أحد يعيد الطباعة في جدول بيانات في نهاية اليوم، فلا أحد يسوّي فرقًا في نهاية الشهر.",
+  "What each SALIS AUTO plan carries, what every plan carries regardless of tier, and what a workshop stops paying for once it switches.":
+    "ما تحمله كل باقة من باقات ساليس أوتو، وما تحمله كل باقة بصرف النظر عن الفئة، وما تتوقف الورشة عن دفع ثمنه بمجرد التحول.",
+  "What happens to our data if we want to leave?": "ماذا يحدث لبياناتنا إن أردنا المغادرة؟",
+  "What it costs": "ما الذي يكلفه",
+  "Yes. Every row carries its organisation and its branch, and PostgreSQL row-level security decides who may read it, with stock transfer between branches and one set of books over all of them. How many branches a plan supports scales with the plan — see pricing or talk to sales for exact limits.":
+    "نعم. كل سطر يحمل منظمته وفرعه، وأمان مستوى الصفوف في PostgreSQL هو من يقرر من يجوز له قراءته، مع تحويل المخزون بين الفروع ودفاتر موحدة فوقها جميعًا. عدد الفروع التي تدعمها الباقة يتوسع مع الباقة — راجع التسعير أو تحدث مع المبيعات لمعرفة الحدود الدقيقة.",
+  "ZATCA correctness is a property of the invoice, not a project in the last week of the quarter — and getting it wrong carries a real regulatory penalty, not just a warning letter.":
+    "صحة الامتثال لهيئة الزكاة والضريبة والجمارك خاصية للفاتورة نفسها، لا مشروع في آخر أسبوع من الربع — والخطأ فيه يحمل عقوبة تنظيمية حقيقية، لا مجرد خطاب تحذير.",
+
+  // GettingStarted.tsx
+  "Getting Started": "البدء",
+  "Getting Started — SALIS AUTO": "البدء — ساليس أوتو",
+  "Getting-started channels": "قنوات البدء",
+  "How a SALIS AUTO onboarding actually runs, from the first call to a pilot branch running in parallel — with a person at the end of it.":
+    "كيف يسير تأهيل ساليس أوتو فعليًا، من المكالمة الأولى إلى فرع تجريبي يعمل بالتوازي — مع شخص في نهاية الخط.",
+  "Not ready for a demo yet? Send the question — about ZATCA, about migrating off what you run now, about anything on this site — and a person answers it.":
+    "لست جاهزًا للعرض التوضيحي بعد؟ أرسل سؤالك — عن الفوترة الإلكترونية، أو الانتقال مما تستخدمه الآن، أو أي شيء في هذا الموقع — وسيجيب عليه شخص.",
+  "On your own workshop’s numbers — bays, job mix, parts — in Arabic or English, with the six stages mapped onto how your floor actually runs.":
+    "على أرقام ورشتك نفسها — الأرصفة، ومزيج الأعمال، وقطع الغيار — بالعربية أو الإنجليزية، مع رسم المراحل الست على الطريقة التي تعمل بها ورشتك فعليًا.",
+  "Say something": "قل شيئًا",
+  "The handshake": "المصافحة",
+  "Where to find a human.": "أين تجد إنسانًا.",
+
+  // PlatformArchitecture.tsx
+  "14 roles × 28 modules — the matrix": "١٤ دورًا × ٢٨ وحدة — المصفوفة",
+  "A role is not a menu; it is a boundary. Twenty-eight permission modules, checked on every screen and every write — and each role carries an approval ceiling in riyals, above which it may not commit the workshop to anything. The refusal is logged as carefully as the change.":
+    "الدور ليس قائمة اختيار؛ إنه حدّ. ثمانية وعشرون وحدة صلاحيات تُفحص في كل شاشة وكل عملية كتابة — ولكل دور سقف اعتماد بالريال لا يجوز أن يلزم الورشة بأي شيء فوقه. يُسجَّل الرفض بالدقة نفسها التي يُسجَّل بها التغيير.",
+  "AR / AP, bank reconciliation and budgets": "الذمم الدائنة والمدينة، والتسوية البنكية، والموازنات",
+  "Assistant — natural language": "المساعد — لغة طبيعية",
+  "Audit log — every change, every refusal": "سجل التدقيق — كل تغيير، كل رفض",
+  "Call logging — one thread per vehicle": "تسجيل المكالمات — خيط واحد لكل مركبة",
+  "Campaigns · SMS, email, WhatsApp — one voice": "الحملات · رسائل نصية، بريد إلكتروني، واتساب — صوت واحد",
+  "Chart of accounts, journals — debits equal credits": "دليل الحسابات والقيود — المدين يساوي الدائن",
+  "Compare plans": "قارن الباقات",
+  "Customer app — sign the estimate": "تطبيق العميل — توقيع عرض السعر",
+  "Customers and fleets — with loyalty": "العملاء والأساطيل — مع الولاء",
+  "Design note — the problem the platform was built to end: one number, entered once, carried everywhere.":
+    "ملاحظة تصميم — المشكلة التي بُنيت المنصة لإنهائها: رقم واحد، يُدخل مرة، ويُحمل في كل مكان.",
+  "Estimates — signed before work starts": "عروض الأسعار — تُوقَّع قبل بدء العمل",
+  "External": "خارجي",
+  "Follow-ups — never dropped": "المتابعات — لا تُهمل أبدًا",
+  "Holds the people records and prepares the payroll run.": "يحتفظ بسجلات الموظفين ويُعِدّ دورة الرواتب.",
+  "Holds the platform itself, and is audited hardest of anyone on it.": "يمسك المنصة نفسها، ويُدقَّق عليه أشد من أي أحد آخر.",
+  "Issues parts to the job card and answers for every unit.": "يصرف القطع لبطاقة العمل ويكون مسؤولًا عن كل وحدة.",
+  "Issues the invoice after delivery, posts the journal.": "يصدر الفاتورة بعد التسليم، ويرحّل القيد.",
+  "Its own orders and its own catalogue. No customer data, ever.": "طلباته الخاصة وكتالوجه الخاص فقط. لا بيانات عملاء أبدًا.",
+  "Job cards — the whole visit": "بطاقات العمل — الزيارة كاملة",
+  "KPIs and alerts — pushed, not hunted": "مؤشرات الأداء والتنبيهات — تُدفع، لا تُطارَد",
+  "Leads and opportunities — one chain": "العملاء المحتملون والفرص — سلسلة واحدة",
+  "Leave, certifications and training": "الإجازات والشهادات والتدريب",
+  "Multi-point inspection — severity and photos": "الفحص متعدد النقاط — الخطورة والصور",
+  "Nothing here is a layer stacked on another. Every domain shares one contract package — the same Zod schemas, permission tables and business rules imported by the server and the browser — so an invoice can post its own journal entry and a part can leave stock costed, with nobody carrying the number between systems by hand.":
+    "لا شيء هنا طبقة فوق أخرى. كل مجال يشارك حزمة عقد واحدة — مخططات Zod نفسها، وجداول الصلاحيات، وقواعد العمل التي يستوردها الخادم والمتصفح — بحيث تستطيع الفاتورة ترحيل قيدها الخاص وتغادر القطعة المخزون مكلّفة، دون أن يحمل أحد الرقم يدويًا بين الأنظمة.",
+  "One branch": "فرع واحد",
+  "One life — the vehicle’s. Signs the estimate, keeps the invoice.": "حياة واحدة — حياة المركبة. يوقّع عرض السعر، ويحتفظ بالفاتورة.",
+  "One thread per vehicle, across every branch. Approves nothing.": "خيط واحد لكل مركبة، عبر كل فرع. لا يعتمد شيئًا.",
+  "Owns one floor and everything on it, within their approval ceiling.": "يملك أرضية واحدة وكل ما عليها، ضمن سقف اعتماده.",
+  "Password policy, argon2id — hashed": "سياسة كلمات المرور، argon2id — مجزّأة",
+  "Payments · Mada, card, cash and transfer": "المدفوعات · مدى، بطاقة، نقدًا وتحويلًا",
+  "Payroll preparation — prepared, not paid": "إعداد الرواتب — يُعَدّ، ولا يُصرف",
+  "Platform Architecture": "بنية المنصة",
+  "Platform Architecture — SALIS AUTO": "بنية المنصة — ساليس أوتو",
+  "Purchase orders — with approval ceilings": "أوامر الشراء — بسقوف اعتماد",
+  "Queues and appointments — across branches": "الطوابير والمواعيد — عبر الفروع",
+  "Raises and places orders, and may not receive what they ordered.": "يرفع الطلبات ويضعها، ولا يجوز له استلام ما طلبه.",
+  "Repair knowledge base — institutional memory": "قاعدة معرفة الإصلاح — ذاكرة مؤسسية",
+  "Report builder — ask for a column": "منشئ التقارير — اطلب عمودًا",
+  "Role dashboards — per standing": "لوحات الأدوار — حسب المكانة",
+  "SMS one-time codes — and lockout": "رموز لمرة واحدة عبر الرسائل النصية — والإغلاق",
+  "See the supply chain": "استعرض سلسلة الإمداد",
+  "Sees the money and the shape of every branch at once. Approves without ceiling.": "يرى المال وشكل كل فرع في آن واحد. يعتمد دون سقف.",
+  "Sees the next hour, in Arabic, with one hand free. Cost and margin are hidden.": "يرى الساعة القادمة، بالعربية، بيد واحدة حرة. التكلفة والهامش مخفيان.",
+  "Self": "الذات",
+  "Separated duty pairs": "أزواج المهام المفصولة",
+  "Service history — the whole life": "سجل الصيانة — الحياة كاملة",
+  "Service reminders — by mileage or date": "تذكيرات الصيانة — بالمسافة أو التاريخ",
+  "Sessions, refresh, MFA — short-lived": "الجلسات، والتجديد، والتحقق متعدد العوامل — قصيرة الأجل",
+  "Shifts and timesheets — from the floor": "المناوبات وسجلات الدوام — من أرضية الورشة",
+  "Smart scheduling — reads the board": "الجدولة الذكية — تقرأ اللوحة",
+  "Stands where the customer stands. Prices the estimate.": "يقف حيث يقف العميل. يسعّر عرض السعر.",
+  "Stock, reorder points — derived, not typed": "المخزون ونقاط إعادة الطلب — مشتقة، لا مُدخلة يدويًا",
+  "Supplier catalogues and price lists": "كتالوجات الموردين وقوائم الأسعار",
+  "Supplier portal — its own orders only": "بوابة المورد — طلباته فقط",
+  "Technician portal — one hand, in Arabic": "بوابة الفني — بيد واحدة، بالعربية",
+  "Tenants, branches, users — territory": "المستأجرون والفروع والمستخدمون — النطاق",
+  "The gate: opens the card, takes the payment. Approves nothing.": "البوابة: يفتح البطاقة، ويستلم الدفعة. لا يعتمد شيئًا.",
+  "The second signature, and never the first. Cannot pass their own repair.": "التوقيع الثاني، وليس الأول أبدًا. لا يمكنه اعتماد إصلاحه الخاص.",
+  "Thirteen functional domains on one tenancy, one shared contract package, and a permission model that is a boundary rather than a menu.":
+    "ثلاثة عشر مجالًا وظيفيًا على مستأجر واحد، وحزمة عقد مشتركة واحدة، ونموذج صلاحيات هو حدّ لا قائمة اختيار.",
+  "Thirteen functional domains, fourteen roles and the four decisions that hold the SALIS AUTO platform together — plus the six pairs of duties the server keeps split.":
+    "ثلاثة عشر مجالًا وظيفيًا، وأربعة عشر دورًا، والقرارات الأربعة التي تُماسك منصة ساليس أوتو معًا — إضافة إلى أزواج المهام الستة التي يبقيها الخادم مفصولة.",
+  "Trial balance, P&L, cash flow — continuous": "ميزان المراجعة، والأرباح والخسائر، والتدفق النقدي — مستمر",
+  "VAT 15% — server-side": "ضريبة القيمة المضافة ١٥٪ — من جهة الخادم",
+  "Vehicles, VIN decoding — identity": "المركبات، وفك رقم الهيكل — الهوية",
+  "What it is made of": "مما يتكون",
+  "ZATCA Phase 2 e-invoicing — cleared, not filed": "الفوترة الإلكترونية بالمرحلة الثانية — مُخلَّصة، لا مجرد مودعة",
+
+  // SupplyChain.tsx
+  "A customer who arrives before the desk is free starts their own check-in: plate, complaint, photographs.":
+    "عميل يصل قبل أن يتفرغ مكتب الاستقبال يبدأ استلامه بنفسه: اللوحة، والشكوى، والصور.",
+  "A sample tenant with several locations. Every branch reads its own rows and only its own, and the group’s books add up across all of them. Sample data — no tenant data reaches this page.":
+    "مستأجر تجريبي بعدة مواقع. كل فرع يقرأ صفوفه الخاصة فقط، ودفاتر المجموعة تتجمع عبرها جميعًا. بيانات تجريبية — لا تصل أي بيانات مستأجر فعلي إلى هذه الصفحة.",
+  "Aftermarket": "السوق البديل",
+  "How a part reaches a job card in SALIS AUTO — requisition to issue, the six ways into the product, and how far one tenancy reaches across branches.":
+    "كيف تصل قطعة الغيار إلى بطاقة عمل في ساليس أوتو — من طلب الشراء إلى الصرف، والطرق الست للدخول إلى المنتج، ومدى امتداد مستأجر واحد عبر الفروع.",
+  "Not everyone who touches a job card should be given the whole application. Each door carries its own permissions and sees exactly its own slice: a supplier never sees a customer, a technician never sees a margin, a customer sees one vehicle — theirs.":
+    "ليس كل من يلمس بطاقة عمل ينبغي أن يُمنح التطبيق بأكمله. كل باب يحمل صلاحياته الخاصة ويرى شريحته فقط بدقة: المورد لا يرى عميلًا أبدًا، والفني لا يرى هامشًا أبدًا، والعميل يرى مركبة واحدة — مركبته.",
+  "OEM catalogue": "كتالوج الشركة المصنعة الأصلية",
+  "Open this portal": "افتح هذه البوابة",
+  "Orders in, confirmations out. A supplier sees the purchase orders placed with it and the catalogue it published — nothing about the workshop beside it.":
+    "طلبات تدخل، وتأكيدات تخرج. يرى المورد أوامر الشراء الموجهة إليه والكتالوج الذي نشره — لا شيء آخر عن الورشة بجانبه.",
+  "Parts are where a workshop quietly loses its margin. Here stock is the sum of its movements rather than a number somebody edits, and the person who raises a requisition is never the person who approves it.":
+    "قطع الغيار هي حيث تخسر الورشة هامشها بهدوء. هنا المخزون مجموع حركاته لا رقمًا يعدّله أحد، والشخص الذي يرفع طلب الشراء ليس أبدًا الشخص الذي يعتمده.",
+  "Short, unambiguous instructions on a phone, in Arabic, operable with one hand — because the other one is holding the part.":
+    "تعليمات قصيرة لا لبس فيها على الهاتف، بالعربية، تُشغَّل بيد واحدة — لأن اليد الأخرى تحمل القطعة.",
+  "Steps, requisition to issue": "خطوات، من طلب الشراء إلى الصرف",
+  "Stock, not typed": "المخزون، غير مُدخل يدويًا",
+  "Supply Chain": "سلسلة الإمداد",
+  "Supply Chain — SALIS AUTO": "سلسلة الإمداد — ساليس أوتو",
+  "Tyres & batteries": "الإطارات والبطاريات",
+  "View pricing": "عرض التسعير",
+  "Ways into the product": "طرق الدخول إلى المنتج",
+  "Where the metal is": "حيث المعدن",
 }

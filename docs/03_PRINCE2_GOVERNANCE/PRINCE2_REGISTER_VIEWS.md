@@ -81,25 +81,26 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 | F-028 | RESOLVED | No financial aggregate endpoints, and four report-source collections are missing | Agent 12 refused to compute any cross-record money total in the browser (§A10: the server computes, the client displays) — and the server exposes none: no GET /invoices/summary, /accounting/tax/return |
 | F-029 | RESOLVED | Workshop approval and diagnostics surfaces exceed what the server exposes | Agent 08 built nine screens; several need server capabilities that do not exist: no unified GET /approvals (ApprovalInbox operates on estimates alone); estimates present() omits submittedBy and there  |
 | F-030 | RESOLVED | Seed appointments do not reconcile with the technician roster | app/src/data/generated/tables.ts: APPOINTMENTS[].tech names (Saeed Al-Zahrani, Majed Al-Otaibi, Yousef Al-Ghamdi) are not in TECHS (Yousef Al-Otaibi, Bandar Al-Qahtani, Faisal Al-Harbi, Nasser Al-Dosa |
-| F-031 | LOW | Four Tier C public pages have no registry route to build against | Agent 17 built Privacy and Terms, but Pricing, Request/Book Demo, Careers and Cookie Policy do not exist in the generated screen registry, and AppRoutes only renders registry entries. A website agent  |
+| F-031 | RESOLVED | Four Tier C public pages have no registry route to build against | Agent 17 built Privacy and Terms, but Pricing, Request/Book Demo, Careers and Cookie Policy do not exist in the generated screen registry, and AppRoutes only renders registry entries. A website agent  |
 | F-032 | LOW | external_dependency_unavailable is not in the client RepositoryErrorCode union | The server sends error code external_dependency_unavailable with status 503 for an unconfigured integration (OBD bridge, SMS). repository.ts's RepositoryErrorCode union does not list it, so agent 08's |
 | F-033 | LOW | Feature-map screens with no SCREEN_MODULE mapping open for any role, then 403 on their data | Insurance-Claims (and other feature-map screens absent from the design bundle's SCREEN_MODULE) has no module mapping, so canScreen returns true and any authenticated role opens the workspace — but its |
 | F-034 | LOW | No real insurance or loans module in the RBAC matrix | Insurance/loans collections and the claim lifecycle are gated on `accounting` (the matrix has no insurance/loans module). accounting conflates ledger authority with claim adjudication. A dedicated ins |
 | F-035 | RESOLVED | InsuranceReports/LoanReports still render the stale gap though their data now exists | GapReports.tsx (agent 12's boundary) still shows 'no data source yet' for insuranceClaims/loanContracts, but those collections and the productReports aggregates now exist. The two reports should gradu |
 | F-036 | RESOLVED | Three generated files (nav.ts, rbac.ts, badges.ts) were hand-patched past what the generator now produces, so a routine `npm run port-design` silently reverts real fixes | Running port-design-data.mjs to fix F-008/F-010 also (a) dropped ~9 real AI/automation and voice nav entries from NAV that exist as routed screens in app/src but were never added to handoff/SCREEN_MAP |
+| F-037 | RESOLVED | Ten public-website screen files were unreachable from any route (BLK-010) | The "SALIS AUTO 2030" design study shipped a six-page tour (Arrival, System, Grid, Access, Origin, Channel) plus its own nav shell (PageNav, CommandDeck) — complete, working React, never linked into t |
 
 ## Quality register (PRINCE2 view)
 
 | Quality criterion | Method | Result |
 | --- | --- | --- |
-| Every capability renders | Registry build + e2e | 428 of 428 |
-| Content asserted, not just routed | e2e content assertions | 428 of 428 |
+| Every capability renders | Registry build + e2e | 433 of 433 |
+| Content asserted, not just routed | e2e content assertions | 433 of 433 |
 | Golden paths pass | Playwright | 23 of 23 |
 | Permission matrix enforced server-side | `server/tests/authz-matrix.test.ts` | suite present |
 | Frontend and server matrices identical | `server/tests/rbac-parity.test.ts` | suite present |
 | Tenant isolation | `server/tests/isolation.test.ts` + RLS | suite present |
 | Segregation of duties enforced | `server/tests/authz-sod.test.ts` | suite present |
 | Accessibility contrast ratchet | `app/e2e/a11y.spec.ts` + `BASELINE.json` | ratcheted |
-| Arabic and RTL | Registry verification | 79 verified, 0 hazards |
+| Arabic and RTL | Registry verification | 81 verified, 0 hazards |
 
 **Present is not passing.** The rows that say "suite present" mean the suite exists and was catalogued by reading it. Whether it passes is a dated statement made only after a run — see the test catalogue.

@@ -26,11 +26,11 @@ This report exists to be read before anything else in the set is relied on. It i
 | Endpoints with a linked test | 108 of 385 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 19 |
-| Screens registered and mapped to a capability | 428 of 428 |
-| Screens wired to the live API | 115 of 428 |
-| Test suites catalogued | 191 containing 2219 cases |
+| Screens registered and mapped to a capability | 433 of 433 |
+| Screens wired to the live API | 115 of 433 |
+| Test suites catalogued | 191 containing 2221 cases |
 | Capabilities with no linked test suite | 5 |
-| Canonical registers at least 3 days behind the newest | 4 of 9 |
+| Canonical registers at least 3 days behind the newest | 3 of 9 |
 | Direct contradictions between registers | 0 |
 
 ## What is not verified
@@ -83,9 +83,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 275 screens read design fixtures rather than the API
+### 5. 280 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 275 of 428 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 280 of 433 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -120,13 +120,12 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-18; 4 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-18; 3 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
 | `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
 | `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 37 |
 | `project-control/BASELINE.json` | 2026-09-03 | 15 |
 
 _No cross-register contradictions detected._
@@ -195,5 +194,5 @@ _None — every required document is present._
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 277 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 275 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 280 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.
