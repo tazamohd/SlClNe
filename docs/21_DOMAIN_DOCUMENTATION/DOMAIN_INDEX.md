@@ -35,4 +35,4 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 18 | 24 | 0 | 0 of 18 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 34 | 0 | 0 | 0 of 34 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 32 of 233 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 33 of 233 |

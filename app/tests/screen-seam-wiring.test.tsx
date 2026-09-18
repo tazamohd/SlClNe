@@ -4,6 +4,7 @@ import { renderScreen } from './helpers/render'
 import { setViewportWidth } from '@/test-setup'
 import { OEMIntegrations } from '@/screens/admin/OEMIntegrations'
 import { SystemIntegrations } from '@/screens/admin/SystemIntegrations'
+import { AccountingIntegration } from '@/screens/accounting/AccountingIntegration'
 import { ExpensesManagement } from '@/screens/accounting/ExpensesManagement'
 import { EmailMarketingCampaigns } from '@/screens/marketing/EmailMarketingCampaigns'
 import { Reports } from '@/screens/accounting/ReportSuite'
@@ -64,6 +65,29 @@ describe('System Integrations reads integrations', () => {
 
     expect(screen.queryByText('v3.1')).not.toBeInTheDocument()
     expect(screen.queryByText(/5 min ago/)).not.toBeInTheDocument()
+    expect(screen.getByText(/GET \/diagnostics\/integrations/)).toBeInTheDocument()
+  })
+})
+
+describe('Accounting Integrations reads integrations, filtered to ERP', () => {
+  it('renders the real ERP connectors, none of them fabricated as Connected', async () => {
+    renderScreen(AccountingIntegration, { role: 'owner' })
+
+    expect(await screen.findByText('QuickBooks')).toBeInTheDocument()
+    expect(screen.getByText('SAP Business One')).toBeInTheDocument()
+    // No live adapter exists, so nothing here is the fabricated "Connected".
+    expect(screen.queryByText('Connected')).not.toBeInTheDocument()
+    // Rows outside ERP (e.g. ZATCA under Government) stay on their own screen.
+    expect(screen.queryByText('ZATCA E-Invoicing')).not.toBeInTheDocument()
+  })
+
+  it('GAP: shows no last-sync clock or record count, and names the read', async () => {
+    renderScreen(AccountingIntegration, { role: 'owner' })
+    await screen.findByText('QuickBooks')
+
+    // The old array's invented figures.
+    expect(screen.queryByText('2026-08-18 09:30')).not.toBeInTheDocument()
+    expect(screen.queryByText('12,450')).not.toBeInTheDocument()
     expect(screen.getByText(/GET \/diagnostics\/integrations/)).toBeInTheDocument()
   })
 })

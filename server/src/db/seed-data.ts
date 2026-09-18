@@ -1238,6 +1238,33 @@ export const SYS_INTEGRATIONS = [
     "ar_detail": "مزامنة الدفاتر للمنشآت الصغيرة"
   },
   {
+    "name": "Xero",
+    "ar": "زيرو",
+    "cat": "ERP",
+    "icon": "BookOpen",
+    "status": "available",
+    "detail": "Cloud invoicing & reconciliation",
+    "ar_detail": "الفوترة السحابية والتسوية"
+  },
+  {
+    "name": "Oracle Financials",
+    "ar": "أوراكل للشؤون المالية",
+    "cat": "ERP",
+    "icon": "HardDrive",
+    "status": "available",
+    "detail": "GL consolidation & multi-entity close",
+    "ar_detail": "دمج دفتر الأستاذ وإقفال متعدد الكيانات"
+  },
+  {
+    "name": "Sage",
+    "ar": "سيج",
+    "cat": "ERP",
+    "icon": "Briefcase",
+    "status": "available",
+    "detail": "Payroll & fixed-asset ledgers",
+    "ar_detail": "دفاتر الرواتب والأصول الثابتة"
+  },
+  {
     "name": "WhatsApp Business",
     "ar": "واتساب للأعمال",
     "cat": "Messaging",

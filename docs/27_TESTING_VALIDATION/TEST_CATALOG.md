@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-200 spec files containing 2268 test cases.
+200 spec files containing 2270 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 125 | 1158 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 125 | 1160 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 38 | 484 |
-| app | 119 | 1407 |
+| app | 119 | 1409 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -183,7 +183,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/public-shell.test.tsx` | UNIT_OR_API | 9 | — |
 | `app/tests/rbac-matrix.test.ts` | SECURITY | 62 | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, customer, test |
 | `app/tests/route-smoke.test.tsx` | UNIT_OR_API | 1 | owner |
-| `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 11 | owner, accountant |
+| `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 13 | owner, accountant |
 | `app/tests/service-worker-registration.test.ts` | UNIT_OR_API | 6 | — |
 | `app/tests/service-worker.test.ts` | UNIT_OR_API | 17 | — |
 | `app/tests/test-account.test.tsx` | UNIT_OR_API | 17 | test, superadmin, owner, supplier |

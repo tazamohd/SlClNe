@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 200,
-    "cases": 2268,
+    "cases": 2270,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1158,
+      "UNIT_OR_API": 1160,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -4221,6 +4221,7 @@
       "describes": [
         "OEM Integrations reads oemTools",
         "System Integrations reads integrations",
+        "Accounting Integrations reads integrations, filtered to ERP",
         "Expenses Management reads expenses",
         "Email Marketing Campaigns reads campaigns",
         "the reports hub reads savedReports"
@@ -4230,6 +4231,8 @@
         "GAP: drops the sync clock and record count it cannot source, and names the read",
         "renders the connectors and groups them by the category the data carries",
         "GAP: shows no adapter version or last-activity clock, and names the read",
+        "renders the real ERP connectors, none of them fabricated as Connected",
+        "GAP: shows no last-sync clock or record count, and names the read",
         "shows each expense with the amount the server formatted",
         "GAP: invents no budget, and names the aggregate that would supply one",
         "counts records rather than summing money",
@@ -4238,7 +4241,7 @@
         "lists what the server holds, and says so honestly when it holds none",
         "keeps the report links, which are navigation rather than data"
       ],
-      "caseCount": 11,
+      "caseCount": 13,
       "touchesPaths": [
         "/sales-reports"
       ],
