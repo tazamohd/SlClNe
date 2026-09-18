@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 189,
-    "cases": 2226,
+    "suites": 191,
+    "cases": 2240,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1086,
+      "UNIT_OR_API": 1100,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2380,6 +2380,26 @@
       "touchesRoles": [
         "owner",
         "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-declined-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "DeclinedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the honest empty state instead of a fabricated row",
+        "states the revenue summary is unavailable without a live API, not a fabricated number",
+        "shows the open-follow-ups count as zero rather than omitting it",
+        "offers the status filter chips"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
       ]
     },
     {
@@ -5459,6 +5479,42 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS",
+      "file": "server/tests/declined-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "declining an estimate line",
+        "rejecting a whole estimate fans out one declined job per line",
+        "the follow-up lifecycle",
+        "tenant isolation",
+        "GET /reports/declined-jobs"
+      ],
+      "cases": [
+        "creates a tracked declined job carrying the line value and reason",
+        "refuses a second decline of the same line while the first is still active",
+        "advisor — who lacks estimates:a — cannot decline a line",
+        "refuses a line id that does not belong to the estimate",
+        "declines every line, skipping one already tracked",
+        "moves through PATCH and derives resolvedAt from status",
+        "cannot be created directly through the generic collection route",
+        "does not serve another organization's declined job",
+        "a customer-scoped principal sees none of it, even with estimates:v",
+        "sums lost and recovered revenue server-side"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/estimates",
+        "/declined-jobs",
+        "/reports/declined-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
       "file": "server/tests/document-chain.test.ts",
       "kind": "UNIT_OR_API",
@@ -6223,7 +6279,9 @@
         "carries an addressable id and version on every object row"
       ],
       "caseCount": 3,
-      "touchesPaths": [],
+      "touchesPaths": [
+        "/reject"
+      ],
       "touchesRoles": [
         "owner"
       ]

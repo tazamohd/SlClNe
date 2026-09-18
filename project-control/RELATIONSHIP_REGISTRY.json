@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -8,10 +8,10 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 170,
-    "declared": 62,
-    "inferred": 108,
-    "orphanReferenceColumns": 12
+    "relationships": 177,
+    "declared": 63,
+    "inferred": 114,
+    "orphanReferenceColumns": 13
   },
   "orphanReferences": [
     {
@@ -21,6 +21,10 @@
     {
       "table": "estimates",
       "column": "customer_signature_challenge_id"
+    },
+    {
+      "table": "declined_jobs",
+      "column": "advisor_id"
     },
     {
       "table": "inventory_movements",
@@ -617,6 +621,111 @@
       "tenantScope": "org_id",
       "branchScope": "branch_id",
       "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-ORG-ID",
+      "from": "declined_jobs",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-BRANCH-ID",
+      "from": "declined_jobs",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-ESTIMATE-ID",
+      "from": "declined_jobs",
+      "fromColumn": "estimate_id",
+      "to": "estimates",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-ESTIMATE-LINE-ID",
+      "from": "declined_jobs",
+      "fromColumn": "estimate_line_id",
+      "to": "estimate_lines",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-JOB-CARD-ID",
+      "from": "declined_jobs",
+      "fromColumn": "job_card_id",
+      "to": "job_cards",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-CUSTOMER-ID",
+      "from": "declined_jobs",
+      "fromColumn": "customer_id",
+      "to": "customers",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-DECLINED-JOBS-VEHICLE-ID",
+      "from": "declined_jobs",
+      "fromColumn": "vehicle_id",
+      "to": "vehicles",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
       "evidence": "server/src/db/schema.ts"
     },
     {

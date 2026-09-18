@@ -82,6 +82,11 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   diagParts: T.DIAG_PARTS,
   diagLabour: T.DIAG_LABOUR,
   diagCopies: T.DIAG_COPIES,
+  /** No design fixture — declined job tracking is new (Sprint 1, P0). Nothing
+   *  is seeded into it; every row is born from `POST /estimates/:id/lines/
+   *  :lineId/decline` or a whole-estimate `/reject`, so the collection serves
+   *  an empty set until a test or a user declines something. */
+  declinedJobs: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and
@@ -143,6 +148,12 @@ describe('the seeded API serves exactly what the fixtures serve', () => {
     const token = await harness.token('owner')
     for (const def of COLLECTIONS) {
       if (def.key === 'services') continue
+      /* declinedJobs starts genuinely empty: unlike every other no-fixture
+       * collection, it gets no seeded coherence rows, because a coherent one
+       * would need a real estimate line to decline and the seed carries no
+       * estimateLines fixture to decline from (Sprint 1, P0). It is exercised
+       * end to end, with a row present, in tests/declined-jobs.test.ts. */
+      if (def.key === 'declinedJobs') continue
       const response = await harness.app.inject({
         method: 'GET',
         url: `/api/v1/${def.path}?pageSize=1`,

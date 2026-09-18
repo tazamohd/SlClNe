@@ -4785,4 +4785,43 @@ export const AR_OVERRIDES: Record<string, string> = {
   "This estimate's details could not be loaded, so no total is shown here. The subtotal, VAT and total due are computed by the estimate the server issues — never in the browser.": "تعذّر تحميل تفاصيل عرض السعر هذا، لذا لا يُعرض إجمالي هنا. المجموع الفرعي وضريبة القيمة المضافة والإجمالي المستحق تُحسب بواسطة عرض السعر الذي يصدره الخادم — لا في المتصفح أبدًا.",
   "Valid until": "ساري حتى",
   "Preview Customer Approval": "معاينة اعتماد العميل",
+
+  // Declined Job Tracking & Follow-Up (Sprint 1, P0) — DeclinedJobs.tsx
+  "Declined Jobs": "المهام المرفوضة",
+  "Work customers said no to — tracked for follow-up, not forgotten": "الأعمال التي رفضها العملاء — تُتابع ولا تُنسى",
+  "Loading declined jobs...": "جارٍ تحميل المهام المرفوضة...",
+  "Open follow-ups": "متابعات مفتوحة",
+  "Lost revenue": "إيرادات مفقودة",
+  "Recovered revenue": "إيرادات مستعادة",
+  "This build has no API configured, so the revenue summary is unavailable. Set VITE_API_URL to see it.": "لا يوجد API مُهيّأ في هذا الإصدار، لذا ملخص الإيرادات غير متاح. اضبط VITE_API_URL لرؤيته.",
+  "Nothing here": "لا يوجد شيء هنا",
+  "Declined estimate lines show up here automatically, with nothing to add by hand.": "تظهر بنود عروض الأسعار المرفوضة هنا تلقائيًا، دون أي إضافة يدوية.",
+  "Follow-up status": "حالة المتابعة",
+  "Follow-up date": "تاريخ المتابعة",
+  "Follow-up updated": "تم تحديث المتابعة",
+  "Could not update": "تعذّر التحديث",
+  // EstimateDetail.tsx — per-line decline action
+  "Line declined": "تم رفض البند",
+  "Could not decline": "تعذّر الرفض",
+  // Reached through STATUS_LABEL/REASON_LABEL dynamic lookups, which
+  // check-i18n cannot follow (see ApprovalInbox's KIND_LABEL note) — checked
+  // by hand rather than by the gate. Keyed by the label *values* (what t()
+  // actually receives), not the enum keys.
+  // "Declined" is already covered by the generated dictionary (identical Arabic).
+  "Follow-up scheduled": "تمت جدولة المتابعة",
+  "Contacted": "تم التواصل",
+  "Reconsidering": "قيد إعادة النظر",
+  "Approved later": "اعتُمد لاحقًا",
+  "Permanently declined": "مرفوض نهائيًا",
+  "Expired": "منتهي الصلاحية",
+  "Timing": "التوقيت",
+  "Second opinion": "رأي ثانٍ",
+  "Not urgent": "غير عاجل",
+  "Trust": "الثقة",
+  // "Cost" and "Other" are already covered above (identical Arabic).
+  // job.safetySeverity is passed to t() as its raw value (no label map);
+  // "urgent" is already covered by the generated dictionary.
+  "monitor": "مراقبة",
+  "attention": "يحتاج انتباه",
+  "unsafe": "غير آمن",
 }

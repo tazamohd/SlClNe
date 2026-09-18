@@ -10,7 +10,7 @@
 
 # API — hr
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 48 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 48 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -30,7 +30,7 @@
 | PATCH | `/api/v1/leave-requests/:id` | hr:e | token | `leaveRequests` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/leave-requests/:id/approve` | hr:a | token | — | — | 1 | `server/src/routes/leave.ts` |
 | GET | `/api/v1/leave-requests/:id/history` | hr:v | token | — | — | — | `server/src/routes/history.ts` |
-| POST | `/api/v1/leave-requests/:id/reject` | hr:a | token | — | — | — | `server/src/routes/leave.ts` |
+| POST | `/api/v1/leave-requests/:id/reject` | hr:a | token | — | — | 1 | `server/src/routes/leave.ts` |
 | POST | `/api/v1/leave-requests/bulk-delete` | hr:d | token | `leaveRequests` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/leave-requests/bulk-update` | hr:e | token | `leaveRequests` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/leave-requests/export` | hr:x | token | `leaveRequests` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
