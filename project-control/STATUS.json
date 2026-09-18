@@ -27,7 +27,7 @@
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
     "crudRead": 116,
-    "crudUpdate": 26,
+    "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 10,

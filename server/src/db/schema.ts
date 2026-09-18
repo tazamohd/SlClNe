@@ -425,6 +425,33 @@ export const inspectionMedia = pgTable(
   }),
 )
 
+/** Customer sign-off at delivery (Sprint 2, P0). One row per job card — the
+ *  signature image lives on disk (`server/src/storage/media.ts`), `storageKey`
+ *  is the only pointer to it a row carries, and it is served only through
+ *  `GET /delivery-signoffs/:id/signature`. */
+export const deliverySignoffs = pgTable(
+  'delivery_signoffs',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the job card at creation time, not trusted from the
+     *  request — the person signing on the shared device is a customer, not
+     *  the staff principal making the call. */
+    signedByName: varchar('signed_by_name', { length: 200 }).notNull(),
+    agreedAt: timestamp('agreed_at', { withTimezone: true }).notNull(),
+    /** `customerNotified`/`keysReturned`/`documentsReady`/`invoiceAttached`/
+     *  `cleaned`/`qualityCheck` — filled in once the advisor has walked it. */
+    checklist: jsonb('checklist').notNull().default(sql`'{}'::jsonb`),
+    odometerOut: integer('odometer_out'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+  },
+  (t) => ({
+    byJob: index('delivery_signoffs_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
 export const invoices = pgTable(
   'invoices',
   {

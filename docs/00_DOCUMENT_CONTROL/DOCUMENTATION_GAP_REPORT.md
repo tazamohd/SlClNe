@@ -20,15 +20,15 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents generated from source | 120 |
 | Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 72 of 72 |
-| Relationships documented | 184 (65 FK-backed, 119 convention only) |
-| Endpoints documented | 407 of 407 |
-| Endpoints with a linked test | 111 of 407 |
+| Entities documented | 73 of 73 |
+| Relationships documented | 187 (66 FK-backed, 121 convention only) |
+| Endpoints documented | 418 of 418 |
+| Endpoints with a linked test | 113 of 418 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 20 |
 | Screens registered and mapped to a capability | 429 of 429 |
 | Screens wired to the live API | 117 of 429 |
-| Test suites catalogued | 194 containing 2234 cases |
+| Test suites catalogued | 197 containing 2251 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
@@ -45,7 +45,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-119 of 184 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+121 of 187 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
@@ -79,7 +79,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 296 endpoints have no test matched to them by path
+### 4. 305 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
@@ -202,7 +202,7 @@ _None — every required document is present._
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 19 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 296 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 305 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 249 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

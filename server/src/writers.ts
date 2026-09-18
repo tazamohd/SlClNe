@@ -18,6 +18,8 @@ import {
   customerUpdate,
   declinedJobCreate,
   declinedJobUpdate,
+  deliverySignoffCreate,
+  deliverySignoffUpdate,
   employeeCreate,
   employeeUpdate,
   feedbackCreate,
@@ -355,6 +357,21 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   inspectionMedia: {
     create: inspectionMediaCreate,
     update: inspectionMediaUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
+
+  /* Customer sign-off at delivery (Sprint 2, P0). `create` is `z.never()` —
+   * a row is born from `POST /job-cards/:id/delivery-signoff`
+   * (`server/src/routes/delivery.ts`), never a generic `POST`, because
+   * neither the job card nor a signature image's bytes belong in a JSON body
+   * the generic writer would trust as-is. `update` only ever carries the
+   * checklist and the odometer reading; the signature, who signed and when
+   * are fixed at creation. */
+  deliverySignoffs: {
+    create: deliverySignoffCreate,
+    update: deliverySignoffUpdate,
     async toColumns(input) {
       return { ...input }
     },

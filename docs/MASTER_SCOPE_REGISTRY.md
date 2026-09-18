@@ -34,7 +34,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths unwritten | 0 |
 | crud create | 32 |
 | crud read | 116 |
-| crud update | 26 |
+| crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
 | orphan screen files | 10 |

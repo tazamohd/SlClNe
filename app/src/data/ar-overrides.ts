@@ -4913,4 +4913,20 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading purchase orders...": "جارٍ تحميل أوامر الشراء...",
   "No purchase orders found": "لا توجد أوامر شراء",
   "Loading suppliers...": "جارٍ تحميل الموردين...",
+
+  // Customer sign-off at delivery — WorkshopSignature/WorkshopDelivery (Sprint 2, P0 backlog item 4)
+  "Signature not saved": "لم يتم حفظ التوقيع",
+  "The signature could not be saved.": "تعذر حفظ التوقيع.",
+  "No signature captured yet": "لم يُلتقط أي توقيع بعد",
+  "The customer needs to sign before delivery can be completed.": "يجب أن يوقّع العميل قبل إتمام التسليم.",
+  "Capture the customer’s signature before completing delivery.": "التقط توقيع العميل قبل إتمام التسليم.",
+  "Capture Signature": "التقاط التوقيع",
+  "Customer signature": "توقيع العميل",
+  "Loading signature...": "جارٍ تحميل التوقيع...",
+  "Odometer at Delivery": "عداد المسافة عند التسليم",
+  "Reading (km)": "القراءة (كم)",
+  "Signature required": "التوقيع مطلوب",
+  "Invalid odometer reading": "قراءة عداد مسافة غير صالحة",
+  "Enter a whole number of kilometres.": "أدخل عددًا صحيحًا من الكيلومترات.",
+  "The checklist could not be saved.": "تعذر حفظ قائمة التحقق.",
 }

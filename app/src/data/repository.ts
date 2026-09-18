@@ -230,6 +230,38 @@ export interface InspectionMediaRow extends EntityMeta {
   url: string
 }
 
+/** The six items `WorkshopDelivery.tsx`'s checklist walks. Mirrors
+ *  `packages/contract/src/entities/deliverySignoff.ts`'s
+ *  `deliverySignoffChecklist`. */
+export interface DeliverySignoffChecklist {
+  customerNotified: boolean
+  keysReturned: boolean
+  documentsReady: boolean
+  invoiceAttached: boolean
+  cleaned: boolean
+  qualityCheck: boolean
+}
+
+/** Customer sign-off at delivery, as `GET /delivery-signoffs` presents it
+ *  (Sprint 2, P0). No design fixture — the capability is new — so the shape
+ *  is declared here rather than inferred, like `InspectionFindingRow`.
+ *  Read-only through the collection except for `PATCH` (checklist,
+ *  odometer); creation is only ever the multipart
+ *  `POST /job-cards/:id/delivery-signoff` (`screens/workshop/delivery-api.ts`),
+ *  never this collection's `POST`. */
+export interface DeliverySignoffRow extends EntityMeta {
+  jobCardId: string
+  signedByName: string
+  agreedAt: string
+  checklist: DeliverySignoffChecklist
+  odometerOut: number | null
+  mimeType: string
+  sizeBytes: number
+  /** `GET /delivery-signoffs/:id/signature` — the only way to reach the
+   *  signature image's bytes, never a storage path. */
+  url: string
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -518,6 +550,7 @@ export interface Repository {
   declinedJobs: Collection<DeclinedJobRow>
   inspectionFindings: Collection<InspectionFindingRow>
   inspectionMedia: Collection<InspectionMediaRow>
+  deliverySignoffs: Collection<DeliverySignoffRow>
   customers: Collection<(typeof T.CUSTOMERS)[number]>
   fleets: Collection<(typeof T.FLEETS)[number]>
   parts: Collection<(typeof T.PARTS)[number]>
@@ -581,6 +614,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   declinedJobs: 'declined-jobs',
   inspectionFindings: 'inspection-findings',
   inspectionMedia: 'inspection-media',
+  deliverySignoffs: 'delivery-signoffs',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -825,6 +859,14 @@ export const mockRepository: Repository = {
    * outright in that mode rather than routing through this collection. */
   inspectionFindings: fixture<InspectionFindingRow>([]),
   inspectionMedia: fixture<InspectionMediaRow>([]),
+  /* No design fixture — customer sign-off at delivery is new (Sprint 2, P0).
+   * An empty read-only mock is the honest fixture, same reasoning as
+   * inspectionFindings: every row is born from
+   * `POST /job-cards/:id/delivery-signoff`, which the fixture repository
+   * cannot perform (`isLive` is false) — `screens/workshop/delivery-api.ts`
+   * refuses it outright in that mode rather than routing through this
+   * collection. */
+  deliverySignoffs: fixture<DeliverySignoffRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),
