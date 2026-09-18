@@ -99,6 +99,6 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 | Tenant isolation | `server/tests/isolation.test.ts` + RLS | suite present |
 | Segregation of duties enforced | `server/tests/authz-sod.test.ts` | suite present |
 | Accessibility contrast ratchet | `app/e2e/a11y.spec.ts` + `BASELINE.json` | ratcheted |
-| Arabic and RTL | Registry verification | 76 verified, 0 hazards |
+| Arabic and RTL | Registry verification | 75 verified, 0 hazards |
 
 **Present is not passing.** The rows that say "suite present" mean the suite exists and was catalogued by reading it. Whether it passes is a dated statement made only after a run — see the test catalogue.

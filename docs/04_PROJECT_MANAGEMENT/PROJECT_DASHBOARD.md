@@ -27,7 +27,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Reading design fixtures | 225 of 430 | `STATUS.json` |
 | End-to-end covered | 430 of 430 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 76 of 430 | `STATUS.json` |
+| Arabic verified | 75 of 430 | `STATUS.json` |
 | Tablet verified | 4 of 430 | `STATUS.json` |
 | API endpoints | 431 | the route files |
 | Test cases | 2292 | the spec files |
