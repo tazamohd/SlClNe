@@ -18,15 +18,15 @@ One document per domain, all to the same standard: purpose, actors and their dat
 
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
-| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 17 | 88 | 14 | 16 of 17 |
-| Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 19 | 2 | 3 of 3 |
-| Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 4 | 9 | 1 | 4 of 4 |
-| Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |
-| Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 1 | 28 | 3 | 1 of 1 |
+| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 23 | 88 | 14 | 22 of 23 |
+| Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 4 | 19 | 2 | 4 of 4 |
+| Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 5 | 9 | 1 | 5 of 5 |
+| Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 8 | 13 | 1 | 2 of 8 |
+| Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 3 | 28 | 3 | 3 of 3 |
 | Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
-| Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 7 of 7 |
-| HR and payroll | [CAP-HR](HR.md) | 5 | 52 | 6 | 5 of 5 |
-| CRM and sales | [CAP-CRM](CRM.md) | 12 | 45 | 6 | 10 of 12 |
+| Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 8 | 50 | 9 | 8 of 8 |
+| HR and payroll | [CAP-HR](HR.md) | 9 | 52 | 6 | 9 of 9 |
+| CRM and sales | [CAP-CRM](CRM.md) | 13 | 45 | 6 | 11 of 13 |
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 9 of 11 |
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 5 | 1 | 1 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
@@ -35,4 +35,4 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 18 | 24 | 0 | 0 of 18 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 39 | 0 | 0 | 0 of 39 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 5 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 224 | 0 | 0 | 30 of 224 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 207 | 0 | 0 | 13 of 207 |

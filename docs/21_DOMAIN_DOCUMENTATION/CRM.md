@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 12 screens, 45 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 13 screens, 45 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
 
 
 ## Actors
@@ -134,10 +134,11 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-Opportunities | `/opportunities` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-SMSCampaigns | `/smscampaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WhatsAppCampaigns | `/whats-app-campaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-174 | `/email-marketing-campaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **2 of 12 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **2 of 13 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **35 of 45 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`crmTaskStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.

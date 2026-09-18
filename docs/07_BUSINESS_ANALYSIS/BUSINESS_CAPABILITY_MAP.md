@@ -28,23 +28,23 @@ flowchart LR
   OBJ_CAPACITY["Use technician capacity well"]
   OBJ_VISIBILITY["Give owners operational visibility"]
   OBJ_CONTROL["Keep financial control auditable"]
-  CAP_WORKSHOP["Workshop operations<br/>17 screens · 88 endpoints"]
+  CAP_WORKSHOP["Workshop operations<br/>23 screens · 88 endpoints"]
   OBJ_THROUGHPUT --> CAP_WORKSHOP
-  CAP_CUSTOMERS["Customer management<br/>3 screens · 19 endpoints"]
+  CAP_CUSTOMERS["Customer management<br/>4 screens · 19 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERS
-  CAP_VEHICLES["Vehicle management<br/>4 screens · 9 endpoints"]
+  CAP_VEHICLES["Vehicle management<br/>5 screens · 9 endpoints"]
   OBJ_THROUGHPUT --> CAP_VEHICLES
-  CAP_INVENTORY["Parts and inventory<br/>7 screens · 13 endpoints"]
+  CAP_INVENTORY["Parts and inventory<br/>8 screens · 13 endpoints"]
   OBJ_MARGIN --> CAP_INVENTORY
-  CAP_PROCUREMENT["Procurement<br/>1 screens · 28 endpoints"]
+  CAP_PROCUREMENT["Procurement<br/>3 screens · 28 endpoints"]
   OBJ_MARGIN --> CAP_PROCUREMENT
   CAP_BILLING["Invoicing and payments<br/>6 screens · 25 endpoints"]
   OBJ_CASH --> CAP_BILLING
-  CAP_ACCOUNTING["Accounting and finance<br/>7 screens · 50 endpoints"]
+  CAP_ACCOUNTING["Accounting and finance<br/>8 screens · 50 endpoints"]
   OBJ_CASH --> CAP_ACCOUNTING
-  CAP_HR["HR and payroll<br/>5 screens · 52 endpoints"]
+  CAP_HR["HR and payroll<br/>9 screens · 52 endpoints"]
   OBJ_CAPACITY --> CAP_HR
-  CAP_CRM["CRM and sales<br/>12 screens · 45 endpoints"]
+  CAP_CRM["CRM and sales<br/>13 screens · 45 endpoints"]
   OBJ_RETENTION --> CAP_CRM
   CAP_REPORTING["Reporting and analytics<br/>11 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_REPORTING
@@ -62,7 +62,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
-  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>224 screens · 0 endpoints"]
+  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>207 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_DESIGNSYSTEM
 ```
 
@@ -70,15 +70,15 @@ flowchart LR
 
 | Capability | Name | Objective | Permission modules | Screens | Data-backed | Endpoints | Entities | Roles with access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 17 | 16 | 88 | 14 | 12 |
-| CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 3 | 3 | 19 | 2 | 9 |
-| CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 4 | 4 | 9 | 1 | 11 |
-| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 7 | 1 | 13 | 1 | 9 |
-| CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 28 | 3 | 8 |
+| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 23 | 22 | 88 | 14 | 12 |
+| CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 4 | 4 | 19 | 2 | 9 |
+| CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 5 | 5 | 9 | 1 | 11 |
+| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 8 | 2 | 13 | 1 | 9 |
+| CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 7 | 50 | 9 | 5 |
-| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
-| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 8 | 8 | 50 | 9 | 5 |
+| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 9 | 9 | 52 | 6 | 10 |
+| CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 45 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
@@ -87,7 +87,7 @@ flowchart LR
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 5 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 224 | 30 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 207 | 13 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -115,7 +115,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `jobcards`, `appointments`, `estimates` |
 | Screen domains | `workshop` |
-| Screens | 17 (16 data-backed) |
+| Screens | 23 (22 data-backed) |
 | Endpoints | 88 |
 | Entities | `appointments`, `declinedJobs`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, frontdesk, callcenter, customer, test |
@@ -129,7 +129,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `customers` |
 | Screen domains | — |
-| Screens | 3 (3 data-backed) |
+| Screens | 4 (4 data-backed) |
 | Endpoints | 19 |
 | Entities | `customers`, `fleets` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, accountant, frontdesk, callcenter, test |
@@ -143,7 +143,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `vehicles` |
 | Screen domains | — |
-| Screens | 4 (4 data-backed) |
+| Screens | 5 (5 data-backed) |
 | Endpoints | 9 |
 | Entities | `vehicles` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, accountant, frontdesk, callcenter, customer, test |
@@ -157,7 +157,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `inventory` |
 | Screen domains | `parts` |
-| Screens | 7 (1 data-backed) |
+| Screens | 8 (2 data-backed) |
 | Endpoints | 13 |
 | Entities | `parts` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, parts, accountant, procurement, test |
@@ -171,7 +171,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `procurement` |
 | Screen domains | — |
-| Screens | 1 (1 data-backed) |
+| Screens | 3 (3 data-backed) |
 | Endpoints | 28 |
 | Entities | `purchaseOrders`, `requisitions`, `suppliers` |
 | Roles with any grant | owner, superadmin, manager, parts, accountant, procurement, supplier, test |
@@ -199,7 +199,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `accounting` |
 | Screen domains | — |
-| Screens | 7 (7 data-backed) |
+| Screens | 8 (8 data-backed) |
 | Endpoints | 50 |
 | Entities | `chartOfAccounts`, `expenses`, `journalEntries`, `bankStatements`, `insuranceClaims`, `insurancePolicies`, `loanContracts`, `loanRepayments`, `savedReports` |
 | Roles with any grant | owner, superadmin, manager, accountant, test |
@@ -213,7 +213,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `hr`, `technicians` |
 | Screen domains | — |
-| Screens | 5 (5 data-backed) |
+| Screens | 9 (9 data-backed) |
 | Endpoints | 52 |
 | Entities | `employees`, `leaveRequests`, `payrollLines`, `payrollRuns`, `technicians`, `timesheets` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, accountant, hr, frontdesk, test |
@@ -227,7 +227,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `crm`, `callcenter` |
 | Screen domains | — |
-| Screens | 12 (10 data-backed) |
+| Screens | 13 (11 data-backed) |
 | Endpoints | 45 |
 | Entities | `campaigns`, `leads`, `opportunities`, `segments`, `crmTasks`, `customerFeedback` |
 | Roles with any grant | owner, superadmin, manager, advisor, frontdesk, callcenter, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 224 (30 data-backed) |
+| Screens | 207 (13 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 4 screens, 9 API endpoints and 1 entities, gated by the `vehicles` permission module.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 5 screens, 9 API endpoints and 1 entities, gated by the `vehicles` permission module.
 
 
 ## Actors
@@ -86,6 +86,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-FleetManagement | `/fleet-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-VehicleDetail | `/vehicle-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Vehicles | `/vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-109 | `/client-portal-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 

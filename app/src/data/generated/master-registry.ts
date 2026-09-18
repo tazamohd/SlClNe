@@ -5123,15 +5123,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/customers-list",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "customers",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5312,7 +5311,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/workshop-calendar",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -5320,8 +5319,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6335,7 +6333,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/interactive-3-d-parts",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "inventory",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6343,8 +6341,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6645,7 +6642,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/purchase-agent-payments",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "procurement",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6653,8 +6650,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6716,15 +6712,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/purchase-agent-suppliers",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "procurement",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
-    "flags": [
-      "NO_RBAC_MODULE"
-    ],
+    "flags": [],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -6833,7 +6827,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-portal-dashboard",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6841,8 +6835,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6856,7 +6849,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-portal-my-jobs",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6864,8 +6857,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7117,7 +7109,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-mobile",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7125,8 +7117,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7163,7 +7154,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-app-jobs",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7171,8 +7162,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7281,7 +7271,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/client-portal-vehicles",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "vehicles",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7289,8 +7279,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7304,7 +7293,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/client-portal-appointments",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "appointments",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7312,8 +7301,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7888,7 +7876,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/timesheet-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7896,8 +7884,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7911,7 +7898,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/timeclock-payroll",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7919,8 +7906,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7934,7 +7920,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/payroll-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7942,8 +7928,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7957,7 +7942,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/leave-requests",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7965,8 +7950,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8594,7 +8578,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/insurance-claims",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "accounting",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -8602,8 +8586,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8665,7 +8648,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/email-marketing-campaigns",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "crm",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -8673,8 +8656,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,

@@ -158,7 +158,7 @@
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 17,
+      "screenCount": 23,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
@@ -176,9 +176,15 @@
         "D-WorkshopEstimate",
         "D-WorkshopInspection",
         "D-WorkshopQC",
-        "D-WorkshopSignature"
+        "D-WorkshopSignature",
+        "F-015",
+        "F-090",
+        "F-091",
+        "F-102",
+        "F-104",
+        "F-110"
       ],
-      "dataBackedScreens": 16,
+      "dataBackedScreens": 22,
       "entities": [
         "appointments",
         "declinedJobs",
@@ -242,13 +248,14 @@
         "API-FLEETS-POSTBULK-UPDATE",
         "API-FLEETS-GETEXPORT"
       ],
-      "screenCount": 3,
+      "screenCount": 4,
       "screens": [
         "D-CustomerDetail",
         "D-CustomerFeedback",
-        "D-Customers"
+        "D-Customers",
+        "F-004"
       ],
-      "dataBackedScreens": 3,
+      "dataBackedScreens": 4,
       "entities": [
         "customers",
         "fleets"
@@ -287,14 +294,15 @@
         "API-VEHICLES-POSTBULK-UPDATE",
         "API-VEHICLES-GETEXPORT"
       ],
-      "screenCount": 4,
+      "screenCount": 5,
       "screens": [
         "D-FleetContract",
         "D-FleetManagement",
         "D-VehicleDetail",
-        "D-Vehicles"
+        "D-Vehicles",
+        "F-109"
       ],
-      "dataBackedScreens": 4,
+      "dataBackedScreens": 5,
       "entities": [
         "vehicles"
       ],
@@ -341,7 +349,7 @@
         "API-PARTS-POSTBULK-UPDATE",
         "API-PARTS-GETEXPORT"
       ],
-      "screenCount": 7,
+      "screenCount": 8,
       "screens": [
         "D-Inventory",
         "D-PartsNetwork.Incoming",
@@ -349,9 +357,10 @@
         "D-PartsNetwork.Orders",
         "D-PartsNetwork.Quotations",
         "D-PartsNetwork.Requests",
-        "D-PartsNetwork.SendRequest"
+        "D-PartsNetwork.SendRequest",
+        "F-064"
       ],
-      "dataBackedScreens": 1,
+      "dataBackedScreens": 2,
       "entities": [
         "parts"
       ],
@@ -417,11 +426,13 @@
         "API-SUPPLIERS-POSTBULK-UPDATE",
         "API-SUPPLIERS-GETEXPORT"
       ],
-      "screenCount": 1,
+      "screenCount": 3,
       "screens": [
-        "D-PurchaseOrder"
+        "D-PurchaseOrder",
+        "F-082",
+        "F-085"
       ],
-      "dataBackedScreens": 1,
+      "dataBackedScreens": 3,
       "entities": [
         "purchaseOrders",
         "requisitions",
@@ -575,7 +586,7 @@
         "API-SAVEDREPORTS-POSTBULK-UPDATE",
         "API-SAVEDREPORTS-GETEXPORT"
       ],
-      "screenCount": 7,
+      "screenCount": 8,
       "screens": [
         "D-BankReconciliation",
         "D-ChartOfAccounts",
@@ -583,9 +594,10 @@
         "D-FinancialReports",
         "D-FinancialStatements",
         "D-JournalEntries",
-        "D-TaxManagement"
+        "D-TaxManagement",
+        "F-171"
       ],
-      "dataBackedScreens": 7,
+      "dataBackedScreens": 8,
       "entities": [
         "chartOfAccounts",
         "expenses",
@@ -673,15 +685,19 @@
         "API-TIMESHEETS-POSTBULK-UPDATE",
         "API-TIMESHEETS-GETEXPORT"
       ],
-      "screenCount": 5,
+      "screenCount": 9,
       "screens": [
         "D-Departments",
         "D-HRPayroll",
         "D-TechnicianKB",
         "D-Technicians",
-        "D-TechnicianSchedule"
+        "D-TechnicianSchedule",
+        "F-139",
+        "F-140",
+        "F-141",
+        "F-142"
       ],
-      "dataBackedScreens": 5,
+      "dataBackedScreens": 9,
       "entities": [
         "employees",
         "leaveRequests",
@@ -765,7 +781,7 @@
         "API-FEEDBACK-POSTBULK-UPDATE",
         "API-FEEDBACK-GETEXPORT"
       ],
-      "screenCount": 12,
+      "screenCount": 13,
       "screens": [
         "D-CallCenter",
         "D-CallCenter.Logs",
@@ -778,9 +794,10 @@
         "D-LeadPipeline",
         "D-Opportunities",
         "D-SMSCampaigns",
-        "D-WhatsAppCampaigns"
+        "D-WhatsAppCampaigns",
+        "F-174"
       ],
-      "dataBackedScreens": 10,
+      "dataBackedScreens": 11,
       "entities": [
         "campaigns",
         "leads",
@@ -1276,7 +1293,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 224,
+      "screenCount": 207,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1303,7 +1320,6 @@
         "F-001",
         "F-002",
         "F-003",
-        "F-004",
         "F-006",
         "F-007",
         "F-008",
@@ -1311,7 +1327,6 @@
         "F-011",
         "F-013",
         "F-014",
-        "F-015",
         "F-016",
         "F-017",
         "F-018",
@@ -1354,7 +1369,6 @@
         "F-061",
         "F-062",
         "F-063",
-        "F-064",
         "F-065",
         "F-066",
         "F-067",
@@ -1367,16 +1381,12 @@
         "F-079",
         "F-080",
         "F-081",
-        "F-082",
         "F-083",
         "F-084",
-        "F-085",
         "F-086",
         "F-087",
         "F-088",
         "F-089",
-        "F-090",
-        "F-091",
         "F-092",
         "F-093",
         "F-094",
@@ -1387,15 +1397,11 @@
         "F-099",
         "F-100",
         "F-101",
-        "F-102",
         "F-103",
-        "F-104",
         "F-105",
         "F-106",
         "F-107",
         "F-108",
-        "F-109",
-        "F-110",
         "F-111",
         "F-112",
         "F-113",
@@ -1420,10 +1426,6 @@
         "F-136",
         "F-137",
         "F-138",
-        "F-139",
-        "F-140",
-        "F-141",
-        "F-142",
         "F-143",
         "F-144",
         "F-146",
@@ -1450,10 +1452,8 @@
         "F-168",
         "F-169",
         "F-170",
-        "F-171",
         "F-172",
         "F-173",
-        "F-174",
         "F-175",
         "F-176",
         "F-177",
@@ -1503,7 +1503,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 30,
+      "dataBackedScreens": 13,
       "entities": [],
       "rules": [],
       "roles": [],

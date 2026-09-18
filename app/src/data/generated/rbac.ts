@@ -708,7 +708,24 @@ export const SCREEN_MODULE: Record<string, string> = {
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",
   "OEMIntegrations": "settings",
-  "SystemIntegrations": "settings"
+  "SystemIntegrations": "settings",
+  "Insurance-Claims": "accounting",
+  "Payroll-Management": "hr",
+  "Timesheet-Management": "hr",
+  "Timeclock-Payroll": "hr",
+  "Leave-Requests": "hr",
+  "Interactive-3D-Parts": "inventory",
+  "Purchase-Agent-Payments": "procurement",
+  "Purchase-Agent-Suppliers": "procurement",
+  "Client-Portal-Appointments": "appointments",
+  "Client-Portal-Vehicles": "vehicles",
+  "Technician-App-Jobs": "jobcards",
+  "Technician-Mobile": "jobcards",
+  "Technician-Portal-Dashboard": "jobcards",
+  "Technician-Portal-My-Jobs": "jobcards",
+  "Workshop-Calendar": "jobcards",
+  "Email-Marketing-Campaigns": "crm",
+  "Customers-List": "customers"
 }
 
 /** Field-level redaction: which roles may NOT see each field. */

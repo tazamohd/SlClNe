@@ -54,15 +54,15 @@ Every screen renders and every screen has an end-to-end assertion on its content
 
 | Capability | Screens | Data-backed | Loading | Error | Empty | Arabic verified |
 | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | 17 | 16 | 15 | 14 | 13 | 2 |
-| CAP-CUSTOMERS | 3 | 3 | 3 | 3 | 3 | 0 |
-| CAP-VEHICLES | 4 | 4 | 4 | 4 | 4 | 0 |
-| CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
-| CAP-PROCUREMENT | 1 | 1 | 1 | 1 | 1 | 0 |
+| CAP-WORKSHOP | 23 | 22 | 21 | 20 | 18 | 2 |
+| CAP-CUSTOMERS | 4 | 4 | 4 | 4 | 4 | 1 |
+| CAP-VEHICLES | 5 | 5 | 5 | 5 | 5 | 0 |
+| CAP-INVENTORY | 8 | 2 | 4 | 4 | 8 | 0 |
+| CAP-PROCUREMENT | 3 | 3 | 3 | 3 | 3 | 1 |
 | CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
-| CAP-ACCOUNTING | 7 | 7 | 7 | 7 | 5 | 0 |
-| CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
-| CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
+| CAP-ACCOUNTING | 8 | 8 | 8 | 8 | 6 | 0 |
+| CAP-HR | 9 | 9 | 9 | 9 | 8 | 1 |
+| CAP-CRM | 13 | 11 | 11 | 11 | 13 | 0 |
 | CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 21 |
 | CAP-CUSTOMERAPP | 11 | 5 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 224 | 30 | 56 | 34 | 77 | 21 |
+| CAP-DESIGNSYSTEM | 207 | 13 | 39 | 17 | 61 | 19 |
 
 ## Full registry
 

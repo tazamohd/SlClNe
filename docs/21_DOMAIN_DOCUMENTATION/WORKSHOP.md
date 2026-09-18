@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 17 screens, 88 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 23 screens, 88 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -198,10 +198,16 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-WorkshopInspection | `/workshop-inspection` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
+| F-015 | `/workshop-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-110 | `/client-portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **1 of 17 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **1 of 23 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **70 of 88 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **3 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.

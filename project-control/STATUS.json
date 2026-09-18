@@ -255,12 +255,12 @@
       "dataBacked": 2
     },
     "appointments": {
-      "total": 2,
-      "rendered": 2,
+      "total": 3,
+      "rendered": 3,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 2,
-      "dataBacked": 2
+      "e2e": 3,
+      "dataBacked": 3
     },
     "approvals": {
       "total": 1,
@@ -279,12 +279,12 @@
       "dataBacked": 0
     },
     "accounting": {
-      "total": 7,
-      "rendered": 7,
+      "total": 8,
+      "rendered": 8,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 7,
-      "dataBacked": 7
+      "e2e": 8,
+      "dataBacked": 8
     },
     "execreports": {
       "total": 5,
@@ -311,12 +311,12 @@
       "dataBacked": 0
     },
     "crm": {
-      "total": 10,
-      "rendered": 10,
+      "total": 11,
+      "rendered": 11,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 10,
-      "dataBacked": 10
+      "e2e": 11,
+      "dataBacked": 11
     },
     "estimates": {
       "total": 5,
@@ -327,12 +327,12 @@
       "dataBacked": 5
     },
     "customers": {
-      "total": 3,
-      "rendered": 3,
+      "total": 4,
+      "rendered": 4,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 3,
-      "dataBacked": 3
+      "e2e": 4,
+      "dataBacked": 4
     },
     "portalcustomer": {
       "total": 2,
@@ -359,36 +359,36 @@
       "dataBacked": 1
     },
     "hr": {
+      "total": 6,
+      "rendered": 6,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 6,
+      "dataBacked": 6
+    },
+    "jobcards": {
+      "total": 15,
+      "rendered": 15,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 15,
+      "dataBacked": 14
+    },
+    "vehicles": {
+      "total": 5,
+      "rendered": 5,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 5,
+      "dataBacked": 5
+    },
+    "inventory": {
       "total": 2,
       "rendered": 2,
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
-    },
-    "jobcards": {
-      "total": 10,
-      "rendered": 10,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 10,
-      "dataBacked": 9
-    },
-    "vehicles": {
-      "total": 4,
-      "rendered": 4,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 4,
-      "dataBacked": 4
-    },
-    "inventory": {
-      "total": 1,
-      "rendered": 1,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 1,
-      "dataBacked": 1
     },
     "invoices": {
       "total": 4,
@@ -439,12 +439,12 @@
       "dataBacked": 1
     },
     "procurement": {
-      "total": 1,
-      "rendered": 1,
+      "total": 3,
+      "rendered": 3,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 1,
-      "dataBacked": 1
+      "e2e": 3,
+      "dataBacked": 3
     },
     "portalsupplier": {
       "total": 2,

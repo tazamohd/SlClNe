@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 3 screens, 19 API endpoints and 2 entities, gated by the `customers` permission module.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 4 screens, 19 API endpoints and 2 entities, gated by the `customers` permission module.
 
 
 ## Actors
@@ -96,6 +96,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-CustomerDetail | `/customer-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerFeedback | `/customer-feedback` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Customers | `/customers` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-004 | `/customers-list` | app | yes | yes | yes | yes | verified | yes |
 
 ## Known gaps in this domain
 

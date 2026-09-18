@@ -36,15 +36,15 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 
 | ID | Statement | Capability | Endpoints | Screens | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| FR-WORKSHOP-001 | The system provides workshop operations through 17 screens and 88 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 88 | 17 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-CUSTOMERS-001 | The system provides customer management through 3 screens and 19 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 19 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-VEHICLES-001 | The system provides vehicle management through 4 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-INVENTORY-001 | The system provides parts and inventory through 7 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PROCUREMENT-001 | The system provides procurement through 1 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 1 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-WORKSHOP-001 | The system provides workshop operations through 23 screens and 88 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 88 | 23 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-CUSTOMERS-001 | The system provides customer management through 4 screens and 19 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 19 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-VEHICLES-001 | The system provides vehicle management through 5 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 5 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-INVENTORY-001 | The system provides parts and inventory through 8 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PROCUREMENT-001 | The system provides procurement through 3 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-ACCOUNTING-001 | The system provides accounting and finance through 7 screens and 50 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 50 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-HR-001 | The system provides hr and payroll through 5 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 5 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-CRM-001 | The system provides crm and sales through 12 screens and 45 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 45 | 12 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-ACCOUNTING-001 | The system provides accounting and finance through 8 screens and 50 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 50 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-HR-001 | The system provides hr and payroll through 9 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 9 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-CRM-001 | The system provides crm and sales through 13 screens and 45 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 45 | 13 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 5 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 5 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PORTALS-001 | The system provides portals and channels through 11 screens and 0 API endpoints, gated by the `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` permission modules. | CAP-PORTALS | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -53,7 +53,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-IDENTITY-001 | The system provides identity and access through 18 screens and 24 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 24 | 18 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-WEBSITE-001 | The system provides public website and acquisition through 39 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 39 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 224 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 224 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 207 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 207 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-RULE-APPROVALS-checkApprovalCeiling | A value above the role's ceiling must escalate rather than be approved. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkQcIndependence | A technician cannot pass QC on a repair they performed. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkSelfApproval | The approver must not be the submitter — the first and most-broken SOD pair, and the one that lets a single person move money on their own say-so. | — | — | — | `packages/contract/src/rules/approvals.ts` |

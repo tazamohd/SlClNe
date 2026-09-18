@@ -16181,8 +16181,18 @@
       "route": "/customers-list",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "customers",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "technician:v",
+        "accountant:vx",
+        "frontdesk:vce",
+        "callcenter:vce",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -16236,8 +16246,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -16710,8 +16719,20 @@
       "route": "/workshop-calendar",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -16766,8 +16787,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -19543,8 +19563,18 @@
       "route": "/interactive-3-d-parts",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "inventory",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:v",
+        "technician:v",
+        "parts:vcedax",
+        "accountant:vx",
+        "procurement:vcex",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -19599,8 +19629,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20401,8 +20430,17 @@
       "route": "/purchase-agent-payments",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "procurement",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcax",
+        "parts:vc",
+        "accountant:vax",
+        "procurement:vcedax",
+        "supplier:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20457,8 +20495,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20600,8 +20637,17 @@
       "route": "/purchase-agent-suppliers",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "procurement",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcax",
+        "parts:vc",
+        "accountant:vax",
+        "procurement:vcedax",
+        "supplier:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20654,9 +20700,7 @@
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": [
-        "NO_RBAC_MODULE"
-      ]
+      "flags": []
     },
     {
       "screenId": "F-086",
@@ -20929,8 +20973,20 @@
       "route": "/technician-portal-dashboard",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20985,8 +21041,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20996,8 +21051,20 @@
       "route": "/technician-portal-my-jobs",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21052,8 +21119,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21721,8 +21787,20 @@
       "route": "/technician-mobile",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21777,8 +21855,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21853,8 +21930,20 @@
       "route": "/technician-app-jobs",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21909,8 +21998,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -22183,8 +22271,19 @@
       "route": "/client-portal-vehicles",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "vehicles",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "technician:v",
+        "qc:v",
+        "accountant:v",
+        "frontdesk:vce",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -22239,8 +22338,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -22250,8 +22348,17 @@
       "route": "/client-portal-appointments",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "appointments",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vced",
+        "technician:v",
+        "frontdesk:vced",
+        "callcenter:vced",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -22306,8 +22413,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23904,8 +24010,15 @@
       "route": "/timesheet-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23960,8 +24073,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23971,8 +24083,15 @@
       "route": "/timeclock-payroll",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24027,8 +24146,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -24038,8 +24156,15 @@
       "route": "/payroll-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24096,8 +24221,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -24107,8 +24231,15 @@
       "route": "/leave-requests",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24163,8 +24294,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25884,8 +26014,14 @@
       "route": "/insurance-claims",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "accounting",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -25941,8 +26077,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26084,8 +26219,15 @@
       "route": "/email-marketing-campaigns",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "crm",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "callcenter:vced",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -26140,8 +26282,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {

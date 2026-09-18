@@ -18,7 +18,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | ARABIC_MISSING | 352 | Arabic not certified: an untranslated key, or keys built dynamically |
 | TABLET_MISSING | 302 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | MOCK_ONLY | 280 | renders, but from fixtures rather than an API |
-| NO_RBAC_MODULE | 212 | no RBAC module maps to this screen |
+| NO_RBAC_MODULE | 195 | no RBAC module maps to this screen |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | DUPLICATE | 0 | two entries claim one route |
 | MOBILE_MISSING | 0 | a .Mobile design exists and is not built |

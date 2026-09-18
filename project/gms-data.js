@@ -528,7 +528,12 @@ export const SCREEN_MODULE={
  "Organizations":"superadmin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"superadmin","Integrations":"admin","Templates":"admin",
  "Settings":"settings","AdvancedSettings":"settings","Backup":"settings","Subscription":"settings","NotificationCenter":"dashboard","GlobalSearch":"dashboard","Profile":"dashboard",
  "AuditLog":"audit","ApprovalInbox":"approvals",
- "CustomerApproval":"estimates","DeclinedJobs":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings"
+ "CustomerApproval":"estimates","DeclinedJobs":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings",
+ "Insurance-Claims":"accounting","Payroll-Management":"hr","Timesheet-Management":"hr","Timeclock-Payroll":"hr","Leave-Requests":"hr",
+ "Interactive-3D-Parts":"inventory","Purchase-Agent-Payments":"procurement","Purchase-Agent-Suppliers":"procurement",
+ "Client-Portal-Appointments":"appointments","Client-Portal-Vehicles":"vehicles",
+ "Technician-App-Jobs":"jobcards","Technician-Mobile":"jobcards","Technician-Portal-Dashboard":"jobcards","Technician-Portal-My-Jobs":"jobcards","Workshop-Calendar":"jobcards",
+ "Email-Marketing-Campaigns":"crm","Customers-List":"customers"
 };
 
 // field-level redaction: which roles may NOT see these

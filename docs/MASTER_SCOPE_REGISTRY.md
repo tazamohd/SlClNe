@@ -77,23 +77,23 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Module | Capabilities | Rendering |
 |---|---|---|
-| accounting | 7 | 7 |
+| accounting | 8 | 8 |
 | admin | 4 | 4 |
 | ai | 14 | 14 |
 | aiadmin | 5 | 5 |
-| appointments | 2 | 2 |
+| appointments | 3 | 3 |
 | approvals | 1 | 1 |
 | audit | 1 | 1 |
 | callcenter | 2 | 2 |
-| crm | 10 | 10 |
-| customers | 3 | 3 |
+| crm | 11 | 11 |
+| customers | 4 | 4 |
 | dashboard | 4 | 4 |
 | estimates | 5 | 5 |
 | execreports | 5 | 5 |
-| hr | 2 | 2 |
-| inventory | 1 | 1 |
+| hr | 6 | 6 |
+| inventory | 2 | 2 |
 | invoices | 4 | 4 |
-| jobcards | 10 | 10 |
+| jobcards | 15 | 15 |
 | kiosk | 1 | 1 |
 | network | 2 | 2 |
 | payments | 2 | 2 |
@@ -101,10 +101,10 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | portalprocure | 2 | 2 |
 | portalsupplier | 2 | 2 |
 | portaltech | 2 | 2 |
-| procurement | 1 | 1 |
+| procurement | 3 | 3 |
 | reports | 6 | 6 |
 | settings | 6 | 6 |
 | superadmin | 3 | 3 |
 | technicians | 3 | 3 |
 | ungated | 16 | 16 |
-| vehicles | 4 | 4 |
+| vehicles | 5 | 5 |

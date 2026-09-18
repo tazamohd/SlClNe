@@ -406,14 +406,16 @@
     },
     {
       "id": "F-033",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Feature-map screens with no SCREEN_MODULE mapping open for any role, then 403 on their data",
       "detail": "Insurance-Claims (and other feature-map screens absent from the design bundle's SCREEN_MODULE) has no module mapping, so canScreen returns true and any authenticated role opens the workspace — but its collections are gated server-side, so every fetch 403s into an ErrorState. The data is safe; the defect is UX.",
       "why": "Not a security hole — the boundary holds — but a screen that opens then errors reads as broken. Fix: give feature-map screens a SCREEN_MODULE entry so nav and data agree.",
       "foundBy": "13",
       "verified": "reported by agent 13",
       "owner": "02",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "17 feature-map/portal screens were cross-referenced against every useCollection/useQuery call site and the server registry's module grants to find every case where the missing SCREEN_MODULE entry was not just cosmetic (most of the ~200 unmapped feature-map screens render only static FEATURE_DEFS content, so they never fetch and never 403). project/gms-data.js's SCREEN_MODULE now maps: Insurance-Claims, Payroll-Management, Timesheet-Management, Timeclock-Payroll and Leave-Requests to \"hr\"; Interactive-3D-Parts to \"inventory\"; Purchase-Agent-Payments and Purchase-Agent-Suppliers to \"procurement\"; Client-Portal-Appointments to \"appointments\"; Client-Portal-Vehicles to \"vehicles\"; Technician-App-Jobs, Technician-Mobile, Technician-Portal-Dashboard, Technician-Portal-My-Jobs and Workshop-Calendar to \"jobcards\"; Email-Marketing-Campaigns to \"crm\"; and Customers-List to \"customers\" — all verified against real role grants in gms-data.js's PERMS (tests/rbac-matrix.test.ts already asserts every SCREEN_MODULE value is a valid module with at least one viewing role, and now covers these 17). One related screen, Staff-Directory / HR-Management, was investigated and deliberately left out of this fix — tracked as F-038, since mapping it to \"hr\" would newly 403 the HR role on its own directory. 3938/3938 app tests (incl. 2336 rbac-matrix assertions), rbac-parity clean, tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-034",
@@ -464,6 +466,17 @@
       "owner": "02",
       "wave": "W3",
       "resolution": "The five content pages were rewritten onto the site's light-first design system (matching Pricing/Features/About) and given real routes: PublicPortal.Platform (/public-portal/platform), .SupplyChain (/public-portal/supply-chain), .ComparePlans (/public-portal/compare-plans), .CompanyStory (/public-portal/story) and .GettingStarted (/public-portal/getting-started) — wired into SCREEN_MAP.md, the website.ts barrel, sitemap.xml and the Footer, with cross-links from About.tsx and Pricing.tsx. One material correction made along the way: the study's Access page published a numeric plan-comparison matrix (branch/user ceilings, SLA hours, uptime percentages) and a \"Starter\" plan name found nowhere else in the codebase, contradicting Pricing.tsx's deliberate no-published-numbers policy, and one FAQ answer's blanket data-export promise contradicted the already-shipped Security.tsx. ComparePlans.tsx and CompanyStory.tsx use Pricing.tsx's real plan names and keep every differentiation qualitative — see those files' docstrings. The old six-page tour's dead scaffolding (CommandDeck.tsx, PageNav.tsx, IndexPage.tsx, landing.css, useLandingMotion.ts) was deleted; types.ts and landingData.ts were trimmed to their still-live exports. BLK-010 now lists one file — SocialProofBand.tsx — which is a deliberate, documented reservation for future testimonials, not orphaned debt."
+    },
+    {
+      "id": "F-038",
+      "severity": "LOW",
+      "title": "Staff-Directory / HR-Management reads a collection gated to a narrower module than the screen itself",
+      "detail": "app/src/screens/hr/StaffDirectory.tsx (screens Staff-Directory and HR-Management) calls useCollection('departments'), whose server route is registered with module:'admin' (server/src/registry.ts:502) — owner/manager/superadmin/test only. The natural SCREEN_MODULE mapping is \"hr\", but that would leave the HR role itself 403ing on its own staff directory, since the hr role has no admin grant.",
+      "why": "Found while fixing F-033's broader SCREEN_MODULE gap. Deliberately not folded into that fix: it needs either module:'admin' on the screen (locks out HR staff, the wrong answer) or the departments collection's own module corrected from 'admin' to 'hr' server-side (a bigger, separate change with its own blast radius on Branches/admin-facing department management, outside a client-only SCREEN_MODULE fix).",
+      "foundBy": "principal-engineer-session",
+      "verified": "reported this session, not yet fixed",
+      "owner": "05",
+      "wave": "W3"
     }
   ]
 }

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 7 screens, 50 API endpoints and 1 entities, gated by the `accounting` permission module.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 8 screens, 50 API endpoints and 1 entities, gated by the `accounting` permission module.
 
 
 ## Actors
@@ -135,6 +135,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-FinancialStatements | `/financial-statements` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-JournalEntries | `/journal-entries` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-TaxManagement | `/tax-management` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-171 | `/insurance-claims` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
