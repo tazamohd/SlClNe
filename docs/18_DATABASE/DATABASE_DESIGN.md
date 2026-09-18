@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-PostgreSQL, accessed through Drizzle ORM. 70 tables, 1178 columns, 19 migrations.
+PostgreSQL, accessed through Drizzle ORM. 72 tables, 1215 columns, 20 migrations.
 
 ## Migrations
 
@@ -35,24 +35,25 @@ PostgreSQL, accessed through Drizzle ORM. 70 tables, 1178 columns, 19 migrations
 | `server/drizzle/0015_journal_lines.sql` | — |
 | `server/drizzle/0016_document_chain.sql` | — |
 | `server/drizzle/0017_declined_jobs.sql` | — |
+| `server/drizzle/0018_inspection_findings.sql` | — |
 
 ## Structural guarantees
 
 | Guarantee | Mechanism | Coverage |
 | --- | --- | --- |
-| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 66 tables |
-| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 66 tables |
-| Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 8 tables |
-| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 66 tables |
+| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 68 tables |
+| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 68 tables |
+| Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 10 tables |
+| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 68 tables |
 | Optimistic concurrency | `bump_version` BEFORE UPDATE trigger | every table in the tenant array |
 | Audit immutability | Trigger raising `insufficient_privilege` on UPDATE/DELETE | `audit_log` |
 | Idempotency | Unique index on `(org_id, key, endpoint)` + stored response | `idempotency_keys` |
-| Soft delete | `deleted_at`, filtered by the generic router | 63 tables |
+| Soft delete | `deleted_at`, filtered by the generic router | 65 tables |
 | Money integrity | `bigint` halalas, never `numeric` | 32 tables carry money |
 
 ## Referential integrity — read this before drawing conclusions from an ERD
 
-Only **63 of 177** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 114 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
+Only **65 of 184** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 119 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
 
 The practical consequences: an orphaned reference is possible and will not be refused by the database; deleting a parent does not clean up children (though deletes are soft anyway); and a join that assumes a row exists needs to handle its absence.
 
@@ -82,6 +83,9 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `declined_jobs` | `declined_jobs_org_idx` | no | orgId, branchId, status |
 | `declined_jobs` | `declined_jobs_estimate_idx` | no | orgId, estimateId |
 | `declined_jobs` | `declined_jobs_line_once_idx` | yes | orgId, estimateLineId |
+| `inspection_findings` | `inspection_findings_job_idx` | no | orgId, jobCardId |
+| `inspection_media` | `inspection_media_finding_idx` | no | orgId, findingId |
+| `inspection_media` | `inspection_media_job_idx` | no | orgId, jobCardId |
 | `invoices` | `invoices_org_code_idx` | yes | orgId, code |
 | `invoices` | `invoices_org_idx` | no | orgId, branchId, status |
 | `invoices` | `invoices_estimate_idx` | no | orgId, estimateId |

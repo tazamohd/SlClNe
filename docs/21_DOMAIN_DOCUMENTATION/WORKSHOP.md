@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 17 screens, 88 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 18 screens, 110 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -132,12 +132,34 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/estimates/:id/request-approval-otp` | estimates:e | explicit | — | **0** |
 | POST | `/api/v1/estimates/:id/verify-approval-otp` | estimates:e | explicit | — | 1 |
 | GET | `/api/v1/estimates/export` | estimates:x | generated | — | **0** |
+| GET | `/api/v1/inspection-findings` | jobcards:v | generated | — | 1 |
+| POST | `/api/v1/inspection-findings` | jobcards:c | generated | — | 1 |
+| DELETE | `/api/v1/inspection-findings/:id` | jobcards:d | generated | — | **0** |
+| GET | `/api/v1/inspection-findings/:id` | jobcards:v | generated | — | **0** |
+| PATCH | `/api/v1/inspection-findings/:id` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/inspection-findings/:id/history` | jobcards:v | explicit | — | **0** |
+| POST | `/api/v1/inspection-findings/:id/media` | jobcards:e | explicit | — | **0** |
+| POST | `/api/v1/inspection-findings/bulk-delete` | jobcards:d | generated | — | **0** |
+| POST | `/api/v1/inspection-findings/bulk-update` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/inspection-findings/export` | jobcards:x | generated | — | **0** |
+| GET | `/api/v1/inspection-media` | jobcards:v | generated | — | **0** |
+| POST | `/api/v1/inspection-media` | jobcards:c | generated | — | **0** |
+| DELETE | `/api/v1/inspection-media/:id` | jobcards:d | generated | — | **0** |
+| GET | `/api/v1/inspection-media/:id` | jobcards:v | generated | — | **0** |
+| PATCH | `/api/v1/inspection-media/:id` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/inspection-media/:id/file` | jobcards:v | explicit | — | **0** |
+| GET | `/api/v1/inspection-media/:id/history` | jobcards:v | explicit | — | **0** |
+| POST | `/api/v1/inspection-media/bulk-delete` | jobcards:d | generated | — | **0** |
+| POST | `/api/v1/inspection-media/bulk-update` | jobcards:e | generated | — | **0** |
+| GET | `/api/v1/inspection-media/export` | jobcards:x | generated | — | **0** |
+| POST | `/api/v1/job-cards/:id/inspection-findings` | jobcards:e | explicit | — | 1 |
 | GET | `/api/v1/jobs` | jobcards:v | generated | — | 7 |
 | POST | `/api/v1/jobs` | jobcards:c | generated | — | 7 |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | generated | — | **0** |
 | GET | `/api/v1/jobs/:id` | jobcards:v | generated | — | **0** |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | generated | — | **0** |
 | POST | `/api/v1/jobs/:id/assign` | jobcards:e | explicit | — | **0** |
+| GET | `/api/v1/jobs/:id/health-check-report` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/jobs/:id/history` | jobcards:v | explicit | — | **0** |
 | POST | `/api/v1/jobs/:id/transition` | jobcards:e | explicit | — | **0** |
 | POST | `/api/v1/jobs/bulk-delete` | jobcards:d | generated | — | **0** |
@@ -176,6 +198,10 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 **State set only** — states: `draft`, `sent`, `approved`, `rejected`, `expired`. No transition table is declared; legal moves are whatever the route handlers check.
 
+### `inspectionMediaStage` (inspection)
+
+**State set only** — states: `before`, `after`. No transition table is declared; legal moves are whatever the route handlers check.
+
 
 ## Screens
 
@@ -184,6 +210,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-AppointmentCalendar | `/appointment-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Appointments | `/appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DeclinedJobs | `/declined-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-HealthCheckReport | `/customer-portal/health-check-report` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -195,18 +222,18 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-WorkshopCheckIn | `/workshop-check-in` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-WorkshopDelivery | `/workshop-delivery` | app | yes | yes | — | yes | verified | yes |
 | D-WorkshopEstimate | `/workshop-estimate` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-WorkshopInspection | `/workshop-inspection` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-WorkshopInspection | `/workshop-inspection` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
 
 ## Known gaps in this domain
 
-- **1 of 17 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **70 of 88 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
-- **3 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
+- **1 of 18 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **89 of 110 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **4 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`, `inspectionMediaStage`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **2 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **1 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

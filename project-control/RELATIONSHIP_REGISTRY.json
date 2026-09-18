@@ -8,10 +8,10 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 177,
-    "declared": 63,
-    "inferred": 114,
-    "orphanReferenceColumns": 13
+    "relationships": 184,
+    "declared": 65,
+    "inferred": 119,
+    "orphanReferenceColumns": 14
   },
   "orphanReferences": [
     {
@@ -25,6 +25,10 @@
     {
       "table": "declined_jobs",
       "column": "advisor_id"
+    },
+    {
+      "table": "inspection_media",
+      "column": "finding_id"
     },
     {
       "table": "inventory_movements",
@@ -726,6 +730,111 @@
       "tenantScope": "org_id",
       "branchScope": "branch_id",
       "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-FINDINGS-ORG-ID",
+      "from": "inspection_findings",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-FINDINGS-BRANCH-ID",
+      "from": "inspection_findings",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-FINDINGS-JOB-CARD-ID",
+      "from": "inspection_findings",
+      "fromColumn": "job_card_id",
+      "to": "job_cards",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-FINDINGS-ESTIMATE-LINE-ID",
+      "from": "inspection_findings",
+      "fromColumn": "estimate_line_id",
+      "to": "estimate_lines",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-MEDIA-ORG-ID",
+      "from": "inspection_media",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-MEDIA-BRANCH-ID",
+      "from": "inspection_media",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-INSPECTION-MEDIA-JOB-CARD-ID",
+      "from": "inspection_media",
+      "fromColumn": "job_card_id",
+      "to": "job_cards",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
       "evidence": "server/src/db/schema.ts"
     },
     {

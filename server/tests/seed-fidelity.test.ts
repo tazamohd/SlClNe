@@ -87,6 +87,13 @@ const FIXTURES: Record<string, readonly unknown[]> = {
    *  :lineId/decline` or a whole-estimate `/reject`, so the collection serves
    *  an empty set until a test or a user declines something. */
   declinedJobs: [],
+  /** No design fixture — DVHC inspection findings/media are new (Sprint 2,
+   *  P0). Nothing is seeded into either; every row is born from
+   *  `POST /job-cards/:id/inspection-findings` or the multipart upload route,
+   *  so both collections serve an empty set until a test or a technician
+   *  records one. */
+  inspectionFindings: [],
+  inspectionMedia: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and
@@ -154,6 +161,10 @@ describe('the seeded API serves exactly what the fixtures serve', () => {
        * estimateLines fixture to decline from (Sprint 1, P0). It is exercised
        * end to end, with a row present, in tests/declined-jobs.test.ts. */
       if (def.key === 'declinedJobs') continue
+      /* Same reasoning: inspectionFindings/inspectionMedia start genuinely
+       * empty, and every row is born from the bespoke DVHC routes, never the
+       * seed. Exercised end to end in tests/inspection-findings.test.ts. */
+      if (def.key === 'inspectionFindings' || def.key === 'inspectionMedia') continue
       const response = await harness.app.inject({
         method: 'GET',
         url: `/api/v1/${def.path}?pageSize=1`,

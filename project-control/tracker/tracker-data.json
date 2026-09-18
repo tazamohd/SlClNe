@@ -838,6 +838,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "HealthCheckReport",
+          "route": "/customer-portal/health-check-report",
+          "status": "built",
+          "mobile": "designed",
+          "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "AuditLog",
           "route": "/audit-log",
           "status": "built",
@@ -3967,8 +3976,8 @@
     }
   ],
   "totals": {
-    "total": 428,
-    "built": 428,
-    "designedMobile": 113
+    "total": 429,
+    "built": 429,
+    "designedMobile": 114
   }
 }

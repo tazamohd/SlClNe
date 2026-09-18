@@ -178,6 +178,58 @@ export interface DeclinedJobRow extends EntityMeta {
   resolvedAt: string | null
 }
 
+/** One overlay drawn on a piece of DVHC evidence, in the media's own 0–1
+ *  fractional coordinates. Mirrors `packages/contract/src/entities/inspection.ts`'s
+ *  `inspectionAnnotation`. */
+export interface InspectionAnnotation {
+  type: 'arrow' | 'box' | 'text'
+  x: number
+  y: number
+  x2?: number
+  y2?: number
+  text?: string
+  color: 'blue' | 'orange'
+}
+
+/** A DVHC inspection finding, as `GET /inspection-findings` presents it
+ *  (Sprint 2, P0). No design fixture — the capability is new — so the shape is
+ *  declared here rather than inferred, like `DeclinedJobRow`. Read-only
+ *  through the collection except for `PATCH` (severity, notes, the estimate
+ *  line link); creation is only ever `POST /job-cards/:id/inspection-findings`
+ *  (`screens/workshop/inspection-api.ts`), never this collection's `POST`. */
+export interface InspectionFindingRow extends EntityMeta {
+  jobCardId: string
+  category: string
+  categoryAr: string | null
+  item: string
+  itemAr: string | null
+  severity: 'ok' | 'monitor' | 'attention' | 'urgent' | 'unsafe'
+  /** Shop-only. Server-redacted to `null` for a customer-scoped principal —
+   *  see `server/src/registry.ts`'s `REDACTIONS` — so this can genuinely be
+   *  `null` here even on a row the caller may otherwise fully read. */
+  internalNote: string | null
+  customerNote: string | null
+  estimateLineId: string | null
+  recordedBy: string | null
+}
+
+/** The photo/video evidence attached to a finding, as `GET /inspection-media`
+ *  presents it. `url` is the only way to reach the bytes — never a storage
+ *  path — and works the same way whether the row came from this collection or
+ *  from a health-check report. Read-only except for `PATCH` (`annotations`);
+ *  creation is only ever the multipart `POST /inspection-findings/:id/media`. */
+export interface InspectionMediaRow extends EntityMeta {
+  findingId: string
+  jobCardId: string
+  kind: 'photo' | 'video'
+  stage: 'before' | 'after'
+  mimeType: string
+  sizeBytes: number
+  annotations: InspectionAnnotation[]
+  uploadedBy: string | null
+  url: string
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -464,6 +516,8 @@ export interface Repository {
   appointments: Collection<(typeof T.APPOINTMENTS)[number]>
   estimates: Collection<(typeof T.ESTIMATES)[number]>
   declinedJobs: Collection<DeclinedJobRow>
+  inspectionFindings: Collection<InspectionFindingRow>
+  inspectionMedia: Collection<InspectionMediaRow>
   customers: Collection<(typeof T.CUSTOMERS)[number]>
   fleets: Collection<(typeof T.FLEETS)[number]>
   parts: Collection<(typeof T.PARTS)[number]>
@@ -525,6 +579,8 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   appointments: 'appointments',
   estimates: 'estimates',
   declinedJobs: 'declined-jobs',
+  inspectionFindings: 'inspection-findings',
+  inspectionMedia: 'inspection-media',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -761,6 +817,14 @@ export const mockRepository: Repository = {
    * false), so there is nothing to seed here. The live API serves rows once a
    * line has actually been declined. */
   declinedJobs: fixture<DeclinedJobRow>([]),
+  /* No design fixture — DVHC is new (Sprint 2, P0). An empty read-only mock is
+   * the honest fixture, same reasoning as declinedJobs: every finding is born
+   * from `POST /job-cards/:id/inspection-findings` and every media row from a
+   * multipart upload, neither of which the fixture repository can perform
+   * (`isLive` is false) — `screens/workshop/inspection-api.ts` refuses both
+   * outright in that mode rather than routing through this collection. */
+  inspectionFindings: fixture<InspectionFindingRow>([]),
+  inspectionMedia: fixture<InspectionMediaRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),
