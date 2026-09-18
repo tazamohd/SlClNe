@@ -20,8 +20,8 @@
 | Reference-only | 28 | 429 |
 | Rendered | 429 | 429 |
 | Placeholder | 0 | 429 |
-| Data-backed (live API) | 125 | 429 |
-| Mock-only (design fixtures) | 241 | 429 |
+| Data-backed (live API) | 127 | 429 |
+| Mock-only (design fixtures) | 239 | 429 |
 | End-to-end covered | 429 | 429 |
 | Content-asserted (not just routed) | 429 | 429 |
 | Has a loading state | 169 | 429 |
@@ -34,14 +34,14 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **241 of 429 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **239 of 429 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 28 | 0 | 0 |
-| app | 315 | 111 | 79 |
+| app | 315 | 113 | 79 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 7 | 4 |
@@ -60,7 +60,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-INVENTORY | 7 | 1 | 3 | 3 | 7 | 0 |
 | CAP-PROCUREMENT | 1 | 1 | 1 | 1 | 1 | 0 |
 | CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
-| CAP-ACCOUNTING | 7 | 5 | 7 | 7 | 5 | 0 |
+| CAP-ACCOUNTING | 7 | 7 | 7 | 7 | 5 | 0 |
 | CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
 | CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
 | CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |

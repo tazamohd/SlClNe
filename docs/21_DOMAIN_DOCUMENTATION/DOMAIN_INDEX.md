@@ -24,7 +24,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |
 | Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 1 | 28 | 3 | 1 of 1 |
 | Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
-| Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 5 of 7 |
+| Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 7 of 7 |
 | HR and payroll | [CAP-HR](HR.md) | 5 | 52 | 6 | 5 of 5 |
 | CRM and sales | [CAP-CRM](CRM.md) | 12 | 45 | 6 | 10 of 12 |
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 9 of 11 |

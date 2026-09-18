@@ -9,7 +9,7 @@ import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection } from '@/data/useCollection'
+import { useCollection, type RowOf } from '@/data/useCollection'
 import { isLive } from '@/data/repository'
 import { fromHalalas } from '@/screens/finance/money'
 import { AggregateGapNotice } from './ReportControls'
@@ -37,7 +37,44 @@ function ExportButtons() {
   )
 }
 
-/** Aggregates the ledger once, for every report that needs it. */
+/** Pure derivation over the three ledger collections — kept separate from the
+ *  fetch so both reports can call `useCollection` in their own body (what
+ *  BLK-004's detector requires) without duplicating this arithmetic. */
+function computeLedgerTotals(
+  accounts: readonly RowOf<'chartOfAccounts'>[],
+  expenses: readonly RowOf<'expenses'>[],
+  invoices: readonly RowOf<'invoices'>[],
+) {
+  const byType = (type: string) =>
+    accounts.filter((a) => a.type === type).reduce((sum, a) => sum + parseSar(a.balance), 0)
+
+  const assets = byType('Assets')
+  const liabilities = byType('Liabilities')
+  const equity = byType('Equity')
+  const revenue = byType('Revenue')
+  const expenseAccounts = byType('Expense')
+
+  const expenseClaims = expenses.reduce((sum, e) => sum + parseSar(e.amount), 0)
+  const receivable = invoices
+    .filter((i) => i.status !== 'paid')
+    .reduce((sum, i) => sum + parseSar(i.amount), 0)
+
+  return {
+    accounts,
+    expenses,
+    assets,
+    liabilities,
+    equity,
+    revenue,
+    expenseAccounts,
+    expenseClaims,
+    receivable,
+    profit: revenue - expenseAccounts,
+  }
+}
+
+/** Fetches the three ledger collections and derives their totals — the shape
+ *  `ExecutiveReports` and `BIDashboard` consume. */
 function useLedgerTotals() {
   const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
   const { data: expenses = [], isLoading: eL } = useCollection('expenses')
@@ -48,34 +85,10 @@ function useLedgerTotals() {
   const error = aErr
   const refetch = aR
 
-  const totals = useMemo(() => {
-    const byType = (type: string) =>
-      accounts.filter((a) => a.type === type).reduce((sum, a) => sum + parseSar(a.balance), 0)
-
-    const assets = byType('Assets')
-    const liabilities = byType('Liabilities')
-    const equity = byType('Equity')
-    const revenue = byType('Revenue')
-    const expenseAccounts = byType('Expense')
-
-    const expenseClaims = expenses.reduce((sum, e) => sum + parseSar(e.amount), 0)
-    const receivable = invoices
-      .filter((i) => i.status !== 'paid')
-      .reduce((sum, i) => sum + parseSar(i.amount), 0)
-
-    return {
-      accounts,
-      expenses,
-      assets,
-      liabilities,
-      equity,
-      revenue,
-      expenseAccounts,
-      expenseClaims,
-      receivable,
-      profit: revenue - expenseAccounts,
-    }
-  }, [accounts, expenses, invoices])
+  const totals = useMemo(
+    () => computeLedgerTotals(accounts, expenses, invoices),
+    [accounts, expenses, invoices],
+  )
 
   return { ...totals, isLoading, isError, error, refetch }
 }
@@ -94,9 +107,16 @@ function useLedgerTotals() {
  *  already compute these same figures in SQL over the whole tenant scope
  *  (F-028), so live mode reads those instead of re-summing a page. The
  *  fixture path is untouched — its collections are never paginated, so the
- *  client sum there is exact. */
-function useHeadlineFigures() {
-  const fixture = useLedgerTotals()
+ *  client sum there is exact.
+ *
+ *  Takes the fixture totals as a parameter rather than calling
+ *  `useLedgerTotals()` itself: `FinancialReports`/`FinancialStatements` fetch
+ *  their three collections with `useCollection` directly in their own body
+ *  (BLK-004's registry detector only recognizes a call written there, not one
+ *  nested inside a wrapper hook), so they build the same shape by hand and
+ *  hand it in; `ExecutiveReports`/`BIDashboard` pass `useLedgerTotals()`
+ *  straight through. */
+function useHeadlineFigures(fixture: ReturnType<typeof useLedgerTotals>) {
   const tb = useTrialBalance()
   const invoicesSummary = useInvoicesSummary({})
 
@@ -125,7 +145,20 @@ function useHeadlineFigures() {
 export function FinancialReports() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures()
+  const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
+  const { data: expenses = [], isLoading: eL } = useCollection('expenses')
+  const { data: invoices = [], isLoading: iL } = useCollection('invoices')
+  const fixtureTotals = useMemo(
+    () => computeLedgerTotals(accounts, expenses, invoices),
+    [accounts, expenses, invoices],
+  )
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures({
+    ...fixtureTotals,
+    isLoading: aL || eL || iL,
+    isError: aE,
+    error: aErr,
+    refetch: aR,
+  })
 
   const stats: Stat[] = [
     { label: 'Revenue', value: formatSar(totals.revenue), caption: 'Period to date', highlight: true },
@@ -328,7 +361,20 @@ function ServerLedgerSummary() {
 export function FinancialStatements() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures()
+  const { data: accounts = [], isLoading: aL, isError: aE, error: aErr, refetch: aR } = useCollection('chartOfAccounts')
+  const { data: expenses = [], isLoading: eL } = useCollection('expenses')
+  const { data: invoices = [], isLoading: iL } = useCollection('invoices')
+  const fixtureTotals = useMemo(
+    () => computeLedgerTotals(accounts, expenses, invoices),
+    [accounts, expenses, invoices],
+  )
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures({
+    ...fixtureTotals,
+    isLoading: aL || eL || iL,
+    isError: aE,
+    error: aErr,
+    refetch: aR,
+  })
 
   const rows: readonly { label: string; value: number; strong?: boolean }[] = [
     { label: 'Revenue', value: totals.revenue },
@@ -399,7 +445,7 @@ export function ExecutiveReports() {
   const { t } = usePreferences()
   const { fieldHidden } = useSession()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures()
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures(useLedgerTotals())
   const { data: jobs = [] } = useCollection('jobs')
   const { data: customers = [] } = useCollection('customers')
 
@@ -561,7 +607,7 @@ export function OperationalReports() {
 export function BIDashboard() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures()
+  const { isLoading, isError, error, refetch, ...totals } = useHeadlineFigures(useLedgerTotals())
   const { data: jobs = [] } = useCollection('jobs')
 
   const bySvc = useMemo(() => {

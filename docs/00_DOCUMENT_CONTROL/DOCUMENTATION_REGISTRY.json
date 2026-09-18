@@ -1165,8 +1165,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/ACCOUNTING.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 8979,
-      "lines": 156,
+      "bytes": 8830,
+      "lines": 155,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61588,
+      "bytes": 61582,
       "lines": 438,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
