@@ -183,8 +183,8 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AppointmentCalendar | `/appointment-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Appointments | `/appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-DeclinedJobs | `/declined-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-DeclinedJobs | `/declined-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Estimates | `/estimates` | app | yes | yes | yes | yes | PARTIAL | yes |
