@@ -318,6 +318,8 @@ export const SCREEN_ENTRIES = composeScreens({
     'Neural-Network-Prediction',
     'Smart-Parts-Recommendations',
     'Intelligent-Price-Optimizer',
+    'Voice-Commands',
+    'Voice-Command-Interface',
   ]),
   'call-center': lazyBarrel(() => import('@/screens/domains/call-center'), ['CallCenter', 'CallCenter.Logs']),
   admin: lazyBarrel(() => import('@/screens/domains/admin'), [
