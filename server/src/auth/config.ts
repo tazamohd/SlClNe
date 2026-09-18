@@ -33,6 +33,11 @@ const schema = z.object({
 
   PASSWORD_RESET_TTL_MINUTES: z.coerce.number().int().min(5).max(1440).default(30),
 
+  /** Days a staff invite link stays live before it must be reissued. Longer
+   *  than a password reset on purpose — an invite is often handed to someone
+   *  who has not started yet. */
+  INVITE_TTL_MINUTES: z.coerce.number().int().min(60).max(43_200).default(10_080),
+
   /** Per-route budgets for the unauthenticated endpoints. The global limiter
    *  keys on `orgId:ip`, and before sign-in there is no `orgId` — every
    *  anonymous caller in the world would otherwise share one bucket. */

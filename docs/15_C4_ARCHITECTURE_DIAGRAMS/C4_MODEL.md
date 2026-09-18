@@ -43,7 +43,7 @@ flowchart TB
 flowchart TB
   browser["Web browser / Capacitor shell<br/>iOS + Android"]
   spa["<b>SPA</b><br/>React 18 + Vite + React Router<br/>TanStack Query, Zustand<br/>app/"]
-  api["<b>API</b><br/>Fastify 5 on Node<br/>374 endpoints under /api/v1<br/>server/"]
+  api["<b>API</b><br/>Fastify 5 on Node<br/>379 endpoints under /api/v1<br/>server/"]
   contract["<b>Shared contract</b><br/>Zod entities, RBAC matrix,<br/>business rules<br/>packages/contract/"]
   db[("<b>PostgreSQL</b><br/>69 tables<br/>Row-level security on 65<br/>Drizzle ORM")]
   browser --> spa
@@ -66,7 +66,7 @@ flowchart TB
   end
   subgraph routing[Routing]
     generic["collections.ts<br/>241 generated routes<br/>from registry.ts"]
-    explicit["133 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
+    explicit["138 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
   end
   subgraph guards[Guards]
     perms["security/permissions.ts<br/>module + action"]
@@ -120,13 +120,13 @@ sequenceDiagram
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
 | accounting | 50 | CAP-ACCOUNTING |
-| admin | 4 | CAP-PLATFORM |
+| admin | 6 | CAP-PLATFORM |
 | ai | 8 | CAP-AI |
 | appointments | 9 | CAP-WORKSHOP |
 | approvals | 5 | CAP-GOVERNANCE |
-| auth | 24 | CAP-IDENTITY |
+| auth | 26 | CAP-IDENTITY |
 | crm | 45 | CAP-CRM |
-| customers | 19 | CAP-CUSTOMERS |
+| customers | 20 | CAP-CUSTOMERS |
 | dashboard | 4 | CAP-PLATFORM |
 | estimates | 11 | CAP-WORKSHOP |
 | hr | 48 | CAP-HR |

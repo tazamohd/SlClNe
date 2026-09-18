@@ -27,9 +27,12 @@ import type { AuthConfig } from './config'
 
 export const OTP_LENGTH = 6
 
-/** `email` and `sms` are delivery channels; `reset` is a password-recovery
- *  challenge whose destination is a user id rather than an address. */
-export type OtpChannel = 'email' | 'sms' | 'reset'
+/** `email` and `sms` are delivery channels; `reset` and `invite` are
+ *  recovery-token challenges whose destination is a user id rather than an
+ *  address — `reset` for an existing account regaining access, `invite` for
+ *  a staff account created `pending` and waiting to set its first
+ *  password. */
+export type OtpChannel = 'email' | 'sms' | 'reset' | 'invite'
 
 export interface OtpTransport {
   readonly name: string
@@ -168,7 +171,11 @@ export async function issueChallenge(
   if (cooldown > 0) throw new ResendTooSoon(cooldown)
 
   const ttlMinutes =
-    input.channel === 'reset' ? config.PASSWORD_RESET_TTL_MINUTES : config.OTP_TTL_MINUTES
+    input.channel === 'reset'
+      ? config.PASSWORD_RESET_TTL_MINUTES
+      : input.channel === 'invite'
+        ? config.INVITE_TTL_MINUTES
+        : config.OTP_TTL_MINUTES
   const code = generateCode()
   const id = ulid()
   const expiresAt = new Date(now.getTime() + ttlMinutes * 60_000)
@@ -248,12 +255,16 @@ export function splitRecoveryToken(token: string): { id: string; code: string } 
   return { id: token.slice(0, index), code: token.slice(index + 1) }
 }
 
-/** Verifies a recovery token by id, which is how reset differs from OTP: the
- *  destination is not resubmitted by the caller, it is read off the row. */
+/** Verifies a recovery token by id, which is how reset/invite differ from
+ *  OTP: the destination is not resubmitted by the caller, it is read off the
+ *  row. `channel` defaults to `'reset'`; pass `'invite'` for a staff-invite
+ *  acceptance link so a reset token can never be replayed to activate an
+ *  invite or vice versa. */
 export async function verifyRecoveryToken(
   tx: Tx,
   token: string,
   config: AuthConfig,
+  channel: 'reset' | 'invite' = 'reset',
   now = new Date(),
 ): Promise<OtpVerdict> {
   const parts = splitRecoveryToken(token)
@@ -262,7 +273,7 @@ export async function verifyRecoveryToken(
   const [challenge] = await tx
     .select()
     .from(otpChallenges)
-    .where(and(eq(otpChallenges.id, parts.id), eq(otpChallenges.channel, 'reset')))
+    .where(and(eq(otpChallenges.id, parts.id), eq(otpChallenges.channel, channel)))
     .limit(1)
     .for('update')
 
@@ -281,6 +292,35 @@ export async function verifyRecoveryToken(
     .set({ verifiedAt: now, attempts: challenge.attempts + 1 })
     .where(eq(otpChallenges.id, challenge.id))
   return { kind: 'verified', challengeId: challenge.id, destination: challenge.destination }
+}
+
+/** A read-only look at a recovery/invite token: does it exist, is it still
+ *  live, and does the code actually match — without consuming it or counting
+ *  an attempt. Used to show who a link is for (`GET /auth/invite/:token`)
+ *  before the person commits to setting a password on it; the token is only
+ *  consumed by `verifyRecoveryToken`, at accept time. */
+export async function peekRecoveryToken(
+  tx: Tx,
+  token: string,
+  config: AuthConfig,
+  channel: 'reset' | 'invite' = 'reset',
+  now = new Date(),
+): Promise<{ destination: string } | null> {
+  const parts = splitRecoveryToken(token)
+  if (!parts) return null
+
+  const [challenge] = await tx
+    .select()
+    .from(otpChallenges)
+    .where(and(eq(otpChallenges.id, parts.id), eq(otpChallenges.channel, channel)))
+    .limit(1)
+
+  if (!challenge || challenge.verifiedAt) return null
+  if (challenge.expiresAt.getTime() <= now.getTime()) return null
+  if (challenge.attempts >= config.OTP_MAX_ATTEMPTS) return null
+  if (!codesMatch(challenge.codeHash, hashCode(parts.code))) return null
+
+  return { destination: challenge.destination }
 }
 
 /** Live challenges for a destination, used by the tests and by the throttle. */

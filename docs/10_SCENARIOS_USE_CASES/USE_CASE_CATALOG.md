@@ -15,16 +15,18 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-61 behavioural use cases.
+64 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| UC-POST-ADMIN-STAFF | POST /admin/staff | owner, superadmin, test | admin:c | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-APPOINTMENTS-ID-JOB-CARD | POST /appointments/:id/job-card | owner, manager, advisor, frontdesk, test | jobcards:c | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-AUTH-2FA-ENROL | POST /auth/2fa/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-2FA-VERIFY | POST /auth/2fa/verify | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-BIOMETRIC-CHALLENGE | POST /auth/biometric/challenge | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-BIOMETRIC-ENROL | POST /auth/biometric/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-FORGOT-PASSWORD | POST /auth/forgot-password | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
+| UC-POST-AUTH-INVITE-TOKEN-ACCEPT | POST /auth/invite/:token/accept | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-LOGIN | POST /auth/login | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-LOGOUT | POST /auth/logout | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-REFRESH | POST /auth/refresh | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
@@ -40,6 +42,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-AUTH-VERIFY-OTP | POST /auth/verify-otp | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-BANK-STATEMENTS-ID-MATCH | POST /bank-statements/:id/match | accountant, test | accounting:e | — | — | — | yes | `server/src/routes/bank.ts` |
 | UC-POST-CRM-LEADS-ID-CONVERT | POST /crm/leads/:id/convert | owner, manager, advisor, callcenter, test | crm:c | — | — | — | yes | `server/src/routes/crm.ts` |
+| UC-POST-CUSTOMERS-ID-PORTAL-ACCESS | POST /customers/:id/portal-access | owner, manager, advisor, frontdesk, callcenter +1 | customers:e | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-DIAGNOSTICS-DEVICES-ID-CLEAR-CODES | POST /diagnostics/devices/:id/clear-codes | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/obd.ts` |
 | UC-POST-DIAGNOSTICS-DEVICES-ID-RESCAN | POST /diagnostics/devices/:id/rescan | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/obd.ts` |
 | UC-POST-ESTIMATES | POST /estimates | owner, manager, advisor, test | estimates:c | — | — | — | yes | `server/src/routes/estimates.ts` |

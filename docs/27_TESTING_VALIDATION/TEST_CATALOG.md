@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-17
 
-189 spec files containing 2228 test cases.
+191 spec files containing 2243 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 113 | 1088 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 115 | 1103 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 35 | 465 |
-| app | 111 | 1386 |
+| server | 35 | 475 |
+| app | 113 | 1391 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -95,6 +95,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/accounting-gap-reports.test.tsx` | UNIT_OR_API | 2 | accountant |
 | `app/tests/accounting-report-screens.test.tsx` | UNIT_OR_API | 8 | accountant, owner |
 | `app/tests/accounting-reporting.test.ts` | UNIT_OR_API | 8 | — |
+| `app/tests/admin-users-teams.test.tsx` | UNIT_OR_API | 2 | owner, parts, technician |
 | `app/tests/component/Accordion.test.tsx` | UNIT_OR_API | 11 | — |
 | `app/tests/component/Badge.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/component/Charts.test.tsx` | UNIT_OR_API | 10 | — |
@@ -152,6 +153,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/inventory-reports.test.tsx` | INVENTORY_INTEGRITY | 8 | — |
 | `app/tests/inventory-screen.test.tsx` | INVENTORY_INTEGRITY | 40 | parts, technician |
 | `app/tests/inventory-transport.test.ts` | INVENTORY_INTEGRITY | 9 | — |
+| `app/tests/invite-acceptance.test.tsx` | UNIT_OR_API | 3 | — |
 | `app/tests/kiosk-identify.test.tsx` | UNIT_OR_API | 10 | frontdesk |
 | `app/tests/money-f007.test.ts` | FINANCIAL_INTEGRITY | 8 | — |
 | `app/tests/native-bridge.test.tsx` | UNIT_OR_API | 7 | — |
@@ -200,7 +202,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/api.test.ts` | UNIT_OR_API | 45 | frontdesk, technician, owner, manager, accountant, advisor, parts, customer |
 | `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 13 | manager, advisor, technician, owner, accountant, procurement, hr |
 | `server/tests/auth-test-account.test.ts` | UNIT_OR_API | 19 | test, technician, customer, accountant, manager, owner, superadmin |
-| `server/tests/auth.test.ts` | UNIT_OR_API | 31 | owner, manager, technician, frontdesk |
+| `server/tests/auth.test.ts` | UNIT_OR_API | 41 | owner, manager, technician, frontdesk, parts, superadmin, customer, supplier, test |
 | `server/tests/authz-matrix.test.ts` | SECURITY | 20 | owner, accountant, manager, superadmin, qc, technician |
 | `server/tests/authz-sod.test.ts` | SECURITY | 7 | manager, qc, parts |
 | `server/tests/collections.test.ts` | UNIT_OR_API | 16 | — |

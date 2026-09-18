@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -11,6 +11,8 @@ import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { isLive } from '@/data/repository'
+import { AddStaffModal } from './AddStaffModal'
+import { actionFailureMessage, listStaff, type StaffUser } from './api'
 
 interface User {
   name: string
@@ -43,6 +45,29 @@ const STATUS_STYLES: Record<string, [string, string]> = {
   offline: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
+/** Tone for a live account's role badge, keyed by the same palette as the
+ *  fixture rows above so the two never look visually inconsistent. Roles the
+ *  map does not name (e.g. `owner`, `customer`) fall back to `slate`. */
+const LIVE_ROLE_TONE: Record<string, keyof typeof ROLE_TONES> = {
+  owner: 'blue',
+  manager: 'sky',
+  advisor: 'slate',
+  technician: 'navy',
+  qc: 'navy',
+  parts: 'navy',
+  accountant: 'orange',
+  hr: 'orange',
+  frontdesk: 'slate',
+  callcenter: 'slate',
+  procurement: 'sky',
+}
+
+const LIVE_STATUS_STYLES: Record<string, [string, string]> = {
+  active: ['var(--tint-blue)', 'var(--salis-blue)'],
+  pending: ['var(--tint-orange)', 'var(--salis-orange)'],
+  disabled: ['var(--tint-neutral)', 'var(--text-muted)'],
+}
+
 const FIXTURE_USERS: User[] = [
   { name: 'Khalid Al-Amri', email: 'khalid@salisauto.sa', role: 'Owner', roleTone: 'blue', team: 'Management', lastLogin: '2 min ago', status: 'online' },
   { name: 'Ahmed Al-Rashid', email: 'ahmed@salisauto.sa', role: 'Manager', roleTone: 'sky', team: 'Operations', lastLogin: '1 hour ago', status: 'online' },
@@ -68,7 +93,41 @@ export function UsersTeams() {
   const isMobile = useIsMobile()
   const [q, setQ] = useState('')
 
-  const users = useMemo(() => {
+  /* Live wiring (Phase A). `!isLive` keeps the fixture rows and disabled
+   * buttons exactly as before — this is a build with no server to call, not
+   * a state this list could ever load into. */
+  const [liveUsers, setLiveUsers] = useState<StaffUser[] | null>(null)
+  const [loadingUsers, setLoadingUsers] = useState(isLive)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [addStaffOpen, setAddStaffOpen] = useState(false)
+
+  const reloadStaff = useCallback(() => {
+    if (!isLive) return
+    setLoadingUsers(true)
+    setLoadError(null)
+    listStaff()
+      .then((rows) => setLiveUsers(rows))
+      .catch((cause) => setLoadError(actionFailureMessage(cause, 'Could not load the staff list.')))
+      .finally(() => setLoadingUsers(false))
+  }, [])
+
+  useEffect(() => {
+    reloadStaff()
+  }, [reloadStaff])
+
+  const liveRows = useMemo(() => {
+    const rows = liveUsers ?? []
+    if (!q.trim()) return rows
+    const lower = q.trim().toLowerCase()
+    return rows.filter(
+      (u) =>
+        u.name.toLowerCase().includes(lower) ||
+        u.email.toLowerCase().includes(lower) ||
+        u.role.toLowerCase().includes(lower),
+    )
+  }, [liveUsers, q])
+
+  const fixtureRows = useMemo(() => {
     if (!q.trim()) return FIXTURE_USERS
     const lower = q.trim().toLowerCase()
     return FIXTURE_USERS.filter(
@@ -78,6 +137,43 @@ export function UsersTeams() {
         u.role.toLowerCase().includes(lower),
     )
   }, [q])
+
+  const liveColumns: Column<StaffUser>[] = [
+    {
+      header: 'User',
+      cell: (u) => (
+        <div className="flex items-center gap-2.5">
+          <Avatar name={u.name} />
+          <div className="min-w-0">
+            <p className="m-0 text-[13px] font-medium text-heading">{u.name}</p>
+            <p className="m-0 text-[11px] text-muted">{u.email}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: 'Role',
+      cell: (u) => {
+        const tone = ROLE_TONES[LIVE_ROLE_TONE[u.role] ?? 'slate']
+        return (
+          <Badge background={tone[0]} color={tone[1]}>
+            {t(u.role)}
+          </Badge>
+        )
+      },
+    },
+    {
+      header: 'Status',
+      cell: (u) => {
+        const tone = LIVE_STATUS_STYLES[u.status] ?? LIVE_STATUS_STYLES.disabled
+        return (
+          <Badge background={tone[0]} color={tone[1]}>
+            {t(u.status)}
+          </Badge>
+        )
+      },
+    },
+  ]
 
   const userColumns: Column<User>[] = [
     {
@@ -131,9 +227,13 @@ export function UsersTeams() {
           </div>
         </div>
         <div className="flex gap-2.5">
-          <Button variant="outline" disabled={!isLive}>
+          <Button
+            variant="outline"
+            disabled={!isLive}
+            onClick={() => setAddStaffOpen(true)}
+          >
             <Icon name="UserPlus" size={15} />
-            {t('Invite User')}
+            {t('Add Staff')}
           </Button>
           <Button disabled={!isLive}>
             <Icon name="Plus" size={16} />
@@ -142,74 +242,156 @@ export function UsersTeams() {
         </div>
       </div>
 
-      <Card className="overflow-hidden p-0">
-        <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
-          <h2 className="text-base font-bold text-heading">{t('Users')}</h2>
-          <Badge background="rgba(10,94,215,.08)" color="var(--salis-blue)">
-            {users.length}
-          </Badge>
-          <div className="flex-1" />
-          <Input
-            icon="Search"
-            inputSize="sm"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder={t('Search users...')}
-            className="w-full sm:w-56"
-            aria-label={t('Search users')}
-          />
-        </div>
-
-        <DataTable
-          caption="Users list"
-          columns={userColumns}
-          rows={users}
-          rowKey={(u) => u.email}
-          empty={
-            <EmptyState
-              icon="Users"
-              title={t('No users found')}
-              description={t('No users match the current search.')}
+      {isLive ? (
+        <Card className="overflow-hidden p-0">
+          <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
+            <h2 className="text-base font-bold text-heading">{t('Users')}</h2>
+            <Badge background="rgba(10,94,215,.08)" color="var(--salis-blue)">
+              {liveRows.length}
+            </Badge>
+            <div className="flex-1" />
+            <Input
+              icon="Search"
+              inputSize="sm"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={t('Search users...')}
+              className="w-full sm:w-56"
+              aria-label={t('Search users')}
             />
-          }
-          mobileCard={(u) => (
-            <>
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2.5">
-                    <Avatar name={u.name} />
-                    <div className="min-w-0">
-                      <span className="text-[13px] font-semibold text-heading">{u.name}</span>
-                      <span className="block text-[11px] text-muted">{u.email}</span>
-                    </div>
-                  </div>
-                }
-                trailing={
-                  <Badge
-                    background={STATUS_STYLES[u.status][0]}
-                    color={STATUS_STYLES[u.status][1]}
-                  >
-                    {t(u.status)}
-                  </Badge>
-                }
-              />
-              <MobileCardRow
-                label={t('Role')}
-                value={
-                  <Badge
-                    background={ROLE_TONES[u.roleTone][0]}
-                    color={ROLE_TONES[u.roleTone][1]}
-                  >
-                    {t(u.role)}
-                  </Badge>
-                }
-              />
-              <MobileCardRow label={t('Team')} value={t(u.team)} />
-              <MobileCardRow label={t('Last Login')} value={u.lastLogin} />
-            </>
+          </div>
+
+          {loadError ? (
+            <div className="p-4 sm:p-6">
+              <EmptyState icon="AlertCircle" title={t('Could not load staff')} description={loadError} />
+            </div>
+          ) : (
+            <DataTable
+              caption="Users list"
+              columns={liveColumns}
+              rows={liveRows}
+              rowKey={(u) => u.id}
+              loading={loadingUsers}
+              empty={
+                <EmptyState
+                  icon="Users"
+                  title={t('No users found')}
+                  description={t('No users match the current search.')}
+                />
+              }
+              mobileCard={(u) => (
+                <>
+                  <MobileCardHeader
+                    leading={
+                      <div className="flex items-center gap-2.5">
+                        <Avatar name={u.name} />
+                        <div className="min-w-0">
+                          <span className="text-[13px] font-semibold text-heading">{u.name}</span>
+                          <span className="block text-[11px] text-muted">{u.email}</span>
+                        </div>
+                      </div>
+                    }
+                    trailing={(() => {
+                      const tone = LIVE_STATUS_STYLES[u.status] ?? LIVE_STATUS_STYLES.disabled
+                      return (
+                        <Badge background={tone[0]} color={tone[1]}>
+                          {t(u.status)}
+                        </Badge>
+                      )
+                    })()}
+                  />
+                  <MobileCardRow
+                    label={t('Role')}
+                    value={(() => {
+                      const tone = ROLE_TONES[LIVE_ROLE_TONE[u.role] ?? 'slate']
+                      return (
+                        <Badge background={tone[0]} color={tone[1]}>
+                          {t(u.role)}
+                        </Badge>
+                      )
+                    })()}
+                  />
+                </>
+              )}
+            />
           )}
-        />
-      </Card>
+        </Card>
+      ) : (
+        <Card className="overflow-hidden p-0">
+          <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
+            <h2 className="text-base font-bold text-heading">{t('Users')}</h2>
+            <Badge background="rgba(10,94,215,.08)" color="var(--salis-blue)">
+              {fixtureRows.length}
+            </Badge>
+            <div className="flex-1" />
+            <Input
+              icon="Search"
+              inputSize="sm"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={t('Search users...')}
+              className="w-full sm:w-56"
+              aria-label={t('Search users')}
+            />
+          </div>
+
+          <DataTable
+            caption="Users list"
+            columns={userColumns}
+            rows={fixtureRows}
+            rowKey={(u) => u.email}
+            empty={
+              <EmptyState
+                icon="Users"
+                title={t('No users found')}
+                description={t('No users match the current search.')}
+              />
+            }
+            mobileCard={(u) => (
+              <>
+                <MobileCardHeader
+                  leading={
+                    <div className="flex items-center gap-2.5">
+                      <Avatar name={u.name} />
+                      <div className="min-w-0">
+                        <span className="text-[13px] font-semibold text-heading">{u.name}</span>
+                        <span className="block text-[11px] text-muted">{u.email}</span>
+                      </div>
+                    </div>
+                  }
+                  trailing={
+                    <Badge
+                      background={STATUS_STYLES[u.status][0]}
+                      color={STATUS_STYLES[u.status][1]}
+                    >
+                      {t(u.status)}
+                    </Badge>
+                  }
+                />
+                <MobileCardRow
+                  label={t('Role')}
+                  value={
+                    <Badge
+                      background={ROLE_TONES[u.roleTone][0]}
+                      color={ROLE_TONES[u.roleTone][1]}
+                    >
+                      {t(u.role)}
+                    </Badge>
+                  }
+                />
+                <MobileCardRow label={t('Team')} value={t(u.team)} />
+                <MobileCardRow label={t('Last Login')} value={u.lastLogin} />
+              </>
+            )}
+          />
+        </Card>
+      )}
+
+      <AddStaffModal
+        open={addStaffOpen}
+        onClose={() => setAddStaffOpen(false)}
+        onCreated={reloadStaff}
+      />
 
       <Card className="p-4 sm:p-6">
         <h2 className="mb-4 text-base font-bold text-heading">{t('Teams')}</h2>

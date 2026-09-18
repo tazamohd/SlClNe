@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 427,
     "screensTotal": 427,
-    "endpointsMapped": 374,
-    "endpointsTotal": 374
+    "endpointsMapped": 379,
+    "endpointsTotal": 379
   },
   "capabilities": [
     {
@@ -207,7 +207,7 @@
       ],
       "objective": "OBJ-RETENTION",
       "objectiveName": "Retain customers",
-      "endpointCount": 19,
+      "endpointCount": 20,
       "endpoints": [
         "API-CUSTOMERS-GET-LIST",
         "API-CUSTOMERS-POST-LIST",
@@ -215,6 +215,7 @@
         "API-CUSTOMERS-GETID",
         "API-CUSTOMERS-PATCHID",
         "API-GET-CUSTOMERS-ID-HISTORY",
+        "API-POST-CUSTOMERS-ID-PORTAL-ACCESS",
         "API-CUSTOMERS-POSTBULK-DELETE",
         "API-CUSTOMERS-POSTBULK-UPDATE",
         "API-CUSTOMERS-GETEXPORT",
@@ -1000,12 +1001,14 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 19,
+      "endpointCount": 21,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
         "API-DEPARTMENTS-GETID",
         "API-GET-ADMIN-DEPARTMENTS-ID-HISTORY",
         "API-DEPARTMENTS-GETEXPORT",
+        "API-GET-ADMIN-STAFF",
+        "API-POST-ADMIN-STAFF",
         "API-BRANCHES-GET-LIST",
         "API-BRANCHES-GETID",
         "API-GET-BRANCHES-ID-HISTORY",
@@ -1098,13 +1101,15 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 24,
+      "endpointCount": 26,
       "endpoints": [
         "API-POST-AUTH-2FA-ENROL",
         "API-POST-AUTH-2FA-VERIFY",
         "API-POST-AUTH-BIOMETRIC-CHALLENGE",
         "API-POST-AUTH-BIOMETRIC-ENROL",
         "API-POST-AUTH-FORGOT-PASSWORD",
+        "API-GET-AUTH-INVITE-TOKEN",
+        "API-POST-AUTH-INVITE-TOKEN-ACCEPT",
         "API-POST-AUTH-LOGIN",
         "API-POST-AUTH-LOGOUT",
         "API-GET-AUTH-ME",

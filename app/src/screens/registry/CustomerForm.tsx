@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { z } from 'zod'
 import { customerCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +14,7 @@ import {
 import { useToast } from '@/components/ui/Toast'
 import { RepositoryError, useCreate, useUpdate, useDelete, type RowOf } from '@/data/useCollection'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { grantCustomerPortalAccess } from './customer-portal-access'
 import { NoWritesNotice, asPatch, rowId, serverFieldError } from './writes'
 
 /** Add / Edit Customer — the "Add New Customer" panel of
@@ -134,7 +136,30 @@ export function CustomerFormModal({
     onClose()
   }
 
-  const busy = form.pending || remove.isPending
+  const [grantingAccess, setGrantingAccess] = useState(false)
+
+  const handleGrantPortalAccess = async () => {
+    const id = rowId(customer)
+    if (!id) return
+    setGrantingAccess(true)
+    try {
+      const result = await grantCustomerPortalAccess(id)
+      toast.show({
+        title: t('Portal access granted'),
+        description: t('An invite email is on its way to') + ` ${result.user.email}.`,
+      })
+    } catch (cause) {
+      toast.show({
+        title: t('Could not grant portal access'),
+        description: cause instanceof RepositoryError ? cause.message : String(cause),
+        error: true,
+      })
+    } finally {
+      setGrantingAccess(false)
+    }
+  }
+
+  const busy = form.pending || remove.isPending || grantingAccess
 
   return (
     <Modal
@@ -156,6 +181,17 @@ export function CustomerFormModal({
             >
               <Icon name="Trash2" size={14} />
               {t('Delete')}
+            </Button>
+          ) : null}
+          {editing && rowId(customer) && customer?.email ? (
+            <Button
+              variant="subtle"
+              size="lg"
+              onClick={() => void handleGrantPortalAccess()}
+              disabled={busy}
+            >
+              <Icon name="UserPlus" size={14} />
+              {grantingAccess ? t('Granting...') : t('Grant Portal Access')}
             </Button>
           ) : null}
           <div className="flex-1" />

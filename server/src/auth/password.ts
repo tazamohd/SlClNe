@@ -15,6 +15,7 @@
  *    weaker parameters than the ones now configured, so the cost can be raised
  *    and existing users migrate on their next successful sign-in.
  */
+import { randomBytes } from 'node:crypto'
 import { hash, verify, type Algorithm } from '@node-rs/argon2'
 import type { AuthConfig } from './config'
 
@@ -63,6 +64,15 @@ function options(config: AuthConfig) {
 
 export async function hashPassword(password: string, config: AuthConfig): Promise<string> {
   return hash(password, options(config))
+}
+
+/** A one-time password for a directly-created staff account (`POST
+ *  /admin/staff`, `mode: 'direct'`) — handed to the admin once in the API
+ *  response, never stored in plaintext or logged. `node:crypto`, not
+ *  `Math.random`: this is a real credential, not a display id. Comfortably
+ *  above `MIN_PASSWORD_LENGTH` so it always clears the policy check. */
+export function generateTemporaryPassword(): string {
+  return randomBytes(18).toString('base64url')
 }
 
 /** Cached so the enumeration-defence path costs the same as a real check
