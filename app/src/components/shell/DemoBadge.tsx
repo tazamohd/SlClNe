@@ -11,8 +11,8 @@ import { Icon } from '@/components/ui/Icon'
  *
  *  The border and icon carry the orange — `text-heading` carries the actual
  *  label. `text-salis-orange` on `bg-tint-orange` is exactly the brand-palette
- *  contrast pairing `e2e/a11y.spec.ts` documents as failing WCAG (orange
- *  #F97316 on its own tint); this badge is new on every shell it mounts in,
+ *  contrast pairing `e2e/a11y.spec.ts` documents as failing WCAG (the orange
+ *  brand hue on its own tint); this badge is new on every shell it mounts in,
  *  so using that pairing here would raise the colour-contrast ratchet on
  *  every route that renders it — the one thing `BASELINE.json` never allows. */
 export function DemoBadge({ compact = false }: { compact?: boolean }) {
