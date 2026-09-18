@@ -1209,7 +1209,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/CUSTOMERAPP.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 3484,
+      "bytes": 3469,
       "lines": 76,
       "type": "GENERATED",
       "archived": false,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16782,
-      "lines": 238,
+      "bytes": 16588,
+      "lines": 237,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61276,
+      "bytes": 61270,
       "lines": 437,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

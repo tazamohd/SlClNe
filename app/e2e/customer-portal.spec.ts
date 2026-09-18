@@ -54,29 +54,41 @@ test.describe('Customer Portal (Golden Path 19)', () => {
       const text = await bodyText(page)
       expect(text).toContain('Active Service')
       expect(text).toContain('Progress')
-      expect(text).toContain('Vehicle Checked In')
+      /* The timeline is wired to the real job stage (BLK-004): it renders
+       * all six real workshop stages from WorkflowStepper.ts, not the old
+       * fixture's invented "Vehicle Checked In" wording. "Check-In" is
+       * always present as the first rail step regardless of which stage
+       * the seeded active job is actually on. */
+      expect(text).toContain('Check-In')
     })
 
-    test('customer app wallet loads with balance', async ({ page }) => {
+    test('customer app wallet has no data source yet', async ({ page }) => {
       await gotoReady(page, '/customer-app/wallet')
       const text = await bodyText(page)
-      expect(text).toContain('Balance')
-      expect(text).toContain('SAR 850.00')
-      expect(text).toContain('Transactions')
+      /* No wallet/balance/ledger backend exists (BLK-004): the previous
+       * three invented transactions and their summed "SAR 850.00" balance
+       * are gone, replaced with an honest gap state. */
+      expect(text).toContain('Wallet')
+      expect(text).toContain('Wallet not available yet')
     })
 
-    test('customer app orders loads', async ({ page }) => {
+    test('customer app orders has no data source yet', async ({ page }) => {
       await gotoReady(page, '/customer-app/orders')
       const text = await bodyText(page)
       expect(text).toContain('My Orders')
-      expect(text).toContain('ORD-0042')
+      /* No order/catalog backend exists (BLK-004): the previous invented
+       * "ORD-0042" row is gone, replaced with an honest gap state. */
+      expect(text).toContain('Order history not available yet')
     })
 
-    test('customer app notifications loads', async ({ page }) => {
+    test('customer app notifications has no data source yet', async ({ page }) => {
       await gotoReady(page, '/customer-app/notifications')
       const text = await bodyText(page)
       expect(text).toContain('Notifications')
-      expect(text).toContain('Service Update')
+      /* No notification feed/delivery backend exists (BLK-004): the
+       * previous invented "Service Update" row is gone, replaced with an
+       * honest gap state. */
+      expect(text).toContain('Notifications not available yet')
     })
 
     test('customer app profile loads', async ({ page }) => {
@@ -117,10 +129,12 @@ test.describe('Customer portal lifecycle', () => {
     await gotoReady(page, '/customer-app/service-tracking')
     expect(await bodyText(page)).toContain('Active Service')
 
+    // No wallet/order backend exists (BLK-004) — the honest gap state, not
+    // the old fixture's invented balance and order number.
     await gotoReady(page, '/customer-app/wallet')
-    expect(await bodyText(page)).toContain('SAR 850.00')
+    expect(await bodyText(page)).toContain('Wallet not available yet')
 
     await gotoReady(page, '/customer-app/orders')
-    expect(await bodyText(page)).toContain('ORD-0042')
+    expect(await bodyText(page)).toContain('Order history not available yet')
   })
 })

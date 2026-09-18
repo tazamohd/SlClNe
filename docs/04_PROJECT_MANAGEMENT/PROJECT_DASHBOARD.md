@@ -23,14 +23,14 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 428 | `STATUS.json` |
 | Rendering | 428 of 428 | `STATUS.json` |
-| Wired to the API | 111 of 428 | `STATUS.json` |
-| Reading design fixtures | 277 of 428 | `STATUS.json` |
+| Wired to the API | 114 of 428 | `STATUS.json` |
+| Reading design fixtures | 274 of 428 | `STATUS.json` |
 | End-to-end covered | 428 of 428 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 79 of 428 | `STATUS.json` |
 | Tablet verified | 4 of 428 | `STATUS.json` |
 | API endpoints | 385 | the route files |
-| Test cases | 2244 | the spec files |
+| Test cases | 2214 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**277 of 428 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**274 of 428 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 277 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 274 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 | BLK-010 | MEDIUM | 10 screen files are unreachable from any route | src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts | 02 |
 
 ## Open risks

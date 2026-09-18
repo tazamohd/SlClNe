@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-428 capabilities · 428 rendering · 0 placeholder · 111 data-backed.
+428 capabilities · 428 rendering · 0 placeholder · 114 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -24,7 +24,7 @@
 | BiometricSetup | `/biometric-setup` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Branches | `/branches` | app | admin | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
 | CallCenter | `/call-center` | call-center | callcenter | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
-| CallCenter · Logs | `/call-center/logs` | call-center | callcenter | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
+| CallCenter · Logs | `/call-center/logs` | call-center | callcenter | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | Campaigns | `/campaigns` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | ChartOfAccounts | `/chart-of-accounts` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | ConversationHistory | `/conversation-history` | app | aiadmin | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 3 roles | route | IMPLEMENTED |
@@ -35,13 +35,13 @@
 | CustomerApp · Appointments | `/customer-app/appointments` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Garage | `/customer-app/garage` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Home | `/customer-app/home` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| CustomerApp · Insurance | `/customer-app/insurance` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| CustomerApp · Loans | `/customer-app/loans` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Marketplace | `/customer-app/marketplace` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Notifications | `/customer-app/notifications` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Orders | `/customer-app/orders` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApp · Profile | `/customer-app/profile` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| CustomerApp · ServiceTracking | `/customer-app/service-tracking` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| CustomerApp · ServiceTracking | `/customer-app/service-tracking` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | CustomerApp · Wallet | `/customer-app/wallet` | customer-app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | CustomerApproval | `/customer-approval` | app | estimates | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | CustomerDetail | `/customer-detail` | app | customers | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
@@ -107,14 +107,14 @@
 | PartsNetwork · Incoming | `/parts-network/incoming` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PartsNetwork · Members | `/parts-network/members` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PartsNetwork · Orders | `/parts-network/orders` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · Quotations | `/parts-network/quotations` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PartsNetwork · Quotations | `/parts-network/quotations` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PartsNetwork · Requests | `/parts-network/requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · SendRequest | `/parts-network/send-request` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsSupplyNetwork | `/parts-supply-network` | app | network | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
+| PartsNetwork · SendRequest | `/parts-network/send-request` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PartsSupplyNetwork | `/parts-supply-network` | app | network | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | Payments | `/payments` | app | payments | DONE | MISSING | DONE | VERIFIED | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
 | PrivacyPolicy | `/privacy-policy` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| ProcurementPortal | `/procurement-portal` | portal | portalprocure | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
-| ProcurementPortal · Requisitions | `/procurement-portal/requisitions` | portal | portalprocure | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
+| ProcurementPortal | `/procurement-portal` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
+| ProcurementPortal · Requisitions | `/procurement-portal/requisitions` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
 | Profile | `/profile` | app | dashboard | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 13 roles | route | IMPLEMENTED |
 | ProfileCompletion | `/profile-completion` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PromptLibrary | `/prompt-library` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |

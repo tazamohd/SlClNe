@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type FormEvent } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
@@ -11,7 +11,6 @@ import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
-import { Field as AuthField } from '@/components/shell/AuthCard'
 import { DataTable, EmptyState, TableFooter, type Column } from '@/components/ui/DataTable'
 import {
   Field,
@@ -26,7 +25,6 @@ import {
 import { Modal, useModal } from '@/components/ui/Modal'
 import { ErrorState, Loading, ReadOnlyNotice } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
-import { Textarea } from '@/components/ui/Textarea'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
@@ -44,46 +42,49 @@ import {
 import { approvalLimit, canApprove as roleCanApprove, sodCounterpart } from '@/data/rbac'
 import { NETWORK_STATUS, PRIORITY_TONE, type Requisition } from '@/data/network'
 
-// ── Send request ────────────────────────────────────────────────────────────
-const PRIORITIES = ['urgent', 'normal', 'low'] as const
+// ── Send request / Quotations ────────────────────────────────────────────────
+//
+// Both screens belong to the same parts-network marketplace as
+// screens/network/PartsNetwork.tsx: a proposed garage-to-garage sourcing
+// network with no backend behind it (no matching route in
+// project-control/API_REGISTRY.json, no type in packages/contract/, no table
+// in server/drizzle/ — see project-control/SOURCE_RECONCILIATION.md). The
+// design's versions faked success here specifically: submitting a request
+// showed "Request sent" with no request persisted anywhere, and "Accept &
+// Order" against a hardcoded quote list showed "Order placed" with no order
+// placed — exactly the false-success write project-control/BLOCKERS.json's
+// BLK-004 forbids. Converted to the ConnectApi/StaffGap.tsx GAP convention
+// used elsewhere for screens whose backend doesn't exist yet.
 
-/** Raise a quotation request to the network.
- *
- *  The design's version had no validation — you could send an empty request to
- *  every supplier on the network. Part name and quantity are required here. */
+function NetworkGapPanel({
+  icon,
+  title,
+  description,
+  collection,
+}: {
+  icon: string
+  title: string
+  description: string
+  collection: string
+}) {
+  const { t } = usePreferences()
+  return (
+    <>
+      <EmptyState icon={icon} title={t(title)} description={t(description)} />
+      <p className="mt-3 flex flex-wrap items-start justify-center gap-1.5 text-[11px] text-muted">
+        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+        {t('Connect the API — no data source yet:')}{' '}
+        <span dir="ltr" className="font-mono text-body">
+          {collection}
+        </span>
+      </p>
+    </>
+  )
+}
+
 export function PartsNetworkSendRequest() {
   const { t } = usePreferences()
-  const toast = useToast()
   const navigate = useNavigate()
-
-  const [part, setPart] = useState('')
-  const [partNumber, setPartNumber] = useState('')
-  const [vehicle, setVehicle] = useState('')
-  const [qty, setQty] = useState('1')
-  const [priority, setPriority] = useState<string>('normal')
-  const [notes, setNotes] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-
-  const missingPart = !part.trim()
-  const badQty = !(Number(qty) > 0)
-
-  function submit(event: FormEvent) {
-    event.preventDefault()
-    setSubmitted(true)
-    if (missingPart || badQty) {
-      toast.show({
-        title: t('Error'),
-        description: t('Enter a part name and a quantity above zero.'),
-        error: true,
-      })
-      return
-    }
-    toast.show({
-      title: t('Request sent'),
-      description: t('Suppliers in your network will respond with quotes.'),
-    })
-    setTimeout(() => navigate('/parts-network/requests'), 700)
-  }
 
   return (
     <>
@@ -93,221 +94,43 @@ export function PartsNetworkSendRequest() {
         subtitle={t('Ask the network for a price on a part')}
       />
 
-      <form onSubmit={submit} noValidate className="contents">
-        <Section title={t('Part Details')}>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <AuthField label={t('Part Name')} htmlFor="part">
-              <Input
-                id="part"
-                inputSize="md"
-                value={part}
-                onChange={(e) => setPart(e.target.value)}
-                placeholder={t('Front Brake Pads Set')}
-                invalid={submitted && missingPart}
-              />
-            </AuthField>
-            <AuthField label={t('Part Number')} htmlFor="part-number">
-              <Input
-                id="part-number"
-                inputSize="md"
-                value={partNumber}
-                onChange={(e) => setPartNumber(e.target.value)}
-                placeholder="04465-33450"
-                dir="ltr"
-              />
-            </AuthField>
-            <AuthField label={t('Vehicle')} htmlFor="vehicle">
-              <Input
-                id="vehicle"
-                inputSize="md"
-                value={vehicle}
-                onChange={(e) => setVehicle(e.target.value)}
-                placeholder={t('Toyota Camry 2022')}
-              />
-            </AuthField>
-            <AuthField label={t('Quantity')} htmlFor="qty">
-              <Input
-                id="qty"
-                inputSize="md"
-                type="number"
-                min={1}
-                value={qty}
-                onChange={(e) => setQty(e.target.value)}
-                invalid={submitted && badQty}
-                dir="ltr"
-              />
-            </AuthField>
-          </div>
+      <Section title={t('Part Details')}>
+        <NetworkGapPanel
+          icon="Send"
+          title="Requesting quotes isn’t available yet"
+          description="Sending a request needs a network of other garages and dealers to send it to, which has no backend yet — filling in this form couldn’t reach anyone."
+          collection="partsNetworkRequests"
+        />
+      </Section>
 
-          <div className="flex flex-col gap-1.5">
-            <span className="font-action text-xs font-medium text-heading">{t('Priority')}</span>
-            <ChipGroup label={t('Priority')}>
-              {PRIORITIES.map((option) => (
-                <Chip
-                  key={option}
-                  label={t(option[0].toUpperCase() + option.slice(1))}
-                  selected={priority === option}
-                  onToggle={() => setPriority(option)}
-                />
-              ))}
-            </ChipGroup>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="notes" className="font-action text-xs font-medium text-heading">
-              {t('Notes')}
-            </label>
-            <Textarea
-              id="notes"
-              rows={3}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder={t('Condition, brand preference, delivery window...')}
-              className="text-[13px]"
-            />
-          </div>
-        </Section>
-
-        <div className="flex justify-end gap-3">
-          <Button variant="outline" size="lg" onClick={() => navigate('/parts-network')}>
-            {t('Cancel')}
-          </Button>
-          <Button type="submit" size="lg">
-            <Icon name="Send" size={16} />
-            {t('Send Request')}
-          </Button>
-        </div>
-      </form>
+      <div className="flex justify-end">
+        <Button variant="outline" size="lg" onClick={() => navigate('/parts-network')}>
+          {t('Back')}
+        </Button>
+      </div>
     </>
   )
 }
 
-// ── Quotations ──────────────────────────────────────────────────────────────
-interface Quote {
-  supplier: string
-  city: string
-  unit: number
-  qty: number
-  lead: string
-  rating: number
-}
-
-/** Quotes received against a request. Transcribed from
- *  PartsNetwork.Quotations.dc.html. */
-const QUOTES: readonly Quote[] = [
-  { supplier: 'Al-Faisal Auto Parts', city: 'Riyadh', unit: 250, qty: 4, lead: '2 days', rating: 4.8 },
-  { supplier: 'Parts Hub KSA', city: 'Dammam', unit: 265, qty: 4, lead: '1 day', rating: 4.4 },
-  { supplier: 'Saudi Parts Company', city: 'Jeddah', unit: 240, qty: 4, lead: '4 days', rating: 4.5 },
-]
-
-const SORTS = [
-  { id: 'price', label: 'Price', icon: 'ArrowUpDown' },
-  { id: 'rating', label: 'Rating', icon: 'Star' },
-  { id: 'lead', label: 'Lead Time', icon: 'Clock' },
-] as const
-
 export function PartsNetworkQuotations() {
   const { t } = usePreferences()
-  const toast = useToast()
-  const [sort, setSort] = useState<string>('price')
-
-  // Sorting is real: the design's buttons only restyled themselves. Comparing
-  // quotes is the entire point of the screen.
-  const sorted = useMemo(() => {
-    const rows = [...QUOTES]
-    if (sort === 'price') rows.sort((a, b) => a.unit - b.unit)
-    if (sort === 'rating') rows.sort((a, b) => b.rating - a.rating)
-    if (sort === 'lead') rows.sort((a, b) => parseInt(a.lead, 10) - parseInt(b.lead, 10))
-    return rows
-  }, [sort])
-
-  const best = Math.min(...QUOTES.map((q) => q.unit))
-
-  const columns: Column<Quote>[] = [
-    {
-      header: 'Supplier',
-      cell: (q) => (
-        <span className="flex items-center gap-2">
-          {q.supplier}
-          {q.unit === best ? (
-            <Badge background="var(--tint-blue)" color="var(--salis-blue)">
-              {t('Best price')}
-            </Badge>
-          ) : null}
-        </span>
-      ),
-    },
-    { header: 'City', cell: (q) => t(q.city) },
-    { header: 'Unit Price', cell: (q) => <Money sar={q.unit} /> },
-    { header: 'Total', cell: (q) => <Money sar={q.unit * q.qty} className="font-semibold" /> },
-    { header: 'Lead Time', cell: (q) => t(q.lead) },
-    {
-      header: 'Rating',
-      cell: (q) => (
-        <span className="inline-flex items-center gap-1">
-          <Icon name="Star" size={13} className="text-salis-orange" />
-          <span className="font-mono text-[13px]" dir="ltr">
-            {q.rating}
-          </span>
-        </span>
-      ),
-    },
-  ]
 
   return (
     <>
       <FeatureHeader
         icon="FileText"
         title={t('Quotations')}
-        subtitle={t('Compare quotes received for Front Brake Pads Set')}
+        subtitle={t('Compare quotes received from the network')}
       />
 
-      <ChipGroup label={t('Sort by')}>
-        {SORTS.map((option) => (
-          <Chip key={option.id} label={t(option.label)} selected={sort === option.id} onToggle={() => setSort(option.id)} />
-        ))}
-      </ChipGroup>
-
-      <DataTable
-        caption="Supplier quotations"
-        columns={columns}
-        rows={sorted}
-        rowKey={(q) => q.supplier}
-        mobileCard={(q) => (
-          <>
-            <MobileCardHeader
-              title={q.supplier}
-              trailing={
-                q.unit === best ? (
-                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">
-                    {t('Best price')}
-                  </Badge>
-                ) : undefined
-              }
-            />
-            <MobileCardRow label={t('Unit Price')}>
-              <Money sar={q.unit} className="text-heading" />
-            </MobileCardRow>
-            <MobileCardRow label={t('Total')}>
-              <Money sar={q.unit * q.qty} className="font-semibold text-heading" />
-            </MobileCardRow>
-            <MobileCardRow label={t('Lead Time')}>{t(q.lead)}</MobileCardRow>
-          </>
-        )}
-        empty={<EmptyState icon="FileText" title={t('No quotes received yet')} />}
-      />
-
-      <div className="flex justify-end">
-        <Button
-          size="lg"
-          onClick={() =>
-            toast.show({ title: t('Order placed'), description: t('The supplier has been notified.') })
-          }
-        >
-          <Icon name="ShoppingCart" size={16} />
-          {t('Accept & Order')}
-        </Button>
-      </div>
+      <Section title={t('Quotations')}>
+        <NetworkGapPanel
+          icon="FileText"
+          title="No quotes received yet"
+          description="Quotes from other network members would appear here once a request has been sent and answered — neither exists as a backend collection yet."
+          collection="partsNetworkQuotes"
+        />
+      </Section>
     </>
   )
 }
@@ -1731,7 +1554,7 @@ export function PartsSupplyNetwork() {
 
       <StatRow
         stats={[
-          { label: 'Partners', value: 156, caption: 'Connected', highlight: true },
+          { label: 'Partners', value: 0, caption: 'Connected', highlight: true },
           { label: 'Open Fulfilments', value: 0, caption: 'In progress', tone: 'info' },
           { label: 'In Transit', value: 0, caption: 'Shipments', tone: 'info' },
           { label: 'Warehouses', value: 0, caption: 'Stocking points' },

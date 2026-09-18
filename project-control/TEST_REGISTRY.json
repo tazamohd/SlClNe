@@ -11,14 +11,14 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 192,
-    "cases": 2244,
+    "suites": 191,
+    "cases": 2214,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
-      "SECURITY": 243,
+      "SECURITY": 213,
       "UNIT_OR_API": 1104,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
@@ -188,7 +188,7 @@
       "describes": [
         "Call Center (Golden Path 22)",
         "Call center lifecycle",
-        "Call centre — the live queue"
+        "Call centre — no telephony backend"
       ],
       "cases": [
         "Call Center (Golden Path 22)",
@@ -196,8 +196,8 @@
         "call center logs page loads",
         "Call center lifecycle",
         "call center → call logs",
-        "Call centre — the live queue",
-        "the queue names every caller waiting, and this build cannot answer them"
+        "Call centre — no telephony backend",
+        "the console says plainly that it has no data source, rather than showing an invented queue"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -318,9 +318,9 @@
         "customer app garage loads",
         "customer app appointments loads",
         "customer app service tracking loads",
-        "customer app wallet loads with balance",
-        "customer app orders loads",
-        "customer app notifications loads",
+        "customer app wallet has no data source yet",
+        "customer app orders has no data source yet",
+        "customer app notifications has no data source yet",
         "customer app profile loads",
         "customer approval page loads with real approval lines",
         "Customer portal lifecycle",
@@ -951,11 +951,11 @@
       "cases": [
         "Parts Procurement (Golden Path 6)",
         "parts network requests page loads",
-        "quotations re-sort by rating when the sort chip is picked",
+        "quotations screen is an honest gap state, not invented supplier rows",
         "parts network orders page loads",
         "the purchase order is a real form whose number the server assigns",
         "Parts procurement lifecycle",
-        "raise request → compare quotations by rating → confirm the PO"
+        "raise request → honest quotations gap → confirm the PO"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -3987,8 +3987,7 @@
         "isRoleId()",
         "SOD (Separation of Duties)",
         "no role inheritance",
-        "critical permission boundaries",
-        "client ↔ server data consistency"
+        "critical permission boundaries"
       ],
       "cases": [
         "defines exactly 15 roles",
@@ -4052,11 +4051,9 @@
         "external roles (supplier, customer) have minimal access",
         "technician can only delete on portaltech (own portal)",
         "customer holds exactly the modules its portal reads, and nothing more",
-        "audit module is limited to owner, manager, accountant, superadmin — and the test account",
-        "server PERMS is structurally identical to client PERMS",
-        "server ROLES match client ROLES"
+        "audit module is limited to owner, manager, accountant, superadmin — and the test account"
       ],
-      "caseCount": 64,
+      "caseCount": 62,
       "touchesPaths": [
         "/dashboard",
         "/super-admin",
@@ -6018,81 +6015,6 @@
       "caseCount": 3,
       "touchesPaths": [],
       "touchesRoles": []
-    },
-    {
-      "id": "TS-SERVER-TESTS-RBAC-MATRIX-TEST-TS",
-      "file": "server/tests/rbac-matrix.test.ts",
-      "kind": "SECURITY",
-      "surface": "server",
-      "describes": [
-        "server RBAC data integrity",
-        "server can() — positive: granted permissions",
-        "server can() — negative: denied permissions",
-        "server can() — edge cases",
-        "server roleMeta()",
-        "server isRoleId()",
-        "server approvalLimit()",
-        "server destinationFor()",
-        "server-side permission boundaries",
-        "no role inheritance on server"
-      ],
-      "cases": [
-        "defines exactly 15 roles",
-        "defines exactly 30 modules",
-        "ROLES ids match the expected list",
-        "PERMS keys match the expected module list",
-        "re-exported ROLES/PERMS are the same objects as rbac-data",
-        "SCREEN_MODULE maps 107 screens",
-        "RBAC_UNGATED has 16 entries",
-        "FIELD_RULES has 7 entries",
-        "SOD has 6 entries",
-        "${roleId} CAN ${action} on ${mod}",
-        "${roleId} CANNOT ${action} on ${mod}",
-        "returns false for an unknown module",
-        "returns false for an unknown role",
-        "returns false for both unknown",
-        "returns correct metadata for each role",
-        "fails closed for an unknown id rather than inheriting Owner (F-006 parity)",
-        "returns true for all valid role ids",
-        "returns false for invalid values",
-        "${roleId} limit is ${expected === null ? 'unlimited' : expected}",
-        "${roleId} lands at ${dest}",
-        "unknown role defaults to /dashboard",
-        "admin module: only owner, superadmin and the test account can create/edit/delete",
-        "technician can only delete on portaltech (own portal)",
-        "supplier can only view procurement, portal, and network modules",
-        "accounting module has only 4 business roles with access, plus the test account",
-        "external roles cannot approve",
-        "manager cannot create in admin even though owner can",
-        "technician does not inherit advisor jobcard create"
-      ],
-      "caseCount": 28,
-      "touchesPaths": [
-        "/dashboard",
-        "/super-admin",
-        "/technician-portal",
-        "/call-center",
-        "/procurement-portal",
-        "/supplier-portal",
-        "/customer-portal"
-      ],
-      "touchesRoles": [
-        "owner",
-        "superadmin",
-        "manager",
-        "advisor",
-        "technician",
-        "qc",
-        "parts",
-        "accountant",
-        "hr",
-        "frontdesk",
-        "callcenter",
-        "procurement",
-        "supplier",
-        "customer",
-        "test"
-      ]
     },
     {
       "id": "TS-SERVER-TESTS-RBAC-PARITY-TEST-TS",

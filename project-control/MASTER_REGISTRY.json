@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 277,
-    "dataBacked": 111,
+    "mockOnly": 274,
+    "dataBacked": 114,
     "e2eCovered": 428,
     "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 110,
+    "crudRead": 113,
     "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -1359,8 +1359,8 @@
       "purpose": null,
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "DONE",
-      "responsive": "DONE",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
@@ -2120,11 +2120,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insurancePolicies"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2151,7 +2153,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2186,11 +2187,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "loanContracts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2217,7 +2220,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2516,11 +2518,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2547,7 +2551,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7252,7 +7255,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7291,6 +7294,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -7382,7 +7386,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7421,6 +7425,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -7455,7 +7460,7 @@
       "mobileType": "B-responsive",
       "purpose": "Admin-side supply-chain view",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7494,6 +7499,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
@@ -7664,7 +7670,7 @@
       "mobileType": "B-responsive",
       "purpose": "External procurement view (requisitions)",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7707,6 +7713,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
     },
@@ -7739,7 +7746,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7778,6 +7785,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY"
       ]

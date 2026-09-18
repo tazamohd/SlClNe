@@ -660,41 +660,16 @@ describe('critical permission boundaries', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Client ↔ Server data consistency (import server data directly)
+// Client ↔ server data consistency is covered by
+// server/tests/rbac-parity.test.ts, which compares this same client file
+// (app/src/data/generated/rbac.ts) against the canonical @salis/contract
+// PERMS/ROLES/SOD/FIELD_RULES the server actually enforces with — the real
+// second source of truth. A "client ↔ server" block here used to import
+// server/src/auth/rbac-data.ts, a duplicated, buggy copy of the permission
+// engine deleted in 694845f ("Remove the dead server RBAC copy that dropped
+// the delete action") specifically because it could drift from the real
+// one; keeping a test pointed at its corpse would just reintroduce the
+// two-copies risk that commit removed. There is nothing left for this file
+// to compare against that server/tests/rbac-parity.test.ts doesn't already
+// check from the correct source.
 // ---------------------------------------------------------------------------
-
-describe('client ↔ server data consistency', () => {
-  // We load the server's data file and compare against the client's
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  let serverData: typeof import('../src/data/generated/rbac')
-
-  it('server PERMS is structurally identical to client PERMS', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    const clientModules = Object.keys(PERMS).sort()
-    const serverModules = Object.keys(serverData.PERMS).sort()
-    expect(serverModules).toEqual(clientModules)
-
-    for (const mod of clientModules) {
-      const clientRoles = Object.keys(PERMS[mod]!).sort()
-      const serverRoles = Object.keys(serverData.PERMS[mod as keyof typeof serverData.PERMS]).sort()
-      expect(serverRoles, `module "${mod}" roles mismatch`).toEqual(clientRoles)
-
-      for (const role of clientRoles) {
-        expect(
-          (serverData.PERMS as Record<string, Record<string, string>>)[mod]![role],
-          `PERMS["${mod}"]["${role}"] differs between client and server`,
-        ).toBe(PERMS[mod]![role])
-      }
-    }
-  })
-
-  it('server ROLES match client ROLES', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    expect(serverData.ROLES).toHaveLength(ROLES.length)
-    for (let i = 0; i < ROLES.length; i++) {
-      expect(serverData.ROLES[i]!.id, `role index ${i} id mismatch`).toBe(ROLES[i]!.id)
-      expect(serverData.ROLES[i]!.limit, `role ${ROLES[i]!.id} limit mismatch`).toBe(ROLES[i]!.limit)
-      expect(serverData.ROLES[i]!.scope, `role ${ROLES[i]!.id} scope mismatch`).toBe(ROLES[i]!.scope)
-    }
-  })
-})
