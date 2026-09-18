@@ -124,9 +124,9 @@
 | PublicPortal · Accounting | `/public-portal/accounting` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · AI | `/public-portal/ai` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Automation | `/public-portal/automation` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PublicPortal · Blog | `/public-portal/blog` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Blog | `/public-portal/blog` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · BookDemo | `/public-portal/book-demo` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PublicPortal · Careers | `/public-portal/careers` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| PublicPortal · Careers | `/public-portal/careers` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · Contact | `/public-portal/contact` | public | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · CRM | `/public-portal/crm` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PublicPortal · CustomerPortal | `/public-portal/customer-portal` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |

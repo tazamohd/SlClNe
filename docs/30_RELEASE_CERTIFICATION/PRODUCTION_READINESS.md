@@ -24,7 +24,7 @@ Each criterion names the evidence that decided it. No criterion is marked met on
 | PR-07 | Segregation of duties is enforced, not advisory | yes | server/tests/authz-sod.test.ts |
 | PR-08 | The audit log is append-only at the database level | yes | server/drizzle/0011_audit_log_statement_immutability.sql |
 | PR-09 | RTL hazards are at zero | yes | rtlHazards: 0 |
-| PR-10 | Arabic is verified on every screen | **no** | arabicVerified: 74 of 430 |
+| PR-10 | Arabic is verified on every screen | **no** | arabicVerified: 76 of 430 |
 | PR-11 | Tablet layouts are verified | **no** | tabletVerified: 4 of 430 |
 | PR-12 | Every endpoint has a test matched to it | **no** | 315 of 431 unmatched by path |
 | PR-13 | No open release blocker | **no** | project-control/BLOCKERS.json |

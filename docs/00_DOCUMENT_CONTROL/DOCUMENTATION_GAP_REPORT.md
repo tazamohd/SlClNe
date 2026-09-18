@@ -28,7 +28,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Lifecycles with a declared transition table | 1 of 20 |
 | Screens registered and mapped to a capability | 430 of 430 |
 | Screens wired to the live API | 142 of 430 |
-| Test suites catalogued | 202 containing 2291 cases |
+| Test suites catalogued | 202 containing 2292 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
@@ -120,15 +120,15 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-19; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-18; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 39 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 38 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 17 |
-| `project-control/BASELINE.json` | 2026-09-03 | 16 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 37 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 16 |
+| `project-control/BASELINE.json` | 2026-09-03 | 15 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
