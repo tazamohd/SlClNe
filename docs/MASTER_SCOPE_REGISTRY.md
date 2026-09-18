@@ -9,14 +9,14 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Metric | Count |
 |---|---|
 | capabilities | 428 |
-| product | 388 |
+| product | 390 |
 | reference only | 28 |
-| external dependency | 12 |
+| external dependency | 10 |
 | rendered | 428 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 273 |
+| mock only | 275 |
 | data backed | 115 |
 | e2e covered | 428 |
 | content asserted | 428 |
@@ -59,8 +59,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `████████████████████` 100% | 19 | 19 |
-| AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
+| Administration | — | G9 | `████████████████████` 100% | 24 | 24 |
+| AI & automation | 15 | G9 | `████████████████████` 100% | 14 | 14 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
 | Portals, call centre & kiosk | 16 | G10 | `████████████████████` 100% | 13 | 13 |
@@ -71,7 +71,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
 | Public website | 17 | G11 | `████████████████████` 100% | 34 | 34 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
-| Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 211 | 211 |
+| Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 202 | 202 |
 
 ## By RBAC module
 
@@ -79,7 +79,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 |---|---|---|
 | accounting | 7 | 7 |
 | admin | 4 | 4 |
-| ai | 5 | 5 |
+| ai | 14 | 14 |
 | aiadmin | 5 | 5 |
 | appointments | 2 | 2 |
 | approvals | 1 | 1 |

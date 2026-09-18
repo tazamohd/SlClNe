@@ -3,7 +3,7 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 217 screens. */
+ *  handoff/SCREEN_MAP.md — 226 screens. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -28,6 +28,30 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/agent-registry",
     "hasMobile": true,
     "purpose": "Deployed AI agents"
+  },
+  {
+    "name": "AI-Automation",
+    "route": "/ai-automation",
+    "hasMobile": false,
+    "purpose": "AI-driven workshop automation rules"
+  },
+  {
+    "name": "AI-Chatbot",
+    "route": "/ai-chatbot",
+    "hasMobile": false,
+    "purpose": "Customer-facing AI chatbot"
+  },
+  {
+    "name": "AI-Chatbot-Assistant",
+    "route": "/ai-chatbot-assistant",
+    "hasMobile": false,
+    "purpose": "Staff-facing AI chatbot assistant"
+  },
+  {
+    "name": "AI-Service-Advisor",
+    "route": "/ai-service-advisor",
+    "hasMobile": false,
+    "purpose": "AI-assisted service advisor recommendations"
   },
   {
     "name": "AIAnalytics",
@@ -516,6 +540,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "System maintenance banner"
   },
   {
+    "name": "ML-Fraud-Detection",
+    "route": "/ml-fraud-detection",
+    "hasMobile": false,
+    "purpose": "Machine-learning fraud detection on claims/transactions"
+  },
+  {
     "name": "ModelSettings",
     "route": "/model-settings",
     "hasMobile": true,
@@ -532,6 +562,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/native/i-os",
     "hasMobile": false,
     "purpose": "Native shell frame — iOS"
+  },
+  {
+    "name": "Neural-Network-Prediction",
+    "route": "/neural-network-prediction",
+    "hasMobile": false,
+    "purpose": "Neural-network demand/failure prediction"
   },
   {
     "name": "NotificationCenter",
@@ -960,6 +996,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "General tenant settings"
   },
   {
+    "name": "Smart-Damage-Assessment",
+    "route": "/smart-damage-assessment",
+    "hasMobile": false,
+    "purpose": "AI vehicle damage assessment from photos"
+  },
+  {
     "name": "SMSCampaigns",
     "route": "/smscampaigns",
     "hasMobile": true,
@@ -1240,6 +1282,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/vehicles",
     "hasMobile": true,
     "purpose": "Vehicle registry"
+  },
+  {
+    "name": "Voice-Command-Interface",
+    "route": "/voice-command-interface",
+    "hasMobile": false,
+    "purpose": "Voice recognition configuration and training"
+  },
+  {
+    "name": "Voice-Commands",
+    "route": "/voice-commands",
+    "hasMobile": false,
+    "purpose": "Voice-activated hands-free workshop controls"
   },
   {
     "name": "Welcome",

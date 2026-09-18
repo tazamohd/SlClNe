@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 233 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 224 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -241,15 +241,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-190 | `/franchise-management` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-191 | `/globalization-layer` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-192 | `/multi-location-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-193 | `/ai-automation` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-194 | `/ai-chatbot` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-195 | `/ai-chatbot-assistant` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-196 | `/ai-service-advisor` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-197 | `/voice-commands` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-198 | `/voice-command-interface` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-199 | `/smart-damage-assessment` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-200 | `/ml-fraud-detection` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-201 | `/neural-network-prediction` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-202 | `/emerging-technologies` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-203 | `/next-gen-technologies` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-204 | `/io-t-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -284,8 +275,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **203 of 233 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **177 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **194 of 224 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **168 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

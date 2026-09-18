@@ -52,7 +52,7 @@ flowchart LR
   OBJ_CONTROL --> CAP_GOVERNANCE
   CAP_PORTALS["Portals and channels<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_PORTALS
-  CAP_AI["AI and automation<br/>10 screens · 8 endpoints"]
+  CAP_AI["AI and automation<br/>19 screens · 8 endpoints"]
   OBJ_THROUGHPUT --> CAP_AI
   CAP_PLATFORM["Administration and platform<br/>36 screens · 19 endpoints"]
   OBJ_CONTROL --> CAP_PLATFORM
@@ -62,7 +62,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
-  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>233 screens · 0 endpoints"]
+  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>224 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_DESIGNSYSTEM
 ```
 
@@ -82,12 +82,12 @@ flowchart LR
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
-| CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 10 | 4 | 8 | 2 | 6 |
+| CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 6 |
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 19 | 4 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 5 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 30 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 224 | 30 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -283,7 +283,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `ai`, `aiadmin` |
 | Screen domains | — |
-| Screens | 10 (4 data-backed) |
+| Screens | 19 (4 data-backed) |
 | Endpoints | 8 |
 | Entities | `aiAgents`, `conversations` |
 | Roles with any grant | owner, superadmin, manager, advisor, accountant, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 233 (30 data-backed) |
+| Screens | 224 (30 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

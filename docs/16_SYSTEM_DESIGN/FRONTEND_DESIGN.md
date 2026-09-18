@@ -23,7 +23,7 @@ Screens never call HTTP. They call `app/src/data/repository.ts`, which is backed
 | Measure | Count | Of |
 | --- | --- | --- |
 | Screens reading the live API | 115 | 428 |
-| Screens reading design fixtures | 273 | 428 |
+| Screens reading design fixtures | 275 | 428 |
 | Rendering | 428 | 428 |
 | Content-asserted end to end | 428 | 428 |
 

@@ -16,12 +16,12 @@
 | Measure | Count | Of |
 | --- | --- | --- |
 | Registered capabilities | 428 | — |
-| Product screens | 388 | 428 |
+| Product screens | 390 | 428 |
 | Reference-only | 28 | 428 |
 | Rendered | 428 | 428 |
 | Placeholder | 0 | 428 |
 | Data-backed (live API) | 115 | 428 |
-| Mock-only (design fixtures) | 273 | 428 |
+| Mock-only (design fixtures) | 275 | 428 |
 | End-to-end covered | 428 | 428 |
 | Content-asserted (not just routed) | 428 | 428 |
 | Has a loading state | 157 | 428 |
@@ -34,14 +34,14 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **273 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **275 of 428 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 28 | 0 | 0 |
-| app | 314 | 102 | 79 |
+| app | 314 | 102 | 88 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 5 | 0 |
 | portal | 8 | 7 | 4 |
@@ -66,12 +66,12 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
-| CAP-AI | 10 | 4 | 4 | 4 | 4 | 4 |
+| CAP-AI | 19 | 4 | 4 | 4 | 4 | 4 |
 | CAP-PLATFORM | 36 | 5 | 12 | 6 | 16 | 17 |
 | CAP-IDENTITY | 18 | 0 | 0 | 0 | 0 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
 | CAP-CUSTOMERAPP | 11 | 5 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 30 | 56 | 34 | 77 | 21 |
+| CAP-DESIGNSYSTEM | 224 | 30 | 56 | 34 | 77 | 21 |
 
 ## Full registry
 

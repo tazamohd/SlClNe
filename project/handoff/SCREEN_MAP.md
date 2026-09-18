@@ -15,6 +15,10 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **AgentRegistry** | `/agent-registry` | 🖥📱 `AgentRegistry.dc.html` · `AgentRegistry.Mobile.dc.html` | Deployed AI agents |
 | **AIAnalytics** | `/aianalytics` | 🖥📱 `AIAnalytics.dc.html` · `AIAnalytics.Mobile.dc.html` | AI usage & cost analytics |
 | **AIAssistant** | `/aiassistant` | 🖥📱 `AIAssistant.dc.html` · `AIAssistant.Mobile.dc.html` | Conversational AI helper |
+| **AI-Automation** | `/ai-automation` | 🖥 `AI-Automation.dc.html` | AI-driven workshop automation rules |
+| **AI-Chatbot** | `/ai-chatbot` | 🖥 `AI-Chatbot.dc.html` | Customer-facing AI chatbot |
+| **AI-Chatbot-Assistant** | `/ai-chatbot-assistant` | 🖥 `AI-Chatbot-Assistant.dc.html` | Staff-facing AI chatbot assistant |
+| **AI-Service-Advisor** | `/ai-service-advisor` | 🖥 `AI-Service-Advisor.dc.html` | AI-assisted service advisor recommendations |
 | **AppointmentCalendar** | `/appointment-calendar` | 🖥📱 `AppointmentCalendar.dc.html` · `AppointmentCalendar.Mobile.dc.html` | Calendar view of bookings |
 | **Appointments** | `/appointments` | 🖥📱 `Appointments.dc.html` · `Appointments.Mobile.dc.html` | Booking list |
 | **ApprovalInbox** | `/approval-inbox` | 🖥 `ApprovalInbox.dc.html` | Approve/reject items above your delegated limit |
@@ -80,7 +84,9 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **Login** | `/login` | 🖥📱 `Login.dc.html` · `Login.Mobile.dc.html` | Sign in — 14 demo roles fill credentials |
 | **LogoutConfirmation** | `/logout-confirmation` | 🖥📱 `LogoutConfirmation.dc.html` · `LogoutConfirmation.Mobile.dc.html` | Confirm sign-out |
 | **Maintenance** | `/maintenance` | 🖥📱 `Maintenance.dc.html` · `Maintenance.Mobile.dc.html` | System maintenance banner |
+| **ML-Fraud-Detection** | `/ml-fraud-detection` | 🖥 `ML-Fraud-Detection.dc.html` | Machine-learning fraud detection on claims/transactions |
 | **ModelSettings** | `/model-settings` | 🖥📱 `ModelSettings.dc.html` · `ModelSettings.Mobile.dc.html` | AI model config |
+| **Neural-Network-Prediction** | `/neural-network-prediction` | 🖥 `Neural-Network-Prediction.dc.html` | Neural-network demand/failure prediction |
 | **NotificationCenter** | `/notification-center` | 🖥📱 `NotificationCenter.dc.html` · `NotificationCenter.Mobile.dc.html` | System notifications inbox |
 | **OBDDiagnostics** | `/obddiagnostics` | 🖥 `OBDDiagnostics.dc.html` | Live vehicle sensor stream + DTC lookup |
 | **OEMIntegrations** | `/oemintegrations` | 🖥 `OEMIntegrations.dc.html` | OEM diagnostic tool integrations |
@@ -111,6 +117,7 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **SalesReports** | `/sales-reports` | 🖥📱 `SalesReports.dc.html` · `SalesReports.Mobile.dc.html` | Revenue reports |
 | **SessionExpired** | `/session-expired` | 🖥📱 `SessionExpired.dc.html` · `SessionExpired.Mobile.dc.html` | Re-authenticate after idle |
 | **Settings** | `/settings` | 🖥📱 `Settings.dc.html` · `Settings.Mobile.dc.html` | General tenant settings |
+| **Smart-Damage-Assessment** | `/smart-damage-assessment` | 🖥 `Smart-Damage-Assessment.dc.html` | AI vehicle damage assessment from photos |
 | **SMSCampaigns** | `/smscampaigns` | 🖥📱 `SMSCampaigns.dc.html` · `SMSCampaigns.Mobile.dc.html` | SMS campaign composer |
 | **SocialLogin** | `/social-login` | 🖥📱 `SocialLogin.dc.html` · `SocialLogin.Mobile.dc.html` | Google/Apple sign-in |
 | **Splash** | `/splash` | 🖥📱 `Splash.dc.html` · `Splash.Mobile.dc.html` | App launch — brand splash |
@@ -131,6 +138,8 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **UsersTeams** | `/users-teams` | 🖥📱 `UsersTeams.dc.html` · `UsersTeams.Mobile.dc.html` | Users & teams |
 | **VehicleDetail** | `/vehicle-detail` | 🖥📱 `VehicleDetail.dc.html` · `VehicleDetail.Mobile.dc.html` | Vehicle 360 (history, docs, insurance) |
 | **Vehicles** | `/vehicles` | 🖥📱 `Vehicles.dc.html` · `Vehicles.Mobile.dc.html` | Vehicle registry |
+| **Voice-Commands** | `/voice-commands` | 🖥 `Voice-Commands.dc.html` | Voice-activated hands-free workshop controls |
+| **Voice-Command-Interface** | `/voice-command-interface` | 🖥 `Voice-Command-Interface.dc.html` | Voice recognition configuration and training |
 | **Welcome** | `/welcome` | 🖥📱 `Welcome.dc.html` · `Welcome.Mobile.dc.html` | First-run welcome |
 | **WhatsAppCampaigns** | `/whats-app-campaigns` | 🖥📱 `WhatsAppCampaigns.dc.html` · `WhatsAppCampaigns.Mobile.dc.html` | WhatsApp campaign composer |
 | **WorkflowBuilder** | `/workflow-builder` | 🖥📱 `WorkflowBuilder.dc.html` · `WorkflowBuilder.Mobile.dc.html` | Visual workflow designer |

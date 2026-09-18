@@ -10,6 +10,10 @@
 | AdvancedSettings | `/advanced-settings` | app | settings | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | AgentDashboard | `/agent-dashboard` | app | ai | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | AgentRegistry | `/agent-registry` | app | aiadmin | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 3 roles | route | IMPLEMENTED |
+| AI-Automation | `/ai-automation` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| AI-Chatbot | `/ai-chatbot` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| AI-Chatbot-Assistant | `/ai-chatbot-assistant` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| AI-Service-Advisor | `/ai-service-advisor` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | AIAnalytics | `/aianalytics` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | AIAssistant | `/aiassistant` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | AppointmentCalendar | `/appointment-calendar` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
@@ -91,9 +95,11 @@
 | Login | `/login` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | LogoutConfirmation | `/logout-confirmation` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Maintenance | `/maintenance` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| ML-Fraud-Detection | `/ml-fraud-detection` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | ModelSettings | `/model-settings` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | Native · Android | `/native/android` | native | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Native · iOS | `/native/i-os` | native | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Neural-Network-Prediction | `/neural-network-prediction` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 13 roles | route | IMPLEMENTED |
 | OBDDiagnostics | `/obddiagnostics` | app | jobcards | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | OEMIntegrations | `/oemintegrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
@@ -165,6 +171,7 @@
 | SalesReports | `/sales-reports` | app | execreports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | SessionExpired | `/session-expired` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Settings | `/settings` | app | settings | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
+| Smart-Damage-Assessment | `/smart-damage-assessment` | app | ai | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | SMSCampaigns | `/smscampaigns` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | SocialLogin | `/social-login` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Splash | `/splash` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -212,6 +219,8 @@
 | UsersTeams | `/users-teams` | app | admin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | VehicleDetail | `/vehicle-detail` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | Vehicles | `/vehicles` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
+| Voice-Command-Interface | `/voice-command-interface` | app | ai | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| Voice-Commands | `/voice-commands` | app | ai | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | Welcome | `/welcome` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | WhatsAppCampaigns | `/whats-app-campaigns` | app | crm | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | WorkflowBuilder | `/workflow-builder` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
@@ -394,15 +403,6 @@
 | Franchise Management | `/franchise-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Globalization Layer | `/globalization-layer` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Multi Location Dashboard | `/multi-location-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| AI Automation | `/ai-automation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| AI Chatbot | `/ai-chatbot` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| AI Chatbot Assistant | `/ai-chatbot-assistant` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| AI Service Advisor | `/ai-service-advisor` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Voice Commands | `/voice-commands` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Voice Command Interface | `/voice-command-interface` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
-| Smart Damage Assessment | `/smart-damage-assessment` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| ML Fraud Detection | `/ml-fraud-detection` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Neural Network Prediction | `/neural-network-prediction` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Emerging Technologies | `/emerging-technologies` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | NextGen Technologies | `/next-gen-technologies` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | IoT Dashboard | `/io-t-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

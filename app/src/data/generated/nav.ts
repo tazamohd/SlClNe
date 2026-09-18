@@ -49,6 +49,12 @@ export const NAV: readonly NavGroup[] = [
         "key": "customer-approval",
         "screen": "CustomerApproval",
         "route": "/customer-approval"
+      },
+      {
+        "label": "Declined Jobs",
+        "key": "declined-jobs",
+        "screen": "DeclinedJobs",
+        "route": "/declined-jobs"
       }
     ]
   },
@@ -217,12 +223,6 @@ export const NAV: readonly NavGroup[] = [
         "key": "approval-inbox",
         "screen": "ApprovalInbox",
         "route": "/approval-inbox"
-      },
-      {
-        "label": "Declined Jobs",
-        "key": "declined-jobs",
-        "screen": "DeclinedJobs",
-        "route": "/declined-jobs"
       },
       {
         "label": "OBD Diagnostics",
@@ -545,55 +545,55 @@ export const NAV: readonly NavGroup[] = [
       {
         "label": "AI Automation",
         "key": "ai-automation",
-        "screen": "AIAutomation",
+        "screen": "AI-Automation",
         "route": "/ai-automation"
       },
       {
         "label": "AI Chatbot",
         "key": "ai-chatbot",
-        "screen": "AIChatbot",
+        "screen": "AI-Chatbot",
         "route": "/ai-chatbot"
       },
       {
         "label": "Chatbot Assistant",
         "key": "ai-chatbot-assistant",
-        "screen": "AIChatbotAssistant",
+        "screen": "AI-Chatbot-Assistant",
         "route": "/ai-chatbot-assistant"
       },
       {
         "label": "AI Service Advisor",
         "key": "ai-service-advisor",
-        "screen": "AIServiceAdvisor",
+        "screen": "AI-Service-Advisor",
         "route": "/ai-service-advisor"
       },
       {
         "label": "Damage Assessment",
         "key": "smart-damage-assessment",
-        "screen": "SmartDamageAssessment",
+        "screen": "Smart-Damage-Assessment",
         "route": "/smart-damage-assessment"
       },
       {
         "label": "Fraud Detection",
         "key": "ml-fraud-detection",
-        "screen": "MLFraudDetection",
+        "screen": "ML-Fraud-Detection",
         "route": "/ml-fraud-detection"
       },
       {
         "label": "Neural Prediction",
         "key": "neural-network-prediction",
-        "screen": "NeuralNetworkPrediction",
+        "screen": "Neural-Network-Prediction",
         "route": "/neural-network-prediction"
       },
       {
         "label": "Voice Commands",
         "key": "voice-commands",
-        "screen": "VoiceCommands",
+        "screen": "Voice-Commands",
         "route": "/voice-commands"
       },
       {
         "label": "Voice Interface",
         "key": "voice-command-interface",
-        "screen": "VoiceCommandInterface",
+        "screen": "Voice-Command-Interface",
         "route": "/voice-command-interface"
       }
     ]

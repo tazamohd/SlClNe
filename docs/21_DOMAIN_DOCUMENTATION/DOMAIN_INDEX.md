@@ -30,9 +30,9 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 9 of 11 |
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 5 | 1 | 1 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
-| AI and automation | [CAP-AI](AI.md) | 10 | 8 | 2 | 4 of 10 |
+| AI and automation | [CAP-AI](AI.md) | 19 | 8 | 2 | 4 of 19 |
 | Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 36 | 19 | 4 | 5 of 36 |
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 18 | 24 | 0 | 0 of 18 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 34 | 0 | 0 | 0 of 34 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 5 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 30 of 233 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 224 | 0 | 0 | 30 of 224 |

@@ -1176,8 +1176,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/AI.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 4903,
-      "lines": 103,
+      "bytes": 5755,
+      "lines": 112,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1231,8 +1231,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 21474,
-      "lines": 299,
+      "bytes": 20761,
+      "lines": 290,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1902,7 +1902,7 @@
     {
       "path": "MASTER_SCOPE_REGISTRY.md",
       "section": "(root)",
-      "bytes": 3315,
+      "bytes": 3317,
       "lines": 111,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61264,
+      "bytes": 61311,
       "lines": 437,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

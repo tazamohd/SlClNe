@@ -38,12 +38,12 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
 | OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
-| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 10 | 0 | 1 |
+| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 19 | 0 | 1 |
 | OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 16 |
 | OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 34 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
-| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 233 | 0 | **0** |
+| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 224 | 0 | **0** |
 
 ## Reverse: from an artefact back to why it exists
 
@@ -70,7 +70,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 | CAP-PORTALS | 0 | 11 |
 | CAP-WEBSITE | 0 | 34 |
 | CAP-CUSTOMERAPP | 0 | 11 |
-| CAP-DESIGNSYSTEM | 0 | 233 |
+| CAP-DESIGNSYSTEM | 0 | 224 |
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 

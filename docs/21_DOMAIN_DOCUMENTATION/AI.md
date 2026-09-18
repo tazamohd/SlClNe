@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 10 screens, 8 API endpoints and 1 entities, gated by the `ai`, `aiadmin` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 19 screens, 8 API endpoints and 1 entities, gated by the `ai`, `aiadmin` permission modules.
 
 
 ## Actors
@@ -74,22 +74,31 @@ _No lifecycle in the contract belongs to this domain._
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AgentDashboard | `/agent-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-AgentRegistry | `/agent-registry` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-AI-Automation | `/ai-automation` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-AI-Chatbot | `/ai-chatbot` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-AI-Chatbot-Assistant | `/ai-chatbot-assistant` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-AI-Service-Advisor | `/ai-service-advisor` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-AIAnalytics | `/aianalytics` | app | **mock** | — | — | — | verified | yes |
 | D-AIAssistant | `/aiassistant` | app | **mock** | — | — | — | verified | yes |
 | D-AutomationRules | `/automation-rules` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-ConversationHistory | `/conversation-history` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-KnowledgeBase | `/knowledge-base` | app | yes | yes | yes | yes | verified | yes |
+| D-ML-Fraud-Detection | `/ml-fraud-detection` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-ModelSettings | `/model-settings` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-Neural-Network-Prediction | `/neural-network-prediction` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-PromptLibrary | `/prompt-library` | app | **mock** | — | — | — | verified | yes |
+| D-Smart-Damage-Assessment | `/smart-damage-assessment` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-Voice-Command-Interface | `/voice-command-interface` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-Voice-Commands | `/voice-commands` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-WorkflowBuilder | `/workflow-builder` | app | **mock** | — | — | — | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **6 of 10 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **15 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **6 of 8 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **6 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **15 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

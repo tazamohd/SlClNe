@@ -740,6 +740,42 @@
           "category": "PRODUCT"
         },
         {
+          "name": "AI-Automation",
+          "route": "/ai-automation",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI-Chatbot",
+          "route": "/ai-chatbot",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI-Chatbot-Assistant",
+          "route": "/ai-chatbot-assistant",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI-Service-Advisor",
+          "route": "/ai-service-advisor",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "AIAnalytics",
           "route": "/aianalytics",
           "status": "built",
@@ -892,6 +928,24 @@
           "category": "PRODUCT"
         },
         {
+          "name": "ML-Fraud-Detection",
+          "route": "/ml-fraud-detection",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Neural-Network-Prediction",
+          "route": "/neural-network-prediction",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "NotificationCenter",
           "route": "/notification-center",
           "status": "built",
@@ -946,6 +1000,15 @@
           "category": "PRODUCT"
         },
         {
+          "name": "Smart-Damage-Assessment",
+          "route": "/smart-damage-assessment",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
           "name": "Subscription",
           "route": "/subscription",
           "status": "built",
@@ -987,6 +1050,24 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Voice-Command-Interface",
+          "route": "/voice-command-interface",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "Voice-Commands",
+          "route": "/voice-commands",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         }
@@ -3597,87 +3678,6 @@
         {
           "name": "Multi Location Dashboard",
           "route": "/multi-location-dashboard",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI Automation",
-          "route": "/ai-automation",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI Chatbot",
-          "route": "/ai-chatbot",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI Chatbot Assistant",
-          "route": "/ai-chatbot-assistant",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI Service Advisor",
-          "route": "/ai-service-advisor",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "Voice Commands",
-          "route": "/voice-commands",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "EXTERNAL_DEPENDENCY"
-        },
-        {
-          "name": "Voice Command Interface",
-          "route": "/voice-command-interface",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "EXTERNAL_DEPENDENCY"
-        },
-        {
-          "name": "Smart Damage Assessment",
-          "route": "/smart-damage-assessment",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "ML Fraud Detection",
-          "route": "/ml-fraud-detection",
-          "status": "kit",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "spec",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "Neural Network Prediction",
-          "route": "/neural-network-prediction",
           "status": "kit",
           "mobile": "responsive",
           "mobileDone": false,
