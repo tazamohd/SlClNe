@@ -296,8 +296,8 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 16921,
-      "lines": 199,
+      "bytes": 16863,
+      "lines": 198,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -439,7 +439,7 @@
     {
       "path": "03_PRINCE2_GOVERNANCE/PRINCE2_REGISTER_VIEWS.md",
       "section": "03_PRINCE2_GOVERNANCE",
-      "bytes": 17387,
+      "bytes": 17392,
       "lines": 109,
       "type": "GENERATED",
       "archived": false,
@@ -461,8 +461,8 @@
     {
       "path": "04_PROJECT_MANAGEMENT/PROJECT_DASHBOARD.md",
       "section": "04_PROJECT_MANAGEMENT",
-      "bytes": 7156,
-      "lines": 89,
+      "bytes": 7072,
+      "lines": 88,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
