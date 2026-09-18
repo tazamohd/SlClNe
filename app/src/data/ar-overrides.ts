@@ -4829,4 +4829,11 @@ export const AR_OVERRIDES: Record<string, string> = {
   "monitor": "مراقبة",
   "attention": "يحتاج انتباه",
   "unsafe": "غير آمن",
+
+  // Technician mobile workflow — TechnicianPortalMyJobs / TechnicianAppJobs /
+  // TechnicianPortalDashboard / TechnicianMobile
+  "No jobs assigned": "لا توجد مهام مُسندة",
+  "Work assigned to you shows up here as soon as an advisor hands it to your bay.": "تظهر هنا الأعمال المُسندة إليك بمجرد أن يُحيلها المستشار إلى خليجك.",
+  "No active jobs": "لا توجد مهام نشطة",
+  "Work in inspection, estimate, repair or QC shows up here.": "تظهر هنا الأعمال قيد الفحص أو عرض السعر أو الإصلاح أو فحص الجودة.",
 }

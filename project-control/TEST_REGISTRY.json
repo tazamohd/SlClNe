@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 191,
-    "cases": 2240,
+    "suites": 192,
+    "cases": 2242,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1100,
+      "UNIT_OR_API": 1102,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2291,6 +2291,24 @@
       "caseCount": 12,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-TECHNICIAN-MY-JOBS-TEST-TSX",
+      "file": "app/tests/component/technician-my-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "TechnicianPortalMyJobs"
+      ],
+      "cases": [
+        "lists real job cards, not fabricated work orders",
+        "renders each row as a reachable action, wired to open a job"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "technician"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-TOOLTIP-TEST-TSX",
