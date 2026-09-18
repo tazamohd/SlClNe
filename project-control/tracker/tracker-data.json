@@ -1281,7 +1281,7 @@
           "route": "/call-center/logs",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },

@@ -659,15 +659,17 @@ describe('critical permission boundaries', () => {
   })
 })
 
-/* A "client ↔ server data consistency" block used to live here, importing
- * `server/src/auth/rbac-data.ts` directly and comparing it against this
- * package's `PERMS`/`ROLES`. That server file was a dead, self-consistent-
- * but-wrong duplicate of the real permission engine (`packages/contract/src/rbac.ts`)
- * — its `Action` type never included `d` (delete), reviving the same
- * `x`-means-delete misreading fixed elsewhere — and was deleted along with
- * its own test suite (`server/tests/rbac-matrix.test.ts`). This block went
- * with it rather than being repointed at the real engine, because the real
- * cross-package parity check already exists and is the one worth keeping:
- * `server/tests/rbac-parity.test.ts` compares `packages/contract/src/rbac.ts`
- * (what the server enforces with) against `app/src/data/generated/rbac.ts`
- * (what this package is generated from) cell by cell. */
+// ---------------------------------------------------------------------------
+// Client ↔ server data consistency is covered by
+// server/tests/rbac-parity.test.ts, which compares this same client file
+// (app/src/data/generated/rbac.ts) against the canonical @salis/contract
+// PERMS/ROLES/SOD/FIELD_RULES the server actually enforces with — the real
+// second source of truth. A "client ↔ server" block here used to import
+// server/src/auth/rbac-data.ts, a duplicated, buggy copy of the permission
+// engine deleted in 694845f ("Remove the dead server RBAC copy that dropped
+// the delete action") specifically because it could drift from the real
+// one; keeping a test pointed at its corpse would just reintroduce the
+// two-copies risk that commit removed. There is nothing left for this file
+// to compare against that server/tests/rbac-parity.test.ts doesn't already
+// check from the correct source.
+// ---------------------------------------------------------------------------

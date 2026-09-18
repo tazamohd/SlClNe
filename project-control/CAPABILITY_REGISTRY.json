@@ -1269,7 +1269,7 @@
         "D-CustomerApp.ServiceTracking",
         "D-CustomerApp.Wallet"
       ],
-      "dataBackedScreens": 3,
+      "dataBackedScreens": 6,
       "entities": [],
       "rules": [],
       "roles": [],

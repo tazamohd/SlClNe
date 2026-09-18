@@ -684,7 +684,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -708,7 +707,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -828,7 +826,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2273,6 +2270,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -2319,6 +2317,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -2342,6 +2341,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
@@ -2407,6 +2407,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": true,
@@ -2428,6 +2429,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
