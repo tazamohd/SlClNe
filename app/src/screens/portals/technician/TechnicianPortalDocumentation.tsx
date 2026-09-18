@@ -1,77 +1,39 @@
+import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
-import { DataTable, type Column } from '@/components/ui/DataTable'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { EmptyState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
 
-interface Document {
-  title: string
-  category: 'Manual' | 'TSB' | 'Procedure' | 'Safety'
-  make: string
-  lastUpdated: string
-  pages: number
-  format: 'PDF' | 'Video' | 'Interactive'
-}
-
-const DOCUMENTS: Document[] = [
-  { title: 'Toyota Engine Diagnostics Guide', category: 'Manual', make: 'Toyota', lastUpdated: '2025-07-01', pages: 245, format: 'PDF' },
-  { title: 'Honda Hybrid Battery Service', category: 'TSB', make: 'Honda', lastUpdated: '2025-08-10', pages: 18, format: 'PDF' },
-  { title: 'Brake System Overhaul Procedure', category: 'Procedure', make: 'General', lastUpdated: '2025-06-15', pages: 32, format: 'Interactive' },
-  { title: 'Hyundai SmartSense Calibration', category: 'TSB', make: 'Hyundai', lastUpdated: '2025-08-05', pages: 12, format: 'PDF' },
-  { title: 'Workshop Safety Guidelines', category: 'Safety', make: 'General', lastUpdated: '2025-01-01', pages: 28, format: 'PDF' },
-  { title: 'AC System Diagnostics Training', category: 'Procedure', make: 'General', lastUpdated: '2025-05-20', pages: 0, format: 'Video' },
-  { title: 'Nissan CVT Transmission Service', category: 'Manual', make: 'Nissan', lastUpdated: '2025-04-12', pages: 156, format: 'PDF' },
-]
-
-const CATEGORY_STYLES: Record<string, { bg: string; fg: string }> = {
-  Manual: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  TSB: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Procedure: { bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-  Safety: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-}
-
-const FORMAT_ICONS: Record<string, string> = {
-  PDF: 'FileText',
-  Video: 'Play',
-  Interactive: 'Monitor',
-}
-
+/* This screen was MOCK_ONLY (BLK-004): every "document" row (a Toyota
+ * diagnostics guide, a Honda TSB, ...) was a hardcoded fixture with an
+ * invented page count and last-updated date.
+ *
+ * There is no documents/manuals collection in Repository
+ * (app/src/data/repository.ts) or API_REGISTRY.json — service manuals and
+ * TSBs are a document library this API does not model or store. Rather
+ * than invent a manual catalog, this is an honest GAP state, following
+ * CallCenterLogs.tsx's pattern. */
 export function TechnicianPortalDocumentation() {
   const { t } = usePreferences()
-
-  const columns: Column<Document>[] = [
-    { header: t('Title'), cell: (d) => d.title },
-    { header: t('Category'), cell: (d) => <Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge> },
-    { header: t('Make'), cell: (d) => d.make },
-    { header: t('Format'), cell: (d) => (
-      <div className="flex items-center gap-1.5">
-        <Icon name={FORMAT_ICONS[d.format]} size={14} className="text-muted" />
-        <span>{t(d.format)}</span>
-      </div>
-    ) },
-    { header: t('Pages'), cell: (d) => d.pages > 0 ? d.pages : '--' },
-    { header: t('Updated'), cell: (d) => d.lastUpdated },
-  ]
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="BookOpen" title={t('Documentation')} subtitle={t('Service manuals and technical guides')} />
 
-      <DataTable
-        caption="Service documentation"
-        columns={columns}
-        rows={DOCUMENTS}
-        rowKey={(_, i) => `row-${i}`}
-        mobileCard={(d) => (
-          <>
-            <MobileCardHeader title={d.title} trailing={<Badge background={CATEGORY_STYLES[d.category].bg} color={CATEGORY_STYLES[d.category].fg}>{t(d.category)}</Badge>} />
-            <MobileCardRow label={t('Make')}>{d.make}</MobileCardRow>
-            <MobileCardRow label={t('Format')}>{t(d.format)}</MobileCardRow>
-            <MobileCardRow label={t('Updated')}>{d.lastUpdated}</MobileCardRow>
-          </>
-        )}
-      />
+      <Card className="p-4">
+        <EmptyState
+          icon="BookOpen"
+          title={t('Documentation has no data source yet')}
+          description={t(
+            'Service manuals, TSBs and technical guides are a document library this API does not expose. Nothing is shown here rather than invented documents.',
+          )}
+        />
+        <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">
+          <Icon name="Info" size={12} className="flex-shrink-0 text-salis-blue" />
+          {t('Connect the API — no data source yet:')}{' '}
+          <span dir="ltr" className="font-mono text-body">documents</span>
+        </p>
+      </Card>
     </div>
   )
 }
