@@ -452,6 +452,49 @@ export const deliverySignoffs = pgTable(
   }),
 )
 
+/** Canned Jobs — predefined, priced service packages (build-order item 5).
+ *  `priceHalalas`/`lineCount` are stored, computed at write time from `lines`
+ *  the same way `estimates.subtotalHalalas` is computed from `estimate_lines`
+ *  — never derived from a join at read time. */
+export const cannedJobs = pgTable(
+  'canned_jobs',
+  {
+    ...tenant,
+    name: varchar('name', { length: 160 }).notNull(),
+    nameAr: varchar('name_ar', { length: 160 }),
+    category: varchar('category', { length: 64 }),
+    description: text('description'),
+    active: boolean('active').notNull().default(true),
+    priceHalalas: money('price_halalas').notNull().default(0),
+    lineCount: integer('line_count').notNull().default(0),
+  },
+  (t) => ({
+    byOrg: index('canned_jobs_org_idx').on(t.orgId, t.branchId, t.active),
+  }),
+)
+
+/** One line of a canned job's bundle — the same shape `estimate_lines`
+ *  carries, copied verbatim into an estimate when the package is applied
+ *  (never referenced live, so a later catalog price change cannot silently
+ *  move an estimate someone already priced from it). */
+export const cannedJobLines = pgTable(
+  'canned_job_lines',
+  {
+    ...tenant,
+    cannedJobId: varchar('canned_job_id', { length: ULID_LENGTH }).notNull(),
+    description: varchar('description', { length: 300 }).notNull(),
+    descriptionAr: varchar('description_ar', { length: 300 }),
+    kind: varchar('kind', { length: 16 }).notNull(),
+    qty: doublePrecision('qty').notNull(),
+    unitPriceHalalas: money('unit_price_halalas').notNull(),
+    partSku: varchar('part_sku', { length: 64 }),
+    sort: integer('sort').notNull().default(0),
+  },
+  (t) => ({
+    byCannedJob: index('canned_job_lines_job_idx').on(t.orgId, t.cannedJobId),
+  }),
+)
+
 export const invoices = pgTable(
   'invoices',
   {
@@ -747,12 +790,21 @@ export const campaigns = pgTable('campaigns', {
   name: varchar('name', { length: 200 }).notNull(),
   type: varchar('type', { length: 24 }).notNull(),
   status: varchar('status', { length: 24 }).notNull(),
+  startDate: date('start_date'),
+  endDate: date('end_date'),
   reach: integer('reach').notNull().default(0),
   opens: integer('opens').notNull().default(0),
   clicks: integer('clicks').notNull().default(0),
   conversions: integer('conversions').notNull().default(0),
   budgetHalalas: money('budget_halalas').notNull().default(0),
   spentHalalas: money('spent_halalas').notNull().default(0),
+  /** When `POST /crm/campaigns/:id/send` last dispatched this campaign to its
+   *  provider, and whether that dispatch came from the mock transport. Neither
+   *  column claims a recipient was reached — this deployment resolves no
+   *  audience for a campaign, so a dispatch confirms the provider accepted the
+   *  request, nothing about delivery. */
+  lastDispatchedAt: timestamp('last_dispatched_at', { withTimezone: true }),
+  lastDispatchMock: boolean('last_dispatch_mock'),
 })
 
 export const segments = pgTable('segments', {

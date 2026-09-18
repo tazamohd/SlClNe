@@ -114,3 +114,45 @@ export const crmTaskRow = appRow({
 })
 
 export type CrmTaskRow = z.infer<typeof crmTaskRow>
+
+/* ---------------------------------------------------------------- campaigns */
+
+/** Free-text like `stage` above: the design's campaigns mix casings
+ *  (`"email"`/`"SMS"`) the seed loads as-is, so `type`/`status` stay bounded
+ *  strings rather than enums that would reject them. */
+export const campaignCreate = z.object({
+  name: nonEmpty.max(200),
+  type: nonEmpty.max(24).default('email'),
+  status: nonEmpty.max(24).default('draft'),
+  startDate: isoDate.optional(),
+  endDate: isoDate.optional(),
+  budgetHalalas: halalas.default(0),
+})
+
+export const campaignUpdate = campaignCreate.partial()
+
+export type CampaignCreate = z.infer<typeof campaignCreate>
+export type CampaignUpdate = z.infer<typeof campaignUpdate>
+
+export const campaignRow = appRow({
+  name: z.string(),
+  type: z.string(),
+  status: z.string(),
+  start: z.string(),
+  end: z.string(),
+  reach: z.number().int(),
+  opens: z.number().int(),
+  clicks: z.number().int(),
+  conversions: z.number().int(),
+  budget: z.string(),
+  spent: z.string(),
+})
+
+export type CampaignRow = z.infer<typeof campaignRow>
+
+/** `POST /crm/campaigns/:id/send` — dispatches an sms/whatsapp campaign to its
+ *  provider. Empty body: there is nothing to choose, since this deployment
+ *  resolves no per-campaign recipient list for the caller to target. */
+export const campaignSendBody = z.object({}).optional()
+
+export type CampaignSendBody = z.infer<typeof campaignSendBody>

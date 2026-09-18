@@ -2,6 +2,7 @@ import { FeatureHeader } from '@/components/shell/FeatureScreen'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
+import { EmptyState, ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import {
@@ -10,38 +11,75 @@ import {
   MobileCardRow,
   MobilePageHeader,
 } from '@/components/shell/MobileShell'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface Integration {
-  name: string
-  status: string
-  lastSync: string
-  syncFrequency: string
-  recordsSynced: number
+/** Accounting Integrations (`/accounting-integration`) — the accounting/ERP
+ *  connectors this deployment is wired to, read from `integrations`
+ *  (`GET /integrations`, `cat === 'ERP'`) through the repository seam, the
+ *  same collection `SystemIntegrations.tsx` reads unfiltered.
+ *
+ *  This used to show a fixed `MOCK_INTEGRATIONS` array with every connector
+ *  hardcoded `Connected`, including systems no adapter in this codebase has
+ *  ever talked to. There is no live accounting adapter here, so the honest
+ *  state for QuickBooks, Xero, SAP Business One, Oracle Financials and Sage
+ *  is `available` (known, not connected) or `pending` — never a fabricated
+ *  `Connected`. The dataset carries no sync clock or record count, so those
+ *  two rows are gone rather than filled in: that runtime state, if a real
+ *  adapter existed, would come from `GET /diagnostics/integrations`, a
+ *  different read not wired to this screen. The gap line names it instead of
+ *  showing a number nothing produced. */
+
+type Integration = RowOf<'integrations'>
+
+const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
+  connected: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  available: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
-const MOCK_INTEGRATIONS: readonly Integration[] = [
-  { name: 'QuickBooks', status: 'Connected', lastSync: '2026-08-18 09:30', syncFrequency: 'Every 15 min', recordsSynced: 12450 },
-  { name: 'Xero', status: 'Connected', lastSync: '2026-08-18 09:15', syncFrequency: 'Hourly', recordsSynced: 8320 },
-  { name: 'SAP', status: 'Disconnected', lastSync: '2026-08-10 14:00', syncFrequency: 'Daily', recordsSynced: 45200 },
-  { name: 'Oracle', status: 'Error', lastSync: '2026-08-17 22:45', syncFrequency: 'Every 30 min', recordsSynced: 3100 },
-  { name: 'Sage', status: 'Disconnected', lastSync: 'Never', syncFrequency: 'Manual', recordsSynced: 0 },
-]
-
-const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Connected: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Disconnected: ['var(--tint-neutral)', 'var(--text-muted)'],
-  Error: ['var(--tint-orange)', 'var(--salis-orange)'],
+function StatusBadge({ value }: { value: string }) {
+  const { t } = usePreferences()
+  const style = STATUS_STYLES[value] ?? STATUS_STYLES.available
+  return (
+    <Badge background={style.bg} color={style.fg}>
+      {t(value.charAt(0).toUpperCase() + value.slice(1))}
+    </Badge>
+  )
 }
 
-const STATUS_ICON: Record<string, string> = {
-  Connected: 'ShieldCheck',
-  Disconnected: 'ShieldOff',
-  Error: 'ShieldAlert',
+/** What `GET /integrations` does not return, named rather than invented. */
+function FieldGap() {
+  const { t } = usePreferences()
+  return (
+    <p className="flex items-start gap-1.5 text-[11px] text-muted">
+      <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
+      <span>
+        {t('Not recorded in this dataset')}: {t('Last Sync')}, {t('Records Synced')}. {t('Endpoint')}:{' '}
+        <span dir="ltr" className="font-mono">
+          GET /diagnostics/integrations
+        </span>
+      </span>
+    </p>
+  )
 }
 
 export function AccountingIntegration() {
-  const { t } = usePreferences()
+  const { t, rtl } = usePreferences()
   const isMobile = useIsMobile()
+  const { data: integrations = [], isLoading, isError, error, refetch } = useCollection('integrations')
+
+  const label = (row: Integration) => (rtl ? row.ar : row.name)
+  const detail = (row: Integration) => (rtl ? row.ar_detail : row.detail)
+  const connectors = integrations.filter((row) => row.cat === 'ERP')
+
+  if (isLoading) return <Loading label="Loading integrations..." />
+  if (isError) {
+    return (
+      <Card className="p-6">
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      </Card>
+    )
+  }
 
   if (isMobile) {
     return (
@@ -51,30 +89,31 @@ export function AccountingIntegration() {
           title={t('Integrations')}
           subtitle={t('Accounting')}
         />
-        <div className="flex flex-col gap-3">
-          {MOCK_INTEGRATIONS.map((intg) => {
-            const [bg, fg] = STATUS_PALETTE[intg.status] ?? STATUS_PALETTE.Disconnected
-            return (
+        {connectors.length === 0 ? (
+          <Card className="p-6">
+            <EmptyState icon="Link" title={t('No integrations found')} />
+          </Card>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {connectors.map((intg) => (
               <MobileCard key={intg.name}>
                 <MobileCardHeader
-                  title={intg.name}
-                  trailing={
-                    <Badge background={bg} color={fg}>
-                      {t(intg.status)}
-                    </Badge>
+                  leading={
+                    <div className="flex items-center gap-2">
+                      <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden>
+                        <Icon name={intg.icon} size={14} />
+                      </span>
+                      <p className="text-[13px] font-semibold text-heading">{label(intg)}</p>
+                    </div>
                   }
+                  trailing={<StatusBadge value={intg.status} />}
                 />
-                <MobileCardRow label={t('Last Sync')}>
-                  <span dir="ltr">{intg.lastSync}</span>
-                </MobileCardRow>
-                <MobileCardRow label={t('Frequency')}>{t(intg.syncFrequency)}</MobileCardRow>
-                <MobileCardRow label={t('Records Synced')}>
-                  {intg.recordsSynced.toLocaleString('en-US')}
-                </MobileCardRow>
+                <MobileCardRow value={detail(intg)} />
               </MobileCard>
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        )}
+        <FieldGap />
       </div>
     )
   }
@@ -87,44 +126,29 @@ export function AccountingIntegration() {
         subtitle={t('External system connections and sync status')}
       />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {MOCK_INTEGRATIONS.map((intg) => {
-          const [bg, fg] = STATUS_PALETTE[intg.status] ?? STATUS_PALETTE.Disconnected
-          const iconName = STATUS_ICON[intg.status] ?? 'ShieldOff'
-          return (
+      {connectors.length === 0 ? (
+        <Card className="p-6">
+          <EmptyState icon="Link" title={t('No integrations found')} />
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {connectors.map((intg) => (
             <Card key={intg.name} className="flex flex-col gap-4 rounded-xl p-5 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span
-                    className="flex rounded-lg p-2"
-                    style={{ background: bg, color: fg }}
-                    aria-hidden
-                  >
-                    <Icon name={iconName} size={18} />
+                  <span className="flex rounded-lg p-2 bg-tint-blue text-salis-blue" aria-hidden>
+                    <Icon name={intg.icon} size={18} />
                   </span>
-                  <span className="text-base font-bold text-heading">{intg.name}</span>
+                  <span className="text-base font-bold text-heading">{label(intg)}</span>
                 </div>
-                <Badge background={bg} color={fg}>{t(intg.status)}</Badge>
+                <StatusBadge value={intg.status} />
               </div>
-
-              <div className="flex flex-col gap-2 text-[13px]">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted">{t('Last Sync')}</span>
-                  <span className="text-body" dir="ltr">{intg.lastSync}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted">{t('Frequency')}</span>
-                  <span className="text-body">{t(intg.syncFrequency)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted">{t('Records Synced')}</span>
-                  <span className="font-semibold text-heading">{intg.recordsSynced.toLocaleString('en-US')}</span>
-                </div>
-              </div>
+              <p className="text-[13px] text-muted">{detail(intg)}</p>
             </Card>
-          )
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+      <FieldGap />
     </div>
   )
 }
