@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 407,
-    "generated": 265,
-    "explicit": 142,
+    "endpoints": 418,
+    "generated": 273,
+    "explicit": 145,
     "unauthenticated": 6,
-    "withPermissionGuard": 380,
+    "withPermissionGuard": 391,
     "idempotent": 2,
-    "withTests": 111
+    "withTests": 113
   },
   "collections": [
     {
@@ -318,6 +318,26 @@
         "jobCardId",
         "kind",
         "stage"
+      ],
+      "codeColumn": null,
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "writable": true
+    },
+    {
+      "key": "deliverySignoffs",
+      "path": "delivery-signoffs",
+      "table": "deliverySignoffs",
+      "module": "jobcards",
+      "entity": "delivery_signoff",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
       ],
       "codeColumn": null,
       "defaultSort": {
@@ -6071,6 +6091,300 @@
       "tests": []
     },
     {
+      "id": "API-DELIVERYSIGNOFFS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/delivery-signoffs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "List the collection with search, sort, filter and pagination — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-DELIVERY-SIGNOFF-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/delivery-signoffs",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Create one row — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": [
+        "TS-SERVER-TESTS-DELIVERY-SIGNOFF-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/delivery-signoffs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Soft-delete one row — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-GETID",
+      "method": "GET",
+      "path": "/api/v1/delivery-signoffs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Read one row by ULID or business code — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/delivery-signoffs/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Update one row (optimistic concurrency on version) — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-GET-DELIVERY-SIGNOFFS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/delivery-signoffs/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "jobcards",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-GET-DELIVERY-SIGNOFFS-ID-SIGNATURE",
+      "method": "GET",
+      "path": "/api/v1/delivery-signoffs/:id/signature",
+      "source": "server/src/routes/delivery.ts",
+      "kind": "EXPLICIT",
+      "domain": "jobcards",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "jobcards",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/delivery-signoffs/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Soft-delete many rows — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/delivery-signoffs/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Apply one patch to many rows — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
+      "id": "API-DELIVERYSIGNOFFS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/delivery-signoffs/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "jobcards",
+      "purpose": "Export the filtered collection as a file — delivery_signoff.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "jobcards",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "delivery_signoff",
+      "table": "deliverySignoffs",
+      "search": [],
+      "sortable": [
+        "createdAt"
+      ],
+      "filterable": [
+        "jobCardId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
+    },
+    {
       "id": "API-DIAGCOPIES-GET-LIST",
       "method": "GET",
       "path": "/api/v1/diagnostics/copies",
@@ -10327,6 +10641,27 @@
       "tests": [
         "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS"
       ]
+    },
+    {
+      "id": "API-POST-JOB-CARDS-ID-DELIVERY-SIGNOFF",
+      "method": "POST",
+      "path": "/api/v1/job-cards/:id/delivery-signoff",
+      "source": "server/src/routes/delivery.ts",
+      "kind": "EXPLICIT",
+      "domain": "jobcards",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "jobcards",
+      "permissionAction": "e",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-WORKSHOP",
+      "tests": []
     },
     {
       "id": "API-POST-JOB-CARDS-ID-INSPECTION-FINDINGS",

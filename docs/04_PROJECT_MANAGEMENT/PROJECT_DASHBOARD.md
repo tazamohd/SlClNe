@@ -29,8 +29,8 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 79 of 429 | `STATUS.json` |
 | Tablet verified | 4 of 429 | `STATUS.json` |
-| API endpoints | 407 | the route files |
-| Test cases | 2234 | the spec files |
+| API endpoints | 418 | the route files |
+| Test cases | 2251 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |

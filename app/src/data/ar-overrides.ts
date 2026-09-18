@@ -4910,4 +4910,20 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Requests sent to other network members would live in a partsNetworkRequests collection the API does not serve yet, so none are shown rather than fabricated ones.": "الطلبات المُرسلة إلى أعضاء الشبكة الآخرين كانت ستكون ضمن مجموعة بيانات partsNetworkRequests التي لا تقدمها واجهة البرمجة بعد، لذا لا تُعرض أي طلبات بدلاً من اختلاقها.",
   "Compare quotes received from the network": "قارن العروض الواردة من الشبكة",
   "Call logs have no data source yet": "سجلات المكالمات ليس لها مصدر بيانات بعد",
+
+  // Customer sign-off at delivery — WorkshopSignature/WorkshopDelivery (Sprint 2, P0 backlog item 4)
+  "Signature not saved": "لم يتم حفظ التوقيع",
+  "The signature could not be saved.": "تعذر حفظ التوقيع.",
+  "No signature captured yet": "لم يُلتقط أي توقيع بعد",
+  "The customer needs to sign before delivery can be completed.": "يجب أن يوقّع العميل قبل إتمام التسليم.",
+  "Capture the customer’s signature before completing delivery.": "التقط توقيع العميل قبل إتمام التسليم.",
+  "Capture Signature": "التقاط التوقيع",
+  "Customer signature": "توقيع العميل",
+  "Loading signature...": "جارٍ تحميل التوقيع...",
+  "Odometer at Delivery": "عداد المسافة عند التسليم",
+  "Reading (km)": "القراءة (كم)",
+  "Signature required": "التوقيع مطلوب",
+  "Invalid odometer reading": "قراءة عداد مسافة غير صالحة",
+  "Enter a whole number of kilometres.": "أدخل عددًا صحيحًا من الكيلومترات.",
+  "The checklist could not be saved.": "تعذر حفظ قائمة التحقق.",
 }

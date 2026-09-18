@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1215 in total.
+Every column of every table, 1232 in total.
 
 ## `organizations`
 
@@ -441,6 +441,34 @@ Photo/video evidence attached to an inspection finding. The bytes live on disk (
 | --- | --- | --- |
 | `inspection_media_finding_idx` | no | orgId, findingId |
 | `inspection_media_job_idx` | no | orgId, jobCardId |
+
+## `delivery_signoffs`
+
+Customer sign-off at delivery (Sprint 2, P0). One row per job card — the signature image lives on disk (`server/src/storage/media.ts`), `storageKey` is the only pointer to it a row carries, and it is served only through `GET /delivery-signoffs/:id/signature`.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `job_card_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `signed_by_name` | varchar(200) | NOT NULL | — | — | — |
+| `agreed_at` | timestamptz | NOT NULL | — | — | — |
+| `checklist` | jsonb | NOT NULL | — | sql`'{}'::jsonb` | — |
+| `odometer_out` | integer | nullable | — | — | — |
+| `storage_key` | varchar(255) | NOT NULL | — | — | — |
+| `mime_type` | varchar(100) | NOT NULL | — | — | — |
+| `size_bytes` | integer | NOT NULL | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `delivery_signoffs_job_idx` | no | orgId, jobCardId |
 
 ## `invoices`
 

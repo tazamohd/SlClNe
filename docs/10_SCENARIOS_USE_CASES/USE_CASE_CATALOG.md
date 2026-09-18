@@ -15,7 +15,7 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-64 behavioural use cases.
+65 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -63,6 +63,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-PATCH-INVOICES-ID | PATCH /invoices/:id | owner, manager, accountant, test | invoices:e | — | — | — | yes | `server/src/routes/invoices.ts` |
 | UC-POST-INVOICES-ID-ISSUE | POST /invoices/:id/issue | owner, manager, accountant, test | invoices:e | yes | — | — | — | `server/src/routes/invoices.ts` |
 | UC-POST-INVOICES-ID-PAYMENTS | POST /invoices/:id/payments | owner, manager, advisor, accountant, frontdesk +1 | payments:c | — | — | — | yes | `server/src/routes/invoices.ts` |
+| UC-POST-JOB-CARDS-ID-DELIVERY-SIGNOFF | POST /job-cards/:id/delivery-signoff | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/delivery.ts` |
 | UC-POST-JOB-CARDS-ID-INSPECTION-FINDINGS | POST /job-cards/:id/inspection-findings | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/inspection.ts` |
 | UC-POST-JOBS-ID-ASSIGN | POST /jobs/:id/assign | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-JOBS-ID-TRANSITION | POST /jobs/:id/transition | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/workshop.ts` |
