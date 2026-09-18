@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-195 spec files containing 2262 test cases.
+192 spec files containing 2244 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 119 | 1122 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 116 | 1104 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 37 | 490 |
-| app | 115 | 1395 |
+| server | 36 | 475 |
+| app | 113 | 1392 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -107,7 +107,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/crm-lead-fleet-detail.test.tsx` | UNIT_OR_API | 18 | owner |
 | `app/tests/component/crm-vehicles.test.tsx` | UNIT_OR_API | 7 | owner, qc |
 | `app/tests/component/crm-write-gaps.test.tsx` | UNIT_OR_API | 5 | owner |
-| `app/tests/component/customer-health-check-report.test.tsx` | UNIT_OR_API | 2 | customer |
 | `app/tests/component/DataTable.test.tsx` | UNIT_OR_API | 14 | — |
 | `app/tests/component/detail-page.test.tsx` | UNIT_OR_API | 16 | — |
 | `app/tests/component/Drawer.test.tsx` | UNIT_OR_API | 12 | — |
@@ -125,7 +124,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/workshop-approval-inbox.test.tsx` | UNIT_OR_API | 6 | owner, advisor |
 | `app/tests/component/workshop-declined-jobs.test.tsx` | UNIT_OR_API | 4 | owner |
 | `app/tests/component/workshop-estimate-detail.test.tsx` | UNIT_OR_API | 6 | owner, advisor |
-| `app/tests/component/workshop-inspection.test.tsx` | UNIT_OR_API | 3 | technician |
 | `app/tests/component/workshop-job-card-detail.test.tsx` | UNIT_OR_API | 9 | technician |
 | `app/tests/component/workshop-job-cards.test.tsx` | UNIT_OR_API | 5 | owner, technician |
 | `app/tests/component/workshop-job-detail.test.tsx` | UNIT_OR_API | 6 | owner, technician, parts |
@@ -181,7 +179,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/route-smoke.test.tsx` | UNIT_OR_API | 1 | owner |
 | `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 11 | owner, accountant |
 | `app/tests/service-worker-registration.test.ts` | UNIT_OR_API | 6 | — |
-| `app/tests/service-worker.test.ts` | UNIT_OR_API | 15 | — |
+| `app/tests/service-worker.test.ts` | UNIT_OR_API | 17 | — |
 | `app/tests/test-account.test.tsx` | UNIT_OR_API | 17 | test, superadmin, owner, supplier |
 | `app/tests/unit/contract-primitives.test.ts` | CONTRACT | 50 | — |
 | `app/tests/unit/contract-rules.test.ts` | CONTRACT | 107 | qc |
@@ -219,7 +217,6 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/finance-reports.test.ts` | FINANCIAL_INTEGRITY | 8 | owner, technician, accountant |
 | `server/tests/history-read.test.ts` | UNIT_OR_API | 6 | manager, owner, supplier, qc |
 | `server/tests/hr.test.ts` | UNIT_OR_API | 12 | hr, technician, advisor, accountant |
-| `server/tests/inspection-findings.test.ts` | UNIT_OR_API | 15 | technician, frontdesk, advisor, customer, manager |
 | `server/tests/insurance-loans.test.ts` | UNIT_OR_API | 14 | accountant, technician, owner |
 | `server/tests/inventory-enforcement.test.ts` | INVENTORY_INTEGRITY | 21 | owner, parts, supplier |
 | `server/tests/isolation.test.ts` | SECURITY | 21 | owner, accountant, manager, superadmin, advisor, technician, qc, parts, hr, frontdesk, callcenter, procurement, supplier, customer |

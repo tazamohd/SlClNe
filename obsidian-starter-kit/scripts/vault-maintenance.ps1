@@ -44,9 +44,16 @@ Do the following:
 
 "=== Vault maintenance started $(Get-Date -Format o) ===" | Tee-Object -FilePath $log -Append
 
-# --permission-mode acceptEdits lets the unattended run write files without
-# interactive prompts, while still blocking anything beyond file edits.
-claude -p $prompt --permission-mode acceptEdits 2>&1 | Tee-Object -FilePath $log -Append
+# --permission-mode acceptEdits auto-approves file edits, but on its own it
+# does NOT confine the run to file edits — a Bash call is still governed by
+# whatever's already allow-listed in this machine's global/project Claude
+# Code settings, which an unattended nightly job should not silently inherit.
+# --allowedTools pins the actual tool surface: reading, editing/writing notes,
+# and the `mv`/`mkdir` needed to file inbox captures into folders — nothing
+# that can reach the network or run arbitrary commands.
+claude -p $prompt --permission-mode acceptEdits `
+  --allowedTools "Read,Edit,Write,Glob,Grep,Bash(mv *),Bash(mkdir *)" `
+  2>&1 | Tee-Object -FilePath $log -Append
 
 "=== Finished $(Get-Date -Format o) (exit $LASTEXITCODE) ===" | Tee-Object -FilePath $log -Append
 
