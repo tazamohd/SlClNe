@@ -54,9 +54,9 @@ flowchart LR
   OBJ_RETENTION --> CAP_PORTALS
   CAP_AI["AI and automation<br/>10 screens · 8 endpoints"]
   OBJ_THROUGHPUT --> CAP_AI
-  CAP_PLATFORM["Administration and platform<br/>36 screens · 19 endpoints"]
+  CAP_PLATFORM["Administration and platform<br/>35 screens · 19 endpoints"]
   OBJ_CONTROL --> CAP_PLATFORM
-  CAP_IDENTITY["Identity and access<br/>18 screens · 24 endpoints"]
+  CAP_IDENTITY["Identity and access<br/>19 screens · 24 endpoints"]
   OBJ_CONTROL --> CAP_IDENTITY
   CAP_WEBSITE["Public website and acquisition<br/>34 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_WEBSITE
@@ -83,8 +83,8 @@ flowchart LR
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 10 | 4 | 8 | 2 | 6 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 19 | 4 | 14 |
-| CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 6 | 19 | 4 | 14 |
+| CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
 | CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 40 | 0 | 0 | 0 |
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-127 of 429 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+128 of 429 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -297,7 +297,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` |
 | Screen domains | `admin` |
-| Screens | 36 (5 data-backed) |
+| Screens | 35 (6 data-backed) |
 | Endpoints | 19 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, test |
@@ -311,7 +311,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `auth` |
 | Screen domains | `auth` |
-| Screens | 18 (0 data-backed) |
+| Screens | 19 (0 data-backed) |
 | Endpoints | 24 |
 | Entities | — |
 | Roles with any grant | — |

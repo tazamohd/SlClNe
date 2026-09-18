@@ -9,16 +9,16 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 239,
-    "dataBacked": 127,
+    "mockOnly": 238,
+    "dataBacked": 128,
     "e2eCovered": 429,
     "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 169,
+    "hasLoadingState": 170,
     "hasErrorState": 134,
-    "hasEmptyState": 208,
+    "hasEmptyState": 214,
     "tabletVerified": 4,
-    "arabicVerified": 79,
+    "arabicVerified": 75,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 126,
+    "crudRead": 127,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -35,20 +35,20 @@
   },
   "bySurface": {
     "auth": {
-      "total": 28,
-      "rendered": 28,
+      "total": 29,
+      "rendered": 29,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 28,
+      "e2e": 29,
       "dataBacked": 0
     },
     "app": {
-      "total": 315,
-      "rendered": 315,
+      "total": 314,
+      "rendered": 314,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 315,
-      "dataBacked": 113
+      "e2e": 314,
+      "dataBacked": 114
     },
     "call-center": {
       "total": 2,
@@ -109,20 +109,20 @@
   },
   "byDomain": {
     "auth": {
-      "total": 28,
-      "rendered": 28,
+      "total": 29,
+      "rendered": 29,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 28,
+      "e2e": 29,
       "dataBacked": 0
     },
     "admin": {
-      "total": 20,
-      "rendered": 20,
+      "total": 19,
+      "rendered": 19,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 20,
-      "dataBacked": 5
+      "e2e": 19,
+      "dataBacked": 6
     },
     "ai": {
       "total": 10,
@@ -364,7 +364,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 4,
-      "dataBacked": 1
+      "dataBacked": 2
     },
     "hr": {
       "total": 2,

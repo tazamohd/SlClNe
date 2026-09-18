@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
@@ -98,14 +98,13 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AccountLocked | `/account-locked` | auth | **mock** | — | — | — | verified | yes |
-| D-AdvancedSettings | `/advanced-settings` | app | **mock** | — | — | — | verified | yes |
-| D-Backup | `/backup` | app | **mock** | — | — | — | verified | yes |
+| D-AdvancedSettings | `/advanced-settings` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-Backup | `/backup` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-Branches | `/branches` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-CookiePolicy | `/cookie-policy` | app | **mock** | — | — | — | verified | yes |
 | D-Dashboard | `/dashboard` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Error404 | `/error404` | auth | **mock** | — | — | — | verified | yes |
 | D-FlowSpec | `/flow-spec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
-| D-GlobalSearch | `/global-search` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-GlobalSearch | `/global-search` | app | yes | yes | — | yes | PARTIAL | yes |
 | D-Index | `/index` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-Integrations | `/integrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Login | `/login` | auth | **mock** | — | — | — | verified | yes |
@@ -120,12 +119,12 @@ _No lifecycle in the contract belongs to this domain._
 | D-RBACSpec | `/rbacspec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-RolesPermissions | `/roles-permissions` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-SessionExpired | `/session-expired` | auth | **mock** | — | — | — | verified | yes |
-| D-Settings | `/settings` | app | **mock** | — | — | — | verified | yes |
+| D-Settings | `/settings` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-Splash | `/splash` | auth | **mock** | — | — | — | verified | yes |
-| D-Subscription | `/subscription` | app | **mock** | — | — | — | PARTIAL | yes |
-| D-SuperAdmin | `/super-admin` | app | **mock** | — | — | — | verified | yes |
+| D-Subscription | `/subscription` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-SuperAdmin | `/super-admin` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-SystemIntegrations | `/system-integrations` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-Templates | `/templates` | app | **mock** | — | — | — | verified | yes |
+| D-Templates | `/templates` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-TermsConditions | `/terms-conditions` | auth | **mock** | — | — | — | verified | yes |
 | D-UI.EmptyStates | `/ui/empty-states` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-UI.FormValidation | `/ui/form-validation` | reference | **mock** | yes | — | yes | PARTIAL | yes |
@@ -136,11 +135,11 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **31 of 36 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **29 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **14 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **24 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **22 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

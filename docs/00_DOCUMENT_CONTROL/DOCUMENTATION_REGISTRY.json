@@ -1253,7 +1253,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/GOVERNANCE.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 4158,
+      "bytes": 4159,
       "lines": 89,
       "type": "GENERATED",
       "archived": false,
@@ -1275,8 +1275,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/IDENTITY.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 5641,
-      "lines": 110,
+      "bytes": 5726,
+      "lines": 111,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1297,8 +1297,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PLATFORM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 9097,
-      "lines": 154,
+      "bytes": 9017,
+      "lines": 153,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61582,
+      "bytes": 61579,
       "lines": 438,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
