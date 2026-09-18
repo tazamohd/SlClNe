@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 191,
-    "cases": 2224,
+    "suites": 192,
+    "cases": 2228,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1114,
+      "UNIT_OR_API": 1118,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -5547,6 +5547,31 @@
         "advisor",
         "manager",
         "customer"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-DEPARTMENTS-WRITE-TEST-TS",
+      "file": "server/tests/departments-write.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "F-039: departments takes writes through the generic router"
+      ],
+      "cases": [
+        "lets hr create a department, defaulting headcount to zero",
+        "writes an audit row for the create",
+        "refuses create to a role with only a view grant on departments",
+        "lets an owner edit and delete, but refuses hr — the \"vc\" grant is create-only"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [
+        "/api/v1/admin/departments"
+      ],
+      "touchesRoles": [
+        "hr",
+        "owner",
+        "manager",
+        "accountant"
       ]
     },
     {

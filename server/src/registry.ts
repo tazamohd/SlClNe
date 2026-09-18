@@ -519,6 +519,9 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       branch: row.branchLabel ?? '',
       icon: row.icon ?? '',
     }),
+    /* F-039: the collection had no writer at all — DepartmentFormModal's "Add
+     * Department" 404'd for every role, owner and superadmin included. */
+    writable: true,
   }),
 
   /* ------------------------------------------------------------------- CRM */

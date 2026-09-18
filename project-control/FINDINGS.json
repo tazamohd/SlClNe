@@ -494,14 +494,16 @@
     },
     {
       "id": "F-039",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "The departments collection has no write routes at all — Add Department 404s for every role",
       "detail": "server/src/registry.ts's departments define() block carries no `writable: true` (unlike collections such as branches or suppliers that do), and server/src/routes/collections.ts:182 only registers create/update/delete routes when `def.writable` is set (`const writer = def.writable ? WRITERS[def.key] : undefined`). So POST/PATCH/DELETE /admin/departments do not exist on a live server at all — app/src/screens/accounting/DepartmentFormModal.tsx's useCreate('departments') call 404s for every role, including owner and superadmin, not just a permissions gap.",
       "why": "Found while fixing F-038 (server/src/routes/collections.ts:182, tools/docs/generators/api.mjs's per-collection 'Writable' column, both keyed off the same `writable` flag). Out of scope there: F-038 is about read 403s on an existing route; this is a missing route, unrelated to which module gates it, and touching WRITERS['departments'] plus verifying the create/update/delete handlers is a separate, server-side change with its own test surface.",
       "foundBy": "principal-engineer-session",
       "verified": "reported this session, not yet fixed",
       "owner": "05",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "The departments collection had no writer registered at all: no `writable: true` on its registry.ts definition, and no packages/contract entity/create/update schema (unlike every other writable collection). DepartmentFormModal's own inline schema also sent `code`/`manager` — field names that matched no column on either side (the real columns are `costCenter`/`head`), so a submission would have 400'd on an unknown field even once the route existed. Fixed for real, not just flagged: added packages/contract/src/entities/department.ts (departmentCreate/departmentUpdate, mirroring the fleets/suppliers convention — name required, head/costCenter/branchLabel/icon optional, headcount defaults to 0 since nothing links an employee row to a department id yet, so there is no real count to derive it from); registered it in server/src/writers.ts as a passthrough writer; set writable: true on the departments collection definition, which is what actually turns on POST/PATCH/DELETE/bulk-* route registration in routes/collections.ts's generic router (`if (!writer) return`). Fixed DepartmentFormModal.tsx to send `head`/`costCenter` instead of the two names that matched nothing, piped through the new contract schema instead of an inline one. New server/tests/departments-write.test.ts (4 tests) proves it end to end against the real API: hr can create (headcount defaults to 0), the create is audited, manager and accountant (view-only on the F-038 'departments' module) are refused with 403, and owner can edit/delete while hr (create-only, 'vc') is refused the edit — the RBAC split from F-038 holds exactly at the write boundary it was designed for. tsc clean in app/ and server/, 4016/4016 app vitest tests, 558/558 server vitest tests (554 existing + 4 new), all gates, smoke 433/433, golden paths 23/23, docs generate/check clean."
     }
   ]
 }

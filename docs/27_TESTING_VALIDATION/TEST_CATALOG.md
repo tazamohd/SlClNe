@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-191 spec files containing 2224 test cases.
+192 spec files containing 2228 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 116 | 1114 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 117 | 1118 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,7 +35,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 35 | 447 |
+| server | 36 | 451 |
 | app | 113 | 1400 |
 | browser | 43 | 377 |
 
@@ -210,6 +210,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/customer-registration.test.ts` | UNIT_OR_API | 14 | customer, owner |
 | `server/tests/customer-self-scope.test.ts` | UNIT_OR_API | 11 | customer, manager, technician |
 | `server/tests/declined-jobs.test.ts` | UNIT_OR_API | 10 | advisor, manager, customer |
+| `server/tests/departments-write.test.ts` | UNIT_OR_API | 4 | hr, owner, manager, accountant |
 | `server/tests/document-chain.test.ts` | UNIT_OR_API | 13 | advisor, owner, accountant, parts, frontdesk, manager, callcenter |
 | `server/tests/errors.test.ts` | UNIT_OR_API | 8 | owner, parts |
 | `server/tests/estimate-money.test.ts` | FINANCIAL_INTEGRITY | 5 | manager, advisor |

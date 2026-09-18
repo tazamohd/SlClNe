@@ -9070,7 +9070,12 @@
       "missingUniversal": [],
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
+        "API-DEPARTMENTS-POST-LIST",
+        "API-DEPARTMENTS-DELETEID",
         "API-DEPARTMENTS-GETID",
+        "API-DEPARTMENTS-PATCHID",
+        "API-DEPARTMENTS-POSTBULK-DELETE",
+        "API-DEPARTMENTS-POSTBULK-UPDATE",
         "API-DEPARTMENTS-GETEXPORT"
       ],
       "collection": "departments",
@@ -9084,7 +9089,8 @@
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-ORG-BRANCH-SETUP-SPEC-TS",
-        "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS"
+        "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
+        "TS-SERVER-TESTS-DEPARTMENTS-WRITE-TEST-TS"
       ]
     },
     {

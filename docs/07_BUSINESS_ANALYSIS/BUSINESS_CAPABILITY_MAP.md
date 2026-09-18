@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 433 registered screens and all 385 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 433 registered screens and all 390 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -54,7 +54,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_PORTALS
   CAP_AI["AI and automation<br/>19 screens · 8 endpoints"]
   OBJ_THROUGHPUT --> CAP_AI
-  CAP_PLATFORM["Administration and platform<br/>36 screens · 19 endpoints"]
+  CAP_PLATFORM["Administration and platform<br/>36 screens · 24 endpoints"]
   OBJ_CONTROL --> CAP_PLATFORM
   CAP_IDENTITY["Identity and access<br/>18 screens · 24 endpoints"]
   OBJ_CONTROL --> CAP_IDENTITY
@@ -83,7 +83,7 @@ flowchart LR
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 6 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 19 | 4 | 13 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 24 | 4 | 13 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 5 | 0 | 0 | 0 |
@@ -298,7 +298,7 @@ flowchart LR
 | Permission modules | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` |
 | Screen domains | `admin` |
 | Screens | 36 (5 data-backed) |
-| Endpoints | 19 |
+| Endpoints | 24 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, test |
 | Rule guards | — |

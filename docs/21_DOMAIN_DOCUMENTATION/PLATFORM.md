@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 24 API endpoints and 3 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
@@ -64,9 +64,14 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/admin/departments` | departments:v | generated | — | 1 |
+| GET | `/api/v1/admin/departments` | departments:v | generated | — | 2 |
+| POST | `/api/v1/admin/departments` | departments:c | generated | — | 2 |
+| DELETE | `/api/v1/admin/departments/:id` | departments:d | generated | — | **0** |
 | GET | `/api/v1/admin/departments/:id` | departments:v | generated | — | **0** |
+| PATCH | `/api/v1/admin/departments/:id` | departments:e | generated | — | **0** |
 | GET | `/api/v1/admin/departments/:id/history` | departments:v | explicit | — | **0** |
+| POST | `/api/v1/admin/departments/bulk-delete` | departments:d | generated | — | **0** |
+| POST | `/api/v1/admin/departments/bulk-update` | departments:e | generated | — | **0** |
 | GET | `/api/v1/admin/departments/export` | departments:x | generated | — | **0** |
 | GET | `/api/v1/branches` | dashboard:v | generated | — | 2 |
 | GET | `/api/v1/branches/:id` | dashboard:v | generated | — | **0** |
@@ -136,7 +141,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **31 of 36 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **14 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **18 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **24 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.

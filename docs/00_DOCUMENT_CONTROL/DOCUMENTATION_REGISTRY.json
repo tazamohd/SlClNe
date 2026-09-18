@@ -439,7 +439,7 @@
     {
       "path": "03_PRINCE2_GOVERNANCE/PRINCE2_REGISTER_VIEWS.md",
       "section": "03_PRINCE2_GOVERNANCE",
-      "bytes": 17377,
+      "bytes": 17382,
       "lines": 109,
       "type": "GENERATED",
       "archived": false,
@@ -560,7 +560,7 @@
     {
       "path": "09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md",
       "section": "09_SYSTEM_ANALYSIS",
-      "bytes": 8451,
+      "bytes": 8507,
       "lines": 152,
       "type": "GENERATED",
       "archived": false,
@@ -780,7 +780,7 @@
     {
       "path": "16_SYSTEM_DESIGN/DATA_ACCESS_DESIGN.md",
       "section": "16_SYSTEM_DESIGN",
-      "bytes": 6440,
+      "bytes": 6434,
       "lines": 111,
       "type": "GENERATED",
       "archived": false,
@@ -956,8 +956,8 @@
     {
       "path": "17_API_INTEGRATION/endpoints/departments.md",
       "section": "17_API_INTEGRATION",
-      "bytes": 1578,
-      "lines": 29,
+      "bytes": 2427,
+      "lines": 34,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1308,8 +1308,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PLATFORM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 8858,
-      "lines": 153,
+      "bytes": 9284,
+      "lines": 158,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1462,8 +1462,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 16727,
-      "lines": 237,
+      "bytes": 16823,
+      "lines": 238,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,

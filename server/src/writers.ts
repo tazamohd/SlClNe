@@ -18,6 +18,8 @@ import {
   customerUpdate,
   declinedJobCreate,
   declinedJobUpdate,
+  departmentCreate,
+  departmentUpdate,
   employeeCreate,
   employeeUpdate,
   feedbackCreate,
@@ -180,6 +182,17 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   fleets: {
     create: fleetCreate,
     update: fleetUpdate,
+    toColumns: passthrough,
+  },
+
+  /* F-039: departments had no writer at all — the generic router's
+   * `def.writable ? WRITERS[def.key] : undefined` left "Add Department"
+   * 404ing for every role, owner and superadmin included, regardless of
+   * permission. RBAC (`departments:c/e`), tenant RLS, audit and optimistic
+   * concurrency all come from the generic router. */
+  departments: {
+    create: departmentCreate,
+    update: departmentUpdate,
     toColumns: passthrough,
   },
 

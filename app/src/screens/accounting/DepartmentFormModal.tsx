@@ -1,5 +1,13 @@
-/** Add / Edit Department modal — inline schema, no contract. */
+/** Add / Edit Department modal.
+ *
+ *  `head`/`costCenter` are the real columns `server/src/db/schema.ts`'s
+ *  `departments` table carries (`packages/contract/src/entities/department.ts`
+ *  is what the API validates against, so it is what this form validates
+ *  against). Before F-039 gave the collection a writer at all, this form sent
+ *  `code`/`manager` — names that matched no column on either side, so a
+ *  submission would have 400'd on `code` even once the route existed. */
 import { z } from 'zod'
+import { departmentCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
@@ -19,13 +27,13 @@ type Department = RowOf<'departments'>
 
 const departmentForm = z.object({
   name: z.string().min(1),
-  code: z.string(),
-  manager: z.string(),
+  costCenter: z.string(),
+  head: z.string(),
 }).transform((v) => ({
   name: v.name.trim(),
-  ...(v.code.trim() ? { code: v.code.trim() } : {}),
-  ...(v.manager.trim() ? { manager: v.manager.trim() } : {}),
-}))
+  ...(v.costCenter.trim() ? { costCenter: v.costCenter.trim() } : {}),
+  ...(v.head.trim() ? { head: v.head.trim() } : {}),
+})).pipe(departmentCreate)
 
 type DepartmentFormValues = z.input<typeof departmentForm>
 
@@ -50,8 +58,8 @@ export function DepartmentFormModal({
     schema: departmentForm,
     initial: {
       name: existingRecord?.name ?? '',
-      code: '',
-      manager: existingRecord?.head ?? '',
+      costCenter: existingRecord?.costCenter ?? '',
+      head: existingRecord?.head ?? '',
     } satisfies DepartmentFormValues,
     async onSubmit(values) {
       try {
@@ -147,8 +155,8 @@ export function DepartmentFormModal({
       <Form form={form}>
         <FormErrorSummary />
         <Field name="name" label="Department Name" required placeholder={t('Operations')} />
-        <Field name="code" label="Department Code" placeholder={t('OPS')} />
-        <Field name="manager" label="Manager" placeholder={t('Ahmed Al-Rashid')} />
+        <Field name="costCenter" label="Department Code" placeholder={t('OPS')} />
+        <Field name="head" label="Manager" placeholder={t('Ahmed Al-Rashid')} />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Add Department')}
         </button>

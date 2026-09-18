@@ -49,7 +49,7 @@
 | ENT-PURCHASE-ORDERS | `purchase_orders` | 23 | yes | yes | yes | yes | yes | yes | 3 | 0 |
 | ENT-PURCHASE-ORDER-LINES | `purchase_order_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-TECHNICIANS | `technicians` | 14 | yes | yes | yes | yes | yes | yes | — | 3 |
-| ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 3 |
+| ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-LEADS | `leads` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-OPPORTUNITIES | `opportunities` | 16 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-CAMPAIGNS | `campaigns` | 18 | yes | yes | yes | yes | yes | yes | 2 | 3 |
