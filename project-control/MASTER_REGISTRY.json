@@ -3,22 +3,22 @@
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 428,
-    "product": 365,
+    "capabilities": 429,
+    "product": 366,
     "referenceOnly": 28,
     "externalDependency": 35,
-    "rendered": 428,
+    "rendered": 429,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 249,
-    "dataBacked": 116,
-    "e2eCovered": 428,
-    "contentAsserted": 428,
+    "mockOnly": 251,
+    "dataBacked": 115,
+    "e2eCovered": 429,
+    "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 159,
     "hasErrorState": 126,
-    "hasEmptyState": 182,
+    "hasEmptyState": 179,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -28,8 +28,8 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 115,
-    "crudUpdate": 25,
+    "crudRead": 114,
+    "crudUpdate": 26,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 10,
@@ -766,6 +766,83 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING"
+      ]
+    },
+    {
+      "screenId": "D-HealthCheckReport",
+      "name": "HealthCheckReport",
+      "title": "HealthCheckReport",
+      "route": "/customer-portal/health-check-report",
+      "surface": "app",
+      "shell": "PortalShell",
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": "project/HealthCheckReport.Mobile.dc.html",
+      "featureMapSource": null,
+      "mobileType": "A-designed",
+      "purpose": "Customer-facing digital vehicle health check: findings, severity and photo/video evidence for one visit",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -14668,17 +14745,20 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "inspectionFindings",
+        "inspectionMedia"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -14702,8 +14782,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -18856,18 +18935,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
+      "loadingState": "MISSING",
       "emptyState": "DONE",
-      "errorState": "DONE",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "suppliers"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18894,6 +18971,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
+        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18923,18 +19001,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "purchaseOrders"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -18961,6 +19037,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
+        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19051,13 +19128,13 @@
       "mobileType": "B-responsive",
       "purpose": "Overview of B2B parts network activity.",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "DONE",
+      "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19090,6 +19167,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19116,13 +19194,13 @@
       "mobileType": "B-responsive",
       "purpose": "Tracking sent requests and received quotes.",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "DONE",
+      "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19155,6 +19233,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19181,13 +19260,13 @@
       "mobileType": "B-responsive",
       "purpose": "Managing requests from other network members.",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "DONE",
+      "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19220,6 +19299,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"

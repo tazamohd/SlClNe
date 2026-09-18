@@ -43,9 +43,9 @@ flowchart TB
 flowchart TB
   browser["Web browser / Capacitor shell<br/>iOS + Android"]
   spa["<b>SPA</b><br/>React 18 + Vite + React Router<br/>TanStack Query, Zustand<br/>app/"]
-  api["<b>API</b><br/>Fastify 5 on Node<br/>385 endpoints under /api/v1<br/>server/"]
+  api["<b>API</b><br/>Fastify 5 on Node<br/>407 endpoints under /api/v1<br/>server/"]
   contract["<b>Shared contract</b><br/>Zod entities, RBAC matrix,<br/>business rules<br/>packages/contract/"]
-  db[("<b>PostgreSQL</b><br/>70 tables<br/>Row-level security on 66<br/>Drizzle ORM")]
+  db[("<b>PostgreSQL</b><br/>72 tables<br/>Row-level security on 68<br/>Drizzle ORM")]
   browser --> spa
   spa -->|"HTTPS, Bearer token"| api
   spa -.->|"types, RBAC, rules"| contract
@@ -65,8 +65,8 @@ flowchart TB
     authn["authn onRequest hook<br/>authenticated by default"]
   end
   subgraph routing[Routing]
-    generic["collections.ts<br/>249 generated routes<br/>from registry.ts"]
-    explicit["136 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
+    generic["collections.ts<br/>265 generated routes<br/>from registry.ts"]
+    explicit["142 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
   end
   subgraph guards[Guards]
     perms["security/permissions.ts<br/>module + action"]
@@ -132,7 +132,7 @@ sequenceDiagram
 | hr | 48 | CAP-HR |
 | inventory | 13 | CAP-INVENTORY |
 | invoices | 14 | CAP-BILLING |
-| jobcards | 57 | CAP-WORKSHOP |
+| jobcards | 79 | CAP-WORKSHOP |
 | payments | 11 | CAP-BILLING |
 | platform | 3 | CAP-PLATFORM |
 | procurement | 28 | CAP-PROCUREMENT |

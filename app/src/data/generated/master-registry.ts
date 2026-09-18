@@ -225,6 +225,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-HealthCheckReport",
+    "name": "HealthCheckReport",
+    "title": "HealthCheckReport",
+    "route": "/customer-portal/health-check-report",
+    "surface": "app",
+    "shell": "PortalShell",
+    "module": "jobcards",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "A-designed",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": "project/HealthCheckReport.Mobile.dc.html",
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-AuditLog",
     "name": "AuditLog",
     "title": "AuditLog",
@@ -4648,8 +4671,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopInspection.dc.html",

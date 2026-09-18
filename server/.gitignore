@@ -3,3 +3,6 @@ dist/
 .env
 .env.*
 !.env.example
+# Inspection-media files (server/src/storage/media.ts) — real evidence bytes,
+# never committed, same as any other uploaded file.
+/var/

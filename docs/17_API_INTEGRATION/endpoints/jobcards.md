@@ -10,7 +10,7 @@
 
 # API — jobcards
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 57 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 79 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -47,12 +47,34 @@
 | GET | `/api/v1/diagnostics/stages/:id` | jobcards:v | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/diagnostics/stages/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/diagnostics/stages/export` | jobcards:x | token | `diagStages` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-findings` | jobcards:v | token | `inspectionFindings` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/inspection-findings` | jobcards:c | token | `inspectionFindings` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/inspection-findings/:id` | jobcards:d | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-findings/:id` | jobcards:v | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/inspection-findings/:id` | jobcards:e | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-findings/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/inspection-findings/:id/media` | jobcards:e | token | — | — | — | `server/src/routes/inspection.ts` |
+| POST | `/api/v1/inspection-findings/bulk-delete` | jobcards:d | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/inspection-findings/bulk-update` | jobcards:e | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-findings/export` | jobcards:x | token | `inspectionFindings` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-media` | jobcards:v | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/inspection-media` | jobcards:c | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/inspection-media/:id` | jobcards:d | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-media/:id` | jobcards:v | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/inspection-media/:id` | jobcards:e | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-media/:id/file` | jobcards:v | token | — | — | — | `server/src/routes/inspection.ts` |
+| GET | `/api/v1/inspection-media/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/inspection-media/bulk-delete` | jobcards:d | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/inspection-media/bulk-update` | jobcards:e | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/inspection-media/export` | jobcards:x | token | `inspectionMedia` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/job-cards/:id/inspection-findings` | jobcards:e | token | — | — | 1 | `server/src/routes/inspection.ts` |
 | GET | `/api/v1/jobs` | jobcards:v | token | `jobCards` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/jobs` | jobcards:c | token | `jobCards` | — | 7 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/jobs/:id` | jobcards:d | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/jobs/:id` | jobcards:v | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/jobs/:id` | jobcards:e | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/jobs/:id/assign` | jobcards:e | token | — | — | — | `server/src/routes/workshop.ts` |
+| GET | `/api/v1/jobs/:id/health-check-report` | jobcards:v | token | — | — | — | `server/src/routes/inspection.ts` |
 | GET | `/api/v1/jobs/:id/history` | jobcards:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/jobs/:id/transition` | jobcards:e | token | — | — | — | `server/src/routes/workshop.ts` |
 | POST | `/api/v1/jobs/bulk-delete` | jobcards:d | token | `jobCards` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -78,6 +100,8 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | services | `/services` | `label` | `label`, `createdAt` | — | createdAt asc | read-only |
 | jobs | `/jobs` | `code`, `customerName`, `vehicleLabel` | `code`, `customerName`, `status`, `priority`, `createdAt` | `status`, `stage`, `priority`, `service`, `assignedTechId` | createdAt asc | yes |
+| inspectionFindings | `/inspection-findings` | `category`, `item` | `createdAt`, `severity` | `jobCardId`, `severity`, `estimateLineId` | createdAt asc | yes |
+| inspectionMedia | `/inspection-media` | — | `createdAt` | `findingId`, `jobCardId`, `kind`, `stage` | createdAt asc | yes |
 | obdDevices | `/diagnostics/devices` | `code`, `vehicleLabel`, `plate`, `vin` | `code`, `bay`, `createdAt` | `status`, `bay` | createdAt asc | read-only |
 | obdReadings | `/diagnostics/readings` | `dtcCode`, `description` | `readAt`, `createdAt`, `severity` | `deviceId`, `source`, `cleared`, `severity` | readAt desc | read-only |
 | dtcCodes | `/kb/dtc` | `code`, `description` | `code`, `severity` | `severity`, `system` | createdAt asc | read-only |

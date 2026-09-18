@@ -17,6 +17,8 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   appointments: '/appointments',
   estimates: '/estimates',
   declinedJobs: '/declined-jobs',
+  inspectionFindings: '/inspection-findings',
+  inspectionMedia: '/inspection-media',
   invoices: '/invoices',
   receipts: '/receipts',
 

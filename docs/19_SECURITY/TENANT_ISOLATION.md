@@ -14,7 +14,7 @@
 
 Isolation is a database policy, not a `WHERE` clause. A `WHERE` clause is something a developer has to remember; a policy is something the database applies whether they remembered or not.
 
-**66 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 65 tenant-scoped tables, **0 lack a policy**.
+**68 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 67 tenant-scoped tables, **0 lack a policy**.
 
 ## Request context
 
@@ -90,6 +90,14 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `p_tenant` | `declined_jobs` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
 | `r_branch` | `declined_jobs` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
 | `r_self` | `declined_jobs` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `inspection_findings` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `inspection_findings` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_own` | `inspection_findings` | RESTRICTIVE | ALL | `app_scope() NOT IN ('own','assigned') OR job_card_id IN (SELECT id FROM job_cards)` |
+| `r_self` | `inspection_findings` | RESTRICTIVE | ALL | `app_scope() <> 'self' OR job_card_id IN (SELECT id FROM job_cards)` |
+| `p_tenant` | `inspection_media` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `inspection_media` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_own` | `inspection_media` | RESTRICTIVE | ALL | `app_scope() NOT IN ('own','assigned') OR job_card_id IN (SELECT id FROM job_cards)` |
+| `r_self` | `inspection_media` | RESTRICTIVE | ALL | `app_scope() <> 'self' OR job_card_id IN (SELECT id FROM job_cards)` |
 
 ## Triggers
 
@@ -121,6 +129,8 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `audit_log_no_truncate` | `audit_log` | `audit_log_is_immutable` | `server/drizzle/0011_audit_log_statement_immutability.sql` |
 | `journal_lines_bump_version` | `journal_lines` | `bump_version` | `server/drizzle/0015_journal_lines.sql` |
 | `declined_jobs_bump_version` | `declined_jobs` | `bump_version` | `server/drizzle/0017_declined_jobs.sql` |
+| `inspection_findings_bump_version` | `inspection_findings` | `bump_version` | `server/drizzle/0018_inspection_findings.sql` |
+| `inspection_media_bump_version` | `inspection_media` | `bump_version` | `server/drizzle/0018_inspection_findings.sql` |
 
 ## Sequence: a request that reads tenant data
 
