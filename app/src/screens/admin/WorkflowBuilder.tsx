@@ -2,18 +2,18 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState } from '@/components/ui/States'
 import { MobilePageHeader } from '@/components/shell/MobileShell'
-import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
-/* This screen was MOCK_ONLY (BLK-004): four fixture workflows ("Job Card
+/* This screen was MOCK_ONLY (BLK-004): all 4 workflow cards ("Job Card
  * Lifecycle", "Invoice Approval", "Customer Onboarding", "Parts
- * Procurement") with invented run counts ("1,248 runs", "2 min ago") and
- * step sequences were presented as real configured automations.
+ * Procurement") — their steps, status and run counts — were hardcoded
+ * fixture data with no `isLive` check on the cards themselves.
  *
- * There is no workflows collection in Repository
- * (app/src/data/repository.ts) or API_REGISTRY.json. Rather than invent
- * workflows, this is an honest GAP state, following CallCenterLogs.tsx's
- * pattern. */
+ * There is no workflow-definition collection in Repository
+ * (app/src/data/repository.ts) or API_REGISTRY.json. Rather than invent a
+ * workflow gallery, this is an honest GAP state, following
+ * CallCenterLogs.tsx's pattern. */
 export function WorkflowBuilder() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -24,7 +24,7 @@ export function WorkflowBuilder() {
         icon="GitBranch"
         title={t('Workflow Builder has no data source yet')}
         description={t(
-          'Configured multi-step workflows, their status and run history have no collection this API serves. Nothing is shown here rather than invented workflows.',
+          'Automated workflows, their steps and run history have no collection this API serves. Nothing is shown here rather than invented workflows.',
         )}
       />
       <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">

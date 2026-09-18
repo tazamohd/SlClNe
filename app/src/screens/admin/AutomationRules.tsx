@@ -2,17 +2,17 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState } from '@/components/ui/States'
 import { MobilePageHeader } from '@/components/shell/MobileShell'
-import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
+import { usePreferences } from '@/providers/PreferencesProvider'
 
-/* This screen was MOCK_ONLY (BLK-004): five fixture rules ("Low Stock
- * Alert", "Auto Invoice", "Appointment Reminder", "Overdue Follow-up",
- * "QC Notification") with hardcoded active/inactive toggle state were
- * presented as a real automation configuration.
+/* This screen was MOCK_ONLY (BLK-004): all 5 rules ("Low Stock Alert",
+ * "Auto Invoice", "Appointment Reminder", "Overdue Follow-up", "QC
+ * Notification") were hardcoded fixture data, and their on/off toggles
+ * flipped local state with no backing rule engine.
  *
- * There is no automation-rules collection in Repository
- * (app/src/data/repository.ts) or API_REGISTRY.json. Rather than invent
- * rules, this is an honest GAP state, following CallCenterLogs.tsx's
+ * There is no automation-rule collection in Repository
+ * (app/src/data/repository.ts) or API_REGISTRY.json. Rather than invent a
+ * rule list, this is an honest GAP state, following CallCenterLogs.tsx's
  * pattern. */
 export function AutomationRules() {
   const { t } = usePreferences()
@@ -24,7 +24,7 @@ export function AutomationRules() {
         icon="Zap"
         title={t('Automation Rules has no data source yet')}
         description={t(
-          'Trigger-based automation rules and their active/inactive state have no collection this API serves. Nothing is shown here rather than invented rules.',
+          'Trigger-based automation rules have no collection this API serves. Nothing is shown here rather than invented rules.',
         )}
       />
       <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[11px] text-muted">
@@ -38,7 +38,7 @@ export function AutomationRules() {
   if (isMobile) {
     return (
       <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
-        <MobilePageHeader icon="Zap" title={t('Automation Rules')} />
+        <MobilePageHeader icon="Zap" title={t('Automation Rules')} subtitle={t('Administration')} />
         {gap}
       </div>
     )
