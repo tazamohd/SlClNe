@@ -6,10 +6,15 @@ import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** SSO / enterprise login — enter company domain and redirect. */
+/** SSO / enterprise login — enter company domain and redirect.
+ *
+ *  Previously fired a fake "Redirecting to SSO provider…" toast
+ *  whenever `isLive`, with no actual redirect or API call — no SSO/OAuth
+ *  mechanism exists anywhere in the API contract or session provider,
+ *  live or not. Now shows the same honest "not available yet" message
+ *  unconditionally, instead of only when offline. */
 export function SSOLogin() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -25,15 +30,10 @@ export function SSOLogin() {
     }
     setError('')
 
-    if (!isLive) {
-      toast.show({
-        title: t('SSO is not available yet'),
-        description: t('Please use the standard login to access the application.'),
-      })
-      return
-    }
-
-    toast.show({ title: t('Redirecting to SSO provider…') })
+    toast.show({
+      title: t('SSO is not available yet'),
+      description: t('Please use the standard login to access the application.'),
+    })
   }
 
   return (

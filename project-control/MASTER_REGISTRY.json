@@ -11,16 +11,16 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 226,
-    "dataBacked": 142,
+    "mockOnly": 225,
+    "dataBacked": 143,
     "e2eCovered": 430,
     "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 178,
-    "hasErrorState": 142,
-    "hasEmptyState": 222,
+    "hasLoadingState": 179,
+    "hasErrorState": 143,
+    "hasEmptyState": 224,
     "tabletVerified": 4,
-    "arabicVerified": 76,
+    "arabicVerified": 75,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 134,
+    "crudRead": 135,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -7019,10 +7019,10 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7056,6 +7056,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -15130,16 +15131,18 @@
       "responsive": "DONE",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "branches"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -15164,8 +15167,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY"
+        "TABLET_MISSING"
       ]
     },
     {

@@ -23,11 +23,11 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 430 | `STATUS.json` |
 | Rendering | 430 of 430 | `STATUS.json` |
-| Wired to the API | 142 of 430 | `STATUS.json` |
-| Reading design fixtures | 226 of 430 | `STATUS.json` |
+| Wired to the API | 143 of 430 | `STATUS.json` |
+| Reading design fixtures | 225 of 430 | `STATUS.json` |
 | End-to-end covered | 430 of 430 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 76 of 430 | `STATUS.json` |
+| Arabic verified | 75 of 430 | `STATUS.json` |
 | Tablet verified | 4 of 430 | `STATUS.json` |
 | API endpoints | 431 | the route files |
 | Test cases | 2292 | the spec files |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**226 of 430 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**225 of 430 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 226 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 225 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 
 ## Open risks
 
