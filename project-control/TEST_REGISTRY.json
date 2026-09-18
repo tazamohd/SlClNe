@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 191,
-    "cases": 2221,
+    "cases": 2223,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1111,
+      "UNIT_OR_API": 1113,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2041,6 +2041,7 @@
         "renders a footer summary under the table",
         "opens a row with Enter and with Space, not only with a click",
         "leaves rows out of the tab order when there is nothing to open",
+        "never nests a real button inside a row carrying an interactive role",
         "replaces the table with the designed card list below 860px",
         "keeps the table when the screen gave no card design",
         "makes each card tappable when rows open something",
@@ -2048,7 +2049,7 @@
         "switches layouts live when the viewport crosses the breakpoint",
         "renders every row of the card list, not a truncated one"
       ],
-      "caseCount": 14,
+      "caseCount": 15,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2133,6 +2134,7 @@
         "marks the offending control invalid and wires its message up for a screen reader",
         "moves focus to the first field it refused",
         "clears a message as soon as the field is fixed, not at the next submit",
+        "does not let a zod issue for an unrendered field steal focus from a real one",
         "shows the hint while the field is happy",
         "passes parsed values through once every rule is satisfied",
         "attaches a server error to the field that caused it",
@@ -2145,7 +2147,7 @@
         "offers a placeholder option so a select cannot look pre-answered",
         "accumulates a multiselect as chips with checkbox semantics"
       ],
-      "caseCount": 16,
+      "caseCount": 17,
       "touchesPaths": [],
       "touchesRoles": []
     },

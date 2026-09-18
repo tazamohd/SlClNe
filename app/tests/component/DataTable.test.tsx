@@ -91,14 +91,23 @@ describe('DataTable — desktop', () => {
 })
 
 describe('DataTable — keyboard reachable rows', () => {
+  // Rows keep their native, implicit `row` role (named explicitly once
+  // `onRowClick` is set) rather than `role="button"` — an Actions column can
+  // render real `<button>`s inside the row, and a widget role must not
+  // contain another interactive widget as a descendant (axe's
+  // `nested-interactive` rule). `tabIndex` and the Enter/Space handler are
+  // what carry keyboard reachability, not the role.
+  function dataRows() {
+    return screen.getAllByRole('row').filter((row) => row.getAttribute('tabindex') === '0')
+  }
+
   it('opens a row with Enter and with Space, not only with a click', async () => {
     const user = userEvent.setup()
     const onRowClick = vi.fn()
     renderWithProviders(table(JOBS, { onRowClick }))
 
-    const rows = screen.getAllByRole('button')
+    const rows = dataRows()
     expect(rows).toHaveLength(JOBS.length)
-    expect(rows[0]).toHaveAttribute('tabindex', '0')
 
     await user.tab()
     expect(rows[0]).toHaveFocus()
@@ -118,9 +127,27 @@ describe('DataTable — keyboard reachable rows', () => {
   it('leaves rows out of the tab order when there is nothing to open', async () => {
     const user = userEvent.setup()
     renderWithProviders(table())
-    expect(screen.queryAllByRole('button')).toHaveLength(0)
+    expect(dataRows()).toHaveLength(0)
     await user.tab()
     expect(document.body).toHaveFocus()
+  })
+
+  it('never nests a real button inside a row carrying an interactive role', () => {
+    // The regression this pins: a row that is itself `role="button"` while an
+    // Actions cell renders a real `<button>` is invalid ARIA even though it
+    // was fully keyboard-operable — the bug this test guards against.
+    const onRowClick = vi.fn()
+    const columns: Column<Job>[] = [
+      ...COLUMNS,
+      {
+        header: 'Actions',
+        cell: () => <button type="button">View</button>,
+      },
+    ]
+    renderWithProviders(table(JOBS, { onRowClick, columns }))
+    for (const row of dataRows()) {
+      expect(row).not.toHaveAttribute('role', 'button')
+    }
   })
 })
 

@@ -108,6 +108,41 @@ describe('validation', () => {
     )
   })
 
+  it('does not let a zod issue for an unrendered field steal focus from a real one', async () => {
+    // The F-019 case ("hit for real with a non-ULID customerId"): a schema
+    // key with no matching `Field` — a hidden derived value, not a control
+    // the user edits directly. `errorsFromZod` still maps its issue to that
+    // name, and it sorts first (schema declaration order). The old
+    // `focusFirstError` tried only `names[0]`, found no element for the
+    // unrendered name, and silently focused nothing at all — so a submit
+    // that also had a real, visible, fixable error moved focus nowhere.
+    const user = userEvent.setup()
+    function MismatchedForm() {
+      const form = useZodForm({
+        schema: z.object({
+          customerId: z.string().uuid('customerId must be a valid id'),
+          name: z.string().min(1, 'Enter the customer name'),
+        }),
+        initial: { customerId: 'not-a-uuid', name: '' },
+        onSubmit: () => {},
+      })
+      return (
+        <Form form={form}>
+          <FormErrorSummary />
+          {/* No Field named "customerId" — it's a hidden derived value. */}
+          <Field name="name" label="Customer Name" required />
+          <FormActions>
+            <SubmitButton label="Save Customer" />
+          </FormActions>
+        </Form>
+      )
+    }
+    renderWithProviders(<MismatchedForm />)
+    await user.click(screen.getByRole('button', { name: 'Save Customer' }))
+
+    await waitFor(() => expect(screen.getByLabelText(/Customer Name/)).toHaveFocus())
+  })
+
   it('shows the hint while the field is happy', () => {
     renderWithProviders(<CustomerForm />)
     expect(screen.getByLabelText('Email')).toHaveAccessibleDescription(

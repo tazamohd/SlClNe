@@ -236,14 +236,16 @@
     },
     {
       "id": "F-019",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two UI-foundation primitives have correctness gaps the wave leaned on",
       "detail": "Form.tsx errorsFromZod assigns every issue to fields[path[0]]; an issue whose path matches no rendered Field silently refuses submit with no message and no focus move (hit for real with a non-ULID customerId). DataTable.tsx:122-141 puts role=button+tabindex on the <tr> for onRowClick, so an Actions column nests buttons inside a button — valid keyboard, invalid ARIA.",
       "why": "Both are in shared primitives every product screen uses, so the gap multiplies across the wave.",
       "foundBy": "09",
       "verified": "reported by agent 09",
       "owner": "04",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Form.tsx: a submit refusal now tracks which field names a `<Field>` actually rendered (`registerField`, called on mount) and filters `focusFirstError` to that set — an unrendered schema key (a derived/hidden value with no matching control) can no longer silently eat the focus move a real, visible field's error was owed. Investigated folding the unrendered field's own message into the form-level summary too, but reverted that half: InvoiceCreate.tsx (and screens like it) read `form.errors[name]` directly for a hand-rolled control with no `<Field>` — e.g. an array-level error over a line-items table — so 'no rendered Field' does not mean 'no visible message', and the broader fix would have duplicated or miscategorized real, already-working error displays. DataTable.tsx: an `onRowClick` row no longer claims `role=\"button\"` while an Actions column's real `<button>`s sit inside it — a widget role must not contain another interactive widget (axe's `nested-interactive` rule). It now uses `role=\"row\"` (what a `<tr>` already is implicitly), keeping the same `tabIndex` + Enter/Space handling — the finding's own \"valid keyboard\" stays true, only the invalid ARIA nesting is gone. 3940/3940 app tests (2 new, 2 existing rewritten for the role change), tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-020",
@@ -258,14 +260,16 @@
     },
     {
       "id": "F-021",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Roughly 135 UI strings shipped this wave have no Arabic key",
       "detail": "The four product agents added English source strings that fall back to English on an Arabic page: ~90 from inventory, ~31 from customers, 14 from workshop. t() never renders empty, so nothing is broken — but the Arabic UI shows English until the keys land in data/generated/ar.ts.",
       "why": "Arabic and RTL are a first-class release target, not a late pass; the strings work the day they are translated.",
       "foundBy": "08 and 09 and 10",
       "verified": "reported with full string lists",
       "owner": "19",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Stale — check-i18n.mjs now reports 3660/3660 unique literal t() keys covered (0 missing) across the whole app, confirmed clean in every gates run this session. The specific string lists these two findings named were translated in earlier waves; this closes them out formally since neither was ever marked fixed."
     },
     {
       "id": "F-022",
@@ -319,14 +323,16 @@
     },
     {
       "id": "F-026",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "~172 new UI strings across portals and the public site have no Arabic key",
       "detail": "Agent 16 added ~47 and agent 17 ~125 English source strings that fall back to English on an Arabic page via t(). Nothing is broken; the Arabic UI shows English until the keys land in ar.ts. Full lists are in the two agents' reports.",
       "why": "Arabic/RTL is a first-class release target; these surfaces are not Arabic-complete until the keys are added.",
       "foundBy": "16 and 17",
       "verified": "reported with full string lists",
       "owner": "19",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Stale — check-i18n.mjs now reports 3660/3660 unique literal t() keys covered (0 missing) across the whole app, confirmed clean in every gates run this session. The specific string lists these two findings named were translated in earlier waves; this closes them out formally since neither was ever marked fixed."
     },
     {
       "id": "F-027",
@@ -395,14 +401,16 @@
     },
     {
       "id": "F-032",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "external_dependency_unavailable is not in the client RepositoryErrorCode union",
       "detail": "The server sends error code external_dependency_unavailable with status 503 for an unconfigured integration (OBD bridge, SMS). repository.ts's RepositoryErrorCode union does not list it, so agent 08's handler keys on the 503 status and casts the code. Works at runtime; the string is untyped.",
       "why": "A minor type gap: the honest EXTERNAL_DEPENDENCY handling works, but the code is not in the shared taxonomy the client types against.",
       "foundBy": "08",
       "verified": "reported by agent 08",
       "owner": "05",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "external_dependency_unavailable added to repository.ts's RepositoryErrorCode union, matching packages/contract's real ErrorCode. workshop/api.ts's isExternalDependency dropped the `error.code as string` cast it used to compare against the literal outside the union — the 503-status check next to it was already sufficient at runtime, so behaviour is unchanged; only the type gap is closed. tsc and all gates clean."
     },
     {
       "id": "F-033",

@@ -72,6 +72,14 @@ export type RepositoryErrorCode =
   | 'rule_violated'
   | 'approval_required'
   | 'rate_limited'
+  /** An integration exists as an adapter but has no credentials configured
+   *  (the OBD bridge, SMS/WhatsApp, SSO/WebAuthn) — the server's real code,
+   *  mirrored from `packages/contract`'s `ErrorCode`. Screens already branch
+   *  on `error.status === 503` for this (workshop/api.ts's
+   *  `isExternalDependency`); naming the code here just lets that check stop
+   *  casting `error.code as string` to compare against a literal outside the
+   *  union. */
+  | 'external_dependency_unavailable'
   | 'internal'
   | 'network'
   | 'unsupported'
