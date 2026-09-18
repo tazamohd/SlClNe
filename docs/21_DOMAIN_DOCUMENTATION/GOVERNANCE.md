@@ -23,15 +23,15 @@ This domain serves the objective **OBJ-CONTROL** (Keep financial control auditab
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `approvals:vax` `audit:vx` |
-| superadmin | platform | unlimited | `approvals:vx` `audit:vx` |
-| manager | branch | SAR 50,000 | `approvals:vax` `audit:vx` |
+| owner | all | unlimited | `approvals:vax` |
+| superadmin | platform | unlimited | `approvals:vx` |
+| manager | branch | SAR 50,000 | `approvals:vax` |
 | advisor | branch | SAR 5,000 | `approvals:va` |
 | parts | branch | SAR 10,000 | `approvals:va` |
-| accountant | all | SAR 25,000 | `approvals:vax` `audit:vx` |
+| accountant | all | SAR 25,000 | `approvals:vax` |
 | hr | all | SAR 15,000 | `approvals:va` |
 | procurement | all | SAR 20,000 | `approvals:vax` |
-| test | all | unlimited | `approvals:vcedax` `audit:vcedax` |
+| test | all | unlimited | `approvals:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 

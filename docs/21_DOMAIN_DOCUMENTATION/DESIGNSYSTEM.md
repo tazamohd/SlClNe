@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 207 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 205 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -175,8 +175,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-132 | `/profit-analysis` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-133 | `/kpi-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-134 | `/productivity-tracker` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-135 | `/hr-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-136 | `/staff-directory` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-137 | `/staff-scheduling` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-138 | `/staff-performance-review` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -258,7 +256,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **194 of 207 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **194 of 205 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **168 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence

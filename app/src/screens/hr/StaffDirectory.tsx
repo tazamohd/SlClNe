@@ -39,7 +39,7 @@ import { Avatar, ConnectApi, Pay, ProvenanceNote, StatCard, StatusPill } from '.
 
 const STATUSES: readonly EmployeeRow['status'][] = ['active', 'on_leave', 'terminated']
 
-type Dept = RowOf<'departments'> & { _id?: string }
+type Dept = RowOf<'departments'>
 
 export function StaffDirectory() {
   const { t } = usePreferences()

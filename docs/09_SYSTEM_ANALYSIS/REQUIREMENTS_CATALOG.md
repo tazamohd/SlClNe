@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 154 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 155 requirements
 
 ## What these requirements are, and what they are not
 
@@ -43,17 +43,17 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-PROCUREMENT-001 | The system provides procurement through 3 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-ACCOUNTING-001 | The system provides accounting and finance through 8 screens and 50 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 50 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-HR-001 | The system provides hr and payroll through 9 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 9 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-HR-001 | The system provides hr and payroll through 11 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CRM-001 | The system provides crm and sales through 13 screens and 45 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 45 | 13 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 5 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 5 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PORTALS-001 | The system provides portals and channels through 11 screens and 0 API endpoints, gated by the `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` permission modules. | CAP-PORTALS | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-AI-001 | The system provides ai and automation through 19 screens and 8 API endpoints, gated by the `ai`, `aiadmin` permission modules. | CAP-AI | 8 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PLATFORM-001 | The system provides administration and platform through 36 screens and 19 API endpoints, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 19 | 36 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PLATFORM-001 | The system provides administration and platform through 36 screens and 19 API endpoints, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 19 | 36 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-IDENTITY-001 | The system provides identity and access through 18 screens and 24 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 24 | 18 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-WEBSITE-001 | The system provides public website and acquisition through 39 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 39 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 207 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 207 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 205 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 205 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-RULE-APPROVALS-checkApprovalCeiling | A value above the role's ceiling must escalate rather than be approved. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkQcIndependence | A technician cannot pass QC on a repair they performed. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkSelfApproval | The approver must not be the submitter — the first and most-broken SOD pair, and the one that lets a single person move money on their own say-so. | — | — | — | `packages/contract/src/rules/approvals.ts` |
@@ -197,10 +197,11 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | SR-RBAC-AI | Access to `ai` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-AIADMIN | Access to `aiadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-ADMIN | Access to `admin` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-SETTINGS | Access to `settings` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-SUPERADMIN | Access to `superadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-AUDIT | Access to `audit` is granted to 5 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-NETWORK | Access to `network` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-S OTHER COLLECTIONS    * (BRANCHES, USERS, INTEGRATIONS, TEMPLATES) TO HR/ACCOUNTANT. */    | Access to `s other collections    * (branches, users, integrations, templates) to hr/accountant. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,   /* PLATFORM/CROSS-TENANT ADMINISTRATION: THE SUPER ADMIN CONSOLE, GLOBAL    * ROLES & PERMISSIONS, CROSS-TENANT ORGANIZATION MANAGEMENT. DISTINCT FROM    * `ADMIN` (TENANT-SCOPED DEPARTMENTS/BRANCHES/USERS) AND `SETTINGS`    * (TENANT-SCOPED CONFIG) SO A TENANT ROLE GRANTED EITHER OF THOSE NEVER    * INHERITS THIS ONE. */    | Access to `,   /* Platform/cross-tenant administration: the Super Admin console, global    * roles & permissions, cross-tenant organization management. Distinct from    * `admin` (tenant-scoped departments/branches/users) and `settings`    * (tenant-scoped config) so a tenant role granted either of those never    * inherits this one. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
 | SR-SOD-001 | "Raise purchase order" and "Approve purchase order" must not be performed by the same person (risk: high). |
 | SR-SOD-002 | "Create supplier" and "Approve supplier payment" must not be performed by the same person (risk: high). |
 | SR-SOD-003 | "Post journal entry" and "Approve journal entry" must not be performed by the same person (risk: high). |

@@ -685,19 +685,21 @@
         "API-TIMESHEETS-POSTBULK-UPDATE",
         "API-TIMESHEETS-GETEXPORT"
       ],
-      "screenCount": 9,
+      "screenCount": 11,
       "screens": [
         "D-Departments",
         "D-HRPayroll",
         "D-TechnicianKB",
         "D-Technicians",
         "D-TechnicianSchedule",
+        "F-135",
+        "F-136",
         "F-139",
         "F-140",
         "F-141",
         "F-142"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 11,
       "entities": [
         "employees",
         "leaveRequests",
@@ -1027,6 +1029,7 @@
       "name": "Administration and platform",
       "modules": [
         "admin",
+        "departments",
         "settings",
         "superadmin",
         "dashboard",
@@ -1121,7 +1124,6 @@
         "frontdesk",
         "callcenter",
         "procurement",
-        "supplier",
         "test"
       ],
       "goldenPaths": []
@@ -1293,7 +1295,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 207,
+      "screenCount": 205,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1422,8 +1424,6 @@
         "F-132",
         "F-133",
         "F-134",
-        "F-135",
-        "F-136",
         "F-137",
         "F-138",
         "F-143",
@@ -1503,7 +1503,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 13,
+      "dataBackedScreens": 11,
       "entities": [],
       "rules": [],
       "roles": [],

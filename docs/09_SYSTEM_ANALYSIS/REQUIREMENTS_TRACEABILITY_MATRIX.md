@@ -33,17 +33,17 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 3 | 4 | 3 |
 | OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 25 | 9 | 6 | 0 | 13 |
 | OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 8 | 0 | 12 |
-| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 9 | 2 | 8 |
+| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 11 | 2 | 8 |
 | OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 13 | 0 | 6 |
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
 | OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
 | OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 19 | 0 | 1 |
-| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 36 | 0 | 6 |
+| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 13 | 36 | 0 | 6 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 16 |
 | OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 39 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
-| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 207 | 0 | **0** |
+| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 205 | 0 | **0** |
 
 ## Reverse: from an artefact back to why it exists
 
@@ -70,7 +70,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 | CAP-PORTALS | 0 | 11 |
 | CAP-WEBSITE | 0 | 39 |
 | CAP-CUSTOMERAPP | 0 | 11 |
-| CAP-DESIGNSYSTEM | 0 | 207 |
+| CAP-DESIGNSYSTEM | 0 | 205 |
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
@@ -89,9 +89,9 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/accounting/journal-entries/:id` | accounting:v |
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x |
-| GET | `/api/v1/admin/departments/:id` | admin:v |
-| GET | `/api/v1/admin/departments/:id/history` | admin:v |
-| GET | `/api/v1/admin/departments/export` | admin:x |
+| GET | `/api/v1/admin/departments/:id` | departments:v |
+| GET | `/api/v1/admin/departments/:id/history` | departments:v |
+| GET | `/api/v1/admin/departments/export` | departments:x |
 | GET | `/api/v1/ai/agents/:id` | ai:v |
 | GET | `/api/v1/ai/agents/:id/history` | ai:v |
 | GET | `/api/v1/ai/agents/export` | ai:x |

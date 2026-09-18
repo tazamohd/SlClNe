@@ -120,7 +120,6 @@ sequenceDiagram
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
 | accounting | 50 | CAP-ACCOUNTING |
-| admin | 4 | CAP-PLATFORM |
 | ai | 8 | CAP-AI |
 | appointments | 9 | CAP-WORKSHOP |
 | approvals | 5 | CAP-GOVERNANCE |
@@ -128,6 +127,7 @@ sequenceDiagram
 | crm | 45 | CAP-CRM |
 | customers | 19 | CAP-CUSTOMERS |
 | dashboard | 4 | CAP-PLATFORM |
+| departments | 4 | CAP-PLATFORM |
 | estimates | 22 | CAP-WORKSHOP |
 | hr | 48 | CAP-HR |
 | inventory | 13 | CAP-INVENTORY |

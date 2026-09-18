@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Sources as of:** 2026-09-18 · 409 documents, 139 in the numbered architecture
+**Sources as of:** 2026-09-18 · 410 documents, 140 in the numbered architecture
 
 ## Start here
 
@@ -47,7 +47,7 @@ An executive or an agent should be able to understand the state of this project 
 | `14_SOLUTION_ARCHITECTURE/` | Master architecture, principles, constraints, risks — current versus target. | 2 |
 | `15_C4_ARCHITECTURE_DIAGRAMS/` | Context, container and component views, and dynamic views. | 2 |
 | `16_SYSTEM_DESIGN/` | High- and low-level design of each cross-cutting mechanism. | 5 |
-| `17_API_INTEGRATION/` | The API surface, per domain, generated from the routers. | 22 |
+| `17_API_INTEGRATION/` | The API surface, per domain, generated from the routers. | 23 |
 | `18_DATABASE/` | Physical model, migrations, RLS, backup, retention. | 2 |
 | `19_SECURITY/` | Authentication, authorization, isolation, audit, threat model. | 4 |
 | `20_UI_UX_EXPERIENCE/` | Information architecture, screen registry, states, accessibility, Arabic and RTL. | 2 |
@@ -98,7 +98,7 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 | `project-control/ENTITY_REGISTRY.json` | 70 tables with every column | `server/src/db/schema.ts` |
 | `project-control/RELATIONSHIP_REGISTRY.json` | 177 relationships, declared versus inferred | `server/src/db/schema.ts` |
 | `project-control/API_REGISTRY.json` | 385 endpoints with guards and scopes | the route files |
-| `project-control/PERMISSION_REGISTRY.json` | 450 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
+| `project-control/PERMISSION_REGISTRY.json` | 465 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
 | `project-control/BUSINESS_RULES.json` | 30 rules, each naming its function | `packages/contract/src/rules/*.ts` |
 | `project-control/STATE_MACHINE_REGISTRY.json` | 19 lifecycles | `packages/contract/src/entities/*.ts` |
 | `project-control/TEST_REGISTRY.json` | 191 suites, 2224 cases | the spec files |

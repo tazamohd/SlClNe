@@ -543,6 +543,14 @@ export const PERMS: PermissionMatrix = {
     "superadmin": "vcedax",
     "test": "vcedax"
   },
+  "departments": {
+    "owner": "vcedax",
+    "manager": "v",
+    "hr": "vc",
+    "accountant": "v",
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
   "settings": {
     "owner": "vcedax",
     "manager": "ve",
@@ -646,6 +654,8 @@ export const SCREEN_MODULE: Record<string, string> = {
   "Technicians": "technicians",
   "TechnicianSchedule": "technicians",
   "Departments": "hr",
+  "Staff-Directory": "hr",
+  "HR-Management": "hr",
   "LeadPipeline": "crm",
   "LeadDetail": "crm",
   "Opportunities": "crm",

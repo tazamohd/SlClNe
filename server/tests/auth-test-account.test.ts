@@ -16,7 +16,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { decodeJwt } from 'jose'
 import { and, desc, eq } from 'drizzle-orm'
 import type { FastifyInstance } from 'fastify'
-import { ROLE_IDS } from '@salis/contract'
+import { MODULE_IDS, ROLE_IDS } from '@salis/contract'
 import { buildApp } from '../src/app'
 import { withAuthPlane } from '../src/auth/context'
 import { createDb, type DbHandle } from '../src/db/client'
@@ -128,7 +128,7 @@ describe('the seeded test account', () => {
     for (const grant of Object.values(entitlements.modules) as string[]) {
       expect(grant).toBe('vcedax')
     }
-    expect(Object.keys(entitlements.modules)).toHaveLength(30)
+    expect(Object.keys(entitlements.modules)).toHaveLength(MODULE_IDS.length)
   })
 })
 

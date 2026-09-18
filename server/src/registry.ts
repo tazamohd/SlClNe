@@ -499,7 +499,12 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     key: 'departments',
     path: 'admin/departments',
     table: s.departments,
-    module: 'admin',
+    /* Split from 'admin' (F-038): Staff-Directory/HR-Management/Departments
+     * are all 'hr'-module screens, and HR (and Accountant, who also holds an
+     * 'hr' grant) need to read this collection without gaining 'admin'
+     * itself — branches, users, integrations and templates are not an HR
+     * concern. See packages/contract/src/rbac.ts's 'departments' module. */
+    module: 'departments',
     entity: 'department',
     search: ['name', 'head', 'costCenter'],
     sortable: ['name', 'headcount', 'createdAt'],

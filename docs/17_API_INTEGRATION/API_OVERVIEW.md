@@ -50,7 +50,6 @@ Everything reachable without a token, in full. This list is short on purpose and
 | Domain | Endpoints | Generated | Explicit | With a stated permission guard |
 | --- | --- | --- | --- | --- |
 | accounting | 50 | 32 | 18 | 50 |
-| admin | 4 | 3 | 1 | 4 |
 | ai | 8 | 6 | 2 | 8 |
 | appointments | 9 | 8 | 1 | 9 |
 | approvals | 5 | 3 | 2 | 5 |
@@ -58,6 +57,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 | crm | 45 | 38 | 7 | 45 |
 | customers | 19 | 16 | 3 | 19 |
 | dashboard | 4 | 3 | 1 | 4 |
+| departments | 4 | 3 | 1 | 4 |
 | estimates | 22 | 11 | 11 | 22 |
 | hr | 48 | 40 | 8 | 48 |
 | inventory | 13 | 8 | 5 | 13 |

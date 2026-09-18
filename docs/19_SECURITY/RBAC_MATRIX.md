@@ -9,7 +9,7 @@
 
 **Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-18
 
-30 modules × 15 roles = 450 cells, of which 223 carry at least one grant.
+31 modules × 15 roles = 465 cells, of which 204 carry at least one grant.
 
 ## Grant alphabet
 
@@ -56,10 +56,11 @@ This is not a naming quibble. A router that checked `x` on `DELETE` under the fi
 | ai | vcedax | vcedax | vce | v | · | · | · | v | · | · | · | · | · | · | vcedax |
 | aiadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | admin | vcedax | vcedax | v | · | · | · | · | · | · | · | · | · | · | · | vcedax |
-| settings | vcedax | vcedax | ve | · | · | · | · | · | · | · | · | · | · | · | vcedax |
-| superadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
-| audit | vx | vx | vx | · | · | · | · | vx | · | · | · | · | · | · | vcedax |
-| network | vcedax | v | vcedx | · | · | · | vced | · | · | · | · | vcedax | vce | · | vcedax |
+| s other collections    * (branches, users, integrations, templates) to hr/accountant. */    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,   /* Platform/cross-tenant administration: the Super Admin console, global    * roles & permissions, cross-tenant organization management. Distinct from    * `admin` (tenant-scoped departments/branches/users) and `settings`    * (tenant-scoped config) so a tenant role granted either of those never    * inherits this one. */    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
 
 ## Roles: data scope and approval ceiling
 

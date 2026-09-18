@@ -493,10 +493,20 @@ export const PERMS={
  // knowledge base) but never "aiadmin" (configure what the platform runs).
  aiadmin:        {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
  admin:          {owner:"vcedax",manager:"v",superadmin:"vcedax",test:"vcedax"},
+ // Split from "admin" (F-038): the department directory is read by Staff-
+ // Directory/HR-Management, an "hr"-module screen, so HR and Accountant (both
+ // hold grants on "hr") need to read it too — folding that into "admin" would
+ // have also opened Branches/Users & Teams/Integrations/Templates to them,
+ // which "admin" gates and which are not an HR concern. `hr` also gets create:
+ // the "Departments" screen (also "hr"-gated) already shows HR an "Add
+ // Department" button on the strength of its own `hr` grant — without this the
+ // button would 403 on click. Branch Manager and the Owner/Super Admin/test
+ // rows are unchanged from what "admin" granted before.
+ departments:    {owner:"vcedax",manager:"v",hr:"vc",accountant:"v",superadmin:"vcedax",test:"vcedax"},
  settings:       {owner:"vcedax",manager:"ve",superadmin:"vcedax",test:"vcedax"},
  // Platform/cross-tenant administration (Super Admin console, global roles &
  // permissions, cross-tenant organization management) is not part of "admin" or
- // "settings" — those two remain tenant-scoped (departments, integrations,
+ // "settings" — those two remain tenant-scoped (branches, integrations,
  // branch settings) and Branch Manager keeps view/edit there. Nobody below
  // Owner/Super Admin gets any action here, not even view.
  superadmin:     {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
@@ -520,6 +530,7 @@ export const SCREEN_MODULE={
  "Invoices":"invoices","InvoiceDetail":"invoices","InvoiceCreate":"invoices","InvoicePreview":"invoices","Payments":"payments","Receipts":"payments",
  "ChartOfAccounts":"accounting","JournalEntries":"accounting","Expenses":"accounting","TaxManagement":"accounting","BankReconciliation":"accounting","FinancialReports":"accounting","FinancialStatements":"accounting",
  "HRPayroll":"hr","Technicians":"technicians","TechnicianSchedule":"technicians","Departments":"hr",
+ "Staff-Directory":"hr","HR-Management":"hr",
  "LeadPipeline":"crm","LeadDetail":"crm","Opportunities":"crm","Campaigns":"crm","EmailMarketing":"crm","SMSCampaigns":"crm","WhatsAppCampaigns":"crm","CustomerSegments":"crm","CRMTasks":"crm","CRMCalendar":"crm",
  "CallCenter":"callcenter","CallCenter.Logs":"callcenter",
  "Reports":"reports","ReportsAnalytics":"reports","ExecutiveReports":"execreports","OperationalReports":"reports","WorkshopReports":"reports","InventoryReports":"reports","SalesReports":"execreports","InsuranceReports":"execreports","LoanReports":"execreports","CustomReports":"reports","BIDashboard":"execreports",

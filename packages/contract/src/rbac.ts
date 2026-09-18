@@ -58,6 +58,11 @@ export const moduleId = z.enum([
    * may run an assistant can never reach what configures the platform. */
   'aiadmin',
   'admin',
+  /* Department directory only — split from `admin` (F-038) so Staff-Directory/
+   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,
+   * create departments without also opening `admin`'s other collections
+   * (branches, users, integrations, templates) to hr/accountant. */
+  'departments',
   'settings',
   /* Platform/cross-tenant administration: the Super Admin console, global
    * roles & permissions, cross-tenant organization management. Distinct from
@@ -143,6 +148,7 @@ export const PERMS: Readonly<Record<ModuleId, Readonly<Record<RoleId, string>>>>
   'ai': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'vce', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'aiadmin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': '', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'admin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'departments': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'v', 'hr': 'vc', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'settings': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 've', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'superadmin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': '', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'audit': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vx', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },

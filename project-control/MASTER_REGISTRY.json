@@ -23742,8 +23742,15 @@
       "route": "/hr-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23799,8 +23806,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23810,8 +23816,15 @@
       "route": "/staff-directory",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23867,8 +23880,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {

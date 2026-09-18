@@ -16,27 +16,26 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 36 screens, 19 API endpoints and 3 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
-| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
-| manager | branch | SAR 50,000 | `admin:v` `settings:ve` `dashboard:vx` `network:vcedx` |
+| owner | all | unlimited | `admin:vcedax` `dashboard:vx` |
+| superadmin | platform | unlimited | `admin:vcedax` `dashboard:vx` |
+| manager | branch | SAR 50,000 | `admin:v` `dashboard:vx` |
 | advisor | branch | SAR 5,000 | `dashboard:v` |
 | technician | own | may not approve | `dashboard:v` |
 | qc | branch | may not approve | `dashboard:v` |
-| parts | branch | SAR 10,000 | `dashboard:v` `network:vced` |
+| parts | branch | SAR 10,000 | `dashboard:v` |
 | accountant | all | SAR 25,000 | `dashboard:vx` |
 | hr | all | SAR 15,000 | `dashboard:v` |
 | frontdesk | branch | may not approve | `dashboard:v` |
 | callcenter | all | may not approve | `dashboard:v` |
-| procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
-| supplier | external | may not approve | `network:vce` |
-| test | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
+| procurement | all | SAR 20,000 | `dashboard:v` |
+| test | all | unlimited | `admin:vcedax` `dashboard:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 
@@ -65,10 +64,10 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/admin/departments` | admin:v | generated | — | 1 |
-| GET | `/api/v1/admin/departments/:id` | admin:v | generated | — | **0** |
-| GET | `/api/v1/admin/departments/:id/history` | admin:v | explicit | — | **0** |
-| GET | `/api/v1/admin/departments/export` | admin:x | generated | — | **0** |
+| GET | `/api/v1/admin/departments` | departments:v | generated | — | 1 |
+| GET | `/api/v1/admin/departments/:id` | departments:v | generated | — | **0** |
+| GET | `/api/v1/admin/departments/:id/history` | departments:v | explicit | — | **0** |
+| GET | `/api/v1/admin/departments/export` | departments:x | generated | — | **0** |
 | GET | `/api/v1/branches` | dashboard:v | generated | — | 2 |
 | GET | `/api/v1/branches/:id` | dashboard:v | generated | — | **0** |
 | GET | `/api/v1/branches/:id/history` | dashboard:v | explicit | — | **0** |

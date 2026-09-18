@@ -90,7 +90,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | dashboard | 4 | 4 |
 | estimates | 5 | 5 |
 | execreports | 5 | 5 |
-| hr | 6 | 6 |
+| hr | 8 | 8 |
 | inventory | 2 | 2 |
 | invoices | 4 | 4 |
 | jobcards | 15 | 15 |

@@ -26,6 +26,7 @@ The API surface, per domain, generated from the routers.
 | [`endpoints/crm.md`](endpoints/crm.md) | generated |
 | [`endpoints/customers.md`](endpoints/customers.md) | generated |
 | [`endpoints/dashboard.md`](endpoints/dashboard.md) | generated |
+| [`endpoints/departments.md`](endpoints/departments.md) | generated |
 | [`endpoints/estimates.md`](endpoints/estimates.md) | generated |
 | [`endpoints/hr.md`](endpoints/hr.md) | generated |
 | [`endpoints/inventory.md`](endpoints/inventory.md) | generated |
