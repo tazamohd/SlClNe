@@ -17,6 +17,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
+import { newContext } from './lib/browser.mjs'
 
 const HERE = resolve(fileURLToPath(new URL('.', import.meta.url)))
 const BASE = process.env.SMOKE_BASE ?? 'http://localhost:4173'
@@ -38,7 +39,7 @@ const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
 })
 
-const context = await browser.newContext({ viewport: { width: WIDTH, height: HEIGHT } })
+const context = await newContext(browser, { viewport: { width: WIDTH, height: HEIGHT } })
 await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
 
 const findings = []

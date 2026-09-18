@@ -19,7 +19,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BASE, isExternal, launchBrowser } from './lib/browser.mjs'
+import { BASE, isExternal, launchBrowser, newContext } from './lib/browser.mjs'
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -1691,7 +1691,7 @@ const failures = []
 
 // ── Generated route coverage ────────────────────────────────────────────────
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   // Every guarded route needs a signed-in role; seed it before the app boots.
   // The owner holds `view` on all 28 modules, so a redirect here means the
   // route is broken rather than forbidden.
@@ -1849,7 +1849,7 @@ const failures = []
 
 // Language switch must flip both the dictionary and the document direction.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   const page = await context.newPage()
   await page.goto(BASE + '/language-selection', { waitUntil: 'networkidle' })
   await page.getByRole('button', { name: /Arabic|العربية/ }).click()
@@ -1888,7 +1888,7 @@ const failures = []
     ['technician', 'ACCOUNTING', false],
     ['owner', 'ACCOUNTING', true],
   ]) {
-    const context = await browser.newContext()
+    const context = await newContext(browser)
     await context.addInitScript((r) => window.localStorage.setItem('salis-role', r), role)
     const page = await context.newPage()
     await page.goto(BASE + '/dashboard', { waitUntil: 'networkidle' })
@@ -1914,7 +1914,7 @@ const failures = []
 // (same as `EstimateDetail`), so the honest, reachable check here is that the
 // screen shows the empty state rather than fabricated numbers.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/workshop-estimate', { waitUntil: 'networkidle' })
@@ -1930,7 +1930,7 @@ const failures = []
 // InvoiceCreate must recompute its summary when a line is removed — the whole
 // point of a create screen the design shipped with fixed totals.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'accountant'))
   const page = await context.newPage()
   await page.goto(BASE + '/invoice-create', { waitUntil: 'networkidle' })
@@ -1951,7 +1951,7 @@ const failures = []
 
 // Segregation of duties: a technician must not be able to pass QC.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'technician'))
   const page = await context.newPage()
   await page.goto(BASE + '/workshop-qc', { waitUntil: 'networkidle' })
@@ -1969,7 +1969,7 @@ const failures = []
 // rather than role="tab"; click any chip whose label is not "All" / "Scheduled"
 // to narrow the table to a non-default status.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/appointments', { waitUntil: 'networkidle' })
@@ -2004,7 +2004,7 @@ const failures = []
 // action must be present for within-limit requests. Escalate only appears
 // when over the ceiling, which depends on seeded data.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'procurement'))
   const page = await context.newPage()
   await page.goto(BASE + '/procurement-portal/requisitions', { waitUntil: 'networkidle' })
@@ -2025,7 +2025,7 @@ const failures = []
 // financial report has to match the Revenue account balance in the chart of
 // accounts — the design hardcoded both sides independently.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'accountant'))
   const page = await context.newPage()
   await page.goto(BASE + '/chart-of-accounts', { waitUntil: 'networkidle' })
@@ -2046,14 +2046,14 @@ const failures = []
 // hidden from is also denied `execreports` view, so the protection that
 // actually fires is the redirect, not the field redaction.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/executive-reports', { waitUntil: 'networkidle' })
   const ownerSees = /SAR [\d,]+\.\d\d/.test(await page.locator('body').innerText())
   await context.close()
 
-  const ctx2 = await browser.newContext()
+  const ctx2 = await newContext(browser)
   await ctx2.addInitScript(() => window.localStorage.setItem('salis-role', 'advisor'))
   const page2 = await ctx2.newPage()
   await page2.goto(BASE + '/executive-reports', { waitUntil: 'networkidle' })
@@ -2073,7 +2073,7 @@ const failures = []
 // The weighted forecast must come out below the gross pipeline. Weighting by
 // probability is the whole reason the column exists.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/opportunities', { waitUntil: 'networkidle' })
@@ -2094,7 +2094,7 @@ const failures = []
 // The customer app is a separate surface: 430px frame with a bottom tab bar
 // and no operational sidebar, even on a desktop viewport.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'customer'))
   const page = await context.newPage()
   await page.goto(BASE + '/customer-app/home', { waitUntil: 'networkidle' })
@@ -2115,7 +2115,7 @@ const failures = []
 // Mobile viewport must get the designed card list, not a scrolling table, and
 // the mobile header rather than the desktop Topbar.
 {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  const context = await newContext(browser, { viewport: { width: 390, height: 844 } })
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + '/job-cards', { waitUntil: 'networkidle' })
@@ -2157,7 +2157,7 @@ const TABLET_TARGETS = [
   { w:1024,h:768, label:'tablet-1024-landscape',route:'/dashboard' },
 ]
 for (const t of TABLET_TARGETS) {
-  const context = await browser.newContext({ viewport: { width: t.w, height: t.h } })
+  const context = await newContext(browser, { viewport: { width: t.w, height: t.h } })
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   await page.goto(BASE + t.route, { waitUntil: 'networkidle' })
@@ -2206,7 +2206,7 @@ for (const t of TABLET_TARGETS) {
 // teal. The reference screenshots use green and purple, so it is genuinely
 // possible to reintroduce them by copying a screenshot too literally.
 {
-  const context = await browser.newContext()
+  const context = await newContext(browser)
   await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
   const page = await context.newPage()
   const offenders = []
