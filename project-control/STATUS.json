@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "totals": {
     "capabilities": 429,
     "product": 366,
@@ -9,16 +9,16 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 228,
-    "dataBacked": 138,
+    "mockOnly": 227,
+    "dataBacked": 139,
     "e2eCovered": 429,
     "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 174,
-    "hasErrorState": 138,
-    "hasEmptyState": 214,
+    "hasLoadingState": 175,
+    "hasErrorState": 139,
+    "hasEmptyState": 216,
     "tabletVerified": 4,
-    "arabicVerified": 75,
+    "arabicVerified": 74,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 130,
+    "crudRead": 131,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -40,7 +40,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 29,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "app": {
       "total": 314,
@@ -114,7 +114,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 29,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "admin": {
       "total": 19,

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
+import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
@@ -38,10 +39,16 @@ const PROVIDERS: SocialProvider[] = [
   },
 ]
 
-/** Social login — Google, Apple, Microsoft buttons. */
+/** Social login — Google, Apple, Microsoft buttons.
+ *
+ *  The provider buttons previously had no `onClick` at all — clicking
+ *  one did nothing, not even a toast. No OAuth mechanism exists
+ *  anywhere in the API contract or session provider, so they now say
+ *  so honestly instead of silently doing nothing. */
 export function SocialLogin() {
   const { t, rtl } = usePreferences()
   const isMobile = useIsMobile()
+  const toast = useToast()
   const chevron = rtl ? 'ChevronLeft' : 'ChevronRight'
 
   return (
@@ -61,6 +68,9 @@ export function SocialLogin() {
               key={p.name}
               type="button"
               aria-label={`${t('Continue with')} ${p.name}`}
+              onClick={() =>
+                toast.show({ title: `${p.name} ${t('sign-in is not available on this deployment yet')}` })
+              }
               className={cn(
                 'flex h-[54px] w-full cursor-pointer items-center gap-3 rounded-xl border-[1.5px] border-border bg-card px-4',
                 'font-action text-sm font-medium text-body',

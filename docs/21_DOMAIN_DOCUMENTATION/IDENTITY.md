@@ -80,7 +80,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-LanguageSelection | `/language-selection` | auth | **mock** | — | — | — | verified | yes |
 | D-LogoutConfirmation | `/logout-confirmation` | auth | **mock** | — | — | — | verified | yes |
 | D-Onboarding | `/onboarding` | auth | **mock** | — | — | — | verified | yes |
-| D-OrganizationSelection | `/organization-selection` | auth | **mock** | — | — | — | verified | yes |
+| D-OrganizationSelection | `/organization-selection` | auth | **mock** | — | — | yes | PARTIAL | yes |
 | D-OTPVerification | `/otpverification` | auth | **mock** | — | — | — | verified | yes |
 | D-ProfileCompletion | `/profile-completion` | auth | **mock** | — | — | — | PARTIAL | yes |
 | D-RegionSelection | `/region-selection` | auth | **mock** | — | — | — | PARTIAL | yes |
@@ -90,14 +90,14 @@ _No lifecycle in the contract belongs to this domain._
 | D-SocialLogin | `/social-login` | auth | **mock** | — | — | — | verified | yes |
 | D-SSOLogin | `/ssologin` | auth | **mock** | — | — | — | PARTIAL | yes |
 | D-TwoFactorVerification | `/two-factor-verification` | auth | **mock** | — | — | — | verified | yes |
-| D-WorkspaceSelection | `/workspace-selection` | auth | **mock** | — | — | — | verified | yes |
+| D-WorkspaceSelection | `/workspace-selection` | auth | yes | yes | yes | yes | verified | yes |
 
 ## Known gaps in this domain
 
-- **19 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **18 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **2 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **19 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **18 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

@@ -27,7 +27,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 20 |
 | Screens registered and mapped to a capability | 429 of 429 |
-| Screens wired to the live API | 138 of 429 |
+| Screens wired to the live API | 139 of 429 |
 | Test suites catalogued | 197 containing 2251 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
@@ -83,9 +83,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 228 screens read design fixtures rather than the API
+### 5. 227 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 228 of 429 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 227 of 429 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -120,15 +120,15 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-18; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-19; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 37 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 16 |
-| `project-control/BASELINE.json` | 2026-09-03 | 15 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 39 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 38 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 17 |
+| `project-control/BASELINE.json` | 2026-09-03 | 16 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
@@ -204,5 +204,5 @@ _None — every required document is present._
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 305 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 228 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 227 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.
