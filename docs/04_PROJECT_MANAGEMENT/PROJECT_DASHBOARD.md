@@ -29,11 +29,11 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 81 of 433 | `STATUS.json` |
 | Tablet verified | 4 of 433 | `STATUS.json` |
-| API endpoints | 390 | the route files |
-| Test cases | 2228 | the spec files |
+| API endpoints | 391 | the route files |
+| Test cases | 2235 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
-| Unresolved findings | 0 of 39 | `FINDINGS.json` |
+| Unresolved findings | 1 of 41 | `FINDINGS.json` |
 | Release gates passing | 11 of 14 | `RELEASE_GATES.json` |
 
 ## The one number that matters most

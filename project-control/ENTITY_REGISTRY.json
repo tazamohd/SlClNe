@@ -942,7 +942,8 @@
       ],
       "rlsEnabled": true,
       "tests": [
-        "TS-APP-E2E-USER-INVITATION-RBAC-SPEC-TS"
+        "TS-APP-E2E-USER-INVITATION-RBAC-SPEC-TS",
+        "TS-SERVER-TESTS-AUDIT-LOG-READ-TEST-TS"
       ]
     },
     {

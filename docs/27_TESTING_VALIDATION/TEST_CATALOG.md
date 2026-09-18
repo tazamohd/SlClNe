@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-192 spec files containing 2228 test cases.
+193 spec files containing 2235 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 117 | 1118 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 118 | 1125 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,7 +35,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 36 | 451 |
+| server | 37 | 458 |
 | app | 113 | 1400 |
 | browser | 43 | 377 |
 
@@ -201,6 +201,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/workshop-stages.test.ts` | UNIT_OR_API | 5 | qc |
 | `server/tests/api.test.ts` | UNIT_OR_API | 45 | frontdesk, technician, owner, manager, accountant, advisor, parts, customer |
 | `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 13 | manager, advisor, technician, owner, accountant, procurement, hr |
+| `server/tests/audit-log-read.test.ts` | UNIT_OR_API | 7 | technician, owner, customer |
 | `server/tests/auth-test-account.test.ts` | UNIT_OR_API | 19 | test, technician, customer, accountant, manager, owner, superadmin |
 | `server/tests/auth.test.ts` | UNIT_OR_API | 31 | owner, manager, technician, frontdesk |
 | `server/tests/authz-matrix.test.ts` | SECURITY | 20 | owner, accountant, manager, superadmin, qc, technician |

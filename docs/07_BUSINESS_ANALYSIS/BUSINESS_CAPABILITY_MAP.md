@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 433 registered screens and all 390 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 433 registered screens and all 391 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -48,7 +48,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_CRM
   CAP_REPORTING["Reporting and analytics<br/>11 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_REPORTING
-  CAP_GOVERNANCE["Approvals and governance<br/>2 screens · 5 endpoints"]
+  CAP_GOVERNANCE["Approvals and governance<br/>2 screens · 6 endpoints"]
   OBJ_CONTROL --> CAP_GOVERNANCE
   CAP_PORTALS["Portals and channels<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_PORTALS
@@ -80,7 +80,7 @@ flowchart LR
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 11 | 11 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 45 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
-| CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
+| CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 6 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 24 | 4 | 14 |
@@ -256,7 +256,7 @@ flowchart LR
 | Permission modules | `approvals`, `audit` |
 | Screen domains | — |
 | Screens | 2 (1 data-backed) |
-| Endpoints | 5 |
+| Endpoints | 6 |
 | Entities | `approvalLines` |
 | Roles with any grant | owner, superadmin, manager, advisor, parts, accountant, hr, procurement, test |
 | Rule guards | BR-APPROVALS-checkApprovalCeiling, BR-APPROVALS-checkQcIndependence, BR-APPROVALS-checkSelfApproval, BR-APPROVALS-SOD_PAIRS |

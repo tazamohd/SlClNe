@@ -21,7 +21,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | e2e covered | 433 |
 | content asserted | 433 |
 | rendered without assertion | 0 |
-| has loading state | 157 |
+| has loading state | 158 |
 | has error state | 124 |
 | has empty state | 179 |
 | tablet verified | 4 |

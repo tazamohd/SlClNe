@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 390,
+    "endpoints": 391,
     "generated": 254,
-    "explicit": 136,
+    "explicit": 137,
     "unauthenticated": 6,
-    "withPermissionGuard": 363,
+    "withPermissionGuard": 364,
     "idempotent": 2,
-    "withTests": 109
+    "withTests": 110
   },
   "collections": [
     {
@@ -3028,6 +3028,29 @@
       "audited": true,
       "capability": "CAP-GOVERNANCE",
       "tests": []
+    },
+    {
+      "id": "API-GET-AUDIT-LOG",
+      "method": "GET",
+      "path": "/api/v1/audit-log",
+      "source": "server/src/routes/audit-log.ts",
+      "kind": "EXPLICIT",
+      "domain": "audit",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "audit",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-GOVERNANCE",
+      "tests": [
+        "TS-SERVER-TESTS-AUDIT-LOG-READ-TEST-TS"
+      ]
     },
     {
       "id": "API-POST-AUTH-2FA-ENROL",

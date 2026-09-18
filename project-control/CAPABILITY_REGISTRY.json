@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 433,
     "screensTotal": 433,
-    "endpointsMapped": 390,
-    "endpointsTotal": 390
+    "endpointsMapped": 391,
+    "endpointsTotal": 391
   },
   "capabilities": [
     {
@@ -875,13 +875,14 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 5,
+      "endpointCount": 6,
       "endpoints": [
         "API-GET-APPROVALS",
         "API-APPROVALLINES-GET-LIST",
         "API-APPROVALLINES-GETID",
         "API-GET-APPROVALS-LINES-ID-HISTORY",
-        "API-APPROVALLINES-GETEXPORT"
+        "API-APPROVALLINES-GETEXPORT",
+        "API-GET-AUDIT-LOG"
       ],
       "screenCount": 2,
       "screens": [

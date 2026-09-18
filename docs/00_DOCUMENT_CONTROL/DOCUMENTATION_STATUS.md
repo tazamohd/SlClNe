@@ -14,13 +14,13 @@
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 411 |
-| In the numbered architecture | 141 |
+| Documents in `docs/` | 412 |
+| In the numbered architecture | 142 |
 | In the pre-existing folders (classified, not yet migrated) | 270 |
-| Machine-generated from source | 122 |
+| Machine-generated from source | 123 |
 | Authored | 289 |
 | Substantive (> 1.2 kB) | 379 |
-| Thin — placeholder or stub | 32 |
+| Thin — placeholder or stub | 33 |
 | Required documents present | 35 of 35 |
 
 ## What is generated, and therefore cannot go stale silently
@@ -29,12 +29,12 @@
 | --- | --- | --- |
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 70 tables |
 | Relationship catalogue | `server/src/db/schema.ts` | 177 relationships |
-| API reference | the route files | 390 endpoints |
+| API reference | the route files | 391 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 495 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 19 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 55 policies |
-| Test catalogue | the spec files | 192 suites |
+| Test catalogue | the spec files | 193 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 433 screens |
 | Capability map, requirements, traceability | all of the above | 157 requirements |
 

@@ -90,6 +90,9 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 | F-037 | RESOLVED | Ten public-website screen files were unreachable from any route (BLK-010) | The "SALIS AUTO 2030" design study shipped a six-page tour (Arrival, System, Grid, Access, Origin, Channel) plus its own nav shell (PageNav, CommandDeck) — complete, working React, never linked into t |
 | F-038 | RESOLVED | Staff-Directory / HR-Management reads a collection gated to a narrower module than the screen itself | app/src/screens/hr/StaffDirectory.tsx (screens Staff-Directory and HR-Management) calls useCollection('departments'), whose server route is registered with module:'admin' (server/src/registry.ts:502)  |
 | F-039 | RESOLVED | The departments collection has no write routes at all — Add Department 404s for every role | server/src/registry.ts's departments define() block carries no `writable: true` (unlike collections such as branches or suppliers that do), and server/src/routes/collections.ts:182 only registers crea |
+| F-040 | RESOLVED | AuditLog (D-AuditLog) rendered its hardcoded fixture rows even when isLive — one of BLK-004's 280 mock-only capabilities | app/src/screens/admin/AuditLog.tsx's `isLive` branch existed only to swap an empty-state gap notice for the real screen; once past that check, the component filtered the same module-level `FIXTURE_ENT |
+
+_1 further findings in `project-control/FINDINGS.json`._
 
 ## Quality register (PRINCE2 view)
 

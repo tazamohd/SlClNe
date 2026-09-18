@@ -17,18 +17,18 @@ This report exists to be read before anything else in the set is relied on. It i
 | Measure | Value |
 | --- | --- |
 | Required documents | 35 present of 35 |
-| Documents generated from source | 122 |
+| Documents generated from source | 123 |
 | Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 70 of 70 |
 | Relationships documented | 177 (63 FK-backed, 114 convention only) |
-| Endpoints documented | 390 of 390 |
-| Endpoints with a linked test | 109 of 390 |
+| Endpoints documented | 391 of 391 |
+| Endpoints with a linked test | 110 of 391 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 19 |
 | Screens registered and mapped to a capability | 433 of 433 |
 | Screens wired to the live API | 115 of 433 |
-| Test suites catalogued | 192 containing 2228 cases |
+| Test suites catalogued | 193 containing 2235 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -120,7 +120,7 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `RELEASE_GATES.json` at 2026-09-18; 2 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-18; 2 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
@@ -143,7 +143,7 @@ Market sizing, competitor positioning, pricing and financial projections are bus
 
 ZATCA, VAT and privacy material states *system requirements* — what the software does and must do. Where the question is whether that satisfies a legal obligation, it is marked `LEGAL_REVIEW_REQUIRED` rather than answered.
 
-### 31 documents are thin
+### 32 documents are thin
 
 Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an index, an ADR with a one-line decision); others are placeholders. They are listed so the difference can be judged rather than assumed.
 
@@ -164,6 +164,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/14_SOLUTION_ARCHITECTURE/README.md` | 567 |
 | `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 531 |
 | `docs/16_SYSTEM_DESIGN/README.md` | 1157 |
+| `docs/17_API_INTEGRATION/endpoints/audit.md` | 796 |
 | `docs/17_API_INTEGRATION/endpoints/platform.md` | 948 |
 | `docs/18_DATABASE/README.md` | 522 |
 | `docs/19_SECURITY/README.md` | 1032 |

@@ -1,30 +1,17 @@
 import { useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
-import { EmptyState } from '@/components/ui/States'
+import { EmptyState, Loading } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { isLive } from '@/data/repository'
+import { auditLogApi, isLive, type AuditLogEntry } from '@/data/repository'
 
 type FilterKey = 'all' | 'auth' | 'data' | 'system'
-
-interface AuditEntry {
-  id: string
-  icon: string
-  user: string
-  action: string
-  detail: string
-  time: string
-  ip: string
-  cat: FilterKey
-  dotColor: string
-  iconBg: string
-  iconColor: string
-}
 
 const FILTERS: { key: FilterKey; label: string }[] = [
   { key: 'all', label: 'All' },
@@ -33,16 +20,87 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: 'system', label: 'System' },
 ]
 
-const FIXTURE_ENTRIES: AuditEntry[] = [
-  { id: '1', icon: 'LogIn', user: 'Khalid Al-Amri', action: 'logged in', detail: 'New session — Chrome browser', time: '10:02 AM', ip: '192.168.1.45', cat: 'auth', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
-  { id: '2', icon: 'Plus', user: 'Khalid Al-Amri', action: 'created job card', detail: 'JC-A3F8B2C1 — Ahmed Al-Rashid · Toyota Camry', time: '10:15 AM', ip: '192.168.1.45', cat: 'data', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
-  { id: '3', icon: 'UserPlus', user: 'Khalid Al-Amri', action: 'assigned technician', detail: 'Yousef Al-Otaibi → JC-A3F8B2C1', time: '10:18 AM', ip: '192.168.1.45', cat: 'data', dotColor: 'bg-salis-bright', iconBg: 'rgba(11,179,255,.08)', iconColor: 'var(--salis-blue-bright)' },
-  { id: '4', icon: 'CheckCircle', user: 'Yousef Al-Otaibi', action: 'completed inspection', detail: 'Multi-point inspection — 18/22 pass', time: '11:45 AM', ip: '192.168.1.102', cat: 'data', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
-  { id: '5', icon: 'Receipt', user: 'Khalid Al-Amri', action: 'created estimate', detail: 'EST-0232 — SAR 1,546.75', time: '12:10 PM', ip: '192.168.1.45', cat: 'data', dotColor: 'bg-salis-blue', iconBg: 'rgba(10,94,215,.08)', iconColor: 'var(--salis-blue)' },
-  { id: '6', icon: 'Send', user: 'System', action: 'sent estimate to customer', detail: 'Email to ahmed@email.com', time: '12:12 PM', ip: '—', cat: 'system', dotColor: 'bg-muted', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
-  { id: '7', icon: 'Shield', user: 'Khalid Al-Amri', action: 'changed security settings', detail: 'Enabled 2FA', time: '1:30 PM', ip: '192.168.1.45', cat: 'system', dotColor: 'bg-salis-orange', iconBg: 'rgba(249,115,22,.08)', iconColor: 'var(--salis-orange)' },
-  { id: '8', icon: 'LogOut', user: 'Layla Al-Sulaiman', action: 'logged out', detail: 'Session expired', time: '2:00 PM', ip: '192.168.1.78', cat: 'auth', dotColor: 'bg-muted', iconBg: 'rgba(100,116,139,.06)', iconColor: 'var(--text-muted)' },
-]
+const CATEGORY_STYLE: Record<AuditLogEntry['category'], { dot: string; bg: string; color: string }> = {
+  auth: { dot: 'bg-salis-blue', bg: 'rgba(10,94,215,.08)', color: 'var(--salis-blue)' },
+  data: { dot: 'bg-salis-bright', bg: 'rgba(11,179,255,.08)', color: 'var(--salis-blue-bright)' },
+  system: { dot: 'bg-muted', bg: 'rgba(100,116,139,.06)', color: 'var(--text-muted)' },
+}
+
+/** The entry's action icon. Session/password-reset entities get a distinct
+ *  icon per event (login vs. logout vs. reset); every other row is keyed off
+ *  its mutation verb, since that is what the audit log actually records. */
+function iconFor(entry: AuditLogEntry): string {
+  if (entry.entity === 'session') {
+    if (entry.action === 'create') return 'LogIn'
+    if (entry.action === 'delete') return 'LogOut'
+    return 'RefreshCw'
+  }
+  if (entry.entity === 'password_reset') return 'KeyRound'
+  switch (entry.action) {
+    case 'create': return 'Plus'
+    case 'update': return 'Pencil'
+    case 'delete': return 'Trash2'
+    case 'restore': return 'RotateCcw'
+    case 'approve': return 'CheckCircle'
+    case 'reject':
+    case 'decline': return 'XCircle'
+    case 'transition': return 'ArrowRightCircle'
+    case 'assign': return 'UserPlus'
+    case 'post':
+    case 'issue': return 'Receipt'
+    case 'pay': return 'CreditCard'
+    case 'export': return 'Download'
+    default: return 'FileText'
+  }
+}
+
+const ACTION_VERBS: Record<string, string> = {
+  create: 'created',
+  update: 'updated',
+  delete: 'deleted',
+  restore: 'restored',
+  bulk_update: 'bulk-updated',
+  bulk_delete: 'bulk-deleted',
+  transition: 'moved',
+  assign: 'assigned',
+  approve: 'approved',
+  reject: 'rejected',
+  decline: 'declined',
+  post: 'posted',
+  issue: 'issued',
+  pay: 'recorded payment on',
+  movement: 'recorded a stock movement on',
+  receive: 'received',
+  reserve: 'reserved',
+  release: 'released',
+  command: 'sent a command to',
+  export: 'exported',
+  seed: 'seeded',
+}
+
+/** What the row reads as: "logged in" / "signed out" for the session
+ *  entity, "requested a password reset" for that entity, and otherwise the
+ *  mutation verb plus the entity it acted on — exactly what the row's own
+ *  `action`/`entity` columns say, never invented detail. */
+function describe(entry: AuditLogEntry, t: (s: string) => string): string {
+  if (entry.entity === 'session') {
+    if (entry.action === 'create') return t('logged in')
+    if (entry.action === 'delete') return t('logged out')
+    if (entry.action === 'reject') return t('had a session revoked for reuse')
+    if (entry.action === 'update') return t('refreshed a session')
+  }
+  if (entry.entity === 'password_reset') return t('requested a password reset')
+  const verb = t(ACTION_VERBS[entry.action] ?? entry.action)
+  return `${verb} ${entry.entity.replace(/_/g, ' ')}`
+}
+
+function detailOf(entry: AuditLogEntry): string {
+  return [entry.entityId, entry.reason].filter(Boolean).join(' — ')
+}
+
+function timeOf(entry: AuditLogEntry): string {
+  return new Date(entry.at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+}
 
 export function AuditLog() {
   const { t } = usePreferences()
@@ -50,22 +108,23 @@ export function AuditLog() {
   const [filter, setFilter] = useState<FilterKey>('all')
   const [search, setSearch] = useState('')
 
+  const query = useQuery<AuditLogEntry[]>({
+    queryKey: ['audit-log', filter],
+    queryFn: () => auditLogApi!.list({ category: filter === 'all' ? undefined : filter }),
+    enabled: auditLogApi !== null,
+  })
+
   const filtered = useMemo(() => {
-    let entries = FIXTURE_ENTRIES
-    if (filter !== 'all') {
-      entries = entries.filter((e) => e.cat === filter)
-    }
+    const entries = query.data ?? []
     const q = search.trim().toLowerCase()
-    if (q) {
-      entries = entries.filter(
-        (e) =>
-          e.user.toLowerCase().includes(q) ||
-          e.action.toLowerCase().includes(q) ||
-          e.detail.toLowerCase().includes(q)
-      )
-    }
-    return entries
-  }, [filter, search])
+    if (!q) return entries
+    return entries.filter(
+      (e) =>
+        (e.actorName ?? '').toLowerCase().includes(q) ||
+        describe(e, t).toLowerCase().includes(q) ||
+        detailOf(e).toLowerCase().includes(q),
+    )
+  }, [query.data, search, t])
 
   if (!isLive) {
     return (
@@ -130,7 +189,19 @@ export function AuditLog() {
         />
       </div>
 
-      {filtered.length === 0 ? (
+      {query.isPending ? (
+        <Card className="p-4">
+          <Loading label={t('Loading the audit trail...')} />
+        </Card>
+      ) : query.isError ? (
+        <Card className="p-4">
+          <EmptyState
+            icon="ScrollText"
+            title={t('The audit trail could not be loaded')}
+            description={t('Something went wrong reaching the server. Try again in a moment.')}
+          />
+        </Card>
+      ) : filtered.length === 0 ? (
         <Card className="p-4">
           <EmptyState
             icon="ScrollText"
@@ -144,29 +215,35 @@ export function AuditLog() {
         </Card>
       ) : isMobile ? (
         <div className="flex flex-col gap-2.5">
-          {filtered.map((entry) => (
-            <Card key={entry.id} className="px-4 py-3">
-              <MobileCardHeader
-                leading={
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className="flex flex-shrink-0 rounded-lg p-1.5"
-                      style={{ background: entry.iconBg, color: entry.iconColor }}
-                    >
-                      <Icon name={entry.icon} size={14} />
-                    </span>
-                    <span className="text-[13px] font-semibold text-heading">{entry.user}</span>
-                  </div>
-                }
-                trailing={
-                  <span className="text-[11px] text-muted">{entry.time}</span>
-                }
-              />
-              <MobileCardRow label={t('Action')} value={t(entry.action)} />
-              <MobileCardRow label={t('Details')} value={entry.detail} />
-              <MobileCardRow label={t('IP')} value={<span dir="ltr" className="font-mono">{entry.ip}</span>} />
-            </Card>
-          ))}
+          {filtered.map((entry) => {
+            const style = CATEGORY_STYLE[entry.category]
+            return (
+              <Card key={entry.id} className="px-4 py-3">
+                <MobileCardHeader
+                  leading={
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="flex flex-shrink-0 rounded-lg p-1.5"
+                        style={{ background: style.bg, color: style.color }}
+                      >
+                        <Icon name={iconFor(entry)} size={14} />
+                      </span>
+                      <span className="text-[13px] font-semibold text-heading">
+                        {entry.actorName ?? t('System')}
+                      </span>
+                    </div>
+                  }
+                  trailing={<span className="text-[11px] text-muted">{timeOf(entry)}</span>}
+                />
+                <MobileCardRow label={t('Action')} value={describe(entry, t)} />
+                <MobileCardRow label={t('Details')} value={detailOf(entry) || '—'} />
+                <MobileCardRow
+                  label={t('IP')}
+                  value={<span dir="ltr" className="font-mono">{entry.ip ?? '—'}</span>}
+                />
+              </Card>
+            )
+          })}
         </div>
       ) : (
         <Card className="overflow-hidden rounded-2xl p-0">
@@ -176,53 +253,53 @@ export function AuditLog() {
                 className="absolute bottom-0 top-0 w-0.5 bg-border"
                 style={{ insetInlineStart: '13px' }}
               />
-              {filtered.map((entry, idx) => (
-                <div
-                  key={entry.id}
-                  className={
-                    'relative flex gap-4 py-3.5' +
-                    (idx < filtered.length - 1 ? ' border-0 border-b border-solid border-border' : '')
-                  }
-                >
-                  <span
+              {filtered.map((entry, idx) => {
+                const style = CATEGORY_STYLE[entry.category]
+                return (
+                  <div
+                    key={entry.id}
                     className={
-                      'absolute h-2.5 w-2.5 rounded-full ' + entry.dotColor
+                      'relative flex gap-4 py-3.5' +
+                      (idx < filtered.length - 1 ? ' border-0 border-b border-solid border-border' : '')
                     }
-                    style={{
-                      insetInlineStart: '-22px',
-                      top: '18px',
-                      border: '2px solid var(--bg-page)',
-                    }}
-                  />
-                  <div className="flex flex-1 items-start gap-3">
+                  >
                     <span
-                      className="flex flex-shrink-0 rounded-lg p-1.5"
-                      style={{ background: entry.iconBg, color: entry.iconColor }}
-                    >
-                      <Icon name={entry.icon} size={14} />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="m-0 text-[13px] text-body">
-                        <span className="font-semibold text-heading">{entry.user}</span>{' '}
-                        {t(entry.action)}
-                      </p>
-                      <p className="m-0 mt-0.5 text-[11px] text-muted">{entry.detail}</p>
-                    </div>
-                    <div className="flex-shrink-0 text-end">
-                      <span className="text-[11px] text-muted">{entry.time}</span>
-                      <p className="m-0 mt-0.5 font-mono text-[10px] text-faint" dir="ltr">
-                        {entry.ip}
-                      </p>
+                      className={'absolute h-2.5 w-2.5 rounded-full ' + style.dot}
+                      style={{
+                        insetInlineStart: '-22px',
+                        top: '18px',
+                        border: '2px solid var(--bg-page)',
+                      }}
+                    />
+                    <div className="flex flex-1 items-start gap-3">
+                      <span
+                        className="flex flex-shrink-0 rounded-lg p-1.5"
+                        style={{ background: style.bg, color: style.color }}
+                      >
+                        <Icon name={iconFor(entry)} size={14} />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="m-0 text-[13px] text-body">
+                          <span className="font-semibold text-heading">
+                            {entry.actorName ?? t('System')}
+                          </span>{' '}
+                          {describe(entry, t)}
+                        </p>
+                        {detailOf(entry) && (
+                          <p className="m-0 mt-0.5 text-[11px] text-muted">{detailOf(entry)}</p>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0 text-end">
+                        <span className="text-[11px] text-muted">{timeOf(entry)}</span>
+                        <p className="m-0 mt-0.5 font-mono text-[10px] text-faint" dir="ltr">
+                          {entry.ip ?? '—'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
-          </div>
-          <div className="flex justify-center border-0 border-t border-solid border-border py-3">
-            <Button variant="subtle" size="sm">
-              {t('Load more')}
-            </Button>
           </div>
         </Card>
       )}

@@ -1177,6 +1177,54 @@ export function createHistoryApi(baseUrl: string): HistoryApi {
   }
 }
 
+/* ------------------------------------------------------------ audit log */
+
+/** One entry in the org-wide audit feed, as `GET /audit-log` presents it.
+ *  `category` is a server-derived classification (auth / data / system),
+ *  not a stored column — see the route's own docstring for the partition. */
+export interface AuditLogEntry {
+  id: string
+  actorId: string | null
+  actorName: string | null
+  actorRole: string | null
+  action: string
+  entity: string
+  entityId: string | null
+  reason: string | null
+  source: string
+  ip: string | null
+  category: 'auth' | 'data' | 'system'
+  at: string
+}
+
+export interface AuditLogQuery {
+  category?: 'auth' | 'data' | 'system'
+  q?: string
+  limit?: number
+}
+
+/** The org-wide audit trail AuditLog reads. Live only: the feed is a server
+ *  computation over the append-only audit log across every entity in the
+ *  tenant scope, and there is no fixture that could reproduce it without
+ *  fabricating history that never happened. */
+export interface AuditLogApi {
+  list(query?: AuditLogQuery): Promise<AuditLogEntry[]>
+}
+
+export function createAuditLogApi(baseUrl: string): AuditLogApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async list(query = {}) {
+      const url = new URL(`${root}/audit-log`)
+      if (query.category) url.searchParams.set('category', query.category)
+      if (query.q) url.searchParams.set('q', query.q)
+      if (query.limit) url.searchParams.set('limit', String(query.limit))
+      const { entries } = await request<{ entries: AuditLogEntry[] }>(url.toString())
+      return entries
+    },
+  }
+}
+
 /* ------------------------------------------------- financial aggregates */
 
 export interface ReportRange {
@@ -1722,6 +1770,13 @@ export const financeReports: FinanceReportsApi | null = API_URL
  *  audit log, and a mock that fabricated one would be fake completion. A screen
  *  reads it when `isLive` and shows the honest gap otherwise. */
 export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : null
+
+/** The org-wide audit feed (BLK-004), live only against the API. Null on the
+ *  fixtures: the trail is a server computation across every entity in the
+ *  tenant scope, and there is no fixture set rich enough to reproduce it
+ *  without fabricating history. AuditLog reads this when `isLive` and shows
+ *  the honest gap otherwise. */
+export const auditLogApi: AuditLogApi | null = API_URL ? createAuditLogApi(API_URL) : null
 
 /** The unified approval queue (F-029), live only against the API. Null on the
  *  fixtures: a per-caller approval standing is a server computation, and a mock

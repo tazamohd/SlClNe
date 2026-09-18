@@ -24,7 +24,7 @@
 | Mock-only (design fixtures) | 280 | 433 |
 | End-to-end covered | 433 | 433 |
 | Content-asserted (not just routed) | 433 | 433 |
-| Has a loading state | 157 | 433 |
+| Has a loading state | 158 | 433 |
 | Has an error state | 124 | 433 |
 | Has an empty state | 179 | 433 |
 | Arabic verified | 81 | 433 |
@@ -64,7 +64,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-HR | 11 | 11 | 11 | 11 | 10 | 1 |
 | CAP-CRM | 13 | 11 | 11 | 11 | 13 | 0 |
 | CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |
-| CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 0 |
+| CAP-GOVERNANCE | 2 | 1 | 2 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
 | CAP-AI | 19 | 4 | 4 | 4 | 4 | 4 |
 | CAP-PLATFORM | 36 | 5 | 12 | 6 | 17 | 17 |

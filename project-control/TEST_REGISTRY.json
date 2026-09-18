@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 192,
-    "cases": 2228,
+    "suites": 193,
+    "cases": 2235,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1118,
+      "UNIT_OR_API": 1125,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -5128,6 +5128,33 @@
         "accountant",
         "procurement",
         "hr"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-AUDIT-LOG-READ-TEST-TS",
+      "file": "server/tests/audit-log-read.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "GET /audit-log"
+      ],
+      "cases": [
+        "refuses a role with no view grant on audit (403)",
+        "returns only the caller organization\\'s entries, never another tenant\\'s",
+        "joins the actor's name from the users table",
+        "classifies session and password_reset rows as auth, unattended/non-api rows as system, everything else as data",
+        "?category=auth narrows to session and password_reset rows only",
+        "?q= searches action, entity and reason",
+        "caps the result at ?limit="
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/audit-log"
+      ],
+      "touchesRoles": [
+        "technician",
+        "owner",
+        "customer"
       ]
     },
     {

@@ -13,6 +13,7 @@ import Fastify, { type FastifyInstance } from 'fastify'
 import { ApiError } from './http/errors'
 import { loggerOptions } from './logger'
 import { registerApprovalRoutes } from './routes/approvals'
+import { registerAuditLogRoutes } from './routes/audit-log'
 import { registerBankRoutes } from './routes/bank'
 import { registerCollectionRoutes } from './routes/collections'
 import { registerCrmRoutes } from './routes/crm'
@@ -357,6 +358,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerHistoryRoutes(api, { db: deps.db })
+      registerAuditLogRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })
       registerDeclinedJobsReportRoutes(api, { db: deps.db, env: deps.env })
