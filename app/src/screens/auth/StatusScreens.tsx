@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -156,22 +156,17 @@ export function SessionExpired() {
   )
 }
 
-/** Lockout after repeated failed sign-ins. The countdown is live — a static
- *  "15:00" would keep claiming 15 minutes no matter how long you waited. */
+/** Lockout after repeated failed sign-ins.
+ *
+ *  Previously showed a hardcoded reference ("LK-2026-4471") and a fixed
+ *  5-dot "Failed attempts" indicator as if they were real incident data,
+ *  plus a countdown seeded from an invented 15-minute policy — no
+ *  lockout-tracking backend exists anywhere in this deployment to back
+ *  any of the three. Replaced with an honest note; the real actions
+ *  (sign in again, contact support) are unchanged. */
 export function AccountLocked() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const [secondsLeft, setSecondsLeft] = useState(15 * 60)
-
-  useEffect(() => {
-    if (secondsLeft <= 0) return
-    const timer = setInterval(() => setSecondsLeft((s) => Math.max(0, s - 1)), 1000)
-    return () => clearInterval(timer)
-  }, [secondsLeft])
-
-  const countdown = `${String(Math.floor(secondsLeft / 60)).padStart(2, '0')}:${String(
-    secondsLeft % 60
-  ).padStart(2, '0')}`
 
   return (
     <StatusFrame
@@ -197,26 +192,12 @@ export function AccountLocked() {
         </p>
       </div>
 
-      <div className={`box-border flex w-full flex-col gap-2.5 rounded-lg border border-border bg-card ${isMobile ? 'p-3' : 'p-4'}`}>
-        <Row label={t('Reference')}>
-          <span className="font-mono font-semibold text-heading" dir="ltr">
-            LK-2026-4471
-          </span>
-        </Row>
-        <Divider />
-        <Row label={t('Failed attempts')}>
-          <span className="flex gap-1">
-            {Array.from({ length: 5 }, (_, i) => (
-              <span key={i} className="h-2 w-2 rounded-full bg-salis-orange" />
-            ))}
-          </span>
-        </Row>
-        <Divider />
-        <Row label={t('Unlocks in')}>
-          <span className="font-mono font-bold text-salis-orange" dir="ltr">
-            {countdown}
-          </span>
-        </Row>
+      <div className={`box-border rounded-lg border border-border bg-card text-start ${isMobile ? 'p-3' : 'p-4'}`}>
+        <p className="m-0 text-[13px] leading-relaxed text-muted">
+          {t(
+            'We don’t track lockout details (reference, attempt count, unlock time) for this deployment yet. Contact support to unlock your account.'
+          )}
+        </p>
       </div>
 
       <div className={`flex w-full gap-2.5 ${isMobile ? 'flex-col' : ''}`}>
@@ -236,19 +217,6 @@ export function AccountLocked() {
       </div>
     </StatusFrame>
   )
-}
-
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-center justify-between text-[13px]">
-      <span className="text-muted">{label}</span>
-      {children}
-    </div>
-  )
-}
-
-function Divider() {
-  return <div className="h-px bg-border" />
 }
 
 /** Logout confirmation, shown over a navy scrim.

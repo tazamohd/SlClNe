@@ -466,6 +466,117 @@ launched yet" state instead of a fake success toast — zero console
 errors throughout. `node tools/docs/generate.mjs` +
 `node tools/docs/check.mjs`: clean, no drift.
 
+## Wave 8 — auth domain (2026-09-18)
+
+Triaged all 29 `MOCK_ONLY` screens flagged under the `auth` domain
+(`app/src/screens/auth/`, plus the three static legal pages under
+`app/src/screens/public/` that `build-registry.mjs`'s `classify()`
+groups into `auth` alongside `Login`/`Register`/etc. — confirmed
+unchanged since wave 6). Checked `app/src/providers/SessionProvider.tsx`
+and the inline `fetch` calls in the password/verification screens for
+what real auth mechanisms exist (`signInWithPassword`, `register`,
+`signOut`, `POST /auth/forgot-password`, `/auth/reset-password`,
+`/auth/verify-otp`, `/auth/request-otp`) before deciding what was
+genuinely fabricated versus a real mechanism the `useCollection`-based
+registry detector doesn't recognise (same blind spot as wave 7's
+`Contact.tsx`/`RequestDemo.tsx`).
+
+Of the 29:
+- **Already honest, left alone (20 screens)** — 14 purely static/
+  navigational UI (`Splash`, `Welcome`, `Error404`, `Maintenance`,
+  `LanguageSelection`, `RegionSelection`, `CreatePIN`, `BiometricSetup`,
+  `SessionExpired`, `Unauthorized`, `LogoutConfirmation`, and the three
+  legal pages), and 6 already wired to real `/auth/*` endpoints with
+  honest offline/error fallbacks (`Login`, `Register`, `ForgotPassword`,
+  `ResetPassword`, `OTPVerification`, `TwoFactorVerification`).
+- **Honest GAP state (4 screens)** — presented something as real with
+  no plausible backing collection:
+  - `AccountLocked` (in `StatusScreens.tsx`): a hardcoded reference
+    (`LK-2026-4471`), a fixed 5-dot "Failed attempts" indicator, and a
+    countdown seeded from an invented 15-minute policy — no
+    lockout-tracking backend exists. Replaced with one honest sentence;
+    the real actions (sign in again, contact support) are unchanged.
+  - `InviteAcceptance`: a hardcoded org name ("Al-Amri Auto Center")
+    the file's own comment admitted was "a placeholder that matches
+    the design prototype." No invite endpoint exists to decode a token
+    or accept an invite — "Accept Invite" previously enabled itself
+    when `isLive` with no real action behind it; now stays honestly
+    disabled unconditionally.
+  - `OrganizationSelection`: a hardcoded three-organization picker with
+    invented member counts — no multi-tenant organizations collection
+    exists, the same conclusion already reached for the admin
+    `Organizations.tsx` directory screen in wave 6. Same fix: an
+    `EmptyState` naming the missing `organizations` collection,
+    "Continue" honestly disabled.
+  - `RoleSelection`: each real RBAC role card carried a fabricated
+    "Users" population count (`248`, `1.2K`, `3.4K`, `680`) — no
+    `users`/accounts collection exists (system accounts have no
+    backing collection at all, same conclusion as `UsersTeams.tsx` in
+    wave 6). The roles themselves are real, so the picker stays; only
+    the invented stat is gone.
+- **Wired to real data (1 screen)** — `WorkspaceSelection`: a
+  hardcoded three-workspace list with invented vehicle/active-job/team
+  counts, replaced with a real `useCollection('branches')` read
+  (`GET /branches`, F-017). `BranchRow`'s shape
+  (name/nameAr/city/isMain) has no usage-stat fields, so those counts
+  are dropped rather than re-invented — `branches` is currently seeded
+  empty in fixture mode, so the honest empty state
+  (`EmptyState`/"No workspaces yet") is what actually renders today.
+- **Fake-success fixes (4 screens)** — claimed to submit, save or
+  redirect with zero real backend call behind it, live or not:
+  - `Onboarding`: a 5-step wizard whose org/branch/profile inputs were
+    never read by anything, ending in "Your workspace is ready" — a
+    false claim, since nothing was saved (no org/branch/profile-creation
+    endpoint exists in the contract). The final step's copy now says so
+    honestly. Its Preferences step also showed hardcoded "English"/
+    "Off"/"On" badges regardless of the visitor's actual settings; now
+    reads the real values from `usePreferences()`. Separately, the
+    final "Get Started" button was a dead end (`canNext` was always
+    `false` on the last step, so its own click handler did nothing) —
+    now navigates to `/dashboard`.
+  - `ProfileCompletion`: fired a fake "Profile updated" toast whenever
+    `isLive`, with no API call at all — there is no profile-update
+    endpoint anywhere in the contract, live or not. Now shows the same
+    honest "not available yet" message unconditionally instead of only
+    when offline.
+  - `SocialLogin`: the Google/Apple/Microsoft buttons had no `onClick`
+    at all — clicking did nothing, not even a toast. No OAuth mechanism
+    exists anywhere in the contract or session provider; they now say
+    so instead of silently doing nothing.
+  - `SSOLogin`: fired a fake "Redirecting to SSO provider…" toast
+    whenever `isLive`, with no actual redirect or API call — no SSO
+    mechanism exists, live or not. Now shows the same honest "SSO is
+    not available yet" message unconditionally.
+
+`npm run registry`: BLK-004 mock-only count dropped from 238 to 227 —
+11 fewer, mostly from PR #149's unrelated accounting-cluster live
+wiring merged into `main` while this wave was in progress (this wave's
+own contribution to the count is 1: `WorkspaceSelection`'s real
+`useCollection` wire; the 4 GAP conversions and 4 fake-success fixes
+stay flagged `MOCK_ONLY` for the same reason every wave-6/7 GAP screen
+and `fetch`-based real submission does — "not wired to a live
+collection" is still literally true of an honest empty state or a raw
+`fetch` call).
+
+Merged `main` twice during this wave: once to pick up PR #149 before
+finishing, and PR #148 (wave 7) separately needed the same base-branch
+merge after `main` advanced out from under it while it was open —
+handled there, not here.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed —
+no `.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3918 tests, no existing test referenced the fabricated
+auth-domain content), `npm run check-i18n` (3934/3934 covered, 10 new
+keys), a full local `smoke.mjs` run (429/429 routes), and a manual
+Playwright check of all 9 changed screens — the GAP states render their
+honest content with the old fabricated strings gone, `WorkspaceSelection`
+shows its real (currently empty) `branches` read, `Onboarding`'s final
+step shows the honest no-save message and "Get Started" now navigates,
+and `ProfileCompletion`/`SocialLogin`/`SSOLogin` all show their honest
+"not available yet" messages instead of a fake success — zero console
+errors throughout. `node tools/docs/generate.mjs` +
+`node tools/docs/check.mjs`: clean, no drift.
+
 ## Wave 9 — ai domain (2026-09-18)
 
 Triaged the 6 `MOCK_ONLY` screens under `app/src/screens/ai/`
