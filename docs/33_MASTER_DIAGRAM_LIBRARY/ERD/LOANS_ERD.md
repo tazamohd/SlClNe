@@ -8,7 +8,7 @@
 
 # LOANS ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 2 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 2 tables
 
 ### LOANS
 

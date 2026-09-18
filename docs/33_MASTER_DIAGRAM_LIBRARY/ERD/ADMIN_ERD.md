@@ -8,7 +8,7 @@
 
 # ADMIN ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 7 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 7 tables
 
 ### ADMIN
 

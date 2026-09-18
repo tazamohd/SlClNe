@@ -8,7 +8,7 @@
 
 # SALIS AUTO documentation index
 
-**Sources as of:** 2026-09-19 · 409 documents, 139 in the numbered architecture
+**Sources as of:** 2026-09-18 · 409 documents, 139 in the numbered architecture
 
 ## Start here
 

@@ -12,7 +12,7 @@
 
 # Domain — Parts and inventory
 
-**Status:** GENERATED · **Capability:** CAP-INVENTORY · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Capability:** CAP-INVENTORY · **Sources as of:** 2026-09-18
 
 ## Purpose and scope
 

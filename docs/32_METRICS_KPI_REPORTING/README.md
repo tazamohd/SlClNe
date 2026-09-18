@@ -8,7 +8,7 @@
 
 # Metrics, KPI and reporting
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 What is measured, where the number comes from, and what it is for.
 

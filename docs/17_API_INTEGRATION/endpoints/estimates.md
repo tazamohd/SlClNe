@@ -10,7 +10,7 @@
 
 # API — estimates
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 22 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 22 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

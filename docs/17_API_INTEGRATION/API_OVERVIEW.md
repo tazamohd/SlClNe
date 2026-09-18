@@ -10,7 +10,7 @@
 
 # API overview
 
-**Status:** GENERATED · **Source of truth:** the route files · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Source of truth:** the route files · **Sources as of:** 2026-09-18
 
 418 endpoints under `/api/v1`, plus the two unauthenticated probes.
 

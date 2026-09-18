@@ -8,7 +8,7 @@
 
 # HR ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 5 tables
 
 ### HR
 

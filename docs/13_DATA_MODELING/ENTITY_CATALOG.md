@@ -8,7 +8,7 @@
 
 # Entity catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
 73 tables. 68 are tenant-scoped (carry `org_id`) and 69 have row-level security enabled and forced.
 

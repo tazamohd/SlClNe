@@ -8,7 +8,7 @@
 
 # Security
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Authentication, authorization, isolation, audit, threat model.
 

@@ -8,7 +8,7 @@
 
 # Scenarios and use cases
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 Business, user and system scenarios; use cases; golden paths.
 

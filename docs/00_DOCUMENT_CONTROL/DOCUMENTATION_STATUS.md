@@ -8,7 +8,7 @@
 
 # Documentation status
 
-**Sources as of:** 2026-09-19
+**Sources as of:** 2026-09-18
 
 ## Coverage
 

@@ -10,7 +10,7 @@
 
 # API — jobcards
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 90 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 90 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
