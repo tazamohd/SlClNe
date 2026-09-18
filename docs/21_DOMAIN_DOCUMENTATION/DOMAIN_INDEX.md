@@ -18,7 +18,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
-| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 18 | 121 | 17 | 17 of 18 |
+| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 19 | 128 | 18 | 18 of 19 |
 | Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 19 | 2 | 3 of 3 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 4 | 9 | 1 | 4 of 4 |
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |
@@ -26,7 +26,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
 | Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 7 | 50 | 9 | 7 of 7 |
 | HR and payroll | [CAP-HR](HR.md) | 5 | 52 | 6 | 5 of 5 |
-| CRM and sales | [CAP-CRM](CRM.md) | 12 | 45 | 6 | 10 of 12 |
+| CRM and sales | [CAP-CRM](CRM.md) | 12 | 51 | 6 | 10 of 12 |
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 11 of 11 |
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 5 | 1 | 1 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
@@ -35,4 +35,4 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 24 | 0 | 1 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 34 | 0 | 0 | 0 of 34 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 48 of 233 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 233 | 0 | 0 | 51 of 233 |

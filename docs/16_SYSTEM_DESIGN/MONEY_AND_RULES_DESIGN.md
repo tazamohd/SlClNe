@@ -12,7 +12,7 @@
 
 ## Money is an integer count of halalas
 
-Every money column is `bigint` named `*_halalas`. 32 tables carry money; 55 columns in total. There is no `numeric` money column and no floating-point money anywhere.
+Every money column is `bigint` named `*_halalas`. 34 tables carry money; 57 columns in total. There is no `numeric` money column and no floating-point money anywhere.
 
 The reason is narrow and sufficient: a `numeric` rounding surprise must not be able to reach a ledger. An integer count of the smallest unit has no rounding behaviour to be surprised by.
 

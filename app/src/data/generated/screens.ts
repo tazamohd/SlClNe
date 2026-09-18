@@ -12,6 +12,8 @@ import type { ScreenMeta } from '../types'
  *  - `DeclinedJobs` — Declined Job Tracking & Follow-Up (Sprint 1, P0).
  *  - `HealthCheckReport` — the customer-facing DVHC report
  *    (Sprint 2, P0).
+ *  - `CannedJobs` — predefined, priced service packages an advisor can
+ *    apply to an estimate (build-order item 5).
  *
  *  `npm run registry` (`build-registry.mjs`) still discovers each correctly
  *  from its route plus its screen file; leaving them here rather than
@@ -80,6 +82,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/declined-jobs",
     "hasMobile": false,
     "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue"
+  },
+  {
+    "name": "CannedJobs",
+    "route": "/canned-jobs",
+    "hasMobile": false,
+    "purpose": "Maintain predefined, priced service packages and apply one to an estimate"
   },
   {
     "name": "HealthCheckReport",

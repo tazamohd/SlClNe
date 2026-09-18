@@ -1,101 +1,132 @@
-import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
-import { DataTable, type Column } from '@/components/ui/DataTable'
+import { DataTable, EmptyState, type Column } from '@/components/ui/DataTable'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
-import { Money, formatSar } from '@/components/ui/Money'
+import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface Campaign {
-  name: string
-  channel: 'Email' | 'SMS' | 'WhatsApp' | 'Social'
-  status: 'Active' | 'Paused' | 'Completed' | 'Draft'
-  reach: number
-  conversions: number
-  budget: number
-}
+/** Marketing Hub (`/marketing-hub`) — an overview across every campaign
+ *  channel, read from `campaigns` (`GET /crm/campaigns`) through the
+ *  repository seam, the same collection `Crm.tsx`'s per-channel screens
+ *  (`EmailMarketing`, `SMSCampaigns`, `WhatsAppCampaigns`) already read.
+ *
+ *  This used to render a fixed `CAMPAIGNS` array and four hardcoded KPI tiles
+ *  ("Active Campaigns: 12", "Total Reach: 45,200"…) that never moved no
+ *  matter what a shop actually ran. The tiles below are now totals over the
+ *  real rows, and an empty catalog shows the empty state rather than six
+ *  invented campaigns.
+ */
 
-const CAMPAIGNS: Campaign[] = [
-  { name: 'Summer Service Special', channel: 'Email', status: 'Active', reach: 12400, conversions: 186, budget: 5000 },
-  { name: 'Ramadan Offer SMS', channel: 'SMS', status: 'Completed', reach: 8900, conversions: 267, budget: 3500 },
-  { name: 'WhatsApp Follow-up', channel: 'WhatsApp', status: 'Active', reach: 6200, conversions: 124, budget: 2000 },
-  { name: 'Instagram Ad Campaign', channel: 'Social', status: 'Active', reach: 9800, conversions: 98, budget: 7500 },
-  { name: 'Loyalty Rewards Blast', channel: 'Email', status: 'Paused', reach: 4300, conversions: 64, budget: 1500 },
-  { name: 'New Branch Opening', channel: 'Social', status: 'Draft', reach: 0, conversions: 0, budget: 5500 },
-]
+type Campaign = RowOf<'campaigns'>
 
 const CHANNEL_ICONS: Record<string, string> = {
-  Email: 'Mail',
-  SMS: 'MessageSquare',
-  WhatsApp: 'MessageCircle',
-  Social: 'Share2',
+  email: 'Mail',
+  sms: 'MessageSquare',
+  whatsapp: 'MessageCircle',
+  social: 'Share2',
 }
 
 const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Active: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Paused: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  running: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  scheduled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  paused: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  completed: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+}
+
+function statusStyle(status: string) {
+  return STATUS_STYLES[status] ?? STATUS_STYLES.draft
 }
 
 export function MarketingHub() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
-  const [_filter] = useState('all')
+  const { data: campaigns = [], isLoading, isError, error, refetch } = useCollection('campaigns')
+
+  const activeCount = campaigns.filter((c) => c.status === 'running').length
+  const totalReach = campaigns.reduce((sum, c) => sum + c.reach, 0)
+  const totalConversions = campaigns.reduce((sum, c) => sum + c.conversions, 0)
+  const totalBudget = campaigns.reduce((sum, c) => sum + parseSar(c.budget), 0)
+  const conversionRate = totalReach ? `${((totalConversions / totalReach) * 100).toFixed(1)}%` : '0%'
 
   const kpis = [
-    { label: t('Active Campaigns'), value: '12', icon: 'Megaphone', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Total Reach'), value: '45,200', icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Conversion Rate'), value: '3.8%', icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Monthly Budget'), value: formatSar(25000), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Active Campaigns'), value: String(activeCount), icon: 'Megaphone', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Reach'), value: totalReach.toLocaleString('en-US'), icon: 'Eye', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Conversion Rate'), value: conversionRate, icon: 'TrendingUp', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Budget'), value: formatSar(totalBudget), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
   ]
 
   const columns: Column<Campaign>[] = [
-    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{c.name}</span> },
+    { header: 'Campaign', cell: (c) => <span className="font-medium text-heading">{t(c.name)}</span> },
     {
       header: 'Channel',
       cell: (c) => (
         <div className="flex items-center gap-1.5">
-          <Icon name={CHANNEL_ICONS[c.channel]} size={14} className="text-muted" />
-          <span className="text-body">{t(c.channel)}</span>
+          <Icon name={CHANNEL_ICONS[c.type] ?? 'Megaphone'} size={14} className="text-muted" />
+          <span className="text-body">{t(c.type)}</span>
         </div>
       ),
     },
-    { header: 'Status', cell: (c) => <Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge> },
-    { header: 'Reach', cell: (c) => <span className="font-mono text-heading">{c.reach.toLocaleString()}</span> },
-    { header: 'Conversions', cell: (c) => <span className="font-mono text-heading">{c.conversions.toLocaleString()}</span> },
-    { header: 'Budget', cell: (c) => <Money sar={c.budget} /> },
+    {
+      header: 'Status',
+      cell: (c) => (
+        <Badge background={statusStyle(c.status).bg} color={statusStyle(c.status).fg}>
+          {t(c.status)}
+        </Badge>
+      ),
+    },
+    { header: 'Reach', cell: (c) => <span className="font-mono text-heading">{c.reach.toLocaleString('en-US')}</span> },
+    { header: 'Conversions', cell: (c) => <span className="font-mono text-heading">{c.conversions.toLocaleString('en-US')}</span> },
+    { header: 'Budget', cell: (c) => <Money sar={parseSar(c.budget)} /> },
   ]
+
+  if (isLoading) return <Loading label="Loading campaigns..." />
+  if (isError) {
+    return (
+      <Card className="p-6">
+        <ErrorState description={error?.message} onRetry={() => void refetch()} />
+      </Card>
+    )
+  }
 
   const table = (
     <DataTable
       caption="Marketing campaigns"
       columns={columns}
-      rows={CAMPAIGNS}
+      rows={campaigns}
       rowKey={(c) => c.name}
       mobileCard={(c) => (
         <>
           <MobileCardHeader
             leading={
               <div className="flex items-center gap-2">
-                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name={CHANNEL_ICONS[c.channel]} size={14} /></span>
+                <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden>
+                  <Icon name={CHANNEL_ICONS[c.type] ?? 'Megaphone'} size={14} />
+                </span>
                 <div>
-                  <p className="text-[13px] font-semibold text-heading">{c.name}</p>
-                  <p className="text-xs text-muted">{t(c.channel)}</p>
+                  <p className="text-[13px] font-semibold text-heading">{t(c.name)}</p>
+                  <p className="text-xs text-muted">{t(c.type)}</p>
                 </div>
               </div>
             }
-            trailing={<Badge background={STATUS_STYLES[c.status].bg} color={STATUS_STYLES[c.status].fg}>{t(c.status)}</Badge>}
+            trailing={
+              <Badge background={statusStyle(c.status).bg} color={statusStyle(c.status).fg}>
+                {t(c.status)}
+              </Badge>
+            }
           />
-          <MobileCardRow label={t('Reach')} value={c.reach.toLocaleString()} />
+          <MobileCardRow label={t('Reach')} value={c.reach.toLocaleString('en-US')} />
           <MobileCardRow label={t('Conversions')} value={String(c.conversions)} />
-          <MobileCardRow label={t('Budget')} value={<Money sar={c.budget} />} />
+          <MobileCardRow label={t('Budget')} value={<Money sar={parseSar(c.budget)} />} />
         </>
       )}
+      empty={<EmptyState icon="Megaphone" title={t('No campaigns yet')} />}
     />
   )
 

@@ -48,10 +48,10 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 429,
-    "screensTotal": 429,
-    "endpointsMapped": 418,
-    "endpointsTotal": 418
+    "screensMapped": 430,
+    "screensTotal": 430,
+    "endpointsMapped": 431,
+    "endpointsTotal": 431
   },
   "capabilities": [
     {
@@ -67,7 +67,7 @@
       ],
       "objective": "OBJ-THROUGHPUT",
       "objectiveName": "Increase workshop throughput",
-      "endpointCount": 121,
+      "endpointCount": 128,
       "endpoints": [
         "API-APPOINTMENTS-GET-LIST",
         "API-APPOINTMENTS-POST-LIST",
@@ -79,6 +79,13 @@
         "API-APPOINTMENTS-POSTBULK-DELETE",
         "API-APPOINTMENTS-POSTBULK-UPDATE",
         "API-APPOINTMENTS-GETEXPORT",
+        "API-CANNEDJOBS-GET-LIST",
+        "API-POST-CANNED-JOBS",
+        "API-CANNEDJOBS-GETID",
+        "API-PATCH-CANNED-JOBS-ID",
+        "API-GET-CANNED-JOBS-ID-HISTORY",
+        "API-GET-CANNED-JOBS-ID-LINES",
+        "API-CANNEDJOBS-GETEXPORT",
         "API-DECLINEDJOBS-GET-LIST",
         "API-DECLINEDJOBS-POST-LIST",
         "API-DECLINEDJOBS-DELETEID",
@@ -191,11 +198,12 @@
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 18,
+      "screenCount": 19,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
         "D-DeclinedJobs",
+        "D-CannedJobs",
         "D-HealthCheckReport",
         "D-CustomerApproval",
         "D-DiagnosticReport",
@@ -212,9 +220,10 @@
         "D-WorkshopQC",
         "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 17,
+      "dataBackedScreens": 18,
       "entities": [
         "appointments",
+        "cannedJobs",
         "declinedJobs",
         "deliverySignoffs",
         "diagCopies",
@@ -754,11 +763,17 @@
       ],
       "objective": "OBJ-RETENTION",
       "objectiveName": "Retain customers",
-      "endpointCount": 45,
+      "endpointCount": 51,
       "endpoints": [
         "API-CAMPAIGNS-GET-LIST",
+        "API-CAMPAIGNS-POST-LIST",
+        "API-CAMPAIGNS-DELETEID",
         "API-CAMPAIGNS-GETID",
+        "API-CAMPAIGNS-PATCHID",
         "API-GET-CRM-CAMPAIGNS-ID-HISTORY",
+        "API-POST-CRM-CAMPAIGNS-ID-SEND",
+        "API-CAMPAIGNS-POSTBULK-DELETE",
+        "API-CAMPAIGNS-POSTBULK-UPDATE",
         "API-CAMPAIGNS-GETEXPORT",
         "API-LEADS-GET-LIST",
         "API-LEADS-POST-LIST",
@@ -1535,7 +1550,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 48,
+      "dataBackedScreens": 51,
       "entities": [],
       "rules": [],
       "roles": [],
