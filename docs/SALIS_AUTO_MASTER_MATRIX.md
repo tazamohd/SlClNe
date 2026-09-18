@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-429 capabilities · 429 rendering · 0 placeholder · 117 data-backed.
+430 capabilities · 430 rendering · 0 placeholder · 118 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -16,6 +16,7 @@
 | Appointments | `/appointments` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | ApprovalInbox | `/approval-inbox` | app | approvals | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | DeclinedJobs | `/declined-jobs` | app | estimates | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
+| CannedJobs | `/canned-jobs` | app | estimates | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | HealthCheckReport | `/customer-portal/health-check-report` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 11 roles | route | IMPLEMENTED |
 | AuditLog | `/audit-log` | app | audit | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
 | AutomationRules | `/automation-rules` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
