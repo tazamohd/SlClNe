@@ -87,7 +87,7 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | NFR-REL-001 | A replayed Idempotency-Key returns the stored response and creates no second business effect; the same key with a different body is refused. | server/src/http/idempotency.ts + idempotency_keys unique index | CODE_AND_SCHEMA |
 | NFR-REL-002 | Concurrent updates are resolved optimistically on a database-maintained version column; a stale write is refused, not silently applied. | bump_version trigger on every tenant table | DATABASE_CONSTRAINT |
 | NFR-A11Y-001 | Colour-contrast violations do not increase. The axe sweep is ratcheted per route and per viewport. | project-control/BASELINE.json axeColourContrastNodes + app/e2e/a11y.spec.ts | RATCHETED_BASELINE |
-| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 75 of 430, rtlHazards 0 | MEASURED_REGISTRY |
+| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 74 of 430, rtlHazards 0 | MEASURED_REGISTRY |
 | NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 430 of 430 | MEASURED_REGISTRY |
 | NFR-PERF-001 | Bundle size and golden-path timings stay within the recorded ratchet. | app/scripts/check-bundle.mjs, app/scripts/golden-paths.mjs | RATCHETED_BASELINE |
 | NFR-OPS-001 | The service exposes liveness and readiness probes that are reachable without a token. | GET /health, GET /ready (server/src/routes/health.ts) | CODE |

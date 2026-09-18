@@ -20,27 +20,27 @@
 | Reference-only | 28 | 430 |
 | Rendered | 430 | 430 |
 | Placeholder | 0 | 430 |
-| Data-backed (live API) | 142 | 430 |
-| Mock-only (design fixtures) | 226 | 430 |
+| Data-backed (live API) | 143 | 430 |
+| Mock-only (design fixtures) | 225 | 430 |
 | End-to-end covered | 430 | 430 |
 | Content-asserted (not just routed) | 430 | 430 |
-| Has a loading state | 178 | 430 |
-| Has an error state | 142 | 430 |
-| Has an empty state | 223 | 430 |
-| Arabic verified | 75 | 430 |
+| Has a loading state | 179 | 430 |
+| Has an error state | 143 | 430 |
+| Has an empty state | 225 | 430 |
+| Arabic verified | 74 | 430 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 430 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **226 of 430 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **225 of 430 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
-| auth | 29 | 0 | 0 |
+| auth | 29 | 1 | 0 |
 | app | 315 | 128 | 79 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
@@ -68,7 +68,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
 | CAP-AI | 10 | 4 | 4 | 4 | 9 | 2 |
 | CAP-PLATFORM | 35 | 6 | 13 | 6 | 22 | 11 |
-| CAP-IDENTITY | 19 | 0 | 0 | 0 | 0 | 14 |
+| CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 21 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
 | CAP-DESIGNSYSTEM | 233 | 51 | 73 | 49 | 109 | 21 |
