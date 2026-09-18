@@ -4,14 +4,14 @@
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
     "capabilities": 428,
-    "product": 388,
+    "product": 365,
     "referenceOnly": 28,
-    "externalDependency": 12,
+    "externalDependency": 35,
     "rendered": 428,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 274,
+    "mockOnly": 251,
     "dataBacked": 114,
     "e2eCovered": 428,
     "contentAsserted": 428,
@@ -16335,7 +16335,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16382,14 +16382,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: GPS/telematics device"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -16533,7 +16533,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16580,13 +16580,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: GPS/telematics device fleet"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -16859,7 +16859,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16906,14 +16906,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: telematics provider integration"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -16991,7 +16991,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17038,14 +17038,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: camera + LPR vision service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17585,7 +17585,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17632,14 +17632,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: computer-vision model service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17717,7 +17717,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17764,14 +17764,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: video-calling provider (SDK + credentials)"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17783,7 +17783,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17830,14 +17830,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: Stripe API credentials"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25183,7 +25183,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25230,13 +25230,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: social platform API credentials"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -25248,7 +25248,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25295,14 +25295,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: social listening provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25314,7 +25314,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25361,13 +25361,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: Google Business Profile API credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -26368,7 +26368,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26415,14 +26415,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26434,7 +26434,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26481,14 +26481,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26500,7 +26500,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26547,14 +26547,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26696,7 +26696,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26743,14 +26743,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: computer-vision damage-assessment model"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26762,7 +26762,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26809,14 +26809,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: trained fraud-detection model service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26828,7 +26828,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26875,14 +26875,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: trained model-serving infrastructure"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27026,7 +27026,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27073,14 +27073,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: IoT device fleet + telemetry ingestion"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27092,7 +27092,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27139,14 +27139,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: edge compute infrastructure"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27158,7 +27158,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27205,14 +27205,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: 3D twin model + live sensor feed"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27686,7 +27686,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27733,14 +27733,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: energy-monitoring hardware/sensors"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27884,7 +27884,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27931,14 +27931,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: MDM platform integration"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28016,7 +28016,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -28063,14 +28063,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: OCR provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28807,7 +28807,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -28854,14 +28854,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: SMS gateway credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {

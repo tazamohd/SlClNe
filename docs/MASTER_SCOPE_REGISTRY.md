@@ -9,14 +9,14 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Metric | Count |
 |---|---|
 | capabilities | 428 |
-| product | 388 |
+| product | 365 |
 | reference only | 28 |
-| external dependency | 12 |
+| external dependency | 35 |
 | rendered | 428 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 274 |
+| mock only | 251 |
 | data backed | 114 |
 | e2e covered | 428 |
 | content asserted | 428 |
