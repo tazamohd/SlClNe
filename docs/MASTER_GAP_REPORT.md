@@ -8,16 +8,15 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-004 | CRITICAL | 228 rendered capabilities are mock-only | 05 | W2 |
-| BLK-010 | MEDIUM | 10 screen files are unreachable from any route | 02 | W0 |
+| BLK-004 | CRITICAL | 226 rendered capabilities are mock-only | 05 | W2 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
-| ARABIC_MISSING | 352 | Arabic not certified: an untranslated key, or keys built dynamically |
+| ARABIC_MISSING | 353 | Arabic not certified: an untranslated key, or keys built dynamically |
 | TABLET_MISSING | 306 | no md:/lg: layout in the source — nothing written for 768–1024 |
-| MOCK_ONLY | 228 | renders, but from fixtures rather than an API |
+| MOCK_ONLY | 226 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 195 | no RBAC module maps to this screen |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | DUPLICATE | 0 | two entries claim one route |
@@ -63,6 +62,12 @@ _None — the registry covers every design file._
 
 ## Screen files no route reaches
 
+_None._
+
+## Retained as reference, deliberately not routed
+
+Pre-kit implementations of feature-map routes that render `FeatureScreenView` today. Kept as the reference for building the real screen; routing one would put a legacy screen back in front of users. See `RETAINED_REFERENCE` in `app/scripts/build-registry.mjs`.
+
 - `app/src/screens/public/landing/CommandDeck.tsx`
 - `app/src/screens/public/landing/PageNav.tsx`
 - `app/src/screens/public/landing/homepage/SocialProofBand.tsx`
@@ -73,12 +78,6 @@ _None — the registry covers every design file._
 - `app/src/screens/public/landing/pages/OriginPage.tsx`
 - `app/src/screens/public/landing/pages/SystemPage.tsx`
 - `app/src/screens/public/landing/useLandingMotion.ts`
-
-## Retained as reference, deliberately not routed
-
-Pre-kit implementations of feature-map routes that render `FeatureScreenView` today. Kept as the reference for building the real screen; routing one would put a legacy screen back in front of users. See `RETAINED_REFERENCE` in `app/scripts/build-registry.mjs`.
-
-_None._
 
 ## Placeholder routes by domain
 
