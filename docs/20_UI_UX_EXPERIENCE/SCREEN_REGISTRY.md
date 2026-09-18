@@ -27,7 +27,7 @@
 | Has a loading state | 179 | 430 |
 | Has an error state | 143 | 430 |
 | Has an empty state | 220 | 430 |
-| Arabic verified | 74 | 430 |
+| Arabic verified | 76 | 430 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 430 |
 | Golden paths passing | 23 of 23 | — |
@@ -69,7 +69,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-AI | 10 | 4 | 4 | 4 | 4 | 4 |
 | CAP-PLATFORM | 35 | 6 | 13 | 6 | 22 | 11 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 13 |
-| CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 19 |
+| CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 21 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
 | CAP-DESIGNSYSTEM | 233 | 51 | 73 | 49 | 109 | 21 |
 
