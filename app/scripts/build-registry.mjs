@@ -905,6 +905,34 @@ const EXTERNAL = {
   'AR Repair Guide': 'AR device + tracked models',
   'AR Overlay': 'AR device + tracked models',
   'Drone Inspection ': 'drone hardware + flight service',
+  // Added in the featuremap triage pass (project-control/FEATUREMAP_TRIAGE.md):
+  // same test as the entries above — a named external system, not "this is
+  // unbuilt" or "the name says AI/smart". Ambiguous cases (predictive
+  // maintenance, dynamic pricing, routing optimisation, a plain VIN decode
+  // call) are left as PRODUCT backlog rather than guessed into this list.
+  'Vehicle Tracking': 'GPS/telematics device',
+  'Fleet Tracking': 'GPS/telematics device fleet',
+  'Telematics Integration': 'telematics provider integration',
+  'License Plate Recognition': 'camera + LPR vision service',
+  'Computer Vision QC': 'computer-vision model service',
+  'Video Consultations': 'video-calling provider (SDK + credentials)',
+  'Stripe Payment Processing': 'Stripe API credentials',
+  'Smart Damage Assessment': 'computer-vision damage-assessment model',
+  'ML Fraud Detection': 'trained fraud-detection model service',
+  'Neural Network Prediction': 'trained model-serving infrastructure',
+  'IoT Dashboard': 'IoT device fleet + telemetry ingestion',
+  'Edge Computing': 'edge compute infrastructure',
+  'Digital Twin Viewer': '3D twin model + live sensor feed',
+  'Sustainable Energy Monitoring': 'energy-monitoring hardware/sensors',
+  'Mobile Device Management': 'MDM platform integration',
+  'Document OCR': 'OCR provider credential',
+  'SMS Integration': 'SMS gateway credential',
+  'Social Media Integration': 'social platform API credentials',
+  'Social Media Monitoring': 'social listening provider credential',
+  'Google My Business': 'Google Business Profile API credential',
+  'AI Chatbot': 'LLM provider credential',
+  'AI Chatbot Assistant': 'LLM provider credential',
+  'AI Service Advisor': 'LLM provider credential',
 }
 
 /** The modules that are a portal rather than a module a portal reads from.

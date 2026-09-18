@@ -34,33 +34,26 @@ test.describe('Call center lifecycle', () => {
 
 /** Ported from the retired `scripts/journeys/portals.mjs`.
  *
- *  "The page loads" was the whole of this path's coverage. The console's one
- *  job is the queue: it has to say who is waiting and offer each of them an
- *  answer control, and in this build (no API, BLK-002) that control is
- *  disabled — which is where this golden path honestly stops. */
-test.describe('Call centre — the live queue', () => {
+ *  "The page loads" was the whole of this path's coverage. This used to
+ *  continue into a queue golden path: the console had to say who was
+ *  waiting and offer each of them a disabled answer control (no API,
+ *  BLK-002). That queue — like the rest of the console — turned out to be
+ *  entirely invented fixture data (BLK-004, project-control/
+ *  SOURCE_RECONCILIATION.md): no calls/callQueue/callLogs backend exists
+ *  anywhere, and a fictional but visible queue is the same false-success
+ *  problem as a fictional answered call. `CallCenter.tsx` now renders a
+ *  single honest "no data source yet" state instead, so there is no queue,
+ *  no badge and no answer controls left to test — "the page loads" above
+ *  is what remains of this golden path. */
+test.describe('Call centre — no telephony backend', () => {
   test.beforeEach(async ({ context }) => {
     await seedRole(context, 'owner')
   })
 
-  test('the queue names every caller waiting, and this build cannot answer them', async ({ page }) => {
+  test('the console says plainly that it has no data source, rather than showing an invented queue', async ({ page }) => {
     await gotoReady(page, '/call-center')
     await expect(page.getByRole('heading', { name: 'Agent Console' })).toBeVisible()
-
-    const answer = page.getByRole('button', { name: /^Answer call from / })
-    const waiting = await answer.count()
-    expect(waiting).toBeGreaterThan(0)
-
-    // The badge over the queue counts the callers the queue actually lists.
-    const badge = page.getByRole('heading', { name: 'Live Queue' }).locator('xpath=following-sibling::*[1]')
-    expect((await badge.innerText()).trim()).toBe(String(waiting))
-
-    for (const call of await answer.all()) {
-      // A queued call that names nobody cannot be worked.
-      const caller = ((await call.getAttribute('aria-label')) ?? '').replace(/^Answer call from/, '').trim()
-      expect(caller.length).toBeGreaterThan(0)
-      // No live API, so the call cannot be taken — refused, never faked.
-      await expect(call).toBeDisabled()
-    }
+    await expect(page.getByText('Call-center console has no data source yet')).toBeVisible()
+    expect(await page.getByRole('button', { name: /^Answer call from / }).count()).toBe(0)
   })
 })

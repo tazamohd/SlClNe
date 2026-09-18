@@ -9,15 +9,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Metric | Count |
 |---|---|
 | capabilities | 428 |
-| product | 388 |
+| product | 365 |
 | reference only | 28 |
-| external dependency | 12 |
+| external dependency | 35 |
 | rendered | 428 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 273 |
-| data backed | 115 |
+| mock only | 249 |
+| data backed | 116 |
 | e2e covered | 428 |
 | content asserted | 428 |
 | rendered without assertion | 0 |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 114 |
+| crud read | 115 |
 | crud update | 25 |
 | crud delete | 24 |
 | unregistered designs | 0 |
