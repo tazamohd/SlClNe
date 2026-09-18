@@ -9,7 +9,10 @@ Follow the vault conventions in `CLAUDE.md`. This skill is read-only by
 default: it reports and suggests, and only edits when the user approves.
 
 1. Enumerate all notes, excluding `templates/`, `archive/`, `.obsidian/`,
-   and daily notes (dailies are expected to be leaf-ish).
+   and daily notes — files matching `daily/YYYY-MM-DD.md` specifically
+   (dailies are expected to be leaf-ish). `/weekly-review` also writes into
+   `daily/` (`YYYY-[W]WW-review.md`); include those, since a review is a
+   synthesis note that should actually be linked to and from.
 2. Extract every wikilink target across the vault (`[[Target]]` and
    `[[Target|alias]]`; resolve against filenames and frontmatter aliases).
 3. Classify:

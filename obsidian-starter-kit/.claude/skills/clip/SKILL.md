@@ -10,7 +10,13 @@ none is given, ask.
 
 1. Fetch the page. If it can't be fetched (paywall, blocked), say so and
    offer to build the note from pasted text instead.
-2. Create `reference/<descriptive title>.md`:
+2. Create `reference/<descriptive title>.md`. Article titles routinely
+   contain characters CLAUDE.md's filename rule forbids (a colon in
+   "Title: Subtitle" is the most common) — strip or replace them in the
+   filename only; keep the real title as the note's H1 and frontmatter.
+   If `reference/<title>.md` already exists, don't overwrite it — check
+   whether it's the same source (update instead) or a genuine name
+   collision (disambiguate the filename).
 
    ```markdown
    ---

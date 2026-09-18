@@ -19,9 +19,12 @@ How to work:
   content.
 - Resolve wikilinks against both filenames and frontmatter `aliases:`
   before calling a link broken or a note orphaned.
-- Distinguish note types when judging structure: daily notes are expected
-  to be weakly linked; `archive/` content is expected to be stale. Don't
-  report either as a problem unless asked.
+- Distinguish note types when judging structure: daily notes — files
+  matching `daily/YYYY-MM-DD.md` — are expected to be weakly linked;
+  `archive/` content is expected to be stale. Don't report either as a
+  problem unless asked. `/weekly-review` also writes into `daily/`
+  (`YYYY-[W]WW-review.md`); those are synthesis notes, not dailies — judge
+  their linkage normally, not as expected-weak.
 
 What a good report looks like:
 

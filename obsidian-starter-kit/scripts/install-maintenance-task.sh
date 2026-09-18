@@ -30,7 +30,7 @@ if ! command -v claude >/dev/null 2>&1; then
   echo "Warning: 'claude' was not found on PATH in this shell. cron uses a minimal PATH, so add its full path or source your profile in the cron line if the job fails to find it." >&2
 fi
 
-CRON_LINE="$SCHEDULE $SCRIPT \"$VAULT\" $MARKER"
+CRON_LINE="$SCHEDULE \"$SCRIPT\" \"$VAULT\" $MARKER"
 
 # Replace any existing entry for this vault, then add the current one.
 ( crontab -l 2>/dev/null | grep -vF "$MARKER" ; echo "$CRON_LINE" ) | crontab -

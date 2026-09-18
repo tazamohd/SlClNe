@@ -11,7 +11,9 @@ Follow the vault conventions in `CLAUDE.md` (folder layout, frontmatter, tags).
    - If the note already exists, don't recreate it — report that it exists
      and offer to carry over tasks into it instead.
 2. Find the most recent previous daily note (it may not be yesterday —
-   scan `daily/` for the latest date before today).
+   scan `daily/` for the latest date before today). Match only filenames of
+   the form `YYYY-MM-DD.md`; `/weekly-review` also writes into `daily/`
+   (`YYYY-[W]WW-review.md`) and is not a daily note to carry tasks from.
 3. Collect every unfinished task (`- [ ]`) from that note.
 4. If `templates/daily.md` exists, use it as the base (fill in dates).
    Otherwise use:
