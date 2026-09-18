@@ -12,13 +12,13 @@
 
 # Domain documentation
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 18 domains
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 18 domains
 
 One document per domain, all to the same standard: purpose, actors and their data scopes, entities and relationships, API surface, business rules, lifecycles, screens, and the gaps. Derived from the registries, so a domain document cannot quietly fall behind the code it describes.
 
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
-| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 16 | 77 | 13 | 15 of 16 |
+| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 17 | 88 | 14 | 16 of 17 |
 | Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 19 | 2 | 3 of 3 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 4 | 9 | 1 | 4 of 4 |
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |

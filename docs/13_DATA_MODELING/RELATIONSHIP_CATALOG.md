@@ -8,11 +8,11 @@
 
 # Relationship catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
 ## The one thing to read first
 
-Of 170 relationships in the model, **62 are backed by a database foreign key** and **108 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 177 relationships in the model, **63 are backed by a database foreign key** and **114 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -57,6 +57,13 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-ESTIMATE-LINES-ORG-ID | `estimate_lines` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-ESTIMATE-LINES-BRANCH-ID | `estimate_lines` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-ESTIMATE-LINES-ESTIMATE-ID | `estimate_lines` | `estimate_id` | `estimates` | one-to-many | mandatory | **INFERRED** | yes |
+| REL-DECLINED-JOBS-ORG-ID | `declined_jobs` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-DECLINED-JOBS-BRANCH-ID | `declined_jobs` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-DECLINED-JOBS-ESTIMATE-ID | `declined_jobs` | `estimate_id` | `estimates` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-DECLINED-JOBS-ESTIMATE-LINE-ID | `declined_jobs` | `estimate_line_id` | `estimate_lines` | many-to-one | optional | **INFERRED** | yes |
+| REL-DECLINED-JOBS-JOB-CARD-ID | `declined_jobs` | `job_card_id` | `job_cards` | many-to-one | optional | **INFERRED** | no |
+| REL-DECLINED-JOBS-CUSTOMER-ID | `declined_jobs` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
+| REL-DECLINED-JOBS-VEHICLE-ID | `declined_jobs` | `vehicle_id` | `vehicles` | many-to-one | optional | **INFERRED** | no |
 | REL-INVOICES-ORG-ID | `invoices` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-INVOICES-BRANCH-ID | `invoices` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-INVOICES-CUSTOMER-ID | `invoices` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
@@ -199,6 +206,7 @@ A `*_id` column whose name does not resolve to a table. Some are legitimate (`au
 | --- | --- |
 | `user_sessions` | `family_id` |
 | `estimates` | `customer_signature_challenge_id` |
+| `declined_jobs` | `advisor_id` |
 | `inventory_movements` | `to_branch_id` |
 | `inventory_movements` | `transfer_id` |
 | `leads` | `converted_opportunity_id` |

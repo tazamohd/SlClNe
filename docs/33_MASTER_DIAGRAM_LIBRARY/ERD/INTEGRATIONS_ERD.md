@@ -8,7 +8,7 @@
 
 # INTEGRATIONS ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 5 tables
 
 ### INTEGRATIONS
 

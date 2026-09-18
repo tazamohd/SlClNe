@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -8,9 +8,9 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only lifecycles marked DECLARED_TRANSITION_TABLE have machine-readable legal transitions. STATE_SET_ONLY entries have a state enum but no declared transition table; their legal moves live in route handlers and rule guards, and are documented as such rather than invented.",
   "totals": {
-    "machines": 18,
+    "machines": 19,
     "withDeclaredTransitions": 1,
-    "stateSetOnly": 17
+    "stateSetOnly": 18
   },
   "machines": [
     {
@@ -112,6 +112,27 @@
       "terminal": [],
       "note": "No transition table is declared for this lifecycle. Legal moves are enforced, where they are enforced, by a guard in packages/contract/src/rules or a status check in the route handler.",
       "evidence": "packages/contract/src/entities/crm.ts"
+    },
+    {
+      "id": "SM-DECLINED-JOB-declinedJobStatus",
+      "kind": "STATE_SET_ONLY",
+      "entity": "declined-job",
+      "name": "declinedJobStatus",
+      "statement": null,
+      "states": [
+        "declined",
+        "follow_up_scheduled",
+        "contacted",
+        "reconsidering",
+        "approved_later",
+        "permanently_declined",
+        "expired"
+      ],
+      "transitions": [],
+      "transitionsDeclared": false,
+      "terminal": [],
+      "note": "No transition table is declared for this lifecycle. Legal moves are enforced, where they are enforced, by a guard in packages/contract/src/rules or a status check in the route handler.",
+      "evidence": "packages/contract/src/entities/declined-job.ts"
     },
     {
       "id": "SM-ESTIMATE-estimateStatus",

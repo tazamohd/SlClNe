@@ -12,7 +12,7 @@
 
 # Domain — Customer management
 
-**Status:** GENERATED · **Capability:** CAP-CUSTOMERS · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Capability:** CAP-CUSTOMERS · **Sources as of:** 2026-09-18
 
 ## Purpose and scope
 

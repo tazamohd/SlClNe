@@ -8,7 +8,7 @@
 
 # Documentation gap report
 
-**Sources as of:** 2026-09-17
+**Sources as of:** 2026-09-18
 
 This report exists to be read before anything else in the set is relied on. It is generated, so it cannot be quietly improved by editing it.
 
@@ -20,15 +20,15 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents generated from source | 120 |
 | Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 69 of 69 |
-| Relationships documented | 170 (62 FK-backed, 108 convention only) |
-| Endpoints documented | 374 of 374 |
-| Endpoints with a linked test | 101 of 374 |
+| Entities documented | 70 of 70 |
+| Relationships documented | 177 (63 FK-backed, 114 convention only) |
+| Endpoints documented | 385 of 385 |
+| Endpoints with a linked test | 108 of 385 |
 | Business rules documented | 30, each naming its enforcing function |
-| Lifecycles with a declared transition table | 1 of 18 |
-| Screens registered and mapped to a capability | 427 of 427 |
-| Screens wired to the live API | 106 of 427 |
-| Test suites catalogued | 189 containing 2226 cases |
+| Lifecycles with a declared transition table | 1 of 19 |
+| Screens registered and mapped to a capability | 428 of 428 |
+| Screens wired to the live API | 107 of 428 |
+| Test suites catalogued | 191 containing 2240 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
@@ -45,11 +45,11 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-108 of 170 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+114 of 177 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
-`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 17 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
+`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 18 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
 ### 3. 21 authenticated endpoints state no permission guard in the handler
 
@@ -79,13 +79,13 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 273 endpoints have no test matched to them by path
+### 4. 277 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
 ### 5. 281 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 281 of 427 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 281 of 428 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -120,15 +120,15 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-17; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-18; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 37 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 37 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 36 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 15 |
-| `project-control/BASELINE.json` | 2026-09-03 | 14 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 37 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 16 |
+| `project-control/BASELINE.json` | 2026-09-03 | 15 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
@@ -200,9 +200,9 @@ _None — every required document is present._
 ## Recommended next actions, in order
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
-2. **Declare transition tables for the remaining 17 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
+2. **Declare transition tables for the remaining 18 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 273 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 277 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 281 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

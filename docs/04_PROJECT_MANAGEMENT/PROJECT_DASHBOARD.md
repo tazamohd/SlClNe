@@ -13,7 +13,7 @@
 
 # Project dashboard
 
-**Status:** GENERATED · **Sources as of:** 2026-09-17
+**Status:** GENERATED · **Sources as of:** 2026-09-18
 
 A view over the canonical registers. Nothing here is entered by hand; if a number looks wrong, the register is wrong.
 
@@ -21,16 +21,16 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 | Measure | Value | Source |
 | --- | --- | --- |
-| Registered capabilities | 427 | `STATUS.json` |
-| Rendering | 427 of 427 | `STATUS.json` |
-| Wired to the API | 106 of 427 | `STATUS.json` |
-| Reading design fixtures | 281 of 427 | `STATUS.json` |
-| End-to-end covered | 427 of 427 | `STATUS.json` |
+| Registered capabilities | 428 | `STATUS.json` |
+| Rendering | 428 of 428 | `STATUS.json` |
+| Wired to the API | 107 of 428 | `STATUS.json` |
+| Reading design fixtures | 281 of 428 | `STATUS.json` |
+| End-to-end covered | 428 of 428 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 79 of 427 | `STATUS.json` |
-| Tablet verified | 4 of 427 | `STATUS.json` |
-| API endpoints | 374 | the route files |
-| Test cases | 2226 | the spec files |
+| Arabic verified | 79 of 428 | `STATUS.json` |
+| Tablet verified | 4 of 428 | `STATUS.json` |
+| API endpoints | 385 | the route files |
+| Test cases | 2240 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
@@ -38,7 +38,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**281 of 427 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**281 of 428 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
