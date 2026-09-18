@@ -529,7 +529,8 @@
       "id": "CAP-ACCOUNTING",
       "name": "Accounting and finance",
       "modules": [
-        "accounting"
+        "accounting",
+        "insurance"
       ],
       "objective": "OBJ-CASH",
       "objectiveName": "Shorten the cash cycle",
@@ -618,6 +619,7 @@
         "test"
       ],
       "goldenPaths": [
+        "e2e/insurance-claim.spec.ts",
         "e2e/accounting-reconciliation.spec.ts"
       ]
     },
@@ -1011,14 +1013,7 @@
         "conversations"
       ],
       "rules": [],
-      "roles": [
-        "owner",
-        "superadmin",
-        "manager",
-        "advisor",
-        "accountant",
-        "test"
-      ],
+      "roles": [],
       "goldenPaths": [
         "e2e/new-customer-to-paid-invoice.spec.ts",
         "e2e/insurance-claim.spec.ts"
@@ -1129,6 +1124,7 @@
         "frontdesk",
         "callcenter",
         "procurement",
+        "supplier",
         "test"
       ],
       "goldenPaths": []

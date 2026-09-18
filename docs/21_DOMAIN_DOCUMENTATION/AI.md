@@ -21,14 +21,7 @@ This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughpu
 
 ## Actors
 
-| Role | Data scope | Approval ceiling | Grants in this domain |
-| --- | --- | --- | --- |
-| owner | all | unlimited | `ai:vcedax` `aiadmin:vcedax` |
-| superadmin | platform | unlimited | `ai:vcedax` `aiadmin:vcedax` |
-| manager | branch | SAR 50,000 | `ai:vce` |
-| advisor | branch | SAR 5,000 | `ai:v` |
-| accountant | all | SAR 25,000 | `ai:v` |
-| test | all | unlimited | `ai:vcedax` `aiadmin:vcedax` |
+_No permission module gates this domain, so no grants apply. Access is controlled at the route level or the surface is unauthenticated._
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 

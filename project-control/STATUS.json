@@ -279,12 +279,12 @@
       "dataBacked": 0
     },
     "accounting": {
-      "total": 8,
-      "rendered": 8,
+      "total": 7,
+      "rendered": 7,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 8,
-      "dataBacked": 8
+      "e2e": 7,
+      "dataBacked": 7
     },
     "execreports": {
       "total": 5,
@@ -469,6 +469,14 @@
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
+    },
+    "insurance": {
+      "total": 1,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 1,
+      "dataBacked": 1
     }
   }
 }

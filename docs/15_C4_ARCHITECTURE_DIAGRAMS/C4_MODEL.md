@@ -119,7 +119,7 @@ sequenceDiagram
 
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
-| accounting | 50 | CAP-ACCOUNTING |
+| accounting | 28 | CAP-ACCOUNTING |
 | ai | 8 | CAP-AI |
 | appointments | 9 | CAP-WORKSHOP |
 | approvals | 5 | CAP-GOVERNANCE |
@@ -130,6 +130,7 @@ sequenceDiagram
 | departments | 9 | CAP-PLATFORM |
 | estimates | 22 | CAP-WORKSHOP |
 | hr | 48 | CAP-HR |
+| insurance | 22 | CAP-ACCOUNTING |
 | inventory | 13 | CAP-INVENTORY |
 | invoices | 14 | CAP-BILLING |
 | jobcards | 57 | CAP-WORKSHOP |

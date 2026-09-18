@@ -8576,7 +8576,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/insurance-claims",
     "surface": "app",
     "shell": "AppShell",
-    "module": "accounting",
+    "module": "insurance",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",

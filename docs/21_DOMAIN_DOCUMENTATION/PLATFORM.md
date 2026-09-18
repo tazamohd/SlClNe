@@ -23,19 +23,20 @@ This domain serves the objective **OBJ-CONTROL** (Keep financial control auditab
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `admin:vcedax` `dashboard:vx` |
-| superadmin | platform | unlimited | `admin:vcedax` `dashboard:vx` |
-| manager | branch | SAR 50,000 | `admin:v` `dashboard:vx` |
+| owner | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
+| superadmin | platform | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
+| manager | branch | SAR 50,000 | `departments:v` `settings:ve` `dashboard:vx` `network:vcedx` |
 | advisor | branch | SAR 5,000 | `dashboard:v` |
 | technician | own | may not approve | `dashboard:v` |
 | qc | branch | may not approve | `dashboard:v` |
-| parts | branch | SAR 10,000 | `dashboard:v` |
-| accountant | all | SAR 25,000 | `dashboard:vx` |
-| hr | all | SAR 15,000 | `dashboard:v` |
+| parts | branch | SAR 10,000 | `dashboard:v` `network:vced` |
+| accountant | all | SAR 25,000 | `departments:v` `dashboard:vx` |
+| hr | all | SAR 15,000 | `departments:vc` `dashboard:v` |
 | frontdesk | branch | may not approve | `dashboard:v` |
 | callcenter | all | may not approve | `dashboard:v` |
-| procurement | all | SAR 20,000 | `dashboard:v` |
-| test | all | unlimited | `admin:vcedax` `dashboard:vcedax` |
+| procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
+| supplier | external | may not approve | `network:vce` |
+| test | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 

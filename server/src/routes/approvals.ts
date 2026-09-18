@@ -252,7 +252,7 @@ async function insuranceClaimItems(tx: Tx, principal: Principal): Promise<Approv
     )
     .orderBy(desc(insuranceClaims.createdAt))
 
-  const module: ModuleId = 'accounting'
+  const module: ModuleId = 'insurance'
   return rows.map((row) => ({
     _id: row.id,
     _version: row.version,
@@ -282,7 +282,7 @@ const SOURCES: { module: ModuleId; items: typeof estimateItems }[] = [
   { module: 'estimates', items: estimateItems },
   { module: 'procurement', items: requisitionItems },
   { module: 'procurement', items: purchaseOrderItems },
-  { module: 'accounting', items: insuranceClaimItems },
+  { module: 'insurance', items: insuranceClaimItems },
 ]
 
 export function registerApprovalRoutes(app: FastifyInstance, deps: RouteDeps): void {

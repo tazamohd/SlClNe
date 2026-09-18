@@ -2,7 +2,7 @@
 
 # SALIS AUTO — RBAC Matrix (live)
 
-15 roles × 31 modules, read from `PERMS` in the generated data layer. Actions: v=view, c=create, e=edit, x=delete, a=approve. This is the matrix the app enforces — the server must be asserted equal to it, not written from this page.
+15 roles × 32 modules, read from `PERMS` in the generated data layer. Actions: v=view, c=create, e=edit, x=delete, a=approve. This is the matrix the app enforces — the server must be asserted equal to it, not written from this page.
 
 | Module | owner | superadmin | manager | advisor | technician | qc | parts | accountant | hr | frontdesk | callcenter | procurement | supplier | customer | test |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -21,6 +21,7 @@
 | estimates | vcedax | v | vceax | vce | v | · | v | vx | · | v | v | · | · | v | vcedax |
 | execreports | vx | vx | vx | · | · | · | · | vx | · | · | · | · | · | · | vcedax |
 | hr | vcedax | v | vx | · | · | · | · | vx | vcedax | · | · | · | · | · | vcedax |
+| insurance | vax | v | vx | · | · | · | · | vcedax | · | · | · | · | · | · | vcedax |
 | inventory | vcedax | v | vcedax | v | v | · | vcedax | vx | · | · | · | vcex | · | · | vcedax |
 | invoices | vcedax | v | vceax | vc | · | · | · | vcedax | · | vc | v | · | · | v | vcedax |
 | jobcards | vcedax | v | vcedax | vcea | ve | va | v | vx | · | vc | v | · | · | v | vcedax |

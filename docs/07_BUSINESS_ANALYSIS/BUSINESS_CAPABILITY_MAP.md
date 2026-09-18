@@ -76,14 +76,14 @@ flowchart LR
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 8 | 2 | 13 | 1 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 8 | 8 | 50 | 9 | 5 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 8 | 8 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 11 | 11 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 45 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
-| CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 6 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 24 | 4 | 13 |
+| CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 24 | 4 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 24 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 5 | 0 | 0 | 0 |
@@ -197,7 +197,7 @@ flowchart LR
 
 | Aspect | Value |
 | --- | --- |
-| Permission modules | `accounting` |
+| Permission modules | `accounting`, `insurance` |
 | Screen domains | — |
 | Screens | 8 (8 data-backed) |
 | Endpoints | 50 |
@@ -286,7 +286,7 @@ flowchart LR
 | Screens | 19 (4 data-backed) |
 | Endpoints | 8 |
 | Entities | `aiAgents`, `conversations` |
-| Roles with any grant | owner, superadmin, manager, advisor, accountant, test |
+| Roles with any grant | — |
 | Rule guards | — |
 
 ### CAP-PLATFORM — Administration and platform
@@ -300,7 +300,7 @@ flowchart LR
 | Screens | 36 (5 data-backed) |
 | Endpoints | 24 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools` |
-| Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, test |
+| Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, test |
 | Rule guards | — |
 
 ### CAP-IDENTITY — Identity and access

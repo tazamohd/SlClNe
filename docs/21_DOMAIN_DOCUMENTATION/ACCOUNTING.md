@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 8 screens, 50 API endpoints and 1 entities, gated by the `accounting` permission module.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 8 screens, 50 API endpoints and 1 entities, gated by the `accounting`, `insurance` permission modules.
 
 
 ## Actors
@@ -69,28 +69,28 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | explicit | — | **0** |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | explicit | — | **0** |
 | GET | `/api/v1/bank-statements/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/insurance-claims` | accounting:v | generated | — | 3 |
-| POST | `/api/v1/insurance-claims` | accounting:c | explicit | — | 3 |
-| GET | `/api/v1/insurance-claims/:id` | accounting:v | generated | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | explicit | — | 1 |
-| GET | `/api/v1/insurance-claims/:id/history` | accounting:v | explicit | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | explicit | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | explicit | — | 1 |
-| GET | `/api/v1/insurance-claims/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/insurance-policies` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/insurance-policies/:id` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/insurance-policies/:id/history` | accounting:v | explicit | — | **0** |
-| GET | `/api/v1/insurance-policies/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/insurance/claims/summary` | accounting:v | explicit | — | 1 |
-| GET | `/api/v1/loan-contracts` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/loan-contracts/:id` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/loan-contracts/:id/history` | accounting:v | explicit | — | **0** |
-| GET | `/api/v1/loan-contracts/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/loan-repayments` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/loan-repayments/:id` | accounting:v | generated | — | **0** |
-| GET | `/api/v1/loan-repayments/:id/history` | accounting:v | explicit | — | **0** |
-| GET | `/api/v1/loan-repayments/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/loans/summary` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/insurance-claims` | insurance:v | generated | — | 3 |
+| POST | `/api/v1/insurance-claims` | insurance:c | explicit | — | 3 |
+| GET | `/api/v1/insurance-claims/:id` | insurance:v | generated | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/approve` | insurance:a | explicit | — | 1 |
+| GET | `/api/v1/insurance-claims/:id/history` | insurance:v | explicit | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/pay` | insurance:e | explicit | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/reject` | insurance:a | explicit | — | 1 |
+| GET | `/api/v1/insurance-claims/export` | insurance:x | generated | — | **0** |
+| GET | `/api/v1/insurance-policies` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/insurance-policies/:id` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/insurance-policies/:id/history` | insurance:v | explicit | — | **0** |
+| GET | `/api/v1/insurance-policies/export` | insurance:x | generated | — | **0** |
+| GET | `/api/v1/insurance/claims/summary` | insurance:v | explicit | — | 1 |
+| GET | `/api/v1/loan-contracts` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/loan-contracts/:id` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/loan-contracts/:id/history` | insurance:v | explicit | — | **0** |
+| GET | `/api/v1/loan-contracts/export` | insurance:x | generated | — | **0** |
+| GET | `/api/v1/loan-repayments` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/loan-repayments/:id` | insurance:v | generated | — | **0** |
+| GET | `/api/v1/loan-repayments/:id/history` | insurance:v | explicit | — | **0** |
+| GET | `/api/v1/loan-repayments/export` | insurance:x | generated | — | **0** |
+| GET | `/api/v1/loans/summary` | insurance:v | explicit | — | 1 |
 | GET | `/api/v1/saved-reports` | accounting:v | generated | — | 1 |
 | POST | `/api/v1/saved-reports` | accounting:c | generated | — | 1 |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | generated | — | **0** |

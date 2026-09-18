@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 155 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 157 requirements
 
 ## What these requirements are, and what they are not
 
@@ -42,7 +42,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-INVENTORY-001 | The system provides parts and inventory through 8 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PROCUREMENT-001 | The system provides procurement through 3 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-ACCOUNTING-001 | The system provides accounting and finance through 8 screens and 50 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 50 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-ACCOUNTING-001 | The system provides accounting and finance through 8 screens and 50 API endpoints, gated by the `accounting`, `insurance` permission modules. | CAP-ACCOUNTING | 50 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-HR-001 | The system provides hr and payroll through 11 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CRM-001 | The system provides crm and sales through 13 screens and 45 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 45 | 13 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -194,14 +194,16 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | SR-RBAC-PORTALCUSTOMER | Access to `portalcustomer` is granted to 8 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PORTALSUPPLIER | Access to `portalsupplier` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PORTALPROCURE | Access to `portalprocure` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-AI | Access to `ai` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-AIADMIN | Access to `aiadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-ADMIN | Access to `admin` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-S OTHER COLLECTIONS    * (BRANCHES, USERS, INTEGRATIONS, TEMPLATES) TO HR/ACCOUNTANT. */    | Access to `s other collections    * (branches, users, integrations, templates) to hr/accountant. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-S    * FOUR COLLECTIONS AND THE CLAIM LIFECYCLE (SUBMIT/APPROVE/REJECT/PAY). F-034:    * THESE WERE GATED ON `ACCOUNTING`, WHICH CONFLATED LEDGER AUTHORITY WITH    * CLAIM ADJUDICATION; NO DEDICATED ROLE EXISTS TO HOLD DIFFERENT GRANTS    * HERE YET, SO EVERY CELL BELOW IS COPIED VERBATIM FROM WHAT `ACCOUNTING`    * GRANTED, ON ITS OWN COLUMN SO THE TWO CAN DIVERGE WITHOUT TOUCHING    * LEDGER ACCESS. */    | Access to `s    * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:    * these were gated on `accounting`, which conflated ledger authority with    * claim adjudication; no dedicated role exists to hold different grants    * here yet, so every cell below is copied verbatim from what `accounting`    * granted, on its own column so the two can diverge without touching    * ledger access. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-,   /* PLATFORM/CROSS-TENANT ADMINISTRATION: THE SUPER ADMIN CONSOLE, GLOBAL    * ROLES & PERMISSIONS, CROSS-TENANT ORGANIZATION MANAGEMENT. DISTINCT FROM    * `ADMIN` (TENANT-SCOPED DEPARTMENTS/BRANCHES/USERS) AND `SETTINGS`    * (TENANT-SCOPED CONFIG) SO A TENANT ROLE GRANTED EITHER OF THOSE NEVER    * INHERITS THIS ONE. */    | Access to `,   /* Platform/cross-tenant administration: the Super Admin console, global    * roles & permissions, cross-tenant organization management. Distinct from    * `admin` (tenant-scoped departments/branches/users) and `settings`    * (tenant-scoped config) so a tenant role granted either of those never    * inherits this one. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,   /* AI PLATFORM ADMINISTRATION — MODEL/PROVIDER CONFIG, AGENT REGISTRY,    * AUTOMATION RULES, WORKFLOW BUILDER, CROSS-ORG CONVERSATION HISTORY — KEPT    * APART FROM ORDINARY `AI` USE SO A BRANCH MANAGER OR SERVICE ADVISOR WHO    * MAY RUN AN ASSISTANT CAN NEVER REACH WHAT CONFIGURES THE PLATFORM. */    | Access to `,   /* AI platform administration — model/provider config, agent registry,    * automation rules, workflow builder, cross-org conversation history — kept    * apart from ordinary `ai` use so a Branch Manager or Service Advisor who    * may run an assistant can never reach what configures the platform. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,   /* DEPARTMENT DIRECTORY ONLY — SPLIT FROM `ADMIN` (F-038) SO STAFF-DIRECTORY/    * HR-MANAGEMENT/DEPARTMENTS (ALL `HR`-MODULE SCREENS) CAN READ AND, FOR HR,    * CREATE DEPARTMENTS WITHOUT ALSO OPENING `ADMIN` | Access to `,   /* Department directory only — split from `admin` (F-038) so Staff-Directory/    * HR-Management/Departments (all `hr`-module screens) can read and, for hr,    * create departments without also opening `admin`` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-DEPARTMENTS | Access to `departments` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-SETTINGS | Access to `settings` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-SUPERADMIN | Access to `superadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-AUDIT | Access to `audit` is granted to 5 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-NETWORK | Access to `network` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-SOD-001 | "Raise purchase order" and "Approve purchase order" must not be performed by the same person (risk: high). |
 | SR-SOD-002 | "Create supplier" and "Approve supplier payment" must not be performed by the same person (risk: high). |
 | SR-SOD-003 | "Post journal entry" and "Approve journal entry" must not be performed by the same person (risk: high). |

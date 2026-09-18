@@ -77,7 +77,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Module | Capabilities | Rendering |
 |---|---|---|
-| accounting | 8 | 8 |
+| accounting | 7 | 7 |
 | admin | 4 | 4 |
 | ai | 14 | 14 |
 | aiadmin | 5 | 5 |
@@ -91,6 +91,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | estimates | 5 | 5 |
 | execreports | 5 | 5 |
 | hr | 8 | 8 |
+| insurance | 1 | 1 |
 | inventory | 2 | 2 |
 | invoices | 4 | 4 |
 | jobcards | 15 | 15 |

@@ -485,6 +485,12 @@ export const PERMS={
  portalcustomer: {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"v",callcenter:"v",procurement:"",customer:"vx",superadmin:"v",test:"vcedax"},
  portalsupplier: {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"v",supplier:"vx",superadmin:"v",test:"vcedax"},
  portalprocure:  {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"v",hr:"",frontdesk:"",callcenter:"",procurement:"vx",superadmin:"v",test:"vcedax"},
+ // Insurance policies/claims and loan contracts/repayments (F-034): these were
+ // gated on "accounting", which conflated ledger authority with claim
+ // adjudication. No dedicated role exists to hold different grants here yet,
+ // so this is "accounting"'s cells copied verbatim onto their own column, so
+ // the two can diverge later without touching ledger access.
+ insurance:      {owner:"vax",manager:"vx",accountant:"vcedax",superadmin:"v",test:"vcedax"},
  ai:             {owner:"vcedax",manager:"vce",advisor:"v",accountant:"v",superadmin:"vcedax",test:"vcedax"},
  // AI platform administration (model/provider config, agent registry, automation
  // rules, workflow builder, cross-org conversation history) is a distinct
@@ -540,7 +546,7 @@ export const SCREEN_MODULE={
  "Settings":"settings","AdvancedSettings":"settings","Backup":"settings","Subscription":"settings","NotificationCenter":"dashboard","GlobalSearch":"dashboard","Profile":"dashboard",
  "AuditLog":"audit","ApprovalInbox":"approvals",
  "CustomerApproval":"estimates","DeclinedJobs":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings",
- "Insurance-Claims":"accounting","Payroll-Management":"hr","Timesheet-Management":"hr","Timeclock-Payroll":"hr","Leave-Requests":"hr",
+ "Insurance-Claims":"insurance","Payroll-Management":"hr","Timesheet-Management":"hr","Timeclock-Payroll":"hr","Leave-Requests":"hr",
  "Interactive-3D-Parts":"inventory","Purchase-Agent-Payments":"procurement","Purchase-Agent-Suppliers":"procurement",
  "Client-Portal-Appointments":"appointments","Client-Portal-Vehicles":"vehicles",
  "Technician-App-Jobs":"jobcards","Technician-Mobile":"jobcards","Technician-Portal-Dashboard":"jobcards","Technician-Portal-My-Jobs":"jobcards","Workshop-Calendar":"jobcards",

@@ -524,6 +524,13 @@ export const PERMS: PermissionMatrix = {
     "superadmin": "v",
     "test": "vcedax"
   },
+  "insurance": {
+    "owner": "vax",
+    "manager": "vx",
+    "accountant": "vcedax",
+    "superadmin": "v",
+    "test": "vcedax"
+  },
   "ai": {
     "owner": "vcedax",
     "manager": "vce",
@@ -719,7 +726,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "DiagnosticReport": "jobcards",
   "OEMIntegrations": "settings",
   "SystemIntegrations": "settings",
-  "Insurance-Claims": "accounting",
+  "Insurance-Claims": "insurance",
   "Payroll-Management": "hr",
   "Timesheet-Management": "hr",
   "Timeclock-Payroll": "hr",

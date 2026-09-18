@@ -26026,7 +26026,7 @@
       "route": "/insurance-claims",
       "surface": "app",
       "shell": "AppShell",
-      "module": "accounting",
+      "module": "insurance",
       "permissions": [
         "owner:vax",
         "manager:vx",

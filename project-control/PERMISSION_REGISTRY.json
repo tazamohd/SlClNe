@@ -56,14 +56,16 @@
     "portalcustomer",
     "portalsupplier",
     "portalprocure",
-    "ai",
-    "aiadmin",
-    "admin",
-    "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
+    "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
     ",\n  ",
-    ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
+    ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
     ",\n  ",
-    ",\n  "
+    ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+    "departments",
+    "settings",
+    "superadmin",
+    "audit",
+    "network"
   ],
   "dataScopes": [
     "platform",
@@ -294,11 +296,11 @@
     }
   ],
   "totals": {
-    "modules": 31,
+    "modules": 33,
     "roles": 15,
-    "cells": 465,
-    "granted": 204,
-    "denied": 261
+    "cells": 495,
+    "granted": 216,
+    "denied": 279
   },
   "matrix": {
     "dashboard": {
@@ -692,15 +694,32 @@
       "customer": "",
       "test": "vcedax"
     },
-    "ai": {
+    "departments": {
       "owner": "vcedax",
       "superadmin": "vcedax",
-      "manager": "vce",
-      "advisor": "v",
+      "manager": "v",
+      "advisor": "",
       "technician": "",
       "qc": "",
       "parts": "",
       "accountant": "v",
+      "hr": "vc",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "",
+      "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "settings": {
+      "owner": "vcedax",
+      "superadmin": "vcedax",
+      "manager": "ve",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "",
+      "accountant": "",
       "hr": "",
       "frontdesk": "",
       "callcenter": "",
@@ -709,7 +728,7 @@
       "customer": "",
       "test": "vcedax"
     },
-    "aiadmin": {
+    "superadmin": {
       "owner": "vcedax",
       "superadmin": "vcedax",
       "manager": "",
@@ -726,20 +745,37 @@
       "customer": "",
       "test": "vcedax"
     },
-    "admin": {
-      "owner": "vcedax",
-      "superadmin": "vcedax",
-      "manager": "v",
+    "audit": {
+      "owner": "vx",
+      "superadmin": "vx",
+      "manager": "vx",
       "advisor": "",
       "technician": "",
       "qc": "",
       "parts": "",
-      "accountant": "",
+      "accountant": "vx",
       "hr": "",
       "frontdesk": "",
       "callcenter": "",
       "procurement": "",
       "supplier": "",
+      "customer": "",
+      "test": "vcedax"
+    },
+    "network": {
+      "owner": "vcedax",
+      "superadmin": "v",
+      "manager": "vcedx",
+      "advisor": "",
+      "technician": "",
+      "qc": "",
+      "parts": "vced",
+      "accountant": "",
+      "hr": "",
+      "frontdesk": "",
+      "callcenter": "",
+      "procurement": "vcedax",
+      "supplier": "vce",
       "customer": "",
       "test": "vcedax"
     }
@@ -3891,7 +3927,532 @@
       "denied": false
     },
     {
-      "module": "ai",
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "owner",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "superadmin",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "s\n   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:\n   * these were gated on `accounting`, which conflated ledger authority with\n   * claim adjudication; no dedicated role exists to hold different grants\n   * here yet, so every cell below is copied verbatim from what `accounting`\n   * granted, on its own column so the two can diverge without touching\n   * ledger access. */\n  ",
+      "role": "test",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "owner",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "superadmin",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "test",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "owner",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "superadmin",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* AI platform administration — model/provider config, agent registry,\n   * automation rules, workflow builder, cross-org conversation history — kept\n   * apart from ordinary `ai` use so a Branch Manager or Service Advisor who\n   * may run an assistant can never reach what configures the platform. */\n  ",
+      "role": "test",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "owner",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "superadmin",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  ",
+      "role": "test",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "owner",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "superadmin",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": ",\n  /* Department directory only — split from `admin` (F-038) so Staff-Directory/\n   * HR-Management/Departments (all `hr`-module screens) can read and, for hr,\n   * create departments without also opening `admin`",
+      "role": "test",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
       "role": "owner",
       "grant": "vcedax",
       "actions": [
@@ -3905,7 +4466,7 @@
       "denied": false
     },
     {
-      "module": "ai",
+      "module": "departments",
       "role": "superadmin",
       "grant": "vcedax",
       "actions": [
@@ -3919,8 +4480,603 @@
       "denied": false
     },
     {
-      "module": "ai",
+      "module": "departments",
       "role": "manager",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "departments",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "accountant",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "departments",
+      "role": "hr",
+      "grant": "vc",
+      "actions": [
+        "view",
+        "create"
+      ],
+      "denied": false
+    },
+    {
+      "module": "departments",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "departments",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "manager",
+      "grant": "ve",
+      "actions": [
+        "view",
+        "edit"
+      ],
+      "denied": false
+    },
+    {
+      "module": "settings",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "settings",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "superadmin",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "superadmin",
+      "role": "manager",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "superadmin",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "owner",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "superadmin",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "manager",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "parts",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "accountant",
+      "grant": "vx",
+      "actions": [
+        "view",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "audit",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "procurement",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "supplier",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "customer",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "audit",
+      "role": "test",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "owner",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "superadmin",
+      "grant": "v",
+      "actions": [
+        "view"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "manager",
+      "grant": "vcedx",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "advisor",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "technician",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "qc",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "parts",
+      "grant": "vced",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "accountant",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "hr",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "frontdesk",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "callcenter",
+      "grant": "",
+      "actions": [],
+      "denied": true
+    },
+    {
+      "module": "network",
+      "role": "procurement",
+      "grant": "vcedax",
+      "actions": [
+        "view",
+        "create",
+        "edit",
+        "delete",
+        "approve",
+        "export"
+      ],
+      "denied": false
+    },
+    {
+      "module": "network",
+      "role": "supplier",
       "grant": "vce",
       "actions": [
         "view",
@@ -3930,88 +5086,14 @@
       "denied": false
     },
     {
-      "module": "ai",
-      "role": "advisor",
-      "grant": "v",
-      "actions": [
-        "view"
-      ],
-      "denied": false
-    },
-    {
-      "module": "ai",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "accountant",
-      "grant": "v",
-      "actions": [
-        "view"
-      ],
-      "denied": false
-    },
-    {
-      "module": "ai",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "ai",
+      "module": "network",
       "role": "customer",
       "grant": "",
       "actions": [],
       "denied": true
     },
     {
-      "module": "ai",
+      "module": "network",
       "role": "test",
       "grant": "vcedax",
       "actions": [
@@ -4023,785 +5105,6 @@
         "export"
       ],
       "denied": false
-    },
-    {
-      "module": "aiadmin",
-      "role": "owner",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "aiadmin",
-      "role": "superadmin",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "aiadmin",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "aiadmin",
-      "role": "test",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "admin",
-      "role": "owner",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "admin",
-      "role": "superadmin",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "admin",
-      "role": "manager",
-      "grant": "v",
-      "actions": [
-        "view"
-      ],
-      "denied": false
-    },
-    {
-      "module": "admin",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "admin",
-      "role": "test",
-      "grant": "vcedax",
-      "actions": [
-        "view",
-        "create",
-        "edit",
-        "delete",
-        "approve",
-        "export"
-      ],
-      "denied": false
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "owner",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "superadmin",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": "s other collections\n   * (branches, users, integrations, templates) to hr/accountant. */\n  ",
-      "role": "test",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "owner",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "superadmin",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "test",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "owner",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "superadmin",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  /* Platform/cross-tenant administration: the Super Admin console, global\n   * roles & permissions, cross-tenant organization management. Distinct from\n   * `admin` (tenant-scoped departments/branches/users) and `settings`\n   * (tenant-scoped config) so a tenant role granted either of those never\n   * inherits this one. */\n  ",
-      "role": "test",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "owner",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "superadmin",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "test",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "owner",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "superadmin",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "manager",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "advisor",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "technician",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "qc",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "parts",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "accountant",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "hr",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "frontdesk",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "callcenter",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "procurement",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "supplier",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "customer",
-      "grant": "",
-      "actions": [],
-      "denied": true
-    },
-    {
-      "module": ",\n  ",
-      "role": "test",
-      "grant": "",
-      "actions": [],
-      "denied": true
     }
   ]
 }

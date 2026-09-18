@@ -17,7 +17,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Measure | Value |
 | --- | --- |
 | Required documents | 35 present of 35 |
-| Documents generated from source | 121 |
+| Documents generated from source | 122 |
 | Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 70 of 70 |

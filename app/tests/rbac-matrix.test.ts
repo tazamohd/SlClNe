@@ -29,8 +29,8 @@ const ALL_MODULES = [
   'vehicles', 'inventory', 'procurement', 'invoices', 'payments',
   'accounting', 'hr', 'technicians', 'crm', 'callcenter', 'reports',
   'approvals', 'kiosk', 'execreports', 'portaltech', 'portalcustomer',
-  'portalsupplier', 'portalprocure', 'ai', 'aiadmin', 'admin', 'departments',
-  'settings', 'superadmin', 'audit', 'network',
+  'portalsupplier', 'portalprocure', 'insurance', 'ai', 'aiadmin', 'admin',
+  'departments', 'settings', 'superadmin', 'audit', 'network',
 ]
 
 const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
@@ -44,8 +44,8 @@ describe('RBAC data integrity', () => {
     expect(ROLES).toHaveLength(15)
   })
 
-  it('defines exactly 31 modules', () => {
-    expect(Object.keys(PERMS)).toHaveLength(31)
+  it('defines exactly 32 modules', () => {
+    expect(Object.keys(PERMS)).toHaveLength(32)
   })
 
   it('ROLES ids match the expected list', () => {

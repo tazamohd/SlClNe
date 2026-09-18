@@ -51,6 +51,14 @@ export const moduleId = z.enum([
   'portalcustomer',
   'portalsupplier',
   'portalprocure',
+  /* Insurance policies/claims and loan contracts/repayments — vertical A's
+   * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:
+   * these were gated on `accounting`, which conflated ledger authority with
+   * claim adjudication; no dedicated role exists to hold different grants
+   * here yet, so every cell below is copied verbatim from what `accounting`
+   * granted, on its own column so the two can diverge without touching
+   * ledger access. */
+  'insurance',
   'ai',
   /* AI platform administration — model/provider config, agent registry,
    * automation rules, workflow builder, cross-org conversation history — kept
@@ -145,6 +153,7 @@ export const PERMS: Readonly<Record<ModuleId, Readonly<Record<RoleId, string>>>>
   'portalcustomer': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'vx', 'test': 'vcedax' },
   'portalsupplier': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'v', 'supplier': 'vx', 'customer': '', 'test': 'vcedax' },
   'portalprocure': { 'owner': 'v', 'superadmin': 'v', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': 'v', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': 'vx', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  'insurance': { 'owner': 'vax', 'superadmin': 'v', 'manager': 'vx', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'vcedax', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'ai': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'vce', 'advisor': 'v', 'technician': '', 'qc': '', 'parts': '', 'accountant': 'v', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'aiadmin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': '', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'admin': { 'owner': 'vcedax', 'superadmin': 'vcedax', 'manager': 'v', 'advisor': '', 'technician': '', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': '', 'callcenter': '', 'procurement': '', 'supplier': '', 'customer': '', 'test': 'vcedax' },

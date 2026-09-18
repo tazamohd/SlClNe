@@ -4007,7 +4007,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 31 modules",
+        "defines exactly 32 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "every role has required metadata fields",
@@ -4710,7 +4710,7 @@
         "navFor unknown and edge roles"
       ],
       "cases": [
-        "is the documented 15 roles × 31 modules × 5 actions",
+        "is the documented 15 roles × 32 modules × 5 actions",
         "grants no action to a role the module never names",
         "denies an unknown module and an unknown role outright",
         "agrees with the matrix for all role × module × action combinations",
@@ -5819,12 +5819,12 @@
         "${c.principal} @ ${c.rateBps}bps over ${c.term}m: whole halalas, schedule ties",
         "zero-rate charges no interest",
         "computes one month of interest as an integer half-up",
-        "serves the coherent policies, claims, contracts and repayments to accounting",
-        "refuses a role without the accounting view grant",
+        "serves the coherent policies, claims, contracts and repayments to the insurance grant",
+        "refuses a role without the insurance view grant",
         "gives every claim a policy that exists (coherence)",
         "gives each contract a full schedule whose amounts amortise the principal",
         "summarises claims by status and loans outstanding, in SQL over the tenant",
-        "refuses the aggregates to a role without accounting view",
+        "refuses the aggregates to a role without insurance view",
         "submits, refuses self-approval (SOD), approves via a different approver, then pays",
         "refuses an approval above the role ceiling",
         "rejects a claim with a reason, and refuses a reason-less rejection",

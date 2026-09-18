@@ -387,7 +387,7 @@
 | Financial Settings | `/financial-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Warranty Management | `/warranty-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Contract Management | `/contract-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Insurance Claims | `/insurance-claims` | app | accounting | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
+| Insurance Claims | `/insurance-claims` | app | insurance | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | Marketing Hub | `/marketing-hub` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Marketing Automation | `/marketing-automation` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Email Marketing Campaigns | `/email-marketing-campaigns` | app | crm | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |

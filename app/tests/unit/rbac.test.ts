@@ -28,7 +28,7 @@ import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
 /** The permission engine, exercised across the whole matrix rather than at a
- *  handful of hand-picked points: 15 roles × 31 modules × 5 actions, generated
+ *  handful of hand-picked points: 15 roles × 32 modules × 5 actions, generated
  *  from `PERMS` so a module or role added to the design bundle is covered the
  *  day it lands.
  *
@@ -47,9 +47,9 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 const UNLIMITED: RoleId[] = ['owner', 'superadmin']
 
 describe('matrix shape', () => {
-  it('is the documented 15 roles × 31 modules × 5 actions', () => {
+  it('is the documented 15 roles × 32 modules × 5 actions', () => {
     expect(ROLE_IDS).toHaveLength(15)
-    expect(MODULES).toHaveLength(31)
+    expect(MODULES).toHaveLength(32)
     expect(ACTIONS).toHaveLength(5)
     expect(new Set(ROLE_IDS).size).toBe(ROLE_IDS.length)
   })

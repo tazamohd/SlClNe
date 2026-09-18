@@ -90,7 +90,7 @@ describe('loan amortisation is integer-safe', () => {
 /* ------------------------------------------------------ seeded collections */
 
 describe('the seeded financial-product collections', () => {
-  it('serves the coherent policies, claims, contracts and repayments to accounting', async () => {
+  it('serves the coherent policies, claims, contracts and repayments to the insurance grant', async () => {
     const accountant = await harness.token('accountant')
     const totals = async (path: string) => {
       const res = await harness.app.inject({ method: 'GET', url: `/api/v1/${path}?pageSize=100`, ...json(accountant) })
@@ -103,7 +103,7 @@ describe('the seeded financial-product collections', () => {
     expect((await totals('loan-repayments')).page.total).toBe(36)
   })
 
-  it('refuses a role without the accounting view grant', async () => {
+  it('refuses a role without the insurance view grant', async () => {
     const technician = await harness.token('technician')
     for (const path of ['insurance-policies', 'insurance-claims', 'loan-contracts', 'loan-repayments']) {
       const res = await harness.app.inject({ method: 'GET', url: `/api/v1/${path}`, ...json(technician) })
@@ -183,7 +183,7 @@ describe('the financial-product aggregates', () => {
     expect(ls.outstandingHalalas).toBeGreaterThan(0)
   })
 
-  it('refuses the aggregates to a role without accounting view', async () => {
+  it('refuses the aggregates to a role without insurance view', async () => {
     const technician = await harness.token('technician')
     const res = await harness.app.inject({ method: 'GET', url: '/api/v1/loans/summary', ...json(technician) })
     expect(res.statusCode).toBe(403)
@@ -225,7 +225,7 @@ describe('the insurance-claim lifecycle', () => {
     })
     expect(selfApprove.statusCode).toBe(403)
 
-    /* Owner holds accounting `a` and an unlimited ceiling — a different approver. */
+    /* Owner holds insurance `a` and an unlimited ceiling — a different approver. */
     const owner = await harness.token('owner')
     const approved = await harness.app.inject({
       method: 'POST',
@@ -237,7 +237,7 @@ describe('the insurance-claim lifecycle', () => {
     expect(approvedRow.status).toBe('approved')
     expect(approvedRow.amountApprovedHalalas).toBe(600_000)
 
-    /* Paying settles an approved claim; accounting `e`, which the accountant holds. */
+    /* Paying settles an approved claim; insurance `e`, which the accountant holds. */
     const paid = await harness.app.inject({
       method: 'POST',
       url: `/api/v1/insurance-claims/${claim._id}/pay`,
