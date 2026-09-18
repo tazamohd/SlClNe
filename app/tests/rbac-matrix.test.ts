@@ -659,42 +659,15 @@ describe('critical permission boundaries', () => {
   })
 })
 
-// ---------------------------------------------------------------------------
-// Client ↔ Server data consistency (import server data directly)
-// ---------------------------------------------------------------------------
-
-describe('client ↔ server data consistency', () => {
-  // We load the server's data file and compare against the client's
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  let serverData: typeof import('../src/data/generated/rbac')
-
-  it('server PERMS is structurally identical to client PERMS', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    const clientModules = Object.keys(PERMS).sort()
-    const serverModules = Object.keys(serverData.PERMS).sort()
-    expect(serverModules).toEqual(clientModules)
-
-    for (const mod of clientModules) {
-      const clientRoles = Object.keys(PERMS[mod]!).sort()
-      const serverRoles = Object.keys(serverData.PERMS[mod as keyof typeof serverData.PERMS]).sort()
-      expect(serverRoles, `module "${mod}" roles mismatch`).toEqual(clientRoles)
-
-      for (const role of clientRoles) {
-        expect(
-          (serverData.PERMS as Record<string, Record<string, string>>)[mod]![role],
-          `PERMS["${mod}"]["${role}"] differs between client and server`,
-        ).toBe(PERMS[mod]![role])
-      }
-    }
-  })
-
-  it('server ROLES match client ROLES', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    expect(serverData.ROLES).toHaveLength(ROLES.length)
-    for (let i = 0; i < ROLES.length; i++) {
-      expect(serverData.ROLES[i]!.id, `role index ${i} id mismatch`).toBe(ROLES[i]!.id)
-      expect(serverData.ROLES[i]!.limit, `role ${ROLES[i]!.id} limit mismatch`).toBe(ROLES[i]!.limit)
-      expect(serverData.ROLES[i]!.scope, `role ${ROLES[i]!.id} scope mismatch`).toBe(ROLES[i]!.scope)
-    }
-  })
-})
+/* A "client ↔ server data consistency" block used to live here, importing
+ * `server/src/auth/rbac-data.ts` directly and comparing it against this
+ * package's `PERMS`/`ROLES`. That server file was a dead, self-consistent-
+ * but-wrong duplicate of the real permission engine (`packages/contract/src/rbac.ts`)
+ * — its `Action` type never included `d` (delete), reviving the same
+ * `x`-means-delete misreading fixed elsewhere — and was deleted along with
+ * its own test suite (`server/tests/rbac-matrix.test.ts`). This block went
+ * with it rather than being repointed at the real engine, because the real
+ * cross-package parity check already exists and is the one worth keeping:
+ * `server/tests/rbac-parity.test.ts` compares `packages/contract/src/rbac.ts`
+ * (what the server enforces with) against `app/src/data/generated/rbac.ts`
+ * (what this package is generated from) cell by cell. */
