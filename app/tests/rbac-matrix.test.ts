@@ -659,42 +659,10 @@ describe('critical permission boundaries', () => {
   })
 })
 
-// ---------------------------------------------------------------------------
-// Client ↔ Server data consistency (import server data directly)
-// ---------------------------------------------------------------------------
-
-describe('client ↔ server data consistency', () => {
-  // We load the server's data file and compare against the client's
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  let serverData: typeof import('../src/data/generated/rbac')
-
-  it('server PERMS is structurally identical to client PERMS', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    const clientModules = Object.keys(PERMS).sort()
-    const serverModules = Object.keys(serverData.PERMS).sort()
-    expect(serverModules).toEqual(clientModules)
-
-    for (const mod of clientModules) {
-      const clientRoles = Object.keys(PERMS[mod]!).sort()
-      const serverRoles = Object.keys(serverData.PERMS[mod as keyof typeof serverData.PERMS]).sort()
-      expect(serverRoles, `module "${mod}" roles mismatch`).toEqual(clientRoles)
-
-      for (const role of clientRoles) {
-        expect(
-          (serverData.PERMS as Record<string, Record<string, string>>)[mod]![role],
-          `PERMS["${mod}"]["${role}"] differs between client and server`,
-        ).toBe(PERMS[mod]![role])
-      }
-    }
-  })
-
-  it('server ROLES match client ROLES', async () => {
-    serverData = await import('../../server/src/auth/rbac-data.js') as typeof serverData
-    expect(serverData.ROLES).toHaveLength(ROLES.length)
-    for (let i = 0; i < ROLES.length; i++) {
-      expect(serverData.ROLES[i]!.id, `role index ${i} id mismatch`).toBe(ROLES[i]!.id)
-      expect(serverData.ROLES[i]!.limit, `role ${ROLES[i]!.id} limit mismatch`).toBe(ROLES[i]!.limit)
-      expect(serverData.ROLES[i]!.scope, `role ${ROLES[i]!.id} scope mismatch`).toBe(ROLES[i]!.scope)
-    }
-  })
-})
+// Client ↔ server data consistency used to be checked here by importing
+// server/src/auth/rbac-data.ts directly. That file was a dead, drifting copy
+// of the real enforcement data (server/tests/rbac-matrix.test.ts, deleted
+// alongside it) and is gone; the live comparison against what the server
+// actually enforces — @salis/contract — is server/tests/rbac-parity.test.ts,
+// which also checks roles, scope, approval ceiling, SOD pairs and field rules,
+// a strict superset of what this block asserted.
