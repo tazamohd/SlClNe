@@ -153,6 +153,50 @@ export function rejectEstimate(ref: string, reason: string): Promise<Record<stri
   return post(`estimates/${encodeURIComponent(ref)}/reject`, { reason })
 }
 
+/** Declines one line of an estimate (Sprint 1, P0 — Declined Job Tracking).
+ *
+ *  `POST /estimates/:id/lines/:lineId/decline` — an action, not a field
+ *  update: the server creates the tracked follow-up record atomically with
+ *  the decline, snapshotting the line's description and value so the two can
+ *  never drift apart. A second decline of the same line while the first is
+ *  still active is a 409, which the caller surfaces rather than retries. */
+export function declineEstimateLine(
+  estimateRef: string,
+  lineId: string,
+  input: {
+    reasonCategory: 'cost' | 'timing' | 'second_opinion' | 'not_urgent' | 'trust' | 'other'
+    reasonNotes?: string
+    safetySeverity: 'monitor' | 'attention' | 'urgent' | 'unsafe'
+    followUpDate?: string
+  }
+): Promise<Record<string, unknown>> {
+  return post(
+    `estimates/${encodeURIComponent(estimateRef)}/lines/${encodeURIComponent(lineId)}/decline`,
+    input
+  )
+}
+
+/** `GET /reports/declined-jobs` — lost/recovered revenue, decline reasons and
+ *  advisor conversion, all summed server-side (§A10: never re-derived from a
+ *  page of rows). */
+export function fetchDeclinedJobsReport(): Promise<DeclinedJobsReport> {
+  return get('reports/declined-jobs')
+}
+
+export interface DeclinedJobsReport {
+  lostRevenueHalalas: number
+  recoveredRevenueHalalas: number
+  openCount: number
+  resolvedCount: number
+  byReason: { reason: string; count: number; valueHalalas: number }[]
+  byAdvisor: {
+    advisorId: string | null
+    declinedCount: number
+    recoveredCount: number
+    recoveredHalalas: number
+  }[]
+}
+
 /** Approves one row of the unified approval queue.
  *
  *  The queue is mixed — estimates, requisitions, purchase orders and insurance

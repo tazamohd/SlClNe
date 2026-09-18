@@ -12,6 +12,7 @@
 import type { DomainScreens } from '../registry'
 import { JobCardDetail } from '../workshop/JobCardDetail'
 import { ApprovalInbox } from '../workshop/ApprovalInbox'
+import { DeclinedJobs } from '../workshop/DeclinedJobs'
 import { EstimateDetail } from '../workshop/EstimateDetail'
 import { AppointmentCalendar } from '../workshop/AppointmentCalendar'
 import { TechnicianSchedule } from '../workshop/TechnicianSchedule'
@@ -32,6 +33,7 @@ import { TowingServices } from '../fleet/TowingServices'
 export const SCREENS: DomainScreens = {
   JobCardDetail,
   ApprovalInbox,
+  DeclinedJobs,
   EstimateDetail,
   AppointmentCalendar,
   TechnicianSchedule,

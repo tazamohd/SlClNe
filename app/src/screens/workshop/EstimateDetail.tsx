@@ -20,6 +20,7 @@ import { history, type EntityHistory } from '@/data/repository'
 import {
   approveEstimate,
   rejectEstimate,
+  declineEstimateLine,
   fetchEstimateLines,
   transitionFailureMessage,
   RepositoryError,
@@ -68,12 +69,28 @@ export function EstimateDetail() {
   const [params] = useSearchParams()
   const estimates = useCollection('estimates')
   const [busy, setBusy] = useState(false)
+  const [decliningLine, setDecliningLine] = useState<string | null>(null)
 
   const id = params.get('id')
   const rows = (estimates.data ?? []) as readonly Estimate[]
   const estimate = id ? rows.find((e) => e.id === id || e._id === id) : rows[0]
 
   const ref = estimate?._id ?? estimate?.id
+
+  /* Declined Job Tracking (Sprint 1, P0): which of this estimate's lines
+   * already carry an active declined-job record, so a line already declined
+   * offers "Declined", not a second "Decline this line" button — the server's
+   * unique index would refuse the duplicate anyway, but the honest UI never
+   * offers an action it knows will be refused. */
+  const declinedForEstimate = useCollection('declinedJobs', {
+    filter: { estimateId: ref ?? '' },
+    pageSize: 200,
+  })
+  const declinedLineIds = new Set(
+    (declinedForEstimate.data ?? [])
+      .filter((row) => row.status === 'declined' && Boolean(row.estimateLineId))
+      .map((row) => row.estimateLineId as string)
+  )
 
   /* Line items are a sub-resource, not a collection — fetched directly. In the
    * fixture build the call throws `unsupported`; the screen renders that as an
@@ -132,6 +149,41 @@ export function EstimateDetail() {
       })
     } finally {
       setBusy(false)
+    }
+  }
+
+  /** Declines one line (Sprint 1, P0). Distinct from the whole-estimate
+   *  "Decline" action above it: this tracks one item for follow-up while the
+   *  rest of the estimate stays live, which is the point of the feature — a
+   *  customer who says no to the brake job but yes to the oil change should
+   *  not turn the whole estimate into a rejection. */
+  async function declineLine(line: EstimateLineRow) {
+    if (!ref) return
+    const ok = await confirm({
+      title: 'Decline this line?',
+      description: `${line.description}. Tracked for advisor follow-up; the rest of the estimate is unaffected.`,
+      icon: 'X',
+      confirmLabel: 'Decline line',
+      destructive: true,
+      variant: 'lifecycle',
+    })
+    if (!ok) return
+    setDecliningLine(line.id)
+    try {
+      await declineEstimateLine(ref, line.id, {
+        reasonCategory: 'other',
+        safetySeverity: 'monitor',
+      })
+      toast.show({ title: t('Line declined'), description: line.description, error: true })
+      void client.invalidateQueries({ queryKey: queryKeys.all('declinedJobs') })
+    } catch (cause) {
+      toast.show({
+        title: t('Could not decline'),
+        description: transitionFailureMessage(cause, t('Something went wrong. Nothing was saved.')),
+        error: true,
+      })
+    } finally {
+      setDecliningLine(null)
     }
   }
 
@@ -205,29 +257,51 @@ export function EstimateDetail() {
         <Loading inline label="Loading line items..." />
       ) : lineRows.length ? (
         <ul className="m-0 flex list-none flex-col gap-2 p-0">
-          {lineRows.map((line) => (
-            <li
-              key={line.id}
-              className="flex items-center gap-3 border-0 border-b border-solid border-border py-2 last:border-b-0"
-            >
-              <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
-                <Icon name={line.kind === 'labour' ? 'Clock' : 'Package'} size={14} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[13px] font-semibold text-heading">
-                  {line.description}
-                </p>
-                <p className="mt-0.5 text-[11px] text-muted">
-                  {line.qty} × <Money sar={line.unitPriceHalalas / 100} bare className="text-muted" />
-                  {line.partSku ? ` · ${line.partSku}` : ''}
-                </p>
-              </div>
-              {/* Unit price is stored; a per-line total is a client money
-                  calculation, so the qty and unit are shown and the server
-                  total below is the only summed figure. */}
-              <Money sar={line.unitPriceHalalas / 100} className="flex-shrink-0 text-[13px] text-muted" />
-            </li>
-          ))}
+          {lineRows.map((line) => {
+            const declined = declinedLineIds.has(line.id)
+            return (
+              <li
+                key={line.id}
+                className="flex items-center gap-3 border-0 border-b border-solid border-border py-2 last:border-b-0"
+              >
+                <span className="flex flex-shrink-0 rounded-lg bg-salis-blue/[.08] p-2 text-salis-blue">
+                  <Icon name={line.kind === 'labour' ? 'Clock' : 'Package'} size={14} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[13px] font-semibold text-heading">
+                    {line.description}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted">
+                    {line.qty} × <Money sar={line.unitPriceHalalas / 100} bare className="text-muted" />
+                    {line.partSku ? ` · ${line.partSku}` : ''}
+                  </p>
+                </div>
+                {/* Unit price is stored; a per-line total is a client money
+                    calculation, so the qty and unit are shown and the server
+                    total below is the only summed figure. */}
+                <Money sar={line.unitPriceHalalas / 100} className="flex-shrink-0 text-[13px] text-muted" />
+                {/* Declined Job Tracking (Sprint 1, P0): a line already tracked
+                    shows a badge, not a second decline button the server would
+                    refuse. Gated on the same authority as the whole-estimate
+                    decision — declining is deciding, not merely viewing. */}
+                {mayApprove ? (
+                  declined ? (
+                    <StatusBadge value="declined" label={t('Declined')} />
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-shrink-0 border-salis-orange/[.4] text-salis-orange hover:bg-salis-orange/[.07]"
+                      onClick={() => void declineLine(line)}
+                      disabled={decliningLine === line.id}
+                    >
+                      {t(decliningLine === line.id ? 'Declining...' : 'Decline this line')}
+                    </Button>
+                  )
+                ) : null}
+              </li>
+            )
+          })}
         </ul>
       ) : (
         <EmptyState

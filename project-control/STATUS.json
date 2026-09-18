@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-17",
+  "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 427,
-    "product": 387,
+    "capabilities": 428,
+    "product": 388,
     "referenceOnly": 28,
     "externalDependency": 12,
-    "rendered": 427,
+    "rendered": 428,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
     "mockOnly": 281,
-    "dataBacked": 106,
-    "e2eCovered": 427,
-    "contentAsserted": 427,
+    "dataBacked": 107,
+    "e2eCovered": 428,
+    "contentAsserted": 428,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 152,
-    "hasErrorState": 119,
-    "hasEmptyState": 173,
+    "hasLoadingState": 153,
+    "hasErrorState": 120,
+    "hasEmptyState": 174,
     "tabletVerified": 4,
     "arabicVerified": 79,
     "rtlHazards": 0,
@@ -26,8 +26,8 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 105,
-    "crudUpdate": 24,
+    "crudRead": 106,
+    "crudUpdate": 25,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 10,
@@ -43,12 +43,12 @@
       "dataBacked": 0
     },
     "app": {
-      "total": 313,
-      "rendered": 313,
+      "total": 314,
+      "rendered": 314,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 313,
-      "dataBacked": 95
+      "e2e": 314,
+      "dataBacked": 96
     },
     "call-center": {
       "total": 2,
@@ -117,12 +117,12 @@
       "dataBacked": 0
     },
     "admin": {
-      "total": 18,
-      "rendered": 18,
+      "total": 19,
+      "rendered": 19,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 18,
-      "dataBacked": 4
+      "e2e": 19,
+      "dataBacked": 5
     },
     "ai": {
       "total": 10,
@@ -270,6 +270,14 @@
       "e2e": 1,
       "dataBacked": 1
     },
+    "estimates": {
+      "total": 5,
+      "rendered": 5,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 5,
+      "dataBacked": 5
+    },
     "audit": {
       "total": 1,
       "rendered": 1,
@@ -317,14 +325,6 @@
       "mobileOwed": 0,
       "e2e": 10,
       "dataBacked": 10
-    },
-    "estimates": {
-      "total": 4,
-      "rendered": 4,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 4,
-      "dataBacked": 4
     },
     "customers": {
       "total": 3,

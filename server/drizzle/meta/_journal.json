@@ -120,6 +120,13 @@
       "when": 1789618239174,
       "tag": "0016_document_chain",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1789704639174,
+      "tag": "0017_declined_jobs",
+      "breakpoints": true
     }
   ]
 }

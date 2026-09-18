@@ -219,6 +219,12 @@ export const NAV: readonly NavGroup[] = [
         "route": "/approval-inbox"
       },
       {
+        "label": "Declined Jobs",
+        "key": "declined-jobs",
+        "screen": "DeclinedJobs",
+        "route": "/declined-jobs"
+      },
+      {
         "label": "OBD Diagnostics",
         "key": "obd",
         "screen": "OBDDiagnostics",

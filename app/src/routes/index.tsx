@@ -225,6 +225,7 @@ export const SCREEN_ENTRIES = composeScreens({
   workshop: lazyBarrel(() => import('@/screens/domains/workshop'), [
     'JobCardDetail',
     'ApprovalInbox',
+    'DeclinedJobs',
     'EstimateDetail',
     'AppointmentCalendar',
     'TechnicianSchedule',
