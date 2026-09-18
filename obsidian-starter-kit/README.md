@@ -62,9 +62,12 @@ audit my folder structure".
 ## Obsidian MCP server (optional but recommended)
 
 `.mcp.json` wires up the [mcp-obsidian](https://github.com/MarkusPfundstein/mcp-obsidian)
-server, which gives Claude Obsidian-aware tools — vault search, reading the
-note you currently have open, appending relative to headings — instead of
-plain file access. One-time setup on your machine:
+server, which gives Claude Obsidian-aware tools instead of plain file access:
+search (including by tag), appending or patching content relative to a
+heading, and reading periodic notes and recent vault changes. It does not
+expose whatever note you currently have open in the app — there's no such
+endpoint in the plugin/server pair — so "summarize the note I'm looking at"
+still needs you to name the note. One-time setup on your machine:
 
 1. **In Obsidian**: Settings → Community plugins → Browse → install
    **"Local REST API"** (by coddingtonbear) → enable it → copy the API key
