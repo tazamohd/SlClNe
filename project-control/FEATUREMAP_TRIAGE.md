@@ -306,11 +306,32 @@ Client Portal/Portal misc here) have now been verified file-by-file.
    (`useTrialBalance()` et al.) the way it already follows one level of
    component delegation. A shared, generator-level fix, not a per-screen
    one — needs its own validated pass across the whole registry.
-3. **Admin domain ownership gap** — 14 screens (`AuditLog`, `Settings`,
-   `RolesPermissions`, etc.) have no owner in `project-control/
-   OWNERSHIP.json`'s product-agent list at all; needs an ownership
-   decision before further wiring.
-4. **`website` (34) and `auth` (28) domains** — need the same "is
+3. ~~**Admin domain ownership gap**~~ — resolved in wave 5
+   (2026-09-18): the 20-screen `admin` domain (`AuditLog`, `Settings`,
+   `RolesPermissions`, `UsersTeams`, `Organizations`, etc. — the count
+   above was itself an undercount) had no owner anywhere. Two places
+   needed the same fix: `project-control/OWNERSHIP.json`'s product-agent
+   list (no entry claimed `app/src/screens/admin/**`) and, independently,
+   `app/scripts/build-registry.mjs`'s own `DOMAIN_AGENT` map, which had a
+   hardcoded `admin: '—'` that both `docs/MASTER_SCOPE_REGISTRY.md`'s
+   by-domain table and `docs/MASTER_AGENT_OWNERSHIP.md` render from —
+   this second map is what the registry actually reads, not
+   `OWNERSHIP.json`'s presence alone. Added agent 25 ("System
+   Administration") to both, owning `app/src/screens/admin/**` and
+   `app/src/screens/domains/admin.ts`. Verified: `npm run typecheck`,
+   `npm run gates` (8/8), `npx vitest run` (111 files / 3918 tests),
+   `node tools/docs/check.mjs` — all clean, and the "Administration" row
+   in `MASTER_SCOPE_REGISTRY.md`'s by-domain table now reads agent `25`
+   instead of `—`.
+4. **Admin domain BLK-004 fixing** — now unblocked by wave 5. Of the 20
+   admin screens, 14 carry `MOCK_ONLY`: `AdvancedSettings`, `AuditLog`,
+   `Backup`, `CookiePolicy`, `GlobalSearch`, `NotificationCenter`,
+   `Organizations`, `Profile`, `RolesPermissions`, `Settings`,
+   `Subscription`, `SuperAdmin`, `Templates`, `UsersTeams`. Needs the same
+   file-by-file "real data, honest gap, or already fine" triage waves 1
+   and 4 used elsewhere — not done here, since this wave's scope was the
+   ownership decision itself.
+5. **`website` (34) and `auth` (28) domains** — need the same "is
    `dataBacked` even the right bar for this screen" judgment call
    `SOURCE_RECONCILIATION.md` flagged; many are legitimately static
    marketing pages or terminal/status screens.

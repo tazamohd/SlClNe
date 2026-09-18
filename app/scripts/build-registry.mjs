@@ -884,7 +884,7 @@ const DOMAIN_GROUP = {
 }
 const DOMAIN_AGENT = {
   workshop: '08', crm: '09', parts: '10', procurement: '11', accounting: '12', hr: '14',
-  ai: '15', admin: '—', auth: '06', portals: '16', customerapp: '16', website: '17',
+  ai: '15', admin: '25', auth: '06', portals: '16', customerapp: '16', website: '17',
   ui: '04', featuremap: '08–17',
 }
 

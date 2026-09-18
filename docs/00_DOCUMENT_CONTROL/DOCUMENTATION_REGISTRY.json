@@ -1814,8 +1814,8 @@
     {
       "path": "MASTER_AGENT_OWNERSHIP.md",
       "section": "(root)",
-      "bytes": 4693,
-      "lines": 57,
+      "bytes": 4805,
+      "lines": 58,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
       "substantive": true,
@@ -1902,7 +1902,7 @@
     {
       "path": "MASTER_SCOPE_REGISTRY.md",
       "section": "(root)",
-      "bytes": 3315,
+      "bytes": 3316,
       "lines": 111,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
