@@ -120,15 +120,15 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-18; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-19; 5 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 38 |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 38 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 37 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 16 |
-| `project-control/BASELINE.json` | 2026-09-03 | 15 |
+| `project-control/RISK_REGISTER.json` | 2026-08-11 | 39 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
+| `project-control/FINDINGS.json` | 2026-08-12 | 38 |
+| `project-control/RELEASE_GATES.json` | 2026-09-02 | 17 |
+| `project-control/BASELINE.json` | 2026-09-03 | 16 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 

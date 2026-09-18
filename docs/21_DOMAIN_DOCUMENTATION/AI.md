@@ -76,12 +76,12 @@ _No lifecycle in the contract belongs to this domain._
 | D-AgentRegistry | `/agent-registry` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-AIAnalytics | `/aianalytics` | app | **mock** | — | — | — | verified | yes |
 | D-AIAssistant | `/aiassistant` | app | **mock** | — | — | — | verified | yes |
-| D-AutomationRules | `/automation-rules` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-AutomationRules | `/automation-rules` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-ConversationHistory | `/conversation-history` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-KnowledgeBase | `/knowledge-base` | app | yes | yes | yes | yes | verified | yes |
-| D-ModelSettings | `/model-settings` | app | **mock** | — | — | — | PARTIAL | yes |
-| D-PromptLibrary | `/prompt-library` | app | **mock** | — | — | — | verified | yes |
-| D-WorkflowBuilder | `/workflow-builder` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-ModelSettings | `/model-settings` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-PromptLibrary | `/prompt-library` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-WorkflowBuilder | `/workflow-builder` | app | **mock** | — | — | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
