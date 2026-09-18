@@ -20,12 +20,12 @@
 | Reference-only | 28 | 429 |
 | Rendered | 429 | 429 |
 | Placeholder | 0 | 429 |
-| Data-backed (live API) | 128 | 429 |
-| Mock-only (design fixtures) | 238 | 429 |
+| Data-backed (live API) | 138 | 429 |
+| Mock-only (design fixtures) | 228 | 429 |
 | End-to-end covered | 429 | 429 |
 | Content-asserted (not just routed) | 429 | 429 |
-| Has a loading state | 170 | 429 |
-| Has an error state | 134 | 429 |
+| Has a loading state | 174 | 429 |
+| Has an error state | 138 | 429 |
 | Has an empty state | 214 | 429 |
 | Arabic verified | 77 | 429 |
 | RTL hazards | 0 | — |
@@ -34,14 +34,14 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **238 of 429 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **228 of 429 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 0 | 0 |
-| app | 314 | 114 | 79 |
+| app | 314 | 124 | 79 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 7 | 4 |
@@ -63,7 +63,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-ACCOUNTING | 7 | 7 | 7 | 7 | 5 | 0 |
 | CAP-HR | 5 | 5 | 5 | 5 | 4 | 1 |
 | CAP-CRM | 12 | 10 | 10 | 10 | 12 | 0 |
-| CAP-REPORTING | 11 | 9 | 11 | 9 | 7 | 0 |
+| CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 1 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
 | CAP-AI | 10 | 4 | 4 | 4 | 4 | 4 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 19 | 0 | 0 | 0 | 0 | 14 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 21 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 233 | 40 | 66 | 42 | 106 | 21 |
+| CAP-DESIGNSYSTEM | 233 | 48 | 70 | 46 | 106 | 21 |
 
 ## Full registry
 

@@ -3,6 +3,7 @@ import { FeatureHeader, StatRow, type Stat } from '@/components/shell/FeatureScr
 import { Money, formatSar } from '@/components/ui/Money'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column, EmptyState } from '@/components/ui/DataTable'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { usePreferences } from '@/providers/PreferencesProvider'
@@ -10,90 +11,98 @@ import {
   MobileCardHeader,
   MobileCardRow,
 } from '@/components/shell/MobileShell'
+import { useCollection, type RowOf } from '@/data/useCollection'
+import { fromHalalas, invoiceMoney } from '@/screens/finance/money'
+import { useInvoicesSummary } from './useFinanceReports'
 
-interface Sale {
+/** Sales Management — invoices read live from `invoices`, with period totals
+ *  from `GET /invoices/summary`. This used to be eight hand-written rows.
+ *
+ *  Two columns from the old mock have no honest source and are dropped:
+ *  "Items" (an invoice's line count is a real number, but only reachable one
+ *  invoice at a time from `invoiceLines`, not on the invoice row itself —
+ *  not worth an N-request fan-out for a list column) and "Payment Method"
+ *  (that lives on the separate `payments` table, and one invoice can have
+ *  several payments with different methods, so a single value per row would
+ *  be invented). Every KPI total is `useInvoicesSummary()`'s own figure —
+ *  `invoicedHalalas` and each status's own `invoicedHalalas` from
+ *  `byStatus` — never a sum of the rows this screen happens to have loaded. */
+
+type InvoiceApiRow = RowOf<'invoices'> & {
+  customerName?: string
+  status?: string
+  code?: string
+  issuedAt?: string
+}
+
+interface SaleRow {
   invoiceNumber: string
   customer: string
   date: string
-  items: number
-  amount: number
+  amountHalalas: number
   status: string
-  paymentMethod: string
 }
 
-const MOCK_SALES: readonly Sale[] = [
-  { invoiceNumber: 'INV-2026-0142', customer: 'Al-Faisal Motors', date: '2026-08-18', items: 3, amount: 12500_00, status: 'Paid', paymentMethod: 'Bank' },
-  { invoiceNumber: 'INV-2026-0141', customer: 'Saudi Fleet Services', date: '2026-08-17', items: 7, amount: 28400_00, status: 'Paid', paymentMethod: 'Bank' },
-  { invoiceNumber: 'INV-2026-0140', customer: 'Mohammed Al-Shehri', date: '2026-08-16', items: 1, amount: 3200_00, status: 'Pending', paymentMethod: 'Cash' },
-  { invoiceNumber: 'INV-2026-0139', customer: 'Riyadh Transport Co', date: '2026-08-15', items: 12, amount: 45000_00, status: 'Paid', paymentMethod: 'Bank' },
-  { invoiceNumber: 'INV-2026-0138', customer: 'Quick Delivery LLC', date: '2026-08-14', items: 2, amount: 8900_00, status: 'Overdue', paymentMethod: 'Card' },
-  { invoiceNumber: 'INV-2026-0137', customer: 'Ahmed Al-Dosari', date: '2026-08-13', items: 1, amount: 1800_00, status: 'Paid', paymentMethod: 'Cash' },
-  { invoiceNumber: 'INV-2026-0136', customer: 'National Auto Parts', date: '2026-08-12', items: 5, amount: 15600_00, status: 'Pending', paymentMethod: 'Bank' },
-  { invoiceNumber: 'INV-2026-0135', customer: 'Gulf Logistics', date: '2026-08-10', items: 4, amount: 22000_00, status: 'Cancelled', paymentMethod: 'Bank' },
-]
-
 const STATUS_PALETTE: Record<string, readonly [string, string]> = {
-  Paid: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Pending: ['var(--tint-orange)', 'var(--salis-orange)'],
-  Overdue: ['var(--tint-navy)', 'var(--salis-navy)'],
-  Cancelled: ['var(--tint-neutral)', 'var(--text-muted)'],
+  paid: ['var(--tint-blue)', 'var(--salis-blue)'],
+  issued: ['var(--tint-orange)', 'var(--salis-orange)'],
+  draft: ['var(--tint-neutral)', 'var(--text-muted)'],
+  void: ['var(--tint-neutral)', 'var(--text-muted)'],
+  cancelled: ['var(--tint-neutral)', 'var(--text-muted)'],
 }
 
 export function SalesManagement() {
   const { t } = usePreferences()
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('All')
+  const { data: invoices = [], isLoading, isError, error, refetch } = useCollection('invoices')
+  const summary = useInvoicesSummary({})
+
+  const rows: readonly SaleRow[] = useMemo(
+    () =>
+      (invoices as readonly InvoiceApiRow[]).map((r) => ({
+        invoiceNumber: r.code ?? r.id,
+        customer: r.customerName ?? r.cust ?? '',
+        date: r.issuedAt ? r.issuedAt.slice(0, 10) : '',
+        amountHalalas: invoiceMoney(r).totalHalalas,
+        status: r.status ?? '',
+      })),
+    [invoices],
+  )
+
+  const statuses = useMemo(() => ['All', ...new Set(rows.map((r) => r.status).filter(Boolean))], [rows])
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
-    return MOCK_SALES
+    return rows
       .filter((s) => statusFilter === 'All' || s.status === statusFilter)
-      .filter(
-        (s) =>
-          !needle ||
-          s.invoiceNumber.toLowerCase().includes(needle) ||
-          s.customer.toLowerCase().includes(needle)
-      )
-  }, [query, statusFilter])
+      .filter((s) => !needle || s.invoiceNumber.toLowerCase().includes(needle) || s.customer.toLowerCase().includes(needle))
+  }, [rows, query, statusFilter])
 
-  const totals = useMemo(() => {
-    let total = 0
-    let paid = 0
-    let pending = 0
-    let count = 0
-    for (const s of MOCK_SALES) {
-      if (s.status !== 'Cancelled') {
-        total += s.amount
-        count++
-      }
-      if (s.status === 'Paid') paid += s.amount
-      if (s.status === 'Pending') pending += s.amount
-    }
-    const avg = count > 0 ? Math.round(total / count) : 0
-    return { total, paid, pending, avg }
-  }, [])
+  const s = summary.data
+  const paid = s?.byStatus.find((b) => b.status === 'paid')
+  const outstanding = s ? s.invoicedHalalas - (paid?.invoicedHalalas ?? 0) : undefined
 
   const stats: Stat[] = [
-    { label: 'Total Sales', value: formatSar(totals.total), caption: 'Excl. cancelled', highlight: true },
-    { label: 'Paid', value: formatSar(totals.paid), caption: 'Collected', tone: 'info' },
-    { label: 'Pending', value: formatSar(totals.pending), caption: 'Awaiting payment', tone: 'warning' },
-    { label: 'Avg Order Value', value: formatSar(totals.avg), caption: 'Per invoice' },
+    { label: 'Total Sales', value: s ? formatSar(fromHalalas(s.invoicedHalalas)) : '—', caption: 'All invoices', highlight: true },
+    { label: 'Paid', value: paid ? formatSar(fromHalalas(paid.invoicedHalalas)) : '—', caption: 'Collected', tone: 'info' },
+    { label: 'Outstanding', value: outstanding !== undefined ? formatSar(fromHalalas(outstanding)) : '—', caption: 'Not yet paid', tone: 'warning' },
+    { label: 'Invoices', value: s ? String(s.count) : '—', caption: 'This period' },
   ]
 
-  const statuses = ['All', 'Paid', 'Pending', 'Overdue', 'Cancelled'] as const
-
-  const columns: Column<Sale>[] = [
-    { header: 'Invoice', cell: (s) => s.invoiceNumber, code: true },
-    { header: 'Customer', cell: (s) => s.customer },
-    { header: 'Date', cell: (s) => <span dir="ltr" className="text-muted">{s.date}</span> },
-    { header: 'Items', cell: (s) => s.items, className: 'text-end' },
-    { header: 'Amount', cell: (s) => <Money sar={s.amount} className="font-semibold" />, className: 'text-end' },
-    { header: 'Payment', cell: (s) => t(s.paymentMethod) },
-    { header: 'Status', cell: (s) => {
-      const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
-      return <Badge background={bg} color={fg}>{t(s.status)}</Badge>
+  const columns: Column<SaleRow>[] = [
+    { header: 'Invoice', cell: (row) => row.invoiceNumber, code: true },
+    { header: 'Customer', cell: (row) => row.customer },
+    { header: 'Date', cell: (row) => <span dir="ltr" className="text-muted">{row.date}</span> },
+    { header: 'Amount', cell: (row) => <Money sar={fromHalalas(row.amountHalalas)} className="font-semibold" />, className: 'text-end' },
+    { header: 'Status', cell: (row) => {
+      const [bg, fg] = STATUS_PALETTE[row.status] ?? STATUS_PALETTE.draft
+      return <Badge background={bg} color={fg}>{t(row.status)}</Badge>
     } },
   ]
+
+  if (isLoading) return <Loading label={t('Loading sales…')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -124,9 +133,9 @@ export function SalesManagement() {
             aria-label={t('Filter by status')}
             size="md"
           >
-            {statuses.map((s) => (
-              <option key={s} value={s}>
-                {s === 'All' ? t('All Statuses') : t(s)}
+            {statuses.map((st) => (
+              <option key={st} value={st}>
+                {st === 'All' ? t('All Statuses') : t(st)}
               </option>
             ))}
           </Select>
@@ -136,15 +145,15 @@ export function SalesManagement() {
       <DataTable
         caption="Sales invoices"
         columns={columns}
-        rows={filtered}
-        rowKey={(s) => s.invoiceNumber}
-        mobileCard={(s) => {
-          const [bg, fg] = STATUS_PALETTE[s.status] ?? STATUS_PALETTE.Pending
+        rows={filtered as SaleRow[]}
+        rowKey={(row) => row.invoiceNumber}
+        mobileCard={(row) => {
+          const [bg, fg] = STATUS_PALETTE[row.status] ?? STATUS_PALETTE.draft
           return (
             <>
-              <MobileCardHeader title={s.invoiceNumber} code trailing={<Badge background={bg} color={fg}>{t(s.status)}</Badge>} />
-              <MobileCardRow label={t('Customer')}>{s.customer}</MobileCardRow>
-              <MobileCardRow label={t('Amount')}><Money sar={s.amount} className="font-semibold text-heading" /></MobileCardRow>
+              <MobileCardHeader title={row.invoiceNumber} code trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
+              <MobileCardRow label={t('Customer')}>{row.customer}</MobileCardRow>
+              <MobileCardRow label={t('Amount')}><Money sar={fromHalalas(row.amountHalalas)} className="font-semibold text-heading" /></MobileCardRow>
             </>
           )
         }}

@@ -11,13 +11,13 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 238,
-    "dataBacked": 128,
+    "mockOnly": 228,
+    "dataBacked": 138,
     "e2eCovered": 429,
     "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 170,
-    "hasErrorState": 134,
+    "hasLoadingState": 174,
+    "hasErrorState": 138,
     "hasEmptyState": 214,
     "tabletVerified": 4,
     "arabicVerified": 77,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 127,
+    "crudRead": 130,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -4016,6 +4016,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "accounting/reports/trial-balance",
         "chartOfAccounts",
         "expenses",
         "invoices"
@@ -4665,8 +4666,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insurance/claims/summary"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -4695,8 +4698,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5990,8 +5992,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "loans/summary"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -6020,8 +6024,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -10709,6 +10712,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "accounting/reports/trial-balance",
         "chartOfAccounts",
         "expenses",
         "invoices"
@@ -10979,7 +10983,8 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "invoices"
+        "invoices",
+        "invoices/summary"
       ],
       "crud": {
         "create": false,
@@ -11808,6 +11813,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "accounting/tax/return",
         "invoices"
       ],
       "crud": {
@@ -23465,8 +23471,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23496,7 +23504,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23531,8 +23538,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23562,7 +23571,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23597,8 +23605,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23627,7 +23637,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23662,8 +23671,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23692,7 +23703,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23788,16 +23798,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices",
+        "invoices/summary"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -23824,7 +23837,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24247,13 +24259,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -24283,7 +24297,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24576,16 +24589,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "expenses"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -24612,7 +24627,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24709,16 +24723,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices",
+        "invoices/summary"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -24745,7 +24762,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },

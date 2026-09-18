@@ -4996,4 +4996,15 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Get in touch": "تواصل معنا",
   "No open positions listed right now": "لا توجد وظائف شاغرة معلنة حاليًا",
   "Think you would be a good fit anyway? ": "تعتقد أنك مناسب رغم ذلك؟ ",
+
+  // Accounting cluster live wiring (Accounts Receivable, Equity Management,
+  // Expense Tracking, Sales Management) — merged from a concurrent branch.
+  "Loading receivables…": "جارٍ تحميل الذمم المدينة…",
+  "No outstanding invoices": "لا توجد فواتير مستحقة",
+  "Total Invoiced": "إجمالي المفوتر",
+  "Loading equity accounts…": "جارٍ تحميل حسابات حقوق الملكية…",
+  "No equity accounts found": "لم يتم العثور على حسابات حقوق ملكية",
+  "ID, category or vendor": "المعرّف أو الفئة أو المورد",
+  "Loading expenses…": "جارٍ تحميل المصروفات…",
+  "Loading sales…": "جارٍ تحميل المبيعات…",
 }
