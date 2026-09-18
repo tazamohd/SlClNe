@@ -19,6 +19,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import { SCREEN_ENTRIES } from '@/routes'
+import { PortalShell } from '@/components/shell/PortalShell'
 import { entryOf, type DomainScreens } from '@/screens/registry'
 import * as portals from '@/screens/domains/portals'
 import * as website from '@/screens/domains/website'
@@ -83,6 +84,17 @@ describe('the shell a screen renders in', () => {
      * it. */
     for (const name of ['CustomerPortal', 'CustomerPortal.Booking', 'TechnicianPortal']) {
       expect(SCREEN_ENTRIES[name]?.shell, name).toBeTruthy()
+    }
+  })
+
+  it('puts the procurement portal in PortalShell, not the operational AppShell (F-024)', () => {
+    /* F-009/F-024: these two render AppShell despite the registry recording
+     * PortalShell, because PortalShell did not exist yet when they were
+     * built. It exists now — `routes/index.tsx` splits them out of
+     * APP_SCREENS into their own `asDomain(..., PortalShell)` entry rather
+     * than moving the whole map's default shell. */
+    for (const name of ['ProcurementPortal', 'ProcurementPortal.Requisitions']) {
+      expect(SCREEN_ENTRIES[name]?.shell, name).toBe(PortalShell)
     }
   })
 

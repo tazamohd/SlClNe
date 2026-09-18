@@ -107,7 +107,7 @@
     },
     {
       "id": "F-009",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two implemented screens render a shell that does not exist yet",
       "detail": "/procurement-portal and /procurement-portal/requisitions are PortalShell in the registry and render AppShell, because PortalShell is not built. The other 60 shell mismatches are placeholder screens correctly rendering PendingScreen in the operational shell.",
       "why": "Tracked so the mismatch closes when agent 04 builds PortalShell, rather than being discovered again later.",
@@ -115,8 +115,8 @@
       "verified": "reported",
       "owner": "04",
       "wave": "W2",
-      "status": "partially resolved",
-      "resolution": "PortalShell now exists (agent 16), so the shell the two procurement-portal screens should render is built. They still render AppShell until migrated onto it — that migration is an orchestrator integration step (a SURFACES entry plus declaring the screens with shell: PortalShell), tracked as F-024. The registry shell-mismatch for /procurement-portal and /procurement-portal/requisitions therefore persists one more tranche."
+      "status": "fixed",
+      "resolution": "Fully closed by F-024: the migration this finding deferred has landed. See F-024's resolution."
     },
     {
       "id": "F-010",
@@ -299,14 +299,16 @@
     },
     {
       "id": "F-024",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two procurement-portal screens still render AppShell instead of PortalShell",
       "detail": "F-009's root cause is fixed (PortalShell exists), but /procurement-portal and /procurement-portal/requisitions are declared in the legacy app map and render AppShell. Migrating them needs a PortalShell SURFACES entry and a barrel declaration with shell: PortalShell.",
       "why": "A registry shell-mismatch that the completion matrix will keep flagging until the migration lands. Cosmetic today; the screens work.",
       "foundBy": "16",
       "verified": "reported by agent 16 as the deferred integration step",
       "owner": "01",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "ProcurementPortal and ProcurementPortal.Requisitions are implemented in network/Procurement.tsx, not a screens/domains/ file portals.ts owns, so routes/index.tsx splits them out of APP_SCREENS into their own PROCUREMENT_PORTAL_SCREENS map, composed with shell: PortalShell (asDomain(..., PortalShell)) rather than adding a per-screen override to the shared asDomain helper. PortalShell.tsx's SURFACES table gained a real /procurement-portal entry (title, icon, Home + Requisitions nav, gated on the existing portalprocure module grants). build-registry.mjs's static analysis specifically looks for the named APP_SCREENS/CUSTOMER_APP_SCREENS/PUBLIC_SCREENS blocks to decide what's IMPLEMENTED vs DISCOVERED — splitting the two screens into a new block without teaching that script about it first regressed check-no-fake to 2 false placeholders; fixed by adding PROCUREMENT_PORTAL_SCREENS as a fourth recognized block, the same shape as the other three. 3941/3941 app tests (1 new, 1 rewritten so its own 'unregistered surface' example does not reuse a route that just became registered), tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-025",

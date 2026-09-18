@@ -212,6 +212,10 @@ const IMPL = {
   public: screensIn(routesSrc, 'PUBLIC_SCREENS'),
   app: screensIn(routesSrc, 'APP_SCREENS'),
   customerApp: screensIn(routesSrc, 'CUSTOMER_APP_SCREENS'),
+  // F-024: split out of APP_SCREENS so these two could carry PortalShell
+  // without moving that whole map's default shell — a fourth named block,
+  // same shape as the three above it.
+  procurementPortal: screensIn(routesSrc, 'PROCUREMENT_PORTAL_SCREENS'),
   domains: domainScreens(),
 }
 const KIT_ROUTES = new Set([...featureDefsSrc.matchAll(/route: '([^']+)'/g)].map((m) => m[1]))
@@ -946,6 +950,7 @@ for (const s of SCREENS) {
     IMPL.public.has(s.name) ||
     IMPL.app.has(s.name) ||
     IMPL.customerApp.has(s.name) ||
+    IMPL.procurementPortal.has(s.name) ||
     IMPL.domains.has(s.name)
   const isReference = surface === 'reference'
   const { module, permissions } = permissionsFor(s.name)

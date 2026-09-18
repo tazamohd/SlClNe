@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-191 spec files containing 2223 test cases.
+191 spec files containing 2224 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 116 | 1113 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 116 | 1114 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 35 | 447 |
-| app | 113 | 1399 |
+| app | 113 | 1400 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -193,7 +193,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/rbac.test.ts` | SECURITY | 60 | owner, superadmin, customer, technician, accountant, advisor, test, manager, supplier, hr, procurement, qc, frontdesk, callcenter |
 | `app/tests/unit/repository-fixture.test.ts` | UNIT_OR_API | 27 | — |
 | `app/tests/unit/route-shells-parser.test.ts` | UNIT_OR_API | 10 | — |
-| `app/tests/unit/route-shells.test.ts` | UNIT_OR_API | 4 | — |
+| `app/tests/unit/route-shells.test.ts` | UNIT_OR_API | 5 | — |
 | `app/tests/unit/screen-facts.test.ts` | UNIT_OR_API | 8 | — |
 | `app/tests/unit/screen-registry.test.ts` | UNIT_OR_API | 5 | — |
 | `app/tests/unit/storage.test.ts` | UNIT_OR_API | 9 | — |

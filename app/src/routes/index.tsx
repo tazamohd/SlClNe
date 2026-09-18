@@ -143,8 +143,6 @@ const APP_SCREENS: Record<string, ComponentType> = {
   'PartsNetwork.Incoming': lazyNamed(() => import('@/screens/network/PartsNetwork'), 'PartsNetworkIncoming'),
   'PartsNetwork.SendRequest': lazyNamed(() => import('@/screens/network/Procurement'), 'PartsNetworkSendRequest'),
   PartsSupplyNetwork: lazyNamed(() => import('@/screens/network/Procurement'), 'PartsSupplyNetwork'),
-  ProcurementPortal: lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementPortal'),
-  'ProcurementPortal.Requisitions': lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementRequisitions'),
   ChartOfAccounts: lazyNamed(() => import('@/screens/accounting/Accounting'), 'ChartOfAccounts'),
   JournalEntries: lazyNamed(() => import('@/screens/accounting/Accounting'), 'JournalEntries'),
   Expenses: lazyNamed(() => import('@/screens/accounting/Accounting'), 'Expenses'),
@@ -173,6 +171,17 @@ const APP_SCREENS: Record<string, ComponentType> = {
   NotificationCenter: lazyNamed(() => import('@/screens/admin/NotificationCenter'), 'NotificationCenter'),
   GlobalSearch: lazyNamed(() => import('@/screens/admin/GlobalSearch'), 'GlobalSearch'),
   AuditLog: lazyNamed(() => import('@/screens/admin/AuditLog'), 'AuditLog'),
+}
+
+/** F-024: implemented in `network/Procurement.tsx` (not a `screens/domains/`
+ *  file `portals.ts` owns), but PortalShell — a single-audience door with a
+ *  narrow nav — is the correct chrome, the same as the customer/technician/
+ *  supplier portals. Split out of `APP_SCREENS` so this pair can carry a
+ *  shell the rest of that map does not, rather than adding a per-screen
+ *  override to `asDomain`. */
+const PROCUREMENT_PORTAL_SCREENS: Record<string, ComponentType> = {
+  ProcurementPortal: lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementPortal'),
+  'ProcurementPortal.Requisitions': lazyNamed(() => import('@/screens/network/Procurement'), 'ProcurementRequisitions'),
 }
 
 /** Customer-app screens. Rendered in `CustomerAppShell`, not `AppShell`. */
@@ -211,6 +220,7 @@ export const SCREEN_ENTRIES = composeScreens({
   'legacy:auth': asDomain(PUBLIC_SCREENS, null, true),
   'legacy:customer-app': asDomain(CUSTOMER_APP_SCREENS, CustomerAppShell),
   'legacy:app': asDomain(APP_SCREENS, undefined),
+  'legacy:procurement-portal': asDomain(PROCUREMENT_PORTAL_SCREENS, PortalShell),
   'auth-extra': lazyBarrel(
     () => import('@/screens/domains/auth-extra'),
     ['Register', 'SSOLogin', 'SocialLogin', 'RoleSelection', 'WorkspaceSelection', 'OrganizationSelection', 'ProfileCompletion', 'InviteAcceptance', 'Onboarding'],

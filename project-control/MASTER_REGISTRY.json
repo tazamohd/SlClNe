@@ -8087,7 +8087,7 @@
       "title": "ProcurementPortal",
       "route": "/procurement-portal",
       "surface": "portal",
-      "shell": "AppShell",
+      "shell": "PortalShell",
       "module": "portalprocure",
       "permissions": [
         "owner:v",
@@ -8162,7 +8162,7 @@
       "title": "ProcurementPortal · Requisitions",
       "route": "/procurement-portal/requisitions",
       "surface": "portal",
-      "shell": "AppShell",
+      "shell": "PortalShell",
       "module": "portalprocure",
       "permissions": [
         "owner:v",

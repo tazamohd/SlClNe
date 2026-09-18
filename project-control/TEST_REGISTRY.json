@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 191,
-    "cases": 2223,
+    "cases": 2224,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1113,
+      "UNIT_OR_API": 1114,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3627,7 +3627,7 @@
         "/technician-portal",
         "/logout-confirmation",
         "/customer-portal/booking",
-        "/procurement-portal",
+        "/vendor-portal",
         "/unmapped-portal"
       ],
       "touchesRoles": [
@@ -4881,9 +4881,10 @@
         "is the one its domain barrel declares, for every screen that declares one",
         "leaves the kiosk bare, because its terminal is public",
         "still puts the actual portals in PortalShell",
+        "puts the procurement portal in PortalShell, not the operational AppShell (F-024)",
         "routes every screen name a domain barrel declares"
       ],
-      "caseCount": 4,
+      "caseCount": 5,
       "touchesPaths": [],
       "touchesRoles": []
     },

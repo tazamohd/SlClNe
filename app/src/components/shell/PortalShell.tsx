@@ -118,6 +118,26 @@ const SURFACES: readonly PortalConfig[] = [
       },
     ],
   },
+  {
+    base: '/procurement-portal',
+    title: 'Procurement Portal',
+    icon: 'ShoppingCart',
+    nav: [
+      {
+        to: '/procurement-portal',
+        icon: 'Home',
+        label: 'Home',
+        screen: 'ProcurementPortal',
+        end: true,
+      },
+      {
+        to: '/procurement-portal/requisitions',
+        icon: 'ClipboardList',
+        label: 'Requisitions',
+        screen: 'ProcurementPortal.Requisitions',
+      },
+    ],
+  },
 ]
 
 /** The last-resort identity for a portal route nobody registered: the shell

@@ -30,10 +30,10 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Arabic verified | 81 of 433 | `STATUS.json` |
 | Tablet verified | 4 of 433 | `STATUS.json` |
 | API endpoints | 385 | the route files |
-| Test cases | 2223 | the spec files |
+| Test cases | 2224 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
-| Unresolved findings | 5 of 38 | `FINDINGS.json` |
+| Unresolved findings | 3 of 38 | `FINDINGS.json` |
 | Release gates passing | 10 of 14 | `RELEASE_GATES.json` |
 
 ## The one number that matters most
