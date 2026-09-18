@@ -51,18 +51,18 @@ _No lifecycle in the contract belongs to this domain._
 | D-CustomerApp.Appointments | `/customer-app/appointments` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Garage | `/customer-app/garage` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Home | `/customer-app/home` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
-| D-CustomerApp.Insurance | `/customer-app/insurance` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
-| D-CustomerApp.Loans | `/customer-app/loans` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
+| D-CustomerApp.Insurance | `/customer-app/insurance` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
+| D-CustomerApp.Loans | `/customer-app/loans` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Marketplace | `/customer-app/marketplace` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Notifications | `/customer-app/notifications` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Orders | `/customer-app/orders` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Profile | `/customer-app/profile` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
-| D-CustomerApp.ServiceTracking | `/customer-app/service-tracking` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
+| D-CustomerApp.ServiceTracking | `/customer-app/service-tracking` | customer-app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApp.Wallet | `/customer-app/wallet` | customer-app | **mock** | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **8 of 11 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **5 of 11 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 
 ## Evidence
 

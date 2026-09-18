@@ -91,14 +91,14 @@ PRINCE2 asks for a risk register, an issue register, a quality register and a le
 
 | Quality criterion | Method | Result |
 | --- | --- | --- |
-| Every capability renders | Registry build + e2e | 428 of 428 |
-| Content asserted, not just routed | e2e content assertions | 428 of 428 |
+| Every capability renders | Registry build + e2e | 429 of 429 |
+| Content asserted, not just routed | e2e content assertions | 429 of 429 |
 | Golden paths pass | Playwright | 23 of 23 |
 | Permission matrix enforced server-side | `server/tests/authz-matrix.test.ts` | suite present |
 | Frontend and server matrices identical | `server/tests/rbac-parity.test.ts` | suite present |
 | Tenant isolation | `server/tests/isolation.test.ts` + RLS | suite present |
 | Segregation of duties enforced | `server/tests/authz-sod.test.ts` | suite present |
 | Accessibility contrast ratchet | `app/e2e/a11y.spec.ts` + `BASELINE.json` | ratcheted |
-| Arabic and RTL | Registry verification | 78 verified, 0 hazards |
+| Arabic and RTL | Registry verification | 74 verified, 0 hazards |
 
 **Present is not passing.** The rows that say "suite present" mean the suite exists and was catalogued by reading it. Whether it passes is a dated statement made only after a run — see the test catalogue.

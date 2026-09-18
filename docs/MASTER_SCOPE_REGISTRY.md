@@ -8,24 +8,24 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Metric | Count |
 |---|---|
-| capabilities | 428 |
-| product | 388 |
+| capabilities | 429 |
+| product | 366 |
 | reference only | 28 |
-| external dependency | 12 |
-| rendered | 428 |
+| external dependency | 35 |
+| rendered | 429 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 277 |
-| data backed | 111 |
-| e2e covered | 428 |
-| content asserted | 428 |
+| mock only | 228 |
+| data backed | 138 |
+| e2e covered | 429 |
+| content asserted | 429 |
 | rendered without assertion | 0 |
-| has loading state | 157 |
-| has error state | 124 |
-| has empty state | 178 |
+| has loading state | 174 |
+| has error state | 138 |
+| has empty state | 214 |
 | tablet verified | 4 |
-| arabic verified | 78 |
+| arabic verified | 74 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,18 +33,18 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 110 |
-| crud update | 25 |
+| crud read | 130 |
+| crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
-| orphan screen files | 10 |
+| orphan screen files | 0 |
 | production ready | 0 |
 
 ## By surface
 
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
-| auth | 28 | 28 | 0 | 0 | 28 |
+| auth | 29 | 29 | 0 | 0 | 29 |
 | app | 314 | 314 | 0 | 0 | 314 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
@@ -58,8 +58,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
-| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `████████████████████` 100% | 19 | 19 |
+| Auth & onboarding | 06 | G3 | `████████████████████` 100% | 29 | 29 |
+| Administration | 25 | G9 | `████████████████████` 100% | 19 | 19 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
@@ -93,7 +93,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | hr | 2 | 2 |
 | inventory | 1 | 1 |
 | invoices | 4 | 4 |
-| jobcards | 10 | 10 |
+| jobcards | 11 | 11 |
 | kiosk | 1 | 1 |
 | network | 2 | 2 |
 | payments | 2 | 2 |

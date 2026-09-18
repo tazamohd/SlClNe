@@ -69,6 +69,9 @@
     { "id": "17", "name": "Public Website & Landing", "team": "product", "domain": "website",
       "owns": ["app/src/screens/public/**", "app/src/components/shell/PublicShell.tsx", "app/public/robots.txt", "app/public/sitemap.xml", "app/src/screens/domains/website.ts"],
       "responsibilities": ["33 public pages", "landing section system", "SEO", "marketing code-split"] },
+    { "id": "25", "name": "System Administration", "team": "product", "domain": "admin",
+      "owns": ["app/src/screens/admin/**", "app/src/screens/domains/admin.ts"],
+      "responsibilities": ["organization, branch and subscription settings", "users, roles and permissions", "audit log", "system and OEM integrations", "backup and data import/export", "workflow and automation rule builder", "global search", "notification centre"] },
 
     { "id": "18", "name": "Mobile / Tablet", "team": "cross-cutting",
       "owns": [], "sweeps": ["every capability at 390/430/768/820/834/1024/1280/1440/1536"],

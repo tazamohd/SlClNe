@@ -127,6 +127,20 @@
       "when": 1789704639174,
       "tag": "0017_declined_jobs",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1789791039174,
+      "tag": "0018_inspection_findings",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1789877439174,
+      "tag": "0019_delivery_signoff",
+      "breakpoints": true
     }
   ]
 }

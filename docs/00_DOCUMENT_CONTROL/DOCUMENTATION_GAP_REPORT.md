@@ -20,15 +20,15 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents generated from source | 120 |
 | Documents authored by hand | 290 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 70 of 70 |
-| Relationships documented | 177 (63 FK-backed, 114 convention only) |
-| Endpoints documented | 390 of 390 |
-| Endpoints with a linked test | 110 of 390 |
+| Entities documented | 73 of 73 |
+| Relationships documented | 187 (66 FK-backed, 121 convention only) |
+| Endpoints documented | 423 of 423 |
+| Endpoints with a linked test | 115 of 423 |
 | Business rules documented | 30, each naming its enforcing function |
-| Lifecycles with a declared transition table | 1 of 19 |
-| Screens registered and mapped to a capability | 428 of 428 |
-| Screens wired to the live API | 111 of 428 |
-| Test suites catalogued | 193 containing 2229 cases |
+| Lifecycles with a declared transition table | 1 of 20 |
+| Screens registered and mapped to a capability | 429 of 429 |
+| Screens wired to the live API | 138 of 429 |
+| Test suites catalogued | 199 containing 2266 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 5 of 9 |
 | Direct contradictions between registers | 3 |
@@ -45,11 +45,11 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-114 of 177 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+121 of 187 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
-`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 18 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
+`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 19 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
 ### 3. 23 authenticated endpoints state no permission guard in the handler
 
@@ -81,13 +81,13 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 280 endpoints have no test matched to them by path
+### 4. 308 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 277 screens read design fixtures rather than the API
+### 5. 228 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 277 of 428 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 228 of 429 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -136,8 +136,8 @@ Staleness alone would be tolerable. These are direct contradictions — one regi
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
+| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
 | RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
@@ -202,9 +202,9 @@ _None — every required document is present._
 ## Recommended next actions, in order
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
-2. **Declare transition tables for the remaining 18 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
+2. **Declare transition tables for the remaining 19 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 23 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 280 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 308 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 277 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 228 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

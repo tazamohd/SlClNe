@@ -43,6 +43,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -225,6 +226,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-HealthCheckReport",
+    "name": "HealthCheckReport",
+    "title": "HealthCheckReport",
+    "route": "/customer-portal/health-check-report",
+    "surface": "app",
+    "shell": "PortalShell",
+    "module": "jobcards",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "A-designed",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": "project/HealthCheckReport.Mobile.dc.html",
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-AuditLog",
     "name": "AuditLog",
     "title": "AuditLog",
@@ -239,7 +263,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -285,6 +308,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -494,18 +518,17 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "name": "CookiePolicy",
     "title": "CookiePolicy",
     "route": "/cookie-policy",
-    "surface": "app",
+    "surface": "auth",
     "shell": "PublicShell",
     "module": null,
     "category": "PRODUCT",
-    "domain": "admin",
-    "owner": "—",
+    "domain": "auth",
+    "owner": "06",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "MOCK_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -661,7 +684,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -685,7 +707,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -805,7 +826,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -1217,8 +1237,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/FinancialReports.dc.html",
@@ -1239,8 +1258,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/FinancialStatements.dc.html",
@@ -1349,8 +1367,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/GlobalSearch.dc.html",
@@ -1415,8 +1432,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/InsuranceReports.dc.html",
@@ -1805,8 +1821,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/LoanReports.dc.html",
@@ -2251,6 +2266,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -2297,6 +2313,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -2320,6 +2337,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
@@ -2385,6 +2403,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
     "inNav": true,
@@ -2406,6 +2425,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
@@ -3488,6 +3508,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3621,6 +3642,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -3840,6 +3862,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -4647,8 +4670,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkshopInspection.dc.html",
@@ -5216,16 +5238,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5288,15 +5308,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5404,16 +5422,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5452,16 +5468,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5668,16 +5682,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5716,16 +5728,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5740,16 +5750,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6130,7 +6138,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6154,7 +6161,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6200,7 +6206,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -6224,7 +6229,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -6248,7 +6252,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -6274,7 +6277,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6393,7 +6395,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6438,7 +6439,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6840,7 +6840,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6911,7 +6910,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6958,7 +6956,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7073,7 +7070,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7097,7 +7093,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7143,6 +7138,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "TABLET_MISSING",
       "ARABIC_MISSING",
       "MOCK_ONLY",
       "NO_RBAC_MODULE"
@@ -7727,7 +7723,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7751,7 +7746,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7774,7 +7768,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7797,7 +7790,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -7845,7 +7837,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8010,7 +8001,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8129,7 +8119,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8176,7 +8165,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8381,15 +8369,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8404,16 +8390,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8428,15 +8412,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8810,16 +8792,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8834,16 +8814,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8858,16 +8836,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8924,16 +8900,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8948,16 +8922,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8972,16 +8944,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9044,16 +9014,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9068,16 +9036,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9092,16 +9058,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9270,16 +9234,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9338,16 +9300,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9386,16 +9346,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -9673,16 +9631,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "surface": "app",
     "shell": "AppShell",
     "module": null,
-    "category": "PRODUCT",
+    "category": "EXTERNAL_DEPENDENCY",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,

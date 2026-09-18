@@ -3,24 +3,24 @@
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 428,
-    "product": 388,
+    "capabilities": 429,
+    "product": 366,
     "referenceOnly": 28,
-    "externalDependency": 12,
-    "rendered": 428,
+    "externalDependency": 35,
+    "rendered": 429,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 277,
-    "dataBacked": 111,
-    "e2eCovered": 428,
-    "contentAsserted": 428,
+    "mockOnly": 228,
+    "dataBacked": 138,
+    "e2eCovered": 429,
+    "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 157,
-    "hasErrorState": 124,
-    "hasEmptyState": 178,
+    "hasLoadingState": 174,
+    "hasErrorState": 138,
+    "hasEmptyState": 214,
     "tabletVerified": 4,
-    "arabicVerified": 78,
+    "arabicVerified": 74,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -28,26 +28,15 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 110,
-    "crudUpdate": 25,
+    "crudRead": 130,
+    "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 10,
+    "orphanScreenFiles": 0,
     "productionReady": 0
   },
   "unregisteredDesigns": [],
-  "orphanScreenFiles": [
-    "src/screens/public/landing/CommandDeck.tsx",
-    "src/screens/public/landing/PageNav.tsx",
-    "src/screens/public/landing/homepage/SocialProofBand.tsx",
-    "src/screens/public/landing/pages/AccessPage.tsx",
-    "src/screens/public/landing/pages/ChannelPage.tsx",
-    "src/screens/public/landing/pages/GridPage.tsx",
-    "src/screens/public/landing/pages/IndexPage.tsx",
-    "src/screens/public/landing/pages/OriginPage.tsx",
-    "src/screens/public/landing/pages/SystemPage.tsx",
-    "src/screens/public/landing/useLandingMotion.ts"
-  ],
+  "orphanScreenFiles": [],
   "entries": [
     {
       "screenId": "D-AccountLocked",
@@ -142,10 +131,10 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -179,6 +168,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -769,6 +759,83 @@
       ]
     },
     {
+      "screenId": "D-HealthCheckReport",
+      "name": "HealthCheckReport",
+      "title": "HealthCheckReport",
+      "route": "/customer-portal/health-check-report",
+      "surface": "app",
+      "shell": "PortalShell",
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": "project/HealthCheckReport.Mobile.dc.html",
+      "featureMapSource": null,
+      "mobileType": "A-designed",
+      "purpose": "Customer-facing digital vehicle health check: findings, severity and photo/video evidence for one visit",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
       "screenId": "D-AuditLog",
       "name": "AuditLog",
       "title": "AuditLog",
@@ -798,7 +865,7 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -835,7 +902,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -937,10 +1003,10 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -974,6 +1040,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -1359,8 +1426,8 @@
       "purpose": null,
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "DONE",
-      "responsive": "DONE",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
@@ -1620,13 +1687,13 @@
       "name": "CookiePolicy",
       "title": "CookiePolicy",
       "route": "/cookie-policy",
-      "surface": "app",
+      "surface": "auth",
       "shell": "PublicShell",
       "module": null,
       "permissions": [],
       "category": "PRODUCT",
-      "domain": "admin",
-      "owner": "—",
+      "domain": "auth",
+      "owner": "06",
       "source": [
         "design"
       ],
@@ -1676,8 +1743,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "MOCK_ONLY"
       ]
     },
     {
@@ -2120,11 +2186,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insurancePolicies"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2151,7 +2219,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2186,11 +2253,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "loanContracts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2217,7 +2286,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2516,11 +2584,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -2547,7 +2617,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -3934,11 +4003,16 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance",
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -3963,8 +4037,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4004,11 +4077,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4033,8 +4110,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4360,16 +4436,22 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "customers",
+        "invoices",
+        "jobs",
+        "parts",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4395,8 +4477,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4574,8 +4655,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "insurance/claims/summary"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -4604,8 +4687,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -5900,8 +5982,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "loans/summary"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -5930,8 +6014,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -7253,7 +7336,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7292,6 +7375,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -7383,7 +7467,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7422,6 +7506,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -7456,7 +7541,7 @@
       "mobileType": "B-responsive",
       "purpose": "Admin-side supply-chain view",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7495,6 +7580,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
@@ -7665,7 +7751,7 @@
       "mobileType": "B-responsive",
       "purpose": "External procurement view (requisitions)",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7708,6 +7794,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
     },
@@ -7740,7 +7827,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7779,6 +7866,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
@@ -10616,6 +10704,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "accounting/reports/trial-balance",
         "chartOfAccounts",
         "expenses",
         "invoices"
@@ -10886,7 +10975,8 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "invoices"
+        "invoices",
+        "invoices/summary"
       ],
       "crud": {
         "create": false,
@@ -11011,10 +11101,10 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -11048,6 +11138,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -11348,7 +11439,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -11412,12 +11503,12 @@
       "purpose": "Platform control plane (multi-garage tenant admin)",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "DONE",
-      "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -11451,6 +11542,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -11713,6 +11805,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "accounting/tax/return",
         "invoices"
       ],
       "crud": {
@@ -12154,10 +12247,10 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -12191,6 +12284,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -14515,13 +14609,14 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "deliverySignoffs",
         "invoiceLines",
         "invoices"
       ],
       "crud": {
         "create": false,
         "read": true,
-        "update": false,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -14661,17 +14756,20 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "inspectionFindings",
+        "inspectionMedia"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -14695,8 +14793,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -16328,7 +16425,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16375,14 +16472,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: GPS/telematics device"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -16526,7 +16623,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16573,13 +16670,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: GPS/telematics device fleet"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -16852,7 +16949,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -16899,14 +16996,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: telematics provider integration"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -16984,7 +17081,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17031,14 +17128,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: camera + LPR vision service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17578,7 +17675,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17625,14 +17722,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: computer-vision model service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17710,7 +17807,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17757,14 +17854,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: video-calling provider (SDK + credentials)"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -17776,7 +17873,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -17823,14 +17920,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: Stripe API credentials"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -18849,16 +18946,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "suppliers"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -18885,7 +18984,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18915,16 +19013,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -18951,7 +19051,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19042,13 +19141,13 @@
       "mobileType": "B-responsive",
       "purpose": "Overview of B2B parts network activity.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19081,7 +19180,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19108,13 +19206,13 @@
       "mobileType": "B-responsive",
       "purpose": "Tracking sent requests and received quotes.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19147,7 +19245,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19174,13 +19271,13 @@
       "mobileType": "B-responsive",
       "purpose": "Managing requests from other network members.",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19213,7 +19310,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -19245,16 +19341,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders",
+        "requisitions",
+        "suppliers"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19281,7 +19381,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19312,7 +19411,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19378,7 +19477,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19511,7 +19610,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19576,16 +19675,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19612,7 +19713,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19707,16 +19807,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19743,7 +19845,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19774,7 +19875,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19840,7 +19941,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19906,7 +20007,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20106,7 +20207,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20172,7 +20273,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20238,7 +20339,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20304,7 +20405,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20369,7 +20470,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20435,7 +20536,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20501,7 +20602,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20830,16 +20931,19 @@
       "responsive": "PARTIAL",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20865,7 +20969,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20963,7 +21066,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21028,16 +21131,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -21064,7 +21169,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21095,7 +21199,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21159,16 +21263,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "invoices",
+        "vehicles"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -21195,7 +21303,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21426,7 +21533,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21490,16 +21597,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -21526,7 +21635,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21556,16 +21664,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -21592,7 +21702,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21623,7 +21732,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21683,13 +21792,13 @@
       "mobileType": "B-responsive",
       "purpose": "Post-service reviews and direct communication.",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21722,6 +21831,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "TABLET_MISSING",
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
@@ -21951,7 +22061,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -22217,7 +22327,7 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23353,8 +23463,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23384,7 +23496,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23419,8 +23530,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23450,7 +23563,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23485,8 +23597,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23515,7 +23629,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23550,8 +23663,10 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -23580,7 +23695,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23676,16 +23790,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices",
+        "invoices/summary"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -23712,7 +23829,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24135,13 +24251,15 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/reports/trial-balance"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -24171,7 +24289,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24464,16 +24581,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "expenses"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -24500,7 +24619,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24597,16 +24715,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices",
+        "invoices/summary"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -24633,7 +24754,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25176,7 +25296,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25223,13 +25343,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: social platform API credentials"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -25241,7 +25361,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25288,14 +25408,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: social listening provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25307,7 +25427,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -25354,13 +25474,13 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: Google Business Profile API credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -26361,7 +26481,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26408,14 +26528,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26427,7 +26547,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26474,14 +26594,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26493,7 +26613,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26540,14 +26660,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: LLM provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26689,7 +26809,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26736,14 +26856,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: computer-vision damage-assessment model"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26755,7 +26875,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26802,14 +26922,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: trained fraud-detection model service"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26821,7 +26941,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -26868,14 +26988,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: trained model-serving infrastructure"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27019,7 +27139,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27066,14 +27186,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: IoT device fleet + telemetry ingestion"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27085,7 +27205,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27132,14 +27252,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: edge compute infrastructure"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27151,7 +27271,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27198,14 +27318,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: 3D twin model + live sensor feed"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27679,7 +27799,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27726,14 +27846,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: energy-monitoring hardware/sensors"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -27877,7 +27997,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -27924,14 +28044,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: MDM platform integration"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28009,7 +28129,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -28056,14 +28176,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: OCR provider credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -28800,7 +28920,7 @@
       "shell": "AppShell",
       "module": null,
       "permissions": [],
-      "category": "PRODUCT",
+      "category": "EXTERNAL_DEPENDENCY",
       "domain": "featuremap",
       "owner": "08–17",
       "source": [
@@ -28847,14 +28967,14 @@
       "performanceTest": false,
       "inNav": false,
       "status": "IMPLEMENTED",
-      "blockers": [],
+      "blockers": [
+        "EXTERNAL_DEPENDENCY: SMS gateway credential"
+      ],
       "dependencies": [],
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {

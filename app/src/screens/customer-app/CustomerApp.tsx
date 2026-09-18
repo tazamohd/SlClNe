@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { cn } from '@/lib/cn'
 import {
   AppHeroCard,
   AppListRow,
@@ -9,16 +7,18 @@ import {
 import { Avatar } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
-import { Chip, ChipGroup } from '@/components/ui/Chip'
 import { Icon } from '@/components/ui/Icon'
 import { Money } from '@/components/ui/Money'
 import { Timeline, type TimelineStep } from '@/components/ui/Timeline'
-import { useToast } from '@/components/ui/Toast'
+import { WORKSHOP_STAGES } from '@/components/ui/WorkflowStepper'
 import { EmptyState } from '@/components/ui/DataTable'
 import { Loading, ErrorState } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useCollection } from '@/data/useCollection'
+import { fromHalalas } from '@/screens/finance/money'
+import { railIndexFor, type JobRow } from '@/screens/workshop/stages'
+import { isDone, isInProgress } from '@/screens/portals/portal-data'
 
 /** The eleven customer-app screens. They render inside `CustomerAppShell`,
  *  which supplies the 430px frame, header and bottom tab bar. */
@@ -202,244 +202,212 @@ export function CustomerAppAppointments() {
 }
 
 // ── Service tracking ────────────────────────────────────────────────────────
-const TRACKING: TimelineStep[] = [
-  { icon: 'CheckCircle', label: 'Vehicle Checked In', time: 'Jul 18, 9:02 AM', done: true },
-  { icon: 'SearchCheck', label: 'Diagnostics Started', time: 'Jul 18, 9:40 AM', done: true },
-  { icon: 'Wrench', label: 'Repair In Progress', time: 'Jul 19, 8:30 AM', done: true },
-  { icon: 'ShieldCheck', label: 'Quality Check', done: false },
-  { icon: 'Car', label: 'Ready for Delivery', done: false },
-]
+/** The six workshop stages as a vertical rail, filled to wherever the job
+ *  card's real `stage` is — same helper `JobDetail.tsx` uses server-side.
+ *  No timestamps: the audit log holds when each transition happened and no
+ *  endpoint exposes it to a client yet, so a stamp here would be invented. */
+const STAGE_ICONS = ['ClipboardCheck', 'SearchCheck', 'Calculator', 'Wrench', 'ShieldCheck', 'Car'] as const
+
+function timelineFor(stage: string | undefined): TimelineStep[] {
+  const reached = railIndexFor(stage)
+  return WORKSHOP_STAGES.map((label, index) => ({
+    icon: STAGE_ICONS[index] ?? 'Circle',
+    label,
+    done: index <= reached,
+  }))
+}
 
 export function CustomerAppServiceTracking() {
   const { t } = usePreferences()
-  const done = TRACKING.filter((step) => step.done).length
+  const { data: jobs = [], isLoading, isError, error, refetch } = useCollection('jobs')
+  const rows = jobs as readonly JobRow[]
+  /* Row scope is the server's, same as every other customer-app screen: the
+   * jobs a customer session gets back are already theirs. */
+  const active = rows.find(isInProgress) ?? rows.find((row) => !isDone(row))
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (!active) {
+    return (
+      <>
+        <AppSection title={t('Service Tracking')} />
+        <EmptyState
+          icon="Radio"
+          title={t('No active service')}
+          description={t('A job in progress on one of your vehicles appears here.')}
+        />
+      </>
+    )
+  }
+
+  const steps = timelineFor(active.stage)
+  const done = steps.filter((step) => step.done).length
 
   return (
     <>
-      <AppHeroCard
-        icon="Radio"
-        label={t('Active Service')}
-        value="Toyota Camry 2022"
-      >
+      <AppHeroCard icon="Radio" label={t('Active Service')} value={active.veh}>
         <p className="mt-1 text-xs opacity-90" dir="ltr">
-          JC-A3F8B2C1
+          {active.id}
         </p>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/25">
           <div
             className="h-full rounded-full bg-white"
-            style={{ width: `${(done / TRACKING.length) * 100}%` }}
+            style={{ width: `${(done / steps.length) * 100}%` }}
           />
         </div>
         <p className="mt-1.5 text-[11px] opacity-90">
-          {done} / {TRACKING.length} {t('stages complete')}
+          {done} / {steps.length} {t('stages complete')}
         </p>
       </AppHeroCard>
 
       <AppSection title={t('Progress')} />
       <div className="rounded-[14px] border border-border bg-card p-4">
-        <Timeline steps={TRACKING} />
+        <Timeline steps={steps} />
       </div>
     </>
   )
 }
 
 // ── Wallet ──────────────────────────────────────────────────────────────────
-const TRANSACTIONS = [
-  { desc: 'Service Payment', date: 'Jul 21', amount: -1840, icon: 'Wrench' },
-  { desc: 'Wallet Top-up', date: 'Jul 20', amount: 3000, icon: 'Plus' },
-  { desc: 'Parts Order', date: 'Jul 15', amount: -310, icon: 'Package' },
-]
-
+/** No wallet exists behind this screen — no stored balance, top-up or
+ *  transaction ledger table anywhere in the schema or `API_REGISTRY.json`.
+ *  The previous version rendered three invented transactions and summed them
+ *  into a "balance" that was never anything but arithmetic on fixture rows.
+ *  Honest state until a real customer-wallet capability is built: a balance
+ *  column plus a transaction/ledger table and a top-up endpoint. */
 export function CustomerAppWallet() {
   const { t } = usePreferences()
-  const balance = TRANSACTIONS.reduce((sum, txn) => sum + txn.amount, 0)
-
   return (
     <>
-      {/* Balance derives from the transactions, so the header cannot drift from
-          the list underneath it. */}
-      <AppHeroCard icon="Wallet" label={t('Balance')} value={`SAR ${balance.toLocaleString('en-US')}.00`}>
-        <button
-          type="button"
-          disabled
-          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border-none bg-white/20 py-2 font-action text-xs font-semibold text-white opacity-50 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-        >
-          <Icon name="Plus" size={13} />
-          {t('Top Up')}
-        </button>
-      </AppHeroCard>
-
-      <AppSection title={t('Transactions')} />
-      {TRANSACTIONS.map((txn) => (
-        <AppListRow
-          key={`${txn.desc}-${txn.date}`}
-          icon={txn.icon}
-          iconTint={txn.amount < 0 ? 'rgba(249,115,22,.08)' : 'rgba(10,94,215,.08)'}
-          iconColor={txn.amount < 0 ? 'var(--salis-orange)' : 'var(--salis-blue)'}
-          title={t(txn.desc)}
-          subtitle={txn.date}
-          trailing={
-            <span
-              dir="ltr"
-              className={cn(
-                'font-mono text-[13px] font-semibold',
-                txn.amount < 0 ? 'text-salis-orange' : 'text-salis-blue'
-              )}
-            >
-              {txn.amount < 0 ? '−' : '+'} SAR {Math.abs(txn.amount).toLocaleString('en-US')}
-            </span>
-          }
-        />
-      ))}
+      <AppSection title={t('Wallet')} />
+      <EmptyState
+        icon="Wallet"
+        title={t('Wallet not available yet')}
+        description={t(
+          'This system has no customer wallet, balance or top-up ledger yet — nothing here is real, so nothing is shown in its place.'
+        )}
+      />
     </>
   )
 }
 
 // ── Orders ──────────────────────────────────────────────────────────────────
-const ORDERS = [
-  { id: 'ORD-0042', items: 'Oil Filter + Air Filter', date: 'Jul 20, 2026', total: 140, status: 'Delivered' },
-  { id: 'ORD-0041', items: 'Brake Pads (Front)', date: 'Jul 15, 2026', total: 310, status: 'Shipped' },
-  { id: 'ORD-0038', items: 'Spark Plug Set', date: 'Jul 2, 2026', total: 140, status: 'Delivered' },
-]
-
+/** No parts/e-commerce order exists behind this screen either — `parts` is
+ *  workshop inventory, not a customer-facing product catalog, and no
+ *  collection or route anywhere carries a customer purchase, a cart or a
+ *  shipment status. The previous version's three orders were invented in
+ *  full. Honest state until a real order capability (catalog, cart, checkout,
+ *  fulfilment) exists — see `CustomerAppMarketplace`, the same gap. */
 export function CustomerAppOrders() {
   const { t } = usePreferences()
   return (
     <>
       <AppSection title={t('My Orders')} />
-      {ORDERS.map((order) => (
-        <div
-          key={order.id}
-          className="flex flex-col gap-2 rounded-[14px] border border-border bg-card p-3.5"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <span className="font-mono text-[13px] font-semibold text-heading" dir="ltr">
-              {order.id}
-            </span>
-            <Badge
-              background={order.status === 'Delivered' ? 'var(--tint-blue)' : 'var(--tint-bright)'}
-              color={order.status === 'Delivered' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
-            >
-              {t(order.status)}
-            </Badge>
-          </div>
-          <p className="text-[13px] text-body">{t(order.items)}</p>
-          <div className="flex items-center justify-between border-t border-border pt-2 text-[11px] text-muted">
-            <span>{order.date}</span>
-            <Money sar={order.total} className="font-semibold text-heading" />
-          </div>
-        </div>
-      ))}
+      <EmptyState
+        icon="Package"
+        title={t('Order history not available yet')}
+        description={t(
+          'This system has no parts or product order record on the backend — no catalog, cart or purchase history exists yet.'
+        )}
+      />
     </>
   )
 }
 
 // ── Marketplace ─────────────────────────────────────────────────────────────
-const CATEGORIES = ['All', 'Oil & Filters', 'Brakes', 'Tires', 'Battery', 'Accessories'] as const
-
-const PRODUCTS = [
-  { name: 'Oil Filter (Toyota)', price: 45, icon: 'Droplets', cat: 'Oil & Filters' },
-  { name: 'Brake Pads (Front)', price: 310, icon: 'Disc', cat: 'Brakes' },
-  { name: 'Air Filter (Universal)', price: 95, icon: 'Wind', cat: 'Oil & Filters' },
-  { name: 'Spark Plug Set', price: 140, icon: 'Zap', cat: 'Accessories' },
-]
-
+/** No parts/services storefront exists behind this screen. `parts` (workshop
+ *  inventory) has no price-to-customer, catalog or cart concept, and
+ *  `API_REGISTRY.json` has no marketplace/product route — the same "no
+ *  backend concept yet" gap `SOURCE_RECONCILIATION.md` records for the
+ *  parts-network screens. The previous version's four products and category
+ *  chips were invented in full. Honest state until a real catalog, cart and
+ *  checkout capability exists. */
 export function CustomerAppMarketplace() {
   const { t } = usePreferences()
-  const toast = useToast()
-  const [category, setCategory] = useState<string>('All')
-
-  // The design's category chips were decorative; filtering is the point of a
-  // category row.
-  const products =
-    category === 'All' ? PRODUCTS : PRODUCTS.filter((product) => product.cat === category)
-
   return (
     <>
       <AppSection title={t('Marketplace')} />
-      <ChipGroup label={t('Category')}>
-        {CATEGORIES.map((option) => (
-          <Chip
-            key={option}
-            label={t(option)}
-            selected={category === option}
-            onToggle={() => setCategory(option)}
-          />
-        ))}
-      </ChipGroup>
-
-      {products.length === 0 ? (
-        <EmptyState icon="ShoppingBag" title={t('Nothing in this category')} />
-      ) : (
-        <div className="grid grid-cols-2 gap-3">
-          {products.map((product) => (
-            <div
-              key={product.name}
-              className="flex flex-col gap-2 rounded-[14px] border border-border bg-card p-3"
-            >
-              <span className="flex h-16 items-center justify-center rounded-lg bg-[linear-gradient(135deg,rgba(10,94,215,.06),rgba(11,179,255,.06))] text-salis-blue">
-                <Icon name={product.icon} size={24} />
-              </span>
-              <p className="text-[12px] font-semibold leading-tight text-heading">
-                {t(product.name)}
-              </p>
-              <div className="flex items-center justify-between gap-1">
-                <Money sar={product.price} className="text-xs font-bold text-heading" />
-                <button
-                  type="button"
-                  onClick={() => toast.show({ title: t('Added to cart'), description: product.name })}
-                  aria-label={`${t('Add')}: ${t(product.name)}`}
-                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border-none bg-salis-gradient text-white focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-                >
-                  <Icon name="Plus" size={13} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <EmptyState
+        icon="ShoppingBag"
+        title={t('Marketplace not available yet')}
+        description={t(
+          'This system has no parts or services product catalog, cart or checkout on the backend yet.'
+        )}
+      />
     </>
   )
 }
 
 // ── Notifications ───────────────────────────────────────────────────────────
-const NOTIFICATIONS = [
-  { title: 'Service Update', desc: 'Your Toyota Camry repair is in progress', time: '2 min ago', icon: 'Wrench' },
-  { title: 'Appointment Reminder', desc: 'Oil change booked for tomorrow, 9:00 AM', time: '1 hour ago', icon: 'Calendar' },
-  { title: 'Order Delivered', desc: 'ORD-0042 has been delivered', time: 'Yesterday', icon: 'Package' },
-]
-
+/** No notification feed exists behind this screen — no `notifications`
+ *  collection, no delivery/read record, in `registry.ts` or
+ *  `API_REGISTRY.json`. The previous version's three notifications were
+ *  invented in full. Honest state until a real notification capability
+ *  (a feed table plus a delivery mechanism) exists. */
 export function CustomerAppNotifications() {
   const { t } = usePreferences()
   return (
     <>
       <AppSection title={t('Notifications')} />
-      {NOTIFICATIONS.map((notification) => (
-        <AppListRow
-          key={notification.title}
-          icon={notification.icon}
-          title={t(notification.title)}
-          subtitle={t(notification.desc)}
-          trailing={<span className="flex-shrink-0 text-[10px] text-faint">{t(notification.time)}</span>}
-        />
-      ))}
+      <EmptyState
+        icon="Bell"
+        title={t('Notifications not available yet')}
+        description={t('This system has no notification feed or delivery record on the backend yet.')}
+      />
     </>
   )
 }
 
 // ── Insurance / loans ───────────────────────────────────────────────────────
+/** Real endpoints: `GET /api/v1/insurance-policies`, `GET
+ *  /api/v1/loan-contracts`. Row scope is meant to be the server's, the same
+ *  way `CustomerAppVehicles` reads `vehicles` — never trimmed by identity in
+ *  the browser.
+ *
+ *  **That scoping does not exist yet for these two.** Both collections are
+ *  gated on the `accounting` RBAC module (F-034: "no real insurance or loans
+ *  module in the RBAC matrix"), and `accounting` has no `customer` entry in
+ *  `PERMS` at all — unlike `vehicles`/`appointments`/`invoices`/`jobs`/
+ *  `estimates`, which `rbac.ts`'s `PORTAL_SURFACE` comment names as exactly
+ *  what the customer portal is scoped to read. A customer-role session hits
+ *  a 403 here today, which is why `ErrorState` (not a fabricated policy) is
+ *  what a real customer sees until the matrix carries a module — or a
+ *  `customerId`-scoped grant — for these two. No `customerId` is filtered
+ *  client-side either: `SessionUser` carries no customer-record id to filter
+ *  by, and row scoping belongs on the server, not invented here. */
 export function CustomerAppInsurance() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const { data: policies = [], isLoading, isError, error, refetch } = useCollection('insurancePolicies')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
+  if (policies.length === 0) {
+    return (
+      <>
+        <AppSection title={t('Insurance')} />
+        <EmptyState
+          icon="Shield"
+          title={t('No active policy')}
+          description={t('Insurance cover for your vehicles appears here once a policy is on file.')}
+        />
+      </>
+    )
+  }
+
+  const policy = policies.find((p) => p.status === 'active') ?? policies[0]
+
   return (
     <>
       <AppSection title={t('Insurance')} />
-      <AppHeroCard icon="Shield" label={t('Active Policy')} value="Tawuniya Comprehensive">
+      <AppHeroCard icon="Shield" label={t('Active Policy')} value={policy.insurer}>
         <p className="mt-1 text-xs opacity-90">
-          {t('Expires')} · 14 {t('March')} 2027
+          {t('Expires')} · {policy.end}
         </p>
       </AppHeroCard>
-      <AppListRow icon="Car" title="Toyota Camry 2022" subtitle="RUH 4821" />
+      <AppListRow icon="Car" title={policy.vehicleLabel} subtitle={policy.policyNumber} />
       <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} onClick={() => navigate('/customer-app/insurance')} />
       <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} onClick={() => navigate('/customer-app/insurance')} />
     </>
@@ -449,14 +417,45 @@ export function CustomerAppInsurance() {
 export function CustomerAppLoans() {
   const { t } = usePreferences()
   const navigate = useNavigate()
+  const { data: contracts = [], isLoading, isError, error, refetch } = useCollection('loanContracts')
+
+  if (isLoading) return <Loading label="Loading..." />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
   return (
     <>
       <AppSection title={t('Loans')} />
-      <EmptyState
-        icon="Banknote"
-        title={t('No active finance')}
-        description={t('Vehicle finance and instalment plans appear here.')}
-      />
+      {contracts.length === 0 ? (
+        <EmptyState
+          icon="Banknote"
+          title={t('No active finance')}
+          description={t('Vehicle finance and instalment plans appear here.')}
+        />
+      ) : (
+        contracts.map((contract) => (
+          <div
+            key={contract._id ?? contract.contractNumber}
+            className="flex flex-col gap-2 rounded-[14px] border border-border bg-card p-3.5"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono text-[13px] font-semibold text-heading" dir="ltr">
+                {contract.contractNumber}
+              </span>
+              <Badge
+                background={contract.status === 'active' ? 'var(--tint-blue)' : 'var(--tint-bright)'}
+                color={contract.status === 'active' ? 'var(--salis-blue)' : 'var(--salis-blue-bright)'}
+              >
+                {t(contract.status[0].toUpperCase() + contract.status.slice(1))}
+              </Badge>
+            </div>
+            <p className="text-[13px] text-body">{t('Monthly instalment')}</p>
+            <div className="flex items-center justify-between border-t border-border pt-2 text-[11px] text-muted">
+              <span>{contract.start}</span>
+              <Money sar={fromHalalas(contract.monthlyInstalmentHalalas)} className="font-semibold text-heading" />
+            </div>
+          </div>
+        ))
+      )}
       <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/loans')}>
         <Icon name="Plus" size={16} />
         {t('Apply for Finance')}

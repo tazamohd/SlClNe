@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 428 registered screens and all 390 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 429 registered screens and all 423 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -28,7 +28,7 @@ flowchart LR
   OBJ_CAPACITY["Use technician capacity well"]
   OBJ_VISIBILITY["Give owners operational visibility"]
   OBJ_CONTROL["Keep financial control auditable"]
-  CAP_WORKSHOP["Workshop operations<br/>17 screens · 88 endpoints"]
+  CAP_WORKSHOP["Workshop operations<br/>18 screens · 121 endpoints"]
   OBJ_THROUGHPUT --> CAP_WORKSHOP
   CAP_CUSTOMERS["Customer management<br/>3 screens · 20 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERS
@@ -54,9 +54,9 @@ flowchart LR
   OBJ_RETENTION --> CAP_PORTALS
   CAP_AI["AI and automation<br/>10 screens · 8 endpoints"]
   OBJ_THROUGHPUT --> CAP_AI
-  CAP_PLATFORM["Administration and platform<br/>36 screens · 21 endpoints"]
+  CAP_PLATFORM["Administration and platform<br/>35 screens · 21 endpoints"]
   OBJ_CONTROL --> CAP_PLATFORM
-  CAP_IDENTITY["Identity and access<br/>18 screens · 26 endpoints"]
+  CAP_IDENTITY["Identity and access<br/>19 screens · 26 endpoints"]
   OBJ_CONTROL --> CAP_IDENTITY
   CAP_WEBSITE["Public website and acquisition<br/>34 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_WEBSITE
@@ -70,24 +70,24 @@ flowchart LR
 
 | Capability | Name | Objective | Permission modules | Screens | Data-backed | Endpoints | Entities | Roles with access |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 17 | 16 | 88 | 14 | 12 |
+| CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 18 | 17 | 121 | 17 | 12 |
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 3 | 3 | 20 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 4 | 4 | 9 | 1 | 11 |
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 7 | 1 | 13 | 1 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 1 | 1 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 5 | 50 | 9 | 5 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting` | 7 | 7 | 50 | 9 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 5 | 5 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 12 | 10 | 45 | 6 | 7 |
-| CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 9 | 0 | 0 | 10 |
+| CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 5 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 10 | 4 | 8 | 2 | 6 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 36 | 5 | 21 | 4 | 14 |
-| CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 18 | 0 | 26 | 0 | 0 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 6 | 21 | 4 | 14 |
+| CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 0 | 26 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 34 | 0 | 0 | 0 | 0 |
-| CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 3 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 30 | 0 | 0 | 0 |
+| CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 233 | 48 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-111 of 428 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+138 of 429 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -115,9 +115,9 @@ flowchart LR
 | --- | --- |
 | Permission modules | `jobcards`, `appointments`, `estimates` |
 | Screen domains | `workshop` |
-| Screens | 17 (16 data-backed) |
-| Endpoints | 88 |
-| Entities | `appointments`, `declinedJobs`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
+| Screens | 18 (17 data-backed) |
+| Endpoints | 121 |
+| Entities | `appointments`, `declinedJobs`, `deliverySignoffs`, `diagCopies`, `obdDevices`, `diagFindings`, `diagLabour`, `diagParts`, `obdDtcReadings`, `diagStages`, `estimates`, `inspectionFindings`, `inspectionMedia`, `jobCards`, `dtcCodes`, `kbProcedures`, `services` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, frontdesk, callcenter, customer, test |
 | Rule guards | — |
 
@@ -199,7 +199,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `accounting` |
 | Screen domains | — |
-| Screens | 7 (5 data-backed) |
+| Screens | 7 (7 data-backed) |
 | Endpoints | 50 |
 | Entities | `chartOfAccounts`, `expenses`, `journalEntries`, `bankStatements`, `insuranceClaims`, `insurancePolicies`, `loanContracts`, `loanRepayments`, `savedReports` |
 | Roles with any grant | owner, superadmin, manager, accountant, test |
@@ -241,7 +241,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `reports`, `execreports` |
 | Screen domains | — |
-| Screens | 11 (9 data-backed) |
+| Screens | 11 (11 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | owner, superadmin, manager, advisor, qc, parts, accountant, hr, procurement, test |
@@ -297,7 +297,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` |
 | Screen domains | `admin` |
-| Screens | 36 (5 data-backed) |
+| Screens | 35 (6 data-backed) |
 | Endpoints | 21 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, test |
@@ -311,7 +311,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `auth` |
 | Screen domains | `auth` |
-| Screens | 18 (0 data-backed) |
+| Screens | 19 (0 data-backed) |
 | Endpoints | 26 |
 | Entities | — |
 | Roles with any grant | — |
@@ -339,7 +339,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `customerapp` |
-| Screens | 11 (3 data-backed) |
+| Screens | 11 (6 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 233 (30 data-backed) |
+| Screens | 233 (48 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

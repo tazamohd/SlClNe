@@ -338,6 +338,107 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Digital Vehicle Health Check — inspection findings (Sprint 2, P0). Read +
+   * `PATCH` (severity/notes/estimate-line link) through the generic router;
+   * `writable: true` is what turns `PATCH` on, and
+   * `WRITERS.inspectionFindings.create` is `z.never()` — every row is born
+   * from `POST /job-cards/:id/inspection-findings`
+   * (`server/src/routes/inspection.ts`), the bespoke route gated on
+   * `jobcards:e` rather than `jobcards:c`, because the matrix gives
+   * technician view-and-edit on job cards and never create — and creating a
+   * finding while walking an inspection is exactly the technician's own act. */
+  define({
+    key: 'inspectionFindings',
+    path: 'inspection-findings',
+    table: s.inspectionFindings,
+    module: 'jobcards',
+    entity: 'inspection_finding',
+    search: ['category', 'item'],
+    sortable: ['createdAt', 'severity'],
+    filterable: ['jobCardId', 'severity', 'estimateLineId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      jobCardId: row.jobCardId,
+      category: row.category,
+      categoryAr: row.categoryAr ?? null,
+      item: row.item,
+      itemAr: row.itemAr ?? null,
+      severity: row.severity,
+      internalNote: row.internalNote ?? null,
+      customerNote: row.customerNote ?? null,
+      estimateLineId: row.estimateLineId ?? null,
+      recordedBy: row.recordedBy ?? null,
+    }),
+  }),
+
+  /* The evidence attached to a finding above. Read + `PATCH` (annotations
+   * only) through the generic router; `WRITERS.inspectionMedia.create` is
+   * `z.never()` — every row is born from the multipart upload route, the only
+   * place a file's bytes can arrive. `url` never exposes the on-disk
+   * `storageKey`; it points at the gated streaming route instead. */
+  define({
+    key: 'inspectionMedia',
+    path: 'inspection-media',
+    table: s.inspectionMedia,
+    module: 'jobcards',
+    entity: 'inspection_media',
+    search: [],
+    sortable: ['createdAt'],
+    filterable: ['findingId', 'jobCardId', 'kind', 'stage'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      findingId: row.findingId,
+      jobCardId: row.jobCardId,
+      kind: row.kind,
+      stage: row.stage,
+      mimeType: row.mimeType,
+      sizeBytes: row.sizeBytes,
+      annotations: row.annotations ?? [],
+      uploadedBy: row.uploadedBy ?? null,
+      /* Relative to the API root, no leading slash — the same convention
+       * every bespoke action path in the app's `api.ts`/`inspection-api.ts`
+       * uses (`jobs/:id/transition`, `inspection-findings/:id/media`), so the
+       * client can join it onto `API_URL` (which already carries `/api/v1`)
+       * without knowing this is a special case. */
+      url: `inspection-media/${row.id}/file`,
+    }),
+  }),
+
+  /* Customer sign-off at delivery (Sprint 2, P0). Read + `PATCH` (checklist,
+   * odometer) through the generic router; `WRITERS.deliverySignoffs.create`
+   * is `z.never()` — every row is born from
+   * `POST /job-cards/:id/delivery-signoff` (`server/src/routes/delivery.ts`),
+   * the multipart route that is the only place a signature image's bytes can
+   * arrive. `url` never exposes the on-disk `storageKey`; it points at the
+   * gated streaming route instead, same convention as `inspectionMedia`. */
+  define({
+    key: 'deliverySignoffs',
+    path: 'delivery-signoffs',
+    table: s.deliverySignoffs,
+    module: 'jobcards',
+    entity: 'delivery_signoff',
+    search: [],
+    sortable: ['createdAt'],
+    filterable: ['jobCardId'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      jobCardId: row.jobCardId,
+      signedByName: row.signedByName,
+      agreedAt: row.agreedAt ? new Date(row.agreedAt as string | Date).toISOString() : null,
+      checklist: row.checklist ?? {},
+      odometerOut: row.odometerOut ?? null,
+      mimeType: row.mimeType,
+      sizeBytes: row.sizeBytes,
+      url: `delivery-signoffs/${row.id}/signature`,
+    }),
+  }),
+
   /* ------------------------------------------------------------- invoicing */
   define({
     key: 'invoices',
@@ -1526,4 +1627,10 @@ export const REDACTIONS: Readonly<Record<string, readonly { ruleField: string; r
   payrollLines: [
     { ruleField: 'Employee salary', rowKeys: ['grossPay', 'allowances', 'deductions', 'netPay'] },
   ],
+  /* DVHC (Sprint 2, P0). RLS's `r_self` narrows `inspection_findings` to a
+   * customer's own job card — they are meant to read their own vehicle's
+   * findings — but `internal_note` is the technician's shop-only note, not
+   * theirs to see. Row visibility and column visibility are answering
+   * different questions here, same as `customers`' phone/email above. */
+  inspectionFindings: [{ ruleField: 'Inspection internal notes', rowKeys: ['internalNote'] }],
 }

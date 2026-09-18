@@ -57,6 +57,12 @@ const schema = z.object({
    *  minute from one address without being abuse. */
   PUBLIC_LEAD_RATE_LIMIT: z.coerce.number().int().min(1).default(5),
 
+  /** Where inspection-media files (`server/src/storage/media.ts`) are written.
+   *  Relative paths resolve against the server package root. Not committed —
+   *  `var/` is gitignored the same way `.env` is, and a real deployment points
+   *  this at a persistent volume. */
+  MEDIA_STORAGE_DIR: z.string().default('var/inspection-media'),
+
   /** The ZATCA VAT rate, in basis points, as the tax-return endpoint reports it
    *  (§A37). Configuration, not a literal in a handler: a Saudi rate change is a
    *  deployment setting, and the figure the return endpoint echoes always names

@@ -1,24 +1,24 @@
 {
   "generatedAt": "2026-09-18",
   "totals": {
-    "capabilities": 428,
-    "product": 388,
+    "capabilities": 429,
+    "product": 366,
     "referenceOnly": 28,
-    "externalDependency": 12,
-    "rendered": 428,
+    "externalDependency": 35,
+    "rendered": 429,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 277,
-    "dataBacked": 111,
-    "e2eCovered": 428,
-    "contentAsserted": 428,
+    "mockOnly": 228,
+    "dataBacked": 138,
+    "e2eCovered": 429,
+    "contentAsserted": 429,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 157,
-    "hasErrorState": 124,
-    "hasEmptyState": 178,
+    "hasLoadingState": 174,
+    "hasErrorState": 138,
+    "hasEmptyState": 214,
     "tabletVerified": 4,
-    "arabicVerified": 78,
+    "arabicVerified": 74,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -26,20 +26,20 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 110,
-    "crudUpdate": 25,
+    "crudRead": 130,
+    "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
-    "orphanScreenFiles": 10,
+    "orphanScreenFiles": 0,
     "productionReady": 0
   },
   "bySurface": {
     "auth": {
-      "total": 28,
-      "rendered": 28,
+      "total": 29,
+      "rendered": 29,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 28,
+      "e2e": 29,
       "dataBacked": 0
     },
     "app": {
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 314,
-      "dataBacked": 100
+      "dataBacked": 124
     },
     "call-center": {
       "total": 2,
@@ -64,7 +64,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "portal": {
       "total": 8,
@@ -109,11 +109,11 @@
   },
   "byDomain": {
     "auth": {
-      "total": 28,
-      "rendered": 28,
+      "total": 29,
+      "rendered": 29,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 28,
+      "e2e": 29,
       "dataBacked": 0
     },
     "admin": {
@@ -122,7 +122,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 19,
-      "dataBacked": 5
+      "dataBacked": 6
     },
     "ai": {
       "total": 10,
@@ -138,7 +138,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 22,
-      "dataBacked": 21
+      "dataBacked": 22
     },
     "accounting": {
       "total": 23,
@@ -146,7 +146,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 23,
-      "dataBacked": 19
+      "dataBacked": 23
     },
     "portals": {
       "total": 13,
@@ -170,7 +170,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 11,
-      "dataBacked": 3
+      "dataBacked": 6
     },
     "ui": {
       "total": 28,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 30
+      "dataBacked": 48
     }
   },
   "byModule": {
@@ -278,6 +278,14 @@
       "e2e": 5,
       "dataBacked": 5
     },
+    "jobcards": {
+      "total": 11,
+      "rendered": 11,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 11,
+      "dataBacked": 10
+    },
     "audit": {
       "total": 1,
       "rendered": 1,
@@ -292,7 +300,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 7,
-      "dataBacked": 5
+      "dataBacked": 7
     },
     "execreports": {
       "total": 5,
@@ -300,7 +308,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 5,
-      "dataBacked": 3
+      "dataBacked": 5
     },
     "admin": {
       "total": 4,
@@ -356,7 +364,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 4,
-      "dataBacked": 1
+      "dataBacked": 2
     },
     "hr": {
       "total": 2,
@@ -365,14 +373,6 @@
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
-    },
-    "jobcards": {
-      "total": 10,
-      "rendered": 10,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 10,
-      "dataBacked": 9
     },
     "vehicles": {
       "total": 4,
