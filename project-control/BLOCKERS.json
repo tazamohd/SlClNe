@@ -1,22 +1,14 @@
 {
   "generatedAt": "2026-09-18",
-  "open": 2,
+  "open": 1,
   "blockers": [
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "228 rendered capabilities are mock-only",
+      "title": "226 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
-    },
-    {
-      "id": "BLK-010",
-      "severity": "MEDIUM",
-      "title": "10 screen files are unreachable from any route",
-      "detail": "src/screens/public/landing/CommandDeck.tsx, src/screens/public/landing/PageNav.tsx, src/screens/public/landing/homepage/SocialProofBand.tsx, src/screens/public/landing/pages/AccessPage.tsx, src/screens/public/landing/pages/ChannelPage.tsx, src/screens/public/landing/pages/GridPage.tsx, src/screens/public/landing/pages/IndexPage.tsx, src/screens/public/landing/pages/OriginPage.tsx, src/screens/public/landing/pages/SystemPage.tsx, src/screens/public/landing/useLandingMotion.ts",
-      "owner": "02",
-      "wave": "W0"
     }
   ]
 }

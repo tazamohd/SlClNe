@@ -299,6 +299,33 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Canned Jobs — predefined, priced service packages (build-order item 5).
+   * Read-only through the generic router, same as `estimates` itself: no
+   * `writable` here, because every write needs the same full-replace-lines-
+   * and-recompute-price transaction `estimates`' bespoke routes already run,
+   * which `server/src/routes/canned-jobs.ts` provides at this same path. */
+  define({
+    key: 'cannedJobs',
+    path: 'canned-jobs',
+    table: s.cannedJobs,
+    module: 'estimates',
+    entity: 'canned_job',
+    search: ['name', 'category'],
+    sortable: ['name', 'priceHalalas', 'createdAt'],
+    filterable: ['active', 'category'],
+    defaultSort: { column: 'name', dir: 'asc' },
+    present: (row) => ({
+      ...meta(row),
+      name: row.name,
+      nameAr: row.nameAr ?? null,
+      category: row.category ?? null,
+      description: row.description ?? null,
+      active: row.active,
+      priceHalalas: count(row.priceHalalas),
+      lineCount: count(row.lineCount),
+    }),
+  }),
+
   /* Declined Job Tracking & Follow-Up (Sprint 1, P0). Read + follow-up-`PATCH`
    * only — `writable: true` is what turns `PATCH` on at all (§`registerOne`),
    * and `WRITERS.declinedJobs.create` is `z.never()`, so a direct
@@ -674,11 +701,14 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     sortable: ['name', 'reach', 'conversions', 'createdAt'],
     filterable: ['type', 'status'],
     defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
     present: (row) => ({
       ...meta(row),
       name: row.name,
       type: row.type,
       status: row.status,
+      start: dateUS(row.startDate),
+      end: dateUS(row.endDate),
       reach: count(row.reach),
       opens: count(row.opens),
       clicks: count(row.clicks),

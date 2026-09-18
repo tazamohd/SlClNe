@@ -262,6 +262,22 @@ export interface DeliverySignoffRow extends EntityMeta {
   url: string
 }
 
+/** A canned job — a predefined, priced service package (build-order item
+ *  5), as `GET /canned-jobs` presents it. No design fixture — the capability
+ *  is new — so the shape is declared here rather than inferred, like
+ *  `DeclinedJobRow`. Read-only through the collection except for `PATCH`;
+ *  creation is only ever `POST /canned-jobs`
+ *  (`screens/workshop/canned-job-api.ts`), never this collection's `POST`. */
+export interface CannedJobRow extends EntityMeta {
+  name: string
+  nameAr: string | null
+  category: string | null
+  description: string | null
+  active: boolean
+  priceHalalas: number
+  lineCount: number
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -551,6 +567,7 @@ export interface Repository {
   inspectionFindings: Collection<InspectionFindingRow>
   inspectionMedia: Collection<InspectionMediaRow>
   deliverySignoffs: Collection<DeliverySignoffRow>
+  cannedJobs: Collection<CannedJobRow>
   customers: Collection<(typeof T.CUSTOMERS)[number]>
   fleets: Collection<(typeof T.FLEETS)[number]>
   parts: Collection<(typeof T.PARTS)[number]>
@@ -615,6 +632,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   inspectionFindings: 'inspection-findings',
   inspectionMedia: 'inspection-media',
   deliverySignoffs: 'delivery-signoffs',
+  cannedJobs: 'canned-jobs',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -867,6 +885,13 @@ export const mockRepository: Repository = {
    * refuses it outright in that mode rather than routing through this
    * collection. */
   deliverySignoffs: fixture<DeliverySignoffRow>([]),
+  /* No design fixture — canned jobs are new (build-order item 5). An empty
+   * read-only mock is the honest fixture, same reasoning as declinedJobs:
+   * every row is born from `POST /canned-jobs`, which the fixture
+   * repository cannot perform (`isLive` is false) —
+   * `screens/workshop/canned-job-api.ts` refuses it outright in that mode
+   * rather than routing through this collection. */
+  cannedJobs: fixture<CannedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),

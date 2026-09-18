@@ -22,12 +22,22 @@ const schema = z.object({
    *  endpoint names these as the missing keys. */
   OBD_BRIDGE_URL: z.string().default(''),
   OBD_BRIDGE_TOKEN: z.string().default(''),
+  /** The campaign-dispatch transport — the SMS/WhatsApp provider a "Send"
+   *  action on a marketing campaign would call. Same idiom as `OBD_TRANSPORT`:
+   *  `unconfigured` (default) refuses, `mock` is the development/test
+   *  transport and flags every response `mock: true`. There is no `live`
+   *  value because a live provider needs an adapter this repo does not ship. */
+  MESSAGING_TRANSPORT: z.enum(['unconfigured', 'mock']).default('unconfigured'),
+  MESSAGING_PROVIDER_URL: z.string().default(''),
+  MESSAGING_PROVIDER_TOKEN: z.string().default(''),
 })
 
 export interface IntegrationConfig extends z.infer<typeof schema> {
   /** True only when a real bridge is wired — never true today, because no live
    *  adapter exists. Recorded so the status surface has one honest answer. */
   obdConfigured: boolean
+  /** Same honest-false as `obdConfigured`, for the messaging transport. */
+  messagingConfigured: boolean
 }
 
 export function loadIntegrationConfig(source: NodeJS.ProcessEnv = process.env): IntegrationConfig {
@@ -42,5 +52,6 @@ export function loadIntegrationConfig(source: NodeJS.ProcessEnv = process.env): 
     /* A live bridge would need the URL and token *and* a live adapter. The
      * adapter does not exist, so this is false regardless — the honest state. */
     obdConfigured: false,
+    messagingConfigured: false,
   }
 }
