@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 192,
-    "cases": 2242,
+    "suites": 195,
+    "cases": 2262,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 243,
-      "UNIT_OR_API": 1102,
+      "UNIT_OR_API": 1122,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2010,6 +2010,26 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-CUSTOMER-HEALTH-CHECK-REPORT-TEST-TSX",
+      "file": "app/tests/component/customer-health-check-report.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "CustomerHealthCheckReport (fixture build)"
+      ],
+      "cases": [
+        "states the report is unavailable without a live API, not a fabricated finding",
+        "states the report is unavailable when no job id is on the link"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [
+        "/customer-portal/health-check-report"
+      ],
+      "touchesRoles": [
+        "customer"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-DATATABLE-TEST-TSX",
       "file": "app/tests/component/DataTable.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2441,6 +2461,25 @@
       "touchesRoles": [
         "owner",
         "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-INSPECTION-TEST-TSX",
+      "file": "app/tests/component/workshop-inspection.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopInspection (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job, not a fabricated one",
+        "lists every checklist item across all six systems",
+        "is honestly read-only without a live API, not a click that silently does nothing"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "technician"
       ]
     },
     {
@@ -4745,7 +4784,7 @@
         "does not recognise UNKNOWN_ROLE.id as a valid RoleId",
         "returns UNKNOWN_ROLE from roleMeta for any unrecognised id",
         "reports the defence-in-depth fields as not live",
-        "reports the five live rules as live",
+        "reports the six live rules as live",
         "treats an unknown field as live — it is not on the defence-in-depth list",
         "DEFENCE_IN_DEPTH_FIELDS lists exactly two fields",
         "treats a zero-ceiling role as authority without money — any amount is refused",
@@ -5759,6 +5798,47 @@
         "technician",
         "advisor",
         "accountant"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-INSPECTION-FINDINGS-TEST-TS",
+      "file": "server/tests/inspection-findings.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "creating a finding",
+        "updating a finding",
+        "attaching photo evidence",
+        "the customer-facing health check report",
+        "tenant isolation"
+      ],
+      "cases": [
+        "lets a technician record a finding on their own assigned job",
+        "defaults severity to \"ok\" when the checklist point passed",
+        "refuses a technician recording a finding on a job that is not theirs",
+        "refuses a role that holds create but not edit on job cards",
+        "rejects a body missing the required fields",
+        "cannot be created directly through the generic collection route",
+        "moves severity and notes through the generic PATCH",
+        "stores an uploaded photo and streams the identical bytes back",
+        "honours ?stage=after",
+        "refuses a file type outside the DVHC allowlist",
+        "refuses a technician the evidence for a job that is not theirs",
+        "shows a customer their own vehicle's findings, never the internal note",
+        "refuses a customer another customer's job report",
+        "redacts the internal note on the generic collection route too, even though the row is visible",
+        "does not serve another organization's finding"
+      ],
+      "caseCount": 15,
+      "touchesPaths": [
+        "/inspection-findings"
+      ],
+      "touchesRoles": [
+        "technician",
+        "frontdesk",
+        "advisor",
+        "customer",
+        "manager"
       ]
     },
     {

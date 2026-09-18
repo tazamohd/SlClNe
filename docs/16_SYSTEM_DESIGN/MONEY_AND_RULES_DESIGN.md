@@ -81,4 +81,4 @@ A rule that lives only in a component is a rule a second component will contradi
 
 ## Where a rule is missing
 
-18 of 19 lifecycles have no declared transition table, so the legality of a status change on an invoice, a purchase order or a claim rests on whatever the route handler checks. For documents that move money that is a control gap, and it is listed in the gap report as one.
+19 of 20 lifecycles have no declared transition table, so the legality of a status change on an invoice, a purchase order or a claim rests on whatever the route handler checks. For documents that move money that is a control gap, and it is listed in the gap report as one.

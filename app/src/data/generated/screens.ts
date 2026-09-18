@@ -5,16 +5,21 @@ import type { ScreenMeta } from '../types'
 /** Every designed screen with its canonical route. Parsed from
  *  handoff/SCREEN_MAP.md — 214 screens.
  *
- *  One entry, `DeclinedJobs`, is hand-added rather than ported: Declined Job
- *  Tracking & Follow-Up (Sprint 1, P0) has no design source, so there was
- *  nothing for `port-design-data.mjs` to port. `npm run registry`
- *  (`build-registry.mjs`) still discovers it correctly from this route plus
- *  `src/screens/workshop/DeclinedJobs.tsx`; leaving it here rather than
+ *  Two entries are hand-added rather than ported, for the same reason: no
+ *  design source exists for either capability, so there was nothing for
+ *  `port-design-data.mjs` to port.
+ *
+ *  - `DeclinedJobs` — Declined Job Tracking & Follow-Up (Sprint 1, P0).
+ *  - `HealthCheckReport` — the customer-facing DVHC report
+ *    (Sprint 2, P0).
+ *
+ *  `npm run registry` (`build-registry.mjs`) still discovers each correctly
+ *  from its route plus its screen file; leaving them here rather than
  *  inventing a `.dc.html` source is the honest choice (§3, §A25 — provenance
  *  is never misrepresented). A future design-bundle regeneration should fold
- *  this in properly. The array below must stay valid JSON (`build-registry.mjs`
+ *  these in properly. The array below must stay valid JSON (`build-registry.mjs`
  *  parses it with `JSON.parse`, not a JS evaluator), so this note lives here
- *  rather than as an inline comment next to the entry itself. */
+ *  rather than as an inline comment next to either entry. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -75,6 +80,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/declined-jobs",
     "hasMobile": false,
     "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue"
+  },
+  {
+    "name": "HealthCheckReport",
+    "route": "/customer-portal/health-check-report",
+    "hasMobile": true,
+    "purpose": "Customer-facing digital vehicle health check: findings, severity and photo/video evidence for one visit"
   },
   {
     "name": "AuditLog",

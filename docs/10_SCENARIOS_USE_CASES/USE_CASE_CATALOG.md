@@ -15,7 +15,7 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-62 behavioural use cases.
+64 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -51,6 +51,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-ESTIMATES-ID-REQUEST-APPROVAL-OTP | POST /estimates/:id/request-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | — | `server/src/routes/estimate-otp.ts` |
 | UC-POST-ESTIMATES-ID-VERIFY-APPROVAL-OTP | POST /estimates/:id/verify-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimate-otp.ts` |
 | UC-POST-FLEETS-ID-RENEW | POST /fleets/:id/renew | owner, manager, advisor, frontdesk, callcenter +1 | customers:e | — | — | — | yes | `server/src/routes/fleets.ts` |
+| UC-POST-INSPECTION-FINDINGS-ID-MEDIA | POST /inspection-findings/:id/media | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/inspection.ts` |
 | UC-POST-INSURANCE-CLAIMS | POST /insurance-claims | accountant, test | accounting:c | — | — | — | yes | `server/src/routes/insurance-claims.ts` |
 | UC-POST-INSURANCE-CLAIMS-ID-APPROVE | POST /insurance-claims/:id/approve | owner, accountant, test | accounting:a | yes | — | — | yes | `server/src/routes/insurance-claims.ts` |
 | UC-POST-INSURANCE-CLAIMS-ID-PAY | POST /insurance-claims/:id/pay | accountant, test | accounting:e | — | — | — | — | `server/src/routes/insurance-claims.ts` |
@@ -62,6 +63,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-PATCH-INVOICES-ID | PATCH /invoices/:id | owner, manager, accountant, test | invoices:e | — | — | — | yes | `server/src/routes/invoices.ts` |
 | UC-POST-INVOICES-ID-ISSUE | POST /invoices/:id/issue | owner, manager, accountant, test | invoices:e | yes | — | — | — | `server/src/routes/invoices.ts` |
 | UC-POST-INVOICES-ID-PAYMENTS | POST /invoices/:id/payments | owner, manager, advisor, accountant, frontdesk +1 | payments:c | — | — | — | yes | `server/src/routes/invoices.ts` |
+| UC-POST-JOB-CARDS-ID-INSPECTION-FINDINGS | POST /job-cards/:id/inspection-findings | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/inspection.ts` |
 | UC-POST-JOBS-ID-ASSIGN | POST /jobs/:id/assign | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-JOBS-ID-TRANSITION | POST /jobs/:id/transition | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-LEAVE-REQUESTS-ID-APPROVE | POST /leave-requests/:id/approve | owner, hr, test | hr:a | — | — | — | yes | `server/src/routes/leave.ts` |

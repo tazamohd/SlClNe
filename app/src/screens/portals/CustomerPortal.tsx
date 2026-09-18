@@ -366,6 +366,15 @@ function ActiveServiceCard({ job }: { job: JobRow }) {
           )
         })}
       </ol>
+      {reached >= 1 ? (
+        <Link
+          to={`/customer-portal/health-check-report?id=${encodeURIComponent(job.id)}`}
+          className="flex items-center gap-1.5 self-start rounded-lg bg-white/15 px-2.5 py-1.5 text-[11px] font-semibold text-white no-underline hover:bg-white/25 hover:no-underline"
+        >
+          <Icon name="ClipboardCheck" size={13} />
+          {t('View Vehicle Health Check')}
+        </Link>
+      ) : null}
     </section>
   )
 }

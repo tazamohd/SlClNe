@@ -373,6 +373,58 @@ export const declinedJobs = pgTable(
   }),
 )
 
+/** Digital Vehicle Health Check — inspection findings (Sprint 2, P0). One row
+ *  per checklist point on one job card; see `packages/contract/src/entities/inspection.ts`
+ *  for why `internalNote` and `customerNote` are kept apart. */
+export const inspectionFindings = pgTable(
+  'inspection_findings',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    category: varchar('category', { length: 64 }).notNull(),
+    categoryAr: varchar('category_ar', { length: 64 }),
+    item: varchar('item', { length: 120 }).notNull(),
+    itemAr: varchar('item_ar', { length: 120 }),
+    /** The DVHC ladder: ok, monitor, attention, urgent, unsafe. */
+    severity: varchar('severity', { length: 16 }).notNull().default('ok'),
+    internalNote: text('internal_note'),
+    customerNote: text('customer_note'),
+    /** The estimate line this finding was priced onto, once one exists. */
+    estimateLineId: varchar('estimate_line_id', { length: ULID_LENGTH }),
+    recordedBy: varchar('recorded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byJob: index('inspection_findings_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Photo/video evidence attached to an inspection finding. The bytes live on
+ *  disk (`server/src/storage/media.ts`); `storageKey` is the only pointer to
+ *  them a row carries — it is never returned to a client, which instead reads
+ *  `GET /inspection-media/:id/file`. */
+export const inspectionMedia = pgTable(
+  'inspection_media',
+  {
+    ...tenant,
+    findingId: varchar('finding_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the finding so RLS and queries never need the join
+     *  just to know which job card a piece of evidence belongs to. */
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    kind: varchar('kind', { length: 8 }).notNull(),
+    stage: varchar('stage', { length: 8 }).notNull().default('before'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+    /** Arrow/box/text overlays, in the media's own 0–1 fractional coordinates. */
+    annotations: jsonb('annotations').notNull().default(sql`'[]'::jsonb`),
+    uploadedBy: varchar('uploaded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byFinding: index('inspection_media_finding_idx').on(t.orgId, t.findingId),
+    byJob: index('inspection_media_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
 export const invoices = pgTable(
   'invoices',
   {
