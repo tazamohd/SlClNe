@@ -21,6 +21,7 @@ import { readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
+import { newContext } from './lib/browser.mjs'
 
 const HERE = resolve(fileURLToPath(new URL('.', import.meta.url)))
 const DESIGN = resolve(HERE, '../../project')
@@ -72,7 +73,7 @@ const norm = (s) => s.replace(/\s+/g, ' ').toLowerCase()
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH ?? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
 })
-const context = await browser.newContext()
+const context = await newContext(browser)
 await context.addInitScript(() => window.localStorage.setItem('salis-role', 'owner'))
 
 const reports = []
