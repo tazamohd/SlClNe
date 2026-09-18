@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 240,
-    "dataBacked": 127,
+    "mockOnly": 238,
+    "dataBacked": 129,
     "e2eCovered": 430,
     "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
@@ -28,7 +28,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 126,
+    "crudRead": 128,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -4090,11 +4090,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4119,8 +4123,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -4160,11 +4163,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "chartOfAccounts",
+        "expenses",
+        "invoices"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -4189,8 +4196,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {

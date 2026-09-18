@@ -16,8 +16,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 240 |
-| data backed | 127 |
+| mock only | 238 |
+| data backed | 129 |
 | e2e covered | 430 |
 | content asserted | 430 |
 | rendered without assertion | 0 |
@@ -33,7 +33,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 32 |
-| crud read | 126 |
+| crud read | 128 |
 | crud update | 27 |
 | crud delete | 24 |
 | unregistered designs | 0 |
@@ -59,7 +59,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 28 | 28 |
-| Administration | — | G9 | `████████████████████` 100% | 21 | 21 |
+| Administration | 25 | G9 | `████████████████████` 100% | 21 | 21 |
 | AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |

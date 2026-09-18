@@ -631,7 +631,7 @@
         "D-JournalEntries",
         "D-TaxManagement"
       ],
-      "dataBackedScreens": 5,
+      "dataBackedScreens": 7,
       "entities": [
         "chartOfAccounts",
         "expenses",

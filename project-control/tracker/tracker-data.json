@@ -817,7 +817,7 @@
       "id": "admin",
       "label": "Administration",
       "group": "G9",
-      "agent": "—",
+      "agent": "25",
       "items": [
         {
           "name": "AdvancedSettings",

@@ -9,8 +9,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 240,
-    "dataBacked": 127,
+    "mockOnly": 238,
+    "dataBacked": 129,
     "e2eCovered": 430,
     "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
@@ -26,7 +26,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 32,
-    "crudRead": 126,
+    "crudRead": 128,
     "crudUpdate": 27,
     "crudDelete": 24,
     "unregisteredDesigns": 0,
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 316,
-      "dataBacked": 113
+      "dataBacked": 115
     },
     "call-center": {
       "total": 2,
@@ -146,7 +146,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 23,
-      "dataBacked": 19
+      "dataBacked": 21
     },
     "portals": {
       "total": 13,
@@ -300,7 +300,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 7,
-      "dataBacked": 5
+      "dataBacked": 7
     },
     "execreports": {
       "total": 5,
