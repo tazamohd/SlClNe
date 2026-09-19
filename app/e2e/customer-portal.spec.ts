@@ -35,11 +35,17 @@ test.describe('Customer Portal (Golden Path 19)', () => {
       expect(text).toContain('My Vehicles')
     })
 
-    test('customer app garage loads', async ({ page }) => {
+    /* "Add Vehicle" is deliberately gone: `vehicles` grants `customer` `v` and
+     * no create, so the button could only ever navigate to the route it was
+     * already on — which is exactly what it did. The screen now names who
+     * registers a vehicle instead, and this asserts that sentence rather than
+     * the label of a control that did nothing. */
+    test('customer app garage loads and says who registers a vehicle', async ({ page }) => {
       await gotoReady(page, '/customer-app/garage')
       const text = await bodyText(page)
       expect(text).toContain('My Garage')
-      expect(text).toContain('Add Vehicle')
+      expect(text).toContain('Vehicles are registered by the workshop')
+      await expect(page.getByRole('button', { name: 'Add Vehicle' })).toHaveCount(0)
     })
 
     test('customer app appointments loads', async ({ page }) => {

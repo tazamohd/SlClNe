@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 229,
-    "cases": 2524,
+    "suites": 230,
+    "cases": 2529,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1414,
+      "UNIT_OR_API": 1419,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -315,7 +315,7 @@
         "customer portal dashboard loads with the active job and the garage",
         "customer portal booking page loads",
         "customer app home loads with welcome and quick actions",
-        "customer app garage loads",
+        "customer app garage loads and says who registers a vehicle",
         "customer app appointments loads",
         "customer app service tracking loads",
         "customer app wallet has no data source yet",
@@ -2108,6 +2108,34 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-CUSTOMER-APP-BOOKING-ENTRY-TEST-TSX",
+      "file": "app/tests/component/customer-app-booking-entry.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Customer-app booking entry point",
+        "Customer-app controls for actions a customer cannot perform"
+      ],
+      "cases": [
+        "sends \"Book Service\" to a screen that can actually book, not back to itself",
+        "does not route the customer to the appointments list it is already showing",
+        "offers no \"Add Vehicle\" control, and says who registers a vehicle",
+        "offers no finance application, and says where finance is arranged",
+        "offers no claim filing or document download, and says who files a claim"
+      ],
+      "caseCount": 5,
+      "touchesPaths": [
+        "/customer-app/appointments",
+        "/customer-portal/booking",
+        "/customer-app/garage",
+        "/customer-app/loans",
+        "/customer-app/insurance"
+      ],
+      "touchesRoles": [
+        "customer"
       ]
     },
     {

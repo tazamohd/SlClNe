@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-229 spec files containing 2524 test cases.
+230 spec files containing 2529 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 154 | 1414 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 155 | 1419 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 48 | 630 |
-| app | 138 | 1517 |
+| app | 139 | 1522 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -111,6 +111,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/crm-lead-fleet-detail.test.tsx` | UNIT_OR_API | 18 | owner |
 | `app/tests/component/crm-vehicles.test.tsx` | UNIT_OR_API | 7 | owner, qc |
 | `app/tests/component/crm-write-gaps.test.tsx` | UNIT_OR_API | 5 | owner |
+| `app/tests/component/customer-app-booking-entry.test.tsx` | UNIT_OR_API | 5 | customer |
 | `app/tests/component/customer-app-booking.test.tsx` | UNIT_OR_API | 3 | customer |
 | `app/tests/component/customer-health-check-report.test.tsx` | UNIT_OR_API | 2 | customer |
 | `app/tests/component/dashboard-role-adaptive.test.tsx` | UNIT_OR_API | 12 | owner, superadmin, test, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement |
