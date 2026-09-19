@@ -8,7 +8,7 @@
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import * as T from '../../app/src/data/generated/tables'
-import { WAREHOUSE_ZONE_FIXTURE } from '../../app/src/data/repository'
+import { TRAINING_COURSE_FIXTURE, WAREHOUSE_ZONE_FIXTURE } from '../../app/src/data/repository'
 import { SEED_COHERENCE_EXTRAS } from '../scripts/seed'
 import { COLLECTIONS } from '../src/registry'
 import { startHarness, type Harness } from './harness'
@@ -34,6 +34,15 @@ const FIXTURES: Record<string, readonly unknown[]> = {
    *  zones the seed inserts. Comparing against that fixture here is what keeps
    *  the two copies from drifting. */
   warehouseZones: WAREHOUSE_ZONE_FIXTURE,
+  /** Training courses (BLK-004), the other table with a real app-side fixture:
+   *  Golden Path 14 asserts a course title in a build with no API, so the app
+   *  ships the same eight courses the seed inserts. Comparing against that
+   *  fixture here is what keeps the two copies from drifting. */
+  trainingCourses: TRAINING_COURSE_FIXTURE,
+  /** No enrolment fixture: an enrolment names an employee, and the app's
+   *  `employees` fixture is empty by design, so every seeded enrolment is a
+   *  declared coherence extra. */
+  trainingEnrolments: [],
   technicians: T.TECHS,
   services: T.SERVICES,
   leads: T.LEADS,

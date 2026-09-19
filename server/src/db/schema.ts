@@ -1418,6 +1418,15 @@ export const employees = pgTable(
   },
   (t) => ({
     numberPerOrg: uniqueIndex('employees_org_number_idx').on(t.orgId, t.employeeNumber),
+    /* `id` is already the primary key, so this adds no uniqueness. It exists to
+     * be a legal foreign-key *target*: `training_enrolments` references
+     * `(org_id, id)` rather than `(id)` alone (BLK-004,
+     * `drizzle/0026_training_lms.sql`), which makes that reference same-tenant
+     * by construction — `org_id` is part of the key, so no row can point at
+     * another organization's employee whatever a writer does. Postgres accepts
+     * only a constraint as an FK target, which is why this is declared here and
+     * created as `ALTER TABLE ... ADD CONSTRAINT` in the migration. */
+    orgScopedId: uniqueIndex('employees_org_id_key').on(t.orgId, t.id),
     byOrg: index('employees_org_idx').on(t.orgId, t.branchId, t.status),
   }),
 )
@@ -1507,6 +1516,88 @@ export const leaveRequests = pgTable(
   },
   (t) => ({
     byEmployee: index('leave_requests_employee_idx').on(t.orgId, t.employeeId, t.status),
+  }),
+)
+
+/** Training courses (BLK-004) — the staff course catalogue `TrainingLMS.tsx`
+ *  rendered as a hardcoded eight-row array in which every `enrolled` head count
+ *  and every `completion` percentage was invented, and from which it then
+ *  computed its KPIs.
+ *
+ *  This table records only what is a property of the *course*: code, title,
+ *  subject, how long it takes to sit, and where it is in its publish/archive
+ *  lifecycle. It carries **no head count and no completion percentage** — both
+ *  are aggregates over `training_enrolments`, so a column here would be a
+ *  second, drifting answer to a question the roster already answers, and would
+ *  be wrong the moment anyone enrolled or finished.
+ *
+ *  `duration_minutes` is the one recorded number, and correctly so: nothing in
+ *  the roster knows how long a course takes. Zero means "not stated", which the
+ *  screen renders as a dash rather than `0 hrs`. `published_at`/`archived_at`
+ *  are derived from the status transition in `writers.ts`, never posted.
+ *  Gated on `hr`. */
+export const trainingCourses = pgTable(
+  'training_courses',
+  {
+    ...tenant,
+    /** `TRN-0001` — the catalogue code, and what `training_enrolments`
+     *  references. */
+    code: varchar('code', { length: 16 }).notNull(),
+    title: varchar('title', { length: 200 }).notNull(),
+    titleAr: varchar('title_ar', { length: 200 }),
+    /** `safety` · `technical` · `customer_service` · `compliance`. */
+    category: varchar('category', { length: 24 }).notNull().default('safety'),
+    durationMinutes: integer('duration_minutes').notNull().default(0),
+    /** `draft` · `active` · `archived` — the course's own lifecycle, and
+     *  nothing about how full or how complete it is. */
+    status: varchar('status', { length: 16 }).notNull().default('draft'),
+    publishedAt: timestamp('published_at', { withTimezone: true }),
+    archivedAt: timestamp('archived_at', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('training_courses_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('training_courses_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Training enrolments (BLK-004) — one row per (employee, course). This is the
+ *  table that makes a course's head count and completion rate *derived*: the
+ *  count is the enrolments naming a course, and the completion is how many of
+ *  them reached `completed`. Neither number is stored anywhere, so neither can
+ *  drift from the roster it describes.
+ *
+ *  Both references are composite in `drizzle/0026_training_lms.sql` —
+ *  `(org_id, course_code)` → `training_courses (org_id, code)` and
+ *  `(org_id, employee_id)` → `employees (org_id, id)` — so each is same-tenant
+ *  by construction rather than by a writer remembering to check.
+ *  `employee_name` is read from the referenced employee at enrolment, the
+ *  denormalised shape `timesheets`/`leave_requests` already carry.
+ *  `completed_at` is derived from the status transition and cleared when the
+ *  enrolment moves back out of `completed`. `withdrawn` is a state rather than
+ *  a deletion, and is excluded from both the head count and the completion
+ *  denominator. Gated on `hr`. */
+export const trainingEnrolments = pgTable(
+  'training_enrolments',
+  {
+    ...tenant,
+    courseCode: varchar('course_code', { length: 16 }).notNull(),
+    employeeId: varchar('employee_id', { length: ULID_LENGTH }).notNull(),
+    employeeName: varchar('employee_name', { length: 200 }).notNull(),
+    /** `enrolled` · `in_progress` · `completed` · `withdrawn`. */
+    status: varchar('status', { length: 16 }).notNull().default('enrolled'),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    /* One live enrolment per employee per course: a head count derived from the
+     * roster is only trustworthy if the roster cannot hold the same person
+     * twice. Partial, so a soft-deleted enrolment does not block a new one. */
+    oncePerEmployee: uniqueIndex('training_enrolments_org_course_employee_idx')
+      .on(t.orgId, t.courseCode, t.employeeId)
+      .where(sql`${t.deletedAt} is null`),
+    byOrg: index('training_enrolments_org_idx').on(t.orgId, t.branchId, t.status),
+    byEmployee: index('training_enrolments_employee_idx').on(t.orgId, t.employeeId),
   }),
 )
 

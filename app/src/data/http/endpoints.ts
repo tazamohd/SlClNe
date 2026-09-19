@@ -63,6 +63,12 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   payrollLines: '/hr/payroll-lines',
   leaveRequests: '/hr/leave-requests',
   timesheets: '/hr/timesheets',
+  /* BLK-004. The real server paths, as `server/src/registry.ts` mounts them —
+   * the `/hr/` prefix on the four rows above predates those collections and is
+   * not copied here, because a guessed URL is exactly what this map exists to
+   * prevent. */
+  trainingCourses: '/training/courses',
+  trainingEnrolments: '/training/enrolments',
 
   // ─── Insurance & Loans ──────────────────────────────────────────────────
   insuranceClaims: '/insurance/claims',

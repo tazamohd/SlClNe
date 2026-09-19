@@ -1479,6 +1479,80 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Training courses (BLK-004) — the staff course catalogue `TrainingLMS.tsx`
+   * rendered as a hardcoded array whose `enrolled` head counts and `completion`
+   * percentages were invented, and whose KPIs were then computed from them.
+   *
+   * What is presented here is only what a course row records. There is no
+   * `enrolled` and no `completion` field, deliberately: both are aggregates
+   * over `trainingEnrolments`, and the screen counts the roster, so neither can
+   * drift from it. `durationMinutes` is recorded, because how long a course
+   * takes to sit is a property of the course and nothing in the roster knows it.
+   *
+   * Writable through the generic router under the existing `hr` module — a flat
+   * catalogue whose only moves are publish and archive, so no bespoke router. */
+  define({
+    key: 'trainingCourses',
+    path: 'training/courses',
+    table: s.trainingCourses,
+    module: 'hr',
+    entity: 'training_course',
+    search: ['code', 'title', 'titleAr'],
+    sortable: ['code', 'title', 'category', 'durationMinutes', 'status', 'createdAt'],
+    filterable: ['status', 'category'],
+    defaultSort: { column: 'code', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      title: row.title,
+      titleAr: row.titleAr ?? null,
+      category: row.category,
+      durationMinutes: count(row.durationMinutes),
+      status: row.status,
+      publishedAt: row.publishedAt ? new Date(row.publishedAt as string | Date).toISOString() : null,
+      archivedAt: row.archivedAt ? new Date(row.archivedAt as string | Date).toISOString() : null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
+  /* Training enrolments (BLK-004) — one row per (employee, course). This is the
+   * collection a course's head count and completion rate are *counted from*:
+   * `enrolled` is the rows naming a course (minus the withdrawn), and
+   * `completion` is how many of those are `completed`. Because the aggregate is
+   * computed from these rows, it cannot disagree with them.
+   *
+   * `employeeName` is echoed so a roster reads without a second request — the
+   * denormalised shape `timesheets`, `leaveRequests` and `payrollLines` already
+   * carry — and is written from the referenced employee rather than posted.
+   * There is deliberately no `courseTitle`: the screen holds the catalogue it
+   * groups by, so copying the title onto every enrolment would create a second
+   * owner of the text and one more thing to go stale. Filter by `courseCode` or
+   * `employeeId`. Gated on `hr`. */
+  define({
+    key: 'trainingEnrolments',
+    path: 'training/enrolments',
+    table: s.trainingEnrolments,
+    module: 'hr',
+    entity: 'training_enrolment',
+    search: ['employeeName', 'courseCode'],
+    sortable: ['employeeName', 'courseCode', 'status', 'completedAt', 'createdAt'],
+    filterable: ['courseCode', 'employeeId', 'status'],
+    defaultSort: { column: 'createdAt', dir: 'asc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      courseCode: row.courseCode,
+      employeeId: row.employeeId,
+      employeeName: row.employeeName,
+      status: row.status,
+      completedAt: row.completedAt ? new Date(row.completedAt as string | Date).toISOString() : null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
   /* --------------------------------------------------------------------- AI */
   define({
     key: 'aiAgents',

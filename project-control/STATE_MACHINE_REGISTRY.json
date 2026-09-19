@@ -8,9 +8,9 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only lifecycles marked DECLARED_TRANSITION_TABLE have machine-readable legal transitions. STATE_SET_ONLY entries have a state enum but no declared transition table; their legal moves live in route handlers and rule guards, and are documented as such rather than invented.",
   "totals": {
-    "machines": 26,
+    "machines": 28,
     "withDeclaredTransitions": 1,
-    "stateSetOnly": 25
+    "stateSetOnly": 27
   },
   "machines": [
     {
@@ -473,6 +473,41 @@
       "terminal": [],
       "note": "No transition table is declared for this lifecycle. Legal moves are enforced, where they are enforced, by a guard in packages/contract/src/rules or a status check in the route handler.",
       "evidence": "packages/contract/src/entities/procurement.ts"
+    },
+    {
+      "id": "SM-TRAINING-trainingCourseStatus",
+      "kind": "STATE_SET_ONLY",
+      "entity": "training",
+      "name": "trainingCourseStatus",
+      "statement": "The course's own lifecycle: a draft nobody can be sent on yet, a published course, and one retired from the catalogue. Deliberately *not* anything about how full or how complete it is — that is derived from enrolments.",
+      "states": [
+        "draft",
+        "active",
+        "archived"
+      ],
+      "transitions": [],
+      "transitionsDeclared": false,
+      "terminal": [],
+      "note": "No transition table is declared for this lifecycle. Legal moves are enforced, where they are enforced, by a guard in packages/contract/src/rules or a status check in the route handler.",
+      "evidence": "packages/contract/src/entities/training.ts"
+    },
+    {
+      "id": "SM-TRAINING-trainingEnrolmentStatus",
+      "kind": "STATE_SET_ONLY",
+      "entity": "training",
+      "name": "trainingEnrolmentStatus",
+      "statement": "Where one employee has got to on one course. `withdrawn` is a real state rather than a deletion, because someone who started and stopped is a fact about the course. It is excluded from the head count and from the completion denominator: a withdrawn enrolment is not an enrolment any more, and counting it would quietly depress every percentage.",
+      "states": [
+        "enrolled",
+        "in_progress",
+        "completed",
+        "withdrawn"
+      ],
+      "transitions": [],
+      "transitionsDeclared": false,
+      "terminal": [],
+      "note": "No transition table is declared for this lifecycle. Legal moves are enforced, where they are enforced, by a guard in packages/contract/src/rules or a status check in the route handler.",
+      "evidence": "packages/contract/src/entities/training.ts"
     },
     {
       "id": "SM-VEHICLE-vehicleStatus",

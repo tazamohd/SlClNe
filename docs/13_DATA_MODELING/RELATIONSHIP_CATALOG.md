@@ -12,7 +12,7 @@
 
 ## The one thing to read first
 
-Of 207 relationships in the model, **76 are backed by a database foreign key** and **131 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 212 relationships in the model, **78 are backed by a database foreign key** and **134 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -192,6 +192,11 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-LEAVE-REQUESTS-ORG-ID | `leave_requests` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-LEAVE-REQUESTS-BRANCH-ID | `leave_requests` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-LEAVE-REQUESTS-EMPLOYEE-ID | `leave_requests` | `employee_id` | `employees` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-TRAINING-COURSES-ORG-ID | `training_courses` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-TRAINING-COURSES-BRANCH-ID | `training_courses` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-TRAINING-ENROLMENTS-ORG-ID | `training_enrolments` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-TRAINING-ENROLMENTS-BRANCH-ID | `training_enrolments` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-TRAINING-ENROLMENTS-EMPLOYEE-ID | `training_enrolments` | `employee_id` | `employees` | many-to-one | mandatory | **INFERRED** | yes |
 | REL-OBD-DEVICES-ORG-ID | `obd_devices` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | no |
 | REL-OBD-DEVICES-BRANCH-ID | `obd_devices` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-OBD-DTC-READINGS-ORG-ID | `obd_dtc_readings` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |

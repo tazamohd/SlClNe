@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 164 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 167 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -325,7 +325,7 @@
 | Technician Portal Guides | `/technician-portal-guides` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Portal Software | `/technician-portal-software` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Management | `/technician-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Technician Leaderboards | `/technician-leaderboards` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Technician Leaderboards | `/technician-leaderboards` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Technician Performance | `/technician-performance` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Mobile | `/technician-mobile` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | Technician App Home | `/technician-app-home` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
@@ -364,7 +364,7 @@
 | Timeclock Payroll | `/timeclock-payroll` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Payroll Management | `/payroll-management` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Leave Requests | `/leave-requests` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
-| Training LMS | `/training-lms` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Training LMS | `/training-lms` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Wearable Integration | `/wearable-integration` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Trial Balance | `/trial-balance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
@@ -399,7 +399,7 @@
 | Google My Business | `/google-my-business` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Chat | `/chat` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Support Chat Dashboard | `/support-chat-dashboard` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Compliance Management | `/compliance-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ZATCA Settings | `/zatca-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | VAT Settings | `/vat-settings` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |

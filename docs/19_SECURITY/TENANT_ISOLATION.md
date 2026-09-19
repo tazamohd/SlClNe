@@ -14,7 +14,7 @@
 
 Isolation is a database policy, not a `WHERE` clause. A `WHERE` clause is something a developer has to remember; a policy is something the database applies whether they remembered or not.
 
-**78 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 77 tenant-scoped tables, **0 lack a policy**.
+**80 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 79 tenant-scoped tables, **0 lack a policy**.
 
 ## Request context
 
@@ -129,6 +129,12 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `p_tenant` | `warehouse_zones` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
 | `r_branch` | `warehouse_zones` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
 | `r_self` | `warehouse_zones` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `training_courses` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `training_courses` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `training_courses` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `training_enrolments` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `training_enrolments` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `training_enrolments` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
 
 ## Triggers
 
@@ -172,6 +178,8 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `parts_network_quotations_bump_version` | `parts_network_quotations` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
 | `parts_network_orders_bump_version` | `parts_network_orders` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
 | `warehouse_zones_bump_version` | `warehouse_zones` | `bump_version` | `server/drizzle/0025_warehouse_zones.sql` |
+| `training_courses_bump_version` | `training_courses` | `bump_version` | `server/drizzle/0026_training_lms.sql` |
+| `training_enrolments_bump_version` | `training_enrolments` | `bump_version` | `server/drizzle/0026_training_lms.sql` |
 
 ## Sequence: a request that reads tenant data
 

@@ -183,6 +183,13 @@
       "when": 1790258200000,
       "tag": "0025_warehouse_zones",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1790344600000,
+      "tag": "0026_training_lms",
+      "breakpoints": true
     }
   ]
 }

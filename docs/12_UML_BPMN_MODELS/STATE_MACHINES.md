@@ -12,7 +12,7 @@
 
 ## What is and is not declared
 
-26 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 25 declare a set of states with no table of legal moves.
+28 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 27 declare a set of states with no table of legal moves.
 
 That distinction matters more than it looks. Where a transition table exists, an illegal move is refused by a single guard that every caller goes through. Where only a state enum exists, the legal moves are whatever the route handlers happen to check — which may be complete, may be partial, and cannot be verified by reading one file. Drawing a confident diagram for those would assert a guarantee the code does not make, so this document shows their states and names what actually guards them.
 
@@ -228,6 +228,22 @@ Guarded by: `checkPurchaseOrderApprovable` (packages/contract/src/rules/procurem
 States: `draft` · `approved` · `sent` · `receiving` · `received` · `closed`
 
 Guarded by: `checkPurchaseOrderApprovable` (packages/contract/src/rules/procurement.ts), `checkReceive` (packages/contract/src/rules/procurement.ts), `purchaseOrderTotals` (packages/contract/src/rules/procurement.ts), `requisitionEstimatedTotalHalalas` (packages/contract/src/rules/procurement.ts).
+
+### training — `trainingCourseStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/training.ts`
+
+States: `draft` · `active` · `archived`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
+
+### training — `trainingEnrolmentStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/training.ts`
+
+States: `enrolled` · `in_progress` · `completed` · `withdrawn`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
 
 ### vehicle — `vehicleStatus`
 

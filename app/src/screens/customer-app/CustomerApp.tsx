@@ -340,11 +340,27 @@ export function CustomerAppMarketplace() {
 }
 
 // ── Notifications ───────────────────────────────────────────────────────────
-/** No notification feed exists behind this screen — no `notifications`
- *  collection, no delivery/read record, in `registry.ts` or
- *  `API_REGISTRY.json`. The previous version's three notifications were
- *  invented in full. Honest state until a real notification capability
- *  (a feed table plus a delivery mechanism) exists. */
+/** Still the honest state, but for a narrower reason than it used to be. A
+ *  `notifications` collection now exists (BLK-004, `drizzle/0023`) and
+ *  `admin/NotificationCenter.tsx` and `notifications/NotificationsList.tsx`
+ *  both read it — so the old comment here ("no `notifications` collection")
+ *  is no longer the truth. What is missing is an **audience**: every row on
+ *  that table is a shop-operational alert filed for staff (a job moving
+ *  stage, an appointment awaiting confirmation, an overdue invoice, a part
+ *  below its reorder level), the collection is gated on the `dashboard`
+ *  module, which grants `customer` nothing, and `drizzle/0014`'s `r_self`
+ *  policy denies the `self` scope outright on this table. Nothing on the row
+ *  says who it is addressed to, so there is no predicate a customer-scoped
+ *  read could narrow by.
+ *
+ *  Wiring this screen to that collection would therefore mean either handing
+ *  the customer role a `dashboard` grant or trimming staff rows off in the
+ *  browser — the first a real leak of internal operations to customers, the
+ *  second a leak with a filter drawn over it. A customer feed needs a
+ *  recipient concept on the table (and an RLS predicate that enforces it),
+ *  plus something that actually files customer-addressed notifications;
+ *  neither exists. The previous version's three notifications were invented
+ *  in full, so this stays the honest state until that audience model lands. */
 export function CustomerAppNotifications() {
   const { t } = usePreferences()
   return (
@@ -353,7 +369,9 @@ export function CustomerAppNotifications() {
       <EmptyState
         icon="Bell"
         title={t('Notifications not available yet')}
-        description={t('This system has no notification feed or delivery record on the backend yet.')}
+        description={t(
+          'The workshop notification feed is staff-only, and no customer-addressed notifications exist on the backend yet.'
+        )}
       />
     </>
   )
