@@ -5590,4 +5590,14 @@ export const AR_OVERRIDES: Record<string, string> = {
   "This screen lists what the workshop offers. Appointments are not booked here — the booking form checks which times are still free and confirms with the workshop.":
     "تعرض هذه الشاشة ما تقدمه الورشة. لا تُحجز المواعيد هنا — نموذج الحجز يتحقق من الأوقات المتاحة ويؤكد الموعد مع الورشة.",
   "Go to booking": "الانتقال إلى الحجز",
+  // Customer-app: the actions this surface does not perform, and who does them
+  // instead. Four buttons used to navigate to the route they were already on;
+  // none could be re-pointed, because a customer holds no grant that would let
+  // the destination answer anything but 403.
+  "Vehicles are registered by the workshop. Ask them to add one and it appears here.":
+    "تُسجَّل المركبات من قبل الورشة. اطلب منهم إضافة مركبة وستظهر هنا.",
+  "Claims are filed by the workshop or your insurer, not from this app. Policy documents are not held here.":
+    "تُقدَّم المطالبات من قبل الورشة أو شركة التأمين، وليس من هذا التطبيق. ولا تُحفظ مستندات الوثيقة هنا.",
+  "Finance is arranged with the workshop or a lender. Applications are not taken in this app.":
+    "يُرتَّب التمويل مع الورشة أو جهة التمويل. ولا تُستقبل الطلبات في هذا التطبيق.",
 }

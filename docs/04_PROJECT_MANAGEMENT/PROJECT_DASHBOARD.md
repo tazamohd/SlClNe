@@ -30,7 +30,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Arabic verified | 122 of 436 | `STATUS.json` |
 | Tablet verified | 4 of 436 | `STATUS.json` |
 | API endpoints | 528 | the route files |
-| Test cases | 2526 | the spec files |
+| Test cases | 2529 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 0 of 44 | `FINDINGS.json` |

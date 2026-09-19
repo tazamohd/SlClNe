@@ -28,7 +28,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Lifecycles with a declared transition table | 1 of 28 |
 | Screens registered and mapped to a capability | 436 of 436 |
 | Screens wired to the live API | 175 of 436 |
-| Test suites catalogued | 230 containing 2526 cases |
+| Test suites catalogued | 230 containing 2529 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -129,8 +129,8 @@ The registries under `project-control/` are each generated at their own time by 
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
-| `project-control/BASELINE.json` | 2026-09-03 | 16 |
+| `project-control/DEPENDENCIES.json` | 2026-08-11 | 40 |
+| `project-control/BASELINE.json` | 2026-09-03 | 17 |
 
 _No cross-register contradictions detected._
 
