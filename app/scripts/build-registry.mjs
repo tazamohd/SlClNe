@@ -538,6 +538,13 @@ const REPORT_HOOK_ENDPOINT = {
  *  call of its own to be credited by. */
 const PROCUREMENT_API_CALL = /\bprocurementApi\(\)/
 
+/** `workshop/inspection-api.ts`'s `fetchHealthCheckReport` is the same shape
+ *  again: a real `GET /jobs/:id/health-check-report` call, live-only,
+ *  rejecting with a named error rather than a fixture fallback when it
+ *  isn't. `CustomerHealthCheckReport.tsx` reads it via `useQuery`, so
+ *  `SEAM_CALL` never sees a collection key to credit. */
+const HEALTH_CHECK_API_CALL = /\bfetchHealthCheckReport\(/
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -598,8 +605,10 @@ const dataBackedScreens = (() => {
       for (const call of reportCalls) keys.add(REPORT_HOOK_ENDPOINT[call[1]])
       const usesProcurementApi = PROCUREMENT_API_CALL.test(body)
       if (usesProcurementApi) { keys.add('requisitions'); keys.add('purchaseOrders') }
+      const usesHealthCheckApi = HEALTH_CHECK_API_CALL.test(body)
+      if (usesHealthCheckApi) keys.add('inspectionFindings')
       const crud = crudFrom(calls, body)
-      if (reportCalls.length || usesProcurementApi) crud.read = true
+      if (reportCalls.length || usesProcurementApi || usesHealthCheckApi) crud.read = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
@@ -629,7 +638,7 @@ const dataBackedScreens = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src) && !PROCUREMENT_API_CALL.test(src)) continue
+        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src) && !PROCUREMENT_API_CALL.test(src) && !HEALTH_CHECK_API_CALL.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
           const prev = map.get(name)

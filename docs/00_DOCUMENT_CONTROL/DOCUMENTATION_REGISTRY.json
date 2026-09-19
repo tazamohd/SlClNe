@@ -1407,8 +1407,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/WORKSHOP.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 18512,
-      "lines": 273,
+      "bytes": 18367,
+      "lines": 272,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1979,7 +1979,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 62855,
+      "bytes": 62852,
       "lines": 445,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

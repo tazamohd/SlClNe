@@ -16,9 +16,9 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 38 |
+| mock only | 37 |
 | no backend | 129 |
-| data backed | 148 |
+| data backed | 149 |
 | e2e covered | 436 |
 | content asserted | 436 |
 | rendered without assertion | 0 |

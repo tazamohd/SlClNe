@@ -23,8 +23,8 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 436 | `STATUS.json` |
 | Rendering | 436 of 436 | `STATUS.json` |
-| Wired to the API | 148 of 436 | `STATUS.json` |
-| Reading design fixtures | 38 of 436 | `STATUS.json` |
+| Wired to the API | 149 of 436 | `STATUS.json` |
+| Reading design fixtures | 37 of 436 | `STATUS.json` |
 | End-to-end covered | 436 of 436 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 119 of 436 | `STATUS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**38 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**37 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 38 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 37 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
 | BLK-013 | HIGH | 129 rendered capabilities have no backend collection yet | They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it. | 05 |
 
 ## Open risks

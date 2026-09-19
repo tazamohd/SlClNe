@@ -18,7 +18,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
-| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 26 | 128 | 18 | 25 of 26 |
+| Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 26 | 128 | 18 | 26 of 26 |
 | Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 4 | 20 | 2 | 4 of 4 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 5 | 9 | 1 | 5 of 5 |
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 8 | 13 | 1 | 3 of 8 |
