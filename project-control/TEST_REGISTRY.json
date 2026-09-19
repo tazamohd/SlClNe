@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 224,
-    "cases": 2492,
+    "suites": 220,
+    "cases": 2448,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1382,
+      "UNIT_OR_API": 1338,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2320,29 +2320,6 @@
       ]
     },
     {
-      "id": "TS-APP-TESTS-COMPONENT-NOTIFICATIONS-LIST-TEST-TSX",
-      "file": "app/tests/component/notifications-list.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "NotificationsList (fixture build)"
-      ],
-      "cases": [
-        "lists a seeded notification and marks it as read",
-        "dismisses a notification after confirming, and it leaves the feed",
-        "marks every unread notification read in one bulk action",
-        "hides every write action from a role with no dashboard write grant"
-      ],
-      "caseCount": 4,
-      "touchesPaths": [
-        "/notifications"
-      ],
-      "touchesRoles": [
-        "advisor",
-        "supplier"
-      ]
-    },
-    {
       "id": "TS-APP-TESTS-COMPONENT-PARTS-CATALOG-SEAM-TEST-TSX",
       "file": "app/tests/component/parts-catalog-seam.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2514,28 +2491,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-COMPONENT-TECHNICIAN-LEADERBOARDS-TEST-TSX",
-      "file": "app/tests/component/technician-leaderboards.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "TechnicianLeaderboards (fixture build)"
-      ],
-      "cases": [
-        "ranks technicians by the completed jobs actually assigned to them",
-        "moves a technician up the board when one more of their jobs is completed",
-        "averages the customer feedback left on their jobs, and shows what it is over",
-        "leaves a technician with nothing completed off the board and says so",
-        "shows the empty state, not a ranking, when no completed job is assigned to anyone",
-        "does not present a metric it cannot derive: no efficiency, and money left to the server"
-      ],
-      "caseCount": 6,
-      "touchesPaths": [],
-      "touchesRoles": [
-        "owner"
-      ]
-    },
-    {
       "id": "TS-APP-TESTS-COMPONENT-TECHNICIAN-MY-JOBS-TEST-TSX",
       "file": "app/tests/component/technician-my-jobs.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2573,29 +2528,6 @@
       "caseCount": 7,
       "touchesPaths": [],
       "touchesRoles": []
-    },
-    {
-      "id": "TS-APP-TESTS-COMPONENT-TRAINING-LMS-TEST-TSX",
-      "file": "app/tests/component/training-lms.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "TrainingLMS (fixture build)"
-      ],
-      "cases": [
-        "shows a course with no enrolments as a real zero and no completion figure",
-        "derives a course head count and completion from the enrolments on it",
-        "leaves a withdrawal out of both the head count and the denominator",
-        "moves the course figure when an enrolment is marked complete on the screen",
-        "raises the head count when an employee is enrolled through the screen",
-        "hides every write control from a role with no hr grant"
-      ],
-      "caseCount": 6,
-      "touchesPaths": [],
-      "touchesRoles": [
-        "hr",
-        "technician"
-      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-WARRANTY-MANAGEMENT-TEST-TSX",
@@ -3063,6 +2995,23 @@
       "caseCount": 11,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-DASHBOARD-WELCOME-PAGE-TEST-TSX",
+      "file": "app/tests/dashboard-welcome-page.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WelcomePage"
+      ],
+      "cases": [
+        "counts real fixture rows rather than showing fixed numbers"
+      ],
+      "caseCount": 1,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "manager"
+      ]
     },
     {
       "id": "TS-APP-TESTS-FINANCE-INTEGRITY-TEST-TS",
@@ -7046,86 +6995,6 @@
       ],
       "touchesRoles": [
         "owner"
-      ]
-    },
-    {
-      "id": "TS-SERVER-TESTS-TECHNICIAN-LEADERBOARD-TEST-TS",
-      "file": "server/tests/technician-leaderboard.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "server",
-      "describes": [
-        "GET /reports/technician-leaderboard"
-      ],
-      "cases": [
-        "counts a technician’s completed jobs, and only the completed ones",
-        "sums the invoiced value of the completed jobs, and leaves drafts out",
-        "averages the customer feedback left on their jobs, in tenths, and null when none",
-        "carries no rank, no efficiency and no stored rating — and orders by completed jobs",
-        "says how much was counted, and the totals agree with the rows",
-        "is tenant-scoped: a neighbour org sees none of this org’s technicians or money",
-        "refuses the roles that may see the technician roster but not staff performance",
-        "allows the roles the hr module already grants view to"
-      ],
-      "caseCount": 8,
-      "touchesPaths": [
-        "/api/v1/reports/technician-leaderboard"
-      ],
-      "touchesRoles": [
-        "manager",
-        "owner",
-        "advisor",
-        "technician",
-        "qc",
-        "frontdesk",
-        "supplier",
-        "hr",
-        "accountant"
-      ]
-    },
-    {
-      "id": "TS-SERVER-TESTS-TRAINING-LMS-TEST-TS",
-      "file": "server/tests/training-lms.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "server",
-      "describes": [
-        "the seeded course catalogue",
-        "the head count and completion are counted from the roster",
-        "an enrolment can only name a real published course and a real employee",
-        "the course catalogue through the generic router",
-        "tenant and scope boundaries"
-      ],
-      "cases": [
-        "serves the eight courses, keyed by their catalogue code",
-        "records a duration and a lifecycle, and no head count or completion at all",
-        "spreads the seeded enrolments so each course has its own real figures",
-        "serves a course roster on its own, so a screen need not read all of them",
-        "follows the roster: enrolling somebody is what raises the head count",
-        "reads the learner name from the employee rather than taking it from the body",
-        "refuses a course this tenant does not have",
-        "refuses a draft course — nobody can be sent on a course still being written",
-        "refuses an archived course, whose existing roster still stands",
-        "refuses an employee who does not exist",
-        "refuses the same employee twice on one course, so a count is a head count",
-        "refuses a role with no hr grant at all",
-        "creates a course as a draft, assigning a counted code when none is supplied",
-        "derives publishedAt and archivedAt from the lifecycle move, and clears them",
-        "ignores a posted publishedAt: only the transition writes it",
-        "refuses a course whose head count somebody tries to set",
-        "refuses a negative duration and an unknown category",
-        "refuses a second course on a code the tenant already uses",
-        "is reachable by its catalogue code as well as its id",
-        "shows a customer on the portal neither the catalogue nor the roster",
-        "shows a technician nothing either — a training record is personnel data"
-      ],
-      "caseCount": 21,
-      "touchesPaths": [
-        "/training/enrolments",
-        "/training/courses"
-      ],
-      "touchesRoles": [
-        "hr",
-        "technician",
-        "customer"
       ]
     },
     {
