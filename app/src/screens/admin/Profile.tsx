@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Avatar } from '@/components/ui/Avatar'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -10,18 +10,15 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-/** The server's `MIN_PASSWORD_LENGTH` (`server/src/auth/password.ts`). A
- *  client that accepted a shorter password would only find out it was
- *  refused after the round trip — this form field-blocks it locally too, like
- *  every other password form in the app. */
-const MIN_PASSWORD_LENGTH = 12
+/** The server's own `MIN_PASSWORD_LENGTH` (`server/src/auth/password.ts`) —
+ *  checking a shorter one here would pass a form the server then 400s. */
+const MIN_PW = 12
 
 function validatePassword(t: (s: string) => string, current: string, next: string, confirm: string) {
   const errors: { current?: string; next?: string; confirm?: string } = {}
   if (!current) errors.current = t('Required')
   if (!next) errors.next = t('Required')
-  else if (next.length < MIN_PASSWORD_LENGTH)
-    errors.next = `${t('Must be at least')} ${MIN_PASSWORD_LENGTH} ${t('characters')}`
+  else if (next.length < MIN_PW) errors.next = t(`At least ${MIN_PW} characters`)
   if (!confirm) errors.confirm = t('Required')
   else if (confirm !== next) errors.confirm = t('Passwords do not match')
   return errors
@@ -35,13 +32,32 @@ export function Profile() {
 
   const [fullName, setFullName] = useState(userName)
   const [email] = useState(user?.email ?? '')
+
+  /* `userName` arrives asynchronously on a live build — the session is
+   * still bootstrapping (exchanging the stored refresh token) on this
+   * component's first render, so the `useState` initialiser above captures
+   * whatever placeholder is available at that instant, never the real name.
+   * This is what keeps the field in sync once the session resolves. */
+  useEffect(() => setFullName(userName), [userName])
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [pwErrors, setPwErrors] = useState<{ current?: string; next?: string; confirm?: string }>({})
-  const [saving, setSaving] = useState(false)
+  const [busy, setBusy] = useState(false)
 
+  /** Neither field can silently no-op: a demo build (`!live`) has no account
+   *  to change either against, so both say so up front rather than the
+   *  button pretending to work and then failing per-field. */
   async function handleSave() {
+    if (!live) {
+      toast.show({
+        title: t('Not available on this deployment'),
+        description: t('Set the API URL to update your profile or password.'),
+        error: true,
+      })
+      return
+    }
+
     const changingPassword = Boolean(currentPassword || newPassword || confirmPassword)
     if (changingPassword) {
       const errors = validatePassword(t, currentPassword, newPassword, confirmPassword)
@@ -52,40 +68,44 @@ export function Profile() {
       }
     }
 
-    if (!live) {
-      toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-      setPwErrors({})
-      return
-    }
-
-    setSaving(true)
+    setBusy(true)
     try {
-      if (fullName.trim() && fullName.trim() !== userName) {
-        const result = await updateProfile(fullName.trim())
+      const nameChanged = fullName.trim() !== userName
+      if (nameChanged) {
+        const result = await updateProfile(fullName)
         if (!result.ok) {
           toast.show({ title: t('Could not save your name'), description: result.message, error: true })
           return
         }
       }
+
       if (changingPassword) {
         const result = await changePassword(currentPassword, newPassword)
         if (!result.ok) {
-          setPwErrors({ current: result.message })
+          setPwErrors(result.field ? { [result.field === 'current' ? 'current' : 'next']: result.message } : {})
           toast.show({ title: t('Could not change your password'), description: result.message, error: true })
           return
         }
+        /* changePassword already ended the session — every credential it
+         * revoked included this one. There is nothing left to clear locally;
+         * RequireAccess routes the now-signed-out session to /login on its
+         * own re-render. */
+        toast.show({
+          title: t('Password changed'),
+          description: t('Password updated. Every device has been signed out.'),
+        })
+        return
       }
+
       toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmPassword('')
-      setPwErrors({})
     } finally {
-      setSaving(false)
+      setBusy(false)
     }
+
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setPwErrors({})
   }
 
   if (isMobile) {
@@ -171,9 +191,9 @@ export function Profile() {
           </div>
         </Card>
 
-        <Button className="self-end" onClick={handleSave} disabled={saving}>
+        <Button className="self-end" onClick={() => void handleSave()} disabled={busy}>
           <Icon name="Check" size={16} />
-          {t(saving ? 'Saving...' : 'Save Changes')}
+          {t('Save Changes')}
         </Button>
       </div>
     )
@@ -254,9 +274,9 @@ export function Profile() {
         </div>
       </Card>
 
-      <Button className="self-end" onClick={handleSave} disabled={saving}>
+      <Button className="self-end" onClick={() => void handleSave()} disabled={busy}>
         <Icon name="Check" size={16} />
-        {t(saving ? 'Saving...' : 'Save Changes')}
+        {t('Save Changes')}
       </Button>
     </div>
   )

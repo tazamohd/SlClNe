@@ -22,8 +22,8 @@ Screens never call HTTP. They call `app/src/data/repository.ts`, which is backed
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Screens reading the live API | 162 | 436 |
-| Screens reading design fixtures | 36 | 436 |
+| Screens reading the live API | 165 | 436 |
+| Screens reading design fixtures | 33 | 436 |
 | Rendering | 436 | 436 |
 | Content-asserted end to end | 436 | 436 |
 
@@ -42,7 +42,7 @@ The gap is real: a fixture-backed screen has no fetch to fail, so it needs no lo
 
 ## Arabic and RTL
 
-119 of 436 screens are Arabic-verified and RTL hazards are held at **0**. RTL is treated as a correctness property rather than a styling preference: logical CSS properties are linted (`app/scripts/check-logical-css.mjs`), because a physical `margin-left` is a bug in an RTL layout and will not be caught by eye.
+120 of 436 screens are Arabic-verified and RTL hazards are held at **0**. RTL is treated as a correctness property rather than a styling preference: logical CSS properties are linted (`app/scripts/check-logical-css.mjs`), because a physical `margin-left` is a bug in an RTL layout and will not be caught by eye.
 
 ## Mobile
 

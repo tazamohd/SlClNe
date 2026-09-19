@@ -3522,7 +3522,7 @@
       "validates": false,
       "capability": "CAP-IDENTITY",
       "tests": [
-        "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS"
+        "TS-SERVER-TESTS-AUTH-TEST-TS"
       ]
     },
     {
@@ -3620,7 +3620,6 @@
         "TS-APP-E2E-SECURITY-HEADERS-SPEC-TS",
         "TS-APP-TESTS-PUBLIC-SHELL-TEST-TSX",
         "TS-APP-TESTS-TEST-ACCOUNT-TEST-TSX",
-        "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
@@ -3670,7 +3669,6 @@
       "validates": false,
       "capability": "CAP-IDENTITY",
       "tests": [
-        "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS"
       ]
@@ -3695,7 +3693,6 @@
       "validates": false,
       "capability": "CAP-IDENTITY",
       "tests": [
-        "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS"
       ]
@@ -3745,7 +3742,6 @@
       "tests": [
         "TS-APP-E2E-OFFLINE-SPEC-TS",
         "TS-APP-TESTS-SERVICE-WORKER-TEST-TS",
-        "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS"
       ]
     },

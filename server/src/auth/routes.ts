@@ -526,22 +526,33 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     const principal = principalOf(request)
     const body = parse(updateProfileBody, request.body)
     try {
-      const user = await service.updateProfile(principal, body, facts(request))
+      const user = await service.updateProfile(principal, { name: body.name }, facts(request))
       return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
     } catch (error) {
       return authFailureReply(reply, request, error)
     }
   })
 
+  /** Every session dies on success (see the service method's own docstring),
+   *  so this is the one authenticated route whose caller must expect its own
+   *  access token to stop being renewable right after a 200 — the response
+   *  carries no new tokens to replace it with, on purpose: the client signs
+   *  itself out and returns to login rather than being handed a session that
+   *  survived a password nothing set. */
   app.post('/auth/change-password', async (request, reply) => {
     const principal = principalOf(request)
     const body = parse(changePasswordBody, request.body)
-    try {
-      await service.changeOwnPassword(principal, body, facts(request))
-      return reply.code(204).send()
-    } catch (error) {
-      return authFailureReply(reply, request, error)
+    const result = await service.changePassword(
+      principal,
+      { currentPassword: body.currentPassword, newPassword: body.newPassword },
+      facts(request),
+    )
+    if (!result.ok) {
+      return reply.code(400).send({
+        error: { code: 'invalid_credentials', message: result.reason, field: result.field, requestId: request.id },
+      })
     }
+    return { ok: true }
   })
 
   app.post('/auth/switch-role', async (request, reply) => {

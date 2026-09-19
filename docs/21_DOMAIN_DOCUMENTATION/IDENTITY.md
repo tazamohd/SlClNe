@@ -43,12 +43,12 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/forgot-password` | — | explicit | — | 2 |
 | GET | `/api/v1/auth/invite/:token` | — | explicit | — | **0** |
 | POST | `/api/v1/auth/invite/:token/accept` | — | explicit | — | **0** |
-| POST | `/api/v1/auth/login` | — | explicit | — | 14 |
+| POST | `/api/v1/auth/login` | — | explicit | — | 13 |
 | POST | `/api/v1/auth/logout` | — | explicit | — | 1 |
-| GET | `/api/v1/auth/me` | — | explicit | — | 3 |
-| PATCH | `/api/v1/auth/me` | — | explicit | — | 3 |
+| GET | `/api/v1/auth/me` | — | explicit | — | 2 |
+| PATCH | `/api/v1/auth/me` | — | explicit | — | 2 |
 | GET | `/api/v1/auth/providers` | — | explicit | — | 1 |
-| POST | `/api/v1/auth/refresh` | — | explicit | — | 4 |
+| POST | `/api/v1/auth/refresh` | — | explicit | — | 3 |
 | POST | `/api/v1/auth/register` | — | explicit | — | 5 |
 | POST | `/api/v1/auth/request-otp` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/reset-password` | — | explicit | — | 1 |

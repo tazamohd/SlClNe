@@ -172,7 +172,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-PartsNetwork | `/parts-network` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PartsSupplyNetwork | `/parts-supply-network` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PrivacyPolicy | `/privacy-policy` | auth | **mock** | — | — | — | verified | yes |
-| D-Profile | `/profile` | app | **mock** | — | — | — | PARTIAL | yes |
+| D-Profile | `/profile` | app | yes | — | — | — | PARTIAL | yes |
 | D-RBACSpec | `/rbacspec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-RolesPermissions | `/roles-permissions` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-SessionExpired | `/session-expired` | auth | **mock** | — | — | — | verified | yes |
@@ -192,7 +192,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **26 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **25 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **54 of 73 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

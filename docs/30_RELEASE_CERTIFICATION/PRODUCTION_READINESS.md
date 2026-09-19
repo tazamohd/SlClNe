@@ -18,13 +18,13 @@ Each criterion names the evidence that decided it. No criterion is marked met on
 | PR-01 | Every registered screen renders | yes | project-control/STATUS.json — placeholder: 0 |
 | PR-02 | Every screen has an end-to-end assertion on its content | yes | contentAsserted: 436 of 436 |
 | PR-03 | Golden paths pass | yes | 23 passing, 0 failing, 0 unwritten |
-| PR-04 | Screens are wired to the live API rather than design fixtures | **no** | mockOnly: 36 of 436 |
+| PR-04 | Screens are wired to the live API rather than design fixtures | **no** | mockOnly: 33 of 436 |
 | PR-05 | Tenant isolation covers every tenant-scoped table | yes | 78 tables with RLS, all FORCEd; 0 uncovered |
 | PR-06 | The permission matrix is enforced server-side and the two copies are asserted identical | yes | server/tests/rbac-parity.test.ts |
 | PR-07 | Segregation of duties is enforced, not advisory | yes | server/tests/authz-sod.test.ts |
 | PR-08 | The audit log is append-only at the database level | yes | server/drizzle/0011_audit_log_statement_immutability.sql |
 | PR-09 | RTL hazards are at zero | yes | rtlHazards: 0 |
-| PR-10 | Arabic is verified on every screen | **no** | arabicVerified: 119 of 436 |
+| PR-10 | Arabic is verified on every screen | **no** | arabicVerified: 120 of 436 |
 | PR-11 | Tablet layouts are verified | **no** | tabletVerified: 4 of 436 |
 | PR-12 | Every endpoint has a test matched to it | **no** | 372 of 509 unmatched by path |
 | PR-13 | No open release blocker | **no** | project-control/BLOCKERS.json |
@@ -33,6 +33,6 @@ Each criterion names the evidence that decided it. No criterion is marked met on
 
 ## What the failing criteria mean together
 
-The product is much further along than a 8-of-15 score suggests, and the score is still the right one to publish. Every screen exists, renders, and is asserted; isolation, authorization and audit are enforced by the database and the server rather than by convention. What is not done is the part that only shows up in production: **36 of 436 screens still read design fixtures**, so a large share of the product has never exchanged a byte with the API under real conditions.
+The product is much further along than a 8-of-15 score suggests, and the score is still the right one to publish. Every screen exists, renders, and is asserted; isolation, authorization and audit are enforced by the database and the server rather than by convention. What is not done is the part that only shows up in production: **33 of 436 screens still read design fixtures**, so a large share of the product has never exchanged a byte with the API under real conditions.
 
 That single fact is why the remaining criteria fail the way they do, and why a release decision should turn on it rather than on the overall count.

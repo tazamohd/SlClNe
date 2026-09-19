@@ -1506,45 +1506,54 @@ export function createAuthService(deps: AuthDeps) {
       return row ? toUser(row) : null
     },
 
-    /** `PATCH /auth/me` — a caller editing their own display name. Nothing
-     *  else on the row is reachable this way: email is the sign-in identity
-     *  (changing it is a different, verification-carrying flow this build
-     *  does not have yet) and role is never client-writable. */
+    /** `PATCH /auth/me`. The only self-editable field is `name` — email is the
+     *  sign-in identity and changing it is a separate, verification-gated flow
+     *  no screen calls yet; `nameAr` has no reader anywhere in `/auth/me`'s own
+     *  response or `SessionUser`, so adding it here would write a column
+     *  nothing downstream reads, which is its own kind of fake completion. */
     async updateProfile(
       principal: Principal,
       input: { name: string },
       facts: RequestFacts,
     ): Promise<AuthenticatedUser> {
+      const name = input.name.trim()
+      if (!name) throw new AuthFailure('invalid_credentials', 'Please enter your name.')
       const [row] = await withTenant(db, principal, async (tx) => {
         const [updated] = await tx
           .update(users)
-          .set({ name: input.name, updatedBy: principal.userId })
+          .set({ name, updatedBy: principal.userId })
           .where(and(eq(users.id, principal.userId), isNull(users.deletedAt)))
           .returning()
-        if (!updated) throw new AuthFailure('invalid_credentials', 'No such user.')
-        await writeAudit(tx, {
-          actor: principal,
-          action: 'update',
-          entity: 'user',
-          entityId: principal.userId,
-          after: { event: 'profile_updated' },
-          ...facts,
-        })
-        return [updated]
+        if (updated) {
+          await writeAudit(tx, {
+            actor: principal,
+            action: 'update',
+            entity: 'user',
+            entityId: principal.userId,
+            after: { event: 'profile_updated' },
+            ...facts,
+          })
+        }
+        return updated ? [updated] : []
       })
-      return toUser(row as UserRow)
+      if (!row) throw new AuthFailure('account_disabled', 'This account no longer exists.')
+      return toUser(row)
     },
 
-    /** `POST /auth/change-password` — a signed-in caller replacing a password
-     *  they already know, unlike `resetPassword`'s token-carried recovery. The
-     *  module docstring's invariant still holds here: every session is
-     *  revoked, including this one's refresh token, because a changed
-     *  password is a claim that any copy of the old one should stop working. */
-    async changeOwnPassword(
+    /** `POST /auth/change-password`. Verifies the caller's current password —
+     *  the one property `setPassword` (administrative provisioning) doesn't
+     *  need and can't check, since nothing there proves the caller ever knew
+     *  the old one. Every session is revoked on success, the same reasoning
+     *  `resetPassword` already uses: a session opened with the old credential
+     *  is worthless to keep alive at the exact moment that credential stops
+     *  being the account's password. The caller is responsible for signing
+     *  itself out client-side; this only guarantees the old credential and
+     *  every refresh token issued under it are dead. */
+    async changePassword(
       principal: Principal,
       input: { currentPassword: string; newPassword: string },
       facts: RequestFacts,
-    ): Promise<void> {
+    ): Promise<{ ok: true } | { ok: false; reason: string; field: 'current' | 'next' }> {
       const [row] = await withTenant(db, principal, async (tx) =>
         tx
           .select()
@@ -1552,12 +1561,15 @@ export function createAuthService(deps: AuthDeps) {
           .where(and(eq(users.id, principal.userId), isNull(users.deletedAt)))
           .limit(1),
       )
-      if (!row) throw new AuthFailure('invalid_credentials', 'No such user.')
-      const ok = await verifyPassword(input.currentPassword, row.passwordHash ?? null, config)
-      if (!ok) throw new AuthFailure('invalid_credentials', 'Current password is not correct.')
+      if (!row) return { ok: false, reason: 'This account no longer exists.', field: 'current' }
+
+      const verified = await verifyPassword(input.currentPassword, row.passwordHash, config)
+      if (!verified) {
+        return { ok: false, reason: 'That current password is incorrect.', field: 'current' }
+      }
 
       const policy = checkPasswordPolicy(input.newPassword)
-      if (policy) throw new AuthFailure('invalid_credentials', policy.message)
+      if (policy) return { ok: false, reason: policy.message, field: 'next' }
 
       const hashed = await hashPassword(input.newPassword, config)
       await withTenant(db, principal, async (tx) => {
@@ -1575,6 +1587,7 @@ export function createAuthService(deps: AuthDeps) {
           ...facts,
         })
       })
+      return { ok: true }
     },
   }
 }
