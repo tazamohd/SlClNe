@@ -21,7 +21,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/AccountLocked.dc.html",
@@ -490,7 +490,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/BiometricSetup.dc.html",
@@ -644,7 +644,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -666,7 +666,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/CreatePIN.dc.html",
@@ -1268,7 +1268,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Error404.dc.html",
@@ -1484,7 +1484,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/ForgotPassword.dc.html",
@@ -1658,7 +1658,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/InviteAcceptance.dc.html",
@@ -1895,7 +1895,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/LanguageSelection.dc.html",
@@ -1982,7 +1982,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Login.dc.html",
@@ -2004,7 +2004,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/LogoutConfirmation.dc.html",
@@ -2026,7 +2026,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Maintenance.dc.html",
@@ -2229,7 +2229,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Onboarding.dc.html",
@@ -2317,7 +2317,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/OrganizationSelection.dc.html",
@@ -2339,7 +2339,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/OTPVerification.dc.html",
@@ -2556,7 +2556,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PrivacyPolicy.dc.html",
@@ -2646,7 +2646,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/ProfileCompletion.dc.html",
@@ -2690,7 +2690,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.About.dc.html",
@@ -2711,7 +2711,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2732,7 +2732,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2753,7 +2753,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2774,7 +2774,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Blog.dc.html",
@@ -2796,7 +2796,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2817,7 +2817,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2838,7 +2838,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2860,7 +2860,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2882,7 +2882,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Contact.dc.html",
@@ -2903,7 +2903,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2924,7 +2924,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2946,7 +2946,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -2967,7 +2967,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.FAQ.dc.html",
@@ -2988,7 +2988,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3009,7 +3009,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3031,7 +3031,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3053,7 +3053,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3075,7 +3075,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Insurance.dc.html",
@@ -3097,7 +3097,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3118,7 +3118,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Landing.dc.html",
@@ -3140,7 +3140,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Loans.dc.html",
@@ -3161,7 +3161,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3183,7 +3183,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3204,7 +3204,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3226,7 +3226,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3247,7 +3247,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3269,7 +3269,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3291,7 +3291,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3313,7 +3313,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3335,7 +3335,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3356,7 +3356,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Services.dc.html",
@@ -3377,7 +3377,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3398,7 +3398,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3419,7 +3419,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3441,7 +3441,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3462,7 +3462,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/PublicPortal.Support.dc.html",
@@ -3483,7 +3483,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3504,7 +3504,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": null,
@@ -3592,7 +3592,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/RegionSelection.dc.html",
@@ -3615,7 +3615,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Register.dc.html",
@@ -3679,7 +3679,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/ResetPassword.dc.html",
@@ -3702,7 +3702,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/RoleSelection.dc.html",
@@ -3767,7 +3767,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SessionExpired.dc.html",
@@ -3856,7 +3856,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SocialLogin.dc.html",
@@ -3878,7 +3878,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Splash.dc.html",
@@ -3901,7 +3901,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/SSOLogin.dc.html",
@@ -4189,7 +4189,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/TermsConditions.dc.html",
@@ -4211,7 +4211,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/TwoFactorVerification.dc.html",
@@ -4758,7 +4758,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Unauthorized.dc.html",
@@ -4891,7 +4891,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY"
+      "CONTENT_ONLY"
     ],
     "inNav": false,
     "designSource": "project/Welcome.dc.html",

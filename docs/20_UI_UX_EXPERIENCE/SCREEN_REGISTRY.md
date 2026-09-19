@@ -21,7 +21,7 @@
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
 | Data-backed (live API) | 157 | 436 |
-| Mock-only (design fixtures) | 225 | 436 |
+| Mock-only (design fixtures) | 158 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
 | Has a loading state | 191 | 436 |
@@ -34,7 +34,7 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **225 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **158 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
