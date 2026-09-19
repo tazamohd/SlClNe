@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 167 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 166 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -224,7 +224,7 @@
 | UI · TableView | `/ui/table-view` | reference | — | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | UI · TimelineView | `/ui/timeline-view` | reference | — | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | MISSING | — | route | REFERENCE_ONLY |
 | Unauthorized | `/unauthorized` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| UsersTeams | `/users-teams` | app | admin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
+| UsersTeams | `/users-teams` | app | admin | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
 | VehicleDetail | `/vehicle-detail` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | Vehicles | `/vehicles` | app | vehicles | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | Voice-Command-Interface | `/voice-command-interface` | app | ai | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
@@ -325,7 +325,7 @@
 | Technician Portal Guides | `/technician-portal-guides` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Portal Software | `/technician-portal-software` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Management | `/technician-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Technician Leaderboards | `/technician-leaderboards` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
+| Technician Leaderboards | `/technician-leaderboards` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Performance | `/technician-performance` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Technician Mobile | `/technician-mobile` | app | jobcards | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | Technician App Home | `/technician-app-home` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
@@ -364,7 +364,7 @@
 | Timeclock Payroll | `/timeclock-payroll` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Payroll Management | `/payroll-management` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Leave Requests | `/leave-requests` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
-| Training LMS | `/training-lms` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
+| Training LMS | `/training-lms` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Wearable Integration | `/wearable-integration` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Trial Balance | `/trial-balance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
@@ -399,7 +399,7 @@
 | Google My Business | `/google-my-business` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Chat | `/chat` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Support Chat Dashboard | `/support-chat-dashboard` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Compliance Management | `/compliance-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ZATCA Settings | `/zatca-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | VAT Settings | `/vat-settings` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -433,9 +433,9 @@
 | Data Backup | `/data-backup` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | User Profile | `/user-profile` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
 | System Settings | `/system-settings` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| User Settings | `/user-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| User Settings | `/user-settings` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Security Settings | `/security-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Role Management | `/role-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Role Management | `/role-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Tasks | `/tasks` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Task Management | `/task-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Tools | `/tools` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

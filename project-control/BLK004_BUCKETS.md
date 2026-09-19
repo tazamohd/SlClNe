@@ -548,6 +548,96 @@ collection: `Tasks`, `Vehicle-History`, `Cash-Flow-Statement`,
 `Barcode-Scanner`, `Customer-App-Booking`, `Technician-Leaderboards`,
 `Training-LMS`, `Native.Android`/`iOS`.
 
+## Bucket E: registry gaps in the settings group, no new backend (2026-09-19)
+
+Three more of bucket D's "next candidates" turned out to need no new
+backend at all — either a real seam the registry couldn't see, or real data
+that was already one hook away.
+
+- **`UsersTeams`** already called the real `listStaff()` (PR #128); it was
+  never re-wired, just miscounted — same detection gap as `Procurement.tsx`.
+  Added `STAFF_API_CALL` beside `PROCUREMENT_API_CALL`.
+- **`RolesPermissions`** renders `@/data/rbac` — the compiled RBAC matrix
+  `packages/contract/src/rbac.ts` generates at build time. Changing it is a
+  contract change and a regeneration, never a runtime write, so there is no
+  collection for it to be `dataBacked` by design, same reasoning as the
+  auth/public `CONTENT_ONLY` surfaces. Named case added rather than a general
+  "imports `@/data/rbac`" rule, since most of that import's other readers use
+  it alongside a real collection.
+- **`Role-Management`** (`RoleManagement.tsx`) had six hand-picked rows with
+  invented `userCount`/`permissionCount` figures, one of them ("Viewer") not
+  among the 15 roles the matrix actually defines. Rewired to the real
+  `ROLES` list, `permissionCount` counted from the real `PERMS` matrix, and
+  `userCount` from `listStaff()` on a live build (an honest "—" on a fixture
+  build, which has no account table to count).
+- **`User-Settings`** showed one hardcoded person regardless of who was
+  signed in, plus a "System" theme value `PreferencesProvider` never offers
+  (only light/dark) and three fields (notification preference, date format,
+  time format) no column tracks. Rewired to `useSession()` (name/email) and
+  `usePreferences()` (the real language/theme); the three unbacked fields
+  dropped. Added `identityContent` beside `staticMatrixContent`: real
+  session/preference data with no collection to read by design, same
+  `CONTENT_ONLY` shape.
+
+**BLK-004: 34 → 30.**
+
+### Remaining MOCK_ONLY after bucket E (30)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Welcome-Page | `/welcome-page` | featuremap |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+The six settings/compliance forms left (`System-Settings`,
+`Security-Settings`, `VAT-Settings`, `ZATCA-Settings`, `Zakat-Settings`,
+`Financial-Settings`) are genuinely different from the three just closed:
+none has any interactive control at all (no toggle, no save button — pure
+display of fabricated config), and `VAT-Settings`' summary figures
+(`totalCollected`/`totalPaid`/`netVat`) are the one case here that
+could plausibly be computed from real `journalEntries`/`invoices` data the
+way `useTrialBalance` derives a balance — but doing that without a
+report-hook-equivalent already built for VAT risks showing a wrong tax
+figure as if it were official, which is a worse failure than an honest
+"not configured yet". Each of the six needs a real settings-table decision
+(a `PATCH /settings/{group}` per domain, or one general
+`organizations.settings` jsonb column with one writer), which is
+product scoping, not a wiring pass. The rest are unchanged from bucket D's
+list: a new collection needed (`Tasks`, `Vehicle-History`,
+`Cash-Flow-Statement`, `Retained-Earnings`, `Notifications`, `CustomerApp.*`,
+`AIAssistant`, `Barcode-Scanner`, `Customer-App-Booking`,
+`Technician-Leaderboards`, `Training-LMS`, `Native.Android`/`iOS`) or a
+persistence endpoint (`Dashboard-Widgets`, `Data-Backup`,
+`Data-Import-Export`, `Tools`, `Voice-Command-Interface`, `Voice-Commands`,
+`Welcome-Page`).
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |

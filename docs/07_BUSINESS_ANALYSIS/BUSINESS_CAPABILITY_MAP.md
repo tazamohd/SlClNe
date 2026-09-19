@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 436 registered screens and all 527 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 436 registered screens and all 508 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -42,7 +42,7 @@ flowchart LR
   OBJ_CASH --> CAP_BILLING
   CAP_ACCOUNTING["Accounting and finance<br/>9 screens · 59 endpoints"]
   OBJ_CASH --> CAP_ACCOUNTING
-  CAP_HR["HR and payroll<br/>13 screens · 71 endpoints"]
+  CAP_HR["HR and payroll<br/>11 screens · 52 endpoints"]
   OBJ_CAPACITY --> CAP_HR
   CAP_CRM["CRM and sales<br/>13 screens · 51 endpoints"]
   OBJ_RETENTION --> CAP_CRM
@@ -62,7 +62,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
-  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>201 screens · 0 endpoints"]
+  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>203 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_DESIGNSYSTEM
 ```
 
@@ -77,17 +77,17 @@ flowchart LR
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 9 | 9 | 59 | 10 | 5 |
-| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 13 | 13 | 71 | 8 | 10 |
+| CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 11 | 11 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 2 | 6 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 9 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 10 | 72 | 9 | 14 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 11 | 72 | 9 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 1 | 28 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 201 | 38 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 203 | 38 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-167 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+166 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -213,9 +213,9 @@ flowchart LR
 | --- | --- |
 | Permission modules | `hr`, `technicians` |
 | Screen domains | — |
-| Screens | 13 (13 data-backed) |
-| Endpoints | 71 |
-| Entities | `employees`, `leaveRequests`, `payrollLines`, `payrollRuns`, `technicians`, `timesheets`, `trainingCourses`, `trainingEnrolments` |
+| Screens | 11 (11 data-backed) |
+| Endpoints | 52 |
+| Entities | `employees`, `leaveRequests`, `payrollLines`, `payrollRuns`, `technicians`, `timesheets` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, accountant, hr, frontdesk, test |
 | Rule guards | BR-HR-payrollLineNetHalalas, BR-HR-sumPayrollLines |
 
@@ -297,7 +297,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` |
 | Screen domains | `admin` |
-| Screens | 35 (10 data-backed) |
+| Screens | 35 (11 data-backed) |
 | Endpoints | 72 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools`, `notifications`, `partsNetworkMembers`, `partsNetworkOrders`, `partsNetworkQuotations`, `partsNetworkRequests` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 201 (38 data-backed) |
+| Screens | 203 (38 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

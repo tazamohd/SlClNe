@@ -11,27 +11,27 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 31,
+    "mockOnly": 30,
     "noBackend": 117,
-    "dataBacked": 167,
+    "dataBacked": 166,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 196,
-    "hasErrorState": 159,
-    "hasEmptyState": 268,
+    "hasLoadingState": 193,
+    "hasErrorState": 156,
+    "hasEmptyState": 266,
     "tabletVerified": 4,
-    "arabicVerified": 119,
+    "arabicVerified": 121,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 38,
-    "crudRead": 155,
-    "crudUpdate": 38,
-    "crudDelete": 30,
+    "crudCreate": 37,
+    "crudRead": 152,
+    "crudUpdate": 36,
+    "crudDelete": 29,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -11878,7 +11878,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -15107,8 +15107,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "admin/staff"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -15137,8 +15139,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21954,15 +21955,8 @@
       "route": "/technician-leaderboards",
       "surface": "app",
       "shell": "AppShell",
-      "module": "hr",
-      "permissions": [
-        "owner:vcedax",
-        "manager:vx",
-        "hr:vcedax",
-        "accountant:vx",
-        "superadmin:v",
-        "test:vcedax"
-      ],
+      "module": null,
+      "permissions": [],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21980,21 +21974,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "feedback",
-        "jobs",
-        "reports/technician-leaderboard",
-        "technicians"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -22020,7 +22009,9 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING"
+        "ARABIC_MISSING",
+        "MOCK_ONLY",
+        "NO_RBAC_MODULE"
       ]
     },
     {
@@ -24627,15 +24618,8 @@
       "route": "/training-lms",
       "surface": "app",
       "shell": "AppShell",
-      "module": "hr",
-      "permissions": [
-        "owner:vcedax",
-        "manager:vx",
-        "hr:vcedax",
-        "accountant:vx",
-        "superadmin:v",
-        "test:vcedax"
-      ],
+      "module": null,
+      "permissions": [],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24653,21 +24637,17 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "employees",
-        "trainingCourses",
-        "trainingEnrolments"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
-        "create": true,
-        "read": true,
-        "update": true,
+        "create": false,
+        "read": false,
+        "update": false,
         "delete": false
       },
       "approval": false,
@@ -24692,7 +24672,9 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING"
+        "ARABIC_MISSING",
+        "MOCK_ONLY",
+        "NO_RBAC_MODULE"
       ]
     },
     {
@@ -26980,20 +26962,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "notifications"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
-        "update": true,
-        "delete": true
+        "read": false,
+        "update": false,
+        "delete": false
       },
       "approval": false,
       "export": false,
@@ -27018,6 +26998,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
+        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -29210,7 +29191,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -29247,8 +29228,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -29342,15 +29322,17 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "admin/staff"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -29379,8 +29361,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
