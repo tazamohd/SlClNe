@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 202,
-    "cases": 2292,
+    "suites": 204,
+    "cases": 2305,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1182,
+      "UNIT_OR_API": 1195,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2370,6 +2370,26 @@
       "caseCount": 7,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WARRANTY-MANAGEMENT-TEST-TSX",
+      "file": "app/tests/component/warranty-management.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WarrantyManagement (fixture build)"
+      ],
+      "cases": [
+        "creates a warranty through the form, and it appears in the list",
+        "marks an active warranty claimed, a real status write rather than an optimistic label",
+        "hides New Warranty, Edit and Mark as Claimed from a role with no accounting edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "accountant",
+        "technician"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-WORKFLOWSTEPPER-TEST-TSX",
@@ -5819,6 +5839,36 @@
         "frontdesk",
         "manager",
         "callcenter"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-EQUIPMENT-WARRANTIES-TEST-TS",
+      "file": "server/tests/equipment-warranties.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "equipment warranty CRUD",
+        "the active -> claimed lifecycle move"
+      ],
+      "cases": [
+        "creates a warranty, assigning WRN-0001 and defaulting status to active",
+        "assigns sequential numbers to two warranties created back to back",
+        "updates a field without touching the others",
+        "deletes a warranty",
+        "is reachable by its human warranty number as well as its id",
+        "refuses an empty item name",
+        "refuses a role with no accounting create grant",
+        "marking a warranty claimed derives claimedAt server-side",
+        "moving off claimed clears claimedAt rather than leaving a stale date",
+        "refuses a role with no accounting edit grant"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/equipment-warranties"
+      ],
+      "touchesRoles": [
+        "accountant",
+        "technician"
       ]
     },
     {

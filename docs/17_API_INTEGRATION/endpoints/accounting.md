@@ -10,7 +10,7 @@
 
 # API — accounting
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 50 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 59 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -33,6 +33,15 @@
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | token | — | — | — | `server/src/routes/bank.ts` |
 | GET | `/api/v1/bank-statements/export` | accounting:x | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/equipment-warranties` | accounting:v | token | `equipmentWarranties` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/equipment-warranties` | accounting:c | token | `equipmentWarranties` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/equipment-warranties/:id` | accounting:d | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/equipment-warranties/:id` | accounting:v | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/equipment-warranties/:id` | accounting:e | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/equipment-warranties/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/equipment-warranties/bulk-delete` | accounting:d | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/equipment-warranties/bulk-update` | accounting:e | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/equipment-warranties/export` | accounting:x | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/insurance-claims` | accounting:v | token | `insuranceClaims` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/insurance-claims` | accounting:c | token | — | — | 3 | `server/src/routes/insurance-claims.ts` |
 | GET | `/api/v1/insurance-claims/:id` | accounting:v | token | `insuranceClaims` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -78,5 +87,6 @@
 | insuranceClaims | `/insurance-claims` | `claimNumber`, `policyNumber`, `vehicleLabel`, `description` | `claimNumber`, `amountClaimedHalalas`, `status`, `incidentDate`, `createdAt` | `status`, `policyId`, `vehicleId`, `jobCardId` | createdAt asc | read-only |
 | loanContracts | `/loan-contracts` | `contractNumber`, `borrowerName` | `contractNumber`, `principalHalalas`, `status`, `startDate`, `createdAt` | `status`, `customerId` | createdAt asc | read-only |
 | loanRepayments | `/loan-repayments` | `contractNumber` | `sequence`, `dueDate`, `amountDueHalalas`, `status`, `createdAt` | `status`, `loanContractId` | sequence asc | read-only |
+| equipmentWarranties | `/equipment-warranties` | `warrantyNumber`, `itemName`, `provider` | `warrantyNumber`, `itemName`, `endDate`, `status`, `createdAt` | `status`, `coverage` | endDate asc | yes |
 
 An unknown `?sort=` key is a 400, not a silent fallback, so a typo is visible instead of ignored.

@@ -12,13 +12,13 @@
 
 **Status:** GENERATED · **Source of truth:** the route files · **Sources as of:** 2026-09-18
 
-431 endpoints under `/api/v1`, plus the two unauthenticated probes.
+440 endpoints under `/api/v1`, plus the two unauthenticated probes.
 
 ## How the surface is built
 
-**281 of them are generated.** `server/src/registry.ts` describes each of the 57 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 57 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
+**289 of them are generated.** `server/src/registry.ts` describes each of the 58 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 58 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
 
-**150 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
+**151 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
 
 ## Cross-cutting contract
 
@@ -49,7 +49,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 
 | Domain | Endpoints | Generated | Explicit | With a stated permission guard |
 | --- | --- | --- | --- | --- |
-| accounting | 50 | 32 | 18 | 50 |
+| accounting | 59 | 40 | 19 | 59 |
 | admin | 4 | 3 | 1 | 4 |
 | ai | 8 | 6 | 2 | 8 |
 | appointments | 9 | 8 | 1 | 9 |
