@@ -382,7 +382,282 @@ Client Portal/Portal misc here) have now been verified file-by-file.
    (real grouped matches across all 5 collections) and three of the
    GAP-state screens at a 390px mobile viewport — all clean, zero
    console errors. `node tools/docs/check.mjs`: passes, no drift.
-5. **`website` (34) and `auth` (28) domains** — need the same "is
-   `dataBacked` even the right bar for this screen" judgment call
-   `SOURCE_RECONCILIATION.md` flagged; many are legitimately static
-   marketing pages or terminal/status screens.
+5. ~~**`website` domain (34)**~~ — triaged in wave 7 (2026-09-18, PR
+   #148). ~~**`auth` domain (29)**~~ — triaged in wave 8 (2026-09-18,
+   PR #150), same judgment call. ~~**`ai` domain (6, plus 2 related
+   screens registered under `admin`)**~~ — triaged in wave 9
+   (2026-09-18), see below.
+
+## Wave 7 — website domain (2026-09-18)
+
+Triaged all 34 `MOCK_ONLY` screens under `app/src/screens/public/`
+(the `PublicPortal.*` marketing site) file-by-file, applying the same
+"is `dataBacked` even the right bar for this screen" judgment call this
+document flagged in wave 2. Repository (`app/src/data/repository.ts`)
+has no `blogPosts`, `testimonials`, `caseStudies`, `demoRequests`,
+`contactSubmissions`, or public "careers/positions" collection, so a
+real-wire fix wasn't possible for any of them — every fix here is an
+honest-content change or a real-submission wire to the one relevant
+endpoint that does exist (`POST /public/leads`, F-025).
+
+Of the 34:
+- **Already honest, left alone (30 screens)** — generic marketing copy
+  with no claim of live/dynamic data (feature grids, pricing tiers that
+  explicitly refuse to publish a number, FAQ content, etc.), or already
+  correctly wired: `Contact.tsx` and `RequestDemo.tsx` both already
+  submit to the real `POST /public/leads` endpoint from an earlier
+  "truth-and-conversion overhaul (2026-09)" pass — they stay flagged
+  `MOCK_ONLY` only because the registry's `dataBackedScreens` detector
+  recognises `useCollection`/`useEntity` calls, not a raw `fetch` POST
+  (the same generator blind spot recorded as item 2 above).
+- **Honest GAP state (2 screens)** — content presented as real/current
+  with no plausible backing collection:
+  - `Blog.tsx`: six fabricated posts ("5 Signs Your Brakes Need
+    Attention", dated "Jul 20, 2026", "4 min read") replaced with an
+    honest "No posts published yet" state routing to Contact, following
+    `DealsOffers.tsx`'s established idiom for this site (say plainly
+    what isn't here yet, route to a real channel).
+  - `Careers.tsx`: four fabricated job openings ("Senior Full-Stack
+    Engineer — Riyadh — Full-time") replaced with an honest "No open
+    positions listed right now" state, same idiom. The "Why SALIS
+    AUTO?" benefits section above it is generic culture copy — left
+    alone.
+  - `Insurance.tsx`'s two plan cards also lost their fabricated fixed
+    annual premiums ("SAR 2,400", "SAR 850" — no consumer
+    insurance-pricing collection exists) in favour of a coverage
+    feature list, following `Pricing.tsx`'s "no number we can't stand
+    behind, route to a quote conversation" precedent. The CTAs already
+    routed to Contact honestly, so this wasn't counted as a third GAP
+    screen, just a pricing-claim fix on an otherwise-fine page.
+- **Wired to real data (1 screen)** — `BookDemo.tsx`: previously the
+  worst offender on this list — its own code comment admitted "No
+  backend endpoint exists yet," and `submit()` fired a fake "Demo
+  booked successfully" toast unconditionally with zero backend call.
+  Rewritten to submit through the same real `POST /public/leads`
+  endpoint `Contact.tsx`/`RequestDemo.tsx` already use, folding the
+  date/time slot this page collects into the bounded `message` field
+  (the lead contract doesn't model them, same technique
+  `RequestDemo.tsx` uses for its own extra qualification fields), with
+  the same two honest non-success states (fixture build: "have not
+  launched yet"; live error: mapped server message).
+
+`npm run registry`: BLK-004 mock-only count unchanged at 238 — expected,
+per the same generator blind spot noted above: an honest GAP state and
+a `fetch`-based real submission both still read as "no
+`useCollection` call" to the detector, the same as every wave-6 GAP
+screen and as `Contact.tsx`/`RequestDemo.tsx` already did before this
+wave. The actual violation fixed here (fabricated content and a
+completely fake form) doesn't show up in that count, only in the diff.
+
+A test in `tests/public-pages.test.tsx` asserted the old Blog.tsx's six
+fake article cards; updated to assert the new honest empty state
+instead, and split the shared assertion it was bundled with
+(`PartsAccessories`'s catalogue-cards check) into its own test.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed — no
+`.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3919 tests, after the one test update above),
+`npm run check-i18n` (3936/3936 covered, 8 new keys added), a full
+local `smoke.mjs` run (429/429 routes), and a manual Playwright check
+of all four changed screens: Blog/Careers/Insurance render the new
+honest content with the old fabricated strings gone, and submitting
+`BookDemo.tsx`'s form in a fixture build shows the honest "have not
+launched yet" state instead of a fake success toast — zero console
+errors throughout. `node tools/docs/generate.mjs` +
+`node tools/docs/check.mjs`: clean, no drift.
+
+## Wave 8 — auth domain (2026-09-18)
+
+Triaged all 29 `MOCK_ONLY` screens flagged under the `auth` domain
+(`app/src/screens/auth/`, plus the three static legal pages under
+`app/src/screens/public/` that `build-registry.mjs`'s `classify()`
+groups into `auth` alongside `Login`/`Register`/etc. — confirmed
+unchanged since wave 6). Checked `app/src/providers/SessionProvider.tsx`
+and the inline `fetch` calls in the password/verification screens for
+what real auth mechanisms exist (`signInWithPassword`, `register`,
+`signOut`, `POST /auth/forgot-password`, `/auth/reset-password`,
+`/auth/verify-otp`, `/auth/request-otp`) before deciding what was
+genuinely fabricated versus a real mechanism the `useCollection`-based
+registry detector doesn't recognise (same blind spot as wave 7's
+`Contact.tsx`/`RequestDemo.tsx`).
+
+Of the 29:
+- **Already honest, left alone (20 screens)** — 14 purely static/
+  navigational UI (`Splash`, `Welcome`, `Error404`, `Maintenance`,
+  `LanguageSelection`, `RegionSelection`, `CreatePIN`, `BiometricSetup`,
+  `SessionExpired`, `Unauthorized`, `LogoutConfirmation`, and the three
+  legal pages), and 6 already wired to real `/auth/*` endpoints with
+  honest offline/error fallbacks (`Login`, `Register`, `ForgotPassword`,
+  `ResetPassword`, `OTPVerification`, `TwoFactorVerification`).
+- **Honest GAP state (4 screens)** — presented something as real with
+  no plausible backing collection:
+  - `AccountLocked` (in `StatusScreens.tsx`): a hardcoded reference
+    (`LK-2026-4471`), a fixed 5-dot "Failed attempts" indicator, and a
+    countdown seeded from an invented 15-minute policy — no
+    lockout-tracking backend exists. Replaced with one honest sentence;
+    the real actions (sign in again, contact support) are unchanged.
+  - `InviteAcceptance`: a hardcoded org name ("Al-Amri Auto Center")
+    the file's own comment admitted was "a placeholder that matches
+    the design prototype." No invite endpoint exists to decode a token
+    or accept an invite — "Accept Invite" previously enabled itself
+    when `isLive` with no real action behind it; now stays honestly
+    disabled unconditionally.
+  - `OrganizationSelection`: a hardcoded three-organization picker with
+    invented member counts — no multi-tenant organizations collection
+    exists, the same conclusion already reached for the admin
+    `Organizations.tsx` directory screen in wave 6. Same fix: an
+    `EmptyState` naming the missing `organizations` collection,
+    "Continue" honestly disabled.
+  - `RoleSelection`: each real RBAC role card carried a fabricated
+    "Users" population count (`248`, `1.2K`, `3.4K`, `680`) — no
+    `users`/accounts collection exists (system accounts have no
+    backing collection at all, same conclusion as `UsersTeams.tsx` in
+    wave 6). The roles themselves are real, so the picker stays; only
+    the invented stat is gone.
+- **Wired to real data (1 screen)** — `WorkspaceSelection`: a
+  hardcoded three-workspace list with invented vehicle/active-job/team
+  counts, replaced with a real `useCollection('branches')` read
+  (`GET /branches`, F-017). `BranchRow`'s shape
+  (name/nameAr/city/isMain) has no usage-stat fields, so those counts
+  are dropped rather than re-invented — `branches` is currently seeded
+  empty in fixture mode, so the honest empty state
+  (`EmptyState`/"No workspaces yet") is what actually renders today.
+- **Fake-success fixes (4 screens)** — claimed to submit, save or
+  redirect with zero real backend call behind it, live or not:
+  - `Onboarding`: a 5-step wizard whose org/branch/profile inputs were
+    never read by anything, ending in "Your workspace is ready" — a
+    false claim, since nothing was saved (no org/branch/profile-creation
+    endpoint exists in the contract). The final step's copy now says so
+    honestly. Its Preferences step also showed hardcoded "English"/
+    "Off"/"On" badges regardless of the visitor's actual settings; now
+    reads the real values from `usePreferences()`. Separately, the
+    final "Get Started" button was a dead end (`canNext` was always
+    `false` on the last step, so its own click handler did nothing) —
+    now navigates to `/dashboard`.
+  - `ProfileCompletion`: fired a fake "Profile updated" toast whenever
+    `isLive`, with no API call at all — there is no profile-update
+    endpoint anywhere in the contract, live or not. Now shows the same
+    honest "not available yet" message unconditionally instead of only
+    when offline.
+  - `SocialLogin`: the Google/Apple/Microsoft buttons had no `onClick`
+    at all — clicking did nothing, not even a toast. No OAuth mechanism
+    exists anywhere in the contract or session provider; they now say
+    so instead of silently doing nothing.
+  - `SSOLogin`: fired a fake "Redirecting to SSO provider…" toast
+    whenever `isLive`, with no actual redirect or API call — no SSO
+    mechanism exists, live or not. Now shows the same honest "SSO is
+    not available yet" message unconditionally.
+
+`npm run registry`: BLK-004 mock-only count dropped from 238 to 227 —
+11 fewer, mostly from PR #149's unrelated accounting-cluster live
+wiring merged into `main` while this wave was in progress (this wave's
+own contribution to the count is 1: `WorkspaceSelection`'s real
+`useCollection` wire; the 4 GAP conversions and 4 fake-success fixes
+stay flagged `MOCK_ONLY` for the same reason every wave-6/7 GAP screen
+and `fetch`-based real submission does — "not wired to a live
+collection" is still literally true of an honest empty state or a raw
+`fetch` call).
+
+Merged `main` twice during this wave: once to pick up PR #149 before
+finishing, and PR #148 (wave 7) separately needed the same base-branch
+merge after `main` advanced out from under it while it was open —
+handled there, not here.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed —
+no `.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3918 tests, no existing test referenced the fabricated
+auth-domain content), `npm run check-i18n` (3934/3934 covered, 10 new
+keys), a full local `smoke.mjs` run (429/429 routes), and a manual
+Playwright check of all 9 changed screens — the GAP states render their
+honest content with the old fabricated strings gone, `WorkspaceSelection`
+shows its real (currently empty) `branches` read, `Onboarding`'s final
+step shows the honest no-save message and "Get Started" now navigates,
+and `ProfileCompletion`/`SocialLogin`/`SSOLogin` all show their honest
+"not available yet" messages instead of a fake success — zero console
+errors throughout. `node tools/docs/generate.mjs` +
+`node tools/docs/check.mjs`: clean, no drift.
+
+## Wave 9 — ai domain (2026-09-18)
+
+Triaged the 6 `MOCK_ONLY` screens under `app/src/screens/ai/`
+(`AIAnalytics`, `AIAssistant`, `ModelSettings`, `PromptLibrary`) plus
+two screens the registry groups into the same "AI Platform" surface
+despite living under `app/src/screens/admin/`
+(`AutomationRules`, `WorkflowBuilder`). Confirmed no AI/chat, automation,
+workflow, settings-persistence or usage-tracking endpoint exists
+anywhere in `packages/contract/src/entities/` — the one AI-adjacent
+collection that does exist, `aiAgents`, backs an unrelated screen
+(`Crm.tsx`'s agent-monitoring panel), not any of these six.
+
+Of the 6:
+- **Honest GAP state (4 screens)** — content presented as real with no
+  backing collection:
+  - `AIAnalytics.tsx`: fabricated KPIs ("4,821" queries, "96.4%"
+    satisfaction, "2.4M" tokens), a fabricated topic breakdown and a
+    fabricated usage-over-time chart, all replaced with an honest
+    `EmptyState` naming the missing `aiAnalytics` collection.
+  - `AutomationRules.tsx`: five fixture rules ("Low Stock Alert", "Auto
+    Invoice", ...) with hardcoded active/inactive state, replaced the
+    same way, naming `automationRules`.
+  - `WorkflowBuilder.tsx`: four fixture workflows ("Job Card
+    Lifecycle", ...) with invented run counts ("1,248 runs", "2 min
+    ago"), replaced the same way, naming `workflows`.
+  - `PromptLibrary.tsx`: nine fabricated saved prompts with invented
+    usage counts and favorited state, replaced the same way, naming
+    `promptLibrary`.
+- **Fake-success/silent-failure fixes (2 screens)**:
+  - `AIAssistant.tsx`: previously, sending a message while `isLive`
+    added the user's own chat bubble and then silently did nothing —
+    no assistant reply was ever generated, with no error or
+    explanation shown, and messages/transcript state that could never
+    actually hold a real reply. Simplified to never add a message it
+    can't answer: sending now always shows an honest "AI Assistant is
+    not available on this deployment yet" toast, and the dead
+    transcript-rendering branch (which could only ever be reached by
+    fabricating an assistant reply) was removed along with it.
+  - `ModelSettings.tsx`: two separate issues on one screen. Its "Usage"
+    card showed fabricated token/cost figures ("2.4M / 5M", "SAR
+    1,840") with no backing collection — replaced with an `EmptyState`
+    naming the missing usage-tracking data. Its "Save Changes" button
+    fired a fake "Settings saved" toast whenever `isLive` with no API
+    call at all — no settings-persistence endpoint exists, live or
+    not — now shows the same honest "not available" message
+    unconditionally. The model/parameter/behavior controls above stay
+    locally editable, since they're real form state with nowhere to
+    persist to yet, not fabricated data.
+
+`npm run registry`: BLK-004 mock-only count unchanged at 228 (measured
+before this wave's own commit; the count moves only on a real
+`useCollection` wire, and none of these six screens had a plausible
+collection to wire to) — same expected blind spot as every wave-6/7/8
+GAP screen. `node tools/docs/check.mjs` also surfaced that
+`project-control/BLOCKERS.json` now holds only 1 open blocker (BLK-004)
+— BLK-010 (the 10 orphan landing-page files) was resolved separately by
+PR #147 while this wave was in progress, unrelated to this wave's own
+work.
+
+Verified: `npm run typecheck`, `npm run gates` (8/8, 0 mobile owed — no
+`.Mobile.dc.html` regression risk on this domain), `npx vitest run`
+(111 files / 3918 tests, no existing test referenced the fabricated AI
+content), `npm run check-i18n` (3900/3900 covered, 8 new keys), a full
+local `smoke.mjs` run (429/429 routes), and a manual Playwright check
+of all 6 changed screens (seeding `salis-role` in `localStorage`, since
+these are gated internal-app screens unlike waves 7/8's public/auth
+surfaces) — the 4 GAP screens render their honest content with the old
+fabricated strings gone, `AIAssistant.tsx`'s suggestion click shows the
+honest toast with no fake transcript entry added, and
+`ModelSettings.tsx` shows its honest Usage gap and honest Save message
+instead of the old fabricated numbers and fake success — zero console
+errors throughout. `node tools/docs/generate.mjs` + `check.mjs`: clean,
+no drift.
+
+**Post-merge note**: while this wave's PR was open, a concurrent
+session independently reached the same conclusion for
+`AutomationRules.tsx`, `WorkflowBuilder.tsx`, `ModelSettings.tsx` and
+`PromptLibrary.tsx` and merged its own honest-GAP fix for all four as
+[PR #152](https://github.com/tazamohd/SlClNe/pull/152) before this
+wave's PR merged. Rather than re-diverge four already-fixed screens,
+this wave's branch took PR #152's versions of those four files on its
+next `main` merge and kept only its own unique work:
+`AIAnalytics.tsx`'s GAP conversion and `AIAssistant.tsx`'s
+fake-success fix, neither of which PR #152 touched.

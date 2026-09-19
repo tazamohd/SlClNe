@@ -12,11 +12,11 @@
 
 # Domain — Workshop operations
 
-**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 18 screens, 121 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 19 screens, 128 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -79,6 +79,13 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/appointments/bulk-delete` | appointments:d | generated | — | **0** |
 | POST | `/api/v1/appointments/bulk-update` | appointments:e | generated | — | **0** |
 | GET | `/api/v1/appointments/export` | appointments:x | generated | — | **0** |
+| GET | `/api/v1/canned-jobs` | estimates:v | generated | — | 1 |
+| POST | `/api/v1/canned-jobs` | estimates:c | explicit | — | 1 |
+| GET | `/api/v1/canned-jobs/:id` | estimates:v | generated | — | **0** |
+| PATCH | `/api/v1/canned-jobs/:id` | estimates:e | explicit | — | **0** |
+| GET | `/api/v1/canned-jobs/:id/history` | estimates:v | explicit | — | **0** |
+| GET | `/api/v1/canned-jobs/:id/lines` | estimates:v | explicit | — | **0** |
+| GET | `/api/v1/canned-jobs/export` | estimates:x | generated | — | **0** |
 | GET | `/api/v1/declined-jobs` | estimates:v | generated | — | 1 |
 | POST | `/api/v1/declined-jobs` | estimates:c | generated | — | 1 |
 | DELETE | `/api/v1/declined-jobs/:id` | estimates:d | generated | — | **0** |
@@ -113,7 +120,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/diagnostics/findings/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/findings/:id/history` | jobcards:v | explicit | — | **0** |
 | GET | `/api/v1/diagnostics/findings/export` | jobcards:x | generated | — | **0** |
-| GET | `/api/v1/diagnostics/integrations` | jobcards:v | explicit | — | 1 |
+| GET | `/api/v1/diagnostics/integrations` | jobcards:v | explicit | — | 2 |
 | GET | `/api/v1/diagnostics/labour` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id` | jobcards:v | generated | — | **0** |
 | GET | `/api/v1/diagnostics/labour/:id/history` | jobcards:v | explicit | — | **0** |
@@ -221,6 +228,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-AppointmentCalendar | `/appointment-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-Appointments | `/appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DeclinedJobs | `/declined-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-CannedJobs | `/canned-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-HealthCheckReport | `/customer-portal/health-check-report` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -239,8 +247,8 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 
 ## Known gaps in this domain
 
-- **1 of 18 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **98 of 121 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **1 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **103 of 128 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`, `inspectionMediaStage`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
@@ -251,7 +259,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/workshop.ts`, `server/src/routes/delivery.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/workshop.ts`, `server/src/routes/canned-jobs.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

@@ -3,7 +3,7 @@
 // from this, so a capability cannot exist without appearing in coverage.
 import type { RegistryEntry } from '../registry-types'
 
-export const REGISTRY_GENERATED_AT = '2026-09-18'
+export const REGISTRY_GENERATED_AT = '2026-09-19'
 
 export const REGISTRY: readonly RegistryEntry[] = [
   {
@@ -108,6 +108,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -221,6 +222,27 @@ export const REGISTRY: readonly RegistryEntry[] = [
       "ARABIC_MISSING"
     ],
     "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-CannedJobs",
+    "name": "CannedJobs",
+    "title": "CannedJobs",
+    "route": "/canned-jobs",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "estimates",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING"
+    ],
+    "inNav": false,
     "designSource": null,
     "designMobileSource": null,
     "featureMapSource": null
@@ -2132,6 +2154,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2494,6 +2517,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -2599,7 +2623,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2643,7 +2666,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -4754,8 +4776,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "A-designed",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": "project/WorkspaceSelection.dc.html",
@@ -8187,7 +8208,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8226,7 +8246,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/warranty-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "accounting",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -8234,9 +8254,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8306,7 +8324,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

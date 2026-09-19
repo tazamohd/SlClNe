@@ -13,7 +13,7 @@
 
 # Project dashboard
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 A view over the canonical registers. Nothing here is entered by hand; if a number looks wrong, the register is wrong.
 
@@ -21,16 +21,16 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 | Measure | Value | Source |
 | --- | --- | --- |
-| Registered capabilities | 429 | `STATUS.json` |
-| Rendering | 429 of 429 | `STATUS.json` |
-| Wired to the API | 138 of 429 | `STATUS.json` |
-| Reading design fixtures | 228 of 429 | `STATUS.json` |
-| End-to-end covered | 429 of 429 | `STATUS.json` |
+| Registered capabilities | 430 | `STATUS.json` |
+| Rendering | 430 of 430 | `STATUS.json` |
+| Wired to the API | 144 of 430 | `STATUS.json` |
+| Reading design fixtures | 224 of 430 | `STATUS.json` |
+| End-to-end covered | 430 of 430 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 74 of 429 | `STATUS.json` |
-| Tablet verified | 4 of 429 | `STATUS.json` |
-| API endpoints | 423 | the route files |
-| Test cases | 2266 | the spec files |
+| Arabic verified | 74 of 430 | `STATUS.json` |
+| Tablet verified | 4 of 430 | `STATUS.json` |
+| API endpoints | 440 | the route files |
+| Test cases | 2305 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**228 of 429 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**224 of 430 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 228 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 224 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 
 ## Open risks
 

@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "totals": {
-    "capabilities": 429,
-    "product": 366,
+    "capabilities": 430,
+    "product": 367,
     "referenceOnly": 28,
     "externalDependency": 35,
-    "rendered": 429,
+    "rendered": 430,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 228,
-    "dataBacked": 138,
-    "e2eCovered": 429,
-    "contentAsserted": 429,
+    "mockOnly": 224,
+    "dataBacked": 144,
+    "e2eCovered": 430,
+    "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 174,
-    "hasErrorState": 138,
-    "hasEmptyState": 214,
+    "hasLoadingState": 180,
+    "hasErrorState": 144,
+    "hasEmptyState": 225,
     "tabletVerified": 4,
     "arabicVerified": 74,
     "rtlHazards": 0,
@@ -25,10 +25,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 32,
-    "crudRead": 130,
-    "crudUpdate": 27,
-    "crudDelete": 24,
+    "crudCreate": 33,
+    "crudRead": 136,
+    "crudUpdate": 28,
+    "crudDelete": 25,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -40,15 +40,15 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 29,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "app": {
-      "total": 314,
-      "rendered": 314,
+      "total": 315,
+      "rendered": 315,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 314,
-      "dataBacked": 124
+      "e2e": 315,
+      "dataBacked": 129
     },
     "call-center": {
       "total": 2,
@@ -114,15 +114,15 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 29,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "admin": {
-      "total": 19,
-      "rendered": 19,
+      "total": 20,
+      "rendered": 20,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 19,
-      "dataBacked": 6
+      "e2e": 20,
+      "dataBacked": 7
     },
     "ai": {
       "total": 10,
@@ -218,7 +218,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 211,
-      "dataBacked": 48
+      "dataBacked": 52
     }
   },
   "byModule": {
@@ -271,12 +271,12 @@
       "dataBacked": 1
     },
     "estimates": {
-      "total": 5,
-      "rendered": 5,
+      "total": 6,
+      "rendered": 6,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 5,
-      "dataBacked": 5
+      "e2e": 6,
+      "dataBacked": 6
     },
     "jobcards": {
       "total": 11,
@@ -295,12 +295,12 @@
       "dataBacked": 0
     },
     "accounting": {
-      "total": 7,
-      "rendered": 7,
+      "total": 8,
+      "rendered": 8,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 7,
-      "dataBacked": 7
+      "e2e": 8,
+      "dataBacked": 8
     },
     "execreports": {
       "total": 5,

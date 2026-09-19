@@ -1,13 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
-import { Card } from '@/components/ui/Card'
+import { useState } from 'react'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { MobileCard, MobilePageHeader } from '@/components/shell/MobileShell'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
-import { isLive } from '@/data/repository'
 
 /** The chat pane is the one screen that sizes itself to the viewport rather
  *  than to its content, so the composer stays pinned while the transcript
@@ -18,12 +16,6 @@ import { isLive } from '@/data/repository'
 const CHAT_HEIGHT_DESKTOP = 'calc(var(--vh-full) - var(--h-topbar))'
 const CHAT_HEIGHT_MOBILE =
   'calc(var(--vh-full) - var(--h-topbar) - var(--safe-top) - var(--safe-bottom))'
-
-interface Message {
-  id: number
-  role: 'user' | 'assistant'
-  text: string
-}
 
 interface Suggestion {
   icon: string
@@ -44,29 +36,26 @@ function useSuggestions(t: (s: string) => string): Suggestion[] {
   ]
 }
 
+/** Previously, sending a message while `isLive` added the user's own
+ *  bubble to a transcript and then silently did nothing — no assistant
+ *  reply was ever generated, with no error or explanation shown, and a
+ *  "New Chat" button implied a real conversation was being tracked. No
+ *  AI/chat endpoint exists anywhere in the API contract, live or not, so
+ *  there is no transcript to render: sending now always shows the honest
+ *  "not available" message instead of pretending to log a conversation
+ *  it can never answer. */
 export function AIAssistant() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const toast = useToast()
   const suggestions = useSuggestions(t)
 
-  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
-  const scrollRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages])
 
   const sendMessage = (text: string) => {
     if (!text.trim()) return
-    const userMsg: Message = { id: Date.now(), role: 'user', text: text.trim() }
-    setMessages((prev) => [...prev, userMsg])
     setInput('')
-    if (!isLive) {
-      toast.show({ title: t('Connect the API') })
-      return
-    }
+    toast.show({ title: t('AI Assistant is not available on this deployment yet') })
   }
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
@@ -106,8 +95,7 @@ export function AIAssistant() {
           key={s.title}
           type="button"
           onClick={() => handleSuggestionClick(s)}
-          disabled={!isLive}
-          className="flex cursor-pointer flex-col gap-1.5 rounded-xl border border-border bg-card p-3.5 text-start transition-all hover:border-salis-blue/[.3] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
+          className="flex cursor-pointer flex-col gap-1.5 rounded-xl border border-border bg-card p-3.5 text-start transition-all hover:border-salis-blue/[.3] hover:shadow-lg focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
         >
           <span
             className="flex rounded-lg p-1.5"
@@ -130,28 +118,11 @@ export function AIAssistant() {
           title="SALIS AI"
           subtitle={t('AI Assistant')}
         />
-        <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4">
-          {messages.length === 0 ? (
-            <div className="flex flex-col gap-5">
-              {greeting}
-              {suggestionGrid}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3">
-              {messages.map((msg) => (
-                <MobileCard key={msg.id}>
-                  <div className="flex gap-2.5">
-                    <span
-                      className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${msg.role === 'assistant' ? 'bg-salis-gradient' : 'bg-heading'}`}
-                    >
-                      {msg.role === 'assistant' ? 'AI' : 'U'}
-                    </span>
-                    <p className="text-sm leading-relaxed text-body">{msg.text}</p>
-                  </div>
-                </MobileCard>
-              ))}
-            </div>
-          )}
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="flex flex-col gap-5">
+            {greeting}
+            {suggestionGrid}
+          </div>
         </div>
         <form onSubmit={handleSubmit} className="border-t border-border bg-card p-3">
           <div className="flex gap-2">
@@ -160,10 +131,9 @@ export function AIAssistant() {
               placeholder={t('Ask SALIS AI anything...')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              disabled={!isLive}
               className="flex-1"
             />
-            <Button type="submit" disabled={!isLive || !input.trim()} aria-label={t('Send')}>
+            <Button type="submit" disabled={!input.trim()} aria-label={t('Send')}>
               <Icon name="ArrowUp" size={18} />
             </Button>
           </div>
@@ -179,36 +149,13 @@ export function AIAssistant() {
           <Icon name="Sparkles" size={16} />
         </span>
         <span className="text-sm font-semibold text-heading">SALIS AI</span>
-        <div className="flex-1" />
-        <Button variant="ghost" size="sm" disabled={!isLive} aria-label={t('New Chat')}
-          onClick={() => setMessages([])}>
-          <Icon name="Plus" size={14} />
-          {t('New Chat')}
-        </Button>
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6">
-        {messages.length === 0 ? (
-          <div className="flex flex-col gap-5">
-            {greeting}
-            {suggestionGrid}
-          </div>
-        ) : (
-          <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5">
-            {messages.map((msg) => (
-              <div key={msg.id} className="flex gap-3">
-                <span
-                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${msg.role === 'assistant' ? 'bg-salis-gradient' : 'bg-heading'}`}
-                >
-                  {msg.role === 'assistant' ? 'AI' : 'U'}
-                </span>
-                <Card className="flex-1 rounded-[14px] p-3.5">
-                  <p className="text-sm leading-relaxed text-body">{msg.text}</p>
-                </Card>
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex flex-col gap-5">
+          {greeting}
+          {suggestionGrid}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="border-t border-border bg-card px-6 py-4">
@@ -219,12 +166,11 @@ export function AIAssistant() {
               placeholder={t('Ask SALIS AI anything...')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              disabled={!isLive}
               className="w-full !rounded-[14px] !pe-14"
             />
             <button
               type="submit"
-              disabled={!isLive || !input.trim()}
+              disabled={!input.trim()}
               aria-label={t('Send')}
               className="absolute end-1.5 flex h-9 w-9 items-center justify-center rounded-[10px] border-none bg-salis-gradient text-white shadow-[0_4px_8px_rgba(10,94,215,.2)] transition-opacity disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
             >

@@ -14,13 +14,13 @@
 
 # Data access design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Covers: the collection registry, the generic router, query contract, presentation, soft delete, the repository seam.
 
 ## One description, many routes
 
-`server/src/registry.ts` describes each of the 56 collections once. `server/src/routes/collections.ts` generates 273 endpoints from those descriptions — list, export, detail, and for the 21 writable ones create, update, delete, bulk-update and bulk-delete.
+`server/src/registry.ts` describes each of the 58 collections once. `server/src/routes/collections.ts` generates 289 endpoints from those descriptions — list, export, detail, and for the 23 writable ones create, update, delete, bulk-update and bulk-delete.
 
 The argument is about people rather than elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. One description means the filter and the check exist once.
 
@@ -49,7 +49,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 
 ## Soft delete
 
-`DELETE` sets `deleted_at`; the row stays. 66 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
+`DELETE` sets `deleted_at`; the row stays. 69 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
 
 ## Collections
 
@@ -63,6 +63,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | jobs | `/jobs` | jobcards | yes | 3 | 5 | 5 |
 | appointments | `/appointments` | appointments | yes | 5 | 5 | 4 |
 | estimates | `/estimates` | estimates | read-only | 3 | 5 | 2 |
+| cannedJobs | `/canned-jobs` | estimates | read-only | 2 | 3 | 2 |
 | declinedJobs | `/declined-jobs` | estimates | yes | 3 | 5 | 5 |
 | inspectionFindings | `/inspection-findings` | jobcards | yes | 2 | 2 | 3 |
 | inspectionMedia | `/inspection-media` | jobcards | yes | 0 | 1 | 4 |
@@ -76,7 +77,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | departments | `/admin/departments` | admin | read-only | 3 | 3 | 0 |
 | leads | `/crm/leads` | crm | yes | 3 | 5 | 2 |
 | opportunities | `/crm/opportunities` | crm | yes | 3 | 5 | 1 |
-| campaigns | `/crm/campaigns` | crm | read-only | 1 | 4 | 2 |
+| campaigns | `/crm/campaigns` | crm | yes | 1 | 4 | 2 |
 | segments | `/crm/segments` | crm | read-only | 2 | 3 | 0 |
 | crmTasks | `/crm/tasks` | crm | yes | 2 | 5 | 3 |
 | feedback | `/customer-feedback` | crm | yes | 2 | 2 | 3 |
@@ -89,6 +90,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | insuranceClaims | `/insurance-claims` | accounting | read-only | 4 | 5 | 4 |
 | loanContracts | `/loan-contracts` | accounting | read-only | 2 | 5 | 2 |
 | loanRepayments | `/loan-repayments` | accounting | read-only | 1 | 5 | 2 |
+| equipmentWarranties | `/equipment-warranties` | accounting | yes | 3 | 5 | 2 |
 | employees | `/employees` | hr | yes | 4 | 5 | 2 |
 | payrollRuns | `/payroll/runs` | hr | yes | 2 | 4 | 2 |
 | payrollLines | `/payroll/lines` | hr | yes | 1 | 3 | 2 |

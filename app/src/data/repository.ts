@@ -262,6 +262,43 @@ export interface DeliverySignoffRow extends EntityMeta {
   url: string
 }
 
+/** A canned job — a predefined, priced service package (build-order item
+ *  5), as `GET /canned-jobs` presents it. No design fixture — the capability
+ *  is new — so the shape is declared here rather than inferred, like
+ *  `DeclinedJobRow`. Read-only through the collection except for `PATCH`;
+ *  creation is only ever `POST /canned-jobs`
+ *  (`screens/workshop/canned-job-api.ts`), never this collection's `POST`. */
+export interface CannedJobRow extends EntityMeta {
+  name: string
+  nameAr: string | null
+  category: string | null
+  description: string | null
+  active: boolean
+  priceHalalas: number
+  lineCount: number
+}
+
+/** An equipment warranty — cover on the shop's own tools and fixed assets
+ *  (a lift, a scanner, a paint booth), never a customer's vehicle (BLK-004),
+ *  as `GET /equipment-warranties` presents it. No design fixture — the shape
+ *  is declared here rather than inferred, like `CannedJobRow`. Writable
+ *  through the generic collection: create, edit, delete and the one
+ *  lifecycle move (`active` → `claimed`) are all a plain `POST`/`PATCH`/
+ *  `DELETE` on this same collection, unlike `cannedJobs`, which needs a
+ *  bespoke route. */
+export interface EquipmentWarrantyRow extends EntityMeta {
+  warrantyNumber: string
+  itemName: string
+  provider: string
+  coverage: 'full' | 'limited' | 'extended'
+  start: string
+  end: string
+  status: 'active' | 'claimed' | 'expired'
+  claimedAt: string | null
+  claimNotes: string | null
+  notes: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -551,6 +588,7 @@ export interface Repository {
   inspectionFindings: Collection<InspectionFindingRow>
   inspectionMedia: Collection<InspectionMediaRow>
   deliverySignoffs: Collection<DeliverySignoffRow>
+  cannedJobs: Collection<CannedJobRow>
   customers: Collection<(typeof T.CUSTOMERS)[number]>
   fleets: Collection<(typeof T.FLEETS)[number]>
   parts: Collection<(typeof T.PARTS)[number]>
@@ -579,6 +617,7 @@ export interface Repository {
   suppliers: Collection<SupplierRow>
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
+  equipmentWarranties: Collection<EquipmentWarrantyRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -615,6 +654,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   inspectionFindings: 'inspection-findings',
   inspectionMedia: 'inspection-media',
   deliverySignoffs: 'delivery-signoffs',
+  cannedJobs: 'canned-jobs',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -645,6 +685,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   suppliers: 'procurement/suppliers',
   requisitions: 'procurement/requisitions',
   purchaseOrders: 'procurement/purchase-orders',
+  equipmentWarranties: 'equipment-warranties',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -867,6 +908,13 @@ export const mockRepository: Repository = {
    * refuses it outright in that mode rather than routing through this
    * collection. */
   deliverySignoffs: fixture<DeliverySignoffRow>([]),
+  /* No design fixture — canned jobs are new (build-order item 5). An empty
+   * read-only mock is the honest fixture, same reasoning as declinedJobs:
+   * every row is born from `POST /canned-jobs`, which the fixture
+   * repository cannot perform (`isLive` is false) —
+   * `screens/workshop/canned-job-api.ts` refuses it outright in that mode
+   * rather than routing through this collection. */
+  cannedJobs: fixture<CannedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),
@@ -911,6 +959,12 @@ export const mockRepository: Repository = {
   suppliers: fixture<SupplierRow>([]),
   requisitions: fixture<RequisitionRow>([]),
   purchaseOrders: fixture<PurchaseOrderRow>([]),
+  /* No design fixture — equipment warranties are new (BLK-004). Unlike
+   * `cannedJobs`/`declinedJobs`, a warranty is born from a plain create on
+   * this same collection rather than a bespoke route, so `fixture()`'s
+   * generic create/update/delete genuinely works here in demo mode too —
+   * session-local, same as everywhere else `isLive` is false. */
+  equipmentWarranties: fixture<EquipmentWarrantyRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),

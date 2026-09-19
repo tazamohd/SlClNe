@@ -12,7 +12,7 @@
 
 # Domain — Public website and acquisition
 
-**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-WEBSITE · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
@@ -52,9 +52,9 @@ _No lifecycle in the contract belongs to this domain._
 | D-PublicPortal.Accounting | `/public-portal/accounting` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.AI | `/public-portal/ai` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Automation | `/public-portal/automation` | public | **mock** | — | — | — | verified | yes |
-| D-PublicPortal.Blog | `/public-portal/blog` | public | **mock** | — | — | — | PARTIAL | yes |
+| D-PublicPortal.Blog | `/public-portal/blog` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.BookDemo | `/public-portal/book-demo` | public | **mock** | — | — | — | PARTIAL | yes |
-| D-PublicPortal.Careers | `/public-portal/careers` | public | **mock** | — | — | — | PARTIAL | yes |
+| D-PublicPortal.Careers | `/public-portal/careers` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.Contact | `/public-portal/contact` | public | **mock** | — | — | — | PARTIAL | yes |
 | D-PublicPortal.CRM | `/public-portal/crm` | public | **mock** | — | — | — | verified | yes |
 | D-PublicPortal.CustomerPortal | `/public-portal/customer-portal` | public | **mock** | — | — | — | verified | yes |

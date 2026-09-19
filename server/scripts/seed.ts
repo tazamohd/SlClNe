@@ -134,6 +134,9 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   suppliers: 2,
   requisitions: 1,
   purchaseOrders: 1,
+  /** Equipment warranties (BLK-004) — no design fixture; one of each status a
+   *  screen needs to render (active, expired, claimed). */
+  equipmentWarranties: 8,
 }
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
@@ -1306,6 +1309,91 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
   await tx.insert(s.purchaseOrderLines).values(
     poLineDefs.map((line, index) => row({ purchaseOrderId: purchaseOrder.id, sort: index, ...line })),
   )
+
+  /* ------------------------------------------------------- equipment warranties (BLK-004)
+   * Cover on the shop's own tools and fixed assets — a lift, a scanner, a
+   * paint booth — never a customer's vehicle. No design bundle fixture
+   * carries this table (BLK-004), so every row here is a declared coherence
+   * extra (SEED_COHERENCE_EXTRAS), served after the (empty) fixture like the
+   * supplier directory: one of each status a screen needs to render
+   * (`active`, `expired`, `claimed`), with the claimed one carrying real
+   * `claimedAt`/`claimNotes`, not a placeholder. */
+  await tx.insert(s.equipmentWarranties).values([
+    row({
+      warrantyNumber: 'WRN-0001',
+      itemName: 'Hydraulic Lift #1',
+      provider: 'LiftMaster Co',
+      coverage: 'full',
+      startDate: '2024-08-01',
+      endDate: '2027-07-31',
+      status: 'active',
+    }),
+    row({
+      warrantyNumber: 'WRN-0002',
+      itemName: 'Diagnostic Scanner Pro',
+      provider: 'AutoDiag Inc',
+      coverage: 'limited',
+      startDate: '2025-04-18',
+      endDate: '2027-04-17',
+      status: 'active',
+    }),
+    row({
+      warrantyNumber: 'WRN-0003',
+      itemName: 'AC Compressor Unit',
+      provider: 'CoolTech SA',
+      coverage: 'full',
+      startDate: '2023-06-01',
+      endDate: '2026-05-31',
+      status: 'expired',
+    }),
+    row({
+      warrantyNumber: 'WRN-0004',
+      itemName: 'Paint Booth System',
+      provider: 'SprayTech Ltd',
+      coverage: 'extended',
+      startDate: '2025-01-15',
+      endDate: '2028-01-14',
+      status: 'active',
+    }),
+    row({
+      warrantyNumber: 'WRN-0005',
+      itemName: 'Wheel Alignment Machine',
+      provider: 'AlignPro',
+      coverage: 'limited',
+      startDate: '2024-03-10',
+      endDate: '2026-09-09',
+      status: 'active',
+    }),
+    row({
+      warrantyNumber: 'WRN-0006',
+      itemName: 'Battery Charger Pro',
+      provider: 'PowerMax SA',
+      coverage: 'full',
+      startDate: '2023-11-20',
+      endDate: '2025-11-19',
+      status: 'claimed',
+      claimedAt: new Date('2025-10-02T09:00:00Z'),
+      claimNotes: 'Charger stopped holding voltage; provider replaced the unit under warranty.',
+    }),
+    row({
+      warrantyNumber: 'WRN-0007',
+      itemName: 'Tire Changer',
+      provider: 'TireTech Inc',
+      coverage: 'full',
+      startDate: '2025-07-01',
+      endDate: '2027-06-30',
+      status: 'active',
+    }),
+    row({
+      warrantyNumber: 'WRN-0008',
+      itemName: 'Old Welder Unit',
+      provider: 'WeldMaster',
+      coverage: 'limited',
+      startDate: '2021-02-15',
+      endDate: '2024-02-14',
+      status: 'expired',
+    }),
+  ])
 }
 
 /** Creates the tenants, their branches and users, then fills the primary one

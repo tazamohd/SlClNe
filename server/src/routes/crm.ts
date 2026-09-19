@@ -1,21 +1,27 @@
 /** CRM actions that are more than a plain collection write.
  *
- *  The writable CRM collections (leads, opportunities, tasks, feedback) go
- *  through the generic router. What lives here is the one action that spans two
- *  tables under a single transaction: converting a lead into an opportunity.
+ *  The writable CRM collections (leads, opportunities, campaigns, tasks,
+ *  feedback) go through the generic router. What lives here are the actions
+ *  that need more than a column update: converting a lead into an
+ *  opportunity, and dispatching an sms/whatsapp campaign to its provider.
  */
 import { and, eq, isNull } from 'drizzle-orm'
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { ulid } from 'ulid'
 import { leadConvertBody } from '@salis/contract'
 import { writeAudit } from '../audit/audit'
-import { leads, opportunities } from '../db/schema'
+import { campaigns, leads, opportunities } from '../db/schema'
 import { withTenant, type Tx } from '../db/tenant'
 import { badRequest, notFound } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { collectionByKey } from '../registry'
 import { requirePermission } from '../security/permissions'
+import { MessagingUnavailable, type MessagingChannel, type MessagingTransport } from '../integrations/messaging'
 import { presentRow, type RouteDeps } from './collections'
+
+export interface CrmRouteDeps extends RouteDeps {
+  messaging: MessagingTransport
+}
 
 function opportunityDef() {
   const def = collectionByKey('opportunities')
@@ -23,7 +29,27 @@ function opportunityDef() {
   return def
 }
 
-export function registerCrmRoutes(app: FastifyInstance, deps: RouteDeps): void {
+function campaignDef() {
+  const def = collectionByKey('campaigns')
+  if (!def) throw new Error('collection "campaigns" is not registered')
+  return def
+}
+
+const SENDABLE_CHANNELS: readonly MessagingChannel[] = ['sms', 'whatsapp']
+
+/** 503 with the messaging dependency named, matching the OTP/OBD envelopes. */
+function unavailable(reply: FastifyReply, request: FastifyRequest, error: MessagingUnavailable) {
+  request.log.warn({ path: request.url }, error.message)
+  return reply.code(503).send({
+    error: {
+      code: 'external_dependency_unavailable',
+      message: `${error.message} ${error.detail}`,
+      requestId: request.id,
+    },
+  })
+}
+
+export function registerCrmRoutes(app: FastifyInstance, deps: CrmRouteDeps): void {
   /* --------------------------------------------- lead → opportunity convert */
   app.post('/crm/leads/:id/convert', async (request, reply) => {
     const principal = principalOf(request)
@@ -111,6 +137,67 @@ export function registerCrmRoutes(app: FastifyInstance, deps: RouteDeps): void {
     reply.code(result.status)
     return result.body
   })
+
+  /* -------------------------------------------------------- campaign send */
+  /* Dispatch is a campaign action distinct from editing its fields, so it is
+   * gated the same as the fields it changes: `crm:e`. */
+  app.post('/crm/campaigns/:id/send', async (request, reply) => {
+    const principal = principalOf(request)
+    requirePermission(principal, 'crm', 'e')
+    const { id } = request.params as { id: string }
+
+    try {
+      const result = await withTenant(deps.db, principal, async (tx) => {
+        const campaign = await loadCampaign(tx, id, { forUpdate: true })
+        if (!SENDABLE_CHANNELS.includes(campaign.type as MessagingChannel)) {
+          throw badRequest(
+            `Only ${SENDABLE_CHANNELS.join('/')} campaigns can be sent from here — an "${campaign.type}" campaign has no provider to dispatch to.`,
+            'type',
+          )
+        }
+        if (campaign.status === 'completed') {
+          throw badRequest('This campaign is already completed.', 'status')
+        }
+
+        /* A single dispatch request, not one per recipient: this deployment
+         * resolves no audience for a campaign, so the provider is asked to
+         * send the campaign, and `reach`/`opens`/`clicks`/`conversions` are
+         * left exactly as they were — nothing here invents a count. */
+        const dispatch = await deps.messaging.dispatch({
+          campaignId: campaign.id,
+          campaignName: campaign.name,
+          channel: campaign.type as MessagingChannel,
+        })
+
+        const [updated] = await tx
+          .update(campaigns)
+          .set({
+            status: campaign.status === 'draft' || campaign.status === 'scheduled' ? 'running' : campaign.status,
+            lastDispatchedAt: new Date(dispatch.dispatchedAt),
+            lastDispatchMock: dispatch.mock,
+            updatedBy: principal.userId,
+          })
+          .where(eq(campaigns.id, campaign.id))
+          .returning()
+        if (!updated) throw notFound('Campaign')
+
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'command',
+          entity: 'campaign',
+          entityId: campaign.id,
+          after: { command: 'send', channel: campaign.type, mock: dispatch.mock },
+          ...metaOf(request),
+        })
+
+        return presentRow(campaignDef(), principal, updated as Record<string, unknown>)
+      })
+      return result
+    } catch (error) {
+      if (error instanceof MessagingUnavailable) return unavailable(reply, request, error)
+      throw error
+    }
+  })
 }
 
 type LeadRow = typeof leads.$inferSelect
@@ -124,5 +211,19 @@ async function loadLead(tx: Tx, id: string, options: { forUpdate?: boolean } = {
   const rows = options.forUpdate ? await base.for('update') : await base
   const row = rows[0]
   if (!row) throw notFound('Lead')
+  return row
+}
+
+type CampaignRow = typeof campaigns.$inferSelect
+
+async function loadCampaign(tx: Tx, id: string, options: { forUpdate?: boolean } = {}): Promise<CampaignRow> {
+  const base = tx
+    .select()
+    .from(campaigns)
+    .where(and(eq(campaigns.id, id), isNull(campaigns.deletedAt)))
+    .limit(1)
+  const rows = options.forUpdate ? await base.for('update') : await base
+  const row = rows[0]
+  if (!row) throw notFound('Campaign')
   return row
 }

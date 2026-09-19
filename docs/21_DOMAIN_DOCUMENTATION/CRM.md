@@ -12,11 +12,11 @@
 
 # Domain — CRM and sales
 
-**Status:** GENERATED · **Capability:** CAP-CRM · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-CRM · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 12 screens, 45 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 12 screens, 51 API endpoints and 4 entities, gated by the `crm`, `callcenter` permission modules.
 
 
 ## Actors
@@ -39,7 +39,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | --- | --- | --- | --- | --- | --- | --- |
 | `leads` | 17 | yes | yes | yes | yes | `value_halalas` |
 | `opportunities` | 16 | yes | yes | yes | yes | `value_halalas` |
-| `campaigns` | 18 | yes | yes | yes | yes | `budget_halalas`, `spent_halalas` |
+| `campaigns` | 22 | yes | yes | yes | yes | `budget_halalas`, `spent_halalas` |
 | `segments` | 13 | yes | yes | yes | yes | — |
 
 ### Relationships
@@ -61,9 +61,15 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/crm/campaigns` | crm:v | generated | — | 2 |
+| GET | `/api/v1/crm/campaigns` | crm:v | generated | — | 3 |
+| POST | `/api/v1/crm/campaigns` | crm:c | generated | — | 3 |
+| DELETE | `/api/v1/crm/campaigns/:id` | crm:d | generated | — | **0** |
 | GET | `/api/v1/crm/campaigns/:id` | crm:v | generated | — | **0** |
+| PATCH | `/api/v1/crm/campaigns/:id` | crm:e | generated | — | **0** |
 | GET | `/api/v1/crm/campaigns/:id/history` | crm:v | explicit | — | **0** |
+| POST | `/api/v1/crm/campaigns/:id/send` | crm:e | explicit | — | **0** |
+| POST | `/api/v1/crm/campaigns/bulk-delete` | crm:d | generated | — | **0** |
+| POST | `/api/v1/crm/campaigns/bulk-update` | crm:e | generated | — | **0** |
 | GET | `/api/v1/crm/campaigns/export` | crm:x | generated | — | **0** |
 | GET | `/api/v1/crm/leads` | crm:v | generated | — | 2 |
 | POST | `/api/v1/crm/leads` | crm:c | generated | — | 2 |
@@ -138,7 +144,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 ## Known gaps in this domain
 
 - **2 of 12 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **35 of 45 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **40 of 51 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`crmTaskStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

@@ -4961,6 +4961,30 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Enter a whole number of kilometres.": "أدخل عددًا صحيحًا من الكيلومترات.",
   "The checklist could not be saved.": "تعذر حفظ قائمة التحقق.",
 
+  // Canned Jobs — CannedJobs.tsx / WorkshopEstimate.tsx (build-order item 5)
+  "Canned Jobs": "الأعمال الجاهزة",
+  "Predefined, priced service packages an advisor can drop onto an estimate": "باقات خدمة معدة مسبقًا ومسعّرة يمكن للمستشار إضافتها إلى عرض السعر",
+  "New Package": "باقة جديدة",
+  "This build has no API configured, so the catalog cannot be saved. Set VITE_API_URL to see it.": "لا تحتوي هذه النسخة على واجهة برمجة مهيأة، لذا لا يمكن حفظ الكتالوج. اضبط VITE_API_URL لرؤيته.",
+  "No canned jobs yet": "لا توجد أعمال جاهزة بعد",
+  "Bundle a standard visit into a named, priced package advisors can reuse.": "اجمع زيارة قياسية في باقة مسمّاة ومسعّرة يمكن للمستشارين إعادة استخدامها.",
+  "Loading canned jobs...": "جارٍ تحميل الأعمال الجاهزة...",
+  "Loading package...": "جارٍ تحميل الباقة...",
+  "Standard Oil Change": "تغيير زيت عادي",
+  "List Price": "السعر المعلن",
+  "Save Package": "حفظ الباقة",
+  "The canned job could not be saved.": "تعذر حفظ العمل الجاهز.",
+  "Apply a Canned Job": "تطبيق عمل جاهز",
+  "Loading packages...": "جارٍ تحميل الباقات...",
+  "No canned jobs yet. Add one from the Canned Jobs catalog.": "لا توجد أعمال جاهزة بعد. أضف واحدة من كتالوج الأعمال الجاهزة.",
+  "Canned job": "عمل جاهز",
+  "Choose a package...": "اختر باقة...",
+  "Apply to Estimate": "تطبيق على عرض السعر",
+  "Applying...": "جارٍ التطبيق...",
+  "Package applied": "تم تطبيق الباقة",
+  "Estimate updated": "تم تحديث عرض السعر",
+  "Could not apply package": "تعذر تطبيق الباقة",
+
   // Wave 4 — honest-gap and real-data fixes for the Purchase Agent /
   // Technician Portal-App / Client Portal / Portal misc screens.
   "Recent Activity has no data source yet": "لا يوجد مصدر بيانات للنشاط الأخير بعد",
@@ -5003,6 +5027,13 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Diagnostic Software has no data source yet": "لا يوجد مصدر بيانات لبرامج التشخيص بعد",
   "Time Clock has no data source yet": "لا يوجد مصدر بيانات لساعة الدوام بعد",
 
+  // Campaign dispatch — Crm.tsx / SMSIntegration.tsx (build-order item 7)
+  "Campaign dispatched": "تم إرسال الحملة",
+  "Could not dispatch campaign": "تعذر إرسال الحملة",
+  "No messaging provider configured": "لا يوجد مزوّد رسائل مهيأ",
+  "This deployment has no live SMS/WhatsApp provider.": "لا تحتوي هذه النسخة على مزوّد رسائل نصية أو واتساب فعلي.",
+  "Message Log has no data source yet": "لا يوجد مصدر بيانات لسجل الرسائل بعد",
+
   // Wave 6 — honest-gap and real-search fixes for the admin domain screens.
   "Advanced Settings has no data source yet": "لا يوجد مصدر بيانات للإعدادات المتقدمة بعد",
   "Audit Log has no data source yet": "لا يوجد مصدر بيانات لسجل التدقيق بعد",
@@ -5018,8 +5049,30 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Templates has no data source yet": "لا يوجد مصدر بيانات للقوالب بعد",
   "Users & Teams has no data source yet": "لا يوجد مصدر بيانات للمستخدمين والفرق بعد",
 
-  // Wave 7 — accounting cluster live wiring (Accounts Receivable, Equity
-  // Management, Expense Tracking, Sales Management).
+  // Honest-gap fixes for the AI Platform screens (BLK-004): Prompt Library,
+  // Model Settings, Workflow Builder and Automation Rules all rendered
+  // fabricated fixture data with no backing collection.
+  "Prompt Library has no data source yet": "لا يوجد مصدر بيانات لمكتبة الأوامر بعد",
+  "Saved AI prompts, their categories and use counts have no collection this API serves. Nothing is shown here rather than invented prompts.": "أوامر الذكاء الاصطناعي المحفوظة وفئاتها وعدد مرات استخدامها ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق أوامر.",
+  "Model Settings has no data source yet": "لا يوجد مصدر بيانات لإعدادات النموذج بعد",
+  "AI model choice, parameters and usage/cost have no collection this API serves. Nothing is shown here rather than invented settings.": "اختيار نموذج الذكاء الاصطناعي ومعاييره واستخدامه/تكلفته ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق إعدادات.",
+  "Workflow Builder has no data source yet": "لا يوجد مصدر بيانات لمنشئ سير العمل بعد",
+  "Automated workflows, their steps and run history have no collection this API serves. Nothing is shown here rather than invented workflows.": "سير العمل الآلي وخطواته وسجل تشغيله ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق مسارات عمل.",
+  "Automation Rules has no data source yet": "لا يوجد مصدر بيانات لقواعد الأتمتة بعد",
+  "Trigger-based automation rules have no collection this API serves. Nothing is shown here rather than invented rules.": "قواعد الأتمتة المُشغَّلة بأحداث ليست ضمن أي مجموعة بيانات تقدمها واجهة البرمجة هذه. لا يُعرض شيء هنا بدلاً من اختلاق قواعد.",
+
+  // Wave 7 — honest-gap and real-lead-submission fixes for the website domain.
+  "No posts published yet": "لا توجد مقالات منشورة بعد",
+  "We haven't published any articles here yet. For product updates and workshop insights in the meantime, ": "لم ننشر أي مقالات هنا حتى الآن. للاطلاع على تحديثات المنتج ورؤى الورشة في هذه الأثناء، ",
+  "Book a demo form": "نموذج حجز عرض توضيحي",
+  "Thank you — a member of our sales team will confirm your demo time shortly.": "شكرًا لك — سيتواصل معك أحد أعضاء فريق المبيعات لتأكيد موعد العرض التوضيحي قريبًا.",
+  " and tell us about yourself.": " وأخبرنا عن نفسك.",
+  "Get in touch": "تواصل معنا",
+  "No open positions listed right now": "لا توجد وظائف شاغرة معلنة حاليًا",
+  "Think you would be a good fit anyway? ": "تعتقد أنك مناسب رغم ذلك؟ ",
+
+  // Accounting cluster live wiring (Accounts Receivable, Equity Management,
+  // Expense Tracking, Sales Management) — merged from a concurrent branch.
   "Loading receivables…": "جارٍ تحميل الذمم المدينة…",
   "No outstanding invoices": "لا توجد فواتير مستحقة",
   "Total Invoiced": "إجمالي المفوتر",
@@ -5028,4 +5081,36 @@ export const AR_OVERRIDES: Record<string, string> = {
   "ID, category or vendor": "المعرّف أو الفئة أو المورد",
   "Loading expenses…": "جارٍ تحميل المصروفات…",
   "Loading sales…": "جارٍ تحميل المبيعات…",
+
+  // Equipment warranties (BLK-004) — a real writable directory replacing
+  // WarrantyManagement.tsx's fabricated "Connected" mock rows.
+  "Delete Warranty?": "هل تريد حذف الضمان؟",
+  "Hydraulic Lift #1": "رافعة هيدروليكية رقم ١",
+  "LiftMaster Co": "شركة ليفت ماستر",
+  "Only used once the status is Claimed.": "تُستخدم فقط عند أن تكون الحالة \"مُطالَب به\".",
+  "Warranty deleted": "تم حذف الضمان",
+  "Could not update warranty": "تعذر تحديث الضمان",
+  "Mark as Claimed": "وضع علامة كمطالَب به",
+  "Updating...": "جارٍ التحديث...",
+  "Warranty marked as claimed": "تم وضع علامة على الضمان كمطالَب به",
+
+  // Wave 8 — honest-gap, real-wire and fake-success fixes for the auth domain screens.
+  "You've been invited to join a workspace.": "لقد تمت دعوتك للانضمام إلى مساحة عمل.",
+  "Accepting invites online is not available on this deployment yet — ask whoever invited you for another way to join.": "قبول الدعوات عبر الإنترنت غير متاح في هذا الإصدار حاليًا — اطلب من الشخص الذي دعاك طريقة أخرى للانضمام.",
+  "Change these anytime from Settings — this step only shows your current choices.": "يمكنك تغيير هذه الخيارات في أي وقت من الإعدادات — هذه الخطوة تعرض اختياراتك الحالية فقط.",
+  "This deployment does not save organization, branch or profile setup yet — nothing you entered was stored. You can configure your workshop from the Settings page once it is available.": "هذا الإصدار لا يحفظ إعداد المؤسسة أو الفرع أو الملف الشخصي بعد — لم يُحفظ أي مما أدخلته. يمكنك إعداد ورشتك من صفحة الإعدادات عند توفرها.",
+  "Organization selection has no data source yet": "لا يوجد مصدر بيانات لاختيار المؤسسة بعد",
+  "sign-in is not available on this deployment yet": "تسجيل الدخول غير متاح في هذا الإصدار حاليًا",
+  "We don’t track lockout details (reference, attempt count, unlock time) for this deployment yet. Contact support to unlock your account.": "لا نتتبع تفاصيل القفل (الرقم المرجعي وعدد المحاولات ووقت إلغاء القفل) في هذا الإصدار حاليًا. تواصل مع الدعم لإلغاء قفل حسابك.",
+  "Loading workspaces...": "جارٍ تحميل مساحات العمل...",
+  "No branches are set up on this account yet.": "لم يتم إعداد أي فروع لهذا الحساب بعد.",
+  "No workspaces yet": "لا توجد مساحات عمل بعد",
+
+  // Wave 9 — honest-gap and fake-success fixes for the ai domain screens.
+  // (AutomationRules/WorkflowBuilder/PromptLibrary's own titles are
+  // already covered above by PR 152's independently-converted versions
+  // of those screens, which merged into main first and superseded this
+  // wave's ModelSettings.tsx rewrite — see FEATUREMAP_TRIAGE.md wave 9.)
+  "AI Analytics has no data source yet": "لا يوجد مصدر بيانات لتحليلات الذكاء الاصطناعي بعد",
+  "AI Assistant is not available on this deployment yet": "مساعد الذكاء الاصطناعي غير متاح في هذا الإصدار حاليًا",
 }

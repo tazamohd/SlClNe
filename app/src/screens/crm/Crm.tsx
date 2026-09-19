@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { ListPageHeader } from '@/components/shell/ListPage'
 import { FeatureHeader, Section, StatRow } from '@/components/shell/FeatureScreen'
@@ -12,9 +13,12 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Money, formatSar, parseSar } from '@/components/ui/Money'
 import { ErrorState, Loading } from '@/components/ui/States'
+import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
-import { useCollection, type RowOf } from '@/data/useCollection'
+import { queryKeys, useCollection, type RowOf } from '@/data/useCollection'
+import { isMessagingUnavailable, sendCampaign } from './campaign-api'
+import { rowId } from '../registry/writes'
 import { LeadFormModal } from './LeadFormModal'
 import { OpportunityFormModal } from './OpportunityFormModal'
 import { CampaignFormModal } from './CampaignFormModal'
@@ -410,17 +414,54 @@ const CHANNEL_ICON: Record<string, string> = {
 
 /** Campaign list, filtered by channel. Also backs EmailMarketing,
  *  SMSCampaigns and WhatsAppCampaigns — same data, one channel each. */
+const SENDABLE_TYPES = new Set(['sms', 'whatsapp'])
+
 export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' }) {
   const { t } = usePreferences()
   const { can } = useSession()
   const isMobile = useIsMobile()
+  const toast = useToast()
+  const queryClient = useQueryClient()
   const { data: all = [], isLoading, isError, error, refetch } = useCollection('campaigns')
   const [creating, setCreating] = useState(false)
+  const [sendingId, setSendingId] = useState<string | null>(null)
 
   const campaigns = useMemo(
     () => (channel ? all.filter((c) => c.type === channel) : all),
     [all, channel]
   )
+
+  const mayDispatch = can('crm', 'e')
+
+  /** `POST /crm/campaigns/:id/send`, not a field write: the server hands the
+   *  campaign to the messaging transport before it moves the status.
+   *  Unconfigured by default (§40) — that refusal is met honestly, never as
+   *  a fabricated "Sent". */
+  const handleSend = async (campaign: Campaign) => {
+    const id = rowId(campaign)
+    if (!id) return
+    setSendingId(id)
+    try {
+      await sendCampaign(id)
+      await queryClient.invalidateQueries({ queryKey: queryKeys.all('campaigns') })
+      toast.show({ title: t('Campaign dispatched'), description: t(campaign.name) })
+    } catch (cause) {
+      if (isMessagingUnavailable(cause)) {
+        toast.show({
+          title: t('No messaging provider configured'),
+          description: cause instanceof Error ? cause.message : t('This deployment has no live SMS/WhatsApp provider.'),
+        })
+      } else {
+        toast.show({
+          title: t('Could not dispatch campaign'),
+          description: cause instanceof Error ? cause.message : String(cause),
+          error: true,
+        })
+      }
+    } finally {
+      setSendingId(null)
+    }
+  }
 
   const totals = useMemo(() => {
     const reach = campaigns.reduce((sum, c) => sum + c.reach, 0)
@@ -472,6 +513,20 @@ export function Campaigns({ channel }: { channel?: 'email' | 'sms' | 'whatsapp' 
     { header: 'Conversions', cell: (c) => c.conversions },
     { header: 'Spent', cell: (c) => <Money sar={parseSar(c.spent)} /> },
     { header: 'Budget', cell: (c) => <Money sar={parseSar(c.budget)} className="text-muted" /> },
+    ...(mayDispatch
+      ? [
+          {
+            header: 'Actions',
+            cell: (c: Campaign) =>
+              SENDABLE_TYPES.has(c.type) && c.status !== 'completed' ? (
+                <Button size="sm" variant="subtle" onClick={() => void handleSend(c)} disabled={sendingId === rowId(c)}>
+                  <Icon name="Send" size={13} />
+                  {sendingId === rowId(c) ? t('Sending...') : t('Send')}
+                </Button>
+              ) : null,
+          },
+        ]
+      : []),
   ]
 
   if (isMobile) {

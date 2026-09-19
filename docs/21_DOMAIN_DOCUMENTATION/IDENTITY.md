@@ -12,11 +12,11 @@
 
 # Domain — Identity and access
 
-**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-IDENTITY · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 19 screens, 26 API endpoints and 0 entities, gated by the `auth` permission module.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 19 screens, 24 API endpoints and 0 entities, gated by the `auth` permission module.
 
 
 ## Actors
@@ -40,8 +40,6 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/biometric/challenge` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/biometric/enrol` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/forgot-password` | — | explicit | — | 2 |
-| GET | `/api/v1/auth/invite/:token` | — | explicit | — | **0** |
-| POST | `/api/v1/auth/invite/:token/accept` | — | explicit | — | **0** |
 | POST | `/api/v1/auth/login` | — | explicit | — | 13 |
 | POST | `/api/v1/auth/logout` | — | explicit | — | 1 |
 | GET | `/api/v1/auth/me` | — | explicit | — | 2 |
@@ -58,7 +56,7 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/sso/start` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/switch-role` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/verify-otp` | — | explicit | — | 1 |
-| POST | `/api/v1/public/customers/register` | — | explicit | — | 6 |
+| POST | `/api/v1/public/customers/register` | — | explicit | — | 5 |
 | POST | `/api/v1/public/customers/resend-otp` | — | explicit | — | 1 |
 | POST | `/api/v1/public/customers/verify-otp` | — | explicit | — | 1 |
 
@@ -78,11 +76,11 @@ _No lifecycle in the contract belongs to this domain._
 | D-CookiePolicy | `/cookie-policy` | auth | **mock** | — | — | — | verified | yes |
 | D-CreatePIN | `/create-pin` | auth | **mock** | — | — | — | verified | yes |
 | D-ForgotPassword | `/forgot-password` | auth | **mock** | — | — | — | verified | yes |
-| D-InviteAcceptance | `/invite-acceptance` | auth | **mock** | — | — | — | PARTIAL | yes |
+| D-InviteAcceptance | `/invite-acceptance` | auth | **mock** | — | — | — | verified | yes |
 | D-LanguageSelection | `/language-selection` | auth | **mock** | — | — | — | verified | yes |
 | D-LogoutConfirmation | `/logout-confirmation` | auth | **mock** | — | — | — | verified | yes |
 | D-Onboarding | `/onboarding` | auth | **mock** | — | — | — | verified | yes |
-| D-OrganizationSelection | `/organization-selection` | auth | **mock** | — | — | — | verified | yes |
+| D-OrganizationSelection | `/organization-selection` | auth | **mock** | — | — | yes | PARTIAL | yes |
 | D-OTPVerification | `/otpverification` | auth | **mock** | — | — | — | verified | yes |
 | D-ProfileCompletion | `/profile-completion` | auth | **mock** | — | — | — | PARTIAL | yes |
 | D-RegionSelection | `/region-selection` | auth | **mock** | — | — | — | PARTIAL | yes |
@@ -92,14 +90,14 @@ _No lifecycle in the contract belongs to this domain._
 | D-SocialLogin | `/social-login` | auth | **mock** | — | — | — | verified | yes |
 | D-SSOLogin | `/ssologin` | auth | **mock** | — | — | — | PARTIAL | yes |
 | D-TwoFactorVerification | `/two-factor-verification` | auth | **mock** | — | — | — | verified | yes |
-| D-WorkspaceSelection | `/workspace-selection` | auth | **mock** | — | — | — | verified | yes |
+| D-WorkspaceSelection | `/workspace-selection` | auth | yes | yes | yes | yes | verified | yes |
 
 ## Known gaps in this domain
 
-- **19 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **4 of 26 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **18 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **2 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **19 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **18 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

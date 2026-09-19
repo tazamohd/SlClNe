@@ -10,13 +10,19 @@
 
 # API — crm
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 45 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 51 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/crm/campaigns` | crm:v | token | `campaigns` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/crm/campaigns` | crm:v | token | `campaigns` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/crm/campaigns` | crm:c | token | `campaigns` | — | 3 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/crm/campaigns/:id` | crm:d | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/campaigns/:id` | crm:v | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/crm/campaigns/:id` | crm:e | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/campaigns/:id/history` | crm:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/crm/campaigns/:id/send` | crm:e | token | — | — | — | `server/src/routes/crm.ts` |
+| POST | `/api/v1/crm/campaigns/bulk-delete` | crm:d | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/crm/campaigns/bulk-update` | crm:e | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/campaigns/export` | crm:x | token | `campaigns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/crm/leads` | crm:v | token | `leads` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/crm/leads` | crm:c | token | `leads` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
@@ -66,7 +72,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | leads | `/crm/leads` | `name`, `company`, `source` | `name`, `valueHalalas`, `score`, `stage`, `createdAt` | `stage`, `source` | createdAt asc | yes |
 | opportunities | `/crm/opportunities` | `name`, `company`, `ownerName` | `name`, `valueHalalas`, `stage`, `closeDate`, `createdAt` | `stage` | createdAt asc | yes |
-| campaigns | `/crm/campaigns` | `name` | `name`, `reach`, `conversions`, `createdAt` | `type`, `status` | createdAt asc | read-only |
+| campaigns | `/crm/campaigns` | `name` | `name`, `reach`, `conversions`, `createdAt` | `type`, `status` | createdAt asc | yes |
 | segments | `/crm/segments` | `name`, `rules` | `name`, `memberCount`, `createdAt` | — | createdAt asc | read-only |
 | crmTasks | `/crm/tasks` | `title`, `assignedTo` | `title`, `dueDate`, `priority`, `status`, `createdAt` | `status`, `priority`, `type` | createdAt asc | yes |
 | feedback | `/customer-feedback` | `comment`, `customerName` | `rating`, `createdAt` | `rating`, `jobCardId`, `customerId` | createdAt desc | yes |

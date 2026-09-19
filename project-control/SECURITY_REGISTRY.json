@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -16,6 +16,8 @@
       "bank_statements",
       "branches",
       "campaigns",
+      "canned_job_lines",
+      "canned_jobs",
       "chart_of_accounts",
       "conversations",
       "crm_tasks",
@@ -31,6 +33,7 @@
       "diag_stages",
       "dtc_codes",
       "employees",
+      "equipment_warranties",
       "estimate_lines",
       "estimates",
       "expenses",
@@ -87,6 +90,8 @@
       "bank_statements",
       "branches",
       "campaigns",
+      "canned_job_lines",
+      "canned_jobs",
       "chart_of_accounts",
       "conversations",
       "crm_tasks",
@@ -102,6 +107,7 @@
       "diag_stages",
       "dtc_codes",
       "employees",
+      "equipment_warranties",
       "estimate_lines",
       "estimates",
       "expenses",
@@ -753,6 +759,87 @@
         "predicate": "app_scope() <> 'self' OR job_card_id IN (SELECT id FROM job_cards)",
         "purpose": null,
         "file": "server/drizzle/0019_delivery_signoff.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "canned_jobs",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "canned_jobs",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "canned_jobs",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "canned_job_lines",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "canned_job_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "canned_job_lines",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "equipment_warranties",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0022_equipment_warranties.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "equipment_warranties",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0022_equipment_warranties.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "equipment_warranties",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0022_equipment_warranties.sql"
       }
     ],
     "triggers": [
@@ -930,6 +1017,24 @@
         "table": "delivery_signoffs",
         "function": "bump_version",
         "file": "server/drizzle/0019_delivery_signoff.sql"
+      },
+      {
+        "name": "canned_jobs_bump_version",
+        "table": "canned_jobs",
+        "function": "bump_version",
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "canned_job_lines_bump_version",
+        "table": "canned_job_lines",
+        "function": "bump_version",
+        "file": "server/drizzle/0020_canned_jobs.sql"
+      },
+      {
+        "name": "equipment_warranties_bump_version",
+        "table": "equipment_warranties",
+        "function": "bump_version",
+        "file": "server/drizzle/0022_equipment_warranties.sql"
       }
     ],
     "contextFunctions": [
@@ -939,9 +1044,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 68,
-      "rlsEnabled": 69,
-      "forced": 69,
+      "tenantScopedTables": 71,
+      "rlsEnabled": 72,
+      "forced": 72,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -966,7 +1071,10 @@
       "server/drizzle/0016_document_chain.sql",
       "server/drizzle/0017_declined_jobs.sql",
       "server/drizzle/0018_inspection_findings.sql",
-      "server/drizzle/0019_delivery_signoff.sql"
+      "server/drizzle/0019_delivery_signoff.sql",
+      "server/drizzle/0020_canned_jobs.sql",
+      "server/drizzle/0021_campaign_messaging.sql",
+      "server/drizzle/0022_equipment_warranties.sql"
     ]
   },
   "authenticationSurface": [

@@ -8,11 +8,11 @@
 
 # Relationship catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
 ## The one thing to read first
 
-Of 187 relationships in the model, **66 are backed by a database foreign key** and **121 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 194 relationships in the model, **69 are backed by a database foreign key** and **125 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -74,6 +74,11 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-DELIVERY-SIGNOFFS-ORG-ID | `delivery_signoffs` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-DELIVERY-SIGNOFFS-BRANCH-ID | `delivery_signoffs` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-DELIVERY-SIGNOFFS-JOB-CARD-ID | `delivery_signoffs` | `job_card_id` | `job_cards` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-CANNED-JOBS-ORG-ID | `canned_jobs` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-CANNED-JOBS-BRANCH-ID | `canned_jobs` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-CANNED-JOB-LINES-ORG-ID | `canned_job_lines` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-CANNED-JOB-LINES-BRANCH-ID | `canned_job_lines` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
+| REL-CANNED-JOB-LINES-CANNED-JOB-ID | `canned_job_lines` | `canned_job_id` | `canned_jobs` | many-to-one | mandatory | **INFERRED** | yes |
 | REL-INVOICES-ORG-ID | `invoices` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-INVOICES-BRANCH-ID | `invoices` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-INVOICES-CUSTOMER-ID | `invoices` | `customer_id` | `customers` | many-to-one | optional | **INFERRED** | no |
@@ -157,6 +162,8 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-LOAN-REPAYMENTS-ORG-ID | `loan_repayments` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-LOAN-REPAYMENTS-BRANCH-ID | `loan_repayments` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-LOAN-REPAYMENTS-LOAN-CONTRACT-ID | `loan_repayments` | `loan_contract_id` | `loan_contracts` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-EQUIPMENT-WARRANTIES-ORG-ID | `equipment_warranties` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-EQUIPMENT-WARRANTIES-BRANCH-ID | `equipment_warranties` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-ORG-ID | `employees` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-EMPLOYEES-BRANCH-ID | `employees` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-DEPARTMENT-ID | `employees` | `department_id` | `departments` | many-to-one | optional | **INFERRED** | no |

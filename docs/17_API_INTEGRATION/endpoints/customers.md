@@ -10,7 +10,7 @@
 
 # API — customers
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 20 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 19 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -20,7 +20,6 @@
 | GET | `/api/v1/customers/:id` | customers:v | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/customers/:id` | customers:e | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customers/:id/history` | customers:v | token | — | — | — | `server/src/routes/history.ts` |
-| POST | `/api/v1/customers/:id/portal-access` | customers:e | token | — | — | — | `server/src/auth/routes.ts` |
 | POST | `/api/v1/customers/bulk-delete` | customers:d | token | `customers` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/customers/bulk-update` | customers:e | token | `customers` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/customers/export` | customers:x | token | `customers` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

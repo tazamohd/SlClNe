@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 199,
-    "cases": 2266,
+    "suites": 204,
+    "cases": 2305,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1156,
+      "UNIT_OR_API": 1195,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1686,26 +1686,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-ADMIN-USERS-TEAMS-TEST-TSX",
-      "file": "app/tests/admin-users-teams.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "UsersTeams — live"
-      ],
-      "cases": [
-        "lists staff from the API rather than the fixture rows",
-        "creates a staff account directly and shows the one-time password"
-      ],
-      "caseCount": 2,
-      "touchesPaths": [],
-      "touchesRoles": [
-        "owner",
-        "parts",
-        "technician"
-      ]
-    },
-    {
       "id": "TS-APP-TESTS-COMPONENT-ACCORDION-TEST-TSX",
       "file": "app/tests/component/Accordion.test.tsx",
       "kind": "UNIT_OR_API",
@@ -1874,6 +1854,26 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-CRM-CAMPAIGN-SEND-TEST-TSX",
+      "file": "app/tests/component/crm-campaign-send.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Campaigns — Send action (fixture build)"
+      ],
+      "cases": [
+        "offers Send only for an sms/whatsapp campaign that is not completed",
+        "a click does not fabricate a status change with no fixture row id to dispatch",
+        "hides Send from a role with no crm edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "technician"
       ]
     },
     {
@@ -2372,6 +2372,26 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WARRANTY-MANAGEMENT-TEST-TSX",
+      "file": "app/tests/component/warranty-management.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WarrantyManagement (fixture build)"
+      ],
+      "cases": [
+        "creates a warranty through the form, and it appears in the list",
+        "marks an active warranty claimed, a real status write rather than an optimistic label",
+        "hides New Warranty, Edit and Mark as Claimed from a role with no accounting edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "accountant",
+        "technician"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKFLOWSTEPPER-TEST-TSX",
       "file": "app/tests/component/WorkflowStepper.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2441,6 +2461,25 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-CANNED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-canned-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "CannedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the real, empty catalog rather than a fabricated one",
+        "states honestly that the catalog cannot be saved without a live API",
+        "offers no \"New Package\" action with no live API to save one to"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
       "file": "app/tests/component/workshop-declined-jobs.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2500,6 +2539,24 @@
       "touchesPaths": [],
       "touchesRoles": [
         "owner",
+        "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-TEST-TSX",
+      "file": "app/tests/component/workshop-estimate.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopEstimate — applying a canned job (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job",
+        "offers no canned-job picker without a linked estimate to apply one to"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
         "advisor"
       ]
     },
@@ -2760,6 +2817,7 @@
       "surface": "app",
       "describes": [
         "CRM collections are writable server-side (F-027 landed)",
+        "campaign CRUD and dispatch are real server-side (build-order item 7, landed)",
         "customer feedback has a home server-side (F-027 landed)",
         "fleet contracts carry terms and are joinable (F-027 landed)"
       ],
@@ -2768,13 +2826,15 @@
         "LANDED: `opportunities` is writable and a lead→opportunity conversion route exists — LeadDetail can offer Convert to Opportunity",
         "LANDED: `crmTasks` is writable — POST /crm/tasks backs CRMCalendar New Task",
         "GAP: there is no lead activity or lead notes collection — GET/POST /crm/leads/:id/activity and /crm/leads/:id/notes are all missing, so LeadDetail shows honest empty rails",
+        "LANDED: `campaigns` is writable — POST/PATCH/DELETE /crm/campaigns back CampaignFormModal",
+        "LANDED: a campaign send route exists, refusing honestly rather than faking delivery",
         "LANDED: a `feedback` collection is registered at customer-feedback — POST /customer-feedback backs the capture form",
         "LANDED: the schema carries a customer_feedback table — storage and endpoint both exist",
         "LANDED: the fleets table has contract-term columns — type, value, dates and contact, so FleetContract can render them",
         "LANDED: `fleets` is writable and a renew-contract route exists — FleetContract can offer Renew",
         "LANDED: customers present `fleetId`, so a fleet can be joined to its vehicles client-side — FleetContract can list assigned vehicles"
       ],
-      "caseCount": 9,
+      "caseCount": 11,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -3456,23 +3516,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-TESTS-INVITE-ACCEPTANCE-TEST-TSX",
-      "file": "app/tests/invite-acceptance.test.tsx",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "InviteAcceptance — live"
-      ],
-      "cases": [
-        "previews the invite, then accepts it and sets the password",
-        "refuses mismatched passwords without calling the server",
-        "shows an invalid-invitation state for an expired or unknown token"
-      ],
-      "caseCount": 3,
-      "touchesPaths": [],
-      "touchesRoles": []
-    },
-    {
       "id": "TS-APP-TESTS-KIOSK-IDENTIFY-TEST-TSX",
       "file": "app/tests/kiosk-identify.test.tsx",
       "kind": "UNIT_OR_API",
@@ -3986,9 +4029,10 @@
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
-        "Blog and catalogue cards are informational, not links to nowhere"
+        "catalogue cards are informational, not links to nowhere",
+        "Blog has no fabricated posts — an honest empty state instead"
       ],
-      "caseCount": 13,
+      "caseCount": 14,
       "touchesPaths": [
         "/public-portal/request-demo",
         "/public-portal/contact"
@@ -4221,6 +4265,9 @@
       "describes": [
         "OEM Integrations reads oemTools",
         "System Integrations reads integrations",
+        "Accounting Integrations reads integrations, filtered to ERP",
+        "Marketing Hub reads campaigns",
+        "SMS Integration reads integrations, filtered to Messaging",
         "Expenses Management reads expenses",
         "Email Marketing Campaigns reads campaigns",
         "the reports hub reads savedReports"
@@ -4230,6 +4277,13 @@
         "GAP: drops the sync clock and record count it cannot source, and names the read",
         "renders the connectors and groups them by the category the data carries",
         "GAP: shows no adapter version or last-activity clock, and names the read",
+        "renders the real ERP connectors, none of them fabricated as Connected",
+        "GAP: shows no last-sync clock or record count, and names the read",
+        "renders the real campaigns, with totals computed from the rows",
+        "GAP: invents no hardcoded KPI tiles the old array used to print",
+        "renders the real messaging connectors, none of them fabricated as Connected",
+        "GAP: shows no sent-today or delivery-rate figure, and names the read",
+        "GAP: shows no fabricated message log, and names the missing data source",
         "shows each expense with the amount the server formatted",
         "GAP: invents no budget, and names the aggregate that would supply one",
         "counts records rather than summing money",
@@ -4238,7 +4292,7 @@
         "lists what the server holds, and says so honestly when it holds none",
         "keeps the report links, which are navigation rather than data"
       ],
-      "caseCount": 11,
+      "caseCount": 18,
       "touchesPaths": [
         "/sales-reports"
       ],
@@ -5288,8 +5342,6 @@
         "GET /auth/me",
         "one-time codes",
         "password recovery",
-        "POST /admin/staff — garage-employee accounts (Phase A)",
-        "POST /customers/:id/portal-access — staff-granted customer login (Phase B)",
         "SSO, WebAuthn, social and TOTP",
         "the public/authenticated split"
       ],
@@ -5322,21 +5374,11 @@
         "refuses to pretend when no transport is configured",
         "answers identically for a known and an unknown address",
         "resets the password, enforces the policy and signs every device out",
-        "creates a staff account directly, active immediately, with a one-time password",
-        "invites a staff account, which cannot sign in until the invite is accepted",
-        "refuses a role this endpoint may not create",
-        "refuses an email already in use",
-        "is refused for a role without admin:c — the matrix gives manager view-only",
-        "lists the organization’s staff — readable by manager, excludes customers",
-        "grants a login, leaving the public self-signup path untouched",
-        "refuses a customer with no email on file",
-        "refuses to grant access twice",
-        "404s for a customer that does not exist",
         "refuse visibly, naming the configuration that is missing",
         "reports each provider’s state rather than leaving it to be inferred",
         "serves the sign-in routes without a token and nothing else"
       ],
-      "caseCount": 41,
+      "caseCount": 31,
       "touchesPaths": [
         "/auth/login",
         "/auth/me",
@@ -5350,10 +5392,6 @@
         "/api/v1/auth/request-otp",
         "/auth/forgot-password",
         "/auth/reset-password",
-        "/admin/staff",
-        "/customers",
-        "/public/customers/register",
-        "/customers/not-a-real-id/portal-access",
         "/auth/sso/start",
         "/auth/sso/callback",
         "/auth/biometric/enrol",
@@ -5361,18 +5399,14 @@
         "/auth/social/google",
         "/auth/2fa/enrol",
         "/auth/2fa/verify",
-        "/auth/providers"
+        "/auth/providers",
+        "/customers"
       ],
       "touchesRoles": [
         "owner",
         "manager",
         "technician",
-        "frontdesk",
-        "parts",
-        "superadmin",
-        "customer",
-        "supplier",
-        "test"
+        "frontdesk"
       ]
     },
     {
@@ -5449,6 +5483,41 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-CANNED-JOBS-TEST-TS",
+      "file": "server/tests/canned-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "creating a canned job",
+        "updating a canned job",
+        "reading canned jobs"
+      ],
+      "cases": [
+        "lets an advisor create a package and prices it from the lines",
+        "lets a manager create one too",
+        "refuses a role that can only view estimates",
+        "rejects a body with no lines",
+        "rejects a body missing a name",
+        "changes a field without touching the price",
+        "replaces the lines and reprices when a new lines array is sent",
+        "can retire a package without touching its lines",
+        "refuses a role that can only view estimates",
+        "lists a created package through the generic collection route",
+        "returns the bundle lines",
+        "shows no canned jobs to a customer"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [
+        "/canned-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "technician",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
       "file": "server/tests/collections.test.ts",
       "kind": "UNIT_OR_API",
@@ -5502,6 +5571,39 @@
         "/api/v1/kb/procedures"
       ],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS",
+      "file": "server/tests/crm-campaigns.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "campaign CRUD — the write route the generic router was missing",
+        "POST /crm/campaigns/:id/send — messaging as EXTERNAL_DEPENDENCY",
+        "GET /diagnostics/integrations — messaging reported honestly"
+      ],
+      "cases": [
+        "creates a campaign through the generic collection route",
+        "updates a field without touching the others",
+        "deletes a campaign",
+        "refuses an empty name",
+        "refuses a role with no crm grant",
+        "the default transport refuses with a 503 naming the missing config",
+        "the mock transport dispatches, flips draft to running, and flags the response mock",
+        "refuses an email campaign — there is no email provider to dispatch to here",
+        "refuses to re-send a completed campaign",
+        "refuses a role with no crm edit grant",
+        "lists the messaging transport alongside OBD and OTP, unconfigured by default"
+      ],
+      "caseCount": 11,
+      "touchesPaths": [
+        "/crm/campaigns",
+        "/diagnostics/integrations"
+      ],
+      "touchesRoles": [
+        "manager",
+        "technician"
+      ]
     },
     {
       "id": "TS-SERVER-TESTS-CRM-FLEET-TEST-TS",
@@ -5737,6 +5839,36 @@
         "frontdesk",
         "manager",
         "callcenter"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-EQUIPMENT-WARRANTIES-TEST-TS",
+      "file": "server/tests/equipment-warranties.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "equipment warranty CRUD",
+        "the active -> claimed lifecycle move"
+      ],
+      "cases": [
+        "creates a warranty, assigning WRN-0001 and defaulting status to active",
+        "assigns sequential numbers to two warranties created back to back",
+        "updates a field without touching the others",
+        "deletes a warranty",
+        "is reachable by its human warranty number as well as its id",
+        "refuses an empty item name",
+        "refuses a role with no accounting create grant",
+        "marking a warranty claimed derives claimedAt server-side",
+        "moving off claimed clears claimedAt rather than leaving a stale date",
+        "refuses a role with no accounting edit grant"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/equipment-warranties"
+      ],
+      "touchesRoles": [
+        "accountant",
+        "technician"
       ]
     },
     {

@@ -8,18 +8,18 @@
 
 # Documentation status
 
-**Sources as of:** 2026-09-18
+**Sources as of:** 2026-09-19
 
 ## Coverage
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 410 |
+| Documents in `docs/` | 409 |
 | In the numbered architecture | 139 |
-| In the pre-existing folders (classified, not yet migrated) | 271 |
+| In the pre-existing folders (classified, not yet migrated) | 270 |
 | Machine-generated from source | 120 |
-| Authored | 290 |
-| Substantive (> 1.2 kB) | 378 |
+| Authored | 289 |
+| Substantive (> 1.2 kB) | 377 |
 | Thin — placeholder or stub | 32 |
 | Required documents present | 35 of 35 |
 
@@ -27,16 +27,16 @@
 
 | Area | Derived from | Count |
 | --- | --- | --- |
-| Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 73 tables |
-| Relationship catalogue | `server/src/db/schema.ts` | 187 relationships |
-| API reference | the route files | 423 endpoints |
+| Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 76 tables |
+| Relationship catalogue | `server/src/db/schema.ts` | 194 relationships |
+| API reference | the route files | 440 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 450 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
-| State machines | `packages/contract/src/entities/*.ts` | 20 lifecycles |
-| Isolation and policies | `server/drizzle/*.sql` | 67 policies |
-| Test catalogue | the spec files | 199 suites |
-| Screen registry view | `project-control/MASTER_REGISTRY.json` | 429 screens |
-| Capability map, requirements, traceability | all of the above | 157 requirements |
+| State machines | `packages/contract/src/entities/*.ts` | 21 lifecycles |
+| Isolation and policies | `server/drizzle/*.sql` | 76 policies |
+| Test catalogue | the spec files | 204 suites |
+| Screen registry view | `project-control/MASTER_REGISTRY.json` | 430 screens |
+| Capability map, requirements, traceability | all of the above | 160 requirements |
 
 `node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
 

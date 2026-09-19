@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
@@ -7,9 +8,22 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 
 const STEPS = ['organization', 'branch', 'profile', 'preferences', 'complete'] as const
 
+/** Post-signup onboarding wizard.
+ *
+ *  Steps 0-2 (organization/branch/profile details) collect input into
+ *  plain, uncontrolled `<Input>`s that were never read or submitted
+ *  anywhere — there is no organization/branch/profile-creation endpoint
+ *  in the API contract, live or not. Reaching step 4 was purely a
+ *  client-side step counter, ending in "Your workspace is ready" — a
+ *  false claim, since nothing entered was ever saved. The final step's
+ *  copy now says so honestly instead. Step 3 (Preferences) previously
+ *  showed hardcoded "English"/"Off"/"On" badges regardless of the
+ *  visitor's actual settings; now reads the real values from
+ *  `usePreferences()`. */
 export function Onboarding() {
-  const { t } = usePreferences()
+  const { t, language, theme, notifications } = usePreferences()
   const isMobile = useIsMobile()
+  const navigate = useNavigate()
   const [step, setStep] = useState(0)
 
   const labels = [
@@ -122,22 +136,31 @@ export function Onboarding() {
                     <Icon name="Globe" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Language')}</span>
                   </div>
-                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('English')}</Badge>
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">
+                    {language === 'ar' ? t('Arabic') : t('English')}
+                  </Badge>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border border-border p-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Moon" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Dark Mode')}</span>
                   </div>
-                  <Badge background="var(--tint-navy)" color="var(--text-heading)">{t('Off')}</Badge>
+                  <Badge background="var(--tint-navy)" color="var(--text-heading)">
+                    {theme === 'dark' ? t('On') : t('Off')}
+                  </Badge>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border border-border p-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Bell" size={16} className="text-salis-blue" />
                     <span className="text-sm text-heading">{t('Notifications')}</span>
                   </div>
-                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">{t('On')}</Badge>
+                  <Badge background="var(--tint-blue)" color="var(--salis-blue)">
+                    {notifications ? t('On') : t('Off')}
+                  </Badge>
                 </div>
+                <p className="m-0 text-xs text-muted">
+                  {t('Change these anytime from Settings — this step only shows your current choices.')}
+                </p>
               </div>
             </div>
           )}
@@ -147,7 +170,11 @@ export function Onboarding() {
                 <Icon name="CheckCircle" size={40} />
               </span>
               <h2 className="text-lg font-bold text-heading">{t('All Set!')}</h2>
-              <p className="max-w-sm text-sm text-muted">{t('Your workspace is ready. You can update these settings anytime from the Settings page.')}</p>
+              <p className="max-w-sm text-sm text-muted">
+                {t(
+                  'This deployment does not save organization, branch or profile setup yet — nothing you entered was stored. You can configure your workshop from the Settings page once it is available.'
+                )}
+              </p>
             </div>
           )}
 
@@ -163,9 +190,9 @@ export function Onboarding() {
             <button
               type="button"
               className="rounded-lg bg-salis-blue px-6 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-salis-blue/90 disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-salis-blue focus-visible:ring-offset-2"
-              disabled={!canNext && step !== STEPS.length - 1}
               onClick={() => {
                 if (canNext) setStep((s) => s + 1)
+                else navigate('/dashboard', { replace: true })
               }}
             >
               {step === STEPS.length - 1 ? t('Get Started') : t('Continue')}

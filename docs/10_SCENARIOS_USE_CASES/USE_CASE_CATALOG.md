@@ -11,7 +11,7 @@
 
 # Use case catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
@@ -41,6 +41,9 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-AUTH-SWITCH-ROLE | POST /auth/switch-role | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-VERIFY-OTP | POST /auth/verify-otp | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-BANK-STATEMENTS-ID-MATCH | POST /bank-statements/:id/match | accountant, test | accounting:e | — | — | — | yes | `server/src/routes/bank.ts` |
+| UC-POST-CANNED-JOBS | POST /canned-jobs | owner, manager, advisor, test | estimates:c | — | — | — | yes | `server/src/routes/canned-jobs.ts` |
+| UC-PATCH-CANNED-JOBS-ID | PATCH /canned-jobs/:id | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/canned-jobs.ts` |
+| UC-POST-CRM-CAMPAIGNS-ID-SEND | POST /crm/campaigns/:id/send | owner, manager, advisor, callcenter, test | crm:e | — | — | — | — | `server/src/routes/crm.ts` |
 | UC-POST-CRM-LEADS-ID-CONVERT | POST /crm/leads/:id/convert | owner, manager, advisor, callcenter, test | crm:c | — | — | — | yes | `server/src/routes/crm.ts` |
 | UC-POST-CUSTOMERS-ID-PORTAL-ACCESS | POST /customers/:id/portal-access | owner, manager, advisor, frontdesk, callcenter +1 | customers:e | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-DIAGNOSTICS-DEVICES-ID-CLEAR-CODES | POST /diagnostics/devices/:id/clear-codes | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/obd.ts` |

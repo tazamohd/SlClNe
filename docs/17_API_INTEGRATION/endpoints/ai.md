@@ -10,7 +10,7 @@
 
 # API — ai
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 8 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 8 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
