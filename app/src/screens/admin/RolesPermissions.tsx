@@ -74,7 +74,7 @@ const ACTIONS: readonly [Action, string][] = [
   ['x', 'Export'],
 ]
 
-const SCOPE_LABELS: Record<string, [string, string]> = {
+export const SCOPE_LABELS: Record<string, [string, string]> = {
   all: ['All branches', 'كل الفروع'],
   branch: ['Own branch', 'فرعه'],
   own: ['Own jobs', 'أعماله'],

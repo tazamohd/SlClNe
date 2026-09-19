@@ -11,17 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 30,
+    "mockOnly": 26,
     "noBackend": 117,
-    "dataBacked": 168,
+    "dataBacked": 170,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 198,
     "hasErrorState": 161,
-    "hasEmptyState": 268,
+    "hasEmptyState": 269,
     "tabletVerified": 4,
-    "arabicVerified": 120,
+    "arabicVerified": 122,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -11879,7 +11879,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -15108,8 +15108,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "admin/staff"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -15138,8 +15140,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -29211,7 +29212,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "MISSING",
@@ -29248,8 +29249,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -29343,15 +29343,17 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "admin/staff"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -29380,8 +29382,6 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },

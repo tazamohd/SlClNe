@@ -64,6 +64,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Dedicated environment and integration review": "بيئة مخصصة ومراجعة للتكاملات",
   "Multi-branch groups and fleets with custom integrations can request a dedicated security review as part of onboarding.": "يمكن للمجموعات متعددة الفروع والأساطيل ذات التكاملات المخصصة طلب مراجعة أمنية مخصصة كجزء من التأهيل.",
   "Data export and offboarding": "تصدير البيانات وإنهاء الخدمة",
+  "Display Name": "الاسم المعروض",
   "Structured data export is available as part of enterprise implementation and offboarding — talk to sales about the format and scope your organisation needs.": "يتوفر تصدير البيانات المُهيكل كجزء من تنفيذ المؤسسات وإنهاء الخدمة — تواصل مع المبيعات لمعرفة الصيغة والنطاق الذي تحتاجه مؤسستك.",
   "Have a specific security or compliance question for your organisation? Our sales team can walk through implementation details with your IT or compliance stakeholders.": "هل لديك سؤال أمني أو امتثالي محدد يخص مؤسستك؟ يمكن لفريق المبيعات لدينا مناقشة تفاصيل التنفيذ مع فريق تقنية المعلومات أو الامتثال لديكم.",
   // ROI Calculator page
