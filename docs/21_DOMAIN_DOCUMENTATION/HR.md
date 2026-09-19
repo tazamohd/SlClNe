@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CAPACITY** (Use technician capacity well). It comprises 11 screens, 52 API endpoints and 3 entities, gated by the `hr`, `technicians` permission modules.
+This domain serves the objective **OBJ-CAPACITY** (Use technician capacity well). It comprises 13 screens, 71 API endpoints and 3 entities, gated by the `hr`, `technicians` permission modules.
 
 
 ## Actors
@@ -103,6 +103,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/payroll/runs/bulk-delete` | hr:d | generated | — | **0** |
 | POST | `/api/v1/payroll/runs/bulk-update` | hr:e | generated | — | **0** |
 | GET | `/api/v1/payroll/runs/export` | hr:x | generated | — | **0** |
+| GET | `/api/v1/reports/technician-leaderboard` | hr:v | explicit | — | 1 |
 | GET | `/api/v1/technicians` | technicians:v | generated | — | 3 |
 | GET | `/api/v1/technicians/:id` | technicians:v | generated | — | **0** |
 | GET | `/api/v1/technicians/:id/history` | technicians:v | explicit | — | **0** |
@@ -116,6 +117,24 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/timesheets/bulk-delete` | hr:d | generated | — | **0** |
 | POST | `/api/v1/timesheets/bulk-update` | hr:e | generated | — | **0** |
 | GET | `/api/v1/timesheets/export` | hr:x | generated | — | **0** |
+| GET | `/api/v1/training/courses` | hr:v | generated | — | 1 |
+| POST | `/api/v1/training/courses` | hr:c | generated | — | 1 |
+| DELETE | `/api/v1/training/courses/:id` | hr:d | generated | — | **0** |
+| GET | `/api/v1/training/courses/:id` | hr:v | generated | — | **0** |
+| PATCH | `/api/v1/training/courses/:id` | hr:e | generated | — | **0** |
+| GET | `/api/v1/training/courses/:id/history` | hr:v | explicit | — | **0** |
+| POST | `/api/v1/training/courses/bulk-delete` | hr:d | generated | — | **0** |
+| POST | `/api/v1/training/courses/bulk-update` | hr:e | generated | — | **0** |
+| GET | `/api/v1/training/courses/export` | hr:x | generated | — | **0** |
+| GET | `/api/v1/training/enrolments` | hr:v | generated | — | 1 |
+| POST | `/api/v1/training/enrolments` | hr:c | generated | — | 1 |
+| DELETE | `/api/v1/training/enrolments/:id` | hr:d | generated | — | **0** |
+| GET | `/api/v1/training/enrolments/:id` | hr:v | generated | — | **0** |
+| PATCH | `/api/v1/training/enrolments/:id` | hr:e | generated | — | **0** |
+| GET | `/api/v1/training/enrolments/:id/history` | hr:v | explicit | — | **0** |
+| POST | `/api/v1/training/enrolments/bulk-delete` | hr:d | generated | — | **0** |
+| POST | `/api/v1/training/enrolments/bulk-update` | hr:e | generated | — | **0** |
+| GET | `/api/v1/training/enrolments/export` | hr:x | generated | — | **0** |
 
 ## Business rules
 
@@ -126,7 +145,14 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 ## Lifecycles
 
-_No lifecycle in the contract belongs to this domain._
+### `trainingCourseStatus` (training)
+
+**State set only** — states: `draft`, `active`, `archived`. No transition table is declared; legal moves are whatever the route handlers check.
+
+### `trainingEnrolmentStatus` (training)
+
+**State set only** — states: `enrolled`, `in_progress`, `completed`, `withdrawn`. No transition table is declared; legal moves are whatever the route handlers check.
+
 
 ## Screens
 
@@ -137,16 +163,19 @@ _No lifecycle in the contract belongs to this domain._
 | D-TechnicianKB | `/technician-kb` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Technicians | `/technicians` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-TechnicianSchedule | `/technician-schedule` | app | yes | yes | yes | yes | verified | yes |
+| F-100 | `/technician-leaderboards` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-135 | `/hr-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-136 | `/staff-directory` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-139 | `/timesheet-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-140 | `/timeclock-payroll` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-141 | `/payroll-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-143 | `/training-lms` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **43 of 52 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **57 of 71 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **2 lifecycles (`trainingCourseStatus`, `trainingEnrolmentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **6 of 9 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 
 ## Evidence

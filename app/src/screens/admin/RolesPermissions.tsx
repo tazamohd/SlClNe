@@ -8,29 +8,62 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { ROLES, PERMS, FIELD_RULES } from '@/data/rbac'
 import type { Action } from '@/data/types'
 
-const MODULES: readonly [string, string][] = [
-  ['dashboard', 'Dashboard'],
-  ['jobcards', 'Job Cards'],
-  ['appointments', 'Appointments'],
-  ['estimates', 'Estimates'],
-  ['customers', 'Customers'],
-  ['vehicles', 'Vehicles'],
-  ['inventory', 'Inventory'],
-  ['procurement', 'Procurement'],
-  ['invoices', 'Invoices'],
-  ['payments', 'Payments'],
-  ['accounting', 'Accounting'],
-  ['hr', 'HR & Payroll'],
-  ['technicians', 'Technicians'],
-  ['crm', 'CRM'],
-  ['callcenter', 'Call Center'],
-  ['reports', 'Reports'],
-  ['ai', 'AI Platform'],
-  ['admin', 'Administration'],
-  ['settings', 'Settings'],
-  ['audit', 'Audit Log'],
-  ['network', 'Parts Network'],
-]
+/** Human labels for the enforced modules. This is a naming table, not the list
+ *  of what exists: the list comes from `PERMS` below.
+ *
+ *  It used to be both, as a hand-written array of 21 entries — and the matrix
+ *  enforces 32. So this screen, whose whole job is to answer "who can do what",
+ *  silently omitted eleven modules including `superadmin`, `approvals`,
+ *  `insurance` and all four portals. Nothing said the view was partial, so an
+ *  administrator auditing a role saw an answer that looked complete and was
+ *  not — the same failure mode as the action-letter documentation that once
+ *  read `x` as delete.
+ *
+ *  A module absent from here now costs a prettier label, not a row. */
+const MODULE_LABELS: Record<string, string> = {
+  dashboard: 'Dashboard',
+  jobcards: 'Job Cards',
+  appointments: 'Appointments',
+  estimates: 'Estimates',
+  customers: 'Customers',
+  vehicles: 'Vehicles',
+  inventory: 'Inventory',
+  procurement: 'Procurement',
+  invoices: 'Invoices',
+  payments: 'Payments',
+  accounting: 'Accounting',
+  hr: 'HR & Payroll',
+  technicians: 'Technicians',
+  crm: 'CRM',
+  callcenter: 'Call Center',
+  reports: 'Reports',
+  ai: 'AI Platform',
+  admin: 'Administration',
+  settings: 'Settings',
+  audit: 'Audit Log',
+  network: 'Parts Network',
+  approvals: 'Approvals',
+  departments: 'Departments',
+  insurance: 'Insurance',
+  kiosk: 'Kiosk',
+  aiadmin: 'AI Administration',
+  execreports: 'Executive Reports',
+  superadmin: 'Super Admin',
+  portalcustomer: 'Customer Portal',
+  portalsupplier: 'Supplier Portal',
+  portaltech: 'Technician Portal',
+  portalprocure: 'Procurement Portal',
+}
+
+/** Every module the matrix enforces, in the curated reading order above, with
+ *  anything the labels do not yet name appended rather than dropped. Derived
+ *  from `PERMS`, so a module added to the enum shows up here on its own. */
+const MODULES: readonly [string, string][] = (() => {
+  const enforced = Object.keys(PERMS)
+  const ordered = Object.keys(MODULE_LABELS).filter((id) => enforced.includes(id))
+  const unnamed = enforced.filter((id) => !(id in MODULE_LABELS))
+  return [...ordered, ...unnamed].map((id) => [id, MODULE_LABELS[id] ?? id] as [string, string])
+})()
 
 const ACTIONS: readonly [Action, string][] = [
   ['v', 'View'],

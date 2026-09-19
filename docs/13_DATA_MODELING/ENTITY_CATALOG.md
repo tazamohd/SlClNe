@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-82 tables. 77 are tenant-scoped (carry `org_id`) and 78 have row-level security enabled and forced.
+84 tables. 79 are tenant-scoped (carry `org_id`) and 80 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -84,6 +84,8 @@
 | ENT-PAYROLL-LINES | `payroll_lines` | 16 | yes | yes | yes | yes | yes | yes | 4 | 0 |
 | ENT-TIMESHEETS | `timesheets` | 16 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-LEAVE-REQUESTS | `leave_requests` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-TRAINING-COURSES | `training_courses` | 18 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-TRAINING-ENROLMENTS | `training_enrolments` | 15 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-OBD-DEVICES | `obd_devices` | 20 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-OBD-DTC-READINGS | `obd_dtc_readings` | 18 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-DTC-CODES | `dtc_codes` | 15 | yes | yes | yes | yes | yes | yes | — | 0 |

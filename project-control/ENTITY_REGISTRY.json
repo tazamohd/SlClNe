@@ -7,15 +7,15 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "entities": 82,
-    "tenantScoped": 77,
-    "branchScoped": 75,
-    "softDelete": 75,
-    "versioned": 75,
-    "audited": 74,
+    "entities": 84,
+    "tenantScoped": 79,
+    "branchScoped": 77,
+    "softDelete": 77,
+    "versioned": 77,
+    "audited": 76,
     "withMoneyColumns": 36,
-    "rlsEnabled": 78,
-    "columns": 1417
+    "rlsEnabled": 80,
+    "columns": 1450
   },
   "entities": [
     {
@@ -286,6 +286,8 @@
         "REL-PAYROLL-LINES-ORG-ID",
         "REL-TIMESHEETS-ORG-ID",
         "REL-LEAVE-REQUESTS-ORG-ID",
+        "REL-TRAINING-COURSES-ORG-ID",
+        "REL-TRAINING-ENROLMENTS-ORG-ID",
         "REL-OBD-DEVICES-ORG-ID",
         "REL-OBD-DTC-READINGS-ORG-ID",
         "REL-DTC-CODES-ORG-ID",
@@ -613,6 +615,8 @@
         "REL-PAYROLL-LINES-BRANCH-ID",
         "REL-TIMESHEETS-BRANCH-ID",
         "REL-LEAVE-REQUESTS-BRANCH-ID",
+        "REL-TRAINING-COURSES-BRANCH-ID",
+        "REL-TRAINING-ENROLMENTS-BRANCH-ID",
         "REL-OBD-DEVICES-BRANCH-ID",
         "REL-OBD-DTC-READINGS-BRANCH-ID",
         "REL-DTC-CODES-BRANCH-ID",
@@ -10440,7 +10444,9 @@
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-TECHNICIAN-PORTAL-SPEC-TS",
-        "TS-APP-TESTS-COMPONENT-WORKSHOP-SCHEDULE-TEST-TSX"
+        "TS-APP-TESTS-COMPONENT-TECHNICIAN-LEADERBOARDS-TEST-TSX",
+        "TS-APP-TESTS-COMPONENT-WORKSHOP-SCHEDULE-TEST-TSX",
+        "TS-SERVER-TESTS-TECHNICIAN-LEADERBOARD-TEST-TS"
       ]
     },
     {
@@ -12793,7 +12799,9 @@
       "rlsEnabled": true,
       "tests": [
         "TS-APP-E2E-CRM-LEAD-CONVERSION-SPEC-TS",
-        "TS-APP-E2E-EXISTING-CUSTOMER-SERVICE-SPEC-TS"
+        "TS-APP-E2E-EXISTING-CUSTOMER-SERVICE-SPEC-TS",
+        "TS-APP-TESTS-COMPONENT-TECHNICIAN-LEADERBOARDS-TEST-TSX",
+        "TS-SERVER-TESTS-TECHNICIAN-LEADERBOARD-TEST-TS"
       ]
     },
     {
@@ -18956,6 +18964,14 @@
           ]
         },
         {
+          "name": "employees_org_id_key",
+          "unique": true,
+          "columns": [
+            "orgId",
+            "id"
+          ]
+        },
+        {
           "name": "employees_org_idx",
           "unique": false,
           "columns": [
@@ -19005,7 +19021,8 @@
       "relationshipsIn": [
         "REL-PAYROLL-LINES-EMPLOYEE-ID",
         "REL-TIMESHEETS-EMPLOYEE-ID",
-        "REL-LEAVE-REQUESTS-EMPLOYEE-ID"
+        "REL-LEAVE-REQUESTS-EMPLOYEE-ID",
+        "REL-TRAINING-ENROLMENTS-EMPLOYEE-ID"
       ],
       "rlsEnabled": true,
       "tests": [
@@ -20271,6 +20288,627 @@
         "TS-APP-E2E-EMPLOYEE-ONBOARDING-SPEC-TS",
         "TS-APP-TESTS-COMPONENT-DASHBOARD-ROLE-ADAPTIVE-TEST-TSX"
       ]
+    },
+    {
+      "id": "ENT-TRAINING-COURSES",
+      "property": "trainingCourses",
+      "table": "training_courses",
+      "description": "Training courses (BLK-004) — the staff course catalogue `TrainingLMS.tsx` rendered as a hardcoded eight-row array in which every `enrolled` head count and every `completion` percentage was invented, and from which it then computed its KPIs. This table records only what is a property of the *course*: code, title, subject, how long it takes to sit, and where it is in its publish/archive lifecycle. It carries **no head count and no completion percentage** — both are aggregates over `training_enrolments`, so a column here would be a second, drifting answer to a question the roster already answers, and would be wrong the moment anyone enrolled or finished. `duration_minutes` is the one recorded number, and correctly so: nothing in the roster knows how long a course takes. Zero means \"not stated\", which the screen renders as a dash rather than `0 hrs`. `published_at`/`archived_at` are derived from the status transition in `writers.ts`, never posted. Gated on `hr`.",
+      "columns": [
+        {
+          "property": "id",
+          "column": "id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": true,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "orgId",
+          "column": "org_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": {
+            "table": "organizations",
+            "column": "id"
+          },
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "branchId",
+          "column": "branch_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdAt",
+          "column": "created_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedAt",
+          "column": "updated_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdBy",
+          "column": "created_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedBy",
+          "column": "updated_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "deletedAt",
+          "column": "deleted_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "version",
+          "column": "version",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "1",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "code",
+          "column": "code",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "title",
+          "column": "title",
+          "type": "varchar",
+          "via": null,
+          "length": "200",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "titleAr",
+          "column": "title_ar",
+          "type": "varchar",
+          "via": null,
+          "length": "200",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "category",
+          "column": "category",
+          "type": "varchar",
+          "via": null,
+          "length": "24",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'safety'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "durationMinutes",
+          "column": "duration_minutes",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "0",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "status",
+          "column": "status",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'draft'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "publishedAt",
+          "column": "published_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "archivedAt",
+          "column": "archived_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "notes",
+          "column": "notes",
+          "type": "text",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "training_courses_org_code_idx",
+          "unique": true,
+          "columns": [
+            "orgId",
+            "code"
+          ]
+        },
+        {
+          "name": "training_courses_org_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "branchId",
+            "status"
+          ]
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ],
+      "foreignKeys": [
+        {
+          "column": "org_id",
+          "referencesProperty": "organizations",
+          "referencesColumn": "id",
+          "referencesTable": "organizations"
+        }
+      ],
+      "tenantScoped": true,
+      "branchScoped": true,
+      "softDelete": true,
+      "versioned": true,
+      "audited": true,
+      "moneyColumns": [],
+      "presentationalColumns": [],
+      "missingUniversal": [],
+      "endpoints": [],
+      "collection": "trainingCourses",
+      "relationshipsOut": [
+        "REL-TRAINING-COURSES-ORG-ID",
+        "REL-TRAINING-COURSES-BRANCH-ID"
+      ],
+      "relationshipsIn": [],
+      "rlsEnabled": true,
+      "tests": []
+    },
+    {
+      "id": "ENT-TRAINING-ENROLMENTS",
+      "property": "trainingEnrolments",
+      "table": "training_enrolments",
+      "description": "Training enrolments (BLK-004) — one row per (employee, course). This is the table that makes a course's head count and completion rate *derived*: the count is the enrolments naming a course, and the completion is how many of them reached `completed`. Neither number is stored anywhere, so neither can drift from the roster it describes. Both references are composite in `drizzle/0026_training_lms.sql` — `(org_id, course_code)` → `training_courses (org_id, code)` and `(org_id, employee_id)` → `employees (org_id, id)` — so each is same-tenant by construction rather than by a writer remembering to check. `employee_name` is read from the referenced employee at enrolment, the denormalised shape `timesheets`/`leave_requests` already carry. `completed_at` is derived from the status transition and cleared when the enrolment moves back out of `completed`. `withdrawn` is a state rather than a deletion, and is excluded from both the head count and the completion denominator. Gated on `hr`.",
+      "columns": [
+        {
+          "property": "id",
+          "column": "id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": true,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "orgId",
+          "column": "org_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": {
+            "table": "organizations",
+            "column": "id"
+          },
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "branchId",
+          "column": "branch_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdAt",
+          "column": "created_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedAt",
+          "column": "updated_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdBy",
+          "column": "created_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedBy",
+          "column": "updated_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "deletedAt",
+          "column": "deleted_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "version",
+          "column": "version",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "1",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "courseCode",
+          "column": "course_code",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "employeeId",
+          "column": "employee_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "employeeName",
+          "column": "employee_name",
+          "type": "varchar",
+          "via": null,
+          "length": "200",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "status",
+          "column": "status",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'enrolled'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "completedAt",
+          "column": "completed_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "notes",
+          "column": "notes",
+          "type": "text",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "training_enrolments_org_course_employee_idx",
+          "unique": true,
+          "columns": [
+            "orgId",
+            "courseCode",
+            "employeeId"
+          ]
+        },
+        {
+          "name": "training_enrolments_org_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "branchId",
+            "status"
+          ]
+        },
+        {
+          "name": "training_enrolments_employee_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "employeeId"
+          ]
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ],
+      "foreignKeys": [
+        {
+          "column": "org_id",
+          "referencesProperty": "organizations",
+          "referencesColumn": "id",
+          "referencesTable": "organizations"
+        }
+      ],
+      "tenantScoped": true,
+      "branchScoped": true,
+      "softDelete": true,
+      "versioned": true,
+      "audited": true,
+      "moneyColumns": [],
+      "presentationalColumns": [],
+      "missingUniversal": [],
+      "endpoints": [],
+      "collection": "trainingEnrolments",
+      "relationshipsOut": [
+        "REL-TRAINING-ENROLMENTS-ORG-ID",
+        "REL-TRAINING-ENROLMENTS-BRANCH-ID",
+        "REL-TRAINING-ENROLMENTS-EMPLOYEE-ID"
+      ],
+      "relationshipsIn": [],
+      "rlsEnabled": true,
+      "tests": []
     },
     {
       "id": "ENT-OBD-DEVICES",

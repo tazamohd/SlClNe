@@ -20,7 +20,7 @@ Covers: the collection registry, the generic router, query contract, presentatio
 
 ## One description, many routes
 
-`server/src/registry.ts` describes each of the 64 collections once. `server/src/routes/collections.ts` generates 342 endpoints from those descriptions — list, export, detail, and for the 30 writable ones create, update, delete, bulk-update and bulk-delete.
+`server/src/registry.ts` describes each of the 66 collections once. `server/src/routes/collections.ts` generates 358 endpoints from those descriptions — list, export, detail, and for the 32 writable ones create, update, delete, bulk-update and bulk-delete.
 
 The argument is about people rather than elegance: fifty-two hand-written routers guarantee that the twenty-ninth forgets the soft-delete filter or the permission check. One description means the filter and the check exist once.
 
@@ -49,7 +49,7 @@ The argument is about people rather than elegance: fifty-two hand-written router
 
 ## Soft delete
 
-`DELETE` sets `deleted_at`; the row stays. 75 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
+`DELETE` sets `deleted_at`; the row stays. 77 tables carry the column and the generic router filters on it. A hard delete is not exposed through the API at all.
 
 ## Collections
 
@@ -102,6 +102,8 @@ The argument is about people rather than elegance: fifty-two hand-written router
 | payrollLines | `/payroll/lines` | hr | yes | 1 | 3 | 2 |
 | timesheets | `/timesheets` | hr | yes | 1 | 4 | 2 |
 | leaveRequests | `/leave-requests` | hr | yes | 2 | 4 | 3 |
+| trainingCourses | `/training/courses` | hr | yes | 3 | 6 | 2 |
+| trainingEnrolments | `/training/enrolments` | hr | yes | 2 | 5 | 3 |
 | aiAgents | `/ai/agents` | ai | read-only | 3 | 3 | 1 |
 | conversations | `/ai/conversations` | ai | read-only | 2 | 3 | 0 |
 | obdDevices | `/diagnostics/devices` | jobcards | read-only | 4 | 3 | 2 |
