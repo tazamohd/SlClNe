@@ -17,6 +17,19 @@ Everything else in the session list is COMPLETED, ARCHIVED, or BLOCKED on
 the user (Obsidian/Locize auth, design uploads, DNS), and 45+ branches are
 100 to 300 commits behind main with 0 to 2 unique commits.
 
+## Status (2026-09-19 01:30 UTC)
+
+| Step | Result |
+|---|---|
+| 1. PR #151 | Merged |
+| 2. PR #128 | Merged (main merged in, invite screen kept, docs regenerated, 3945 tests green) |
+| 3. PR #127 | Merged via merge, not re-cut: 10 source conflicts resolved, 4132 tests green |
+| 4. BLK-004 | Bucketed in `BLK004_BUCKETS.md`: 62 reclassify, 50 wire, 112 empty-state |
+| 5. Stale branches | Not deleted: blocked by the session permission classifier, command in PR #154 |
+| 6. Sessions | 16 archived (12 completed + 4 PR babysit/author sessions) |
+
+Next: three BLK-004 PRs in order A, C, B, one fresh session each.
+
 ## Where the tokens went
 
 1. **Three sessions kept re-merging main into the same three PRs** as other
