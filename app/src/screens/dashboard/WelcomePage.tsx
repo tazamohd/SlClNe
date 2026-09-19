@@ -5,6 +5,7 @@ import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCard, MobileCardHeader, MobilePageHeader } from '@/components/shell/MobileShell'
 import { isLive } from '@/data/repository'
+import { useCollection } from '@/data/useCollection'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 function getGreeting(t: (s: string) => string): string {
@@ -14,13 +15,6 @@ function getGreeting(t: (s: string) => string): string {
   return t('Good Evening')
 }
 
-const QUICK_STATS = [
-  { label: "Today's Appointments", value: '5', icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  { label: 'Active Jobs', value: '12', icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-  { label: 'Pending Invoices', value: '8', icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  { label: 'Notifications', value: '3', icon: 'Bell', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-]
-
 const QUICK_ACTIONS = [
   { label: 'New Appointment', icon: 'CalendarPlus', route: '/appointment-calendar' },
   { label: 'Create Job Card', icon: 'ClipboardPlus', route: '/job-cards' },
@@ -28,10 +22,37 @@ const QUICK_ACTIONS = [
   { label: 'View Reports', icon: 'BarChart3', route: '/reports' },
 ]
 
+/** Previously every figure here was a hand-typed constant ("5", "12", "8",
+ *  "3") that never moved no matter what the collections behind it held, plus
+ *  a "Notifications" stat no collection backs at all (BLK-004). `appointments`
+ *  and `invoices`/`jobs` are real; counted the same way `Dashboard.tsx`'s own
+ *  `ManagerDashboard` already counts them — `st !== 'delivered' &&
+ *  st !== 'cancelled'` for an active job, `status === 'unpaid' ||
+ *  status === 'overdue'` for a pending invoice — rather than a new,
+ *  unverified rule invented for this screen alone. The notifications stat is
+ *  dropped rather than re-invented. */
+export function useQuickStats() {
+  const appointments = useCollection('appointments')
+  const jobs = useCollection('jobs')
+  const invoices = useCollection('invoices')
+
+  const loading = appointments.isLoading || jobs.isLoading || invoices.isLoading
+  const activeJobs = (jobs.data ?? []).filter((j) => j.st !== 'delivered' && j.st !== 'cancelled').length
+  const pendingInvoices = (invoices.data ?? []).filter((inv) => inv.status === 'unpaid' || inv.status === 'overdue').length
+
+  const stats = [
+    { label: 'Appointments', value: loading ? '…' : String(appointments.data?.length ?? 0), icon: 'Calendar', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: 'Active Jobs', value: loading ? '…' : String(activeJobs), icon: 'Wrench', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: 'Pending Invoices', value: loading ? '…' : String(pendingInvoices), icon: 'FileText', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  ]
+  return stats
+}
+
 export function WelcomePage() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const navigate = useNavigate()
+  const QUICK_STATS = useQuickStats()
 
   const greeting = getGreeting(t)
 

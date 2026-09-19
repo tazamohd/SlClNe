@@ -11,13 +11,13 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 27,
+    "mockOnly": 26,
     "noBackend": 117,
-    "dataBacked": 169,
+    "dataBacked": 170,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 196,
+    "hasLoadingState": 197,
     "hasErrorState": 159,
     "hasEmptyState": 269,
     "tabletVerified": 4,
@@ -29,7 +29,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 38,
-    "crudRead": 155,
+    "crudRead": 156,
     "crudUpdate": 38,
     "crudDelete": 30,
     "unregisteredDesigns": 0,
@@ -16350,16 +16350,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "appointments",
+        "invoices",
+        "jobs"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -16386,7 +16390,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
