@@ -813,12 +813,19 @@ only `app/scripts/build-registry.mjs`'s classification.
 
 **BLK-004: 23 → 15.**
 
-### Remaining MOCK_ONLY after bucket H (15)
+This bucket's own two fixes took 23 → 15. This branch then rebased onto
+main after two concurrent PRs landed independently: #167 wired
+`Customer-App-Booking` to a real service catalogue, and #165 built the
+tax-compliance screens (`VAT-Settings`/`Zakat-Settings`) onto a real
+enforced-rate read. Neither is this bucket's own work — both are gone
+from the list below because of that other work, landing the count on
+the merged main at **12**, not 15.
+
+### Remaining MOCK_ONLY after bucket H (12)
 
 | Screen | Route | Domain |
 |---|---|---|
 | Barcode-Scanner | `/barcode-scanner` | featuremap |
-| Customer-App-Booking | `/customer-app-booking` | featuremap |
 | Dashboard-Widgets | `/dashboard-widgets` | featuremap |
 | Data-Backup | `/data-backup` | featuremap |
 | Data-Import-Export | `/data-import-export` | featuremap |
@@ -828,22 +835,24 @@ only `app/scripts/build-registry.mjs`'s classification.
 | System-Settings | `/system-settings` | featuremap |
 | Tasks | `/tasks` | featuremap |
 | Tools | `/tools` | featuremap |
-| VAT-Settings | `/vat-settings` | featuremap |
 | Voice-Command-Interface | `/voice-command-interface` | admin |
 | Voice-Commands | `/voice-commands` | admin |
-| Zakat-Settings | `/zakat-settings` | featuremap |
 
-A second-opinion sweep of all 15 (not just skimmed by name) confirmed
-each is genuinely category (c): a new backend collection/schema or a
-product decision, not a wiring pass. The four settings/compliance forms
-plus `Security-Settings`/`System-Settings` need a real settings-table
-design; `Retained-Earnings`/`VAT-Settings`/`Zakat-Settings` need real
-aggregation/computation engines the ledger doesn't have yet;
-`Tasks`/`Data-Backup`/`Data-Import-Export`/`Dashboard-Widgets`/
-`Customer-App-Booking` need collections that don't exist;
-`Barcode-Scanner`/`Voice-Command-Interface`/`Voice-Commands` need a
-device/speech integration with nothing in the schema to hook into. None
-of these should be forced through without that decision.
+A second-opinion sweep of the 15 this bucket started from (not just
+skimmed by name) confirmed each was genuinely category (c): a new
+backend collection/schema or a product decision, not a wiring pass.
+Two of them (`Customer-App-Booking`, `VAT-Settings`/`Zakat-Settings`)
+were independently closed by other sessions in the meantime, which
+does not contradict that assessment — a product/schema decision is
+still exactly what each of those PRs made. Of the twelve left:
+`Financial-Settings`/`Security-Settings`/`System-Settings` need a real
+settings-table design; `Retained-Earnings` needs a real
+aggregation/computation engine the ledger doesn't have yet;
+`Tasks`/`Data-Backup`/`Data-Import-Export`/`Dashboard-Widgets` need
+collections that don't exist; `Barcode-Scanner`/`Voice-Command-
+Interface`/`Voice-Commands` need a device/speech integration with
+nothing in the schema to hook into. None of these should be forced
+through without that decision.
 
 ## Bucket C (original list): no entity, EmptyState or retire
 

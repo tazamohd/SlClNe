@@ -23,14 +23,14 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 436 | `STATUS.json` |
 | Rendering | 436 of 436 | `STATUS.json` |
-| Wired to the API | 172 of 436 | `STATUS.json` |
-| Reading design fixtures | 15 of 436 | `STATUS.json` |
+| Wired to the API | 175 of 436 | `STATUS.json` |
+| Reading design fixtures | 12 of 436 | `STATUS.json` |
 | End-to-end covered | 436 of 436 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 121 of 436 | `STATUS.json` |
+| Arabic verified | 122 of 436 | `STATUS.json` |
 | Tablet verified | 4 of 436 | `STATUS.json` |
 | API endpoints | 528 | the route files |
-| Test cases | 2500 | the spec files |
+| Test cases | 2524 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 0 of 44 | `FINDINGS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**15 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**12 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 15 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 12 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
 | BLK-013 | HIGH | 123 rendered capabilities have no backend collection yet | They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it. | 05 |
 
 ## Open risks
