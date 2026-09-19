@@ -25,7 +25,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 3 | 28 | 3 | 3 of 3 |
 | Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
 | Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 9 | 59 | 10 | 9 of 9 |
-| HR and payroll | [CAP-HR](HR.md) | 11 | 52 | 6 | 11 of 11 |
+| HR and payroll | [CAP-HR](HR.md) | 13 | 71 | 8 | 13 of 13 |
 | CRM and sales | [CAP-CRM](CRM.md) | 13 | 51 | 6 | 11 of 13 |
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 11 of 11 |
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 6 | 1 | 2 of 2 |
@@ -35,4 +35,4 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 28 | 0 | 1 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 39 | 0 | 0 | 0 of 39 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 203 | 0 | 0 | 39 of 203 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 201 | 0 | 0 | 40 of 201 |

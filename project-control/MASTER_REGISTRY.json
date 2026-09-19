@@ -11,15 +11,15 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 29,
+    "mockOnly": 26,
     "noBackend": 117,
-    "dataBacked": 167,
+    "dataBacked": 170,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 194,
-    "hasErrorState": 156,
-    "hasEmptyState": 266,
+    "hasLoadingState": 197,
+    "hasErrorState": 159,
+    "hasEmptyState": 269,
     "tabletVerified": 4,
     "arabicVerified": 121,
     "rtlHazards": 0,
@@ -28,10 +28,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 37,
-    "crudRead": 153,
-    "crudUpdate": 36,
-    "crudDelete": 29,
+    "crudCreate": 38,
+    "crudRead": 156,
+    "crudUpdate": 38,
+    "crudDelete": 30,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -21958,8 +21958,15 @@
       "route": "/technician-leaderboards",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21977,16 +21984,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "feedback",
+        "jobs",
+        "reports/technician-leaderboard",
+        "technicians"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -22012,9 +22024,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -24621,8 +24631,15 @@
       "route": "/training-lms",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -24640,17 +24657,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "employees",
+        "trainingCourses",
+        "trainingEnrolments"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
+        "create": true,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -24675,9 +24696,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26965,18 +26984,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "notifications"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -27001,7 +27022,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
