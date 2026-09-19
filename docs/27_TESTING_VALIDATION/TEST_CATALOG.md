@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-229 spec files containing 2524 test cases.
+231 spec files containing 2537 test cases.
 
 ## What this document claims, and what it does not
 
@@ -25,8 +25,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 | UNIT_OR_API | 154 | 1414 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
+| SECURITY | 13 | 226 | Permission grants, tenant isolation, segregation of duties, session handling |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
-| SECURITY | 11 | 213 | Permission grants, tenant isolation, segregation of duties, session handling |
 | CONTRACT | 3 | 182 | The shared rule functions both sides depend on |
 | DATA_FIDELITY | 2 | 15 | That the seeded data matches what the design bundle carried |
 | ACCESSIBILITY | 1 | 2 | Axe sweeps, ratcheted per route and viewport |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 48 | 630 |
-| app | 138 | 1517 |
+| server | 49 | 637 |
+| app | 139 | 1523 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -203,6 +203,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/service-worker.test.ts` | UNIT_OR_API | 17 | — |
 | `app/tests/settings-role-management-demo.test.tsx` | UNIT_OR_API | 1 | owner |
 | `app/tests/settings-role-management.test.tsx` | UNIT_OR_API | 2 | owner, technician |
+| `app/tests/settings-security-settings.test.tsx` | SECURITY | 6 | owner |
 | `app/tests/settings-user-settings.test.tsx` | UNIT_OR_API | 2 | manager |
 | `app/tests/test-account.test.tsx` | UNIT_OR_API | 17 | test, superadmin, owner, supplier |
 | `app/tests/unit/contract-primitives.test.ts` | CONTRACT | 50 | — |
@@ -263,6 +264,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/report-collections.test.ts` | UNIT_OR_API | 8 | accountant, technician, manager, owner |
 | `server/tests/repository-swap.test.ts` | UNIT_OR_API | 6 | owner, technician |
 | `server/tests/rules.test.ts` | CONTRACT | 25 | manager, owner, technician, qc, frontdesk, callcenter, supplier, customer, advisor |
+| `server/tests/security-summary.test.ts` | SECURITY | 7 | owner, technician |
 | `server/tests/security.test.ts` | SECURITY | 13 | — |
 | `server/tests/seed-coherence.test.ts` | DATA_FIDELITY | 12 | — |
 | `server/tests/seed-fidelity.test.ts` | DATA_FIDELITY | 3 | owner |

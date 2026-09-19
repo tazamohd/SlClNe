@@ -2433,6 +2433,40 @@ export const organizationApi: OrganizationApi | null = API_URL
   ? createOrganizationApi(API_URL)
   : null
 
+/** The security policy this deployment actually enforces (BLK-004), read from
+ *  `GET /security/summary` rather than the six hand-picked literals
+ *  `SecuritySettings` used to show. `passwordMinLength` / `loginMaxAttempts` /
+ *  `loginLockoutSeconds` / `refreshTokenTtlDays` are deployment configuration —
+ *  the same figures the login/password-change endpoints actually enforce, not
+ *  a database row. `activeSessions` is the one figure that varies by caller: a
+ *  real count of that org's live `user_sessions` rows, narrowed to the
+ *  caller's own row-level scope like every other tenant read. */
+export interface SecuritySummary {
+  passwordMinLength: number
+  loginMaxAttempts: number
+  loginLockoutSeconds: number
+  refreshTokenTtlDays: number
+  activeSessions: number
+}
+
+export interface SecurityApi {
+  summary(): Promise<SecuritySummary>
+}
+
+export function createSecurityApi(baseUrl: string): SecurityApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async summary() {
+      return request<SecuritySummary>(`${root}/security/summary`)
+    },
+  }
+}
+
+/** Null on the fixtures, and deliberately with no mock: a "Require 2FA" or
+ *  "IP Whitelist Enabled" toggle with nothing behind it is exactly what this
+ *  screen used to show. */
+export const securityApi: SecurityApi | null = API_URL ? createSecurityApi(API_URL) : null
+
 /** The customer-approval OTP e-signature (F-029), live only. SMS is an external
  *  dependency; the request refuses with a 503 until a provider is configured. */
 export const estimateOtp: EstimateOtpApi | null = API_URL ? createEstimateOtpApi(API_URL) : null

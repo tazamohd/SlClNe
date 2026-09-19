@@ -5590,4 +5590,14 @@ export const AR_OVERRIDES: Record<string, string> = {
   "This screen lists what the workshop offers. Appointments are not booked here — the booking form checks which times are still free and confirms with the workshop.":
     "تعرض هذه الشاشة ما تقدمه الورشة. لا تُحجز المواعيد هنا — نموذج الحجز يتحقق من الأوقات المتاحة ويؤكد الموعد مع الورشة.",
   "Go to booking": "الانتقال إلى الحجز",
+  "Active Sessions": "الجلسات النشطة",
+  "Could not read the security policy": "تعذر قراءة سياسة الأمان",
+  "Enforced security policy": "سياسة الأمان المطبَّقة",
+  "Failed Attempts Before Lockout": "المحاولات الفاشلة قبل القفل",
+  "Lockout Duration": "مدة القفل",
+  "Password Minimum Length": "الحد الأدنى لطول كلمة المرور",
+  "Reading the enforced security policy…": "جارٍ قراءة سياسة الأمان المطبَّقة…",
+  "Sign-in Session Length": "مدة جلسة تسجيل الدخول",
+  "The enforced password, lockout and session policy can only be read from the API. This build has none, so nothing is shown in its place.":
+    "لا يمكن قراءة سياسة كلمة المرور والقفل والجلسة المطبَّقة إلا من الواجهة البرمجية. ولا تتوفر واجهة في هذه النسخة، لذلك لا يُعرض أي شيء بديلاً عنها.",
 }

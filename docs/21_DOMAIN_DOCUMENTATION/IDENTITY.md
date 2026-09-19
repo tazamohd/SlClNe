@@ -43,7 +43,7 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/forgot-password` | — | explicit | — | 2 |
 | GET | `/api/v1/auth/invite/:token` | — | explicit | — | **0** |
 | POST | `/api/v1/auth/invite/:token/accept` | — | explicit | — | **0** |
-| POST | `/api/v1/auth/login` | — | explicit | — | 13 |
+| POST | `/api/v1/auth/login` | — | explicit | — | 14 |
 | POST | `/api/v1/auth/logout` | — | explicit | — | 1 |
 | GET | `/api/v1/auth/me` | — | explicit | — | 2 |
 | PATCH | `/api/v1/auth/me` | — | explicit | — | 2 |

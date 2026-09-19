@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 528,
+    "endpoints": 529,
     "generated": 358,
-    "explicit": 170,
+    "explicit": 171,
     "unauthenticated": 6,
     "withPermissionGuard": 496,
     "idempotent": 2,
-    "withTests": 142
+    "withTests": 143
   },
   "collections": [
     {
@@ -3683,6 +3683,7 @@
         "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
         "TS-SERVER-TESTS-AUTH-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-REGISTRATION-TEST-TS",
+        "TS-SERVER-TESTS-SECURITY-SUMMARY-TEST-TS",
         "TS-SERVER-TESTS-SECURITY-TEST-TS"
       ]
     },
@@ -17710,6 +17711,29 @@
       "audited": true,
       "capability": "CAP-ACCOUNTING",
       "tests": []
+    },
+    {
+      "id": "API-GET-SECURITY-SUMMARY",
+      "method": "GET",
+      "path": "/api/v1/security/summary",
+      "source": "server/src/routes/security.ts",
+      "kind": "EXPLICIT",
+      "domain": "platform",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": null,
+      "permissionAction": null,
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-SERVER-TESTS-SECURITY-SUMMARY-TEST-TS"
+      ]
     },
     {
       "id": "API-SERVICES-GET-LIST",

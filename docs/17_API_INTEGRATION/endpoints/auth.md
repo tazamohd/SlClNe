@@ -22,7 +22,7 @@
 | POST | `/api/v1/auth/forgot-password` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/invite/:token` | — | token | — | — | — | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/invite/:token/accept` | — | token | — | — | — | `server/src/auth/routes.ts` |
-| POST | `/api/v1/auth/login` | — | token | — | — | 13 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/login` | — | token | — | — | 14 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/logout` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
 | PATCH | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
