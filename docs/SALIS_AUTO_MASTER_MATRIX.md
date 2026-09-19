@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 174 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 175 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -342,7 +342,7 @@
 | Client Portal Live Tracking | `/client-portal-live-tracking` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Client Portal Reminders | `/client-portal-reminders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Client Portal Review Chat | `/client-portal-review-chat` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Customer App Booking | `/customer-app-booking` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Customer App Booking | `/customer-app-booking` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Customer App Vehicles | `/customer-app-vehicles` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Customer App Payments | `/customer-app-payments` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Portal Dashboard | `/portal-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
