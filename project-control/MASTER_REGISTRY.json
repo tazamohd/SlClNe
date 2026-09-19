@@ -11,17 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 27,
+    "mockOnly": 24,
     "noBackend": 117,
-    "dataBacked": 169,
+    "dataBacked": 172,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 196,
-    "hasErrorState": 159,
-    "hasEmptyState": 269,
+    "hasLoadingState": 199,
+    "hasErrorState": 162,
+    "hasEmptyState": 270,
     "tabletVerified": 4,
-    "arabicVerified": 121,
+    "arabicVerified": 123,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -27094,8 +27094,14 @@
       "route": "/zatca-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "accounting",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27111,15 +27117,17 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "organization/tax-profile"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -27147,10 +27155,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -27160,8 +27165,14 @@
       "route": "/vat-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "accounting",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27179,13 +27190,16 @@
       "responsive": "PARTIAL",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "accounting/tax/return",
+        "organization/tax-profile"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -27213,9 +27227,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -27225,8 +27237,14 @@
       "route": "/zakat-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "accounting",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27242,15 +27260,17 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "organization/tax-profile"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -27278,10 +27298,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {

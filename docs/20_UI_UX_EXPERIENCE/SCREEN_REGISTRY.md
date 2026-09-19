@@ -20,28 +20,28 @@
 | Reference-only | 28 | 436 |
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
-| Data-backed (live API) | 169 | 436 |
-| Mock-only (design fixtures) | 27 | 436 |
+| Data-backed (live API) | 172 | 436 |
+| Mock-only (design fixtures) | 24 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
-| Has a loading state | 196 | 436 |
-| Has an error state | 159 | 436 |
-| Has an empty state | 269 | 436 |
-| Arabic verified | 121 | 436 |
+| Has a loading state | 199 | 436 |
+| Has an error state | 162 | 436 |
+| Has an empty state | 270 | 436 |
+| Arabic verified | 123 | 436 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 436 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **27 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **24 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 316 | 153 | 89 |
+| app | 316 | 156 | 89 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 8 | 4 |
@@ -60,7 +60,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-INVENTORY | 9 | 9 | 9 | 9 | 9 | 0 |
 | CAP-PROCUREMENT | 3 | 3 | 3 | 3 | 3 | 1 |
 | CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
-| CAP-ACCOUNTING | 9 | 9 | 9 | 9 | 7 | 0 |
+| CAP-ACCOUNTING | 12 | 12 | 12 | 12 | 8 | 3 |
 | CAP-HR | 13 | 13 | 13 | 13 | 12 | 1 |
 | CAP-CRM | 13 | 11 | 11 | 11 | 13 | 0 |
 | CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 201 | 39 | 59 | 35 | 122 | 60 |
+| CAP-DESIGNSYSTEM | 198 | 39 | 59 | 35 | 122 | 59 |
 
 ## Full registry
 

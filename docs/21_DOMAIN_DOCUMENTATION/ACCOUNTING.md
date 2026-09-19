@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 9 screens, 59 API endpoints and 1 entities, gated by the `accounting`, `insurance` permission modules.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 12 screens, 60 API endpoints and 1 entities, gated by the `accounting`, `insurance` permission modules.
 
 
 ## Actors
@@ -63,7 +63,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v | explicit | — | **0** |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x | generated | — | **0** |
 | GET | `/api/v1/accounting/reports/trial-balance` | accounting:v | explicit | — | 1 |
-| GET | `/api/v1/accounting/tax/return` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/accounting/tax/return` | accounting:v | explicit | — | 2 |
 | GET | `/api/v1/bank-statements` | accounting:v | generated | — | 1 |
 | GET | `/api/v1/bank-statements/:id` | accounting:v | generated | — | **0** |
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | explicit | — | **0** |
@@ -100,6 +100,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/loan-repayments/:id/history` | insurance:v | explicit | — | **0** |
 | GET | `/api/v1/loan-repayments/export` | insurance:x | generated | — | **0** |
 | GET | `/api/v1/loans/summary` | insurance:v | explicit | — | 1 |
+| GET | `/api/v1/organization/tax-profile` | accounting:v | explicit | — | 1 |
 | GET | `/api/v1/saved-reports` | accounting:v | generated | — | 1 |
 | POST | `/api/v1/saved-reports` | accounting:c | generated | — | 1 |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | generated | — | **0** |
@@ -146,10 +147,13 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-TaxManagement | `/tax-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-169 | `/warranty-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-171 | `/insurance-claims` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-183 | `/zatca-settings` | app | yes | yes | yes | — | verified | yes |
+| F-184 | `/vat-settings` | app | yes | yes | yes | yes | verified | yes |
+| F-185 | `/zakat-settings` | app | yes | yes | yes | — | verified | yes |
 
 ## Known gaps in this domain
 
-- **43 of 59 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **43 of 60 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`insurancePolicyStatus`, `insuranceClaimStatus`, `loanContractStatus`, `loanRepaymentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

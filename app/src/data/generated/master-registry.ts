@@ -8804,17 +8804,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/zatca-settings",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "accounting",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8828,16 +8825,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/vat-settings",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "accounting",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8851,17 +8846,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/zakat-settings",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "accounting",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,

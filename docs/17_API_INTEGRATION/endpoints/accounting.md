@@ -10,7 +10,7 @@
 
 # API — accounting
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 37 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 38 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -27,7 +27,7 @@
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x | token | `journalEntries` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/reports/trial-balance` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
-| GET | `/api/v1/accounting/tax/return` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
+| GET | `/api/v1/accounting/tax/return` | accounting:v | token | — | — | 2 | `server/src/routes/finance-reports.ts` |
 | GET | `/api/v1/bank-statements` | accounting:v | token | `bankStatements` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id` | accounting:v | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
@@ -42,6 +42,7 @@
 | POST | `/api/v1/equipment-warranties/bulk-delete` | accounting:d | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/equipment-warranties/bulk-update` | accounting:e | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/equipment-warranties/export` | accounting:x | token | `equipmentWarranties` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/organization/tax-profile` | accounting:v | token | — | — | 1 | `server/src/routes/organization.ts` |
 | GET | `/api/v1/saved-reports` | accounting:v | token | `savedReports` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/saved-reports` | accounting:c | token | `savedReports` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | token | `savedReports` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

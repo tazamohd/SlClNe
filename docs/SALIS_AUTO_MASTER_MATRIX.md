@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 169 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 172 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -401,9 +401,9 @@
 | Support Chat Dashboard | `/support-chat-dashboard` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Notifications | `/notifications` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Compliance Management | `/compliance-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| ZATCA Settings | `/zatca-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| VAT Settings | `/vat-settings` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Zakat Settings | `/zakat-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| ZATCA Settings | `/zatca-settings` | app | accounting | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
+| VAT Settings | `/vat-settings` | app | accounting | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
+| Zakat Settings | `/zakat-settings` | app | accounting | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | Safety Incidents | `/safety-incidents` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Environmental Compliance | `/environmental-compliance` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ISO Quality Management | `/iso-quality-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |

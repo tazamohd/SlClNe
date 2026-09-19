@@ -106,6 +106,6 @@ _1 further findings in `project-control/FINDINGS.json`._
 | Tenant isolation | `server/tests/isolation.test.ts` + RLS | suite present |
 | Segregation of duties enforced | `server/tests/authz-sod.test.ts` | suite present |
 | Accessibility contrast ratchet | `app/e2e/a11y.spec.ts` + `BASELINE.json` | ratcheted |
-| Arabic and RTL | Registry verification | 121 verified, 0 hazards |
+| Arabic and RTL | Registry verification | 123 verified, 0 hazards |
 
 **Present is not passing.** The rows that say "suite present" mean the suite exists and was catalogued by reading it. Whether it passes is a dated statement made only after a run — see the test catalogue.

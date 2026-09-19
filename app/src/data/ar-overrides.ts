@@ -5510,4 +5510,63 @@ export const AR_OVERRIDES: Record<string, string> = {
     "المفوتر إجمالي مالي عبر عدة سجلات، لذا يحسبه الخادم ويظهر بعلامة «—» إلى أن تتوفر واجهة برمجية لهذه النسخة:",
   "Efficiency is not shown: it needs estimated against actual labour hours per job, which no record carries.":
     "لا تُعرض الكفاءة: فهي تحتاج إلى ساعات العمل المقدّرة مقابل الفعلية لكل عمل، وهي بيانات لا يسجلها أي سجل.",
+  // Tax-compliance screens (BLK-004) — VAT / ZATCA / Zakat. The enforced rate is
+  // read from the server's own configuration, registration numbers come from the
+  // organization's record (or read as "not recorded"), and the fabricated
+  // registration numbers, filing dates and zakat figures are gone.
+  "Enforced VAT rate": "نسبة ضريبة القيمة المضافة المطبَّقة",
+  "Rate charged on every invoice": "النسبة المفروضة على كل فاتورة",
+  "Deployment configuration": "إعداد بيئة التشغيل",
+  "Contract standard rate": "النسبة القياسية في قاعدة التسعير",
+  "VAT is computed by the server on the discounted net of every invoice it prices; there is no switch for it.":
+    "يحسب الخادم ضريبة القيمة المضافة على الصافي بعد الخصم لكل فاتورة يسعّرها؛ ولا يوجد مفتاح لتشغيلها أو إيقافها.",
+  "Tax registration": "التسجيل الضريبي",
+  "VAT registration number": "رقم التسجيل الضريبي",
+  "Seller VAT registration number": "رقم التسجيل الضريبي للبائع",
+  "Commercial registration": "السجل التجاري",
+  "Not recorded": "غير مسجَّل",
+  "Reading the organization record…": "جارٍ قراءة سجل المؤسسة…",
+  "Could not read the organization record": "تعذر قراءة سجل المؤسسة",
+  "This is the seller VAT number the server stamps onto every invoice it issues, and into its ZATCA QR payload.":
+    "هذا هو رقم التسجيل الضريبي للبائع الذي يُدرجه الخادم في كل فاتورة يصدرها وفي رمز QR الخاص بزاتكا.",
+  "No VAT registration number is recorded, so the server refuses to issue an invoice: it has no seller identity to stamp onto a tax document.":
+    "لا يوجد رقم تسجيل ضريبي مسجَّل، لذلك يرفض الخادم إصدار أي فاتورة: لا تتوفر هوية بائع لإدراجها في مستند ضريبي.",
+  "GAP: no filing frequency or filing date is recorded anywhere in this system, so no filing calendar is shown.":
+    "فراغ: لا تُسجَّل في هذا النظام أي دورية إقرار أو تاريخ إقرار، لذلك لا يُعرض أي جدول إقرارات.",
+  "Output VAT charged": "ضريبة المخرجات المفروضة",
+  "issued invoices, all dates": "فاتورة مُصدرة، جميع التواريخ",
+  "Computing output VAT…": "جارٍ حساب ضريبة المخرجات…",
+  "Could not compute output VAT": "تعذر حساب ضريبة المخرجات",
+  "No output VAT charged yet": "لم تُفرض ضريبة مخرجات بعد",
+  "No invoice has been issued, so the server has charged no VAT. Nothing is estimated in its place.":
+    "لم تُصدر أي فاتورة، لذلك لم يفرض الخادم أي ضريبة. ولا يُقدَّر أي مبلغ بديلاً عن ذلك.",
+  "Seller identity": "هوية البائع",
+  "Invoice VAT rate": "نسبة ضريبة الفاتورة",
+  "Authority integration": "الربط مع الهيئة",
+  "What the server does do at issue time": "ما ينفّذه الخادم فعليًا عند الإصدار",
+  "Stamps the organization’s recorded VAT number onto the invoice as the seller.":
+    "يُدرج رقم التسجيل الضريبي المسجَّل للمؤسسة في الفاتورة كبائع.",
+  "Builds the phase-2 QR payload from the seller, the timestamp, the total and the VAT.":
+    "يبني حمولة رمز QR للمرحلة الثانية من بيانات البائع والوقت والإجمالي والضريبة.",
+  "Chains each issued invoice’s hash to the previously issued one.":
+    "يربط بصمة كل فاتورة مُصدرة ببصمة الفاتورة السابقة لها.",
+  "That is document preparation, not clearance: no invoice here has been submitted to the authority.":
+    "هذا إعداد للمستند وليس مصادقة: لم تُرسل أي فاتورة هنا إلى الهيئة.",
+  "Filing registration": "تسجيل الإقرار",
+  "The rate the server charges on every invoice it prices, read from the configuration the pricing rule reads. Changing it is a deployment change, not a setting on this screen.":
+    "هي النسبة التي يفرضها الخادم على كل فاتورة يسعّرها، مقروءة من الإعداد نفسه الذي تقرأ منه قاعدة التسعير. وتغييرها تغيير في بيئة التشغيل، لا إعداد في هذه الشاشة.",
+  "This build has no API, so the rate this deployment enforces cannot be read. Shown is the contract standard rate the client prices unsaved drafts at.":
+    "لا تتوفر واجهة برمجية في هذه النسخة، لذلك لا يمكن قراءة النسبة المطبَّقة في بيئة التشغيل. والمعروض هو النسبة القياسية في قاعدة التسعير التي تُسعَّر بها المسودات غير المحفوظة.",
+  "Registration numbers are recorded on the organization’s own record and can only be read from the API. This build has none, so none is shown rather than a stand-in.":
+    "أرقام التسجيل مُسجَّلة في سجل المؤسسة نفسه ولا يمكن قراءتها إلا من الواجهة البرمجية. ولا تتوفر واجهة في هذه النسخة، لذلك لا يُعرض أي رقم بدلاً من عرض رقم بديل.",
+  "GAP: expense-side VAT is not tracked, so no net VAT is shown — output VAT is not a filing figure on its own.":
+    "فراغ: لا تُتابَع ضريبة المدخلات على المصروفات، لذلك لا يُعرض صافي الضريبة — فضريبة المخرجات وحدها ليست رقم إقرار.",
+  "GAP: no ZATCA integration is configured in this deployment. Nothing clears, reports or syncs an invoice with the authority, so there is no integration status, onboarding phase or sync time to show.":
+    "فراغ: لا يوجد ربط مع زاتكا في بيئة التشغيل هذه. فلا شيء يصادق على فاتورة أو يبلّغ عنها أو يزامنها مع الهيئة، وبالتالي لا توجد حالة ربط ولا مرحلة تسجيل ولا وقت مزامنة تُعرض.",
+  "GAP: no zakat base, zakat due, assessment year or filing status is recorded or computed anywhere in this system, so none is shown.":
+    "فراغ: لا يُسجَّل ولا يُحسب في هذا النظام أي وعاء زكوي أو زكاة مستحقة أو سنة ربط أو حالة إقرار، لذلك لا يُعرض أي منها.",
+  "A zakat base is a net-worth computation over an adjusted balance sheet under the authority’s rules. Nothing here performs it, and the ledger’s equity figure is not one — so no figure is estimated in its place.":
+    "الوعاء الزكوي حساب لصافي الثروة على قائمة مركز مالي معدَّلة وفق قواعد الهيئة. ولا شيء هنا ينفّذ هذا الحساب، ورقم حقوق الملكية في الدفاتر ليس وعاءً زكويًا — لذلك لا يُقدَّر أي رقم بديلاً عنه.",
+  "The statutory zakat rate on an assessed base is 2.5%. It is stated here as law, not as a setting: no computation in this system applies it to anything.":
+    "نسبة الزكاة النظامية على الوعاء المربوط هي 2.5%. وهي مذكورة هنا كحكم نظامي لا كإعداد: لا توجد في هذا النظام أي عملية حسابية تطبّقها على شيء.",
 }

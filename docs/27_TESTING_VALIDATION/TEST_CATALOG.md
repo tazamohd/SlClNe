@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-224 spec files containing 2492 test cases.
+226 spec files containing 2518 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 149 | 1382 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 151 | 1408 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 47 | 623 |
-| app | 134 | 1492 |
+| server | 48 | 630 |
+| app | 135 | 1511 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -97,6 +97,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/admin-profile-demo.test.tsx` | UNIT_OR_API | 1 | owner |
 | `app/tests/admin-profile.test.tsx` | UNIT_OR_API | 4 | owner |
 | `app/tests/admin-users-teams.test.tsx` | UNIT_OR_API | 2 | owner, parts, technician |
+| `app/tests/compliance-tax-screens.test.tsx` | UNIT_OR_API | 19 | accountant, owner, superadmin, manager, test, technician, frontdesk, parts, advisor, qc, hr, customer, supplier |
 | `app/tests/component/Accordion.test.tsx` | UNIT_OR_API | 11 | — |
 | `app/tests/component/Badge.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/component/Charts.test.tsx` | UNIT_OR_API | 10 | — |
@@ -251,6 +252,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
 | `server/tests/notifications.test.ts` | UNIT_OR_API | 12 | advisor, test, technician, customer |
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
+| `server/tests/organization-tax-profile.test.ts` | UNIT_OR_API | 7 | accountant, technician, frontdesk, parts |
 | `server/tests/parts-network.test.ts` | UNIT_OR_API | 34 | procurement, supplier, technician, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |

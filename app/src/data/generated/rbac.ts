@@ -6,6 +6,7 @@
 // "Warranty-Management": "accounting" / "Internal-Warehouse": "inventory" /
 // "Training-LMS": "hr"
 // "Technician-Leaderboards": "hr"
+// "VAT-Settings" / "ZATCA-Settings" / "Zakat-Settings": "accounting"
 // entries in SCREEN_MODULE, were added by
 // hand alongside the matching FIELD_RULES entry in project/gms-data.js (DVHC,
 // Sprint 2, P0; Canned Jobs, build-order item 5; Warranty Management, BLK-004;
@@ -24,6 +25,13 @@
 // `test` account) and is what `GET /reports/technician-leaderboard` enforces,
 // so no cell in PERMS moves — none of the five has a design
 // source, same reasoning as "DeclinedJobs"
+// module and its grants already existed — VAT / ZATCA / Zakat Settings,
+// BLK-004 — the three tax-compliance screens read
+// `GET /organization/tax-profile` and `GET /accounting/tax/return`, both gated
+// server-side on `accounting:v`, so gating the screens on the same module means
+// no role can open a screen whose data it would be refused; this narrows
+// access (they were ungated) and widens nothing — none of the seven has a
+// design source, same reasoning as "DeclinedJobs"
 // already in this file) — a full
 // `node scripts/port-design-data.mjs` run also touched
 // nav.ts/screens.ts/badges.ts/icon-registry.ts with unrelated drift this
@@ -694,6 +702,9 @@ export const SCREEN_MODULE: Record<string, string> = {
   "JournalEntries": "accounting",
   "Expenses": "accounting",
   "TaxManagement": "accounting",
+  "VAT-Settings": "accounting",
+  "ZATCA-Settings": "accounting",
+  "Zakat-Settings": "accounting",
   "BankReconciliation": "accounting",
   "FinancialReports": "accounting",
   "HRPayroll": "hr",
