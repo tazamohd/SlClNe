@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-208 spec files containing 2341 test cases.
+214 spec files containing 2431 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 133 | 1231 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 139 | 1321 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 42 | 526 |
-| app | 123 | 1438 |
+| server | 45 | 588 |
+| app | 126 | 1466 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -114,8 +114,11 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/detail-page.test.tsx` | UNIT_OR_API | 16 | — |
 | `app/tests/component/Drawer.test.tsx` | UNIT_OR_API | 12 | — |
 | `app/tests/component/Form.test.tsx` | UNIT_OR_API | 17 | — |
+| `app/tests/component/internal-warehouse.test.tsx` | UNIT_OR_API | 6 | parts, technician |
 | `app/tests/component/Modal.test.tsx` | UNIT_OR_API | 12 | — |
+| `app/tests/component/notification-center.test.tsx` | UNIT_OR_API | 4 | advisor, supplier |
 | `app/tests/component/parts-catalog-seam.test.tsx` | UNIT_OR_API | 10 | parts, procurement |
+| `app/tests/component/parts-network.test.tsx` | UNIT_OR_API | 18 | procurement, superadmin, manager |
 | `app/tests/component/Popover.test.tsx` | UNIT_OR_API | 7 | — |
 | `app/tests/component/Select.test.tsx` | UNIT_OR_API | 9 | — |
 | `app/tests/component/States.test.tsx` | UNIT_OR_API | 13 | — |
@@ -238,7 +241,9 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/inventory-enforcement.test.ts` | INVENTORY_INTEGRITY | 21 | owner, parts, supplier |
 | `server/tests/isolation.test.ts` | SECURITY | 21 | owner, accountant, manager, superadmin, advisor, technician, qc, parts, hr, frontdesk, callcenter, procurement, supplier, customer |
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
+| `server/tests/notifications.test.ts` | UNIT_OR_API | 12 | advisor, test, technician, customer |
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
+| `server/tests/parts-network.test.ts` | UNIT_OR_API | 34 | procurement, supplier, technician, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |
 | `server/tests/rbac-parity.test.ts` | SECURITY | 4 | — |
@@ -248,6 +253,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/security.test.ts` | SECURITY | 13 | — |
 | `server/tests/seed-coherence.test.ts` | DATA_FIDELITY | 12 | — |
 | `server/tests/seed-fidelity.test.ts` | DATA_FIDELITY | 3 | owner |
+| `server/tests/warehouse-zones.test.ts` | UNIT_OR_API | 16 | parts, technician, customer |
 | `server/tests/workshop-qc.test.ts` | UNIT_OR_API | 7 | qc, manager, technician, hr |
 | `server/tests/workshop-reports.test.ts` | UNIT_OR_API | 6 | manager, qc, owner, supplier |
 | `server/tests/writes.test.ts` | UNIT_OR_API | 17 | — |

@@ -600,6 +600,53 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       costHalalas: row.costHalalas ?? null,
       reserved: count(row.reserved),
       available: count(row.onHand) - count(row.reserved),
+      /* Which bay this part is put away in (BLK-004). The zone code rather
+       * than a ULID, because that is what the floor and `InternalWarehouse.tsx`
+       * group on, and a composite FK keeps it honest. Null until the part is
+       * put away. */
+      zoneCode: row.zoneCode ?? null,
+    }),
+  }),
+
+  /* Warehouse zones (BLK-004) — the bays stock is put away in, which
+   * `InternalWarehouse.tsx` rendered as a hardcoded six-row array with
+   * invented capacity, utilisation and item counts.
+   *
+   * What is presented here is only what the zone row records. There is no
+   * `itemCount` and no `utilization` field, deliberately: those are facts
+   * about stock, and the screen derives them by grouping `parts` on
+   * `zoneCode`, so they cannot drift from the inventory they describe.
+   * `capacityUnits` is recorded, because how big a bay is is a property of
+   * the bay and nothing in the ledger knows it.
+   *
+   * Writable through the generic router under `inventory` — the same module
+   * as the parts it holds — with one lifecycle move (active <-> maintenance)
+   * as an ordinary field write, so no bespoke router is needed. */
+  define({
+    key: 'warehouseZones',
+    path: 'warehouse-zones',
+    table: s.warehouseZones,
+    module: 'inventory',
+    entity: 'warehouse_zone',
+    search: ['code', 'name', 'nameAr'],
+    sortable: ['code', 'name', 'capacityUnits', 'status', 'createdAt'],
+    filterable: ['status', 'kind'],
+    defaultSort: { column: 'code', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      name: row.name,
+      nameAr: row.nameAr ?? null,
+      kind: row.kind,
+      capacityUnits: count(row.capacityUnits),
+      status: row.status,
+      maintenanceSince: row.maintenanceSince
+        ? new Date(row.maintenanceSince as string | Date).toISOString()
+        : null,
+      notes: row.notes ?? null,
     }),
   }),
 
@@ -1075,6 +1122,194 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       status: row.status,
       claimedAt: row.claimedAt ? new Date(row.claimedAt as string | Date).toISOString() : null,
       claimNotes: row.claimNotes ?? null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
+  /* Notifications (BLK-004) — a per-tenant feed of job, appointment,
+   * invoice and stock alerts. Writable through the generic router, the same
+   * shape `equipmentWarranties` gets: a flat directory with no lines, no
+   * derived money and one lifecycle move (unread -> read), so it needs no
+   * bespoke router. Gated on `dashboard` — the module every operating role
+   * already holds view on — because a notification is directory data about
+   * a user's own tenant, not a privilege the way an accounting record is. */
+  define({
+    key: 'notifications',
+    path: 'notifications',
+    table: s.notifications,
+    module: 'dashboard',
+    entity: 'notification',
+    search: ['title', 'message'],
+    sortable: ['createdAt', 'severity', 'category', 'readAt'],
+    filterable: ['category', 'severity'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      category: row.category,
+      severity: row.severity,
+      title: row.title,
+      message: row.message,
+      link: row.link ?? null,
+      read: row.readAt != null,
+      readAt: row.readAt ? new Date(row.readAt as string | Date).toISOString() : null,
+    }),
+  }),
+
+  /* ------------------------------------------- parts supply network (BLK-004)
+   *
+   * Four collections behind the eight parts-network screens that all rendered
+   * an honest "no data source yet" shell. Gated on `network`, the module that
+   * already expresses parts-network authority — `procurement`/`owner` hold the
+   * full set, `parts` holds `vced`, `supplier` holds `vce`, and `technician`
+   * holds nothing, so a technician can neither request nor order through the
+   * network. No grant was widened for this feature.
+   *
+   * Members, requests and quotations are writable through the generic router:
+   * flat rows, no line items, and lifecycle moves that are ordinary field
+   * writes. Accepting a quotation is the one exception and has its own router
+   * (`routes/parts-network.ts`), because it must reject the request's other
+   * quotations, move the request to `ordered` and create the order atomically.
+   *
+   * Nothing here crosses the tenant boundary: every row is `org_id`-owned
+   * under the same RLS as `equipment_warranties`. See
+   * `drizzle/0024_parts_network.sql`.
+   */
+  define({
+    key: 'partsNetworkMembers',
+    path: 'parts-network/members',
+    table: s.partsNetworkMembers,
+    module: 'network',
+    entity: 'parts_network_member',
+    search: ['code', 'name', 'city', 'contactName'],
+    sortable: ['code', 'name', 'kind', 'city', 'status', 'ratingTenths', 'createdAt'],
+    filterable: ['kind', 'status'],
+    defaultSort: { column: 'name', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      name: row.name,
+      nameAr: row.nameAr ?? null,
+      kind: row.kind,
+      city: row.city ?? null,
+      contactName: row.contactName ?? null,
+      contactPhone: row.contactPhone ?? null,
+      contactEmail: row.contactEmail ?? null,
+      supplierId: row.supplierId ?? null,
+      status: row.status,
+      ratingTenths: row.ratingTenths ?? null,
+      /* Null stays null — an unrated member shows no stars rather than a
+       * fabricated zero. */
+      rating: row.ratingTenths == null ? null : row.ratingTenths / 10,
+      notes: row.notes ?? null,
+    }),
+  }),
+
+  define({
+    key: 'partsNetworkRequests',
+    path: 'parts-network/requests',
+    table: s.partsNetworkRequests,
+    module: 'network',
+    entity: 'parts_network_request',
+    search: ['code', 'partName', 'partNumber', 'memberName', 'vehicleInfo'],
+    sortable: ['code', 'partName', 'qty', 'urgency', 'status', 'neededBy', 'createdAt'],
+    /* `direction` is filterable because it is how the Incoming view is served:
+     * a filtered read over this one collection, not a second table. */
+    filterable: ['direction', 'status', 'urgency', 'memberId'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      direction: row.direction,
+      memberId: row.memberId ?? null,
+      memberName: row.memberName ?? null,
+      partSku: row.partSku ?? null,
+      partName: row.partName,
+      partNumber: row.partNumber ?? null,
+      qty: count(row.qty),
+      urgency: row.urgency,
+      vehicleInfo: row.vehicleInfo ?? null,
+      jobCode: row.jobCode ?? null,
+      neededBy: row.neededBy ? dateUS(row.neededBy) : null,
+      status: row.status,
+      quotationCount: count(row.quotationCount),
+      quotedAt: row.quotedAt ? new Date(row.quotedAt as string | Date).toISOString() : null,
+      orderedAt: row.orderedAt ? new Date(row.orderedAt as string | Date).toISOString() : null,
+      closedAt: row.closedAt ? new Date(row.closedAt as string | Date).toISOString() : null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
+  define({
+    key: 'partsNetworkQuotations',
+    path: 'parts-network/quotations',
+    table: s.partsNetworkQuotations,
+    module: 'network',
+    entity: 'parts_network_quotation',
+    search: ['code', 'memberName'],
+    sortable: ['code', 'memberName', 'unitPriceHalalas', 'leadTimeDays', 'status', 'createdAt'],
+    filterable: ['requestId', 'status', 'condition', 'memberId'],
+    defaultSort: { column: 'unitPriceHalalas', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      requestId: row.requestId,
+      memberId: row.memberId ?? null,
+      memberName: row.memberName,
+      unitPriceHalalas: count(row.unitPriceHalalas),
+      unitPrice: sarString(row.unitPriceHalalas),
+      qtyAvailable: count(row.qtyAvailable),
+      leadTimeDays: row.leadTimeDays ?? null,
+      condition: row.condition,
+      warrantyMonths: row.warrantyMonths ?? null,
+      status: row.status,
+      acceptedAt: row.acceptedAt ? new Date(row.acceptedAt as string | Date).toISOString() : null,
+      rejectedAt: row.rejectedAt ? new Date(row.rejectedAt as string | Date).toISOString() : null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
+  define({
+    key: 'partsNetworkOrders',
+    path: 'parts-network/orders',
+    table: s.partsNetworkOrders,
+    module: 'network',
+    entity: 'parts_network_order',
+    search: ['code', 'memberName', 'partName', 'trackingRef'],
+    sortable: ['code', 'memberName', 'partName', 'totalHalalas', 'status', 'expectedAt', 'createdAt'],
+    filterable: ['direction', 'status', 'memberId', 'requestId'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      requestId: row.requestId ?? null,
+      quotationId: row.quotationId ?? null,
+      memberId: row.memberId ?? null,
+      memberName: row.memberName,
+      direction: row.direction,
+      partName: row.partName,
+      qty: count(row.qty),
+      unitPriceHalalas: count(row.unitPriceHalalas),
+      totalHalalas: count(row.totalHalalas),
+      total: sarString(row.totalHalalas),
+      status: row.status,
+      trackingRef: row.trackingRef ?? null,
+      expectedAt: row.expectedAt ? dateUS(row.expectedAt) : null,
+      shippedAt: row.shippedAt ? new Date(row.shippedAt as string | Date).toISOString() : null,
+      receivedAt: row.receivedAt ? new Date(row.receivedAt as string | Date).toISOString() : null,
+      cancelledAt: row.cancelledAt ? new Date(row.cancelledAt as string | Date).toISOString() : null,
       notes: row.notes ?? null,
     }),
   }),

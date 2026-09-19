@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-Every column of every table, 1288 in total.
+Every column of every table, 1417 in total.
 
 ## `organizations`
 
@@ -662,11 +662,13 @@ One line of a canned job's bundle — the same shape `estimate_lines` carries, c
 | `reserved` | integer | NOT NULL | — | 0 | — |
 | `reorder_level` | integer | NOT NULL | — | 0 | — |
 | `backorderable` | boolean | NOT NULL | — | false | — |
+| `zone_code` | varchar(16) | nullable | — | — | — |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `parts_org_sku_idx` | yes | orgId, sku |
 | `parts_org_idx` | no | orgId, branchId |
+| `parts_org_zone_idx` | no | orgId, zoneCode |
 
 ## `inventory_movements`
 
@@ -1361,6 +1363,206 @@ Equipment warranties — cover on the shop's own tools and fixed assets (a lift,
 | --- | --- | --- |
 | `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
 | `equipment_warranties_org_idx` | no | orgId, branchId, status |
+
+## `warehouse_zones`
+
+Warehouse zones (BLK-004) — the physical bays stock is put away in, and the collection `InternalWarehouse.tsx` reads instead of the hardcoded `ZONES` array whose capacity, utilisation and item counts were all invented. What this table records is only what is a property of the *zone*: its code, name, what it is for and how much it can hold. It deliberately carries **no** item count and **no** utilisation percentage — those are facts about stock, derived by counting the `parts` rows whose `zone_code` points here, so they cannot drift from the inventory they describe. `capacity_units` is the one recorded number, and correctly so: nothing in the stock ledger knows how big a bay is. Writable through the generic router — `inventory:c/e/d`, the same module the parts it holds are under. `maintenance_since` is server-derived from the status transition (`writers.ts`), the discipline `equipment_warranties.claimed_at` uses, so it records when a bay actually went out of service rather than a date someone typed.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(16) | NOT NULL | — | — | — |
+| `name` | varchar(120) | NOT NULL | — | — | — |
+| `name_ar` | varchar(120) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | 'storage' | — |
+| `capacity_units` | integer | NOT NULL | — | 0 | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `maintenance_since` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `warehouse_zones_org_code_idx` | yes | orgId, code |
+| `warehouse_zones_org_idx` | no | orgId, branchId, status |
+
+## `notifications`
+
+Notifications (BLK-004) — a per-tenant feed of job, appointment, invoice and stock alerts a staff member can view, mark read and dismiss. `NotificationCenter.tsx` rendered an honest GAP state because this collection did not exist; this is it. Writable through the generic router — same shape as `equipment_warranties`: a flat directory with no lines, no derived money and one lifecycle move (unread -> read). `readAt` is never accepted as raw input, only derived server-side from a `read` boolean on the write (`writers.ts`), the same discipline `equipment_warranties.claimedAt` uses — so a read timestamp always reflects when the row was actually marked read, and clears if it is ever marked unread again.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `category` | varchar(16) | NOT NULL | — | 'system' | — |
+| `severity` | varchar(16) | NOT NULL | — | 'info' | — |
+| `title` | varchar(200) | NOT NULL | — | — | — |
+| `message` | text | NOT NULL | — | — | — |
+| `link` | varchar(300) | nullable | — | — | — |
+| `read_at` | timestamptz | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `notifications_org_idx` | no | orgId, branchId, readAt |
+| `notifications_org_created_idx` | no | orgId, createdAt |
+
+## `parts_network_members`
+
+Parts Network (BLK-004) — a garage-to-garage / garage-to-dealer parts supply network: who this workshop trades parts with, what it asked the network for, what came back, and what an accepted quotation became. **Nothing here crosses the tenant boundary.** Every row below carries `org_id` and is visible only to that organization, under the same policy set `declined_jobs` / `equipment_warranties` / `notifications` carry. What is modelled is each tenant's *own record of its network activity* — the counterparty is a row in this tenant's own member directory, never a foreign `org_id`. `drizzle/0024_parts_network.sql` states at length why real cross-org sharing is out of scope rather than faked by widening `p_tenant`. Gated on the `network` module, which already expresses parts-network authority: `procurement`/`owner` hold the full set, `parts` holds `vced`, `supplier` holds `vce`, and `technician` holds nothing — so a technician can neither request nor order through the network. No grant was widened for this feature.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `name` | varchar(200) | NOT NULL | — | — | — |
+| `name_ar` | varchar(200) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | 'garage' | — |
+| `city` | varchar(120) | nullable | — | — | — |
+| `contact_name` | varchar(200) | nullable | — | — | — |
+| `contact_phone` | varchar(32) | nullable | — | — | — |
+| `contact_email` | varchar(254) | nullable | — | — | — |
+| `supplier_id` | varchar(ULID_LENGTH) | nullable | FK → suppliers | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `rating_tenths` | integer | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_members_org_code_idx` | yes | orgId, code |
+| `parts_network_members_org_idx` | no | orgId, branchId, status |
+
+## `parts_network_requests`
+
+A part request. `direction` is what makes the single-tenant model honest: `outgoing` is one this workshop broadcast to the network, `incoming` is one it recorded as having been sent to it by a member. Both are this tenant's own rows.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `direction` | varchar(16) | NOT NULL | — | 'outgoing' | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | nullable | — | — | — |
+| `part_sku` | varchar(64) | nullable | — | — | — |
+| `part_name` | varchar(200) | NOT NULL | — | — | — |
+| `part_number` | varchar(64) | nullable | — | — | — |
+| `qty` | integer | NOT NULL | — | 1 | — |
+| `urgency` | varchar(16) | NOT NULL | — | 'normal' | — |
+| `vehicle_info` | varchar(200) | nullable | — | — | — |
+| `job_code` | varchar(32) | nullable | — | — | — |
+| `needed_by` | date | nullable | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'open' | — |
+| `quotation_count` | integer | NOT NULL | — | 0 | — |
+| `quoted_at` | timestamptz | nullable | — | — | — |
+| `ordered_at` | timestamptz | nullable | — | — | — |
+| `closed_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_requests_org_code_idx` | yes | orgId, code |
+| `parts_network_requests_org_idx` | no | orgId, branchId, direction, status |
+
+## `parts_network_quotations`
+
+An offer against a request. Accepting one is the domain's single real invariant — the accepted quotation's siblings must be rejected, the request must move to `ordered`, and the order must be created, all atomically — so that transition has a bespoke router (`POST /parts-network/quotations/:id/accept`) rather than riding a generic `PATCH`. Everything else here is an ordinary column write.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `request_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | NOT NULL | — | — | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `qty_available` | integer | NOT NULL | — | 0 | — |
+| `lead_time_days` | integer | nullable | — | — | — |
+| `condition` | varchar(16) | NOT NULL | — | 'new' | — |
+| `warranty_months` | integer | nullable | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'pending' | — |
+| `accepted_at` | timestamptz | nullable | — | — | — |
+| `rejected_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_quotations_org_code_idx` | yes | orgId, code |
+| `parts_network_quotations_request_idx` | no | orgId, requestId, status |
+
+## `parts_network_orders`
+
+An accepted quotation, become an order. `direction` mirrors the request's: `outbound` is one this workshop placed with a member, `inbound` is one it is fulfilling for a member. "Incoming" on the screen is a *filtered read* over this table (outbound and in transit), not a table of its own — there is no fact an extra table would carry that `direction` plus `status` does not.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `request_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `quotation_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | NOT NULL | — | — | — |
+| `direction` | varchar(16) | NOT NULL | — | 'outbound' | — |
+| `part_name` | varchar(200) | NOT NULL | — | — | — |
+| `qty` | integer | NOT NULL | — | 1 | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `status` | varchar(24) | NOT NULL | — | 'placed' | — |
+| `tracking_ref` | varchar(64) | nullable | — | — | — |
+| `expected_at` | date | nullable | — | — | — |
+| `shipped_at` | timestamptz | nullable | — | — | — |
+| `received_at` | timestamptz | nullable | — | — | — |
+| `cancelled_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_orders_org_code_idx` | yes | orgId, code |
+| `parts_network_orders_org_idx` | no | orgId, branchId, direction, status |
 
 ## `employees`
 

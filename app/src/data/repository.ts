@@ -307,6 +307,125 @@ export interface EquipmentWarrantyRow extends EntityMeta {
   notes: string | null
 }
 
+/** A notification — a job, appointment, invoice or stock alert on the
+ *  tenant's own feed (BLK-004), as `GET /notifications` presents it. No
+ *  design fixture — the shape is declared here rather than inferred, like
+ *  `EquipmentWarrantyRow`. Writable through the generic collection: create,
+ *  edit, delete and the one lifecycle move (unread → read) are all a plain
+ *  `POST`/`PATCH`/`DELETE` on this same collection. */
+export interface NotificationRow extends EntityMeta {
+  category: 'job' | 'appointment' | 'invoice' | 'stock' | 'system'
+  severity: 'info' | 'warning' | 'critical'
+  title: string
+  message: string
+  link: string | null
+  read: boolean
+  readAt: string | null
+}
+
+/* ------------------------------------------- parts supply network (BLK-004)
+ *
+ * The four collections behind the eight parts-network screens, which all
+ * rendered an honest "no data source yet" shell. No design fixture — the
+ * shapes are declared here rather than inferred, like `NotificationRow`.
+ *
+ * Nothing in this domain crosses the tenant boundary: every row belongs to one
+ * organization, and a `memberId` names a counterparty in *this* tenant's own
+ * directory, never a foreign org. `direction` is what makes that honest — an
+ * `incoming` request is one this workshop recorded as sent to it. See
+ * `server/drizzle/0024_parts_network.sql`. */
+
+/** A participant this workshop trades parts with. `supplierId` points at the
+ *  matching `suppliers` row when the member is also a vendor of record, rather
+ *  than duplicating the vendor concept. */
+export interface PartsNetworkMemberRow extends EntityMeta {
+  id: string
+  code: string
+  name: string
+  nameAr: string | null
+  kind: 'garage' | 'dealer' | 'store' | 'supplier'
+  city: string | null
+  contactName: string | null
+  contactPhone: string | null
+  contactEmail: string | null
+  supplierId: string | null
+  status: 'active' | 'pending' | 'suspended'
+  ratingTenths: number | null
+  /** `46` presented as `4.6`; null when unrated, never a fabricated default. */
+  rating: number | null
+  notes: string | null
+}
+
+/** A part request. `outgoing` went out to the network, `incoming` came in from
+ *  a member — the Incoming view is a filtered read over this one collection,
+ *  not a second table. `quotationCount` and every `*At` are server-maintained. */
+export interface PartsNetworkRequestRow extends EntityMeta {
+  id: string
+  code: string
+  direction: 'outgoing' | 'incoming'
+  memberId: string | null
+  memberName: string | null
+  partSku: string | null
+  partName: string
+  partNumber: string | null
+  qty: number
+  urgency: 'low' | 'normal' | 'high' | 'urgent'
+  vehicleInfo: string | null
+  jobCode: string | null
+  neededBy: string | null
+  status: 'open' | 'quoted' | 'ordered' | 'closed' | 'cancelled'
+  quotationCount: number
+  quotedAt: string | null
+  orderedAt: string | null
+  closedAt: string | null
+  notes: string | null
+}
+
+/** A member's offer against a request. `accepted` is unreachable through the
+ *  generic `PATCH` — accepting also rejects the siblings and raises the order,
+ *  so it goes through `partsNetwork.acceptQuotation` (live only). */
+export interface PartsNetworkQuotationRow extends EntityMeta {
+  id: string
+  code: string
+  requestId: string
+  memberId: string | null
+  memberName: string
+  unitPriceHalalas: number
+  unitPrice: string
+  qtyAvailable: number
+  leadTimeDays: number | null
+  condition: 'new' | 'used' | 'oem' | 'aftermarket'
+  warrantyMonths: number | null
+  status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
+  acceptedAt: string | null
+  rejectedAt: string | null
+  notes: string | null
+}
+
+/** An accepted quotation, become an order. `outbound` is one this workshop
+ *  placed, `inbound` one it is fulfilling; the total is computed server-side. */
+export interface PartsNetworkOrderRow extends EntityMeta {
+  id: string
+  code: string
+  requestId: string | null
+  quotationId: string | null
+  memberId: string | null
+  memberName: string
+  direction: 'outbound' | 'inbound'
+  partName: string
+  qty: number
+  unitPriceHalalas: number
+  totalHalalas: number
+  total: string
+  status: 'placed' | 'shipped' | 'received' | 'cancelled'
+  trackingRef: string | null
+  expectedAt: string | null
+  shippedAt: string | null
+  receivedAt: string | null
+  cancelledAt: string | null
+  notes: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -621,6 +740,39 @@ export type PartRow = WithMeta<(typeof T.PARTS)[number]> & {
   priceHalalas?: number
   costHalalas?: number | null
   backorderable?: boolean
+  /** The `warehouseZones.code` this part is racked in, or null when it has not
+   *  been put away yet (BLK-004). This is the field `InternalWarehouse.tsx`
+   *  groups on, which is what makes each zone's item count and utilisation
+   *  *derived* from the stock rather than a number typed onto the zone. Unlike
+   *  the other extras here it is present in the fixture build too (see
+   *  `PART_ZONE_CODES`), because Golden Path 7 asserts a real per-zone
+   *  utilisation with no API at all. */
+  zoneCode?: string | null
+}
+
+/** A warehouse zone — a bay, rack or bin stock is put away in (BLK-004), as
+ *  `GET /warehouse-zones` presents it. No design fixture; the shape is
+ *  declared here rather than inferred, like `EquipmentWarrantyRow`.
+ *
+ *  Note what is absent: no `itemCount`, no `utilization`. Those are facts about
+ *  stock, not about the bay, and `screens/inventory/InternalWarehouse.tsx`
+ *  derives them by grouping `parts` on `zoneCode`, so they cannot drift from
+ *  the inventory they describe. `capacityUnits` is the one recorded number, and
+ *  correctly so: how many units a bay holds is a property of the bay.
+ *
+ *  Writable through the generic collection: the lifecycle move a bay makes
+ *  (`active` ⇄ `maintenance`) is a plain `PATCH`, and `maintenanceSince` is
+ *  derived server-side from that transition rather than accepted as input. */
+export interface WarehouseZoneRow extends EntityMeta {
+  id: string
+  code: string
+  name: string
+  nameAr: string | null
+  kind: 'storage' | 'receiving' | 'shipping' | 'cold' | 'hazmat'
+  capacityUnits: number
+  status: 'active' | 'maintenance' | 'closed'
+  maintenanceSince: string | null
+  notes: string | null
 }
 
 /** `scheduledDate`/`startMinute` are the machine values `timeLabel` is
@@ -672,6 +824,7 @@ export interface Repository {
   customers: Collection<CustomerRow>
   fleets: Collection<WithMeta<(typeof T.FLEETS)[number]>>
   parts: Collection<PartRow>
+  warehouseZones: Collection<WarehouseZoneRow>
   technicians: Collection<WithMeta<(typeof T.TECHS)[number]>>
   services: Collection<WithMeta<(typeof T.SERVICES)[number]>>
   leads: Collection<WithMeta<(typeof T.LEADS)[number]>>
@@ -698,6 +851,11 @@ export interface Repository {
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
   equipmentWarranties: Collection<EquipmentWarrantyRow>
+  notifications: Collection<NotificationRow>
+  partsNetworkMembers: Collection<PartsNetworkMemberRow>
+  partsNetworkRequests: Collection<PartsNetworkRequestRow>
+  partsNetworkQuotations: Collection<PartsNetworkQuotationRow>
+  partsNetworkOrders: Collection<PartsNetworkOrderRow>
   receipts: Collection<WithMeta<(typeof T.RECEIPTS)[number]>>
   departments: Collection<WithMeta<(typeof T.DEPARTMENTS)[number]>>
   aiAgents: Collection<WithMeta<(typeof T.AI_AGENTS)[number]>>
@@ -740,6 +898,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   invoicePayments: 'payments',
   receipts: 'receipts',
   parts: 'inventory',
+  warehouseZones: 'warehouse-zones',
   technicians: 'technicians',
   departments: 'admin/departments',
   leads: 'crm/leads',
@@ -766,6 +925,11 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   requisitions: 'procurement/requisitions',
   purchaseOrders: 'procurement/purchase-orders',
   equipmentWarranties: 'equipment-warranties',
+  notifications: 'notifications',
+  partsNetworkMembers: 'parts-network/members',
+  partsNetworkRequests: 'parts-network/requests',
+  partsNetworkQuotations: 'parts-network/quotations',
+  partsNetworkOrders: 'parts-network/orders',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -950,6 +1114,64 @@ function fixture<TRow>(seed: readonly TRow[]): Collection<TRow> {
   }
 }
 
+/** Which warehouse zone each design-bundle part is racked in (BLK-004), by
+ *  SKU. The prototype had no zones, so this assignment lives here rather than
+ *  in the generated fixture — filters and pads on the main floor, the smaller
+ *  service items on the mezzanine.
+ *
+ *  Mirrored by `PART_ZONE_CODES` in `server/scripts/seed.ts`, which assigns the
+ *  same zone to the same SKU; `server/tests/repository-swap.test.ts` compares
+ *  the fixture rows against the seeded ones field by field, so the two copies
+ *  cannot drift apart unnoticed. */
+export const PART_ZONE_CODES: Readonly<Record<string, string>> = {
+  'OF-TY-118': 'A1',
+  'BP-FR-220': 'A1',
+  'AF-UN-002': 'A2',
+  'SP-SET-04': 'A2',
+}
+
+/** The six warehouse zones the fixture build serves (BLK-004).
+ *
+ *  Every other collection new to BLK-004 ships an **empty** fixture, because
+ *  `server/tests/repository-swap.test.ts` asserts each collection's live rows
+ *  are exactly this fixture's rows plus `SEED_COHERENCE_EXTRAS`. Zones are the
+ *  exception on purpose: Golden Path 7 (`app/e2e/inventory-receiving.spec.ts`)
+ *  asserts a real numeric utilisation per zone in a build with **no API**, so an
+ *  empty fixture here would leave the screen with nothing real to render. The
+ *  answer is not to weaken the assertion but to ship the same six zones the
+ *  server seeds: `server/scripts/seed.ts` inserts these rows, in this order,
+ *  with `SEED_COHERENCE_EXTRAS.warehouseZones = 0`, and both
+ *  `repository-swap.test.ts` and `seed-fidelity.test.ts` compare the two copies
+ *  field by field.
+ *
+ *  The names and capacities are ported from the array `InternalWarehouse.tsx`
+ *  used to render (they are plausible shop bays, not invented people or
+ *  customers). What is deliberately *not* ported is that array's `utilized` and
+ *  `itemCount`: those are derived from the parts assigned to each zone, so a
+ *  zone row has no place to record them. */
+export const WAREHOUSE_ZONE_FIXTURE: readonly WarehouseZoneRow[] = [
+  { id: 'A1', code: 'A1', name: 'Main Floor', nameAr: 'الصالة الرئيسية', kind: 'storage', capacityUnits: 500, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A2', code: 'A2', name: 'Mezzanine', nameAr: 'الميزانين', kind: 'storage', capacityUnits: 200, status: 'active', maintenanceSince: null, notes: null },
+  /* One bay genuinely out of service, so the lifecycle the screen can drive is
+   * visible in the demo build too. `maintenanceSince` matches the seed's fixed
+   * timestamp exactly — through the API it is derived from the status
+   * transition and never posted. */
+  {
+    id: 'A3',
+    code: 'A3',
+    name: 'Cold Storage',
+    nameAr: 'التخزين المبرد',
+    kind: 'cold',
+    capacityUnits: 80,
+    status: 'maintenance',
+    maintenanceSince: '2026-09-10T06:00:00.000Z',
+    notes: 'Compressor service; chiller offline.',
+  },
+  { id: 'A4', code: 'A4', name: 'Hazmat', nameAr: 'المواد الخطرة', kind: 'hazmat', capacityUnits: 50, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A5', code: 'A5', name: 'Receiving', nameAr: 'الاستلام', kind: 'receiving', capacityUnits: 150, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A6', code: 'A6', name: 'Shipping', nameAr: 'الشحن', kind: 'shipping', capacityUnits: 120, status: 'active', maintenanceSince: null, notes: null },
+]
+
 /** Demo data straight from the design bundle. Same rows every screen in the
  *  prototypes showed, so a rebuilt screen can be diffed against its `.dc.html`
  *  original without accounting for different content — and the same rows
@@ -997,7 +1219,15 @@ export const mockRepository: Repository = {
   cannedJobs: fixture<CannedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
-  parts: fixture(T.PARTS),
+  /* The design bundle's parts, each with the bay it is racked in (BLK-004).
+   * `zoneCode` is absent from the generated fixture — the prototype had no
+   * warehouse zones — so it is added here rather than left undefined, because
+   * Golden Path 7 asserts a real numeric utilisation per zone in a build with
+   * no API, and a fixture with no zone assignment could only ever show 0%. */
+  parts: fixture<PartRow>(
+    T.PARTS.map((part) => ({ ...part, zoneCode: PART_ZONE_CODES[part.sku] ?? null }) as PartRow),
+  ),
+  warehouseZones: fixture<WarehouseZoneRow>(WAREHOUSE_ZONE_FIXTURE),
   technicians: fixture(T.TECHS),
   services: fixture(T.SERVICES),
   leads: fixture(T.LEADS),
@@ -1045,6 +1275,32 @@ export const mockRepository: Repository = {
    * generic create/update/delete genuinely works here in demo mode too —
    * session-local, same as everywhere else `isLive` is false. */
   equipmentWarranties: fixture<EquipmentWarrantyRow>([]),
+  /* No design fixture — notifications are new (BLK-004). Empty, same as
+   * `equipmentWarranties`: `tests/repository-swap.test.ts` asserts every
+   * collection's live rows are exactly this fixture's rows plus
+   * `SEED_COHERENCE_EXTRAS`, so a literal seed here would have to match the
+   * server's seeded rows verbatim or break that check. Unlike
+   * `equipmentWarranties` there is no create action on the real screen (a
+   * notification is filed by the system, not typed in by a user, so
+   * `dashboard` grants `c` only to `test` — see `writers.ts`), so
+   * `app/tests/component/notification-center.test.tsx` seeds this fixture
+   * directly through `repository.notifications.create(...)` before
+   * rendering, the same generic write path the real API's `test` role
+   * uses. */
+  notifications: fixture<NotificationRow>([]),
+  /* No design fixture — the parts network is new (BLK-004). Empty, for the
+   * same reason `notifications` is: `tests/repository-swap.test.ts` asserts
+   * every collection's live rows are exactly this fixture's rows plus
+   * `SEED_COHERENCE_EXTRAS`, so a literal seed here would have to match the
+   * server's seeded rows verbatim or break that check. The generic
+   * create/update/delete genuinely works against these in demo mode, so
+   * `app/tests/component/parts-network.test.tsx` seeds them through
+   * `repository.partsNetworkRequests.create(...)` and friends before
+   * rendering — the same write path a live deployment uses. */
+  partsNetworkMembers: fixture<PartsNetworkMemberRow>([]),
+  partsNetworkRequests: fixture<PartsNetworkRequestRow>([]),
+  partsNetworkQuotations: fixture<PartsNetworkQuotationRow>([]),
+  partsNetworkOrders: fixture<PartsNetworkOrderRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
@@ -1983,6 +2239,43 @@ export const productReports: ProductReportsApi | null = API_URL
  *  faked one would be the fake-completion this seam refuses. Agent 11's
  *  Procurement screens read this when `isLive` and show the honest gap otherwise. */
 export const procurement: ProcurementApi | null = API_URL ? createProcurementApi(API_URL) : null
+
+/** Accepting a parts-network quotation (BLK-004). Not a field write: it rejects
+ *  the request's other pending quotations, moves the request to `ordered` and
+ *  creates the order, all in one server transaction with its audit entry
+ *  (`server/src/routes/parts-network.ts`), and it is gated on `network:a`
+ *  because it commits money.
+ *
+ *  Live only, and `null` on the fixtures for the same reason
+ *  `procurement`/`insuranceClaimsApi` are: a mock that faked the acceptance
+ *  would leave the siblings pending, the request `quoted` and no order
+ *  anywhere — the false-success write BLK-004 forbids. The Quotations screen
+ *  shows an honest read-only notice instead of an Accept button when this is
+ *  null, rather than offering a button that cannot work. */
+export interface PartsNetworkApi {
+  acceptQuotation(
+    id: string,
+    body?: { qty?: number; expectedAt?: string; notes?: string },
+  ): Promise<{
+    quotation: PartsNetworkQuotationRow
+    order: PartsNetworkOrderRow
+    rejectedQuotationCodes: string[]
+  }>
+}
+
+export function createPartsNetworkApi(baseUrl: string): PartsNetworkApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async acceptQuotation(id, body = {}) {
+      return request(`${root}/parts-network/quotations/${encodeURIComponent(id)}/accept`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+    },
+  }
+}
+
+export const partsNetwork: PartsNetworkApi | null = API_URL ? createPartsNetworkApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */

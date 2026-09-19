@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 148 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 161 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -22,7 +22,7 @@
 | DeclinedJobs | `/declined-jobs` | app | estimates | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | CannedJobs | `/canned-jobs` | app | estimates | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
 | HealthCheckReport | `/customer-portal/health-check-report` | app | jobcards | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 11 roles | route | IMPLEMENTED |
-| AuditLog | `/audit-log` | app | audit | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 5 roles | route | IMPLEMENTED |
+| AuditLog | `/audit-log` | app | audit | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | AutomationRules | `/automation-rules` | app | aiadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | Backup | `/backup` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | BankReconciliation | `/bank-reconciliation` | app | accounting | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
@@ -103,7 +103,7 @@
 | Native · Android | `/native/android` | native | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Native · iOS | `/native/i-os` | native | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Neural-Network-Prediction | `/neural-network-prediction` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
-| NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 13 roles | route | IMPLEMENTED |
+| NotificationCenter | `/notification-center` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 13 roles | route | IMPLEMENTED |
 | OBDDiagnostics | `/obddiagnostics` | app | jobcards | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | OEMIntegrations | `/oemintegrations` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
 | Onboarding | `/onboarding` | auth | — | DONE | PARTIAL | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -112,14 +112,14 @@
 | Organizations | `/organizations` | app | superadmin | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 3 roles | route | IMPLEMENTED |
 | OrganizationSelection | `/organization-selection` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | OTPVerification | `/otpverification` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork | `/parts-network` | app | network | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
-| PartsNetwork · Incoming | `/parts-network/incoming` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · Members | `/parts-network/members` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · Orders | `/parts-network/orders` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · Quotations | `/parts-network/quotations` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| PartsNetwork · Requests | `/parts-network/requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsNetwork · SendRequest | `/parts-network/send-request` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| PartsSupplyNetwork | `/parts-supply-network` | app | network | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | 7 roles | route | IMPLEMENTED |
+| PartsNetwork | `/parts-network` | app | network | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
+| PartsNetwork · Incoming | `/parts-network/incoming` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsNetwork · Members | `/parts-network/members` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsNetwork · Orders | `/parts-network/orders` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsNetwork · Quotations | `/parts-network/quotations` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsNetwork · Requests | `/parts-network/requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsNetwork · SendRequest | `/parts-network/send-request` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| PartsSupplyNetwork | `/parts-supply-network` | app | network | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
 | Payments | `/payments` | app | payments | DONE | MISSING | DONE | VERIFIED | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
 | PrivacyPolicy | `/privacy-policy` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ProcurementPortal | `/procurement-portal` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
@@ -293,7 +293,7 @@
 | Automated Reordering | `/automated-reordering` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Spare Parts | `/spare-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Barcode Scanner | `/barcode-scanner` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Internal Warehouse | `/internal-warehouse` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Internal Warehouse | `/internal-warehouse` | app | inventory | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Interactive 3D Parts | `/interactive-3-d-parts` | app | inventory | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Parts Marketplace | `/parts-marketplace` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dynamic Pricing | `/dynamic-pricing` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
@@ -301,9 +301,9 @@
 | Suppliers | `/suppliers` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Purchase Orders | `/purchase-orders` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Vendor Supplier Portal | `/vendor-supplier-portal` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Parts Network Dashboard | `/parts-network-dashboard` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Parts Network My Requests | `/parts-network-my-requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Parts Network Incoming Requests | `/parts-network-incoming-requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Parts Network Dashboard | `/parts-network-dashboard` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Parts Network My Requests | `/parts-network-my-requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
+| Parts Network Incoming Requests | `/parts-network-incoming-requests` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Purchase Agent Dashboard | `/purchase-agent-dashboard` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Purchase Agent Tasks | `/purchase-agent-tasks` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Purchase Agent Quotations | `/purchase-agent-quotations` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

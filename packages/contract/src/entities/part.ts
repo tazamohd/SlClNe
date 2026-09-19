@@ -18,6 +18,15 @@ export const partCreate = z.object({
   backorderable: z.boolean().default(false),
   /** Opening quantity. Later changes go through `/inventory/:id/movement`. */
   openingStock: z.number().int().min(0).default(0),
+  /** Which warehouse zone this part is stored in — a `warehouseZones.code`
+   *  in this same tenant, refused otherwise (`server/src/writers.ts`). Null
+   *  means "not put away yet", which `InternalWarehouse.tsx` reports as
+   *  unassigned stock rather than silently dropping it from the zone totals.
+   *
+   *  This is the field that makes a zone's item count and utilisation
+   *  *derived* (BLK-004): the count is the parts actually assigned to the
+   *  zone, so it cannot drift from the stock it describes. */
+  zoneCode: z.string().max(16).nullable().optional(),
 })
 
 export const partUpdate = partCreate.omit({ openingStock: true }).partial()
@@ -98,6 +107,9 @@ export const partRow = appRow({
   costHalalas: z.number().int().min(0).nullable(),
   reserved: z.number().int().min(0),
   available: z.number().int(),
+  /** The `warehouseZones.code` this part is stored in, or null when it has
+   *  not been put away yet. */
+  zoneCode: z.string().nullable(),
 })
 
 export type PartRow = z.infer<typeof partRow>

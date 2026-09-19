@@ -134,9 +134,48 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   suppliers: 2,
   requisitions: 1,
   purchaseOrders: 1,
+  /** Warehouse zones (BLK-004) — **zero extras, deliberately.** Unlike every
+   *  other new BLK-004 table, the six zones are a fixture the app itself ships
+   *  (`WAREHOUSE_ZONE_FIXTURE` in `app/src/data/repository.ts`), because
+   *  Golden Path 7 asserts a real numeric utilisation per zone in a build with
+   *  no API at all. The seed below inserts exactly those six rows, in that
+   *  order, so `tests/seed-fidelity.test.ts` and
+   *  `tests/repository-swap.test.ts` both compare the two copies field by
+   *  field and neither can drift from the other unnoticed. */
+  warehouseZones: 0,
   /** Equipment warranties (BLK-004) — no design fixture; one of each status a
    *  screen needs to render (active, expired, claimed). */
   equipmentWarranties: 8,
+  /** Notifications (BLK-004) — no design fixture; a handful spanning every
+   *  category (job, appointment, invoice, stock) and read/unread state. */
+  notifications: 8,
+  /** Parts network (BLK-004) — no design fixture; the eight parts-network
+   *  screens all rendered an honest GAP state. A small coherent network: the
+   *  two seeded suppliers plus the `Neighbouring Garage` organization as
+   *  members, four requests (three outgoing, one incoming), the three
+   *  quotations that answer two of them, and the three orders. */
+  partsNetworkMembers: 3,
+  partsNetworkRequests: 4,
+  partsNetworkQuotations: 3,
+  partsNetworkOrders: 3,
+}
+
+/** Which warehouse zone each seeded part is racked in (BLK-004), by SKU.
+ *
+ *  Kept as data rather than an index-based rule so the assignment is plausible
+ *  rather than arbitrary: filters and pads on the main floor, the smaller
+ *  service items on the mezzanine. A part not listed here is simply not put
+ *  away yet (`zone_code` null), which `InternalWarehouse.tsx` reports as
+ *  unassigned stock rather than dropping from the zone totals.
+ *
+ *  Mirrored by `PART_ZONE_CODES` in `app/src/data/repository.ts`, whose fixture
+ *  build must agree with this one row for row; `tests/repository-swap.test.ts`
+ *  compares them. */
+const PART_ZONE_CODES: Readonly<Record<string, string>> = {
+  'OF-TY-118': 'A1',
+  'BP-FR-220': 'A1',
+  'AF-UN-002': 'A2',
+  'SP-SET-04': 'A2',
 }
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
@@ -484,6 +523,44 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     ),
   )
 
+  /* ------------------------------------------------------- warehouse zones (BLK-004)
+   * The bays stock is put away in. `InternalWarehouse.tsx` rendered these six
+   * zones as a hardcoded array with invented capacity, utilisation and item
+   * counts; the names and capacities are ported from it (they are plausible
+   * shop zones, not invented people or customers), and nothing else is.
+   *
+   * These rows must stay identical, and in this order, to
+   * `WAREHOUSE_ZONE_FIXTURE` in `app/src/data/repository.ts` — the app ships
+   * the same six zones as its no-API fixture, because Golden Path 7 asserts a
+   * real per-zone utilisation in a build with no API. `tests/
+   * seed-fidelity.test.ts` and `tests/repository-swap.test.ts` compare the two
+   * copies field by field, so they cannot drift.
+   *
+   * Note what is *not* here: no item count and no utilisation. Both are
+   * derived from the parts assigned to each zone below. `capacityUnits` is
+   * recorded, because how many units a bay holds is a property of the bay. */
+  await tx.insert(s.warehouseZones).values([
+    row({ code: 'A1', name: 'Main Floor', nameAr: 'الصالة الرئيسية', kind: 'storage', capacityUnits: 500 }),
+    row({ code: 'A2', name: 'Mezzanine', nameAr: 'الميزانين', kind: 'storage', capacityUnits: 200 }),
+    row({
+      code: 'A3',
+      name: 'Cold Storage',
+      nameAr: 'التخزين المبرد',
+      kind: 'cold',
+      capacityUnits: 80,
+      /* One bay out of service, so the lifecycle the screen can drive is
+       * visible in the demo data. `maintenanceSince` is set here because the
+       * status is; through the API it is derived from the transition and never
+       * accepted as input (`writers.ts`). */
+      status: 'maintenance',
+      maintenanceSince: new Date('2026-09-10T06:00:00.000Z'),
+      notes: 'Compressor service; chiller offline.',
+    }),
+    row({ code: 'A4', name: 'Hazmat', nameAr: 'المواد الخطرة', kind: 'hazmat', capacityUnits: 50 }),
+    row({ code: 'A5', name: 'Receiving', nameAr: 'الاستلام', kind: 'receiving', capacityUnits: 150 }),
+    row({ code: 'A6', name: 'Shipping', nameAr: 'الشحن', kind: 'shipping', capacityUnits: 120 }),
+  ])
+
   await tx.insert(s.parts).values(
     T.PARTS.map((p) => {
       const price = parseSarToHalalas(p.price)
@@ -496,6 +573,12 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         costHalalas: Math.round(price * 0.65),
         onHand: p.stock,
         reorderLevel: p.reorder,
+        /* Where this part is actually racked (BLK-004). This is what makes
+         * `InternalWarehouse.tsx`'s item counts and utilisation derived rather
+         * than typed in: the zone's count is these rows, counted. Mirrored by
+         * `PART_ZONE_CODES` in `app/src/data/repository.ts`, which
+         * `tests/repository-swap.test.ts` compares against this. */
+        zoneCode: PART_ZONE_CODES[p.sku] ?? null,
       })
     }),
   )
@@ -1254,6 +1337,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
   ]
   await tx.insert(s.suppliers).values(supplierRows)
   const aljazira = supplierRows[0]!
+  const gulfSpare = supplierRows[1]!
 
   /* The requisition and the lines it carries. Estimated unit prices are the
    * budget figures at request time; the PO sets the agreed price. */
@@ -1392,6 +1476,317 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       startDate: '2021-02-15',
       endDate: '2024-02-14',
       status: 'expired',
+    }),
+  ])
+
+  /* --------------------------------------------------------------- notifications (BLK-004)
+   * A per-tenant feed of job, appointment, invoice and stock alerts.
+   * `NotificationCenter.tsx` had no collection to read at all (BLK-004), so
+   * every row here is a declared coherence extra (SEED_COHERENCE_EXTRAS),
+   * pointed at real seeded records rather than invented ones: the job codes
+   * are `T.JOBS` ids, the invoice numbers and amounts are `T.INVOICES`
+   * rows (the overdue Fatima Al-Zahrani notice is the same fact the old
+   * fabricated mock alluded to, now against a real invoice), and the
+   * low-stock alerts are `T.PARTS` rows whose seeded `stock` already sits
+   * below their `reorder` level. One of each category, a mix of read and
+   * unread, and severities across info/warning/critical so the screen has
+   * something to render in every state. */
+  await tx.insert(s.notifications).values([
+    row({
+      category: 'job',
+      severity: 'info',
+      title: 'Job C2A9F4E3 completed',
+      message: "Diagnostic completed for Omar Al-Ghamdi's Hyundai Sonata 2023.",
+      link: 'C2A9F4E3',
+    }),
+    row({
+      category: 'job',
+      severity: 'info',
+      title: 'Job E5D7A3B5 delivered',
+      message: "Sara Al-Mutairi's Ford Explorer 2022 has been delivered.",
+      link: 'E5D7A3B5',
+      readAt: new Date('2026-07-20T09:15:00Z'),
+    }),
+    row({
+      category: 'appointment',
+      severity: 'warning',
+      title: 'Appointment awaiting confirmation',
+      message: 'Layla Al-Sulaiman — GMC Yukon 2023, 10:30 AM, Bay 3 — is still awaiting confirmation.',
+    }),
+    row({
+      category: 'appointment',
+      severity: 'info',
+      title: 'Appointment confirmed',
+      message: 'Ahmed Al-Rashid — Toyota Camry 2022, 9:00 AM, Bay 1 — confirmed for Maintenance.',
+      readAt: new Date('2026-07-19T08:00:00Z'),
+    }),
+    row({
+      category: 'invoice',
+      severity: 'critical',
+      title: 'Invoice INV-2026-0141 overdue',
+      message: "Fatima Al-Zahrani's invoice for SAR 4,250 is overdue.",
+      link: 'INV-2026-0141',
+    }),
+    row({
+      category: 'invoice',
+      severity: 'warning',
+      title: 'Invoice INV-2026-0139 due soon',
+      message: "Mohammed Hassan's invoice for SAR 2,975 is due Jul 30, 2026.",
+      link: 'INV-2026-0139',
+      readAt: new Date('2026-07-22T11:30:00Z'),
+    }),
+    row({
+      category: 'stock',
+      severity: 'warning',
+      title: 'Brake Pads (Front) low on stock',
+      message: '18 units on hand, below the reorder level of 25 (SKU BP-FR-220).',
+      link: 'BP-FR-220',
+    }),
+    row({
+      category: 'stock',
+      severity: 'critical',
+      title: 'Spark Plug Set critically low',
+      message: '12 units on hand, below the reorder level of 20 (SKU SP-SET-04).',
+      link: 'SP-SET-04',
+      readAt: new Date('2026-07-23T07:45:00Z'),
+    }),
+  ])
+
+  /* ------------------------------------------------------- parts network (BLK-004)
+   * A small, coherent supply network: three members, four requests, three
+   * quotations and three orders. No design bundle fixture carries any of these
+   * tables — the eight parts-network screens all rendered an honest "no data
+   * source yet" shell — so every row is a declared coherence extra
+   * (SEED_COHERENCE_EXTRAS), served after the (empty) fixture like the
+   * supplier directory.
+   *
+   * Nothing invented: the two supplier members *are* the two seeded suppliers
+   * and point at their `suppliers` rows through `supplierId`, the garage member
+   * is the `Neighbouring Garage` organization the seed already creates for the
+   * isolation tests, every `partSku` is a `T.PARTS` row, and every request's
+   * vehicle and `jobCode` are a `T.JOBS` row. Coherent, not merely present:
+   * NRQ-0001 is `quoted` with exactly the two quotations that name it,
+   * NRQ-0002 is `ordered` because NQT-0003 was accepted and NOR-0001 came out
+   * of it, and NOR-0001's total is `qty × unitPrice`.
+   *
+   * These rows belong to the primary tenant and to no one else. The
+   * `Neighbouring Garage` member below is *this* workshop's directory entry for
+   * that garage — a name and a phone number it keeps — not a window into that
+   * organization's own data, which stays invisible under RLS. See
+   * `drizzle/0024_parts_network.sql`. */
+  const networkMemberRows = [
+    row({
+      code: 'NWM-0001',
+      name: aljazira.name,
+      nameAr: aljazira.nameAr,
+      kind: 'supplier',
+      city: 'Riyadh',
+      contactName: aljazira.contactName,
+      contactPhone: aljazira.contactPhone,
+      contactEmail: aljazira.contactEmail,
+      /* Reuse over invention: the same vendor this workshop raises purchase
+       * orders against, related by FK rather than duplicated. */
+      supplierId: aljazira.id,
+      status: 'active',
+      ratingTenths: 46,
+      notes: 'Primary parts vendor; also quotes on network requests.',
+    }),
+    row({
+      code: 'NWM-0002',
+      name: gulfSpare.name,
+      nameAr: gulfSpare.nameAr,
+      kind: 'supplier',
+      city: 'Dammam',
+      contactName: gulfSpare.contactName,
+      contactPhone: gulfSpare.contactPhone,
+      contactEmail: gulfSpare.contactEmail,
+      supplierId: gulfSpare.id,
+      status: 'active',
+      ratingTenths: 42,
+    }),
+    row({
+      code: 'NWM-0003',
+      name: 'Neighbouring Garage',
+      kind: 'garage',
+      city: 'Riyadh',
+      status: 'active',
+      /* Unrated: this workshop has not traded enough with them to score them,
+       * and the screen shows no stars rather than a fabricated default. */
+      ratingTenths: null,
+      notes: 'Trades spare stock both ways; sends occasional requests.',
+    }),
+  ]
+  await tx.insert(s.partsNetworkMembers).values(networkMemberRows)
+  const [memberAlJazira, memberGulfSpare, memberNeighbour] = networkMemberRows as [
+    (typeof networkMemberRows)[number],
+    (typeof networkMemberRows)[number],
+    (typeof networkMemberRows)[number],
+  ]
+
+  const brakePadsRequest = row({
+    code: 'NRQ-0001',
+    direction: 'outgoing',
+    partSku: 'BP-FR-220',
+    partName: 'Brake Pads (Front)',
+    partNumber: 'BP-FR-220',
+    qty: 40,
+    urgency: 'high',
+    vehicleInfo: 'Toyota Camry 2022',
+    jobCode: 'A3F8B2C1',
+    neededBy: '2026-08-02',
+    /* Two quotations arrived, neither accepted yet. */
+    status: 'quoted',
+    quotationCount: 2,
+    quotedAt: new Date('2026-07-27T08:30:00Z'),
+    notes: 'Broadcast to the network — front pads below reorder level.',
+  })
+  const sparkPlugRequest = row({
+    code: 'NRQ-0002',
+    direction: 'outgoing',
+    memberId: memberAlJazira.id,
+    memberName: memberAlJazira.name,
+    partSku: 'SP-SET-04',
+    partName: 'Spark Plug Set',
+    partNumber: 'SP-SET-04',
+    qty: 20,
+    urgency: 'urgent',
+    vehicleInfo: 'Nissan Patrol 2021',
+    jobCode: 'B7E4D9A2',
+    neededBy: '2026-07-30',
+    /* NQT-0003 was accepted and NOR-0001 raised from it. */
+    status: 'ordered',
+    quotationCount: 1,
+    quotedAt: new Date('2026-07-25T11:00:00Z'),
+    orderedAt: new Date('2026-07-26T09:15:00Z'),
+  })
+  const airFilterRequest = row({
+    code: 'NRQ-0003',
+    direction: 'outgoing',
+    partSku: 'AF-UN-002',
+    partName: 'Air Filter (Universal)',
+    partNumber: 'AF-UN-002',
+    qty: 30,
+    urgency: 'normal',
+    vehicleInfo: 'Hyundai Sonata 2023',
+    jobCode: 'C2A9F4E3',
+    neededBy: '2026-08-10',
+    /* Still waiting on the network: no quotations, so the Quotations view has
+     * a genuinely empty case to render. */
+    status: 'open',
+  })
+  const incomingRequest = row({
+    code: 'NRQ-0004',
+    /* An `incoming` request: one this workshop recorded as having been sent to
+     * it by a member. Still its own row under its own `orgId` — the member is a
+     * directory entry, not another tenant. */
+    direction: 'incoming',
+    memberId: memberNeighbour.id,
+    memberName: memberNeighbour.name,
+    partSku: 'OF-TY-118',
+    partName: 'Oil Filter (Toyota)',
+    partNumber: 'OF-TY-118',
+    qty: 12,
+    urgency: 'normal',
+    neededBy: '2026-08-05',
+    status: 'open',
+    notes: 'Asked whether we can spare a dozen from the Riyadh shelf.',
+  })
+  await tx
+    .insert(s.partsNetworkRequests)
+    .values([brakePadsRequest, sparkPlugRequest, airFilterRequest, incomingRequest])
+
+  const acceptedQuotationAt = new Date('2026-07-26T09:15:00Z')
+  const acceptedQuotation = row({
+    code: 'NQT-0003',
+    requestId: sparkPlugRequest.id,
+    memberId: memberAlJazira.id,
+    memberName: memberAlJazira.name,
+    unitPriceHalalas: 13500,
+    qtyAvailable: 24,
+    leadTimeDays: 3,
+    condition: 'new',
+    warrantyMonths: 12,
+    status: 'accepted',
+    acceptedAt: acceptedQuotationAt,
+  })
+  await tx.insert(s.partsNetworkQuotations).values([
+    row({
+      code: 'NQT-0001',
+      requestId: brakePadsRequest.id,
+      memberId: memberAlJazira.id,
+      memberName: memberAlJazira.name,
+      /* The same SAR 85 a pad costs on PO-0001 — the network quote and the
+       * purchase order agree because they are the same vendor. */
+      unitPriceHalalas: 8500,
+      qtyAvailable: 40,
+      leadTimeDays: 2,
+      condition: 'new',
+      warrantyMonths: 12,
+      status: 'pending',
+    }),
+    row({
+      code: 'NQT-0002',
+      requestId: brakePadsRequest.id,
+      memberId: memberGulfSpare.id,
+      memberName: memberGulfSpare.name,
+      unitPriceHalalas: 9100,
+      qtyAvailable: 60,
+      leadTimeDays: 1,
+      condition: 'oem',
+      warrantyMonths: 24,
+      status: 'pending',
+      notes: 'OEM part, next-day from Dammam.',
+    }),
+    acceptedQuotation,
+  ])
+
+  await tx.insert(s.partsNetworkOrders).values([
+    row({
+      code: 'NOR-0001',
+      requestId: sparkPlugRequest.id,
+      quotationId: acceptedQuotation.id,
+      memberId: memberAlJazira.id,
+      memberName: memberAlJazira.name,
+      direction: 'outbound',
+      partName: 'Spark Plug Set',
+      qty: 20,
+      unitPriceHalalas: 13500,
+      /* `qty × unitPrice`, the figure the server computes — not a literal. */
+      totalHalalas: 20 * 13500,
+      status: 'shipped',
+      trackingRef: 'AJ-SHP-40218',
+      expectedAt: '2026-07-30',
+      shippedAt: new Date('2026-07-27T06:00:00Z'),
+      notes: 'Raised from NQT-0003.',
+    }),
+    row({
+      code: 'NOR-0002',
+      memberId: memberGulfSpare.id,
+      memberName: memberGulfSpare.name,
+      direction: 'outbound',
+      partName: 'Air Filter (Universal)',
+      qty: 30,
+      unitPriceHalalas: 7800,
+      totalHalalas: 30 * 7800,
+      status: 'received',
+      trackingRef: 'GS-SHP-11907',
+      expectedAt: '2026-07-18',
+      shippedAt: new Date('2026-07-15T07:30:00Z'),
+      receivedAt: new Date('2026-07-18T10:05:00Z'),
+      notes: 'Agreed directly with Gulf Spare, outside the quotation flow.',
+    }),
+    row({
+      code: 'NOR-0003',
+      memberId: memberNeighbour.id,
+      memberName: memberNeighbour.name,
+      /* `inbound`: this workshop is the one fulfilling. */
+      direction: 'inbound',
+      partName: 'Oil Filter (Toyota)',
+      qty: 12,
+      unitPriceHalalas: 4500,
+      totalHalalas: 12 * 4500,
+      status: 'placed',
+      expectedAt: '2026-08-05',
     }),
   ])
 }

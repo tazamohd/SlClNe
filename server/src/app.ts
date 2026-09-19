@@ -40,6 +40,7 @@ import { registerWorkshopReportRoutes } from './routes/workshop-reports'
 import { registerDeclinedJobsReportRoutes } from './routes/declined-jobs-report'
 import { registerDeliveryRoutes } from './routes/delivery'
 import { registerCannedJobRoutes } from './routes/canned-jobs'
+import { registerPartsNetworkRoutes } from './routes/parts-network'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
 import type { OtpTransport } from './auth'
@@ -401,6 +402,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerPayrollRoutes(api, { db: deps.db })
       registerLeaveRoutes(api, { db: deps.db })
       registerProcurementRoutes(api, { db: deps.db })
+      registerPartsNetworkRoutes(api, { db: deps.db })
       registerProductReportRoutes(api, { db: deps.db })
       registerPublicRoutes(api, { db: deps.db, env: deps.env })
     },

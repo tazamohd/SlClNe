@@ -140,6 +140,7 @@ erDiagram
     integer reserved
     integer reorder_level
     boolean backorderable
+    varchar zone_code
   }
   purchase_orders {
     varchar id PK

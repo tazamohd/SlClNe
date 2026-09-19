@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 208,
-    "cases": 2341,
+    "suites": 214,
+    "cases": 2431,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1231,
+      "UNIT_OR_API": 1321,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -951,11 +951,11 @@
       "cases": [
         "Parts Procurement (Golden Path 6)",
         "parts network requests page loads",
-        "quotations screen is an honest gap state, not invented supplier rows",
+        "quotations screen is a real collection, empty here, not invented supplier rows",
         "parts network orders page loads",
         "the purchase order is a real form whose number the server assigns",
         "Parts procurement lifecycle",
-        "raise request → honest quotations gap → confirm the PO"
+        "raise request → empty quotations list → confirm the PO"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -2212,6 +2212,29 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-INTERNAL-WAREHOUSE-TEST-TSX",
+      "file": "app/tests/component/internal-warehouse.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "InternalWarehouse (fixture build)"
+      ],
+      "cases": [
+        "derives each zone utilisation from the stock assigned to it",
+        "follows the stock: putting units into an empty bay is what fills it",
+        "shows a bay over its capacity as Full, a state nothing records",
+        "reports stock that is not put away instead of dropping it from the totals",
+        "takes a bay out of service and back, a real status write rather than a label",
+        "hides the lifecycle action from a role with only inventory view"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "parts",
+        "technician"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-MODAL-TEST-TSX",
       "file": "app/tests/component/Modal.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2239,6 +2262,27 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-NOTIFICATION-CENTER-TEST-TSX",
+      "file": "app/tests/component/notification-center.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "NotificationCenter (fixture build)"
+      ],
+      "cases": [
+        "lists an unread notification and marks it as read",
+        "dismisses a notification after confirming, and it leaves the list",
+        "marks every unread notification read in one bulk action",
+        "hides Mark as Read, Dismiss and Mark all as read from a role with no dashboard write grant"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor",
+        "supplier"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-PARTS-CATALOG-SEAM-TEST-TSX",
       "file": "app/tests/component/parts-catalog-seam.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2264,6 +2308,48 @@
       "touchesRoles": [
         "parts",
         "procurement"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-PARTS-NETWORK-TEST-TSX",
+      "file": "app/tests/component/parts-network.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "PartsNetworkMembers (fixture build)",
+        "PartsNetworkRequests (fixture build)",
+        "PartsNetworkSendRequest (fixture build)",
+        "PartsNetworkIncoming (fixture build)",
+        "PartsNetworkQuotations (fixture build)",
+        "PartsNetworkOrders (fixture build)",
+        "PartsNetworkDashboard and PartsSupplyNetwork (fixture build)"
+      ],
+      "cases": [
+        "lists the member directory and adds a member through the real write path",
+        "shows a dash rather than a fabricated zero for an unrated member",
+        "hides Add Member and Edit from a role with no network write grant",
+        "lists only outgoing requests and cancels one for real",
+        "narrows the list by search",
+        "shows a read-only notice instead of Send Request for a role without create",
+        "sends a request that then appears in My Requests",
+        "offers no form at all to a role without network create",
+        "lists an incoming request and opens a quotation prefilled with the asking member",
+        "refuses a demo-mode quotation rather than reporting a false success",
+        "shows an empty state, not a gap card, when nothing has come in",
+        "shows a quotation against its request and rejects it for real",
+        "does not offer Accept & Order on the fixtures, and says why",
+        "tells a role without approval authority that it cannot place the order",
+        "walks an order from placed to shipped to received",
+        "hides every lifecycle action from a role without network edit",
+        "counts real rows on the dashboard rather than rendering fixed figures",
+        "separates the fulfilment and shipment tabs by direction and status"
+      ],
+      "caseCount": 18,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "procurement",
+        "superadmin",
+        "manager"
       ]
     },
     {
@@ -6401,6 +6487,40 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-NOTIFICATIONS-TEST-TS",
+      "file": "server/tests/notifications.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "notifications CRUD",
+        "the unread -> read lifecycle move"
+      ],
+      "cases": [
+        "lists the seeded notification feed",
+        "creates a notification, defaulting category/severity and read to false",
+        "creates a notification already read when the client asks for it",
+        "lets an advisor update a field without touching the others",
+        "lets a technician delete (dismiss) a notification",
+        "refuses an empty title",
+        "refuses any operating role trying to create one directly — a notification is filed by the system, not typed in",
+        "refuses a role with no dashboard grant at all",
+        "marking a notification read derives readAt server-side",
+        "marking a notification unread again clears readAt rather than leaving a stale date",
+        "a technician can mark their own tenant feed read too — dashboard write is broad, not accounting-gated",
+        "refuses a role with no dashboard edit grant"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [
+        "/notifications"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "test",
+        "technician",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-OBD-OTP-TEST-TS",
       "file": "server/tests/obd-otp.test.ts",
       "kind": "UNIT_OR_API",
@@ -6428,6 +6548,70 @@
       ],
       "touchesRoles": [
         "manager",
+        "parts"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS",
+      "file": "server/tests/parts-network.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "parts network members",
+        "parts network requests",
+        "parts network quotations",
+        "accepting a quotation",
+        "parts network orders",
+        "parts network RBAC",
+        "the tenant boundary"
+      ],
+      "cases": [
+        "lists the seeded member directory, including the two suppliers it reuses",
+        "creates a member, assigning NWM-0001 sequentially server-side",
+        "updates a member without touching its other fields, and deletes it",
+        "is reachable by its human member code as well as its id",
+        "refuses a supplierId that is not one of this tenant’s suppliers",
+        "refuses an empty name",
+        "serves the Incoming view as a filtered read over one collection",
+        "creates a request that starts open with no quotations",
+        "takes memberName from the directory rather than the request body",
+        "derives the lifecycle timestamps from the status transition",
+        "ignores a client-supplied quotationCount or closedAt",
+        "deletes a request",
+        "a quotation arriving moves its request to quoted and counts itself",
+        "refuses a quotation against a closed request",
+        "refuses a quotation against a request that does not exist",
+        "cannot be moved to accepted through the generic PATCH",
+        "rejecting a quotation stamps rejectedAt and leaves the others alone",
+        "accepts one, rejects the siblings, orders the request and raises the order atomically",
+        "refuses a second acceptance on the same request",
+        "refuses ordering more than the quoting member said they have",
+        "an incoming request becomes an inbound order — the direction we fulfil",
+        "is reachable by the quotation’s human code as well as its id",
+        "computes the total server-side and refuses one posted with the body",
+        "reprices the total when the quantity changes on a patch",
+        "derives shippedAt and receivedAt from the status transition",
+        "serves the in-transit Incoming view as a filtered read over one collection",
+        "deletes an order",
+        "refuses a technician everything, including reading the network at all",
+        "lets parts send requests but never commit an order against a quotation",
+        "lets a supplier quote but not delete or accept",
+        "a neighbouring organization sees an empty network, not the primary tenant’s",
+        "a neighbouring organization gets 404, never 403, on the primary tenant’s ids",
+        "a neighbouring organization cannot accept the primary tenant’s quotation",
+        "a member row names a counterparty, never exposes another tenant’s data"
+      ],
+      "caseCount": 34,
+      "touchesPaths": [
+        "/parts-network/requests",
+        "/parts-network/quotations",
+        "/parts-network/members",
+        "/parts-network/orders"
+      ],
+      "touchesRoles": [
+        "procurement",
+        "supplier",
+        "technician",
         "parts"
       ]
     },
@@ -6694,6 +6878,47 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS",
+      "file": "server/tests/warehouse-zones.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "the seeded zone directory",
+        "the per-zone counts are derived from the parts assigned to the zone",
+        "zone CRUD through the generic router",
+        "the active <-> maintenance lifecycle move",
+        "tenant and scope boundaries"
+      ],
+      "cases": [
+        "serves the six bays, keyed by the code painted on the floor",
+        "records capacity and status, and no item count or utilisation at all",
+        "serves each part with the bay it is racked in",
+        "a stock count that follows the parts: moving a part moves the quantity with it",
+        "refuses a part put away in a zone that does not exist",
+        "accepts a null zone — stock not put away yet is a real state, not an error",
+        "creates a zone, assigning a counted code when none is supplied",
+        "keeps a code a caller supplies, since a bay already has one painted on it",
+        "refuses a second zone on a code the tenant already uses",
+        "refuses a negative capacity",
+        "refuses a role with no inventory create grant",
+        "is reachable by its zone code as well as its id",
+        "derives maintenanceSince from the transition and clears it on the way back",
+        "ignores a posted maintenanceSince: only the transition writes it",
+        "has no `full` status to record — fullness is derived from the stock in the bay",
+        "shows a customer on the portal nothing at all"
+      ],
+      "caseCount": 16,
+      "touchesPaths": [
+        "/inventory",
+        "/warehouse-zones"
+      ],
+      "touchesRoles": [
+        "parts",
+        "technician",
+        "customer"
       ]
     },
     {

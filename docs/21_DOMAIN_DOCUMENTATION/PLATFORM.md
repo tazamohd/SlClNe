@@ -16,25 +16,25 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 26 API endpoints and 3 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 72 API endpoints and 4 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
-| superadmin | platform | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
-| manager | branch | SAR 50,000 | `departments:v` `settings:ve` `dashboard:vx` `network:vcedx` |
-| advisor | branch | SAR 5,000 | `dashboard:v` |
-| technician | own | may not approve | `dashboard:v` |
-| qc | branch | may not approve | `dashboard:v` |
-| parts | branch | SAR 10,000 | `dashboard:v` `network:vced` |
-| accountant | all | SAR 25,000 | `departments:v` `dashboard:vx` |
-| hr | all | SAR 15,000 | `departments:vc` `dashboard:v` |
-| frontdesk | branch | may not approve | `dashboard:v` |
-| callcenter | all | may not approve | `dashboard:v` |
-| procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
+| owner | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vedx` `network:vcedax` |
+| superadmin | platform | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vedx` `network:v` |
+| manager | branch | SAR 50,000 | `departments:v` `settings:ve` `dashboard:vedx` `network:vcedx` |
+| advisor | branch | SAR 5,000 | `dashboard:ved` |
+| technician | own | may not approve | `dashboard:ved` |
+| qc | branch | may not approve | `dashboard:ved` |
+| parts | branch | SAR 10,000 | `dashboard:ved` `network:vced` |
+| accountant | all | SAR 25,000 | `departments:v` `dashboard:vedx` |
+| hr | all | SAR 15,000 | `departments:vc` `dashboard:ved` |
+| frontdesk | branch | may not approve | `dashboard:ved` |
+| callcenter | all | may not approve | `dashboard:ved` |
+| procurement | all | SAR 20,000 | `dashboard:ved` `network:vcedax` |
 | supplier | external | may not approve | `network:vce` |
 | test | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
 
@@ -46,6 +46,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | --- | --- | --- | --- | --- | --- | --- |
 | `branches` | 13 | yes | yes | yes | yes | — |
 | `departments` | 15 | yes | yes | yes | yes | — |
+| `notifications` | 15 | yes | yes | yes | yes | — |
 | `integrations` | 16 | yes | yes | yes | yes | — |
 
 ### Relationships
@@ -56,6 +57,8 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | `branches` | `branch_id` | `branches` | optional | **convention only** |
 | `departments` | `org_id` | `organizations` | mandatory | FK |
 | `departments` | `branch_id` | `branches` | optional | **convention only** |
+| `notifications` | `org_id` | `organizations` | mandatory | FK |
+| `notifications` | `branch_id` | `branches` | optional | **convention only** |
 | `integrations` | `org_id` | `organizations` | mandatory | FK |
 | `integrations` | `branch_id` | `branches` | optional | **convention only** |
 
@@ -88,6 +91,52 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/integrations/oem-tools/:id` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/:id/history` | settings:v | explicit | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/export` | settings:x | generated | — | **0** |
+| GET | `/api/v1/notifications` | dashboard:v | generated | — | 1 |
+| POST | `/api/v1/notifications` | dashboard:c | generated | — | 1 |
+| DELETE | `/api/v1/notifications/:id` | dashboard:d | generated | — | **0** |
+| GET | `/api/v1/notifications/:id` | dashboard:v | generated | — | **0** |
+| PATCH | `/api/v1/notifications/:id` | dashboard:e | generated | — | **0** |
+| GET | `/api/v1/notifications/:id/history` | dashboard:v | explicit | — | **0** |
+| POST | `/api/v1/notifications/bulk-delete` | dashboard:d | generated | — | **0** |
+| POST | `/api/v1/notifications/bulk-update` | dashboard:e | generated | — | **0** |
+| GET | `/api/v1/notifications/export` | dashboard:x | generated | — | **0** |
+| GET | `/api/v1/parts-network/members` | network:v | generated | — | 1 |
+| POST | `/api/v1/parts-network/members` | network:c | generated | — | 1 |
+| DELETE | `/api/v1/parts-network/members/:id` | network:d | generated | — | **0** |
+| GET | `/api/v1/parts-network/members/:id` | network:v | generated | — | **0** |
+| PATCH | `/api/v1/parts-network/members/:id` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/members/:id/history` | network:v | explicit | — | **0** |
+| POST | `/api/v1/parts-network/members/bulk-delete` | network:d | generated | — | **0** |
+| POST | `/api/v1/parts-network/members/bulk-update` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/members/export` | network:x | generated | — | **0** |
+| GET | `/api/v1/parts-network/orders` | network:v | generated | — | 4 |
+| POST | `/api/v1/parts-network/orders` | network:c | generated | — | 4 |
+| DELETE | `/api/v1/parts-network/orders/:id` | network:d | generated | — | **0** |
+| GET | `/api/v1/parts-network/orders/:id` | network:v | generated | — | **0** |
+| PATCH | `/api/v1/parts-network/orders/:id` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/orders/:id/history` | network:v | explicit | — | **0** |
+| POST | `/api/v1/parts-network/orders/bulk-delete` | network:d | generated | — | **0** |
+| POST | `/api/v1/parts-network/orders/bulk-update` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/orders/export` | network:x | generated | — | **0** |
+| GET | `/api/v1/parts-network/quotations` | network:v | generated | — | 4 |
+| POST | `/api/v1/parts-network/quotations` | network:c | generated | — | 4 |
+| DELETE | `/api/v1/parts-network/quotations/:id` | network:d | generated | — | **0** |
+| GET | `/api/v1/parts-network/quotations/:id` | network:v | generated | — | **0** |
+| PATCH | `/api/v1/parts-network/quotations/:id` | network:e | generated | — | **0** |
+| POST | `/api/v1/parts-network/quotations/:id/accept` | network:a | explicit | — | **0** |
+| GET | `/api/v1/parts-network/quotations/:id/history` | network:v | explicit | — | **0** |
+| POST | `/api/v1/parts-network/quotations/bulk-delete` | network:d | generated | — | **0** |
+| POST | `/api/v1/parts-network/quotations/bulk-update` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/quotations/export` | network:x | generated | — | **0** |
+| GET | `/api/v1/parts-network/requests` | network:v | generated | — | 4 |
+| POST | `/api/v1/parts-network/requests` | network:c | generated | — | 4 |
+| DELETE | `/api/v1/parts-network/requests/:id` | network:d | generated | — | **0** |
+| GET | `/api/v1/parts-network/requests/:id` | network:v | generated | — | **0** |
+| PATCH | `/api/v1/parts-network/requests/:id` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/requests/:id/history` | network:v | explicit | — | **0** |
+| POST | `/api/v1/parts-network/requests/bulk-delete` | network:d | generated | — | **0** |
+| POST | `/api/v1/parts-network/requests/bulk-update` | network:e | generated | — | **0** |
+| GET | `/api/v1/parts-network/requests/export` | network:x | generated | — | **0** |
 | POST | `/api/v1/public/leads` | — | explicit | — | 2 |
 | GET | `/health` | — | explicit | — | 2 |
 | GET | `/ready` | — | explicit | — | 1 |
@@ -116,11 +165,11 @@ _No lifecycle in the contract belongs to this domain._
 | D-Integrations | `/integrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Login | `/login` | auth | **mock** | — | — | — | verified | yes |
 | D-Maintenance | `/maintenance` | auth | **mock** | — | — | — | verified | yes |
-| D-NotificationCenter | `/notification-center` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-NotificationCenter | `/notification-center` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-OEMIntegrations | `/oemintegrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Organizations | `/organizations` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork | `/parts-network` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsSupplyNetwork | `/parts-supply-network` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| D-PartsNetwork | `/parts-network` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-PartsSupplyNetwork | `/parts-supply-network` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PrivacyPolicy | `/privacy-policy` | auth | **mock** | — | — | — | verified | yes |
 | D-Profile | `/profile` | app | **mock** | — | — | — | verified | yes |
 | D-RBACSpec | `/rbacspec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
@@ -142,18 +191,18 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **29 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **18 of 26 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
-- **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
+- **26 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **54 of 72 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **22 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **20 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/auth/routes.ts`, `server/src/routes/public.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/auth/routes.ts`, `server/src/routes/parts-network.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

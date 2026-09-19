@@ -11,14 +11,14 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 38,
-    "noBackend": 129,
-    "dataBacked": 148,
+    "mockOnly": 37,
+    "noBackend": 117,
+    "dataBacked": 161,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 183,
-    "hasErrorState": 146,
+    "hasLoadingState": 193,
+    "hasErrorState": 156,
     "hasEmptyState": 265,
     "tabletVerified": 4,
     "arabicVerified": 119,
@@ -28,10 +28,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 33,
-    "crudRead": 138,
-    "crudUpdate": 29,
-    "crudDelete": 25,
+    "crudCreate": 37,
+    "crudRead": 151,
+    "crudUpdate": 36,
+    "crudDelete": 29,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -934,6 +934,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "approvals",
         "estimates"
       ],
       "crud": {
@@ -1235,8 +1236,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "audit-log"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -1265,8 +1268,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_BACKEND"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3095,7 +3097,9 @@
       "dataBacked": true,
       "dataSource": [
         "approvalLines",
-        "estimates"
+        "estimates",
+        "estimates/:id/request-approval-otp",
+        "estimates/:id/verify-approval-otp"
       ],
       "crud": {
         "create": false,
@@ -3671,18 +3675,18 @@
       "shell": "AppShell",
       "module": "dashboard",
       "permissions": [
-        "owner:vx",
-        "manager:vx",
-        "advisor:v",
-        "technician:v",
-        "qc:v",
-        "parts:v",
-        "accountant:vx",
-        "hr:v",
-        "frontdesk:v",
-        "callcenter:v",
-        "procurement:v",
-        "superadmin:vx",
+        "owner:vedx",
+        "manager:vedx",
+        "advisor:ved",
+        "technician:ved",
+        "qc:ved",
+        "parts:ved",
+        "accountant:vedx",
+        "hr:ved",
+        "frontdesk:ved",
+        "callcenter:ved",
+        "procurement:ved",
+        "superadmin:vedx",
         "test:vcedax"
       ],
       "category": "PRODUCT",
@@ -4169,7 +4173,8 @@
       "dataBacked": true,
       "dataSource": [
         "declinedJobs",
-        "estimates"
+        "estimates",
+        "estimates/:id/history"
       ],
       "crud": {
         "create": false,
@@ -4862,18 +4867,18 @@
       "shell": "AppShell",
       "module": "dashboard",
       "permissions": [
-        "owner:vx",
-        "manager:vx",
-        "advisor:v",
-        "technician:v",
-        "qc:v",
-        "parts:v",
-        "accountant:vx",
-        "hr:v",
-        "frontdesk:v",
-        "callcenter:v",
-        "procurement:v",
-        "superadmin:vx",
+        "owner:vedx",
+        "manager:vedx",
+        "advisor:ved",
+        "technician:ved",
+        "qc:ved",
+        "parts:ved",
+        "accountant:vedx",
+        "hr:ved",
+        "frontdesk:ved",
+        "callcenter:ved",
+        "procurement:ved",
+        "superadmin:vedx",
         "test:vcedax"
       ],
       "category": "PRODUCT",
@@ -7018,18 +7023,18 @@
       "shell": "AppShell",
       "module": "dashboard",
       "permissions": [
-        "owner:vx",
-        "manager:vx",
-        "advisor:v",
-        "technician:v",
-        "qc:v",
-        "parts:v",
-        "accountant:vx",
-        "hr:v",
-        "frontdesk:v",
-        "callcenter:v",
-        "procurement:v",
-        "superadmin:vx",
+        "owner:vedx",
+        "manager:vedx",
+        "advisor:ved",
+        "technician:ved",
+        "qc:ved",
+        "parts:ved",
+        "accountant:vedx",
+        "hr:ved",
+        "frontdesk:ved",
+        "callcenter:ved",
+        "procurement:ved",
+        "superadmin:vedx",
         "test:vcedax"
       ],
       "category": "PRODUCT",
@@ -7049,18 +7054,20 @@
       "responsive": "DONE",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "notifications"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -7084,8 +7091,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_BACKEND"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -7133,6 +7139,8 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "diagnostics/devices/:id/readings",
+        "diagnostics/integrations",
         "dtcCodes",
         "obdDevices"
       ],
@@ -7682,16 +7690,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -7716,8 +7729,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "NO_BACKEND"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -7746,16 +7758,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -7781,7 +7796,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7811,18 +7825,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -7846,7 +7862,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7876,17 +7891,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -7911,7 +7928,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7936,7 +7952,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7948,13 +7964,14 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "purchaseOrders",
-        "requisitions"
+        "parts-network/quotations/:id/accept",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
       ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -7978,7 +7995,6 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
         "NO_RBAC_MODULE"
       ]
@@ -8009,18 +8025,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -8044,7 +8063,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8069,7 +8087,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8079,11 +8097,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8108,9 +8128,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8143,7 +8161,7 @@
       "mobileType": "B-responsive",
       "purpose": "Admin-side supply-chain view",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8153,11 +8171,14 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8182,9 +8203,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_BACKEND"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -8484,18 +8503,18 @@
       "shell": "AppShell",
       "module": "dashboard",
       "permissions": [
-        "owner:vx",
-        "manager:vx",
-        "advisor:v",
-        "technician:v",
-        "qc:v",
-        "parts:v",
-        "accountant:vx",
-        "hr:v",
-        "frontdesk:v",
-        "callcenter:v",
-        "procurement:v",
-        "superadmin:vx",
+        "owner:vedx",
+        "manager:vedx",
+        "advisor:ved",
+        "technician:ved",
+        "qc:ved",
+        "parts:ved",
+        "accountant:vedx",
+        "hr:ved",
+        "frontdesk:ved",
+        "callcenter:ved",
+        "procurement:ved",
+        "superadmin:vedx",
         "test:vcedax"
       ],
       "category": "PRODUCT",
@@ -15980,6 +15999,7 @@
       "dataSource": [
         "invoiceLines",
         "invoices",
+        "jobs/:id/history",
         "technicians"
       ],
       "crud": {
@@ -16057,6 +16077,7 @@
       "dataBacked": true,
       "dataSource": [
         "jobs",
+        "reports/workshop",
         "technicians"
       ],
       "crud": {
@@ -19752,8 +19773,18 @@
       "route": "/internal-warehouse",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "inventory",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:v",
+        "technician:v",
+        "parts:vcedax",
+        "accountant:vx",
+        "procurement:vcex",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -19771,17 +19802,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts",
+        "warehouseZones"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -19806,9 +19840,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20307,16 +20339,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20342,7 +20379,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20372,18 +20408,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -20407,7 +20446,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20437,16 +20475,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20472,7 +20513,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26326,6 +26366,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "insurance/claims/summary",
         "insuranceClaims",
         "insurancePolicies"
       ],

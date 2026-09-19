@@ -3,16 +3,29 @@
 //
 // Exception: the "Inspection internal notes" entry in FIELD_RULES below, and
 // the "HealthCheckReport": "jobcards" / "CannedJobs": "estimates" /
-// "Warranty-Management": "accounting" entries in SCREEN_MODULE, were added by
+// "Warranty-Management": "accounting" / "Internal-Warehouse": "inventory"
+// entries in SCREEN_MODULE, were added by
 // hand alongside the matching FIELD_RULES entry in project/gms-data.js (DVHC,
-// Sprint 2, P0; Canned Jobs, build-order item 5; Warranty Management, BLK-004
-// — none of the three has a design source, same reasoning as "DeclinedJobs"
+// Sprint 2, P0; Canned Jobs, build-order item 5; Warranty Management, BLK-004;
+// Internal Warehouse, BLK-004 — it reads and writes the `inventory` module's
+// own collections, `warehouseZones` and `parts`, and widens no role: the
+// module and its grants already existed — none of the four has a design
+// source, same reasoning as "DeclinedJobs"
 // already in this file) — a full
 // `node scripts/port-design-data.mjs` run also touched
 // nav.ts/screens.ts/badges.ts/icon-registry.ts with unrelated drift this
 // change did not intend to carry, so only the entries this feature needs
 // were hand-applied here. A future full regeneration will fold them in and
 // this note can go.
+//
+// Also hand-applied: `e`/`d` added to every role already holding `v` on
+// "dashboard" below (BLK-004, Notification Center — packages/contract's
+// PERMS carries the matching change and server/tests/rbac-parity.test.ts
+// is what keeps the two in step). Notifications are the first `dashboard`
+// collection that needs write letters this module never carried; marking
+// one read or dismissing it is a personal act on a user's own feed, not a
+// business-record edit, so it rides the same broad view grant every
+// operating role already holds here.
 import type { Role, PermissionMatrix, FieldRule, SodRule } from '../types'
 
 export const ROLES = [
@@ -231,18 +244,18 @@ export const ROLES = [
 /** module → role → granted actions, e.g. "vcex". "" means hidden from nav. */
 export const PERMS: PermissionMatrix = {
   "dashboard": {
-    "owner": "vx",
-    "manager": "vx",
-    "advisor": "v",
-    "technician": "v",
-    "qc": "v",
-    "parts": "v",
-    "accountant": "vx",
-    "hr": "v",
-    "frontdesk": "v",
-    "callcenter": "v",
-    "procurement": "v",
-    "superadmin": "vx",
+    "owner": "vedx",
+    "manager": "vedx",
+    "advisor": "ved",
+    "technician": "ved",
+    "qc": "ved",
+    "parts": "ved",
+    "accountant": "vedx",
+    "hr": "ved",
+    "frontdesk": "ved",
+    "callcenter": "ved",
+    "procurement": "ved",
+    "superadmin": "vedx",
     "test": "vcedax"
   },
   "jobcards": {
@@ -737,6 +750,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "CannedJobs": "estimates",
   "HealthCheckReport": "jobcards",
   "Warranty-Management": "accounting",
+  "Internal-Warehouse": "inventory",
   "CustomerApproval": "estimates",
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",

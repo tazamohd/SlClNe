@@ -24,6 +24,7 @@ erDiagram
     integer reserved
     integer reorder_level
     boolean backorderable
+    varchar zone_code
   }
   inventory_movements {
     varchar id PK

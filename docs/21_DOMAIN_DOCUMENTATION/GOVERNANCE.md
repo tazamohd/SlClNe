@@ -70,11 +70,10 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-ApprovalInbox | `/approval-inbox` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-AuditLog | `/audit-log` | app | **mock** | yes | — | yes | PARTIAL | yes |
+| D-AuditLog | `/audit-log` | app | yes | yes | — | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **1 of 2 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **4 of 6 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 
 ## Evidence

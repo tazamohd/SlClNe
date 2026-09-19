@@ -30,7 +30,7 @@ This is not a naming quibble. A router that checked `x` on `DELETE` under the fi
 
 | Module | owner | superadmin | manager | advisor | technician | qc | parts | accountant | hr | frontdesk | callcenter | procurement | supplier | customer | test |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| dashboard | vx | vx | vx | v | v | v | v | vx | v | v | v | v | · | · | vcedax |
+| dashboard | vedx | vedx | vedx | ved | ved | ved | ved | vedx | ved | ved | ved | ved | · | · | vcedax |
 | jobcards | vcedax | v | vcedax | vcea | ve | va | v | vx | · | vc | v | · | · | v | vcedax |
 | appointments | vcedax | v | vcedax | vced | v | · | · | · | · | vced | vced | · | · | vc | vcedax |
 | estimates | vcedax | v | vceax | vce | v | · | v | vx | · | v | v | · | · | v | vcedax |

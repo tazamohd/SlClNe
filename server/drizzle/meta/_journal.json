@@ -162,6 +162,27 @@
       "when": 1789999000000,
       "tag": "0022_equipment_warranties",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790085400000,
+      "tag": "0023_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790171800000,
+      "tag": "0024_parts_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1790258200000,
+      "tag": "0025_warehouse_zones",
+      "breakpoints": true
     }
   ]
 }

@@ -1,9 +1,15 @@
 # RBAC — SALIS AUTO
 
 ## Actions
-- `v` — view · `c` — create · `e` — edit · `x` — delete · `a` — approve
+- `v` — view · `c` — create · `e` — edit · `d` — delete · `a` — approve · `x` — export
 - Empty `""` — hidden from sidebar for that role
-- `"x"` alone — visible-but-disabled with tooltip (read-only observer)
+
+Six letters, and `x` is **export**, not delete. `packages/contract/src/rbac.ts` holds the
+enforced enum and is the source of truth; this file is a handoff narrative and its matrix
+below is historical. Reading `x` as delete is not a naming quibble: `routes/collections.ts`
+once checked `'x'` on DELETE, which granted delete to every role holding view-plus-export —
+accountant on the audit log, job cards, estimates and inventory; technician and customer on
+their portals. Twenty-odd cells, live until it was caught.
 
 Enforce on both sides: the frontend hides / disables, the API layer re-checks every request against the same table.
 

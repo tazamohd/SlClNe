@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 8 screens, 13 API endpoints and 1 entities, gated by the `inventory` permission module.
+This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 9 screens, 22 API endpoints and 1 entities, gated by the `inventory` permission module.
 
 
 ## Actors
@@ -39,7 +39,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 
 | Table | Columns | Tenant | Branch | Soft delete | RLS | Money columns |
 | --- | --- | --- | --- | --- | --- | --- |
-| `parts` | 17 | yes | yes | yes | yes | `price_halalas`, `cost_halalas` |
+| `parts` | 18 | yes | yes | yes | yes | `price_halalas`, `cost_halalas` |
 
 ### Relationships
 
@@ -54,8 +54,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/inventory` | inventory:v | generated | — | 10 |
-| POST | `/api/v1/inventory` | inventory:c | generated | — | 10 |
+| GET | `/api/v1/inventory` | inventory:v | generated | — | 11 |
+| POST | `/api/v1/inventory` | inventory:c | generated | — | 11 |
 | DELETE | `/api/v1/inventory/:id` | inventory:d | generated | — | **0** |
 | GET | `/api/v1/inventory/:id` | inventory:v | generated | — | **0** |
 | PATCH | `/api/v1/inventory/:id` | inventory:e | generated | — | **0** |
@@ -67,6 +67,15 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/inventory/bulk-delete` | inventory:d | generated | — | **0** |
 | POST | `/api/v1/inventory/bulk-update` | inventory:e | generated | — | **0** |
 | GET | `/api/v1/inventory/export` | inventory:x | generated | — | **0** |
+| GET | `/api/v1/warehouse-zones` | inventory:v | generated | — | 1 |
+| POST | `/api/v1/warehouse-zones` | inventory:c | generated | — | 1 |
+| DELETE | `/api/v1/warehouse-zones/:id` | inventory:d | generated | — | **0** |
+| GET | `/api/v1/warehouse-zones/:id` | inventory:v | generated | — | **0** |
+| PATCH | `/api/v1/warehouse-zones/:id` | inventory:e | generated | — | **0** |
+| GET | `/api/v1/warehouse-zones/:id/history` | inventory:v | explicit | — | **0** |
+| POST | `/api/v1/warehouse-zones/bulk-delete` | inventory:d | generated | — | **0** |
+| POST | `/api/v1/warehouse-zones/bulk-update` | inventory:e | generated | — | **0** |
+| GET | `/api/v1/warehouse-zones/export` | inventory:x | generated | — | **0** |
 
 ## Business rules
 
@@ -80,27 +89,30 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 ## Lifecycles
 
-_No lifecycle in the contract belongs to this domain._
+### `warehouseZoneStatus` (warehouse)
+
+**State set only** — states: `active`, `maintenance`, `closed`. No transition table is declared; legal moves are whatever the route handlers check.
+
 
 ## Screens
 
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-Inventory | `/inventory` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-PartsNetwork.Incoming | `/parts-network/incoming` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork.Members | `/parts-network/members` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork.Orders | `/parts-network/orders` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-PartsNetwork.Incoming | `/parts-network/incoming` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-PartsNetwork.Members | `/parts-network/members` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-PartsNetwork.Orders | `/parts-network/orders` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PartsNetwork.Quotations | `/parts-network/quotations` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-PartsNetwork.Requests | `/parts-network/requests` | app | **mock** | — | — | yes | PARTIAL | yes |
-| D-PartsNetwork.SendRequest | `/parts-network/send-request` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| D-PartsNetwork.Requests | `/parts-network/requests` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-PartsNetwork.SendRequest | `/parts-network/send-request` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-063 | `/internal-warehouse` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-064 | `/interactive-3-d-parts` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **5 of 8 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **10 of 13 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **17 of 22 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **1 lifecycle (`warehouseZoneStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
-- **4 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 
