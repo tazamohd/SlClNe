@@ -252,8 +252,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **160 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **140 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **159 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **139 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

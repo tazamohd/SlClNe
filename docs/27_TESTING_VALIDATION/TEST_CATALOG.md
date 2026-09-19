@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-226 spec files containing 2495 test cases.
+227 spec files containing 2500 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 151 | 1385 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 152 | 1390 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,7 +35,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 47 | 623 |
+| server | 48 | 628 |
 | app | 136 | 1495 |
 | browser | 43 | 377 |
 
@@ -253,6 +253,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
 | `server/tests/notifications.test.ts` | UNIT_OR_API | 12 | advisor, test, technician, customer |
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
+| `server/tests/organization-read.test.ts` | UNIT_OR_API | 5 | owner, technician |
 | `server/tests/parts-network.test.ts` | UNIT_OR_API | 34 | procurement, supplier, technician, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |

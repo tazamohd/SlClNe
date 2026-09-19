@@ -727,9 +727,14 @@ that had nothing wrong with its actual behavior.
   `NetworkGapPanel`/`ConnectApi` were added for. Added `<ReportGap` to
   `GAP_MARKERS`; the screen's own code did not change.
 
-**BLK-004: 26 → 24.**
+**BLK-004: 26 → 24** from this bucket's own two fixes. A concurrent branch
+(F-042/F-043/F-044, merged as PR #160 into the same main this bucket
+rebased onto) independently wired `ZATCA-Settings` to the real
+organization VAT/CR number, so the count on the merged main after this
+bucket is **23**, not 24 — `ZATCA-Settings` is gone from the list below
+because of that other work, not this one.
 
-### Remaining MOCK_ONLY after bucket G (24)
+### Remaining MOCK_ONLY after bucket G (23)
 
 | Screen | Route | Domain |
 |---|---|---|
@@ -755,7 +760,6 @@ that had nothing wrong with its actual behavior.
 | VAT-Settings | `/vat-settings` | featuremap |
 | Voice-Command-Interface | `/voice-command-interface` | admin |
 | Voice-Commands | `/voice-commands` | admin |
-| ZATCA-Settings | `/zatca-settings` | featuremap |
 | Zakat-Settings | `/zakat-settings` | featuremap |
 
 Every remaining screen needs either a genuine product decision (the six
