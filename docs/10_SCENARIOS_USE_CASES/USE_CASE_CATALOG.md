@@ -19,7 +19,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| UC-POST-ADMIN-STAFF | POST /admin/staff | owner, superadmin, test | admin:c | — | — | — | — | `server/src/auth/routes.ts` |
+| UC-POST-ADMIN-STAFF | POST /admin/staff | — | admin:c | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-APPOINTMENTS-ID-JOB-CARD | POST /appointments/:id/job-card | owner, manager, advisor, frontdesk, test | jobcards:c | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-AUTH-2FA-ENROL | POST /auth/2fa/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-2FA-VERIFY | POST /auth/2fa/verify | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
@@ -58,10 +58,10 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-ESTIMATES-ID-VERIFY-APPROVAL-OTP | POST /estimates/:id/verify-approval-otp | owner, manager, advisor, test | estimates:e | — | — | — | yes | `server/src/routes/estimate-otp.ts` |
 | UC-POST-FLEETS-ID-RENEW | POST /fleets/:id/renew | owner, manager, advisor, frontdesk, callcenter +1 | customers:e | — | — | — | yes | `server/src/routes/fleets.ts` |
 | UC-POST-INSPECTION-FINDINGS-ID-MEDIA | POST /inspection-findings/:id/media | owner, manager, advisor, technician, test | jobcards:e | — | — | — | — | `server/src/routes/inspection.ts` |
-| UC-POST-INSURANCE-CLAIMS | POST /insurance-claims | accountant, test | accounting:c | — | — | — | yes | `server/src/routes/insurance-claims.ts` |
-| UC-POST-INSURANCE-CLAIMS-ID-APPROVE | POST /insurance-claims/:id/approve | owner, accountant, test | accounting:a | yes | — | — | yes | `server/src/routes/insurance-claims.ts` |
-| UC-POST-INSURANCE-CLAIMS-ID-PAY | POST /insurance-claims/:id/pay | accountant, test | accounting:e | — | — | — | — | `server/src/routes/insurance-claims.ts` |
-| UC-POST-INSURANCE-CLAIMS-ID-REJECT | POST /insurance-claims/:id/reject | owner, accountant, test | accounting:a | — | — | — | — | `server/src/routes/insurance-claims.ts` |
+| UC-POST-INSURANCE-CLAIMS | POST /insurance-claims | — | insurance:c | — | — | — | yes | `server/src/routes/insurance-claims.ts` |
+| UC-POST-INSURANCE-CLAIMS-ID-APPROVE | POST /insurance-claims/:id/approve | — | insurance:a | yes | — | — | yes | `server/src/routes/insurance-claims.ts` |
+| UC-POST-INSURANCE-CLAIMS-ID-PAY | POST /insurance-claims/:id/pay | — | insurance:e | — | — | — | — | `server/src/routes/insurance-claims.ts` |
+| UC-POST-INSURANCE-CLAIMS-ID-REJECT | POST /insurance-claims/:id/reject | — | insurance:a | — | — | — | — | `server/src/routes/insurance-claims.ts` |
 | UC-POST-INVENTORY-ID-MOVEMENT | POST /inventory/:id/movement | owner, manager, parts, procurement, test | inventory:e | — | yes | — | yes | `server/src/routes/inventory.ts` |
 | UC-DELETE-INVENTORY-ID-RESERVATION | DELETE /inventory/:id/reservation | owner, manager, parts, procurement, test | inventory:e | — | — | — | yes | `server/src/routes/inventory.ts` |
 | UC-POST-INVENTORY-ID-RESERVATION | POST /inventory/:id/reservation | owner, manager, parts, procurement, test | inventory:e | — | — | — | yes | `server/src/routes/inventory.ts` |

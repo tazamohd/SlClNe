@@ -15,9 +15,9 @@
  *  audited. Money is integer halalas; the claimed and approved figures are the
  *  only money values, and neither is a client-computed total.
  *
- *  Gated on `accounting` — the RBAC matrix has no `insurance` module, so the
- *  nearest existing one is used; its accountant role carries the `a` grant the
- *  approval needs. See registry.ts for the full rationale.
+ *  Gated on `insurance` (F-034 — split from `accounting`, which conflated
+ *  ledger authority with claim adjudication). See registry.ts for the full
+ *  rationale.
  */
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import type { FastifyInstance } from 'fastify'
@@ -36,7 +36,7 @@ import {
 } from '../security/permissions'
 import { presentRow, type RouteDeps } from './collections'
 
-const CLAIM_MODULE = 'accounting'
+const CLAIM_MODULE = 'insurance'
 
 function def() {
   const found = collectionByKey('insuranceClaims')
@@ -200,7 +200,7 @@ export function registerInsuranceClaimRoutes(app: FastifyInstance, deps: RouteDe
   app.post('/insurance-claims/:id/pay', async (request) => {
     const principal = principalOf(request)
     /* Paying an approved claim is an edit, not an approval — the approval was
-     * the control; settlement follows it. `accounting:e`, which the accountant
+     * the control; settlement follows it. `insurance:e`, which the accountant
      * holds. */
     requirePermission(principal, CLAIM_MODULE, 'e')
     const { id } = request.params as { id: string }

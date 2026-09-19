@@ -2,7 +2,7 @@ export const MOBILE_HREF={"dashboard":"Dashboard.Mobile.dc.html","job-cards":"Jo
 // Shared SALIS AUTO GMS data: nav model, Arabic dictionary, sample records (from ui_kits/gms-admin source)
 export const NAV=[
  {label:"Overview",icon:"Home",items:[{l:"Dashboard",r:"dashboard",href:"Dashboard.dc.html"}]},
- {label:"Operations",icon:"Wrench",items:[{l:"Job Cards",r:"job-cards",href:"JobCards.dc.html"},{l:"Appointments",r:"appointments",href:"Appointments.dc.html"},{l:"Appointment Calendar",r:"appointment-calendar",href:"AppointmentCalendar.dc.html"},{l:"Estimates",r:"estimates",href:"Estimates.dc.html"},{l:"Customer Approval",href:"CustomerApproval.dc.html",r:"customer-approval"}]},
+ {label:"Operations",icon:"Wrench",items:[{l:"Job Cards",r:"job-cards",href:"JobCards.dc.html"},{l:"Appointments",r:"appointments",href:"Appointments.dc.html"},{l:"Appointment Calendar",r:"appointment-calendar",href:"AppointmentCalendar.dc.html"},{l:"Estimates",r:"estimates",href:"Estimates.dc.html"},{l:"Customer Approval",href:"CustomerApproval.dc.html",r:"customer-approval"},{l:"Declined Jobs",r:"declined-jobs",href:"DeclinedJobs.dc.html"}]},
  {label:"Customers & Vehicles",icon:"Users",items:[{l:"Customers",r:"customers",href:"Customers.dc.html"},{l:"Vehicles",r:"vehicles",href:"Vehicles.dc.html"},{l:"Customer Feedback",r:"customer-feedback",href:"CustomerFeedback.dc.html"},{l:"Fleet Management",r:"fleet-management",href:"FleetManagement.dc.html"}]},
  {label:"Inventory",icon:"Package",items:[{l:"Inventory",r:"inventory",href:"Inventory.dc.html"},{l:"Parts Supply Network",r:"parts-supply-network",href:"PartsSupplyNetwork.dc.html"},{l:"Parts Network",r:"parts-network",href:"PartsNetwork.dc.html"}]},
  {label:"Team",icon:"HardHat",items:[{l:"Technicians",r:"technicians",href:"Technicians.dc.html"},{l:"Technician Schedule",r:"technician-schedule",href:"TechnicianSchedule.dc.html"},{l:"HR & Payroll",r:"hr-payroll",href:"HRPayroll.dc.html"},{l:"Technician Knowledge Base",href:"TechnicianKB.dc.html",r:"technician-kb"}]},
@@ -12,7 +12,7 @@ export const NAV=[
  {label:"Accounting",icon:"Calculator",items:[{l:"Chart of Accounts",r:"chart-of-accounts",href:"ChartOfAccounts.dc.html"},{l:"Journal Entries",r:"journal-entries",href:"JournalEntries.dc.html"},{l:"Expenses",r:"expenses",href:"Expenses.dc.html"},{l:"Tax Management",r:"tax-management",href:"TaxManagement.dc.html"},{l:"Bank Reconciliation",r:"bank-reconciliation",href:"BankReconciliation.dc.html"},{l:"Receipts",r:"receipts",href:"Receipts.dc.html"},{l:"Financial Statements",r:"financial-statements",href:"FinancialStatements.dc.html"},{l:"Financial Reports",r:"financial-reports",href:"FinancialReports.dc.html"}]},
  {label:"Reports & Analytics",icon:"BarChart3",items:[{l:"Executive Dashboard",r:"executive-reports",href:"ExecutiveReports.dc.html"},{l:"Operational Reports",r:"operational-reports",href:"OperationalReports.dc.html"},{l:"Workshop Reports",r:"workshop-reports",href:"WorkshopReports.dc.html"},{l:"Inventory Reports",r:"inventory-reports",href:"InventoryReports.dc.html"},{l:"Sales Reports",r:"sales-reports",href:"SalesReports.dc.html"},{l:"Insurance Reports",r:"insurance-reports",href:"InsuranceReports.dc.html"},{l:"Loan Reports",r:"loan-reports",href:"LoanReports.dc.html"},{l:"Custom Reports",r:"custom-reports",href:"CustomReports.dc.html"},{l:"BI Dashboard",r:"bi-dashboard",href:"BIDashboard.dc.html"}]},
  {label:"Administration",icon:"Shield",items:[{l:"Organizations",r:"organizations",href:"Organizations.dc.html"},{l:"Branches",r:"branches",href:"Branches.dc.html"},{l:"Departments",r:"departments",href:"Departments.dc.html"},{l:"Users & Teams",r:"users-teams",href:"UsersTeams.dc.html"},{l:"Roles & Permissions",r:"roles-permissions",href:"RolesPermissions.dc.html"},{l:"Integrations",r:"integrations",href:"Integrations.dc.html"},{l:"Templates",r:"templates-admin",href:"Templates.dc.html"},{l:"Automation Rules",r:"automation-rules",href:"AutomationRules.dc.html"},{l:"Audit Log",r:"audit-log",href:"AuditLog.dc.html"}]},
- {label:"AI Platform",icon:"Sparkles",items:[{l:"AI Assistant",r:"ai-assistant",href:"AIAssistant.dc.html"},{l:"Prompt Library",r:"prompt-library",href:"PromptLibrary.dc.html"},{l:"Knowledge Base",r:"knowledge-base",href:"KnowledgeBase.dc.html"},{l:"Workflow Builder",r:"workflow-builder",href:"WorkflowBuilder.dc.html"},{l:"Agent Dashboard",r:"agent-dashboard",href:"AgentDashboard.dc.html"},{l:"Agent Registry",r:"agent-registry",href:"AgentRegistry.dc.html"},{l:"Conversation History",r:"conversation-history",href:"ConversationHistory.dc.html"},{l:"Model Settings",r:"model-settings",href:"ModelSettings.dc.html"},{l:"AI Analytics",r:"ai-analytics",href:"AIAnalytics.dc.html"}]},
+ {label:"AI Platform",icon:"Sparkles",items:[{l:"AI Assistant",r:"ai-assistant",href:"AIAssistant.dc.html"},{l:"Prompt Library",r:"prompt-library",href:"PromptLibrary.dc.html"},{l:"Knowledge Base",r:"knowledge-base",href:"KnowledgeBase.dc.html"},{l:"Workflow Builder",r:"workflow-builder",href:"WorkflowBuilder.dc.html"},{l:"Agent Dashboard",r:"agent-dashboard",href:"AgentDashboard.dc.html"},{l:"Agent Registry",r:"agent-registry",href:"AgentRegistry.dc.html"},{l:"Conversation History",r:"conversation-history",href:"ConversationHistory.dc.html"},{l:"Model Settings",r:"model-settings",href:"ModelSettings.dc.html"},{l:"AI Analytics",r:"ai-analytics",href:"AIAnalytics.dc.html"},{l:"AI Automation",r:"ai-automation",href:"AI-Automation.dc.html"},{l:"AI Chatbot",r:"ai-chatbot",href:"AI-Chatbot.dc.html"},{l:"Chatbot Assistant",r:"ai-chatbot-assistant",href:"AI-Chatbot-Assistant.dc.html"},{l:"AI Service Advisor",r:"ai-service-advisor",href:"AI-Service-Advisor.dc.html"},{l:"Damage Assessment",r:"smart-damage-assessment",href:"Smart-Damage-Assessment.dc.html"},{l:"Fraud Detection",r:"ml-fraud-detection",href:"ML-Fraud-Detection.dc.html"},{l:"Neural Prediction",r:"neural-network-prediction",href:"Neural-Network-Prediction.dc.html"},{l:"Voice Commands",r:"voice-commands",href:"Voice-Commands.dc.html"},{l:"Voice Interface",r:"voice-command-interface",href:"Voice-Command-Interface.dc.html"}]},
  {label:"Portals",icon:"Building2",items:[{l:"Technician Portal",r:"technician-portal",href:"TechnicianPortal.dc.html"},{l:"Customer Portal",r:"customer-portal",href:"CustomerPortal.dc.html"},{l:"Supplier Portal",r:"supplier-portal",href:"SupplierPortal.dc.html"},{l:"Procurement Portal",r:"procurement-portal",href:"ProcurementPortal.dc.html"},{l:"Call Center",r:"call-center",href:"CallCenter.dc.html"},{l:"Call Logs",r:"call-logs",href:"CallCenter.Logs.dc.html"},{l:"Kiosk Check-In",r:"kiosk",href:"KioskCheckIn.dc.html"},{l:"Super Admin",r:"super-admin",href:"SuperAdmin.dc.html"}]},
  {label:"Design Reference",icon:"Boxes",items:[{l:"Screen Index",r:"screen-index",href:"Index.dc.html"},{l:"Flow Spec",r:"flow-spec",href:"FlowSpec.dc.html"},{l:"Empty States",r:"empty-states",href:"UI.EmptyStates.dc.html"},{l:"Loading States",r:"loading-states",href:"UI.LoadingStates.dc.html"},{l:"Form Validation",r:"form-validation",href:"UI.FormValidation.dc.html"}]}
 ];
@@ -302,9 +302,9 @@ export const JOBS=[
  {id:"D8C1B6F4",cust:"Mohammed Hassan",veh:"Lexus ES 350 2020",svc:"inspection",st:"in_progress",pr:"urgent"},
  {id:"E5D7A3B5",cust:"Sara Al-Mutairi",veh:"Ford Explorer 2022",svc:"tire_service",st:"delivered",pr:"low"}
 ];
-export const SVC_BADGE={maintenance:["rgba(10,94,215,.1)","#0A5ED7","🔧"],repair:["rgba(249,115,22,.1)","#F97316","⚙️"],diagnostic:["rgba(11,179,255,.1)","#0BB3FF","🔍"],inspection:["rgba(10,94,215,.1)","#0A5ED7","✓"],tire_service:["rgba(100,116,139,.1)","#64748B","⭕"]};
-export const ST_BADGE={pending:["rgba(249,115,22,.1)","#F97316","⏳"],assigned:["rgba(11,179,255,.1)","#0BB3FF","👤"],in_progress:["rgba(10,94,215,.1)","#0A5ED7","🔄"],completed:["rgba(10,94,215,.1)","#0A5ED7","✅"],delivered:["rgba(11,31,59,.1)","#0B1F3B","🚗"],cancelled:["rgba(249,115,22,.1)","#F97316","❌"]};
-export const PR_BADGE={urgent:["#F97316","🔥"],high:["#F97316","⚡"],medium:["#0BB3FF","⭐"],low:["#0A5ED7","💙"]};
+export const SVC_BADGE={maintenance:["var(--tint-blue)","var(--salis-blue)","🔧"],repair:["var(--tint-orange)","var(--salis-orange)","⚙️"],diagnostic:["var(--tint-bright)","var(--salis-blue-bright)","🔍"],inspection:["var(--tint-blue)","var(--salis-blue)","✓"],tire_service:["var(--tint-neutral)","var(--text-muted)","⭕"]};
+export const ST_BADGE={pending:["var(--tint-orange)","var(--salis-orange)","⏳"],assigned:["var(--tint-bright)","var(--salis-blue-bright)","👤"],in_progress:["var(--tint-blue)","var(--salis-blue)","🔄"],completed:["var(--tint-blue)","var(--salis-blue)","✅"],delivered:["var(--tint-navy)","var(--salis-navy)","🚗"],cancelled:["var(--tint-orange)","var(--salis-orange)","❌"]};
+export const PR_BADGE={urgent:["var(--salis-orange)","🔥"],high:["var(--salis-orange)","⚡"],medium:["var(--salis-blue-bright)","⭐"],low:["var(--salis-blue)","💙"]};
 export const APPOINTMENTS=[
  {time:"9:00 AM", cust:"Ahmed Al-Rashid",     veh:"Toyota Camry 2022",  plate:"RUH 4821",svc:"Maintenance",status:"confirmed",bay:"Bay 1",tech:"Saeed Al-Zahrani",mins:90},
  {time:"10:30 AM",cust:"Layla Al-Sulaiman",   veh:"GMC Yukon 2023",     plate:"RUH 2207",svc:"Inspection", status:"awaiting", bay:"Bay 3",tech:"Majed Al-Otaibi", mins:45},
@@ -387,7 +387,7 @@ export const ACCOUNTS_COA=[
  {code:"1300",name:"Fixed Assets",type:"Assets",balance:"SAR 1,450,000",children:5},
  {code:"2000",name:"Accounts Payable",type:"Liabilities",balance:"SAR 98,400",children:2},
  {code:"2100",name:"VAT Payable",type:"Liabilities",balance:"SAR 42,150",children:1},
- {code:"3000",name:"Owner's Equity",type:"Equity",balance:"SAR 2,800,000",children:2},
+ {code:"3000",name:"Owner's Equity",type:"Equity",balance:"SAR 2,542,950",children:2},
  {code:"4000",name:"Service Revenue",type:"Revenue",balance:"SAR 1,284,500",children:6},
  {code:"5000",name:"Cost of Services",type:"Expense",balance:"SAR 645,200",children:8},
  {code:"6000",name:"Operating Expenses",type:"Expense",balance:"SAR 312,400",children:10}
@@ -443,21 +443,21 @@ export const CONVERSATIONS=[
 // ============================================================
 // Actions: v=view c=create e=edit d=delete a=approve x=export
 export const ROLES=[
- {id:"owner",       label:"Owner / CEO",        ar:"المالك / الرئيس التنفيذي", icon:"Crown",      demo:{name:"Abdullah Al-Salis",  ar:"عبدالله السالس",  email:"owner@salisauto.sa"},      scope:"all",     limit:null,   color:"#0A5ED7"},
- {id:"superadmin",  label:"Super Admin",        ar:"المشرف العام",             icon:"Shield",     demo:{name:"Platform Admin",     ar:"مشرف المنصة",     email:"admin@salisauto.com"},     scope:"platform",limit:null,   color:"#0B1F3B"},
- {id:"manager",     label:"Branch Manager",     ar:"مدير الفرع",               icon:"UserCog",    demo:{name:"Faisal Al-Harbi",    ar:"فيصل الحربي",     email:"manager@salisauto.sa"},    scope:"branch",  limit:50000,  color:"#0A5ED7"},
- {id:"advisor",     label:"Service Advisor",    ar:"مستشار الخدمة",            icon:"Headset",    demo:{name:"Noura Al-Qahtani",   ar:"نورة القحطاني",   email:"advisor@salisauto.sa"},    scope:"branch",  limit:5000,   color:"#0BB3FF"},
- {id:"technician",  label:"Technician",         ar:"فني",                      icon:"Wrench",     demo:{name:"Saeed Al-Zahrani",   ar:"سعيد الزهراني",   email:"tech@salisauto.sa"},       scope:"own",     limit:0,      color:"#0BB3FF"},
- {id:"qc",          label:"QC Inspector",       ar:"مفتش الجودة",              icon:"ClipboardCheck",demo:{name:"Majed Al-Otaibi",  ar:"ماجد العتيبي",    email:"qc@salisauto.sa"},         scope:"branch",  limit:0,      color:"#0BB3FF"},
- {id:"parts",       label:"Storekeeper",        ar:"أمين المستودع",            icon:"Package",    demo:{name:"Yousef Al-Ghamdi",   ar:"يوسف الغامدي",    email:"parts@salisauto.sa"},      scope:"branch",  limit:10000,  color:"#0A5ED7"},
- {id:"accountant",  label:"Accountant",         ar:"محاسب",                    icon:"Calculator", demo:{name:"Hessa Al-Mutairi",   ar:"حصة المطيري",     email:"finance@salisauto.sa"},    scope:"all",     limit:25000,  color:"#0A5ED7"},
- {id:"hr",          label:"HR Manager",         ar:"مدير الموارد البشرية",     icon:"Users",      demo:{name:"Reem Al-Dossari",    ar:"ريم الدوسري",     email:"hr@salisauto.sa"},         scope:"all",     limit:15000,  color:"#0A5ED7"},
- {id:"frontdesk",   label:"Receptionist",       ar:"موظف الاستقبال",           icon:"Bell",       demo:{name:"Lama Al-Shehri",     ar:"لمى الشهري",      email:"frontdesk@salisauto.sa"},  scope:"branch",  limit:0,      color:"#0BB3FF"},
- {id:"callcenter",  label:"Call Center Agent",  ar:"موظف مركز الاتصال",        icon:"PhoneCall",  demo:{name:"Turki Al-Anazi",     ar:"تركي العنزي",     email:"calls@salisauto.sa"},      scope:"all",     limit:0,      color:"#0BB3FF"},
- {id:"procurement", label:"Procurement Agent",  ar:"وكيل المشتريات",           icon:"ShoppingCart",demo:{name:"Bandar Al-Subaie",  ar:"بندر السبيعي",    email:"procurement@salisauto.sa"},scope:"all",     limit:20000,  color:"#0A5ED7"},
- {id:"supplier",    label:"Supplier",           ar:"مورّد",                    icon:"Truck",      demo:{name:"Al-Jazira Parts Co.",ar:"شركة الجزيرة للقطع",email:"supplier@aljazira.sa"},  scope:"external",limit:0,      color:"#F97316"},
- {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Ahmed Al-Rashid",    ar:"أحمد الراشد",     email:"ahmed@example.sa"},       scope:"self",    limit:0,      color:"#F97316"},
- {id:"test",        label:"Test User",          ar:"مستخدم اختبار",            icon:"FlaskConical",demo:{name:"Test User",        ar:"مستخدم اختبار",   email:"test@salisauto.sa"},       scope:"all",     limit:null,   color:"#0B1F3B"}
+ {id:"owner",       label:"Owner / CEO",        ar:"المالك / الرئيس التنفيذي", icon:"Crown",      demo:{name:"Abdullah Al-Salis",  ar:"عبدالله السالس",  email:"owner@salisauto.sa"},      scope:"all",     limit:null,   color:"var(--salis-blue)"},
+ {id:"superadmin",  label:"Super Admin",        ar:"المشرف العام",             icon:"Shield",     demo:{name:"Platform Admin",     ar:"مشرف المنصة",     email:"admin@salisauto.com"},     scope:"platform",limit:null,   color:"var(--salis-navy)"},
+ {id:"manager",     label:"Branch Manager",     ar:"مدير الفرع",               icon:"UserCog",    demo:{name:"Faisal Al-Harbi",    ar:"فيصل الحربي",     email:"manager@salisauto.sa"},    scope:"branch",  limit:50000,  color:"var(--salis-blue)"},
+ {id:"advisor",     label:"Service Advisor",    ar:"مستشار الخدمة",            icon:"Headset",    demo:{name:"Noura Al-Qahtani",   ar:"نورة القحطاني",   email:"advisor@salisauto.sa"},    scope:"branch",  limit:5000,   color:"var(--salis-blue-bright)"},
+ {id:"technician",  label:"Technician",         ar:"فني",                      icon:"Wrench",     demo:{name:"Saeed Al-Zahrani",   ar:"سعيد الزهراني",   email:"tech@salisauto.sa"},       scope:"own",     limit:0,      color:"var(--salis-blue-bright)"},
+ {id:"qc",          label:"QC Inspector",       ar:"مفتش الجودة",              icon:"ClipboardCheck",demo:{name:"Majed Al-Otaibi",  ar:"ماجد العتيبي",    email:"qc@salisauto.sa"},         scope:"branch",  limit:0,      color:"var(--salis-blue-bright)"},
+ {id:"parts",       label:"Storekeeper",        ar:"أمين المستودع",            icon:"Package",    demo:{name:"Yousef Al-Ghamdi",   ar:"يوسف الغامدي",    email:"parts@salisauto.sa"},      scope:"branch",  limit:10000,  color:"var(--salis-blue)"},
+ {id:"accountant",  label:"Accountant",         ar:"محاسب",                    icon:"Calculator", demo:{name:"Hessa Al-Mutairi",   ar:"حصة المطيري",     email:"finance@salisauto.sa"},    scope:"all",     limit:25000,  color:"var(--salis-blue)"},
+ {id:"hr",          label:"HR Manager",         ar:"مدير الموارد البشرية",     icon:"Users",      demo:{name:"Reem Al-Dossari",    ar:"ريم الدوسري",     email:"hr@salisauto.sa"},         scope:"all",     limit:15000,  color:"var(--salis-blue)"},
+ {id:"frontdesk",   label:"Receptionist",       ar:"موظف الاستقبال",           icon:"Bell",       demo:{name:"Lama Al-Shehri",     ar:"لمى الشهري",      email:"frontdesk@salisauto.sa"},  scope:"branch",  limit:0,      color:"var(--salis-blue-bright)"},
+ {id:"callcenter",  label:"Call Center Agent",  ar:"موظف مركز الاتصال",        icon:"PhoneCall",  demo:{name:"Turki Al-Anazi",     ar:"تركي العنزي",     email:"calls@salisauto.sa"},      scope:"all",     limit:0,      color:"var(--salis-blue-bright)"},
+ {id:"procurement", label:"Procurement Agent",  ar:"وكيل المشتريات",           icon:"ShoppingCart",demo:{name:"Bandar Al-Subaie",  ar:"بندر السبيعي",    email:"procurement@salisauto.sa"},scope:"all",     limit:20000,  color:"var(--salis-blue)"},
+ {id:"supplier",    label:"Supplier",           ar:"مورّد",                    icon:"Truck",      demo:{name:"Al-Jazira Parts Co.",ar:"شركة الجزيرة للقطع",email:"supplier@aljazira.sa"},  scope:"external",limit:0,      color:"var(--salis-orange)"},
+ {id:"customer",    label:"Customer",           ar:"عميل",                     icon:"User",       demo:{name:"Ahmed Al-Rashid",    ar:"أحمد الراشد",     email:"ahmed@example.sa"},       scope:"self",    limit:0,      color:"var(--salis-orange)"},
+ {id:"test",        label:"Test User",          ar:"مستخدم اختبار",            icon:"FlaskConical",demo:{name:"Test User",        ar:"مستخدم اختبار",   email:"test@salisauto.sa"},       scope:"all",     limit:null,   color:"var(--salis-navy)"}
 ];
 
 // module -> allowed actions per role. "" = no access (nav item hidden entirely)
@@ -485,6 +485,12 @@ export const PERMS={
  portalcustomer: {owner:"v",manager:"v",advisor:"v",technician:"",qc:"",parts:"",accountant:"",hr:"",frontdesk:"v",callcenter:"v",procurement:"",customer:"vx",superadmin:"v",test:"vcedax"},
  portalsupplier: {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"",hr:"",frontdesk:"",callcenter:"",procurement:"v",supplier:"vx",superadmin:"v",test:"vcedax"},
  portalprocure:  {owner:"v",manager:"v",advisor:"",technician:"",qc:"",parts:"v",accountant:"v",hr:"",frontdesk:"",callcenter:"",procurement:"vx",superadmin:"v",test:"vcedax"},
+ // Insurance policies/claims and loan contracts/repayments (F-034): these were
+ // gated on "accounting", which conflated ledger authority with claim
+ // adjudication. No dedicated role exists to hold different grants here yet,
+ // so this is "accounting"'s cells copied verbatim onto their own column, so
+ // the two can diverge later without touching ledger access.
+ insurance:      {owner:"vax",manager:"vx",accountant:"vcedax",superadmin:"v",test:"vcedax"},
  ai:             {owner:"vcedax",manager:"vce",advisor:"v",accountant:"v",superadmin:"vcedax",test:"vcedax"},
  // AI platform administration (model/provider config, agent registry, automation
  // rules, workflow builder, cross-org conversation history) is a distinct
@@ -493,10 +499,20 @@ export const PERMS={
  // knowledge base) but never "aiadmin" (configure what the platform runs).
  aiadmin:        {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
  admin:          {owner:"vcedax",manager:"v",superadmin:"vcedax",test:"vcedax"},
+ // Split from "admin" (F-038): the department directory is read by Staff-
+ // Directory/HR-Management, an "hr"-module screen, so HR and Accountant (both
+ // hold grants on "hr") need to read it too — folding that into "admin" would
+ // have also opened Branches/Users & Teams/Integrations/Templates to them,
+ // which "admin" gates and which are not an HR concern. `hr` also gets create:
+ // the "Departments" screen (also "hr"-gated) already shows HR an "Add
+ // Department" button on the strength of its own `hr` grant — without this the
+ // button would 403 on click. Branch Manager and the Owner/Super Admin/test
+ // rows are unchanged from what "admin" granted before.
+ departments:    {owner:"vcedax",manager:"v",hr:"vc",accountant:"v",superadmin:"vcedax",test:"vcedax"},
  settings:       {owner:"vcedax",manager:"ve",superadmin:"vcedax",test:"vcedax"},
  // Platform/cross-tenant administration (Super Admin console, global roles &
  // permissions, cross-tenant organization management) is not part of "admin" or
- // "settings" — those two remain tenant-scoped (departments, integrations,
+ // "settings" — those two remain tenant-scoped (branches, integrations,
  // branch settings) and Branch Manager keeps view/edit there. Nobody below
  // Owner/Super Admin gets any action here, not even view.
  superadmin:     {owner:"vcedax",superadmin:"vcedax",test:"vcedax"},
@@ -520,14 +536,21 @@ export const SCREEN_MODULE={
  "Invoices":"invoices","InvoiceDetail":"invoices","InvoiceCreate":"invoices","InvoicePreview":"invoices","Payments":"payments","Receipts":"payments",
  "ChartOfAccounts":"accounting","JournalEntries":"accounting","Expenses":"accounting","TaxManagement":"accounting","BankReconciliation":"accounting","FinancialReports":"accounting","FinancialStatements":"accounting",
  "HRPayroll":"hr","Technicians":"technicians","TechnicianSchedule":"technicians","Departments":"hr",
+ "Staff-Directory":"hr","HR-Management":"hr",
  "LeadPipeline":"crm","LeadDetail":"crm","Opportunities":"crm","Campaigns":"crm","EmailMarketing":"crm","SMSCampaigns":"crm","WhatsAppCampaigns":"crm","CustomerSegments":"crm","CRMTasks":"crm","CRMCalendar":"crm",
  "CallCenter":"callcenter","CallCenter.Logs":"callcenter",
  "Reports":"reports","ReportsAnalytics":"reports","ExecutiveReports":"execreports","OperationalReports":"reports","WorkshopReports":"reports","InventoryReports":"reports","SalesReports":"execreports","InsuranceReports":"execreports","LoanReports":"execreports","CustomReports":"reports","BIDashboard":"execreports",
  "AIAssistant":"ai","PromptLibrary":"ai","KnowledgeBase":"ai","WorkflowBuilder":"aiadmin","AgentDashboard":"ai","AgentRegistry":"aiadmin","ConversationHistory":"aiadmin","ModelSettings":"aiadmin","AIAnalytics":"ai","AutomationRules":"aiadmin",
+ "AI-Automation":"ai","AI-Chatbot":"ai","AI-Chatbot-Assistant":"ai","AI-Service-Advisor":"ai","Smart-Damage-Assessment":"ai","ML-Fraud-Detection":"ai","Neural-Network-Prediction":"ai","Voice-Commands":"ai","Voice-Command-Interface":"ai",
  "Organizations":"superadmin","Branches":"admin","UsersTeams":"admin","RolesPermissions":"superadmin","Integrations":"admin","Templates":"admin",
  "Settings":"settings","AdvancedSettings":"settings","Backup":"settings","Subscription":"settings","NotificationCenter":"dashboard","GlobalSearch":"dashboard","Profile":"dashboard",
  "AuditLog":"audit","ApprovalInbox":"approvals",
- "CustomerApproval":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings"
+ "CustomerApproval":"estimates","DeclinedJobs":"estimates","TechnicianKB":"technicians","OBDDiagnostics":"jobcards","DiagnosticReport":"jobcards","OEMIntegrations":"settings","SystemIntegrations":"settings",
+ "Insurance-Claims":"insurance","Payroll-Management":"hr","Timesheet-Management":"hr","Timeclock-Payroll":"hr","Leave-Requests":"hr",
+ "Interactive-3D-Parts":"inventory","Purchase-Agent-Payments":"procurement","Purchase-Agent-Suppliers":"procurement",
+ "Client-Portal-Appointments":"appointments","Client-Portal-Vehicles":"vehicles",
+ "Technician-App-Jobs":"jobcards","Technician-Mobile":"jobcards","Technician-Portal-Dashboard":"jobcards","Technician-Portal-My-Jobs":"jobcards","Workshop-Calendar":"jobcards",
+ "Email-Marketing-Campaigns":"crm","Customers-List":"customers"
 };
 
 // field-level redaction: which roles may NOT see these

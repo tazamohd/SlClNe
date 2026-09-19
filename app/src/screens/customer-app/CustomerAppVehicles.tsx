@@ -30,8 +30,8 @@ import { derived, UNKNOWN } from '@/screens/registry/writes'
  *  shows the em dash and the note names what would supply it. The vehicle count
  *  is the server's own `page.total`.
  */
+/** Entity metadata is typed on `Repository` itself now (F-020). */
 type Vehicle = RowOf<'vehicles'> & {
-  _id?: string
   /** Not projected by any build today — see the note above. */
   color?: string | null
   nextService?: string | null

@@ -627,7 +627,12 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     key: 'departments',
     path: 'admin/departments',
     table: s.departments,
-    module: 'admin',
+    /* Split from 'admin' (F-038): Staff-Directory/HR-Management/Departments
+     * are all 'hr'-module screens, and HR (and Accountant, who also holds an
+     * 'hr' grant) need to read this collection without gaining 'admin'
+     * itself — branches, users, integrations and templates are not an HR
+     * concern. See packages/contract/src/rbac.ts's 'departments' module. */
+    module: 'departments',
     entity: 'department',
     search: ['name', 'head', 'costCenter'],
     sortable: ['name', 'headcount', 'createdAt'],
@@ -642,6 +647,9 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       branch: row.branchLabel ?? '',
       icon: row.icon ?? '',
     }),
+    /* F-039: the collection had no writer at all — DepartmentFormModal's "Add
+     * Department" 404'd for every role, owner and superadmin included. */
+    writable: true,
   }),
 
   /* ------------------------------------------------------------------- CRM */
@@ -906,17 +914,16 @@ export const COLLECTIONS: readonly CollectionDef[] = [
   /* ------------------------------------------------------ financial products */
   define({
     /** Insurance policies — the cover a customer holds on a vehicle (vertical A).
-     *  Read-only through the generic router. Gated on `accounting`: the RBAC
-     *  matrix has no `insurance` module, so the nearest existing one is used —
-     *  `accounting` is the back-office financial-products module whose consumers
-     *  (accountant, owner, manager) are exactly the Insurance-report audience,
-     *  and whose accountant role carries the `a` grant the claim approval needs.
-     *  Money is integer halalas; premium and coverage carry both the formatted
-     *  string and the raw halalas. */
+     *  Read-only through the generic router. Gated on `insurance` (F-034: split
+     *  from `accounting`, which conflated ledger authority with claim
+     *  adjudication — every grant here is `accounting`'s copied onto its own
+     *  column, since no dedicated role exists yet to diverge them). Money is
+     *  integer halalas; premium and coverage carry both the formatted string
+     *  and the raw halalas. */
     key: 'insurancePolicies',
     path: 'insurance-policies',
     table: s.insurancePolicies,
-    module: 'accounting',
+    module: 'insurance',
     entity: 'insurance_policy',
     search: ['policyNumber', 'insurer', 'holderName', 'vehicleLabel'],
     sortable: ['policyNumber', 'insurer', 'premiumHalalas', 'endDate', 'status', 'createdAt'],
@@ -946,12 +953,13 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     /** Insurance claims — a request against a policy (vertical A). Read-only
      *  through the generic router; the lifecycle (submit/approve/reject/pay) is
      *  the bespoke router in `routes/insurance-claims.ts`, gated on the ceiling
-     *  and segregation of duties like the estimate. Gated on `accounting` for
-     *  the same reason as policies. `amountApproved` is null until approval. */
+     *  and segregation of duties like the estimate. Gated on `insurance` for
+     *  the same reason as policies (F-034). `amountApproved` is null until
+     *  approval. */
     key: 'insuranceClaims',
     path: 'insurance-claims',
     table: s.insuranceClaims,
-    module: 'accounting',
+    module: 'insurance',
     entity: 'insurance_claim',
     search: ['claimNumber', 'policyNumber', 'vehicleLabel', 'description'],
     sortable: ['claimNumber', 'amountClaimedHalalas', 'status', 'incidentDate', 'createdAt'],
@@ -982,11 +990,11 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     /** Auto-loan contracts (vertical A). Read-only through the generic router;
      *  the monthly instalment is amortised by the server at origination
      *  (`rules/loans.ts`) and served as both a formatted string and raw halalas.
-     *  Gated on `accounting`. */
+     *  Gated on `insurance` (F-034 — the vertical-A module covers loans too). */
     key: 'loanContracts',
     path: 'loan-contracts',
     table: s.loanContracts,
-    module: 'accounting',
+    module: 'insurance',
     entity: 'loan_contract',
     search: ['contractNumber', 'borrowerName'],
     sortable: ['contractNumber', 'principalHalalas', 'status', 'startDate', 'createdAt'],
@@ -1013,11 +1021,11 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     /** Loan repayments — the amortised schedule a contract implies (vertical A).
      *  Read-only through the generic router; filter by `loanContractId`. Money is
      *  integer halalas and the schedule's amounts sum to principal + interest.
-     *  Gated on `accounting`. */
+     *  Gated on `insurance` (F-034). */
     key: 'loanRepayments',
     path: 'loan-repayments',
     table: s.loanRepayments,
-    module: 'accounting',
+    module: 'insurance',
     entity: 'loan_repayment',
     search: ['contractNumber'],
     sortable: ['sequence', 'dueDate', 'amountDueHalalas', 'status', 'createdAt'],

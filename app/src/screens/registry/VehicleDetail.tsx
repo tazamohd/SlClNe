@@ -39,13 +39,12 @@ import { derived, rowId } from './writes'
  *    vehicle — so it is absent rather than guessed.
  *
  *  What replaces them is real and joined the way the mobile design itself
- *  joins it: the job cards raised against this vehicle, and the estimates. */
-type Vehicle = RowOf<'vehicles'> & {
-  vin?: string | null
-  mileageKm?: number
-  customerId?: string | null
-  _id?: string
-}
+ *  joins it: the job cards raised against this vehicle, and the estimates.
+ *
+ *  `vin`/`mileageKm`/`customerId` and entity metadata are typed on
+ *  `Repository` itself now (F-020), so `RowOf<'vehicles'>` already carries
+ *  them. */
+type Vehicle = RowOf<'vehicles'>
 type Job = RowOf<'jobs'>
 
 export function VehicleDetail() {

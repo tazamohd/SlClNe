@@ -5,7 +5,7 @@ import { createRepository, mockRepository, type Repository } from '@/data/reposi
  * The seam between screens and their data source, wired into the React tree.
  *
  * `createRepository()` returns the mock synchronously via a resolved Promise
- * when `VITE_API_BASE_URL` is unset, and the HTTP-backed one after a dynamic
+ * when `VITE_API_URL` is unset, and the HTTP-backed one after a dynamic
  * import when set. The provider always starts with `mockRepository` so the
  * first render never shows an empty state — that would flash on every page
  * load. It then upgrades to whatever `createRepository()` returns.

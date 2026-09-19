@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { DemoBadge } from './DemoBadge'
 import { GlobalSearchPalette, useGlobalSearch } from './GlobalSearch'
 
 /** 56px desktop header: search, command palette hint, theme, notifications,
@@ -13,6 +14,7 @@ export function Topbar() {
 
   return (
     <header className="relative z-[5] flex h-topbar flex-shrink-0 items-center gap-3 border-b border-border bg-sidebar px-6 shadow-sm">
+      <DemoBadge />
       <div className="flex-1" />
 
       <span className="relative hidden items-center sm:flex">
@@ -77,7 +79,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
+      className="relative inline-flex h-10 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent text-muted transition-all duration-150 hover:bg-tint-blue hover:text-salis-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-salis-blue"
     >
       <Icon name={icon} size={16} />
       {badge ? (

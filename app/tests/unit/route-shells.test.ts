@@ -19,6 +19,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import { SCREEN_ENTRIES } from '@/routes'
+import { PortalShell } from '@/components/shell/PortalShell'
 import { entryOf, type DomainScreens } from '@/screens/registry'
 import * as portals from '@/screens/domains/portals'
 import * as website from '@/screens/domains/website'
@@ -84,5 +85,38 @@ describe('the shell a screen renders in', () => {
     for (const name of ['CustomerPortal', 'CustomerPortal.Booking', 'TechnicianPortal']) {
       expect(SCREEN_ENTRIES[name]?.shell, name).toBeTruthy()
     }
+  })
+
+  it('puts the procurement portal in PortalShell, not the operational AppShell (F-024)', () => {
+    /* F-009/F-024: these two render AppShell despite the registry recording
+     * PortalShell, because PortalShell did not exist yet when they were
+     * built. It exists now — `routes/index.tsx` splits them out of
+     * APP_SCREENS into their own `asDomain(..., PortalShell)` entry rather
+     * than moving the whole map's default shell. */
+    for (const name of ['ProcurementPortal', 'ProcurementPortal.Requisitions']) {
+      expect(SCREEN_ENTRIES[name]?.shell, name).toBe(PortalShell)
+    }
+  })
+
+  it('routes every screen name a domain barrel declares', () => {
+    /* `lazyBarrel` composes `SCREEN_ENTRIES` from an EXPLICIT array of screen
+     * names per domain, written once in `routes/index.tsx` — not from the
+     * barrel module's own export keys. A name present in a barrel's `SCREENS`
+     * but missing from that array renders `PendingScreen` at runtime even
+     * though the registry marks it IMPLEMENTED, which nothing above this
+     * catches (the previous test explicitly skips a name `routes/index.tsx`
+     * hasn't routed yet, deferring to `screen-registry.test.ts` — which only
+     * unit-tests `composeScreens` against fake fixture data, not any real
+     * barrel). This bit twice in one session — Voice-Commands/Voice-Command-
+     * Interface in the `ai` domain, then five new PublicPortal screens in
+     * `website` — both times caught only by the much slower Playwright smoke
+     * suite. This is the fast, unit-level guard for the same defect class. */
+    const missing: string[] = []
+    for (const [domain, barrel] of Object.entries(BARRELS)) {
+      for (const name of Object.keys(barrel.SCREENS)) {
+        if (!SCREEN_ENTRIES[name]) missing.push(`${domain}/${name}`)
+      }
+    }
+    expect(missing).toEqual([])
   })
 })

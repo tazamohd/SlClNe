@@ -33,8 +33,9 @@ export function DashboardMain() {
   const { data: technicians = [], isLoading: tL } = useCollection('technicians')
 
   type AnyJob = Record<string, string>
+  const asAnyJob = (j: unknown) => j as AnyJob
   const totalRevenue = useMemo(
-    () => jobs.reduce((sum, j) => sum + parseSar((j as AnyJob).total ?? '0'), 0),
+    () => jobs.reduce((sum, j) => sum + parseSar(asAnyJob(j).total ?? '0'), 0),
     [jobs]
   )
   const activeJobs = useMemo(
@@ -42,14 +43,14 @@ export function DashboardMain() {
     [jobs]
   )
   const partsValue = useMemo(
-    () => jobs.reduce((sum, j) => sum + parseSar((j as AnyJob).parts ?? '0'), 0),
+    () => jobs.reduce((sum, j) => sum + parseSar(asAnyJob(j).parts ?? '0'), 0),
     [jobs]
   )
   const outstanding = useMemo(
     () =>
       jobs
         .filter((j) => j.st === 'completed')
-        .reduce((sum, j) => sum + parseSar((j as AnyJob).total ?? '0'), 0),
+        .reduce((sum, j) => sum + parseSar(asAnyJob(j).total ?? '0'), 0),
     [jobs]
   )
 
@@ -94,7 +95,7 @@ export function DashboardMain() {
     const step = Math.max(1, Math.ceil(jobs.length / 7))
     for (let i = 0; i < jobs.length; i++) {
       const bucket = Math.min(Math.floor(i / step), 6)
-      buckets[bucket] += parseSar((jobs[i] as AnyJob).total ?? '0')
+      buckets[bucket] += parseSar(asAnyJob(jobs[i]).total ?? '0')
     }
     const max = Math.max(...buckets, 1)
     return buckets.map((v) => Math.round((v / max) * 40))

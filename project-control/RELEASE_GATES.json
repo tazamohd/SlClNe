@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T08:31:16.612Z",
+  "generatedAt": "2026-09-18T23:31:52.291Z",
   "generator": "project-control/release-gates.mjs",
   "note": "The fourteen release blockers named in tracker/plan-structure.json, each decided by a check that ran, or reported UNCHECKABLE with the reason and the human action that would settle it. PASS means a check ran and the gate holds; nothing here is PASS because nobody contradicted it. Prose status documents (docs/release-blockers.md, docs/certification-report.md, docs/security-report.md) are deliberately not read.",
   "statusVocabulary": {
@@ -8,8 +8,8 @@
     "UNCHECKABLE": "the gate cannot be decided from this repository; evidence says why and what a human must do"
   },
   "summary": {
-    "PASS": 8,
-    "FAIL": 3,
+    "PASS": 11,
+    "FAIL": 0,
     "UNCHECKABLE": 3
   },
   "certifiable": false,
@@ -18,77 +18,77 @@
       "id": "RB-01",
       "title": "No P0 defect open",
       "status": "UNCHECKABLE",
-      "evidence": "No defect tracker exists in this repository, and no artefact in it uses P0 severity. The nearest two are project-control/BLOCKERS.json (5 open: 2 BLOCKER, 1 CRITICAL, 1 HIGH, 1 MEDIUM) and project-control/FINDINGS.json (12 unresolved: 2 MEDIUM, 10 LOW). BLOCKERS.json is computed from the registry rather than being a defect log, and neither file grades anything P0, so calling this gate either way would mean inventing a severity mapping nobody has ratified. A human must either point this gate at the real tracker (Jira/Linear/GitHub Issues) or ratify a mapping — e.g. BLOCKER→P0, CRITICAL→P1 — and record it, at which point this becomes checkable. Open blockers today: BLK-003 (BLOCKER), BLK-004 (CRITICAL), BLK-006 (HIGH), BLK-008 (MEDIUM), BLK-013 (BLOCKER).",
+      "evidence": "No defect tracker exists in this repository, and no artefact in it uses P0 severity. The nearest two are project-control/BLOCKERS.json (2 open: 1 CRITICAL, 1 MEDIUM) and project-control/FINDINGS.json (1 unresolved: 1 LOW). BLOCKERS.json is computed from the registry rather than being a defect log, and neither file grades anything P0, so calling this gate either way would mean inventing a severity mapping nobody has ratified. A human must either point this gate at the real tracker (Jira/Linear/GitHub Issues) or ratify a mapping — e.g. BLOCKER→P0, CRITICAL→P1 — and record it, at which point this becomes checkable. Open blockers today: BLK-004 (CRITICAL), BLK-010 (MEDIUM).",
       "checkedBy": "no source of truth in repo"
     },
     {
       "id": "RB-02",
       "title": "No P1 defect open",
       "status": "UNCHECKABLE",
-      "evidence": "No defect tracker exists in this repository, and no artefact in it uses P1 severity. The nearest two are project-control/BLOCKERS.json (5 open: 2 BLOCKER, 1 CRITICAL, 1 HIGH, 1 MEDIUM) and project-control/FINDINGS.json (12 unresolved: 2 MEDIUM, 10 LOW). BLOCKERS.json is computed from the registry rather than being a defect log, and neither file grades anything P1, so calling this gate either way would mean inventing a severity mapping nobody has ratified. A human must either point this gate at the real tracker (Jira/Linear/GitHub Issues) or ratify a mapping — e.g. BLOCKER→P0, CRITICAL→P1 — and record it, at which point this becomes checkable. Open blockers today: BLK-003 (BLOCKER), BLK-004 (CRITICAL), BLK-006 (HIGH), BLK-008 (MEDIUM), BLK-013 (BLOCKER).",
+      "evidence": "No defect tracker exists in this repository, and no artefact in it uses P1 severity. The nearest two are project-control/BLOCKERS.json (2 open: 1 CRITICAL, 1 MEDIUM) and project-control/FINDINGS.json (1 unresolved: 1 LOW). BLOCKERS.json is computed from the registry rather than being a defect log, and neither file grades anything P1, so calling this gate either way would mean inventing a severity mapping nobody has ratified. A human must either point this gate at the real tracker (Jira/Linear/GitHub Issues) or ratify a mapping — e.g. BLOCKER→P0, CRITICAL→P1 — and record it, at which point this becomes checkable. Open blockers today: BLK-004 (CRITICAL), BLK-010 (MEDIUM).",
       "checkedBy": "no source of truth in repo"
     },
     {
       "id": "RB-03",
       "title": "No critical golden-path failure",
-      "status": "FAIL",
-      "evidence": "project-control/GOLDEN_PATHS.json (written by the golden-path runner, not by this checker) reports 16 of 23 named paths FAILING: New customer to paid invoice, Existing customer service, Technician job completion, Parts procurement, Inventory receiving, Inventory consumption, Supplier order, CRM lead conversion, Insurance claim, Loan workflow, Employee onboarding, Accounting reconciliation, Report generation, Customer portal, Supplier portal, Kiosk. 0 more are UNWRITTEN (), so the gate would still not be decidable even with the failure fixed: nothing has walked those paths, and \"nobody checked\" is not \"nothing failed\".",
+      "status": "PASS",
+      "evidence": "project-control/GOLDEN_PATHS.json reports all 23 golden paths PASSING.",
       "checkedBy": "golden-path runner"
     },
     {
       "id": "RB-04",
       "title": "No cross-tenant access in the RBAC lab",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 36 mapped assertion(s) passed across 8 suite file(s) (tests/api.test.ts, tests/approvals-queue.test.ts, tests/estimate-money.test.ts, tests/export.test.ts, tests/finance-reports.test.ts, tests/history-read.test.ts, tests/isolation.test.ts, tests/rbac-lab.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 36 mapped assertion(s) passed across 8 suite file(s) (tests/api.test.ts, tests/approvals-queue.test.ts, tests/estimate-money.test.ts, tests/export.test.ts, tests/finance-reports.test.ts, tests/history-read.test.ts, tests/isolation.test.ts, tests/rbac-lab.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
       "checkedBy": "server-suite"
     },
     {
       "id": "RB-05",
       "title": "No unauthorized financial operation",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 51 mapped assertion(s) passed across 8 suite file(s) (tests/api.test.ts, tests/approvals-queue.test.ts, tests/authz-matrix.test.ts, tests/authz-sod.test.ts, tests/collections.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts, tests/writes.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 59 mapped assertion(s) passed across 8 suite file(s) (tests/api.test.ts, tests/approvals-queue.test.ts, tests/authz-matrix.test.ts, tests/authz-sod.test.ts, tests/collections.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts, tests/writes.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
       "checkedBy": "server-suite"
     },
     {
       "id": "RB-06",
       "title": "No financial calculation corruption",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 29 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/estimate-money.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. Scope note: this proves the arithmetic engine and the money endpoints — totals derived from lines rather than trusted from the client, tax on the discounted net, one rounding at the total, payment never exceeding the balance, no double-billing under a repeated Idempotency-Key, and only one of two simultaneous payments taking the last of a balance. It does not clear the seeded ledger: FINDINGS.json F-008 (MEDIUM, open) records that the seeded chart of accounts does not balance, and tests/finance-reports.test.ts asserts the trial balance reports that imbalance honestly rather than forcing it to zero. That is seed data, not a calculation defect, and it is a separate open finding.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 33 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/estimate-money.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. Scope note: this proves the arithmetic engine and the money endpoints — totals derived from lines rather than trusted from the client, tax on the discounted net, one rounding at the total, payment never exceeding the balance, no double-billing under a repeated Idempotency-Key, and only one of two simultaneous payments taking the last of a balance. FINDINGS.json F-008 (RESOLVED) covered the balance-sheet identity (assets = liabilities + equity), which tests/finance-reports.test.ts now asserts holds exactly (differenceHalalas 0, balanced true). The full five-account-type trial balance still legitimately doesn't tie — this fixture carries no period-close entries, so its residual equals exactly the period's unclosed net income, which the same test asserts honestly rather than forcing to zero. That is expected seed behaviour, not a calculation defect.",
       "checkedBy": "server-suite"
     },
     {
       "id": "RB-07",
       "title": "No inventory corruption",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/inventory-enforcement.test.ts, tests/procurement.test.ts, tests/rules.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/inventory-enforcement.test.ts, tests/procurement.test.ts, tests/rules.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
       "checkedBy": "server-suite"
     },
     {
       "id": "RB-08",
       "title": "No authentication bypass",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/auth.test.ts, tests/isolation.test.ts, tests/security.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/auth.test.ts, tests/isolation.test.ts, tests/security.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false.",
       "checkedBy": "server-suite"
     },
     {
       "id": "RB-09",
       "title": "No critical security vulnerability",
       "status": "PASS",
-      "evidence": "`npm audit --json` in app/, server/ and packages/contract/ — app: 0 critical, 0 high, 5 moderate, 0 low; server: 0 critical, 0 high, 4 moderate, 0 low; packages/contract: 0 critical, 0 high, 0 moderate, 0 low. No critical advisory anywhere and no high advisory reaching a production dependency. Failing rule: any critical advisory anywhere, or any high advisory that reaches a production dependency. A high in a dev-only tool and a high in the ORM that serves customer data are not the same finding, so the chain is traced through npm's own effects graph rather than counted flat. Scope: dependency advisories only; no SAST or penetration test has been run against this tree.",
+      "evidence": "`npm audit --json` in app/, server/ and packages/contract/ — app: 0 critical, 0 high, 8 moderate, 0 low; server: 0 critical, 0 high, 4 moderate, 0 low; packages/contract: 0 critical, 0 high, 0 moderate, 0 low. No critical advisory anywhere and no high advisory reaching a production dependency. Failing rule: any critical advisory anywhere, or any high advisory that reaches a production dependency. A high in a dev-only tool and a high in the ORM that serves customer data are not the same finding, so the chain is traced through npm's own effects graph rather than counted flat. Scope: dependency advisories only; no SAST or penetration test has been run against this tree.",
       "checkedBy": "npm-audit"
     },
     {
       "id": "RB-10",
       "title": "No exposed secret (three chat-exposed PATs rotated)",
-      "status": "FAIL",
-      "evidence": "built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2303 files, 26.3 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, google-api-key, stripe-live-key, npm-token) — 0 finding(s). CI secret scanning is configured in .github/workflows/ci.yml (job: security). The tree is clean, but the second half of the gate is not met. Rotation of the three chat-exposed PATs is not recorded as done: BLK-003 (BLOCKER) \"Three GitHub PATs were exposed in chat and are not confirmed rotated\" is open in BLOCKERS.json; RISK_REGISTER.json R-03 \"Three GitHub PATs were pasted in chat\" is status=open. A scan finding nothing proves no credential is committed here; it cannot prove a credential already leaked elsewhere was rotated — that is a fact about GitHub, and the only thing this repository can hold is the record. To clear: rotate all three tokens at GitHub, then close BLK-003 and move R-03 to mitigated with the date and who confirmed each revocation.",
+      "status": "PASS",
+      "evidence": "built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2598 files, 30.2 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, google-api-key, stripe-live-key, npm-token) — 0 finding(s). CI secret scanning is configured in .github/workflows/ci.yml (job: security). Rotation is recorded: BLK-003 is closed and RISK_REGISTER.json R-03 is mitigated.",
       "checkedBy": "secret-scan + tracker"
     },
     {
       "id": "RB-11",
       "title": "No major data loss path",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 7 mapped assertion(s) passed across 3 suite file(s) (tests/api.test.ts, tests/authz-matrix.test.ts, tests/writes.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. Schema scan of server/drizzle (14 migrations): 61 foreign keys, 0 with ON DELETE CASCADE, 0 destructive statements (DROP TABLE/COLUMN/SCHEMA, TRUNCATE), 78 deleted_at references. Scope: this decides the four data-loss paths a repository can express — deletes hide rows rather than destroying them, the audit log cannot be updated, deleted or truncated even by the application role, delete is gated behind the delete grant rather than export, and no foreign key cascades a parent's removal into its children. It says nothing about retention, replication or restorability; that is RB-12, which is UNCHECKABLE here.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 7 mapped assertion(s) passed across 3 suite file(s) (tests/api.test.ts, tests/authz-matrix.test.ts, tests/writes.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. Schema scan of server/drizzle (19 migrations): 62 foreign keys, 0 with ON DELETE CASCADE, 0 destructive statements (DROP TABLE/COLUMN/SCHEMA, TRUNCATE), 83 deleted_at references. Scope: this decides the four data-loss paths a repository can express — deletes hide rows rather than destroying them, the audit log cannot be updated, deleted or truncated even by the application role, delete is gated behind the delete grant rather than export, and no foreign key cascades a parent's removal into its children. It says nothing about retention, replication or restorability; that is RB-12, which is UNCHECKABLE here.",
       "checkedBy": "server-suite + schema-scan"
     },
     {
@@ -101,15 +101,15 @@
     {
       "id": "RB-13",
       "title": "No broken critical mobile workflow",
-      "status": "FAIL",
-      "evidence": "4 of 7 phone- and kiosk-facing golden path(s) fail in the mobile project (390x840) of the Playwright suite, per project-control/GOLDEN_PATHS.json: Customer portal; Supplier portal; Kiosk; Inventory consumption. 1 fail on mobile while passing on desktop, which is a phone-specific break rather than a product-wide one: Inventory consumption. Open mobile blockers: BLK-006 (HIGH): 1 built screens owe their designed mobile layout | BLK-008 (MEDIUM): Tablet verification samples 6 screens, not the full inventory.",
+      "status": "PASS",
+      "evidence": "All 6 phone- and kiosk-facing golden path(s) pass in the mobile project (390x840) of the Playwright suite, per project-control/GOLDEN_PATHS.json (projects: desktop, mobile). Note this covers workflow completion at a phone viewport, not layout quality: BLK-008 (tablet 768-1024) is a separate, still-open concern, and app/scripts/mobile-audit.mjs measures horizontal overflow rather than whether a workflow finishes.",
       "checkedBy": "playwright mobile project via the golden-path run record"
     },
     {
       "id": "RB-14",
       "title": "Invoice and payment workflows intact",
       "status": "PASS",
-      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 23 mapped assertion(s) passed across 5 suite file(s) (tests/api.test.ts, tests/collections.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts, tests/writes.test.ts); whole run 2473/2473 passed, 0 failed, 0 skipped in 52.6s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. The screens are wired to those endpoints and not to fixtures: 5 of 5 core invoice/payment product screens are dataBacked in MASTER_REGISTRY.json (D-InvoiceCreate /invoice-create dataBacked=true; D-InvoiceDetail /invoice-detail dataBacked=true; D-InvoicePreview /invoice-preview dataBacked=true; D-Invoices /invoices dataBacked=true; D-Payments /payments dataBacked=true). Scope: this proves the workflow end to end at the API — draft to issue, issue locked against edit and against a second issue, payment refused above the balance and against an unissued or cancelled invoice, duplicate submissions collapsed by Idempotency-Key, and two simultaneous payments racing for the last of a balance where only one wins — and confirms the screens read it. It does not prove a person can drive that flow through the UI: the \"New customer to paid invoice\" golden path is unwritten (RB-03), so no browser has walked it.",
+      "evidence": "`npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 25 mapped assertion(s) passed across 5 suite file(s) (tests/api.test.ts, tests/collections.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts, tests/writes.test.ts); whole run 565/565 passed, 0 failed, 0 skipped in 68.2s. Row-level security was in force: DATABASE_URL connects as \"salis_app\", pg_roles reports rolsuper=false and rolbypassrls=false. The screens are wired to those endpoints and not to fixtures: 5 of 5 core invoice/payment product screens are dataBacked in MASTER_REGISTRY.json (D-InvoiceCreate /invoice-create dataBacked=true; D-InvoiceDetail /invoice-detail dataBacked=true; D-InvoicePreview /invoice-preview dataBacked=true; D-Invoices /invoices dataBacked=true; D-Payments /payments dataBacked=true). Scope: this proves the workflow end to end at the API — draft to issue, issue locked against edit and against a second issue, payment refused above the balance and against an unissued or cancelled invoice, duplicate submissions collapsed by Idempotency-Key, and two simultaneous payments racing for the last of a balance where only one wins — and confirms the screens read it. It does not prove a person can drive that flow through the UI: the \"New customer to paid invoice\" golden path is unwritten (RB-03), so no browser has walked it.",
       "checkedBy": "server-suite + registry"
     }
   ],
@@ -117,12 +117,12 @@
     "serverSuite": {
       "ran": true,
       "command": "npx vitest run --reporter=json --outputFile=<tmp> (in server/)",
-      "files": 30,
-      "total": 2473,
-      "passed": 2473,
+      "files": 37,
+      "total": 565,
+      "passed": 565,
       "failed": 0,
       "skipped": 0,
-      "durationSeconds": 52.6,
+      "durationSeconds": 68.2,
       "exitCode": 0,
       "rowLevelSecurity": {
         "applicationRole": "salis_app",
@@ -138,10 +138,10 @@
         "counts": {
           "info": 0,
           "low": 0,
-          "moderate": 5,
+          "moderate": 8,
           "high": 0,
           "critical": 0,
-          "total": 5
+          "total": 8
         },
         "highAndCritical": []
       },
@@ -176,7 +176,7 @@
       "tool": "built-in prefix rules (gitleaks is not installed here)",
       "command": "node project-control/release-gates.mjs — internal scanner",
       "scope": "working tree only, not git history",
-      "filesScanned": 2303,
+      "filesScanned": 2598,
       "findings": [],
       "note": "Findings carry file, line and rule only. Matched text is never captured or written.",
       "ciScanning": {
@@ -186,11 +186,11 @@
     },
     "schemaScan": {
       "ran": true,
-      "migrations": 14,
-      "foreignKeys": 61,
+      "migrations": 19,
+      "foreignKeys": 62,
       "cascades": [],
       "destructive": [],
-      "softDeleteColumns": 78
+      "softDeleteColumns": 83
     },
     "defectArtefacts": {
       "ran": true,
@@ -198,95 +198,25 @@
       "findingsFile": "project-control/FINDINGS.json",
       "openBlockers": [
         {
-          "id": "BLK-003",
-          "severity": "BLOCKER",
-          "title": "Three GitHub PATs were exposed in chat and are not confirmed rotated"
-        },
-        {
           "id": "BLK-004",
           "severity": "CRITICAL",
-          "title": "285 rendered capabilities are mock-only"
+          "title": "280 rendered capabilities are mock-only"
         },
         {
-          "id": "BLK-006",
-          "severity": "HIGH",
-          "title": "1 built screens owe their designed mobile layout"
-        },
-        {
-          "id": "BLK-008",
+          "id": "BLK-010",
           "severity": "MEDIUM",
-          "title": "Tablet verification samples 6 screens, not the full inventory"
-        },
-        {
-          "id": "BLK-013",
-          "severity": "BLOCKER",
-          "title": "16 golden paths fail"
+          "title": "1 screen files are unreachable from any route"
         }
       ],
       "openFindings": [
         {
-          "id": "F-008",
-          "severity": "MEDIUM",
-          "title": "The seeded chart of accounts does not balance"
-        },
-        {
-          "id": "F-009",
+          "id": "F-041",
           "severity": "LOW",
-          "title": "Two implemented screens render a shell that does not exist yet"
-        },
-        {
-          "id": "F-010",
-          "severity": "MEDIUM",
-          "title": "23 icon names resolve to no glyph"
-        },
-        {
-          "id": "F-019",
-          "severity": "LOW",
-          "title": "Two UI-foundation primitives have correctness gaps the wave leaned on"
-        },
-        {
-          "id": "F-020",
-          "severity": "LOW",
-          "title": "The client Repository is typed against fixtures, not the contract"
-        },
-        {
-          "id": "F-021",
-          "severity": "LOW",
-          "title": "Roughly 135 UI strings shipped this wave have no Arabic key"
-        },
-        {
-          "id": "F-024",
-          "severity": "LOW",
-          "title": "Two procurement-portal screens still render AppShell instead of PortalShell"
-        },
-        {
-          "id": "F-026",
-          "severity": "LOW",
-          "title": "~172 new UI strings across portals and the public site have no Arabic key"
-        },
-        {
-          "id": "F-031",
-          "severity": "LOW",
-          "title": "Four Tier C public pages have no registry route to build against"
-        },
-        {
-          "id": "F-032",
-          "severity": "LOW",
-          "title": "external_dependency_unavailable is not in the client RepositoryErrorCode union"
-        },
-        {
-          "id": "F-033",
-          "severity": "LOW",
-          "title": "Feature-map screens with no SCREEN_MODULE mapping open for any role, then 403 on their data"
-        },
-        {
-          "id": "F-034",
-          "severity": "LOW",
-          "title": "No real insurance or loans module in the RBAC matrix"
+          "title": "build-registry.mjs's dataBacked/MOCK_ONLY heuristic only recognizes the generic useCollection/useEntity/useCreate/useUpdate/useDelete/useBulk seam — every screen wired through a bespoke live-only API object is still counted mock-only"
         }
       ],
-      "blockerSeverities": "2 BLOCKER, 1 CRITICAL, 1 HIGH, 1 MEDIUM",
-      "findingSeverities": "2 MEDIUM, 10 LOW",
+      "blockerSeverities": "1 CRITICAL, 1 MEDIUM",
+      "findingSeverities": "1 LOW",
       "usesP0P1": false
     },
     "goldenPaths": {
@@ -333,27 +263,24 @@
         "runner": "playwright",
         "present": false,
         "covered": 0,
-        "of": 424,
+        "of": 433,
         "note": "W3 — Agent 18"
       },
       "tabletSuite": {
         "runner": "playwright",
         "present": true,
-        "covered": 6,
-        "of": 424,
-        "note": "e2e/tablet.spec.ts — 8 viewports x 6 screens, one per layout family, plus a rotation across the 860px breakpoint"
+        "covered": 433,
+        "of": 433,
+        "note": "e2e/tablet.spec.ts — 8 viewports x 433 screens (every registered capability), plus a rotation across the 860px breakpoint"
       },
       "goldenPathSuite": {
         "runner": "playwright",
         "present": true,
-        "covered": 7,
+        "covered": 23,
         "of": 23,
-        "note": "scripts/golden-paths.mjs — 16 failing, 0 unwritten"
+        "note": "scripts/golden-paths.mjs — 0 failing, 0 unwritten"
       },
-      "openMobileBlockers": [
-        "BLK-006 (HIGH): 1 built screens owe their designed mobile layout",
-        "BLK-008 (MEDIUM): Tablet verification samples 6 screens, not the full inventory"
-      ]
+      "openMobileBlockers": []
     },
     "invoiceScreens": {
       "total": 5,
@@ -367,17 +294,13 @@
       ]
     },
     "patRotation": {
-      "blocker": {
-        "id": "BLK-003",
-        "severity": "BLOCKER",
-        "title": "Three GitHub PATs were exposed in chat and are not confirmed rotated"
-      },
+      "blocker": null,
       "risk": {
         "id": "R-03",
-        "status": "open",
+        "status": "mitigated",
         "title": "Three GitHub PATs were pasted in chat"
       },
-      "rotationRecorded": false
+      "rotationRecorded": true
     }
   }
 }

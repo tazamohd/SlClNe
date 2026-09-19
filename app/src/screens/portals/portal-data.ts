@@ -1,43 +1,18 @@
 /** Shared row shapes and small derivations for the portal screens.
  *
- *  Like `workshop/stages.ts`, the row types widen the fixture-inferred
- *  `RowOf<…>` with the columns only the API serves (`scheduledDate`,
- *  `balanceHalalas`, entity metadata). Both shapes reach these screens —
- *  fixtures with `VITE_API_URL` unset, API rows with it set — so every extra
- *  column is optional and every screen degrades honestly when one is absent. */
+ *  These used to widen the fixture-inferred `RowOf<…>` by hand with the
+ *  columns only the API serves (`scheduledDate`, `balanceHalalas`, entity
+ *  metadata) — that widening is typed on `Repository` itself now (F-020), so
+ *  each of these is a plain alias, kept because the screens below already
+ *  import it by this name. */
 import type { RowOf } from '@/data/useCollection'
 import type { JobRow } from '@/screens/workshop/stages'
 
-export type AppointmentRow = RowOf<'appointments'> & {
-  _id?: string
-  /** ISO date the API stores; fixture rows carry only the time label. */
-  scheduledDate?: string | null
-  startMinute?: number
-}
-
-export type VehicleRow = RowOf<'vehicles'> & {
-  _id?: string
-  customerId?: string | null
-}
-
-/** The kiosk resolves a walk-in to one of these by phone number before it will
- *  show anybody a vehicle. `_id` is what the appointment is then filed against;
- *  the fixture rows carry no id, which is why it is optional here too. */
-export type CustomerRow = RowOf<'customers'> & {
-  _id?: string
-}
-
-export type InvoiceRow = RowOf<'invoices'> & {
-  _id?: string
-  totalHalalas?: number
-  paidHalalas?: number
-  balanceHalalas?: number
-}
-
-export type EstimateRow = RowOf<'estimates'> & {
-  _id?: string
-  totalHalalas?: number
-}
+export type AppointmentRow = RowOf<'appointments'>
+export type VehicleRow = RowOf<'vehicles'>
+export type CustomerRow = RowOf<'customers'>
+export type InvoiceRow = RowOf<'invoices'>
+export type EstimateRow = RowOf<'estimates'>
 
 /** Job states the board treats as finished. `st` is the design's status
  *  vocabulary; `stage` (API only) is the machine's. Either saying "done" wins. */

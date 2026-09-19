@@ -30,10 +30,10 @@ import { NoWritesNotice, asPatch, rowId, serverFieldError } from './writes'
  *  has to do that an API body does not: every control produces a string, and an
  *  untouched optional field produces an empty one that must be dropped rather
  *  than sent as `""`. */
+/** `email` and entity metadata are typed on `Repository` itself now (F-020),
+ *  so this already carries the columns the API returns beyond the three the
+ *  fixture-derived shape used to be limited to. */
 type Customer = RowOf<'customers'>
-
-/** Columns the API returns that the fixture-derived row type does not name. */
-type CustomerFields = Customer & { email?: string | null }
 
 const customerForm = z
   .object({
@@ -61,7 +61,7 @@ export function CustomerFormModal({
 }: {
   open: boolean
   onClose: () => void
-  customer?: CustomerFields
+  customer?: Customer
 }) {
   const { t } = usePreferences()
   const toast = useToast()

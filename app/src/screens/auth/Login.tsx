@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { AuthLayout, BrandMark } from '@/components/shell/AuthLayout'
+import { DemoBadge } from '@/components/shell/DemoBadge'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { ROLES, destinationFor } from '@/data/rbac'
@@ -239,6 +240,7 @@ export function Login() {
               <p className="font-display text-sm font-bold text-heading">
                 {t('Quick access — pick a role')}
               </p>
+              <DemoBadge />
             </div>
             <p className="mt-[7px] text-pretty text-xs leading-[1.55] text-muted">
               {t(

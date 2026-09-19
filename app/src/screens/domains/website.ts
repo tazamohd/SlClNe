@@ -21,6 +21,8 @@ import { PublicAutomation } from '../public/Automation'
 import { PublicBlog } from '../public/Blog'
 import { PublicBookDemo } from '../public/BookDemo'
 import { PublicCareers } from '../public/Careers'
+import { PublicCompanyStory } from '../public/CompanyStory'
+import { PublicComparePlans } from '../public/ComparePlans'
 import { PublicContact } from '../public/Contact'
 import { PublicCookiePolicy } from '../public/CookiePolicy'
 import { PublicCRM } from '../public/CRM'
@@ -28,6 +30,7 @@ import { PublicCustomerPortal } from '../public/CustomerPortalPage'
 import { PublicFaq } from '../public/Faq'
 import { PublicFeatures } from '../public/Features'
 import { PublicFleet } from '../public/Fleet'
+import { PublicGettingStarted } from '../public/GettingStarted'
 import { PublicIndustries } from '../public/Industries'
 import { PublicInsurance } from '../public/Insurance'
 import { PublicIntegrations } from '../public/Integrations'
@@ -35,6 +38,7 @@ import { PublicLoans } from '../public/Loans'
 import { PublicMiniERP } from '../public/MiniERP'
 import { PublicPartsAccessories } from '../public/PartsAccessories'
 import { PublicDealsOffers } from '../public/DealsOffers'
+import { PublicPlatformArchitecture } from '../public/PlatformArchitecture'
 import { PublicPricing } from '../public/Pricing'
 import { PublicProducts } from '../public/Products'
 import { PublicRequestDemo } from '../public/RequestDemo'
@@ -45,6 +49,7 @@ import { PublicServices } from '../public/Services'
 import { PublicSolutions } from '../public/Solutions'
 import { PublicSpareParts } from '../public/SpareParts'
 import { PublicSupplierPortal } from '../public/SupplierPortalPage'
+import { PublicSupplyChain } from '../public/SupplyChain'
 import { PublicSupport } from '../public/Support'
 import { PublicTechnicianPortal } from '../public/TechnicianPortalPage'
 import { PublicWorkshop } from '../public/Workshop'
@@ -66,12 +71,15 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.Blog': pub(PublicBlog),
   'PublicPortal.BookDemo': pub(PublicBookDemo),
   'PublicPortal.Careers': pub(PublicCareers),
+  'PublicPortal.CompanyStory': pub(PublicCompanyStory),
+  'PublicPortal.ComparePlans': pub(PublicComparePlans),
   'PublicPortal.Contact': pub(PublicContact),
   'PublicPortal.CRM': pub(PublicCRM),
   'PublicPortal.CustomerPortal': pub(PublicCustomerPortal),
   'PublicPortal.FAQ': pub(PublicFaq),
   'PublicPortal.Features': pub(PublicFeatures),
   'PublicPortal.Fleet': pub(PublicFleet),
+  'PublicPortal.GettingStarted': pub(PublicGettingStarted),
   'PublicPortal.Industries': pub(PublicIndustries),
   'PublicPortal.Insurance': pub(PublicInsurance),
   'PublicPortal.Integrations': pub(PublicIntegrations),
@@ -79,6 +87,7 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.MiniERP': pub(PublicMiniERP),
   'PublicPortal.PartsAccessories': pub(PublicPartsAccessories),
   'PublicPortal.DealsOffers': pub(PublicDealsOffers),
+  'PublicPortal.Platform': pub(PublicPlatformArchitecture),
   'PublicPortal.Pricing': pub(PublicPricing),
   'PublicPortal.Products': pub(PublicProducts),
   'PublicPortal.RequestDemo': pub(PublicRequestDemo),
@@ -89,6 +98,7 @@ export const SCREENS: DomainScreens = {
   'PublicPortal.Solutions': pub(PublicSolutions),
   'PublicPortal.SpareParts': pub(PublicSpareParts),
   'PublicPortal.SupplierPortal': pub(PublicSupplierPortal),
+  'PublicPortal.SupplyChain': pub(PublicSupplyChain),
   'PublicPortal.Support': pub(PublicSupport),
   'PublicPortal.TechnicianPortal': pub(PublicTechnicianPortal),
   'PublicPortal.Workshop': pub(PublicWorkshop),

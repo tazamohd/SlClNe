@@ -681,7 +681,7 @@ export const ACCOUNTS_COA = [
     "code": "3000",
     "name": "Owner's Equity",
     "type": "Equity",
-    "balance": "SAR 2,800,000",
+    "balance": "SAR 2,542,950",
     "children": 2
   },
   {

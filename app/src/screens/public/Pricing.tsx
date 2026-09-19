@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { useT } from '@/providers/PreferencesProvider'
+import { Icon } from '@/components/ui/Icon'
+import { useT, usePreferences } from '@/providers/PreferencesProvider'
 import { usePageMeta } from './usePageMeta'
 import { SectionIntro } from './sections/SectionIntro'
 import { CornerBrackets } from './sections/CornerBrackets'
@@ -60,6 +61,8 @@ const PLANS: readonly Plan[] = [
 
 export function PublicPricing() {
   const t = useT()
+  const { language } = usePreferences()
+  const rtl = language === 'ar'
   usePageMeta({
     title: t('Pricing — SALIS AUTO'),
     description: t(
@@ -112,6 +115,15 @@ export function PublicPricing() {
         {t(
           'Final configuration and cost depend on the modules you need, the number of branches and users, data migration, integrations, training and your support or service-level requirements. A sales specialist will scope this with you before any commitment.'
         )}
+      </p>
+      <p className="mx-auto mt-4 text-center">
+        <Link
+          to="/public-portal/compare-plans"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-salis-blue no-underline hover:underline"
+        >
+          {t('Compare what each plan carries, line by line')}
+          <Icon name={rtl ? 'ArrowLeft' : 'ArrowRight'} size={14} />
+        </Link>
       </p>
     </div>
   )

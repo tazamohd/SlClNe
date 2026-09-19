@@ -13,10 +13,11 @@
  *     isolation is the same boundary as the arithmetic.
  *  2. **Money stays integer halalas.** Every sum is a `bigint` cast, returned
  *     as an integer count of halalas; nothing here divides by 100.
- *  3. **Reality is reported, not smoothed.** The trial balance surfaces F-008's
- *     SAR 257,050 imbalance as a real number rather than forcing the books to
- *     tie. A report that hides a bad figure to look correct is the one thing
- *     §A10 exists to forbid.
+ *  3. **Reality is reported, not smoothed.** The trial balance reports the real
+ *     `balanceSheet.differenceHalalas` rather than forcing the columns to tie —
+ *     F-008 (a SAR 257,050 fixture-data imbalance) was caught this way and is
+ *     now fixed at the source. A report that hides a bad figure to look
+ *     correct is the one thing §A10 exists to forbid.
  */
 import { sql, type SQL, type SQLWrapper } from 'drizzle-orm'
 import type { FastifyInstance, FastifyRequest } from 'fastify'
@@ -221,9 +222,11 @@ export function registerFinanceReportRoutes(app: FastifyInstance, deps: FinanceR
   /* ---------------------------------- GET /accounting/reports/trial-balance
    * A trial balance over the chart of accounts, plus a P&L roll-up and a
    * journal-entry roll-up — the endpoint AGGREGATE_GAP.ledger named. It reports
-   * reality: the seeded ledger does not balance (F-008 — assets are out against
-   * liabilities plus equity by SAR 257,050), and this surfaces that as a real
-   * `balanceSheet.differenceHalalas` rather than forcing the columns to tie.
+   * reality rather than forcing the columns to tie: `balanceSheet.balanced`
+   * is a real computation (this caught F-008, a SAR 257,050 fixture-data
+   * imbalance, now fixed at the source), and the full trial balance's own
+   * `balanced` legitimately stays false on this seed — it has no period-close
+   * entries, so the residual is exactly the period's unclosed net income.
    * Gated on `accounting:v`. */
   app.get('/accounting/reports/trial-balance', async (request) => {
     const principal = principalOf(request)

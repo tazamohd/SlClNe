@@ -96,7 +96,7 @@ export function WorkshopCheckIn() {
               />
               <ReadField
                 label={t('Email')}
-                value={(customer as { email?: string } | undefined)?.email ?? '—'}
+                value={customer?.email ?? '—'}
                 redacted={hideContact}
               />
               <ReadField label={t('Total Visits')} value={customer?.vehicles ?? '—'} />
@@ -110,7 +110,7 @@ export function WorkshopCheckIn() {
               <ReadField label={t('Status')} value={t(vehicle?.status ?? '—')} />
               <ReadField
                 label="VIN"
-                value={(vehicle as { vin?: string } | undefined)?.vin ?? '—'}
+                value={vehicle?.vin ?? '—'}
                 code
               />
             </FieldGrid>

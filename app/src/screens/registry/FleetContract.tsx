@@ -42,8 +42,10 @@ import { FleetRenewModal } from './FleetRenewModal'
  *  keyed to a vehicle by make, not to a fleet), so it keeps its honest empty
  *  state. Against the fixtures the Renew action refuses honestly with the "set
  *  VITE_API_URL" state rather than faking a renewal. */
+/** Entity metadata is typed on `Repository` itself now (F-020); the rest
+ *  below are columns `fleets`/`customers` carry that have no F-020 entry of
+ *  their own yet (`vehicles`' `customerId` does — see `VehicleRow`). */
 type Fleet = RowOf<'fleets'> & {
-  _id?: string
   contractType?: string
   contractValue?: string
   start?: string
@@ -52,8 +54,8 @@ type Fleet = RowOf<'fleets'> & {
   contact?: string
   contactPhone?: string
 }
-type Customer = RowOf<'customers'> & { _id?: string; fleetId?: string | null }
-type Vehicle = RowOf<'vehicles'> & { customerId?: string | null }
+type Customer = RowOf<'customers'> & { fleetId?: string | null }
+type Vehicle = RowOf<'vehicles'>
 
 const TYPE_LABEL: Record<string, string> = {
   standard: 'Standard',

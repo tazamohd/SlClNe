@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 1 screens, 28 API endpoints and 2 entities, gated by the `procurement` permission module.
+This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 3 screens, 28 API endpoints and 2 entities, gated by the `procurement` permission module.
 
 
 ## Actors
@@ -103,6 +103,8 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-PurchaseOrder | `/purchase-order` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-085 | `/purchase-agent-suppliers` | app | yes | yes | yes | yes | verified | yes |
 
 ## Known gaps in this domain
 

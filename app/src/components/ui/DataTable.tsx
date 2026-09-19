@@ -145,7 +145,15 @@ export function DataTable<TRow>({
                       : undefined
                   }
                   tabIndex={onRowClick ? 0 : undefined}
-                  role={onRowClick ? 'button' : undefined}
+                  // Not `role="button"`: an Actions column's real `<button>`s
+                  // sit inside this row, and a widget role (button, link, …)
+                  // may not contain another interactive widget — axe's
+                  // `nested-interactive` rule, and screen readers disagree on
+                  // what happens when it does. `role="row"` is what a `<tr>`
+                  // already is implicitly; naming it keeps `tabIndex` and the
+                  // key handler above meaningful to assistive tech without
+                  // claiming a role that conflicts with its own children.
+                  role={onRowClick ? 'row' : undefined}
                   className={cn(
                     'transition-colors duration-150',
                     onRowClick &&

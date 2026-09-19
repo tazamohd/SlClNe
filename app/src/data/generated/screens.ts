@@ -48,6 +48,30 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Deployed AI agents"
   },
   {
+    "name": "AI-Automation",
+    "route": "/ai-automation",
+    "hasMobile": false,
+    "purpose": "AI-driven workshop automation rules"
+  },
+  {
+    "name": "AI-Chatbot",
+    "route": "/ai-chatbot",
+    "hasMobile": false,
+    "purpose": "Customer-facing AI chatbot"
+  },
+  {
+    "name": "AI-Chatbot-Assistant",
+    "route": "/ai-chatbot-assistant",
+    "hasMobile": false,
+    "purpose": "Staff-facing AI chatbot assistant"
+  },
+  {
+    "name": "AI-Service-Advisor",
+    "route": "/ai-service-advisor",
+    "hasMobile": false,
+    "purpose": "AI-assisted service advisor recommendations"
+  },
+  {
     "name": "AIAnalytics",
     "route": "/aianalytics",
     "hasMobile": true,
@@ -312,6 +336,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Role-adaptive KPI home"
   },
   {
+    "name": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "hasMobile": false,
+    "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue"
+  },
+  {
     "name": "Departments",
     "route": "/departments",
     "hasMobile": true,
@@ -546,6 +576,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "System maintenance banner"
   },
   {
+    "name": "ML-Fraud-Detection",
+    "route": "/ml-fraud-detection",
+    "hasMobile": false,
+    "purpose": "Machine-learning fraud detection on claims/transactions"
+  },
+  {
     "name": "ModelSettings",
     "route": "/model-settings",
     "hasMobile": true,
@@ -562,6 +598,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/native/i-os",
     "hasMobile": false,
     "purpose": "Native shell frame — iOS"
+  },
+  {
+    "name": "Neural-Network-Prediction",
+    "route": "/neural-network-prediction",
+    "hasMobile": false,
+    "purpose": "Neural-network demand/failure prediction"
   },
   {
     "name": "NotificationCenter",
@@ -750,6 +792,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Careers"
   },
   {
+    "name": "PublicPortal.CompanyStory",
+    "route": "/public-portal/story",
+    "hasMobile": false,
+    "purpose": "Public website — Our Story (company origin, principles, dispatches)"
+  },
+  {
+    "name": "PublicPortal.ComparePlans",
+    "route": "/public-portal/compare-plans",
+    "hasMobile": false,
+    "purpose": "Public website — Compare plans in detail"
+  },
+  {
     "name": "PublicPortal.Contact",
     "route": "/public-portal/contact",
     "hasMobile": false,
@@ -792,6 +846,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "purpose": "Public website — Fleet Management product page"
   },
   {
+    "name": "PublicPortal.GettingStarted",
+    "route": "/public-portal/getting-started",
+    "hasMobile": false,
+    "purpose": "Public website — Getting started, onboarding walkthrough"
+  },
+  {
     "name": "PublicPortal.Industries",
     "route": "/public-portal/industries",
     "hasMobile": false,
@@ -832,6 +892,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/public-portal/parts-accessories",
     "hasMobile": false,
     "purpose": "Public website — Services, Parts & Accessories"
+  },
+  {
+    "name": "PublicPortal.Platform",
+    "route": "/public-portal/platform",
+    "hasMobile": false,
+    "purpose": "Public website — Platform architecture deep-dive"
   },
   {
     "name": "PublicPortal.Pricing",
@@ -892,6 +958,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/public-portal/supplier-portal",
     "hasMobile": false,
     "purpose": "Public website — Supplier Portal product page"
+  },
+  {
+    "name": "PublicPortal.SupplyChain",
+    "route": "/public-portal/supply-chain",
+    "hasMobile": false,
+    "purpose": "Public website — Supply chain, requisition to issue"
   },
   {
     "name": "PublicPortal.Support",
@@ -988,6 +1060,12 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/settings",
     "hasMobile": true,
     "purpose": "General tenant settings"
+  },
+  {
+    "name": "Smart-Damage-Assessment",
+    "route": "/smart-damage-assessment",
+    "hasMobile": false,
+    "purpose": "AI vehicle damage assessment from photos"
   },
   {
     "name": "SMSCampaigns",
@@ -1270,6 +1348,18 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/vehicles",
     "hasMobile": true,
     "purpose": "Vehicle registry"
+  },
+  {
+    "name": "Voice-Command-Interface",
+    "route": "/voice-command-interface",
+    "hasMobile": false,
+    "purpose": "Voice recognition configuration and training"
+  },
+  {
+    "name": "Voice-Commands",
+    "route": "/voice-commands",
+    "hasMobile": false,
+    "purpose": "Voice-activated hands-free workshop controls"
   },
   {
     "name": "Welcome",

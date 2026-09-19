@@ -46,6 +46,11 @@ const PAGES: readonly { name: string; h1: string; title: string }[] = [
   { name: 'PublicPortal.FAQ', h1: 'FAQ', title: 'FAQ — SALIS AUTO' },
   { name: 'PublicPortal.Contact', h1: 'Contact Us', title: 'Contact — SALIS AUTO' },
   { name: 'PublicPortal.Support', h1: 'Help & Support', title: 'Help & Support — SALIS AUTO' },
+  { name: 'PublicPortal.Platform', h1: 'Platform Architecture', title: 'Platform Architecture — SALIS AUTO' },
+  { name: 'PublicPortal.SupplyChain', h1: 'Supply Chain', title: 'Supply Chain — SALIS AUTO' },
+  { name: 'PublicPortal.ComparePlans', h1: 'Compare Plans', title: 'Compare Plans — SALIS AUTO' },
+  { name: 'PublicPortal.CompanyStory', h1: 'Our Story', title: 'Our Story — SALIS AUTO' },
+  { name: 'PublicPortal.GettingStarted', h1: 'Getting Started', title: 'Getting Started — SALIS AUTO' },
 ]
 
 function componentOf(name: string): ComponentType {
@@ -191,6 +196,23 @@ describe('Tier A public pages', () => {
     expect(quotes).toHaveLength(2)
     for (const quote of quotes) {
       expect(quote).toHaveAttribute('href', '/public-portal/contact')
+    }
+  })
+
+  it('ComparePlans names real plans and invents no branch/user/SLA figures', () => {
+    // The "SALIS AUTO 2030" design study's `access` page this was cascaded
+    // from published a "Starter" plan and specific branch/user/uptime/SLA
+    // numbers found nowhere else in the codebase, contradicting Pricing.tsx's
+    // deliberate no-published-numbers policy — see ComparePlans.tsx's
+    // docstring. This pins the correction: real plan names, no invented
+    // figures republished.
+    const Page = componentOf('PublicPortal.ComparePlans')
+    const { container } = renderPublic(<Page />)
+    expect(screen.getByText('Essential')).toBeInTheDocument()
+    expect(screen.queryByText('Starter')).toBeNull()
+    const text = container.textContent ?? ''
+    for (const figure of ['24 hours', '4 hours', '1 hour', '99.5%', '99.9%', '99.95%', '10 GB', '50 GB']) {
+      expect(text).not.toContain(figure)
     }
   })
 

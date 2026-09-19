@@ -293,7 +293,7 @@ export function GlobalSearchPalette({
             for (const row of rows) {
               if (count >= MAX_PER_CATEGORY) break
               if (all.length >= MAX_TOTAL) break
-              const r = row as Record<string, unknown>
+              const r = row as unknown as Record<string, unknown>
               if (matchRow(r, def.searchFields, needle)) {
                 const primary = fieldValue(r, def.primaryField)
                 const secondary = def.secondaryFields

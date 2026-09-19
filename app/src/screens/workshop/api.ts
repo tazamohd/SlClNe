@@ -328,8 +328,7 @@ export function isRefusal(error: unknown): boolean {
 export function isExternalDependency(error: unknown): boolean {
   return (
     error instanceof RepositoryError &&
-    (error.status === 503 ||
-      (error.code as string) === 'external_dependency_unavailable')
+    (error.status === 503 || error.code === 'external_dependency_unavailable')
   )
 }
 

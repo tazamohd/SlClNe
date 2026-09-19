@@ -24,12 +24,10 @@ import { derived, UNKNOWN } from '@/screens/registry/writes'
  *  Vehicles" is the server's own `page.total` rather than a count of the page.
  *  The projection carries no model year, so that column renders the em dash
  *  `derived()` uses for "this record does not know" instead of a value invented
- *  to fill it; `vin` is served by the API and absent from the design fixtures.
+ *  to fill it. `vin` and entity metadata are typed on `Repository` itself now
+ *  (F-020); `year` is the one column no build projects at all.
  */
 type Vehicle = RowOf<'vehicles'> & {
-  _id?: string
-  /** API-only; the design fixtures carry no VIN. */
-  vin?: string | null
   /** Not projected by any build today — see the note above. */
   year?: string | number | null
 }

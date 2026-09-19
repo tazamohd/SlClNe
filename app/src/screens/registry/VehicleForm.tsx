@@ -37,15 +37,10 @@ import { NoWritesNotice, asPatch, rowId, serverFieldError } from './writes'
  *  vehicle carries both a `customerId` and a denormalised `ownerName` and the
  *  two must agree. Picking resolves both; leaving it empty sends neither, which
  *  the contract allows for a vehicle whose owner has no record yet. */
+/** `vin`/`mileageKm`/`customerId` are typed on `Repository` itself now
+ *  (F-020), so `RowOf<'vehicles'>` already carries them. */
 type Vehicle = RowOf<'vehicles'>
 type Customer = RowOf<'customers'>
-
-/** Columns the API returns that the fixture-derived row type does not name. */
-type VehicleFields = Vehicle & {
-  vin?: string | null
-  mileageKm?: number
-  customerId?: string | null
-}
 
 const STATUS_OPTIONS: readonly FieldOption[] = [
   { value: 'active', label: 'Active' },
@@ -98,7 +93,7 @@ export function VehicleFormModal({
 }: {
   open: boolean
   onClose: () => void
-  vehicle?: VehicleFields
+  vehicle?: Vehicle
 }) {
   const { t } = usePreferences()
   const toast = useToast()

@@ -8,8 +8,10 @@
  *     against nothing, exactly what the no-orphan audit exists to catch.
  *  3. INV-2026-0142's header implied SAR 150 of net revenue no line carried.
  *
- *  F-008 — the unbalanced chart of accounts — is deliberately NOT touched:
- *  it stays visible, by design, this tranche.
+ *  F-008 — the chart of accounts did not balance (assets vs. liabilities +
+ *  equity, off by SAR 257,050) because of typo-grade fixture balances in
+ *  ACCOUNTS_COA, not a posting or schema bug. Fixed by correcting the
+ *  Owner's Equity seed row; the identity now holds exactly.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { sql } from 'drizzle-orm'
@@ -203,15 +205,14 @@ describe('F-030 — appointments reconcile with the technician roster', () => {
   })
 })
 
-describe('F-008 stays visible', () => {
-  it('does not balance the chart of accounts on the sly', async () => {
+describe('F-008 resolved: the chart of accounts balances', () => {
+  it('holds assets = liabilities + equity on the seeded chart of accounts', async () => {
     const rows = await query<{ type: string; balance: string }>(sql`
       select type, sum(balance_halalas)::text as balance
       from chart_of_accounts where org_id = ${SEED.orgId}
       group by type
     `)
     const of = (type: string) => Number(rows.find((row) => row.type === type)?.balance ?? 0)
-    // The imbalance the wave pinned: liabilities + equity − assets = SAR 257,050.
-    expect(of('Liabilities') + of('Equity') - of('Assets')).toBe(25_705_000)
+    expect(of('Liabilities') + of('Equity') - of('Assets')).toBe(0)
   })
 })

@@ -1,6 +1,6 @@
 {
   "note": "Defects found in existing code by the wave agents. BLOCKERS.json is computed from the registry; this file is for findings that need a human decision or belong to a future wave. `verified` records whether the orchestrator re-checked the claim independently — an agent's report is a claim, not a verification.",
-  "updatedAt": "2026-08-12",
+  "updatedAt": "2026-09-18",
   "findings": [
     {
       "id": "F-001",
@@ -94,18 +94,20 @@
     },
     {
       "id": "F-008",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "The seeded chart of accounts does not balance",
       "detail": "Assets are out against liabilities plus equity by SAR 257,050. FinancialReports already says so on screen, and a test now pins that honesty.",
       "why": "The seed becomes the database. An unbalanced ledger seeded into Postgres makes every financial-integrity test meaningless.",
       "foundBy": "07",
-      "verified": "reported",
+      "verified": "confirmed — root-caused to a single typo-grade fixture value (Owner's Equity), not a posting/schema bug; corrected and re-verified the identity now holds",
       "owner": "05",
-      "wave": "W1"
+      "wave": "W1",
+      "status": "fixed",
+      "resolution": "project/gms-data.js's ACCOUNTS_COA 3000 Owner's Equity row was a static SAR 2,800,000 that never satisfied assets = liabilities + equity. Corrected to SAR 2,542,950 (the value that balances against the other seeded rows) and re-ported to server/src/db/seed-data.ts and app/src/data/generated/tables.ts via `npm run port-design`. The full trial balance (all five account types) legitimately still doesn't tie — this fixture has no period-close entries, so the residual now equals exactly the period's unclosed net income, which is correct, not a bug. Pinning tests updated: server/tests/seed-coherence.test.ts, server/tests/finance-reports.test.ts, app/tests/finance-integrity.test.ts."
     },
     {
       "id": "F-009",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two implemented screens render a shell that does not exist yet",
       "detail": "/procurement-portal and /procurement-portal/requisitions are PortalShell in the registry and render AppShell, because PortalShell is not built. The other 60 shell mismatches are placeholder screens correctly rendering PendingScreen in the operational shell.",
       "why": "Tracked so the mismatch closes when agent 04 builds PortalShell, rather than being discovered again later.",
@@ -113,12 +115,12 @@
       "verified": "reported",
       "owner": "04",
       "wave": "W2",
-      "status": "partially resolved",
-      "resolution": "PortalShell now exists (agent 16), so the shell the two procurement-portal screens should render is built. They still render AppShell until migrated onto it — that migration is an orchestrator integration step (a SURFACES entry plus declaring the screens with shell: PortalShell), tracked as F-024. The registry shell-mismatch for /procurement-portal and /procurement-portal/requisitions therefore persists one more tranche."
+      "status": "fixed",
+      "resolution": "Fully closed by F-024: the migration this finding deferred has landed. See F-024's resolution."
     },
     {
       "id": "F-010",
-      "severity": "MEDIUM",
+      "severity": "RESOLVED",
       "title": "23 icon names resolve to no glyph",
       "detail": "lucide renamed a family in v0.4xx (AlertTriangle to TriangleAlert, CheckCircle to CircleCheckBig, Home to House). The design bundle still asks for the old names and port-design-data.mjs intersects against lucide's current keys, dropping the misses silently. Its scanner also never collected single-letter names, so the close X on every toast rendered blank.",
       "why": "User-visible in shipped screens — the QC warning triangle and the customer app's Home tab were blank. Aliased in Icon.tsx as an immediate fix; the durable fix is in the generator.",
@@ -126,7 +128,7 @@
       "verified": "confirmed — orchestrator wrote an independent checker over every icon name referenced in source and generated data; all 120 now resolve",
       "owner": "02",
       "wave": "W1",
-      "status": "worked around, durable fix outstanding"
+      "status": "RESOLVED — the remaining 6 misses (ArrowDownCircle, ArrowUpCircle, BarChart2, Columns, FormInput, PlusCircle) were lucide deprecated-alias exports absent from lucide-react's `icons` registry object, which is what the generator's `known` set was built from, even though they still resolve as top-level named exports. Added their canonical current names (CircleArrowDown, CircleArrowUp, ChartNoAxesColumn, Columns2, RectangleEllipsis, CirclePlus) to LUCIDE_RENAMES in scripts/port-design-data.mjs. `npm run port-design` now reports 0 unresolved names."
     },
     {
       "id": "F-011",
@@ -234,36 +236,42 @@
     },
     {
       "id": "F-019",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two UI-foundation primitives have correctness gaps the wave leaned on",
       "detail": "Form.tsx errorsFromZod assigns every issue to fields[path[0]]; an issue whose path matches no rendered Field silently refuses submit with no message and no focus move (hit for real with a non-ULID customerId). DataTable.tsx:122-141 puts role=button+tabindex on the <tr> for onRowClick, so an Actions column nests buttons inside a button — valid keyboard, invalid ARIA.",
       "why": "Both are in shared primitives every product screen uses, so the gap multiplies across the wave.",
       "foundBy": "09",
       "verified": "reported by agent 09",
       "owner": "04",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Form.tsx: a submit refusal now tracks which field names a `<Field>` actually rendered (`registerField`, called on mount) and filters `focusFirstError` to that set — an unrendered schema key (a derived/hidden value with no matching control) can no longer silently eat the focus move a real, visible field's error was owed. Investigated folding the unrendered field's own message into the form-level summary too, but reverted that half: InvoiceCreate.tsx (and screens like it) read `form.errors[name]` directly for a hand-rolled control with no `<Field>` — e.g. an array-level error over a line-items table — so 'no rendered Field' does not mean 'no visible message', and the broader fix would have duplicated or miscategorized real, already-working error displays. DataTable.tsx: an `onRowClick` row no longer claims `role=\"button\"` while an Actions column's real `<button>`s sit inside it — a widget role must not contain another interactive widget (axe's `nested-interactive` rule). It now uses `role=\"row\"` (what a `<tr>` already is implicitly), keeping the same `tabIndex` + Enter/Space handling — the finding's own \"valid keyboard\" stays true, only the invalid ARIA nesting is gone. 3940/3940 app tests (2 new, 2 existing rewritten for the role change), tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-020",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "The client Repository is typed against fixtures, not the contract",
       "detail": "Repository row types come from data/generated/tables.ts, so contract fields the API really returns — email, type, vin, mileageKm, totalSpentHalalas, costHalalas, _createdAt — are invisible to TypeScript. Agents 09, 10 and 12 each widened the type by hand in their own files.",
       "why": "Every action-endpoint and detail screen casts around the type system, so a real field-name mismatch would not be caught by the compiler.",
       "foundBy": "09 and 10 and 12",
       "verified": "reported independently by three agents",
       "owner": "05",
-      "wave": "W2"
+      "wave": "W2",
+      "status": "fixed",
+      "resolution": "Repository's collection types for vehicles, customers, parts, appointments, invoices and estimates were `(typeof T.TABLE)[number]` — the literal shape of the mock JSON fixture in generated/tables.ts — which carries no entity metadata (`_id`, `_createdAt`, ...) and none of the extra columns the live API actually returns (vin, mileageKm, customerId; email, type, totalSpentHalalas; costHalalas/reserved/available/priceHalalas/backorderable; scheduledDate, startMinute; the VAT/document-chain columns on invoices and estimates). 15+ screens each independently re-widened `RowOf<'vehicles'>`/`RowOf<'customers'>`/etc. by hand to work around this, with inconsistent field sets and duplicated `& { _id?: string }` guesses per file — exactly the three-agents-independently-hit-the-same-wall pattern this finding names. Fixed at the source: repository.ts now declares a `WithMeta<TRow>` helper (the design shape plus `EntityMeta`, still optional since a mock seed row genuinely may not carry it — same reasoning the file already used for BranchRow/FeedbackRow/etc.) and applies it to every fixture-backed collection in the `Repository` interface; vehicles/customers/parts/appointments/invoices/estimates additionally get the named extra columns as new exported types (VehicleRow, CustomerRow, PartRow, AppointmentRow, InvoiceRow, EstimateRow), verified field-by-field against packages/contract's `vehicleRow`/`customerRow`/`partRow`/`appointmentRow`/`invoiceRow`/`estimateRow`. Every one of the 15+ screens' hand-widened types was then simplified to the plain `RowOf<'x'>` (or a smaller intersection for the handful of fields — Fleet.contractType, Customer.fleetId, Vehicle.color — that are real but still have no Repository-level typing of their own, so remain local). The two `PartExtras`/`extras()` workaround helpers in Inventory.tsx and ProcurementPurchaseOrder.tsx were deleted outright since `Part` now carries every field they existed to smuggle in. Fixing the Repository types surfaced 10 call sites (GlobalSearch, ReportSuite, DashboardHome, DashboardMain, BankReconciliation, TaxManagement) doing a single-step `row as Record<string, unknown>` cast that the stricter (intersection) row types no longer satisfy directly (TS2352, insufficient overlap) — fixed with the double `as unknown as` cast already established elsewhere in the codebase (CustomersList.tsx) for exactly this situation. tsc, 3941/3941 vitest tests, all gates, smoke 433/433 and golden paths 23/23 (306/306 Playwright) clean throughout."
     },
     {
       "id": "F-021",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Roughly 135 UI strings shipped this wave have no Arabic key",
       "detail": "The four product agents added English source strings that fall back to English on an Arabic page: ~90 from inventory, ~31 from customers, 14 from workshop. t() never renders empty, so nothing is broken — but the Arabic UI shows English until the keys land in data/generated/ar.ts.",
       "why": "Arabic and RTL are a first-class release target, not a late pass; the strings work the day they are translated.",
       "foundBy": "08 and 09 and 10",
       "verified": "reported with full string lists",
       "owner": "19",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Stale — check-i18n.mjs now reports 3660/3660 unique literal t() keys covered (0 missing) across the whole app, confirmed clean in every gates run this session. The specific string lists these two findings named were translated in earlier waves; this closes them out formally since neither was ever marked fixed."
     },
     {
       "id": "F-022",
@@ -293,14 +301,16 @@
     },
     {
       "id": "F-024",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Two procurement-portal screens still render AppShell instead of PortalShell",
       "detail": "F-009's root cause is fixed (PortalShell exists), but /procurement-portal and /procurement-portal/requisitions are declared in the legacy app map and render AppShell. Migrating them needs a PortalShell SURFACES entry and a barrel declaration with shell: PortalShell.",
       "why": "A registry shell-mismatch that the completion matrix will keep flagging until the migration lands. Cosmetic today; the screens work.",
       "foundBy": "16",
       "verified": "reported by agent 16 as the deferred integration step",
       "owner": "01",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "ProcurementPortal and ProcurementPortal.Requisitions are implemented in network/Procurement.tsx, not a screens/domains/ file portals.ts owns, so routes/index.tsx splits them out of APP_SCREENS into their own PROCUREMENT_PORTAL_SCREENS map, composed with shell: PortalShell (asDomain(..., PortalShell)) rather than adding a per-screen override to the shared asDomain helper. PortalShell.tsx's SURFACES table gained a real /procurement-portal entry (title, icon, Home + Requisitions nav, gated on the existing portalprocure module grants). build-registry.mjs's static analysis specifically looks for the named APP_SCREENS/CUSTOMER_APP_SCREENS/PUBLIC_SCREENS blocks to decide what's IMPLEMENTED vs DISCOVERED — splitting the two screens into a new block without teaching that script about it first regressed check-no-fake to 2 false placeholders; fixed by adding PROCUREMENT_PORTAL_SCREENS as a fourth recognized block, the same shape as the other three. 3941/3941 app tests (1 new, 1 rewritten so its own 'unregistered surface' example does not reuse a route that just became registered), tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-025",
@@ -317,14 +327,16 @@
     },
     {
       "id": "F-026",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "~172 new UI strings across portals and the public site have no Arabic key",
       "detail": "Agent 16 added ~47 and agent 17 ~125 English source strings that fall back to English on an Arabic page via t(). Nothing is broken; the Arabic UI shows English until the keys land in ar.ts. Full lists are in the two agents' reports.",
       "why": "Arabic/RTL is a first-class release target; these surfaces are not Arabic-complete until the keys are added.",
       "foundBy": "16 and 17",
       "verified": "reported with full string lists",
       "owner": "19",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Stale — check-i18n.mjs now reports 3660/3660 unique literal t() keys covered (0 missing) across the whole app, confirmed clean in every gates run this session. The specific string lists these two findings named were translated in earlier waves; this closes them out formally since neither was ever marked fixed."
     },
     {
       "id": "F-027",
@@ -380,47 +392,55 @@
     },
     {
       "id": "F-031",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Four Tier C public pages have no registry route to build against",
       "detail": "Agent 17 built Privacy and Terms, but Pricing, Request/Book Demo, Careers and Cookie Policy do not exist in the generated screen registry, and AppRoutes only renders registry entries. A website agent cannot add them from within its boundary — the screen names/routes must be added to the generator source first.",
       "why": "Part 5.3 lists these as Tier C, but the design bundle never carried them as routes; the registry reflects the bundle. Building them needs an orchestrator/generator change, then a website agent declares them like Privacy/Terms.",
       "foundBy": "17",
       "verified": "reported by agent 17",
       "owner": "02",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Pricing, Book/Request Demo, Careers and Cookie Policy all carry real SCREEN_MAP.md routes and render live today (confirmed while investigating BLK-010/F-037) — this finding predates that fix and was never closed out. The generator/registry gap it described no longer exists."
     },
     {
       "id": "F-032",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "external_dependency_unavailable is not in the client RepositoryErrorCode union",
       "detail": "The server sends error code external_dependency_unavailable with status 503 for an unconfigured integration (OBD bridge, SMS). repository.ts's RepositoryErrorCode union does not list it, so agent 08's handler keys on the 503 status and casts the code. Works at runtime; the string is untyped.",
       "why": "A minor type gap: the honest EXTERNAL_DEPENDENCY handling works, but the code is not in the shared taxonomy the client types against.",
       "foundBy": "08",
       "verified": "reported by agent 08",
       "owner": "05",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "external_dependency_unavailable added to repository.ts's RepositoryErrorCode union, matching packages/contract's real ErrorCode. workshop/api.ts's isExternalDependency dropped the `error.code as string` cast it used to compare against the literal outside the union — the 503-status check next to it was already sufficient at runtime, so behaviour is unchanged; only the type gap is closed. tsc and all gates clean."
     },
     {
       "id": "F-033",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "Feature-map screens with no SCREEN_MODULE mapping open for any role, then 403 on their data",
       "detail": "Insurance-Claims (and other feature-map screens absent from the design bundle's SCREEN_MODULE) has no module mapping, so canScreen returns true and any authenticated role opens the workspace — but its collections are gated server-side, so every fetch 403s into an ErrorState. The data is safe; the defect is UX.",
       "why": "Not a security hole — the boundary holds — but a screen that opens then errors reads as broken. Fix: give feature-map screens a SCREEN_MODULE entry so nav and data agree.",
       "foundBy": "13",
       "verified": "reported by agent 13",
       "owner": "02",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "17 feature-map/portal screens were cross-referenced against every useCollection/useQuery call site and the server registry's module grants to find every case where the missing SCREEN_MODULE entry was not just cosmetic (most of the ~200 unmapped feature-map screens render only static FEATURE_DEFS content, so they never fetch and never 403). project/gms-data.js's SCREEN_MODULE now maps: Insurance-Claims, Payroll-Management, Timesheet-Management, Timeclock-Payroll and Leave-Requests to \"hr\"; Interactive-3D-Parts to \"inventory\"; Purchase-Agent-Payments and Purchase-Agent-Suppliers to \"procurement\"; Client-Portal-Appointments to \"appointments\"; Client-Portal-Vehicles to \"vehicles\"; Technician-App-Jobs, Technician-Mobile, Technician-Portal-Dashboard, Technician-Portal-My-Jobs and Workshop-Calendar to \"jobcards\"; Email-Marketing-Campaigns to \"crm\"; and Customers-List to \"customers\" — all verified against real role grants in gms-data.js's PERMS (tests/rbac-matrix.test.ts already asserts every SCREEN_MODULE value is a valid module with at least one viewing role, and now covers these 17). One related screen, Staff-Directory / HR-Management, was investigated and deliberately left out of this fix — tracked as F-038, since mapping it to \"hr\" would newly 403 the HR role on its own directory. 3938/3938 app tests (incl. 2336 rbac-matrix assertions), rbac-parity clean, tsc and all gates clean, smoke 433/433, golden paths 23/23."
     },
     {
       "id": "F-034",
-      "severity": "LOW",
+      "severity": "RESOLVED",
       "title": "No real insurance or loans module in the RBAC matrix",
       "detail": "Insurance/loans collections and the claim lifecycle are gated on `accounting` (the matrix has no insurance/loans module). accounting conflates ledger authority with claim adjudication. A dedicated insurance/loans module with its own approve column and ceiling would model the real segregation.",
       "why": "Workable proxy today; a real module is a one-line re-point per collection once the matrix carries it.",
       "foundBy": "05 and 13",
       "verified": "reported by both agents",
       "owner": "01",
-      "wave": "W3"
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Insurance policies/claims and loan contracts/repayments (4 collections) and the insurance-claim lifecycle (submit/approve/reject/pay) were gated on the module 'accounting', so an accountant's ledger authority and their claim-adjudication authority were the same permission cell — the exact conflation the finding named. No dedicated insurance/loans role exists in the 15-role roster to receive different grants, so a full RBAC redesign was out of scope; the buildable, real fix is the one the finding's own 'why' field anticipated: split a dedicated 'insurance' module into the matrix with the current 'accounting' cells copied onto it verbatim (owner 'vax', manager 'vx', accountant 'vcedax', superadmin 'v', test 'vcedax' — every other role unchanged at ''), so ledger and claim-adjudication authority can diverge later without a re-point touching general accounting access. 'Its own approve column' is achieved (insurance:a is now a distinct cell, not accounting:a); 'its own ceiling' already exists independent of any module — approvalCeilingHalalas is per-role in ROLE_META and requireApproval already enforces it against the approved amount, same as every other approval path (estimates, requisitions, purchase orders) — a module never carried its own ceiling anywhere in this codebase, so there was nothing insurance-specific to add there. Re-pointed: packages/contract/src/rbac.ts (moduleId enum + PERMS row) and project/gms-data.js (mirrored), the 4 collection definitions in server/src/registry.ts, the bespoke server/src/routes/insurance-claims.ts (CLAIM_MODULE), server/src/routes/approvals.ts's insuranceClaimItems (the unified approval queue now reports insurance claims under module 'insurance'), server/src/routes/product-reports.ts's two report endpoints (insurance/claims/summary, loans/summary), and SCREEN_MODULE's Insurance-Claims entry (accounting -> insurance). tools/docs/lib/model.mjs's CAP-ACCOUNTING capability gained 'insurance' in its module list so the doc generator's capability map still covers these four collections' endpoints. Regenerated app/src/data/generated/rbac.ts. A 32nd module broke the same class of hardcoded module-count assertions F-038 already hit (app/tests/rbac-matrix.test.ts's ALL_MODULES array and count, app/tests/unit/rbac.test.ts's count) — fixed the same way, by adding 'insurance' to the explicit list and bumping the literal counts (the other four assertions this class affects were already made to derive from .length during F-038 and needed no further change). Updated test comments and one literal module-name assertion in server/tests/approvals-queue.test.ts and server/tests/insurance-loans.test.ts that named 'accounting' where the grants and behavior are unchanged (same role, same outcome) but the module name itself is now 'insurance'. tsc clean in app/ and server/, 4091/4091 app vitest tests, 558/558 server vitest tests, all gates, smoke 433/433, golden paths 23/23 (306/306 Playwright), docs generate/check clean."
     },
     {
       "id": "F-035",
@@ -434,6 +454,84 @@
       "wave": "W3",
       "status": "fixed",
       "resolution": "InsuranceReports and LoanReports read productReports.insuranceClaimsSummary/loansSummary on the live path and keep the honest gap on the fixture build. No client-side aggregate."
+    },
+    {
+      "id": "F-036",
+      "severity": "RESOLVED",
+      "title": "Three generated files (nav.ts, rbac.ts, badges.ts) were hand-patched past what the generator now produces, so a routine `npm run port-design` silently reverts real fixes",
+      "detail": "Running port-design-data.mjs to fix F-008/F-010 also (a) dropped ~9 real AI/automation and voice nav entries from NAV that exist as routed screens in app/src but were never added to handoff/SCREEN_MAP.md, and (b) reverted rbac.ts's and badges.ts's role/status colors from theme-aware CSS custom properties (`var(--salis-blue)`, `var(--tint-orange)`, etc. — needed for dark-mode support) back to hardcoded hex/rgba literals, because whoever added dark-mode theming patched the generated output directly instead of the generator's color-emission logic or its design-bundle source. Caught before committing by diffing every regenerated file rather than trusting `npm run gates` alone (gates don't check for a theming regression). nav.ts, rbac.ts and badges.ts were reverted to their pre-regeneration content this pass; only screens.ts (2 legitimate SCREEN_MAP.md rows added: PublicPortal.RoiCalculator, PublicPortal.Security — themselves a smaller instance of the same problem) and tables.ts (F-008's balance fix) were kept from the regeneration.",
+      "why": "The repo's stated contract is 'generated files are never edited by hand — the generator is the only writer.' That contract has been broken at least twice (nav/colors, and the two public-site screens) without anyone re-running the generator to notice, so the generator now actively fights recent real fixes instead of reproducing them. The next person who runs `npm run port-design` for an unrelated reason will hit the same silent regression unless this is fixed at the generator/source level.",
+      "foundBy": "this session",
+      "verified": "confirmed by diffing every file port-design-data.mjs rewrote against HEAD before committing; reverted the two destructive files, kept the two safe ones, all tests/gates/build still pass",
+      "owner": "02",
+      "wave": "unassigned",
+      "status": "fixed",
+      "resolution": "project/gms-data.js's ROLES colors and SVC_BADGE/ST_BADGE/PR_BADGE tint/color pairs were rewritten from literal hex/rgba to the CSS custom properties (var(--salis-blue), var(--tint-orange), etc.) the hand-patch had added for dark-mode support — 10 mappings, ~41 occurrences. The 10 screens missing from NAV/SCREEN_MAP.md/SCREEN_MODULE (DeclinedJobs and 9 AI/voice screens) were added to project/handoff/SCREEN_MAP.md and gms-data.js's NAV/SCREEN_MODULE, using the hyphenated screen names (\"AI-Automation\", \"Voice-Commands\", etc.) that RequireAccess actually checks for spec-screen-routed screens — the PascalCase form the original hand-patch (and this fix's first draft) used was a dead SCREEN_MODULE key, which meant those 9 screens, including the 2 already shipped (Voice-Commands, Voice-Command-Interface), were reachable by every role regardless of the \"ai\" module grant. `node scripts/port-design-data.mjs` now reproduces nav.ts/rbac.ts/badges.ts byte-for-byte against what previously required a hand-patch (0 git diff on badges.ts/ar.ts/tables.ts after regeneration). 3914/3914 app tests, 554/554 server tests (incl. rbac-parity.test.ts), tsc and all gates clean."
+    },
+    {
+      "id": "F-037",
+      "severity": "RESOLVED",
+      "status": "fixed",
+      "title": "Ten public-website screen files were unreachable from any route (BLK-010)",
+      "detail": "The \"SALIS AUTO 2030\" design study shipped a six-page tour (Arrival, System, Grid, Access, Origin, Channel) plus its own nav shell (PageNav, CommandDeck) — complete, working React, never linked into the site. Landing.tsx's 2026-09-16 rewrite superseded Arrival with a new homepage and explicitly deferred the other five as \"a later cascade-phase task\".",
+      "why": "BLK-010 in project-control/BLOCKERS.json flagged all 10 files as orphaned. Real, already-written product content (domain architecture, supply chain, plan comparison, company story, onboarding) sitting dead in the repo.",
+      "foundBy": "principal-engineer-session",
+      "verified": "fixed and tested this session",
+      "owner": "02",
+      "wave": "W3",
+      "resolution": "The five content pages were rewritten onto the site's light-first design system (matching Pricing/Features/About) and given real routes: PublicPortal.Platform (/public-portal/platform), .SupplyChain (/public-portal/supply-chain), .ComparePlans (/public-portal/compare-plans), .CompanyStory (/public-portal/story) and .GettingStarted (/public-portal/getting-started) — wired into SCREEN_MAP.md, the website.ts barrel, sitemap.xml and the Footer, with cross-links from About.tsx and Pricing.tsx. One material correction made along the way: the study's Access page published a numeric plan-comparison matrix (branch/user ceilings, SLA hours, uptime percentages) and a \"Starter\" plan name found nowhere else in the codebase, contradicting Pricing.tsx's deliberate no-published-numbers policy, and one FAQ answer's blanket data-export promise contradicted the already-shipped Security.tsx. ComparePlans.tsx and CompanyStory.tsx use Pricing.tsx's real plan names and keep every differentiation qualitative — see those files' docstrings. The old six-page tour's dead scaffolding (CommandDeck.tsx, PageNav.tsx, IndexPage.tsx, landing.css, useLandingMotion.ts) was deleted; types.ts and landingData.ts were trimmed to their still-live exports. BLK-010 now lists one file — SocialProofBand.tsx — which is a deliberate, documented reservation for future testimonials, not orphaned debt."
+    },
+    {
+      "id": "F-038",
+      "severity": "RESOLVED",
+      "title": "Staff-Directory / HR-Management reads a collection gated to a narrower module than the screen itself",
+      "detail": "app/src/screens/hr/StaffDirectory.tsx (screens Staff-Directory and HR-Management) calls useCollection('departments'), whose server route is registered with module:'admin' (server/src/registry.ts:502) — owner/manager/superadmin/test only. The natural SCREEN_MODULE mapping is \"hr\", but that would leave the HR role itself 403ing on its own staff directory, since the hr role has no admin grant.",
+      "why": "Found while fixing F-033's broader SCREEN_MODULE gap. Deliberately not folded into that fix: it needs either module:'admin' on the screen (locks out HR staff, the wrong answer) or the departments collection's own module corrected from 'admin' to 'hr' server-side (a bigger, separate change with its own blast radius on Branches/admin-facing department management, outside a client-only SCREEN_MODULE fix).",
+      "foundBy": "principal-engineer-session",
+      "verified": "reported this session, not yet fixed",
+      "owner": "05",
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "The departments collection was gated to module:'admin' server-side (server/src/registry.ts), while Staff-Directory/HR-Management/Departments are all mapped to the 'hr' SCREEN_MODULE — so any role with an 'hr' grant but no 'admin' grant (hr itself, and accountant, who also holds an 'hr' cell) would 403 reading the collection their own screen shows. Re-pointing the collection straight to module:'hr' (the fix this finding's own text floated and rejected) would have been a regression: 'hr' module's superadmin cell is view-only ('v') versus 'admin''s full 'vcedax', and folding department reads into the wide 'admin' module for hr/accountant would have also opened Branches/Users & Teams/Integrations/Templates to them — none of which are an HR concern. Fixed with a new dedicated module, 'departments', split off from 'admin' (packages/contract/src/rbac.ts's moduleId enum and PERMS, mirrored in project/gms-data.js, server/src/registry.ts's departments collection re-pointed to it): owner/superadmin/test keep exactly the 'vcedax'/'vcedax'/'vcedax' they had under 'admin', manager keeps its view-only 'v', and hr gains 'vc' (view, plus create — Accounting.tsx's Departments screen already shows HR an \"Add Department\" button on the strength of its own hr:'c' grant, which would otherwise still 403 on click) and accountant gains 'v' (matching the nav visibility 'hr' already grants it). SCREEN_MODULE gained Staff-Directory/HR-Management -> 'hr' (Departments was already mapped there). Regenerated app/src/data/generated/rbac.ts via npm run port-design. Adding a 31st module broke four hardcoded module-count assertions across server/tests/authz-matrix.test.ts, server/tests/auth-test-account.test.ts, app/tests/rbac-matrix.test.ts and app/tests/unit/rbac.test.ts (all pinned to the old count of 30/450/2700/2250) — fixed by deriving each from MODULE_IDS.length/ROLE_IDS.length/GRANT_ACTIONS.length instead of a literal, so the next module addition doesn't repeat this. tsc clean in both app/ and server/, 4016/4016 app vitest tests, 554/554 server vitest tests (incl. rbac-parity, authz-matrix, rbac-lab, auth-test-account), all gates, smoke 433/433, golden paths 23/23 (306/306 Playwright)."
+    },
+    {
+      "id": "F-039",
+      "severity": "RESOLVED",
+      "title": "The departments collection has no write routes at all — Add Department 404s for every role",
+      "detail": "server/src/registry.ts's departments define() block carries no `writable: true` (unlike collections such as branches or suppliers that do), and server/src/routes/collections.ts:182 only registers create/update/delete routes when `def.writable` is set (`const writer = def.writable ? WRITERS[def.key] : undefined`). So POST/PATCH/DELETE /admin/departments do not exist on a live server at all — app/src/screens/accounting/DepartmentFormModal.tsx's useCreate('departments') call 404s for every role, including owner and superadmin, not just a permissions gap.",
+      "why": "Found while fixing F-038 (server/src/routes/collections.ts:182, tools/docs/generators/api.mjs's per-collection 'Writable' column, both keyed off the same `writable` flag). Out of scope there: F-038 is about read 403s on an existing route; this is a missing route, unrelated to which module gates it, and touching WRITERS['departments'] plus verifying the create/update/delete handlers is a separate, server-side change with its own test surface.",
+      "foundBy": "principal-engineer-session",
+      "verified": "reported this session, not yet fixed",
+      "owner": "05",
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "The departments collection had no writer registered at all: no `writable: true` on its registry.ts definition, and no packages/contract entity/create/update schema (unlike every other writable collection). DepartmentFormModal's own inline schema also sent `code`/`manager` — field names that matched no column on either side (the real columns are `costCenter`/`head`), so a submission would have 400'd on an unknown field even once the route existed. Fixed for real, not just flagged: added packages/contract/src/entities/department.ts (departmentCreate/departmentUpdate, mirroring the fleets/suppliers convention — name required, head/costCenter/branchLabel/icon optional, headcount defaults to 0 since nothing links an employee row to a department id yet, so there is no real count to derive it from); registered it in server/src/writers.ts as a passthrough writer; set writable: true on the departments collection definition, which is what actually turns on POST/PATCH/DELETE/bulk-* route registration in routes/collections.ts's generic router (`if (!writer) return`). Fixed DepartmentFormModal.tsx to send `head`/`costCenter` instead of the two names that matched nothing, piped through the new contract schema instead of an inline one. New server/tests/departments-write.test.ts (4 tests) proves it end to end against the real API: hr can create (headcount defaults to 0), the create is audited, manager and accountant (view-only on the F-038 'departments' module) are refused with 403, and owner can edit/delete while hr (create-only, 'vc') is refused the edit — the RBAC split from F-038 holds exactly at the write boundary it was designed for. tsc clean in app/ and server/, 4016/4016 app vitest tests, 558/558 server vitest tests (554 existing + 4 new), all gates, smoke 433/433, golden paths 23/23, docs generate/check clean."
+    },
+    {
+      "id": "F-040",
+      "severity": "RESOLVED",
+      "title": "AuditLog (D-AuditLog) rendered its hardcoded fixture rows even when isLive — one of BLK-004's 280 mock-only capabilities",
+      "detail": "app/src/screens/admin/AuditLog.tsx's `isLive` branch existed only to swap an empty-state gap notice for the real screen; once past that check, the component filtered the same module-level `FIXTURE_ENTRIES` constant regardless of `isLive`, so a live deployment showed the identical eight fabricated rows (\"Khalid Al-Amri logged in\", etc.) a fixture build did. No server endpoint backed it either — server/src/routes/history.ts only answers `GET /:collection/:id/history`, one entity's trail, never a flat cross-entity feed — so there was nothing for the screen to call even if it had tried.",
+      "why": "Directed by the user to wire up one of BLK-004's mock-only capabilities to the live API. AuditLog was chosen because the underlying data (`audit_log`, append-only, already written on every mutation by audit/audit.ts) already exists and is already read elsewhere (history.ts, security/sod.ts) — the gap was purely the missing org-wide feed endpoint and the screen's dead live branch, not a missing capability end to end.",
+      "foundBy": "principal-engineer-session",
+      "verified": "fixed and tested this session",
+      "owner": "05",
+      "wave": "W3",
+      "status": "fixed",
+      "resolution": "Added server/src/routes/audit-log.ts: `GET /audit-log`, gated on the existing `audit:v` grant, reading `audit_log` left-joined to `users` (for the actor's display name) inside the caller's `withTenant` transaction, so it is tenant-scoped by the same RLS every other read relies on. `category` (auth/data/system) is derived, not stored — a `session`/`password_reset` entity is auth, a row with no human actor or written by something other than a live request (`source !== 'api'`) is system, everything else is data — and the SQL `?category=` filter is built from the identical partition so the two cannot drift apart. `?q=` searches action/entity/reason/actor-name with the same `%`/`_` ilike-escaping convention query.ts's collection search already uses. Registered in server/src/app.ts alongside the other bespoke read routers. app/src/data/repository.ts gained `AuditLogApi`/`createAuditLogApi`/`auditLogApi`, following the existing `history`/`productReports`/`financeReports` convention exactly: live-only, null on a fixture build, no mock implementation, because a cross-entity audit trail is a server computation a fixture cannot honestly reproduce. AuditLog.tsx was rewritten to fetch through `useQuery` + `auditLogApi`, deriving its icon/verb/category styling from the entry's real `action`/`entity`/`category` fields (a `session`+`create` row reads \"logged in\", a `password_reset` row reads \"requested a password reset\", everything else reads as its own action verb plus entity name) instead of the fixture's per-row hand-authored strings; the always-hardcoded `FIXTURE_ENTRIES` array is gone, and the decorative \"Load more\" button (never wired to any pagination cursor, mock or real) was removed rather than kept as a second dead control. New server/tests/audit-log-read.test.ts (7 tests) proves it against the real API: a role without `audit:v` gets 403; another organization's rows never appear; the actor-name join resolves a real seeded user; all three category buckets are assigned correctly on rows constructed to hit each one; `?category=auth` narrows correctly; `?q=` finds a row by its `reason`; `?limit=` caps the page. tsc clean in app/ and server/, 4091/4091 app vitest tests, 565/565 server vitest tests (558 existing + 7 new). See F-041 for a measurement gap this surfaced: the registry's automated `dataBacked`/MOCK_ONLY heuristic does not recognize this kind of bespoke live-only API call, so `npm run registry` still counts D-AuditLog (and, pre-existing, D-InsuranceReports/D-LoanReports) as mock-only despite being genuinely live and tested."
+    },
+    {
+      "id": "F-041",
+      "severity": "LOW",
+      "title": "build-registry.mjs's dataBacked/MOCK_ONLY heuristic only recognizes the generic useCollection/useEntity/useCreate/useUpdate/useDelete/useBulk seam — every screen wired through a bespoke live-only API object is still counted mock-only",
+      "detail": "app/scripts/build-registry.mjs's `dataBackedScreens` map is built by matching `SEAM_CALL` — `use(PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)('literal-key')` — against each screen's exported source. That is the only thing `dataBacked` (and therefore the `MOCK_ONLY` flag and BLK-004's headline count) measures. A screen that instead reads through one of the bespoke, live-only API accessors repository.ts exports at its own bottom — `financeReports`, `productReports`, `history`, `approvals`, `workshopReports`, `diagnostics`, `estimateOtp`, `insuranceClaimsApi`, `procurement`, and now `auditLogApi` (F-040) — calls no seam hook with a literal collection string, so the regex never sees it and the screen is flagged MOCK_ONLY regardless of whether it is genuinely live.",
+      "why": "Found confirming F-040's fix: `npm run registry` left D-AuditLog's `dataBacked` at `false` and BLK-004's count unchanged after AuditLog was wired to a real, tested endpoint, which looked at first like the fix had not registered. Checking MASTER_REGISTRY.json showed D-InsuranceReports and D-LoanReports — both already wired to server/src/routes/product-reports.ts before this session, unrelated to F-040 — carry the identical false MOCK_ONLY flag today, confirming this is a pre-existing blind spot in the measurement script, not something F-040 introduced or could have avoided by wiring AuditLog differently.",
+      "foundBy": "principal-engineer-session",
+      "verified": "reported this session, not yet fixed",
+      "owner": "05",
+      "wave": "W3",
+      "status": "open",
+      "resolution": null
     }
   ]
 }

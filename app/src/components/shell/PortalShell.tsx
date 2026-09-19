@@ -6,6 +6,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
+import { DemoBadge } from './DemoBadge'
 
 /** The chrome for a single-audience portal — technician, customer, and later
  *  supplier and procurement.
@@ -117,6 +118,26 @@ const SURFACES: readonly PortalConfig[] = [
       },
     ],
   },
+  {
+    base: '/procurement-portal',
+    title: 'Procurement Portal',
+    icon: 'ShoppingCart',
+    nav: [
+      {
+        to: '/procurement-portal',
+        icon: 'Home',
+        label: 'Home',
+        screen: 'ProcurementPortal',
+        end: true,
+      },
+      {
+        to: '/procurement-portal/requisitions',
+        icon: 'ClipboardList',
+        label: 'Requisitions',
+        screen: 'ProcurementPortal.Requisitions',
+      },
+    ],
+  },
 ]
 
 /** The last-resort identity for a portal route nobody registered: the shell
@@ -209,6 +230,8 @@ function PortalFrame({ config, children }: { config: PortalConfig; children: Rea
           ) : null}
 
           <span className="flex-1" />
+
+          <DemoBadge />
 
           <button
             type="button"
