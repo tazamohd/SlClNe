@@ -57,6 +57,8 @@ import {
   vehicleUpdate,
   warrantyCreate,
   warrantyUpdate,
+  notificationCreate,
+  notificationUpdate,
 } from '@salis/contract'
 import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
 import { appointments, employees, equipmentWarranties, payrollRuns, suppliers } from './db/schema'
@@ -353,6 +355,28 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       if ('status' in value) {
         value.claimedAt = value.status === 'claimed' ? new Date() : null
       }
+      return value
+    },
+  },
+
+  /* Notifications (BLK-004). A tenant-owned directory, writable through the
+   * generic router — RBAC (`dashboard:c/e/d`), tenant RLS, audit and
+   * optimistic concurrency all come from it. `read` is a write-only
+   * convenience: the client sends a boolean, never a timestamp, and it is
+   * translated to `readAt` here — never accepted as input directly — the
+   * same discipline `equipmentWarranties.claimedAt` uses, so a read
+   * timestamp always records when the row actually moved rather than a date
+   * a client made up. Marking a notification unread again (`read: false`)
+   * clears `readAt` rather than leaving a stale one behind. */
+  notifications: {
+    create: notificationCreate,
+    update: notificationUpdate,
+    async toColumns(input) {
+      const value = { ...input } as Record<string, unknown>
+      if ('read' in value) {
+        value.readAt = value.read ? new Date() : null
+      }
+      delete value.read
       return value
     },
   },

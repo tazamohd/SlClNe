@@ -55,6 +55,7 @@
       "leave_requests",
       "loan_contracts",
       "loan_repayments",
+      "notifications",
       "obd_devices",
       "obd_dtc_readings",
       "oem_tools",
@@ -129,6 +130,7 @@
       "leave_requests",
       "loan_contracts",
       "loan_repayments",
+      "notifications",
       "obd_devices",
       "obd_dtc_readings",
       "oem_tools",
@@ -840,6 +842,33 @@
         "predicate": "app_scope() <> 'self'",
         "purpose": null,
         "file": "server/drizzle/0022_equipment_warranties.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "notifications",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0023_notifications.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "notifications",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0023_notifications.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "notifications",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0023_notifications.sql"
       }
     ],
     "triggers": [
@@ -1035,6 +1064,12 @@
         "table": "equipment_warranties",
         "function": "bump_version",
         "file": "server/drizzle/0022_equipment_warranties.sql"
+      },
+      {
+        "name": "notifications_bump_version",
+        "table": "notifications",
+        "function": "bump_version",
+        "file": "server/drizzle/0023_notifications.sql"
       }
     ],
     "contextFunctions": [
@@ -1044,9 +1079,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 71,
-      "rlsEnabled": 72,
-      "forced": 72,
+      "tenantScopedTables": 72,
+      "rlsEnabled": 73,
+      "forced": 73,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -1074,7 +1109,8 @@
       "server/drizzle/0019_delivery_signoff.sql",
       "server/drizzle/0020_canned_jobs.sql",
       "server/drizzle/0021_campaign_messaging.sql",
-      "server/drizzle/0022_equipment_warranties.sql"
+      "server/drizzle/0022_equipment_warranties.sql",
+      "server/drizzle/0023_notifications.sql"
     ]
   },
   "authenticationSurface": [

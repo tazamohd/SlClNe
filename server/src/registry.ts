@@ -1071,6 +1071,36 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Notifications (BLK-004) — a per-tenant feed of job, appointment,
+   * invoice and stock alerts. Writable through the generic router, the same
+   * shape `equipmentWarranties` gets: a flat directory with no lines, no
+   * derived money and one lifecycle move (unread -> read), so it needs no
+   * bespoke router. Gated on `dashboard` — the module every operating role
+   * already holds view on — because a notification is directory data about
+   * a user's own tenant, not a privilege the way an accounting record is. */
+  define({
+    key: 'notifications',
+    path: 'notifications',
+    table: s.notifications,
+    module: 'dashboard',
+    entity: 'notification',
+    search: ['title', 'message'],
+    sortable: ['createdAt', 'severity', 'category', 'readAt'],
+    filterable: ['category', 'severity'],
+    defaultSort: { column: 'createdAt', dir: 'desc' },
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      category: row.category,
+      severity: row.severity,
+      title: row.title,
+      message: row.message,
+      link: row.link ?? null,
+      read: row.readAt != null,
+      readAt: row.readAt ? new Date(row.readAt as string | Date).toISOString() : null,
+    }),
+  }),
+
   /* ------------------------------------------------------------------- HR */
   define({
     /** Employees (vertical B) — staff who belong to a department (the existing

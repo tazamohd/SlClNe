@@ -5074,4 +5074,20 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading workspaces...": "جارٍ تحميل مساحات العمل...",
   "No branches are set up on this account yet.": "لم يتم إعداد أي فروع لهذا الحساب بعد.",
   "No workspaces yet": "لا توجد مساحات عمل بعد",
+
+  // Notifications (BLK-004) — a real writable feed replacing
+  // NotificationCenter.tsx's honest GAP state.
+  "Job, appointment, invoice and stock alerts": "تنبيهات أوامر العمل والمواعيد والفواتير والمخزون",
+  "Mark as Read": "وضع علامة كمقروءة",
+  "Mark all as read": "وضع علامة على الكل كمقروء",
+  "Could not update notification": "تعذر تحديث الإشعار",
+  "All notifications marked as read": "تم وضع علامة على جميع الإشعارات كمقروءة",
+  "Dismiss Notification?": "هل تريد تجاهل الإشعار؟",
+  "Notification dismissed": "تم تجاهل الإشعار",
+  "Could not dismiss notification": "تعذر تجاهل الإشعار",
+  "No notifications yet": "لا توجد إشعارات بعد",
+  "No notifications match the filter": "لا توجد إشعارات مطابقة للتصفية",
+  "Title or message": "العنوان أو الرسالة",
+  "Search notifications": "البحث في الإشعارات",
+  "Info": "معلومة",
 }

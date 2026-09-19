@@ -13,6 +13,15 @@
 // change did not intend to carry, so only the entries this feature needs
 // were hand-applied here. A future full regeneration will fold them in and
 // this note can go.
+//
+// Also hand-applied: `e`/`d` added to every role already holding `v` on
+// "dashboard" below (BLK-004, Notification Center — packages/contract's
+// PERMS carries the matching change and server/tests/rbac-parity.test.ts
+// is what keeps the two in step). Notifications are the first `dashboard`
+// collection that needs write letters this module never carried; marking
+// one read or dismissing it is a personal act on a user's own feed, not a
+// business-record edit, so it rides the same broad view grant every
+// operating role already holds here.
 import type { Role, PermissionMatrix, FieldRule, SodRule } from '../types'
 
 export const ROLES = [
@@ -231,18 +240,18 @@ export const ROLES = [
 /** module → role → granted actions, e.g. "vcex". "" means hidden from nav. */
 export const PERMS: PermissionMatrix = {
   "dashboard": {
-    "owner": "vx",
-    "manager": "vx",
-    "advisor": "v",
-    "technician": "v",
-    "qc": "v",
-    "parts": "v",
-    "accountant": "vx",
-    "hr": "v",
-    "frontdesk": "v",
-    "callcenter": "v",
-    "procurement": "v",
-    "superadmin": "vx",
+    "owner": "vedx",
+    "manager": "vedx",
+    "advisor": "ved",
+    "technician": "ved",
+    "qc": "ved",
+    "parts": "ved",
+    "accountant": "vedx",
+    "hr": "ved",
+    "frontdesk": "ved",
+    "callcenter": "ved",
+    "procurement": "ved",
+    "superadmin": "vedx",
     "test": "vcedax"
   },
   "jobcards": {

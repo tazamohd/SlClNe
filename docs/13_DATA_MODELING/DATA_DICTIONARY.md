@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-Every column of every table, 1288 in total.
+Every column of every table, 1303 in total.
 
 ## `organizations`
 
@@ -1361,6 +1361,33 @@ Equipment warranties — cover on the shop's own tools and fixed assets (a lift,
 | --- | --- | --- |
 | `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
 | `equipment_warranties_org_idx` | no | orgId, branchId, status |
+
+## `notifications`
+
+Notifications (BLK-004) — a per-tenant feed of job, appointment, invoice and stock alerts a staff member can view, mark read and dismiss. `NotificationCenter.tsx` rendered an honest GAP state because this collection did not exist; this is it. Writable through the generic router — same shape as `equipment_warranties`: a flat directory with no lines, no derived money and one lifecycle move (unread -> read). `readAt` is never accepted as raw input, only derived server-side from a `read` boolean on the write (`writers.ts`), the same discipline `equipment_warranties.claimedAt` uses — so a read timestamp always reflects when the row was actually marked read, and clears if it is ever marked unread again.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `category` | varchar(16) | NOT NULL | — | 'system' | — |
+| `severity` | varchar(16) | NOT NULL | — | 'info' | — |
+| `title` | varchar(200) | NOT NULL | — | — | — |
+| `message` | text | NOT NULL | — | — | — |
+| `link` | varchar(300) | nullable | — | — | — |
+| `read_at` | timestamptz | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `notifications_org_idx` | no | orgId, branchId, readAt |
+| `notifications_org_created_idx` | no | orgId, createdAt |
 
 ## `employees`
 

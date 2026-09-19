@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 160 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-18 · 161 requirements
 
 ## What these requirements are, and what they are not
 
@@ -49,7 +49,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 5 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 5 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PORTALS-001 | The system provides portals and channels through 11 screens and 0 API endpoints, gated by the `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` permission modules. | CAP-PORTALS | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-AI-001 | The system provides ai and automation through 10 screens and 8 API endpoints, gated by the `ai`, `aiadmin` permission modules. | CAP-AI | 8 | 10 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PLATFORM-001 | The system provides administration and platform through 35 screens and 19 API endpoints, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 19 | 35 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PLATFORM-001 | The system provides administration and platform through 35 screens and 28 API endpoints, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 28 | 35 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-IDENTITY-001 | The system provides identity and access through 19 screens and 24 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 24 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-WEBSITE-001 | The system provides public website and acquisition through 34 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 34 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -145,6 +145,7 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-LOAN-CONTRACTS | `loan_contracts` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-LOAN-REPAYMENTS | `loan_repayments` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-EQUIPMENT-WARRANTIES | `equipment_warranties` holds 19 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-NOTIFICATIONS | `notifications` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-EMPLOYEES | `employees` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-PAYROLL-RUNS | `payroll_runs` holds 17 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-PAYROLL-LINES | `payroll_lines` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |

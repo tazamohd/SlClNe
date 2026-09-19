@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-18
 
-204 spec files containing 2305 test cases.
+206 spec files containing 2321 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 129 | 1195 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 131 | 1211 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 40 | 505 |
-| app | 121 | 1423 |
+| server | 41 | 517 |
+| app | 122 | 1427 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -114,6 +114,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/Drawer.test.tsx` | UNIT_OR_API | 12 | — |
 | `app/tests/component/Form.test.tsx` | UNIT_OR_API | 16 | — |
 | `app/tests/component/Modal.test.tsx` | UNIT_OR_API | 12 | — |
+| `app/tests/component/notification-center.test.tsx` | UNIT_OR_API | 4 | advisor, supplier |
 | `app/tests/component/parts-catalog-seam.test.tsx` | UNIT_OR_API | 10 | parts, procurement |
 | `app/tests/component/Popover.test.tsx` | UNIT_OR_API | 7 | — |
 | `app/tests/component/Select.test.tsx` | UNIT_OR_API | 9 | — |
@@ -234,6 +235,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/inventory-enforcement.test.ts` | INVENTORY_INTEGRITY | 21 | owner, parts, supplier |
 | `server/tests/isolation.test.ts` | SECURITY | 21 | owner, accountant, manager, superadmin, advisor, technician, qc, parts, hr, frontdesk, callcenter, procurement, supplier, customer |
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
+| `server/tests/notifications.test.ts` | UNIT_OR_API | 12 | advisor, test, technician, customer |
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |

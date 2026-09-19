@@ -16,25 +16,25 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 28 API endpoints and 4 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
-| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
-| manager | branch | SAR 50,000 | `admin:v` `settings:ve` `dashboard:vx` `network:vcedx` |
-| advisor | branch | SAR 5,000 | `dashboard:v` |
-| technician | own | may not approve | `dashboard:v` |
-| qc | branch | may not approve | `dashboard:v` |
-| parts | branch | SAR 10,000 | `dashboard:v` `network:vced` |
-| accountant | all | SAR 25,000 | `dashboard:vx` |
-| hr | all | SAR 15,000 | `dashboard:v` |
-| frontdesk | branch | may not approve | `dashboard:v` |
-| callcenter | all | may not approve | `dashboard:v` |
-| procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
+| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vedx` `network:vcedax` |
+| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vedx` `network:v` |
+| manager | branch | SAR 50,000 | `admin:v` `settings:ve` `dashboard:vedx` `network:vcedx` |
+| advisor | branch | SAR 5,000 | `dashboard:ved` |
+| technician | own | may not approve | `dashboard:ved` |
+| qc | branch | may not approve | `dashboard:ved` |
+| parts | branch | SAR 10,000 | `dashboard:ved` `network:vced` |
+| accountant | all | SAR 25,000 | `dashboard:vedx` |
+| hr | all | SAR 15,000 | `dashboard:ved` |
+| frontdesk | branch | may not approve | `dashboard:ved` |
+| callcenter | all | may not approve | `dashboard:ved` |
+| procurement | all | SAR 20,000 | `dashboard:ved` `network:vcedax` |
 | supplier | external | may not approve | `network:vce` |
 | test | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
 
@@ -46,6 +46,7 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | --- | --- | --- | --- | --- | --- | --- |
 | `branches` | 13 | yes | yes | yes | yes | — |
 | `departments` | 15 | yes | yes | yes | yes | — |
+| `notifications` | 15 | yes | yes | yes | yes | — |
 | `integrations` | 16 | yes | yes | yes | yes | — |
 
 ### Relationships
@@ -56,6 +57,8 @@ The grant says *which module*. The data scope says *which rows*, and it is enfor
 | `branches` | `branch_id` | `branches` | optional | **convention only** |
 | `departments` | `org_id` | `organizations` | mandatory | FK |
 | `departments` | `branch_id` | `branches` | optional | **convention only** |
+| `notifications` | `org_id` | `organizations` | mandatory | FK |
+| `notifications` | `branch_id` | `branches` | optional | **convention only** |
 | `integrations` | `org_id` | `organizations` | mandatory | FK |
 | `integrations` | `branch_id` | `branches` | optional | **convention only** |
 
@@ -81,6 +84,15 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/integrations/oem-tools/:id` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/:id/history` | settings:v | explicit | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/export` | settings:x | generated | — | **0** |
+| GET | `/api/v1/notifications` | dashboard:v | generated | — | 1 |
+| POST | `/api/v1/notifications` | dashboard:c | generated | — | 1 |
+| DELETE | `/api/v1/notifications/:id` | dashboard:d | generated | — | **0** |
+| GET | `/api/v1/notifications/:id` | dashboard:v | generated | — | **0** |
+| PATCH | `/api/v1/notifications/:id` | dashboard:e | generated | — | **0** |
+| GET | `/api/v1/notifications/:id/history` | dashboard:v | explicit | — | **0** |
+| POST | `/api/v1/notifications/bulk-delete` | dashboard:d | generated | — | **0** |
+| POST | `/api/v1/notifications/bulk-update` | dashboard:e | generated | — | **0** |
+| GET | `/api/v1/notifications/export` | dashboard:x | generated | — | **0** |
 | POST | `/api/v1/public/leads` | — | explicit | — | 2 |
 | GET | `/health` | — | explicit | — | 2 |
 | GET | `/ready` | — | explicit | — | 1 |
@@ -109,7 +121,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-Integrations | `/integrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Login | `/login` | auth | **mock** | — | — | — | verified | yes |
 | D-Maintenance | `/maintenance` | auth | **mock** | — | — | — | verified | yes |
-| D-NotificationCenter | `/notification-center` | app | **mock** | — | — | yes | PARTIAL | yes |
+| D-NotificationCenter | `/notification-center` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-OEMIntegrations | `/oemintegrations` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Organizations | `/organizations` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-PartsNetwork | `/parts-network` | app | **mock** | — | — | yes | PARTIAL | yes |
@@ -135,11 +147,11 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **29 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **14 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
-- **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
+- **28 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **21 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
-- **22 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **21 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

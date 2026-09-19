@@ -1134,6 +1134,40 @@ export const equipmentWarranties = pgTable(
   }),
 )
 
+/** Notifications (BLK-004) — a per-tenant feed of job, appointment, invoice
+ *  and stock alerts a staff member can view, mark read and dismiss.
+ *  `NotificationCenter.tsx` rendered an honest GAP state because this
+ *  collection did not exist; this is it. Writable through the generic
+ *  router — same shape as `equipment_warranties`: a flat directory with no
+ *  lines, no derived money and one lifecycle move (unread -> read).
+ *  `readAt` is never accepted as raw input, only derived server-side from a
+ *  `read` boolean on the write (`writers.ts`), the same discipline
+ *  `equipment_warranties.claimedAt` uses — so a read timestamp always
+ *  reflects when the row was actually marked read, and clears if it is ever
+ *  marked unread again. */
+export const notifications = pgTable(
+  'notifications',
+  {
+    ...tenant,
+    /** `job` · `appointment` · `invoice` · `stock` · `system`. */
+    category: varchar('category', { length: 16 }).notNull().default('system'),
+    /** `info` · `warning` · `critical`. */
+    severity: varchar('severity', { length: 16 }).notNull().default('info'),
+    title: varchar('title', { length: 200 }).notNull(),
+    message: text('message').notNull(),
+    /** A loose reference to the source record (a job code, an invoice
+     *  number, a part SKU) — not a foreign key, since a notification can
+     *  point at any table in the system. Null when there is nothing to
+     *  link to. */
+    link: varchar('link', { length: 300 }),
+    readAt: timestamp('read_at', { withTimezone: true }),
+  },
+  (t) => ({
+    byOrg: index('notifications_org_idx').on(t.orgId, t.branchId, t.readAt),
+    byCreated: index('notifications_org_created_idx').on(t.orgId, t.createdAt),
+  }),
+)
+
 /* ------------------------------------------------------------------- HR */
 
 /** Employees — a member of staff who belongs to a department (the existing

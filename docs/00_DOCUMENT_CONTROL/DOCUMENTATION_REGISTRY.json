@@ -505,7 +505,7 @@
     {
       "path": "07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md",
       "section": "07_BUSINESS_ANALYSIS",
-      "bytes": 14542,
+      "bytes": 14559,
       "lines": 361,
       "type": "GENERATED",
       "archived": false,
@@ -549,8 +549,8 @@
     {
       "path": "09_SYSTEM_ANALYSIS/REQUIREMENTS_CATALOG.md",
       "section": "09_SYSTEM_ANALYSIS",
-      "bytes": 25749,
-      "lines": 216,
+      "bytes": 25875,
+      "lines": 217,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -692,8 +692,8 @@
     {
       "path": "13_DATA_MODELING/DATA_DICTIONARY.md",
       "section": "13_DATA_MODELING",
-      "bytes": 100288,
-      "lines": 1968,
+      "bytes": 102138,
+      "lines": 1995,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -703,8 +703,8 @@
     {
       "path": "13_DATA_MODELING/ENTITY_CATALOG.md",
       "section": "13_DATA_MODELING",
-      "bytes": 9282,
-      "lines": 118,
+      "bytes": 9371,
+      "lines": 119,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -725,8 +725,8 @@
     {
       "path": "13_DATA_MODELING/RELATIONSHIP_CATALOG.md",
       "section": "13_DATA_MODELING",
-      "bytes": 26110,
-      "lines": 238,
+      "bytes": 26357,
+      "lines": 240,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -758,7 +758,7 @@
     {
       "path": "15_C4_ARCHITECTURE_DIAGRAMS/C4_MODEL.md",
       "section": "15_C4_ARCHITECTURE_DIAGRAMS",
-      "bytes": 4899,
+      "bytes": 4900,
       "lines": 142,
       "type": "GENERATED",
       "archived": false,
@@ -780,8 +780,8 @@
     {
       "path": "16_SYSTEM_DESIGN/DATA_ACCESS_DESIGN.md",
       "section": "16_SYSTEM_DESIGN",
-      "bytes": 6798,
-      "lines": 116,
+      "bytes": 6865,
+      "lines": 117,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -835,7 +835,7 @@
     {
       "path": "17_API_INTEGRATION/API_OVERVIEW.md",
       "section": "17_API_INTEGRATION",
-      "bytes": 3843,
+      "bytes": 3846,
       "lines": 72,
       "type": "GENERATED",
       "archived": false,
@@ -945,8 +945,8 @@
     {
       "path": "17_API_INTEGRATION/endpoints/dashboard.md",
       "section": "17_API_INTEGRATION",
-      "bytes": 1499,
-      "lines": 29,
+      "bytes": 3090,
+      "lines": 39,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1077,8 +1077,8 @@
     {
       "path": "18_DATABASE/DATABASE_DESIGN.md",
       "section": "18_DATABASE",
-      "bytes": 9352,
-      "lines": 147,
+      "bytes": 9555,
+      "lines": 150,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1099,7 +1099,7 @@
     {
       "path": "19_SECURITY/RBAC_MATRIX.md",
       "section": "19_SECURITY",
-      "bytes": 6050,
+      "bytes": 6074,
       "lines": 109,
       "type": "GENERATED",
       "archived": false,
@@ -1132,8 +1132,8 @@
     {
       "path": "19_SECURITY/TENANT_ISOLATION.md",
       "section": "19_SECURITY",
-      "bytes": 16305,
-      "lines": 174,
+      "bytes": 16766,
+      "lines": 178,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1297,8 +1297,8 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PLATFORM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 9017,
-      "lines": 153,
+      "bytes": 9941,
+      "lines": 165,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1451,8 +1451,8 @@
     {
       "path": "27_TESTING_VALIDATION/TEST_CATALOG.md",
       "section": "27_TESTING_VALIDATION",
-      "bytes": 17782,
-      "lines": 250,
+      "bytes": 17973,
+      "lines": 252,
       "type": "GENERATED",
       "archived": false,
       "substantive": true,
@@ -1880,7 +1880,7 @@
     {
       "path": "MASTER_RBAC_MATRIX.md",
       "section": "(root)",
-      "bytes": 3777,
+      "bytes": 3801,
       "lines": 59,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61686,
+      "bytes": 61683,
       "lines": 439,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

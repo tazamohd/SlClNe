@@ -106,6 +106,9 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   /** No design fixture — equipment warranties are new (BLK-004). The
    *  collection serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
   equipmentWarranties: [],
+  /** No design fixture — notifications are new (BLK-004). The collection
+   *  serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  notifications: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and

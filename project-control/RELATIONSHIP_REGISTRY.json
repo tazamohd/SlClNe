@@ -8,9 +8,9 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 194,
-    "declared": 69,
-    "inferred": 125,
+    "relationships": 196,
+    "declared": 70,
+    "inferred": 126,
     "orphanReferenceColumns": 14
   },
   "orphanReferences": [
@@ -2220,6 +2220,36 @@
     {
       "id": "REL-EQUIPMENT-WARRANTIES-BRANCH-ID",
       "from": "equipment_warranties",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-NOTIFICATIONS-ORG-ID",
+      "from": "notifications",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-NOTIFICATIONS-BRANCH-ID",
+      "from": "notifications",
       "fromColumn": "branch_id",
       "to": "branches",
       "toColumn": "id",

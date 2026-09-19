@@ -137,6 +137,9 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   /** Equipment warranties (BLK-004) — no design fixture; one of each status a
    *  screen needs to render (active, expired, claimed). */
   equipmentWarranties: 8,
+  /** Notifications (BLK-004) — no design fixture; a handful spanning every
+   *  category (job, appointment, invoice, stock) and read/unread state. */
+  notifications: 8,
 }
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
@@ -1392,6 +1395,79 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       startDate: '2021-02-15',
       endDate: '2024-02-14',
       status: 'expired',
+    }),
+  ])
+
+  /* --------------------------------------------------------------- notifications (BLK-004)
+   * A per-tenant feed of job, appointment, invoice and stock alerts.
+   * `NotificationCenter.tsx` had no collection to read at all (BLK-004), so
+   * every row here is a declared coherence extra (SEED_COHERENCE_EXTRAS),
+   * pointed at real seeded records rather than invented ones: the job codes
+   * are `T.JOBS` ids, the invoice numbers and amounts are `T.INVOICES`
+   * rows (the overdue Fatima Al-Zahrani notice is the same fact the old
+   * fabricated mock alluded to, now against a real invoice), and the
+   * low-stock alerts are `T.PARTS` rows whose seeded `stock` already sits
+   * below their `reorder` level. One of each category, a mix of read and
+   * unread, and severities across info/warning/critical so the screen has
+   * something to render in every state. */
+  await tx.insert(s.notifications).values([
+    row({
+      category: 'job',
+      severity: 'info',
+      title: 'Job C2A9F4E3 completed',
+      message: "Diagnostic completed for Omar Al-Ghamdi's Hyundai Sonata 2023.",
+      link: 'C2A9F4E3',
+    }),
+    row({
+      category: 'job',
+      severity: 'info',
+      title: 'Job E5D7A3B5 delivered',
+      message: "Sara Al-Mutairi's Ford Explorer 2022 has been delivered.",
+      link: 'E5D7A3B5',
+      readAt: new Date('2026-07-20T09:15:00Z'),
+    }),
+    row({
+      category: 'appointment',
+      severity: 'warning',
+      title: 'Appointment awaiting confirmation',
+      message: 'Layla Al-Sulaiman — GMC Yukon 2023, 10:30 AM, Bay 3 — is still awaiting confirmation.',
+    }),
+    row({
+      category: 'appointment',
+      severity: 'info',
+      title: 'Appointment confirmed',
+      message: 'Ahmed Al-Rashid — Toyota Camry 2022, 9:00 AM, Bay 1 — confirmed for Maintenance.',
+      readAt: new Date('2026-07-19T08:00:00Z'),
+    }),
+    row({
+      category: 'invoice',
+      severity: 'critical',
+      title: 'Invoice INV-2026-0141 overdue',
+      message: "Fatima Al-Zahrani's invoice for SAR 4,250 is overdue.",
+      link: 'INV-2026-0141',
+    }),
+    row({
+      category: 'invoice',
+      severity: 'warning',
+      title: 'Invoice INV-2026-0139 due soon',
+      message: "Mohammed Hassan's invoice for SAR 2,975 is due Jul 30, 2026.",
+      link: 'INV-2026-0139',
+      readAt: new Date('2026-07-22T11:30:00Z'),
+    }),
+    row({
+      category: 'stock',
+      severity: 'warning',
+      title: 'Brake Pads (Front) low on stock',
+      message: '18 units on hand, below the reorder level of 25 (SKU BP-FR-220).',
+      link: 'BP-FR-220',
+    }),
+    row({
+      category: 'stock',
+      severity: 'critical',
+      title: 'Spark Plug Set critically low',
+      message: '12 units on hand, below the reorder level of 20 (SKU SP-SET-04).',
+      link: 'SP-SET-04',
+      readAt: new Date('2026-07-23T07:45:00Z'),
     }),
   ])
 }

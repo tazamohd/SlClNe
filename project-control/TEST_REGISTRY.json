@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 204,
-    "cases": 2305,
+    "suites": 206,
+    "cases": 2321,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1195,
+      "UNIT_OR_API": 1211,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2202,6 +2202,27 @@
       "caseCount": 12,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-NOTIFICATION-CENTER-TEST-TSX",
+      "file": "app/tests/component/notification-center.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "NotificationCenter (fixture build)"
+      ],
+      "cases": [
+        "lists an unread notification and marks it as read",
+        "dismisses a notification after confirming, and it leaves the list",
+        "marks every unread notification read in one bulk action",
+        "hides Mark as Read, Dismiss and Mark all as read from a role with no dashboard write grant"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor",
+        "supplier"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-PARTS-CATALOG-SEAM-TEST-TSX",
@@ -6271,6 +6292,40 @@
       "touchesRoles": [
         "accountant",
         "procurement"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-NOTIFICATIONS-TEST-TS",
+      "file": "server/tests/notifications.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "notifications CRUD",
+        "the unread -> read lifecycle move"
+      ],
+      "cases": [
+        "lists the seeded notification feed",
+        "creates a notification, defaulting category/severity and read to false",
+        "creates a notification already read when the client asks for it",
+        "lets an advisor update a field without touching the others",
+        "lets a technician delete (dismiss) a notification",
+        "refuses an empty title",
+        "refuses any operating role trying to create one directly — a notification is filed by the system, not typed in",
+        "refuses a role with no dashboard grant at all",
+        "marking a notification read derives readAt server-side",
+        "marking a notification unread again clears readAt rather than leaving a stale date",
+        "a technician can mark their own tenant feed read too — dashboard write is broad, not accounting-gated",
+        "refuses a role with no dashboard edit grant"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [
+        "/notifications"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "test",
+        "technician",
+        "customer"
       ]
     },
     {

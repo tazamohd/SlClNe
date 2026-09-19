@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 430,
     "screensTotal": 430,
-    "endpointsMapped": 440,
-    "endpointsTotal": 440
+    "endpointsMapped": 449,
+    "endpointsTotal": 449
   },
   "capabilities": [
     {
@@ -1076,7 +1076,7 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 19,
+      "endpointCount": 28,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
         "API-DEPARTMENTS-GETID",
@@ -1094,6 +1094,15 @@
         "API-OEMTOOLS-GETID",
         "API-GET-INTEGRATIONS-OEM-TOOLS-ID-HISTORY",
         "API-OEMTOOLS-GETEXPORT",
+        "API-NOTIFICATIONS-GET-LIST",
+        "API-NOTIFICATIONS-POST-LIST",
+        "API-NOTIFICATIONS-DELETEID",
+        "API-NOTIFICATIONS-GETID",
+        "API-NOTIFICATIONS-PATCHID",
+        "API-GET-NOTIFICATIONS-ID-HISTORY",
+        "API-NOTIFICATIONS-POSTBULK-DELETE",
+        "API-NOTIFICATIONS-POSTBULK-UPDATE",
+        "API-NOTIFICATIONS-GETEXPORT",
         "API-POST-PUBLIC-LEADS",
         "API-GET-HEALTH",
         "API-GET-READY"
@@ -1136,12 +1145,13 @@
         "D-UsersTeams",
         "D-Welcome"
       ],
-      "dataBackedScreens": 6,
+      "dataBackedScreens": 7,
       "entities": [
         "departments",
         "branches",
         "integrations",
-        "oemTools"
+        "oemTools",
+        "notifications"
       ],
       "rules": [],
       "roles": [

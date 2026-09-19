@@ -162,6 +162,13 @@
       "when": 1789999000000,
       "tag": "0022_equipment_warranties",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1790085400000,
+      "tag": "0023_notifications",
+      "breakpoints": true
     }
   ]
 }

@@ -7,15 +7,15 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "entities": 76,
-    "tenantScoped": 71,
-    "branchScoped": 69,
-    "softDelete": 69,
-    "versioned": 69,
-    "audited": 68,
+    "entities": 77,
+    "tenantScoped": 72,
+    "branchScoped": 70,
+    "softDelete": 70,
+    "versioned": 70,
+    "audited": 69,
     "withMoneyColumns": 34,
-    "rlsEnabled": 72,
-    "columns": 1288
+    "rlsEnabled": 73,
+    "columns": 1303
   },
   "entities": [
     {
@@ -275,6 +275,7 @@
         "REL-LOAN-CONTRACTS-ORG-ID",
         "REL-LOAN-REPAYMENTS-ORG-ID",
         "REL-EQUIPMENT-WARRANTIES-ORG-ID",
+        "REL-NOTIFICATIONS-ORG-ID",
         "REL-EMPLOYEES-ORG-ID",
         "REL-PAYROLL-RUNS-ORG-ID",
         "REL-PAYROLL-LINES-ORG-ID",
@@ -596,6 +597,7 @@
         "REL-LOAN-CONTRACTS-BRANCH-ID",
         "REL-LOAN-REPAYMENTS-BRANCH-ID",
         "REL-EQUIPMENT-WARRANTIES-BRANCH-ID",
+        "REL-NOTIFICATIONS-BRANCH-ID",
         "REL-EMPLOYEES-BRANCH-ID",
         "REL-PAYROLL-RUNS-BRANCH-ID",
         "REL-PAYROLL-LINES-BRANCH-ID",
@@ -16316,6 +16318,300 @@
       "relationshipsIn": [],
       "rlsEnabled": true,
       "tests": []
+    },
+    {
+      "id": "ENT-NOTIFICATIONS",
+      "property": "notifications",
+      "table": "notifications",
+      "description": "Notifications (BLK-004) — a per-tenant feed of job, appointment, invoice and stock alerts a staff member can view, mark read and dismiss. `NotificationCenter.tsx` rendered an honest GAP state because this collection did not exist; this is it. Writable through the generic router — same shape as `equipment_warranties`: a flat directory with no lines, no derived money and one lifecycle move (unread -> read). `readAt` is never accepted as raw input, only derived server-side from a `read` boolean on the write (`writers.ts`), the same discipline `equipment_warranties.claimedAt` uses — so a read timestamp always reflects when the row was actually marked read, and clears if it is ever marked unread again.",
+      "columns": [
+        {
+          "property": "id",
+          "column": "id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": true,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "orgId",
+          "column": "org_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": {
+            "table": "organizations",
+            "column": "id"
+          },
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "branchId",
+          "column": "branch_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdAt",
+          "column": "created_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedAt",
+          "column": "updated_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdBy",
+          "column": "created_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedBy",
+          "column": "updated_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "deletedAt",
+          "column": "deleted_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "version",
+          "column": "version",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "1",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "category",
+          "column": "category",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'system'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "severity",
+          "column": "severity",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'info'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "title",
+          "column": "title",
+          "type": "varchar",
+          "via": null,
+          "length": "200",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "message",
+          "column": "message",
+          "type": "text",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "link",
+          "column": "link",
+          "type": "varchar",
+          "via": null,
+          "length": "300",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "readAt",
+          "column": "read_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "notifications_org_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "branchId",
+            "readAt"
+          ]
+        },
+        {
+          "name": "notifications_org_created_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "createdAt"
+          ]
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ],
+      "foreignKeys": [
+        {
+          "column": "org_id",
+          "referencesProperty": "organizations",
+          "referencesColumn": "id",
+          "referencesTable": "organizations"
+        }
+      ],
+      "tenantScoped": true,
+      "branchScoped": true,
+      "softDelete": true,
+      "versioned": true,
+      "audited": true,
+      "moneyColumns": [],
+      "presentationalColumns": [],
+      "missingUniversal": [],
+      "endpoints": [
+        "API-NOTIFICATIONS-GET-LIST",
+        "API-NOTIFICATIONS-POST-LIST",
+        "API-NOTIFICATIONS-DELETEID",
+        "API-NOTIFICATIONS-GETID",
+        "API-NOTIFICATIONS-PATCHID",
+        "API-NOTIFICATIONS-POSTBULK-DELETE",
+        "API-NOTIFICATIONS-POSTBULK-UPDATE",
+        "API-NOTIFICATIONS-GETEXPORT"
+      ],
+      "collection": "notifications",
+      "relationshipsOut": [
+        "REL-NOTIFICATIONS-ORG-ID",
+        "REL-NOTIFICATIONS-BRANCH-ID"
+      ],
+      "relationshipsIn": [],
+      "rlsEnabled": true,
+      "tests": [
+        "TS-APP-E2E-CUSTOMER-PORTAL-SPEC-TS"
+      ]
     },
     {
       "id": "ENT-EMPLOYEES",

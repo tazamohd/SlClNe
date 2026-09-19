@@ -299,6 +299,22 @@ export interface EquipmentWarrantyRow extends EntityMeta {
   notes: string | null
 }
 
+/** A notification — a job, appointment, invoice or stock alert on the
+ *  tenant's own feed (BLK-004), as `GET /notifications` presents it. No
+ *  design fixture — the shape is declared here rather than inferred, like
+ *  `EquipmentWarrantyRow`. Writable through the generic collection: create,
+ *  edit, delete and the one lifecycle move (unread → read) are all a plain
+ *  `POST`/`PATCH`/`DELETE` on this same collection. */
+export interface NotificationRow extends EntityMeta {
+  category: 'job' | 'appointment' | 'invoice' | 'stock' | 'system'
+  severity: 'info' | 'warning' | 'critical'
+  title: string
+  message: string
+  link: string | null
+  read: boolean
+  readAt: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -618,6 +634,7 @@ export interface Repository {
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
   equipmentWarranties: Collection<EquipmentWarrantyRow>
+  notifications: Collection<NotificationRow>
   receipts: Collection<(typeof T.RECEIPTS)[number]>
   departments: Collection<(typeof T.DEPARTMENTS)[number]>
   aiAgents: Collection<(typeof T.AI_AGENTS)[number]>
@@ -686,6 +703,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   requisitions: 'procurement/requisitions',
   purchaseOrders: 'procurement/purchase-orders',
   equipmentWarranties: 'equipment-warranties',
+  notifications: 'notifications',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -965,6 +983,19 @@ export const mockRepository: Repository = {
    * generic create/update/delete genuinely works here in demo mode too —
    * session-local, same as everywhere else `isLive` is false. */
   equipmentWarranties: fixture<EquipmentWarrantyRow>([]),
+  /* No design fixture — notifications are new (BLK-004). Empty, same as
+   * `equipmentWarranties`: `tests/repository-swap.test.ts` asserts every
+   * collection's live rows are exactly this fixture's rows plus
+   * `SEED_COHERENCE_EXTRAS`, so a literal seed here would have to match the
+   * server's seeded rows verbatim or break that check. Unlike
+   * `equipmentWarranties` there is no create action on the real screen (a
+   * notification is filed by the system, not typed in by a user, so
+   * `dashboard` grants `c` only to `test` — see `writers.ts`), so
+   * `app/tests/component/notification-center.test.tsx` seeds this fixture
+   * directly through `repository.notifications.create(...)` before
+   * rendering, the same generic write path the real API's `test` role
+   * uses. */
+  notifications: fixture<NotificationRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
