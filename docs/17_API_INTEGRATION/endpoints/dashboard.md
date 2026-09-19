@@ -18,8 +18,8 @@
 | GET | `/api/v1/branches/:id` | dashboard:v | token | `branches` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/branches/:id/history` | dashboard:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/branches/export` | dashboard:x | token | `branches` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/notifications` | dashboard:v | token | `notifications` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| POST | `/api/v1/notifications` | dashboard:c | token | `notifications` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/notifications` | dashboard:v | token | `notifications` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/notifications` | dashboard:c | token | `notifications` | — | 2 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/notifications/:id` | dashboard:d | token | `notifications` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/notifications/:id` | dashboard:v | token | `notifications` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | PATCH | `/api/v1/notifications/:id` | dashboard:e | token | `notifications` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

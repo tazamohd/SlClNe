@@ -13496,6 +13496,7 @@
       "audited": false,
       "capability": "CAP-PLATFORM",
       "tests": [
+        "TS-APP-TESTS-COMPONENT-NOTIFICATIONS-LIST-TEST-TSX",
         "TS-SERVER-TESTS-NOTIFICATIONS-TEST-TS"
       ]
     },
@@ -13536,6 +13537,7 @@
       "audited": true,
       "capability": "CAP-PLATFORM",
       "tests": [
+        "TS-APP-TESTS-COMPONENT-NOTIFICATIONS-LIST-TEST-TSX",
         "TS-SERVER-TESTS-NOTIFICATIONS-TEST-TS"
       ]
     },

@@ -91,8 +91,8 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/integrations/oem-tools/:id` | settings:v | generated | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/:id/history` | settings:v | explicit | — | **0** |
 | GET | `/api/v1/integrations/oem-tools/export` | settings:x | generated | — | **0** |
-| GET | `/api/v1/notifications` | dashboard:v | generated | — | 1 |
-| POST | `/api/v1/notifications` | dashboard:c | generated | — | 1 |
+| GET | `/api/v1/notifications` | dashboard:v | generated | — | 2 |
+| POST | `/api/v1/notifications` | dashboard:c | generated | — | 2 |
 | DELETE | `/api/v1/notifications/:id` | dashboard:d | generated | — | **0** |
 | GET | `/api/v1/notifications/:id` | dashboard:v | generated | — | **0** |
 | PATCH | `/api/v1/notifications/:id` | dashboard:e | generated | — | **0** |

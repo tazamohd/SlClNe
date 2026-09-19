@@ -22,8 +22,8 @@ Screens never call HTTP. They call `app/src/data/repository.ts`, which is backed
 
 | Measure | Count | Of |
 | --- | --- | --- |
-| Screens reading the live API | 162 | 436 |
-| Screens reading design fixtures | 36 | 436 |
+| Screens reading the live API | 163 | 436 |
+| Screens reading design fixtures | 35 | 436 |
 | Rendering | 436 | 436 |
 | Content-asserted end to end | 436 | 436 |
 
@@ -33,9 +33,9 @@ Four states a data-backed screen needs, and the counts that have them:
 
 | State | Screens with it | Why it matters |
 | --- | --- | --- |
-| Loading | 194 of 436 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
-| Error | 157 of 436 | A failed fetch with no error state is a blank screen the user cannot act on |
-| Empty | 266 of 436 | Zero rows is a normal state and needs its own design, not a table with no rows |
+| Loading | 195 of 436 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
+| Error | 158 of 436 | A failed fetch with no error state is a blank screen the user cannot act on |
+| Empty | 267 of 436 | Zero rows is a normal state and needs its own design, not a table with no rows |
 | Permission | enforced by `RequireAccess` | A screen a role may not see must not render and then fail; it must not be reachable |
 
 The gap is real: a fixture-backed screen has no fetch to fail, so it needs no loading or error state — which is exactly why those counts will have to rise as the remaining screens are connected.

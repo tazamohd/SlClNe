@@ -5470,4 +5470,9 @@ export const AR_OVERRIDES: Record<string, string> = {
     "تُحسب أعداد المسجَّلين ونسبة الإكمال من التسجيلات أدناه، أما العنوان والتصنيف والمدة والحالة فهي مُسجّلة على الدورة نفسها. والدورة التي لا يوجد بها أي مسجَّل لا تُعرض لها نسبة إكمال بدلاً من عرض نسبة صفرية.",
   "enrolments": "تسجيل",
   "Unknown employee": "موظف غير معروف",
+  // Notifications (BLK-004) — F-181's `/notifications` feed wired to the real
+  // collection, and the customer app's honest gap now that the staff feed
+  // exists but carries no customer audience.
+  "Job, appointment, invoice and stock alerts appear here as the system files them.": "تظهر هنا تنبيهات أوامر العمل والمواعيد والفواتير والمخزون عند تسجيلها في النظام.",
+  "The workshop notification feed is staff-only, and no customer-addressed notifications exist on the backend yet.": "تنبيهات الورشة مخصصة للموظفين فقط، ولا توجد إشعارات موجهة للعملاء في الخدمات الخلفية بعد.",
 }

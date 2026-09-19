@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 216,
-    "cases": 2458,
+    "suites": 217,
+    "cases": 2462,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1348,
+      "UNIT_OR_API": 1352,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2277,6 +2277,29 @@
       ],
       "caseCount": 4,
       "touchesPaths": [],
+      "touchesRoles": [
+        "advisor",
+        "supplier"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-NOTIFICATIONS-LIST-TEST-TSX",
+      "file": "app/tests/component/notifications-list.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "NotificationsList (fixture build)"
+      ],
+      "cases": [
+        "lists a seeded notification and marks it as read",
+        "dismisses a notification after confirming, and it leaves the feed",
+        "marks every unread notification read in one bulk action",
+        "hides every write action from a role with no dashboard write grant"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [
+        "/notifications"
+      ],
       "touchesRoles": [
         "advisor",
         "supplier"
