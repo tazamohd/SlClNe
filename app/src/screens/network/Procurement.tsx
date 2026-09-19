@@ -1563,37 +1563,41 @@ export function PartsSupplyNetwork() {
 
       {tab === 'partners' && (
         <Section title={t('Network Partners')}>
-          <EmptyState
+          <NetworkGapPanel
             icon="Users"
-            title={t('No network partners')}
-            description={t('Partner garages appear here once they join the supply network.')}
+            title="No network partners"
+            description="Partner garages appear here once they join the supply network — the same network `PartsNetworkSendRequest`/`PartsNetworkQuotations` have no backend for either."
+            collection="partsNetworkPartners"
           />
         </Section>
       )}
       {tab === 'fulfillment' && (
         <Section title={t('Fulfillment Orders')}>
-          <EmptyState
+          <NetworkGapPanel
             icon="Package"
-            title={t('No fulfillment orders')}
-            description={t('Group-buy and fulfillment orders appear here once placed.')}
+            title="No fulfillment orders"
+            description="Group-buy and fulfillment orders appear here once placed, once a network exists to place them with."
+            collection="partsNetworkFulfillment"
           />
         </Section>
       )}
       {tab === 'shipments' && (
         <Section title={t('Shipments')}>
-          <EmptyState
+          <NetworkGapPanel
             icon="Truck"
-            title={t('No shipments in transit')}
-            description={t('Shipments and delivery tracking appear here once orders are dispatched.')}
+            title="No shipments in transit"
+            description="Shipments and delivery tracking appear here once orders are dispatched through the network."
+            collection="partsNetworkShipments"
           />
         </Section>
       )}
       {tab === 'warehouses' && (
         <Section title={t('Warehouses')}>
-          <EmptyState
+          <NetworkGapPanel
             icon="Warehouse"
-            title={t('No warehouses registered')}
-            description={t('Partner warehouse locations and stock levels appear here.')}
+            title="No warehouses registered"
+            description="Partner warehouse locations and stock levels appear here once a partner registers one."
+            collection="partsNetworkWarehouses"
           />
         </Section>
       )}

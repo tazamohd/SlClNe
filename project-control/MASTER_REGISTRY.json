@@ -11,14 +11,14 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 43,
-    "noBackend": 127,
-    "dataBacked": 145,
+    "mockOnly": 38,
+    "noBackend": 129,
+    "dataBacked": 148,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 182,
-    "hasErrorState": 145,
+    "hasLoadingState": 183,
+    "hasErrorState": 146,
     "hasEmptyState": 265,
     "tabletVerified": 4,
     "arabicVerified": 119,
@@ -29,7 +29,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 33,
-    "crudRead": 137,
+    "crudRead": 138,
     "crudUpdate": 29,
     "crudDelete": 25,
     "unregisteredDesigns": 0,
@@ -7946,8 +7946,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders",
+        "requisitions"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -7977,7 +7980,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8108,7 +8110,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8182,7 +8184,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -8437,8 +8439,11 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "purchaseOrders",
+        "requisitions"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -8467,8 +8472,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -11201,7 +11205,9 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "parts"
+        "parts",
+        "purchaseOrders",
+        "requisitions"
       ],
       "crud": {
         "create": false,
@@ -19632,16 +19638,18 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "parts"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -19668,7 +19676,6 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
