@@ -34,7 +34,7 @@
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 28 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 100 policies |
-| Test catalogue | the spec files | 225 suites |
+| Test catalogue | the spec files | 226 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 436 screens |
 | Capability map, requirements, traceability | all of the above | 171 requirements |
 

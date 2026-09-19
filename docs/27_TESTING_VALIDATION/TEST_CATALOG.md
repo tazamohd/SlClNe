@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-225 spec files containing 2497 test cases.
+226 spec files containing 2498 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 150 | 1387 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 151 | 1388 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 48 | 628 |
-| app | 134 | 1492 |
+| app | 135 | 1493 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -150,6 +150,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/workshop-stage-chain.test.tsx` | UNIT_OR_API | 5 | owner, manager, technician |
 | `app/tests/component/workshop-technician-kb.test.tsx` | UNIT_OR_API | 3 | technician |
 | `app/tests/crm-gaps.test.ts` | UNIT_OR_API | 11 | — |
+| `app/tests/dashboard-welcome-page.test.tsx` | UNIT_OR_API | 1 | manager |
 | `app/tests/finance-integrity.test.ts` | FINANCIAL_INTEGRITY | 35 | — |
 | `app/tests/finance-money.test.ts` | FINANCIAL_INTEGRITY | 17 | — |
 | `app/tests/finance-new-screens.test.tsx` | FINANCIAL_INTEGRITY | 10 | accountant |

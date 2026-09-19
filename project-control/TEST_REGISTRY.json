@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 225,
-    "cases": 2497,
+    "suites": 226,
+    "cases": 2498,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1387,
+      "UNIT_OR_API": 1388,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -3063,6 +3063,23 @@
       "caseCount": 11,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-DASHBOARD-WELCOME-PAGE-TEST-TSX",
+      "file": "app/tests/dashboard-welcome-page.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WelcomePage"
+      ],
+      "cases": [
+        "counts real fixture rows rather than showing fixed numbers"
+      ],
+      "caseCount": 1,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "manager"
+      ]
     },
     {
       "id": "TS-APP-TESTS-FINANCE-INTEGRITY-TEST-TS",
