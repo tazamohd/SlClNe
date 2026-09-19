@@ -1,24 +1,24 @@
 {
   "generatedAt": "2026-09-19",
   "totals": {
-    "capabilities": 436,
-    "product": 381,
+    "capabilities": 430,
+    "product": 367,
     "referenceOnly": 28,
-    "externalDependency": 27,
-    "rendered": 436,
+    "externalDependency": 35,
+    "rendered": 430,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 237,
-    "dataBacked": 145,
-    "e2eCovered": 436,
-    "contentAsserted": 436,
+    "mockOnly": 224,
+    "dataBacked": 144,
+    "e2eCovered": 430,
+    "contentAsserted": 430,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 182,
-    "hasErrorState": 145,
-    "hasEmptyState": 227,
+    "hasLoadingState": 180,
+    "hasErrorState": 144,
+    "hasEmptyState": 225,
     "tabletVerified": 4,
-    "arabicVerified": 75,
+    "arabicVerified": 73,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -26,8 +26,8 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 33,
-    "crudRead": 137,
-    "crudUpdate": 29,
+    "crudRead": 136,
+    "crudUpdate": 28,
     "crudDelete": 25,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
@@ -43,12 +43,12 @@
       "dataBacked": 1
     },
     "app": {
-      "total": 316,
-      "rendered": 316,
+      "total": 315,
+      "rendered": 315,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 316,
-      "dataBacked": 130
+      "e2e": 315,
+      "dataBacked": 129
     },
     "call-center": {
       "total": 2,
@@ -99,11 +99,11 @@
       "dataBacked": 0
     },
     "public": {
-      "total": 39,
-      "rendered": 39,
+      "total": 34,
+      "rendered": 34,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 39,
+      "e2e": 34,
       "dataBacked": 0
     }
   },
@@ -117,19 +117,19 @@
       "dataBacked": 1
     },
     "admin": {
-      "total": 26,
-      "rendered": 26,
+      "total": 20,
+      "rendered": 20,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 26,
-      "dataBacked": 8
+      "e2e": 20,
+      "dataBacked": 7
     },
     "ai": {
-      "total": 14,
-      "rendered": 14,
+      "total": 10,
+      "rendered": 10,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 14,
+      "e2e": 10,
       "dataBacked": 4
     },
     "workshop": {
@@ -197,11 +197,11 @@
       "dataBacked": 2
     },
     "website": {
-      "total": 39,
-      "rendered": 39,
+      "total": 34,
+      "rendered": 34,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 39,
+      "e2e": 34,
       "dataBacked": 0
     },
     "procurement": {
@@ -213,11 +213,11 @@
       "dataBacked": 1
     },
     "featuremap": {
-      "total": 202,
-      "rendered": 202,
+      "total": 211,
+      "rendered": 211,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 202,
+      "e2e": 211,
       "dataBacked": 52
     }
   },
@@ -239,11 +239,11 @@
       "dataBacked": 2
     },
     "ai": {
-      "total": 14,
-      "rendered": 14,
+      "total": 5,
+      "rendered": 5,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 14,
+      "e2e": 5,
       "dataBacked": 2
     },
     "aiadmin": {
@@ -255,12 +255,12 @@
       "dataBacked": 2
     },
     "appointments": {
-      "total": 3,
-      "rendered": 3,
+      "total": 2,
+      "rendered": 2,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 3,
-      "dataBacked": 3
+      "e2e": 2,
+      "dataBacked": 2
     },
     "approvals": {
       "total": 1,
@@ -271,20 +271,20 @@
       "dataBacked": 1
     },
     "estimates": {
-      "total": 7,
-      "rendered": 7,
+      "total": 6,
+      "rendered": 6,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 7,
-      "dataBacked": 7
+      "e2e": 6,
+      "dataBacked": 6
     },
     "jobcards": {
-      "total": 16,
-      "rendered": 16,
+      "total": 11,
+      "rendered": 11,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 16,
-      "dataBacked": 15
+      "e2e": 11,
+      "dataBacked": 10
     },
     "audit": {
       "total": 1,
@@ -327,20 +327,20 @@
       "dataBacked": 0
     },
     "crm": {
-      "total": 11,
-      "rendered": 11,
+      "total": 10,
+      "rendered": 10,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 11,
-      "dataBacked": 11
+      "e2e": 10,
+      "dataBacked": 10
     },
     "customers": {
-      "total": 4,
-      "rendered": 4,
+      "total": 3,
+      "rendered": 3,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 4,
-      "dataBacked": 4
+      "e2e": 3,
+      "dataBacked": 3
     },
     "portalcustomer": {
       "total": 2,
@@ -367,28 +367,28 @@
       "dataBacked": 2
     },
     "hr": {
-      "total": 8,
-      "rendered": 8,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 8,
-      "dataBacked": 8
-    },
-    "vehicles": {
-      "total": 5,
-      "rendered": 5,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 5,
-      "dataBacked": 5
-    },
-    "inventory": {
       "total": 2,
       "rendered": 2,
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
+    },
+    "vehicles": {
+      "total": 4,
+      "rendered": 4,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 4,
+      "dataBacked": 4
+    },
+    "inventory": {
+      "total": 1,
+      "rendered": 1,
+      "placeholder": 0,
+      "mobileOwed": 0,
+      "e2e": 1,
+      "dataBacked": 1
     },
     "invoices": {
       "total": 4,
@@ -439,12 +439,12 @@
       "dataBacked": 1
     },
     "procurement": {
-      "total": 3,
-      "rendered": 3,
+      "total": 1,
+      "rendered": 1,
       "placeholder": 0,
       "mobileOwed": 0,
-      "e2e": 3,
-      "dataBacked": 3
+      "e2e": 1,
+      "dataBacked": 1
     },
     "portalsupplier": {
       "total": 2,
@@ -469,14 +469,6 @@
       "mobileOwed": 0,
       "e2e": 2,
       "dataBacked": 2
-    },
-    "insurance": {
-      "total": 1,
-      "rendered": 1,
-      "placeholder": 0,
-      "mobileOwed": 0,
-      "e2e": 1,
-      "dataBacked": 1
     }
   }
 }

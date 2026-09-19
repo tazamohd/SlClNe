@@ -80,7 +80,7 @@
 | Integrations | `/integrations` | app | admin | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 4 roles | route | IMPLEMENTED |
 | Inventory | `/inventory` | app | inventory | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | InventoryReports | `/inventory-reports` | app | reports | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 10 roles | route | IMPLEMENTED |
-| InviteAcceptance | `/invite-acceptance` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| InviteAcceptance | `/invite-acceptance` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | InvoiceCreate | `/invoice-create` | app | invoices | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | InvoiceDetail | `/invoice-detail` | app | invoices | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | InvoicePreview | `/invoice-preview` | app | invoices | DONE | MISSING | DONE | VERIFIED | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |

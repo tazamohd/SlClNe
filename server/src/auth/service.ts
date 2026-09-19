@@ -16,11 +16,11 @@
  *  - **A password change signs every device out.** Changing a password because
  *    it may have leaked is worthless if the sessions opened with it survive.
  */
-import { and, eq, isNull } from 'drizzle-orm'
+import { and, asc, eq, isNull, ne } from 'drizzle-orm'
 import { ulid } from 'ulid'
 import { roleId, type RoleId } from '@salis/contract'
 import { writeAudit } from '../audit/audit'
-import { branches, customers, organizations, users } from '../db/schema'
+import { branches, customers, organizations, technicians, users } from '../db/schema'
 import type { Database } from '../db/client'
 import { withTenant, type Principal, type Tx } from '../db/tenant'
 import { sessionPrincipal, withAuthPlane } from './context'
@@ -28,13 +28,20 @@ import type { AuthConfig } from './config'
 import {
   ResendTooSoon,
   issueChallenge,
+  peekRecoveryToken,
   recoveryToken,
   verifyChallenge,
   verifyRecoveryToken,
   type OtpChannel,
   type OtpTransport,
 } from './otp'
-import { checkPasswordPolicy, hashPassword, needsRehash, verifyPassword } from './password'
+import {
+  checkPasswordPolicy,
+  generateTemporaryPassword,
+  hashPassword,
+  needsRehash,
+  verifyPassword,
+} from './password'
 import {
   createSession,
   judge,
@@ -106,6 +113,47 @@ export class RoleSwitchRefused extends Error {
     this.name = 'RoleSwitchRefused'
   }
 }
+
+export class CustomerPortalAccessRefused extends Error {
+  readonly code: 'not_found' | 'no_email' | 'already_linked' | 'email_taken'
+  constructor(code: CustomerPortalAccessRefused['code'], message: string) {
+    super(message)
+    this.name = 'CustomerPortalAccessRefused'
+    this.code = code
+  }
+}
+
+export class StaffCreationRefused extends Error {
+  readonly code: 'email_taken' | 'invalid_role' | 'invalid_branch'
+  readonly field: string
+  constructor(code: StaffCreationRefused['code'], message: string, field: string) {
+    super(message)
+    this.name = 'StaffCreationRefused'
+    this.code = code
+    this.field = field
+  }
+}
+
+/** Internal roles `POST /admin/staff` may create — a garage's own employees.
+ *
+ *  `owner` and `superadmin` are excluded: nobody hands out tenant ownership or
+ *  platform administration from a form. `supplier` and `customer` are
+ *  excluded because they have their own onboarding paths (Phase D's
+ *  supplier-as-tenant application, and `registerCustomer`/`POST /customers`
+ *  respectively) — a supplier or customer created here would bypass whatever
+ *  that path is responsible for. `test` is provisioning-only. */
+export const STAFF_ROLES: readonly RoleId[] = [
+  'manager',
+  'advisor',
+  'technician',
+  'qc',
+  'parts',
+  'accountant',
+  'hr',
+  'frontdesk',
+  'callcenter',
+  'procurement',
+]
 
 export interface TokenPair {
   accessToken: string
@@ -695,6 +743,357 @@ export function createAuthService(deps: AuthDeps) {
         issueChallenge(tx, { channel: 'sms', destination }, config),
       )
       await transport.send({ channel: 'sms', destination, code: issued.code })
+    },
+
+    /** `GET /admin/staff` — the organization's own accounts, for the Users &
+     *  Teams screen. Customers are excluded: they have their own list
+     *  (`customers`), and a portal login is not "staff". */
+    async listStaffUsers(principal: Principal): Promise<AuthenticatedUser[]> {
+      const rows = await withTenant(db, principal, async (tx) =>
+        tx
+          .select()
+          .from(users)
+          .where(and(isNull(users.deletedAt), ne(users.role, 'customer')))
+          .orderBy(asc(users.name)),
+      )
+      return rows.map((row) => toUser(row as UserRow))
+    },
+
+    /** `POST /admin/staff` — a garage's own employee account, made by its
+     *  owner or manager rather than by the person themselves.
+     *
+     *  Two modes, chosen by the caller per person:
+     *  - `direct`: active immediately, with a generated password returned
+     *    **once** in this response for the admin to relay in person. Never
+     *    logged, never stored in plaintext.
+     *  - `invite`: created `pending`, with a `channel: 'invite'` recovery
+     *    token emailed to the new hire — the same mechanism `forgotPassword`
+     *    uses for `reset`, so accepting it is `acceptInvite` below rather
+     *    than a second credential system.
+     *
+     *  Runs under the caller's own tenant context (`withTenant`), unlike
+     *  `register`/`registerCustomer`: there is already an organization and an
+     *  authenticated principal here, so this is an ordinary tenant write, not
+     *  the auth plane. Only the `otp_challenges` step — a table with no
+     *  tenant column — reaches for `withAuthPlane`, exactly as
+     *  `forgotPassword` does. */
+    async createStaffUser(
+      principal: Principal,
+      input: {
+        name: string
+        email: string
+        role: string
+        branchId?: string | null
+        mode: 'direct' | 'invite'
+      },
+      facts: RequestFacts,
+    ): Promise<
+      | { mode: 'direct'; user: AuthenticatedUser; temporaryPassword: string }
+      | { mode: 'invite'; user: AuthenticatedUser; expiresAt: Date }
+    > {
+      const email = input.email.trim().toLowerCase()
+      const name = input.name.trim()
+
+      const parsedRole = roleId.safeParse(input.role)
+      if (!parsedRole.success || !STAFF_ROLES.includes(parsedRole.data)) {
+        throw new StaffCreationRefused(
+          'invalid_role',
+          `"${input.role}" is not a role this endpoint may create.`,
+          'role',
+        )
+      }
+      const role = parsedRole.data
+
+      const taken = await withTenant(db, principal, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.email, email), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (taken.length > 0) {
+        throw new StaffCreationRefused(
+          'email_taken',
+          'That email address already has an account in this organization.',
+          'email',
+        )
+      }
+
+      const requestedBranchId = input.branchId?.trim() || principal.branchId || null
+      if (requestedBranchId) {
+        const [branch] = await withTenant(db, principal, async (tx) =>
+          tx
+            .select({ id: branches.id })
+            .from(branches)
+            .where(and(eq(branches.id, requestedBranchId), isNull(branches.deletedAt)))
+            .limit(1),
+        )
+        if (!branch) {
+          throw new StaffCreationRefused('invalid_branch', 'That branch does not exist.', 'branchId')
+        }
+      }
+
+      const userId = ulid()
+      const insertTechnician = async (tx: Tx) => {
+        if (role !== 'technician') return
+        await tx.insert(technicians).values({
+          id: ulid(),
+          orgId: principal.orgId,
+          branchId: requestedBranchId,
+          name,
+          userId,
+          createdBy: principal.userId,
+          updatedBy: principal.userId,
+        })
+      }
+
+      if (input.mode === 'direct') {
+        const temporaryPassword = generateTemporaryPassword()
+        const passwordHash = await hashPassword(temporaryPassword, config)
+        const created = await withTenant(db, principal, async (tx) => {
+          const [row] = await tx
+            .insert(users)
+            .values({
+              id: userId,
+              orgId: principal.orgId,
+              branchId: requestedBranchId,
+              email,
+              name,
+              role,
+              passwordHash,
+              status: 'active',
+              createdBy: principal.userId,
+              updatedBy: principal.userId,
+            })
+            .returning()
+          await insertTechnician(tx)
+          await writeAudit(tx, {
+            actor: principal,
+            action: 'create',
+            entity: 'user',
+            entityId: userId,
+            after: { event: 'staff_created', email, role, mode: 'direct' },
+            ...facts,
+          })
+          return toUser(row as UserRow)
+        })
+        return { mode: 'direct', user: created, temporaryPassword }
+      }
+
+      const created = await withTenant(db, principal, async (tx) => {
+        const [row] = await tx
+          .insert(users)
+          .values({
+            id: userId,
+            orgId: principal.orgId,
+            branchId: requestedBranchId,
+            email,
+            name,
+            role,
+            /* Not `active` — `login` refuses anything else, the same
+             * invariant `registerCustomer` relies on for its own pending
+             * accounts. */
+            status: 'pending',
+            createdBy: principal.userId,
+            updatedBy: principal.userId,
+          })
+          .returning()
+        await insertTechnician(tx)
+        return toUser(row as UserRow)
+      })
+
+      /* Inside no single transaction with the insert above by necessity —
+       * `otp_challenges` has no tenant column and can only be reached from
+       * `withAuthPlane` — but issued only once the user row exists, so a
+       * challenge is never issued for an account that was not actually
+       * created. */
+      const issued = await withAuthPlane(db, (tx) =>
+        issueChallenge(tx, { channel: 'invite', destination: userId }, config),
+      )
+      await transport.send({ channel: 'invite', destination: email, code: recoveryToken(issued) })
+
+      await withTenant(db, principal, async (tx) => {
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'user',
+          entityId: userId,
+          after: { event: 'staff_invited', email, role },
+          ...facts,
+        })
+      })
+
+      return { mode: 'invite', user: created, expiresAt: issued.expiresAt }
+    },
+
+    /** `GET /auth/invite/:token` — a read-only look, so the acceptance screen
+     *  can show who the invite is for before anyone commits to a password.
+     *  Consumes nothing; only `acceptInvite` does that. */
+    async previewInvite(token: string): Promise<{ name: string; email: string } | null> {
+      const preview = await withAuthPlane(db, (tx) => peekRecoveryToken(tx, token, config, 'invite'))
+      if (!preview) return null
+      const [row] = await withAuthPlane(db, async (tx) =>
+        tx
+          .select({ name: users.name, email: users.email })
+          .from(users)
+          .where(and(eq(users.id, preview.destination), eq(users.status, 'pending')))
+          .limit(1),
+      )
+      return row ?? null
+    },
+
+    /** `POST /auth/invite/:token/accept` — sets the first password on a
+     *  staff account `createStaffUser` created `pending`, and activates it.
+     *  Mirrors `resetPassword` below, with `channel: 'invite'` where that one
+     *  reads `'reset'` so the two token kinds can never be swapped. */
+    async acceptInvite(
+      input: { token: string; password: string },
+      facts: RequestFacts,
+    ): Promise<{ ok: true } | { ok: false; reason: string }> {
+      const policy = checkPasswordPolicy(input.password)
+      if (policy) return { ok: false, reason: policy.message }
+
+      const verdict = await withAuthPlane(db, (tx) =>
+        verifyRecoveryToken(tx, input.token, config, 'invite'),
+      )
+      if (verdict.kind !== 'verified') {
+        return { ok: false, reason: 'That invite link is invalid or has expired.' }
+      }
+
+      const [row] = await withAuthPlane(db, async (tx) =>
+        tx
+          .select()
+          .from(users)
+          .where(and(eq(users.id, verdict.destination), eq(users.status, 'pending')))
+          .limit(1),
+      )
+      if (!row) return { ok: false, reason: 'That invite link is invalid or has expired.' }
+
+      const user = toUser(row as UserRow)
+      const principal = principalOf(user)
+      const hashed = await hashPassword(input.password, config)
+      await withTenant(db, principal, async (tx) => {
+        await tx
+          .update(users)
+          .set({ passwordHash: hashed, status: 'active', updatedBy: user.id })
+          .where(eq(users.id, user.id))
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'update',
+          entity: 'user',
+          entityId: user.id,
+          before: { status: 'pending' },
+          after: { event: 'invite_accepted', status: 'active' },
+          ...facts,
+        })
+      })
+      return { ok: true }
+    },
+
+    /** `POST /customers/:id/portal-access` — the second way a customer gets
+     *  an account (Phase B), beside the public phone-OTP self-signup
+     *  (`registerCustomer` above, untouched by this method entirely). A
+     *  garage's own staff, adding or already holding a customer record, can
+     *  grant that customer a login instead of waiting for them to sign up on
+     *  their own.
+     *
+     *  Deliberately not folded into the generic `customers` collection
+     *  writer (`registry.ts`): creating a `users` row is not a field update
+     *  on the customer, it is provisioning a credential, and credential
+     *  provisioning belongs in `src/auth/**` — the same reasoning that keeps
+     *  `registerCustomer` here rather than in `routes/public.ts`.
+     *
+     *  Requires an email on file: the invite is a `channel: 'invite'` link,
+     *  the same mechanism `createStaffUser`'s invite mode uses, and that
+     *  mechanism has nowhere to send a link without an address. A customer
+     *  with no email keeps the phone-OTP self-signup path open to them
+     *  instead — this method does not touch it. */
+    async grantCustomerPortalAccess(
+      principal: Principal,
+      customerId: string,
+      facts: RequestFacts,
+    ): Promise<{ user: AuthenticatedUser; expiresAt: Date }> {
+      const [customer] = await withTenant(db, principal, async (tx) =>
+        tx
+          .select()
+          .from(customers)
+          .where(and(eq(customers.id, customerId), isNull(customers.deletedAt)))
+          .limit(1),
+      )
+      if (!customer) {
+        throw new CustomerPortalAccessRefused('not_found', 'That customer does not exist.')
+      }
+
+      const email = customer.email?.trim().toLowerCase()
+      if (!email) {
+        throw new CustomerPortalAccessRefused(
+          'no_email',
+          'Add an email address for this customer before granting portal access.',
+        )
+      }
+
+      const existingLink = await withTenant(db, principal, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.customerId, customerId), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (existingLink.length > 0) {
+        throw new CustomerPortalAccessRefused('already_linked', 'This customer already has portal access.')
+      }
+
+      const taken = await withTenant(db, principal, async (tx) =>
+        tx
+          .select({ id: users.id })
+          .from(users)
+          .where(and(eq(users.email, email), isNull(users.deletedAt)))
+          .limit(1),
+      )
+      if (taken.length > 0) {
+        throw new CustomerPortalAccessRefused(
+          'email_taken',
+          'That email address already has an account.',
+        )
+      }
+
+      const userId = ulid()
+      await withTenant(db, principal, async (tx) => {
+        await tx.insert(users).values({
+          id: userId,
+          orgId: principal.orgId,
+          branchId: customer.branchId,
+          email,
+          name: customer.name,
+          role: 'customer',
+          customerId,
+          /* Not `active` — the invite is what gives this row a password. */
+          status: 'pending',
+          createdBy: principal.userId,
+          updatedBy: principal.userId,
+        })
+      })
+
+      /* `otp_challenges` has no tenant column; see `createStaffUser`. */
+      const issued = await withAuthPlane(db, (tx) =>
+        issueChallenge(tx, { channel: 'invite', destination: userId }, config),
+      )
+      await transport.send({ channel: 'invite', destination: email, code: recoveryToken(issued) })
+
+      const created = await withTenant(db, principal, async (tx) => {
+        await writeAudit(tx, {
+          actor: principal,
+          action: 'create',
+          entity: 'user',
+          entityId: userId,
+          after: { event: 'customer_portal_access_granted', customerId, email },
+          ...facts,
+        })
+        const [row] = await tx.select().from(users).where(eq(users.id, userId)).limit(1)
+        return toUser(row as UserRow)
+      })
+
+      return { user: created, expiresAt: issued.expiresAt }
     },
 
     /** `POST /auth/switch-role` — the `test` account acts as another role.

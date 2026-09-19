@@ -48,10 +48,10 @@
   ],
   "totals": {
     "capabilities": 18,
-    "screensMapped": 436,
-    "screensTotal": 436,
-    "endpointsMapped": 446,
-    "endpointsTotal": 446
+    "screensMapped": 430,
+    "screensTotal": 430,
+    "endpointsMapped": 445,
+    "endpointsTotal": 445
   },
   "capabilities": [
     {
@@ -198,7 +198,7 @@
         "API-GET-SERVICES-ID-HISTORY",
         "API-SERVICES-GETEXPORT"
       ],
-      "screenCount": 26,
+      "screenCount": 19,
       "screens": [
         "D-AppointmentCalendar",
         "D-Appointments",
@@ -206,7 +206,6 @@
         "D-CannedJobs",
         "D-HealthCheckReport",
         "D-CustomerApproval",
-        "D-DeclinedJobs",
         "D-DiagnosticReport",
         "D-EstimateDetail",
         "D-Estimates",
@@ -219,15 +218,9 @@
         "D-WorkshopEstimate",
         "D-WorkshopInspection",
         "D-WorkshopQC",
-        "D-WorkshopSignature",
-        "F-015",
-        "F-090",
-        "F-091",
-        "F-102",
-        "F-104",
-        "F-110"
+        "D-WorkshopSignature"
       ],
-      "dataBackedScreens": 25,
+      "dataBackedScreens": 18,
       "entities": [
         "appointments",
         "cannedJobs",
@@ -273,7 +266,7 @@
       ],
       "objective": "OBJ-RETENTION",
       "objectiveName": "Retain customers",
-      "endpointCount": 19,
+      "endpointCount": 20,
       "endpoints": [
         "API-CUSTOMERS-GET-LIST",
         "API-CUSTOMERS-POST-LIST",
@@ -281,6 +274,7 @@
         "API-CUSTOMERS-GETID",
         "API-CUSTOMERS-PATCHID",
         "API-GET-CUSTOMERS-ID-HISTORY",
+        "API-POST-CUSTOMERS-ID-PORTAL-ACCESS",
         "API-CUSTOMERS-POSTBULK-DELETE",
         "API-CUSTOMERS-POSTBULK-UPDATE",
         "API-CUSTOMERS-GETEXPORT",
@@ -295,14 +289,13 @@
         "API-FLEETS-POSTBULK-UPDATE",
         "API-FLEETS-GETEXPORT"
       ],
-      "screenCount": 4,
+      "screenCount": 3,
       "screens": [
         "D-CustomerDetail",
         "D-CustomerFeedback",
-        "D-Customers",
-        "F-004"
+        "D-Customers"
       ],
-      "dataBackedScreens": 4,
+      "dataBackedScreens": 3,
       "entities": [
         "customers",
         "fleets"
@@ -341,15 +334,14 @@
         "API-VEHICLES-POSTBULK-UPDATE",
         "API-VEHICLES-GETEXPORT"
       ],
-      "screenCount": 5,
+      "screenCount": 4,
       "screens": [
         "D-FleetContract",
         "D-FleetManagement",
         "D-VehicleDetail",
-        "D-Vehicles",
-        "F-109"
+        "D-Vehicles"
       ],
-      "dataBackedScreens": 5,
+      "dataBackedScreens": 4,
       "entities": [
         "vehicles"
       ],
@@ -396,7 +388,7 @@
         "API-PARTS-POSTBULK-UPDATE",
         "API-PARTS-GETEXPORT"
       ],
-      "screenCount": 8,
+      "screenCount": 7,
       "screens": [
         "D-Inventory",
         "D-PartsNetwork.Incoming",
@@ -404,10 +396,9 @@
         "D-PartsNetwork.Orders",
         "D-PartsNetwork.Quotations",
         "D-PartsNetwork.Requests",
-        "D-PartsNetwork.SendRequest",
-        "F-064"
+        "D-PartsNetwork.SendRequest"
       ],
-      "dataBackedScreens": 2,
+      "dataBackedScreens": 1,
       "entities": [
         "parts"
       ],
@@ -473,13 +464,11 @@
         "API-SUPPLIERS-POSTBULK-UPDATE",
         "API-SUPPLIERS-GETEXPORT"
       ],
-      "screenCount": 3,
+      "screenCount": 1,
       "screens": [
-        "D-PurchaseOrder",
-        "F-082",
-        "F-085"
+        "D-PurchaseOrder"
       ],
-      "dataBackedScreens": 3,
+      "dataBackedScreens": 1,
       "entities": [
         "purchaseOrders",
         "requisitions",
@@ -576,8 +565,7 @@
       "id": "CAP-ACCOUNTING",
       "name": "Accounting and finance",
       "modules": [
-        "accounting",
-        "insurance"
+        "accounting"
       ],
       "objective": "OBJ-CASH",
       "objectiveName": "Shorten the cash cycle",
@@ -643,7 +631,7 @@
         "API-SAVEDREPORTS-POSTBULK-UPDATE",
         "API-SAVEDREPORTS-GETEXPORT"
       ],
-      "screenCount": 9,
+      "screenCount": 8,
       "screens": [
         "D-BankReconciliation",
         "D-ChartOfAccounts",
@@ -652,10 +640,9 @@
         "D-FinancialStatements",
         "D-JournalEntries",
         "D-TaxManagement",
-        "F-169",
-        "F-171"
+        "F-169"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 8,
       "entities": [
         "chartOfAccounts",
         "expenses",
@@ -677,7 +664,6 @@
         "test"
       ],
       "goldenPaths": [
-        "e2e/insurance-claim.spec.ts",
         "e2e/accounting-reconciliation.spec.ts"
       ]
     },
@@ -745,21 +731,15 @@
         "API-TIMESHEETS-POSTBULK-UPDATE",
         "API-TIMESHEETS-GETEXPORT"
       ],
-      "screenCount": 11,
+      "screenCount": 5,
       "screens": [
         "D-Departments",
         "D-HRPayroll",
         "D-TechnicianKB",
         "D-Technicians",
-        "D-TechnicianSchedule",
-        "F-135",
-        "F-136",
-        "F-139",
-        "F-140",
-        "F-141",
-        "F-142"
+        "D-TechnicianSchedule"
       ],
-      "dataBackedScreens": 11,
+      "dataBackedScreens": 5,
       "entities": [
         "employees",
         "leaveRequests",
@@ -849,7 +829,7 @@
         "API-FEEDBACK-POSTBULK-UPDATE",
         "API-FEEDBACK-GETEXPORT"
       ],
-      "screenCount": 13,
+      "screenCount": 12,
       "screens": [
         "D-CallCenter",
         "D-CallCenter.Logs",
@@ -862,10 +842,9 @@
         "D-LeadPipeline",
         "D-Opportunities",
         "D-SMSCampaigns",
-        "D-WhatsAppCampaigns",
-        "F-174"
+        "D-WhatsAppCampaigns"
       ],
-      "dataBackedScreens": 11,
+      "dataBackedScreens": 10,
       "entities": [
         "campaigns",
         "leads",
@@ -939,14 +918,13 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 6,
+      "endpointCount": 5,
       "endpoints": [
         "API-GET-APPROVALS",
         "API-APPROVALLINES-GET-LIST",
         "API-APPROVALLINES-GETID",
         "API-GET-APPROVALS-LINES-ID-HISTORY",
-        "API-APPROVALLINES-GETEXPORT",
-        "API-GET-AUDIT-LOG"
+        "API-APPROVALLINES-GETEXPORT"
       ],
       "screenCount": 2,
       "screens": [
@@ -1050,26 +1028,17 @@
         "API-GET-AI-CONVERSATIONS-ID-HISTORY",
         "API-CONVERSATIONS-GETEXPORT"
       ],
-      "screenCount": 19,
+      "screenCount": 10,
       "screens": [
         "D-AgentDashboard",
         "D-AgentRegistry",
-        "D-AI-Automation",
-        "D-AI-Chatbot",
-        "D-AI-Chatbot-Assistant",
-        "D-AI-Service-Advisor",
         "D-AIAnalytics",
         "D-AIAssistant",
         "D-AutomationRules",
         "D-ConversationHistory",
         "D-KnowledgeBase",
-        "D-ML-Fraud-Detection",
         "D-ModelSettings",
-        "D-Neural-Network-Prediction",
         "D-PromptLibrary",
-        "D-Smart-Damage-Assessment",
-        "D-Voice-Command-Interface",
-        "D-Voice-Commands",
         "D-WorkflowBuilder"
       ],
       "dataBackedScreens": 4,
@@ -1078,7 +1047,14 @@
         "conversations"
       ],
       "rules": [],
-      "roles": [],
+      "roles": [
+        "owner",
+        "superadmin",
+        "manager",
+        "advisor",
+        "accountant",
+        "test"
+      ],
       "goldenPaths": [
         "e2e/new-customer-to-paid-invoice.spec.ts",
         "e2e/insurance-claim.spec.ts"
@@ -1089,7 +1065,6 @@
       "name": "Administration and platform",
       "modules": [
         "admin",
-        "departments",
         "settings",
         "superadmin",
         "dashboard",
@@ -1102,17 +1077,14 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 24,
+      "endpointCount": 21,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
-        "API-DEPARTMENTS-POST-LIST",
-        "API-DEPARTMENTS-DELETEID",
         "API-DEPARTMENTS-GETID",
-        "API-DEPARTMENTS-PATCHID",
         "API-GET-ADMIN-DEPARTMENTS-ID-HISTORY",
-        "API-DEPARTMENTS-POSTBULK-DELETE",
-        "API-DEPARTMENTS-POSTBULK-UPDATE",
         "API-DEPARTMENTS-GETEXPORT",
+        "API-GET-ADMIN-STAFF",
+        "API-POST-ADMIN-STAFF",
         "API-BRANCHES-GET-LIST",
         "API-BRANCHES-GETID",
         "API-GET-BRANCHES-ID-HISTORY",
@@ -1204,13 +1176,15 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 24,
+      "endpointCount": 26,
       "endpoints": [
         "API-POST-AUTH-2FA-ENROL",
         "API-POST-AUTH-2FA-VERIFY",
         "API-POST-AUTH-BIOMETRIC-CHALLENGE",
         "API-POST-AUTH-BIOMETRIC-ENROL",
         "API-POST-AUTH-FORGOT-PASSWORD",
+        "API-GET-AUTH-INVITE-TOKEN",
+        "API-POST-AUTH-INVITE-TOKEN-ACCEPT",
         "API-POST-AUTH-LOGIN",
         "API-POST-AUTH-LOGOUT",
         "API-GET-AUTH-ME",
@@ -1270,7 +1244,7 @@
       "objectiveName": "Retain customers",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 39,
+      "screenCount": 34,
       "screens": [
         "D-PublicPortal.About",
         "D-PublicPortal.Accounting",
@@ -1279,8 +1253,6 @@
         "D-PublicPortal.Blog",
         "D-PublicPortal.BookDemo",
         "D-PublicPortal.Careers",
-        "D-PublicPortal.CompanyStory",
-        "D-PublicPortal.ComparePlans",
         "D-PublicPortal.Contact",
         "D-PublicPortal.CRM",
         "D-PublicPortal.CustomerPortal",
@@ -1288,7 +1260,6 @@
         "D-PublicPortal.FAQ",
         "D-PublicPortal.Features",
         "D-PublicPortal.Fleet",
-        "D-PublicPortal.GettingStarted",
         "D-PublicPortal.Industries",
         "D-PublicPortal.Insurance",
         "D-PublicPortal.Integrations",
@@ -1296,7 +1267,6 @@
         "D-PublicPortal.Loans",
         "D-PublicPortal.MiniERP",
         "D-PublicPortal.PartsAccessories",
-        "D-PublicPortal.Platform",
         "D-PublicPortal.Pricing",
         "D-PublicPortal.Products",
         "D-PublicPortal.RequestDemo",
@@ -1307,7 +1277,6 @@
         "D-PublicPortal.Solutions",
         "D-PublicPortal.SpareParts",
         "D-PublicPortal.SupplierPortal",
-        "D-PublicPortal.SupplyChain",
         "D-PublicPortal.Support",
         "D-PublicPortal.TechnicianPortal",
         "D-PublicPortal.Workshop"
@@ -1361,7 +1330,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 204,
+      "screenCount": 232,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1388,6 +1357,7 @@
         "F-001",
         "F-002",
         "F-003",
+        "F-004",
         "F-006",
         "F-007",
         "F-008",
@@ -1395,6 +1365,7 @@
         "F-011",
         "F-013",
         "F-014",
+        "F-015",
         "F-016",
         "F-017",
         "F-018",
@@ -1437,6 +1408,7 @@
         "F-061",
         "F-062",
         "F-063",
+        "F-064",
         "F-065",
         "F-066",
         "F-067",
@@ -1449,12 +1421,16 @@
         "F-079",
         "F-080",
         "F-081",
+        "F-082",
         "F-083",
         "F-084",
+        "F-085",
         "F-086",
         "F-087",
         "F-088",
         "F-089",
+        "F-090",
+        "F-091",
         "F-092",
         "F-093",
         "F-094",
@@ -1465,11 +1441,15 @@
         "F-099",
         "F-100",
         "F-101",
+        "F-102",
         "F-103",
+        "F-104",
         "F-105",
         "F-106",
         "F-107",
         "F-108",
+        "F-109",
+        "F-110",
         "F-111",
         "F-112",
         "F-113",
@@ -1490,8 +1470,14 @@
         "F-132",
         "F-133",
         "F-134",
+        "F-135",
+        "F-136",
         "F-137",
         "F-138",
+        "F-139",
+        "F-140",
+        "F-141",
+        "F-142",
         "F-143",
         "F-144",
         "F-146",
@@ -1517,8 +1503,10 @@
         "F-167",
         "F-168",
         "F-170",
+        "F-171",
         "F-172",
         "F-173",
+        "F-174",
         "F-175",
         "F-176",
         "F-177",
@@ -1536,6 +1524,15 @@
         "F-190",
         "F-191",
         "F-192",
+        "F-193",
+        "F-194",
+        "F-195",
+        "F-196",
+        "F-197",
+        "F-198",
+        "F-199",
+        "F-200",
+        "F-201",
         "F-202",
         "F-203",
         "F-204",
@@ -1568,7 +1565,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 32,
+      "dataBackedScreens": 51,
       "entities": [],
       "rules": [],
       "roles": [],

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 4 screens, 19 API endpoints and 2 entities, gated by the `customers` permission module.
+This domain serves the objective **OBJ-RETENTION** (Retain customers). It comprises 3 screens, 20 API endpoints and 2 entities, gated by the `customers` permission module.
 
 
 ## Actors
@@ -64,6 +64,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/customers/:id` | customers:v | generated | — | **0** |
 | PATCH | `/api/v1/customers/:id` | customers:e | generated | — | **0** |
 | GET | `/api/v1/customers/:id/history` | customers:v | explicit | — | **0** |
+| POST | `/api/v1/customers/:id/portal-access` | customers:e | explicit | — | **0** |
 | POST | `/api/v1/customers/bulk-delete` | customers:d | generated | — | 1 |
 | POST | `/api/v1/customers/bulk-update` | customers:e | generated | — | **0** |
 | GET | `/api/v1/customers/export` | customers:x | generated | — | 1 |
@@ -96,11 +97,10 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-CustomerDetail | `/customer-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-CustomerFeedback | `/customer-feedback` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Customers | `/customers` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-004 | `/customers-list` | app | yes | yes | yes | yes | verified | yes |
 
 ## Known gaps in this domain
 
-- **13 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **14 of 20 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 lifecycle (`fleetContractStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **3 of 5 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
@@ -110,7 +110,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/fleets.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/auth/routes.ts`, `server/src/routes/fleets.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |
