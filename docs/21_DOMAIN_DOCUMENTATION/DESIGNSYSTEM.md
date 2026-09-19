@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 204 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 203 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -121,7 +121,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-060 | `/automated-reordering` | app | **mock** | — | — | yes | verified | yes |
 | F-061 | `/spare-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-062 | `/barcode-scanner` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-063 | `/internal-warehouse` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-065 | `/parts-marketplace` | app | **mock** | — | — | yes | verified | yes |
 | F-066 | `/dynamic-pricing` | app | **mock** | — | — | yes | verified | yes |
 | F-067 | `/intelligent-price-optimizer` | app | **mock** | — | — | yes | verified | yes |
@@ -255,8 +254,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **169 of 204 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **147 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **168 of 203 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **146 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

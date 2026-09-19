@@ -600,6 +600,53 @@ export const COLLECTIONS: readonly CollectionDef[] = [
       costHalalas: row.costHalalas ?? null,
       reserved: count(row.reserved),
       available: count(row.onHand) - count(row.reserved),
+      /* Which bay this part is put away in (BLK-004). The zone code rather
+       * than a ULID, because that is what the floor and `InternalWarehouse.tsx`
+       * group on, and a composite FK keeps it honest. Null until the part is
+       * put away. */
+      zoneCode: row.zoneCode ?? null,
+    }),
+  }),
+
+  /* Warehouse zones (BLK-004) — the bays stock is put away in, which
+   * `InternalWarehouse.tsx` rendered as a hardcoded six-row array with
+   * invented capacity, utilisation and item counts.
+   *
+   * What is presented here is only what the zone row records. There is no
+   * `itemCount` and no `utilization` field, deliberately: those are facts
+   * about stock, and the screen derives them by grouping `parts` on
+   * `zoneCode`, so they cannot drift from the inventory they describe.
+   * `capacityUnits` is recorded, because how big a bay is is a property of
+   * the bay and nothing in the ledger knows it.
+   *
+   * Writable through the generic router under `inventory` — the same module
+   * as the parts it holds — with one lifecycle move (active <-> maintenance)
+   * as an ordinary field write, so no bespoke router is needed. */
+  define({
+    key: 'warehouseZones',
+    path: 'warehouse-zones',
+    table: s.warehouseZones,
+    module: 'inventory',
+    entity: 'warehouse_zone',
+    search: ['code', 'name', 'nameAr'],
+    sortable: ['code', 'name', 'capacityUnits', 'status', 'createdAt'],
+    filterable: ['status', 'kind'],
+    defaultSort: { column: 'code', dir: 'asc' },
+    codeColumn: 'code',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.code,
+      code: row.code,
+      name: row.name,
+      nameAr: row.nameAr ?? null,
+      kind: row.kind,
+      capacityUnits: count(row.capacityUnits),
+      status: row.status,
+      maintenanceSince: row.maintenanceSince
+        ? new Date(row.maintenanceSince as string | Date).toISOString()
+        : null,
+      notes: row.notes ?? null,
     }),
   }),
 

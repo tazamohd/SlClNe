@@ -85,7 +85,8 @@
       "timesheets",
       "user_sessions",
       "users",
-      "vehicles"
+      "vehicles",
+      "warehouse_zones"
     ],
     "forcedTables": [
       "ai_agents",
@@ -164,7 +165,8 @@
       "timesheets",
       "user_sessions",
       "users",
-      "vehicles"
+      "vehicles",
+      "warehouse_zones"
     ],
     "policies": [
       {
@@ -985,6 +987,33 @@
         "predicate": "app_scope() <> 'self'",
         "purpose": null,
         "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "warehouse_zones",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0025_warehouse_zones.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "warehouse_zones",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0025_warehouse_zones.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "warehouse_zones",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0025_warehouse_zones.sql"
       }
     ],
     "triggers": [
@@ -1210,6 +1239,12 @@
         "table": "parts_network_orders",
         "function": "bump_version",
         "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "warehouse_zones_bump_version",
+        "table": "warehouse_zones",
+        "function": "bump_version",
+        "file": "server/drizzle/0025_warehouse_zones.sql"
       }
     ],
     "contextFunctions": [
@@ -1219,9 +1254,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 76,
-      "rlsEnabled": 77,
-      "forced": 77,
+      "tenantScopedTables": 77,
+      "rlsEnabled": 78,
+      "forced": 78,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -1251,7 +1286,8 @@
       "server/drizzle/0021_campaign_messaging.sql",
       "server/drizzle/0022_equipment_warranties.sql",
       "server/drizzle/0023_notifications.sql",
-      "server/drizzle/0024_parts_network.sql"
+      "server/drizzle/0024_parts_network.sql",
+      "server/drizzle/0025_warehouse_zones.sql"
     ]
   },
   "authenticationSurface": [

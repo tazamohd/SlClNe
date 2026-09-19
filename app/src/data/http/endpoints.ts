@@ -31,6 +31,7 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
 
   // ─── Inventory and team ──────────────────────────────────────────────────
   parts: '/inventory',
+  warehouseZones: '/warehouse-zones',
   technicians: '/technicians',
 
   // ─── CRM ─────────────────────────────────────────────────────────────────

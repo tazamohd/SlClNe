@@ -3,10 +3,14 @@
 //
 // Exception: the "Inspection internal notes" entry in FIELD_RULES below, and
 // the "HealthCheckReport": "jobcards" / "CannedJobs": "estimates" /
-// "Warranty-Management": "accounting" entries in SCREEN_MODULE, were added by
+// "Warranty-Management": "accounting" / "Internal-Warehouse": "inventory"
+// entries in SCREEN_MODULE, were added by
 // hand alongside the matching FIELD_RULES entry in project/gms-data.js (DVHC,
-// Sprint 2, P0; Canned Jobs, build-order item 5; Warranty Management, BLK-004
-// — none of the three has a design source, same reasoning as "DeclinedJobs"
+// Sprint 2, P0; Canned Jobs, build-order item 5; Warranty Management, BLK-004;
+// Internal Warehouse, BLK-004 — it reads and writes the `inventory` module's
+// own collections, `warehouseZones` and `parts`, and widens no role: the
+// module and its grants already existed — none of the four has a design
+// source, same reasoning as "DeclinedJobs"
 // already in this file) — a full
 // `node scripts/port-design-data.mjs` run also touched
 // nav.ts/screens.ts/badges.ts/icon-registry.ts with unrelated drift this
@@ -746,6 +750,7 @@ export const SCREEN_MODULE: Record<string, string> = {
   "CannedJobs": "estimates",
   "HealthCheckReport": "jobcards",
   "Warranty-Management": "accounting",
+  "Internal-Warehouse": "inventory",
   "CustomerApproval": "estimates",
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",

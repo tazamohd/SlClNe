@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-Every column of every table, 1399 in total.
+Every column of every table, 1417 in total.
 
 ## `organizations`
 
@@ -662,11 +662,13 @@ One line of a canned job's bundle — the same shape `estimate_lines` carries, c
 | `reserved` | integer | NOT NULL | — | 0 | — |
 | `reorder_level` | integer | NOT NULL | — | 0 | — |
 | `backorderable` | boolean | NOT NULL | — | false | — |
+| `zone_code` | varchar(16) | nullable | — | — | — |
 
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `parts_org_sku_idx` | yes | orgId, sku |
 | `parts_org_idx` | no | orgId, branchId |
+| `parts_org_zone_idx` | no | orgId, zoneCode |
 
 ## `inventory_movements`
 
@@ -1361,6 +1363,35 @@ Equipment warranties — cover on the shop's own tools and fixed assets (a lift,
 | --- | --- | --- |
 | `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
 | `equipment_warranties_org_idx` | no | orgId, branchId, status |
+
+## `warehouse_zones`
+
+Warehouse zones (BLK-004) — the physical bays stock is put away in, and the collection `InternalWarehouse.tsx` reads instead of the hardcoded `ZONES` array whose capacity, utilisation and item counts were all invented. What this table records is only what is a property of the *zone*: its code, name, what it is for and how much it can hold. It deliberately carries **no** item count and **no** utilisation percentage — those are facts about stock, derived by counting the `parts` rows whose `zone_code` points here, so they cannot drift from the inventory they describe. `capacity_units` is the one recorded number, and correctly so: nothing in the stock ledger knows how big a bay is. Writable through the generic router — `inventory:c/e/d`, the same module the parts it holds are under. `maintenance_since` is server-derived from the status transition (`writers.ts`), the discipline `equipment_warranties.claimed_at` uses, so it records when a bay actually went out of service rather than a date someone typed.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(16) | NOT NULL | — | — | — |
+| `name` | varchar(120) | NOT NULL | — | — | — |
+| `name_ar` | varchar(120) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | 'storage' | — |
+| `capacity_units` | integer | NOT NULL | — | 0 | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `maintenance_since` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `warehouse_zones_org_code_idx` | yes | orgId, code |
+| `warehouse_zones_org_idx` | no | orgId, branchId, status |
 
 ## `notifications`
 

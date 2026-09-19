@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 497,
-    "endpointsTotal": 497
+    "endpointsMapped": 506,
+    "endpointsTotal": 506
   },
   "capabilities": [
     {
@@ -381,7 +381,7 @@
       ],
       "objective": "OBJ-MARGIN",
       "objectiveName": "Protect parts and labour margin",
-      "endpointCount": 13,
+      "endpointCount": 22,
       "endpoints": [
         "API-PARTS-GET-LIST",
         "API-PARTS-POST-LIST",
@@ -395,9 +395,18 @@
         "API-POST-INVENTORY-ID-RESERVATION",
         "API-PARTS-POSTBULK-DELETE",
         "API-PARTS-POSTBULK-UPDATE",
-        "API-PARTS-GETEXPORT"
+        "API-PARTS-GETEXPORT",
+        "API-WAREHOUSEZONES-GET-LIST",
+        "API-WAREHOUSEZONES-POST-LIST",
+        "API-WAREHOUSEZONES-DELETEID",
+        "API-WAREHOUSEZONES-GETID",
+        "API-WAREHOUSEZONES-PATCHID",
+        "API-GET-WAREHOUSE-ZONES-ID-HISTORY",
+        "API-WAREHOUSEZONES-POSTBULK-DELETE",
+        "API-WAREHOUSEZONES-POSTBULK-UPDATE",
+        "API-WAREHOUSEZONES-GETEXPORT"
       ],
-      "screenCount": 8,
+      "screenCount": 9,
       "screens": [
         "D-Inventory",
         "D-PartsNetwork.Incoming",
@@ -406,11 +415,13 @@
         "D-PartsNetwork.Quotations",
         "D-PartsNetwork.Requests",
         "D-PartsNetwork.SendRequest",
+        "F-063",
         "F-064"
       ],
-      "dataBackedScreens": 8,
+      "dataBackedScreens": 9,
       "entities": [
-        "parts"
+        "parts",
+        "warehouseZones"
       ],
       "rules": [
         "BR-INVENTORY-checkMovement",
@@ -1417,7 +1428,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 204,
+      "screenCount": 203,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1492,7 +1503,6 @@
         "F-060",
         "F-061",
         "F-062",
-        "F-063",
         "F-065",
         "F-066",
         "F-067",

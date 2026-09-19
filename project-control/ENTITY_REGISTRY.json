@@ -7,15 +7,15 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "entities": 81,
-    "tenantScoped": 76,
-    "branchScoped": 74,
-    "softDelete": 74,
-    "versioned": 74,
-    "audited": 73,
+    "entities": 82,
+    "tenantScoped": 77,
+    "branchScoped": 75,
+    "softDelete": 75,
+    "versioned": 75,
+    "audited": 74,
     "withMoneyColumns": 36,
-    "rlsEnabled": 77,
-    "columns": 1399
+    "rlsEnabled": 78,
+    "columns": 1417
   },
   "entities": [
     {
@@ -275,6 +275,7 @@
         "REL-LOAN-CONTRACTS-ORG-ID",
         "REL-LOAN-REPAYMENTS-ORG-ID",
         "REL-EQUIPMENT-WARRANTIES-ORG-ID",
+        "REL-WAREHOUSE-ZONES-ORG-ID",
         "REL-NOTIFICATIONS-ORG-ID",
         "REL-PARTS-NETWORK-MEMBERS-ORG-ID",
         "REL-PARTS-NETWORK-REQUESTS-ORG-ID",
@@ -601,6 +602,7 @@
         "REL-LOAN-CONTRACTS-BRANCH-ID",
         "REL-LOAN-REPAYMENTS-BRANCH-ID",
         "REL-EQUIPMENT-WARRANTIES-BRANCH-ID",
+        "REL-WAREHOUSE-ZONES-BRANCH-ID",
         "REL-NOTIFICATIONS-BRANCH-ID",
         "REL-PARTS-NETWORK-MEMBERS-BRANCH-ID",
         "REL-PARTS-NETWORK-REQUESTS-BRANCH-ID",
@@ -8048,6 +8050,21 @@
           "references": null,
           "money": false,
           "presentational": false
+        },
+        {
+          "property": "zoneCode",
+          "column": "zone_code",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
         }
       ],
       "indexes": [
@@ -8065,6 +8082,14 @@
           "columns": [
             "orgId",
             "branchId"
+          ]
+        },
+        {
+          "name": "parts_org_zone_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "zoneCode"
           ]
         }
       ],
@@ -8123,7 +8148,8 @@
         "TS-APP-TESTS-RBAC-MATRIX-TEST-TS",
         "TS-APP-TESTS-UNIT-GENERATED-TABLES-TEST-TS",
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
-        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS",
+        "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS"
       ]
     },
     {
@@ -16343,6 +16369,319 @@
       "relationshipsOut": [
         "REL-EQUIPMENT-WARRANTIES-ORG-ID",
         "REL-EQUIPMENT-WARRANTIES-BRANCH-ID"
+      ],
+      "relationshipsIn": [],
+      "rlsEnabled": true,
+      "tests": []
+    },
+    {
+      "id": "ENT-WAREHOUSE-ZONES",
+      "property": "warehouseZones",
+      "table": "warehouse_zones",
+      "description": "Warehouse zones (BLK-004) — the physical bays stock is put away in, and the collection `InternalWarehouse.tsx` reads instead of the hardcoded `ZONES` array whose capacity, utilisation and item counts were all invented. What this table records is only what is a property of the *zone*: its code, name, what it is for and how much it can hold. It deliberately carries **no** item count and **no** utilisation percentage — those are facts about stock, derived by counting the `parts` rows whose `zone_code` points here, so they cannot drift from the inventory they describe. `capacity_units` is the one recorded number, and correctly so: nothing in the stock ledger knows how big a bay is. Writable through the generic router — `inventory:c/e/d`, the same module the parts it holds are under. `maintenance_since` is server-derived from the status transition (`writers.ts`), the discipline `equipment_warranties.claimed_at` uses, so it records when a bay actually went out of service rather than a date someone typed.",
+      "columns": [
+        {
+          "property": "id",
+          "column": "id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": true,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "orgId",
+          "column": "org_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": {
+            "table": "organizations",
+            "column": "id"
+          },
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "branchId",
+          "column": "branch_id",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdAt",
+          "column": "created_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedAt",
+          "column": "updated_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "now()",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "createdBy",
+          "column": "created_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "updatedBy",
+          "column": "updated_by",
+          "type": "varchar",
+          "via": null,
+          "length": "ULID_LENGTH",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "deletedAt",
+          "column": "deleted_at",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "version",
+          "column": "version",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "1",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "code",
+          "column": "code",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "name",
+          "column": "name",
+          "type": "varchar",
+          "via": null,
+          "length": "120",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "nameAr",
+          "column": "name_ar",
+          "type": "varchar",
+          "via": null,
+          "length": "120",
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "kind",
+          "column": "kind",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'storage'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "capacityUnits",
+          "column": "capacity_units",
+          "type": "integer",
+          "via": null,
+          "length": null,
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "0",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "status",
+          "column": "status",
+          "type": "varchar",
+          "via": null,
+          "length": "16",
+          "notNull": true,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": true,
+          "default": "'active'",
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "maintenanceSince",
+          "column": "maintenance_since",
+          "type": "timestamptz",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        },
+        {
+          "property": "notes",
+          "column": "notes",
+          "type": "text",
+          "via": null,
+          "length": null,
+          "notNull": false,
+          "primaryKey": false,
+          "unique": false,
+          "hasDefault": false,
+          "default": null,
+          "references": null,
+          "money": false,
+          "presentational": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "warehouse_zones_org_code_idx",
+          "unique": true,
+          "columns": [
+            "orgId",
+            "code"
+          ]
+        },
+        {
+          "name": "warehouse_zones_org_idx",
+          "unique": false,
+          "columns": [
+            "orgId",
+            "branchId",
+            "status"
+          ]
+        }
+      ],
+      "primaryKey": [
+        "id"
+      ],
+      "foreignKeys": [
+        {
+          "column": "org_id",
+          "referencesProperty": "organizations",
+          "referencesColumn": "id",
+          "referencesTable": "organizations"
+        }
+      ],
+      "tenantScoped": true,
+      "branchScoped": true,
+      "softDelete": true,
+      "versioned": true,
+      "audited": true,
+      "moneyColumns": [],
+      "presentationalColumns": [],
+      "missingUniversal": [],
+      "endpoints": [],
+      "collection": "warehouseZones",
+      "relationshipsOut": [
+        "REL-WAREHOUSE-ZONES-ORG-ID",
+        "REL-WAREHOUSE-ZONES-BRANCH-ID"
       ],
       "relationshipsIn": [],
       "rlsEnabled": true,

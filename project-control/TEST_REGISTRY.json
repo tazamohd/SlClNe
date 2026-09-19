@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 212,
-    "cases": 2409,
+    "suites": 214,
+    "cases": 2431,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1299,
+      "UNIT_OR_API": 1321,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2210,6 +2210,29 @@
       "caseCount": 17,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-INTERNAL-WAREHOUSE-TEST-TSX",
+      "file": "app/tests/component/internal-warehouse.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "InternalWarehouse (fixture build)"
+      ],
+      "cases": [
+        "derives each zone utilisation from the stock assigned to it",
+        "follows the stock: putting units into an empty bay is what fills it",
+        "shows a bay over its capacity as Full, a state nothing records",
+        "reports stock that is not put away instead of dropping it from the totals",
+        "takes a bay out of service and back, a real status write rather than a label",
+        "hides the lifecycle action from a role with only inventory view"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "parts",
+        "technician"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-MODAL-TEST-TSX",
@@ -6855,6 +6878,47 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS",
+      "file": "server/tests/warehouse-zones.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "the seeded zone directory",
+        "the per-zone counts are derived from the parts assigned to the zone",
+        "zone CRUD through the generic router",
+        "the active <-> maintenance lifecycle move",
+        "tenant and scope boundaries"
+      ],
+      "cases": [
+        "serves the six bays, keyed by the code painted on the floor",
+        "records capacity and status, and no item count or utilisation at all",
+        "serves each part with the bay it is racked in",
+        "a stock count that follows the parts: moving a part moves the quantity with it",
+        "refuses a part put away in a zone that does not exist",
+        "accepts a null zone — stock not put away yet is a real state, not an error",
+        "creates a zone, assigning a counted code when none is supplied",
+        "keeps a code a caller supplies, since a bay already has one painted on it",
+        "refuses a second zone on a code the tenant already uses",
+        "refuses a negative capacity",
+        "refuses a role with no inventory create grant",
+        "is reachable by its zone code as well as its id",
+        "derives maintenanceSince from the transition and clears it on the way back",
+        "ignores a posted maintenanceSince: only the transition writes it",
+        "has no `full` status to record — fullness is derived from the stock in the bay",
+        "shows a customer on the portal nothing at all"
+      ],
+      "caseCount": 16,
+      "touchesPaths": [
+        "/inventory",
+        "/warehouse-zones"
+      ],
+      "touchesRoles": [
+        "parts",
+        "technician",
+        "customer"
       ]
     },
     {

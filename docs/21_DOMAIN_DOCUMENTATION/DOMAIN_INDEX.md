@@ -21,7 +21,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 26 | 128 | 18 | 25 of 26 |
 | Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 4 | 20 | 2 | 4 of 4 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 5 | 9 | 1 | 5 of 5 |
-| Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 8 | 13 | 1 | 8 of 8 |
+| Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 9 | 22 | 2 | 9 of 9 |
 | Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 3 | 28 | 3 | 3 of 3 |
 | Invoicing and payments | [CAP-BILLING](BILLING.md) | 6 | 25 | 4 | 6 of 6 |
 | Accounting and finance | [CAP-ACCOUNTING](ACCOUNTING.md) | 9 | 59 | 10 | 9 of 9 |
@@ -35,4 +35,4 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 26 | 0 | 1 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 39 | 0 | 0 | 0 of 39 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 204 | 0 | 0 | 35 of 204 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 203 | 0 | 0 | 35 of 203 |

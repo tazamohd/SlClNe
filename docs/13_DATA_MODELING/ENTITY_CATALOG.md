@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-81 tables. 76 are tenant-scoped (carry `org_id`) and 77 have row-level security enabled and forced.
+82 tables. 77 are tenant-scoped (carry `org_id`) and 78 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -46,7 +46,7 @@
 | ENT-INVOICE-LINES | `invoice_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-PAYMENTS | `payments` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |
 | ENT-RECEIPTS | `receipts` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |
-| ENT-PARTS | `parts` | 17 | yes | yes | yes | yes | yes | yes | 2 | 8 |
+| ENT-PARTS | `parts` | 18 | yes | yes | yes | yes | yes | yes | 2 | 8 |
 | ENT-INVENTORY-MOVEMENTS | `inventory_movements` | 17 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-SUPPLIERS | `suppliers` | 17 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-REQUISITIONS | `requisitions` | 20 | yes | yes | yes | yes | yes | yes | 1 | 3 |
@@ -73,6 +73,7 @@
 | ENT-LOAN-CONTRACTS | `loan_contracts` | 18 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-LOAN-REPAYMENTS | `loan_repayments` | 17 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-EQUIPMENT-WARRANTIES | `equipment_warranties` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-WAREHOUSE-ZONES | `warehouse_zones` | 17 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-NOTIFICATIONS | `notifications` | 15 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-PARTS-NETWORK-MEMBERS | `parts_network_members` | 21 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-PARTS-NETWORK-REQUESTS | `parts_network_requests` | 27 | yes | yes | yes | yes | yes | yes | — | 0 |

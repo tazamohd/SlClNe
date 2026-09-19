@@ -134,6 +134,15 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   suppliers: 2,
   requisitions: 1,
   purchaseOrders: 1,
+  /** Warehouse zones (BLK-004) — **zero extras, deliberately.** Unlike every
+   *  other new BLK-004 table, the six zones are a fixture the app itself ships
+   *  (`WAREHOUSE_ZONE_FIXTURE` in `app/src/data/repository.ts`), because
+   *  Golden Path 7 asserts a real numeric utilisation per zone in a build with
+   *  no API at all. The seed below inserts exactly those six rows, in that
+   *  order, so `tests/seed-fidelity.test.ts` and
+   *  `tests/repository-swap.test.ts` both compare the two copies field by
+   *  field and neither can drift from the other unnoticed. */
+  warehouseZones: 0,
   /** Equipment warranties (BLK-004) — no design fixture; one of each status a
    *  screen needs to render (active, expired, claimed). */
   equipmentWarranties: 8,
@@ -149,6 +158,24 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   partsNetworkRequests: 4,
   partsNetworkQuotations: 3,
   partsNetworkOrders: 3,
+}
+
+/** Which warehouse zone each seeded part is racked in (BLK-004), by SKU.
+ *
+ *  Kept as data rather than an index-based rule so the assignment is plausible
+ *  rather than arbitrary: filters and pads on the main floor, the smaller
+ *  service items on the mezzanine. A part not listed here is simply not put
+ *  away yet (`zone_code` null), which `InternalWarehouse.tsx` reports as
+ *  unassigned stock rather than dropping from the zone totals.
+ *
+ *  Mirrored by `PART_ZONE_CODES` in `app/src/data/repository.ts`, whose fixture
+ *  build must agree with this one row for row; `tests/repository-swap.test.ts`
+ *  compares them. */
+const PART_ZONE_CODES: Readonly<Record<string, string>> = {
+  'OF-TY-118': 'A1',
+  'BP-FR-220': 'A1',
+  'AF-UN-002': 'A2',
+  'SP-SET-04': 'A2',
 }
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
@@ -496,6 +523,44 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
     ),
   )
 
+  /* ------------------------------------------------------- warehouse zones (BLK-004)
+   * The bays stock is put away in. `InternalWarehouse.tsx` rendered these six
+   * zones as a hardcoded array with invented capacity, utilisation and item
+   * counts; the names and capacities are ported from it (they are plausible
+   * shop zones, not invented people or customers), and nothing else is.
+   *
+   * These rows must stay identical, and in this order, to
+   * `WAREHOUSE_ZONE_FIXTURE` in `app/src/data/repository.ts` — the app ships
+   * the same six zones as its no-API fixture, because Golden Path 7 asserts a
+   * real per-zone utilisation in a build with no API. `tests/
+   * seed-fidelity.test.ts` and `tests/repository-swap.test.ts` compare the two
+   * copies field by field, so they cannot drift.
+   *
+   * Note what is *not* here: no item count and no utilisation. Both are
+   * derived from the parts assigned to each zone below. `capacityUnits` is
+   * recorded, because how many units a bay holds is a property of the bay. */
+  await tx.insert(s.warehouseZones).values([
+    row({ code: 'A1', name: 'Main Floor', nameAr: 'الصالة الرئيسية', kind: 'storage', capacityUnits: 500 }),
+    row({ code: 'A2', name: 'Mezzanine', nameAr: 'الميزانين', kind: 'storage', capacityUnits: 200 }),
+    row({
+      code: 'A3',
+      name: 'Cold Storage',
+      nameAr: 'التخزين المبرد',
+      kind: 'cold',
+      capacityUnits: 80,
+      /* One bay out of service, so the lifecycle the screen can drive is
+       * visible in the demo data. `maintenanceSince` is set here because the
+       * status is; through the API it is derived from the transition and never
+       * accepted as input (`writers.ts`). */
+      status: 'maintenance',
+      maintenanceSince: new Date('2026-09-10T06:00:00.000Z'),
+      notes: 'Compressor service; chiller offline.',
+    }),
+    row({ code: 'A4', name: 'Hazmat', nameAr: 'المواد الخطرة', kind: 'hazmat', capacityUnits: 50 }),
+    row({ code: 'A5', name: 'Receiving', nameAr: 'الاستلام', kind: 'receiving', capacityUnits: 150 }),
+    row({ code: 'A6', name: 'Shipping', nameAr: 'الشحن', kind: 'shipping', capacityUnits: 120 }),
+  ])
+
   await tx.insert(s.parts).values(
     T.PARTS.map((p) => {
       const price = parseSarToHalalas(p.price)
@@ -508,6 +573,12 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
         costHalalas: Math.round(price * 0.65),
         onHand: p.stock,
         reorderLevel: p.reorder,
+        /* Where this part is actually racked (BLK-004). This is what makes
+         * `InternalWarehouse.tsx`'s item counts and utilisation derived rather
+         * than typed in: the zone's count is these rows, counted. Mirrored by
+         * `PART_ZONE_CODES` in `app/src/data/repository.ts`, which
+         * `tests/repository-swap.test.ts` compares against this. */
+        zoneCode: PART_ZONE_CODES[p.sku] ?? null,
       })
     }),
   )

@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 158 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 159 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -293,7 +293,7 @@
 | Automated Reordering | `/automated-reordering` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Spare Parts | `/spare-parts` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Barcode Scanner | `/barcode-scanner` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Internal Warehouse | `/internal-warehouse` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Internal Warehouse | `/internal-warehouse` | app | inventory | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Interactive 3D Parts | `/interactive-3-d-parts` | app | inventory | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Parts Marketplace | `/parts-marketplace` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Dynamic Pricing | `/dynamic-pricing` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |

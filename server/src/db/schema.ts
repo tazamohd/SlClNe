@@ -595,10 +595,21 @@ export const parts = pgTable(
     reserved: integer('reserved').notNull().default(0),
     reorderLevel: integer('reorder_level').notNull().default(0),
     backorderable: boolean('backorderable').notNull().default(false),
+    /** Which `warehouse_zones` bay this part is put away in (BLK-004), by
+     *  zone code rather than id — the code is what is painted on the floor and
+     *  what a screen joins on, and a composite FK `(org_id, zone_code)` →
+     *  `warehouse_zones (org_id, code)` keeps the reference honest without a
+     *  join through a surrogate key (`drizzle/0025_warehouse_zones.sql`).
+     *  Null means "not put away yet", which `InternalWarehouse.tsx` reports as
+     *  unassigned stock rather than hiding it. This column is what makes a
+     *  zone's item count and utilisation *derived* rather than a number
+     *  someone typed onto the zone. */
+    zoneCode: varchar('zone_code', { length: 16 }),
   },
   (t) => ({
     skuPerOrg: uniqueIndex('parts_org_sku_idx').on(t.orgId, t.sku),
     byOrg: index('parts_org_idx').on(t.orgId, t.branchId),
+    byZone: index('parts_org_zone_idx').on(t.orgId, t.zoneCode),
   }),
 )
 
@@ -1131,6 +1142,51 @@ export const equipmentWarranties = pgTable(
   (t) => ({
     numberPerOrg: uniqueIndex('equipment_warranties_org_number_idx').on(t.orgId, t.warrantyNumber),
     byOrg: index('equipment_warranties_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** Warehouse zones (BLK-004) — the physical bays stock is put away in, and
+ *  the collection `InternalWarehouse.tsx` reads instead of the hardcoded
+ *  `ZONES` array whose capacity, utilisation and item counts were all
+ *  invented.
+ *
+ *  What this table records is only what is a property of the *zone*: its
+ *  code, name, what it is for and how much it can hold. It deliberately
+ *  carries **no** item count and **no** utilisation percentage — those are
+ *  facts about stock, derived by counting the `parts` rows whose `zone_code`
+ *  points here, so they cannot drift from the inventory they describe.
+ *  `capacity_units` is the one recorded number, and correctly so: nothing in
+ *  the stock ledger knows how big a bay is.
+ *
+ *  Writable through the generic router — `inventory:c/e/d`, the same module
+ *  the parts it holds are under. `maintenance_since` is server-derived from
+ *  the status transition (`writers.ts`), the discipline
+ *  `equipment_warranties.claimed_at` uses, so it records when a bay actually
+ *  went out of service rather than a date someone typed. */
+export const warehouseZones = pgTable(
+  'warehouse_zones',
+  {
+    ...tenant,
+    /** `A1` — the code painted on the floor, and what `parts.zone_code`
+     *  references. */
+    code: varchar('code', { length: 16 }).notNull(),
+    name: varchar('name', { length: 120 }).notNull(),
+    nameAr: varchar('name_ar', { length: 120 }),
+    /** `storage` · `receiving` · `shipping` · `cold` · `hazmat`. */
+    kind: varchar('kind', { length: 16 }).notNull().default('storage'),
+    /** How many stock units the bay holds. Recorded, not derived — and zero
+     *  means "not measured", which the screen renders as no percentage rather
+     *  than dividing by it. */
+    capacityUnits: integer('capacity_units').notNull().default(0),
+    /** `active` · `maintenance` · `closed`. Never `full`: fullness is derived
+     *  from the stock actually in the zone against `capacity_units`. */
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    maintenanceSince: timestamp('maintenance_since', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('warehouse_zones_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('warehouse_zones_org_idx').on(t.orgId, t.branchId, t.status),
   }),
 )
 

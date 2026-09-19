@@ -15,7 +15,7 @@
 
 A capability is a grouping of **permission modules** and **screen domains** — the two taxonomies the implementation already agrees on. Inventing a third taxonomy for the documentation would give a map that looks tidy and drifts from the product within a release.
 
-All 436 registered screens and all 497 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
+All 436 registered screens and all 506 endpoints map to exactly one capability. That is a property this generator checks, not a claim: an unmapped screen or endpoint is a failure in `docs:check`.
 
 ## Objectives to capabilities
 
@@ -34,7 +34,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_CUSTOMERS
   CAP_VEHICLES["Vehicle management<br/>5 screens · 9 endpoints"]
   OBJ_THROUGHPUT --> CAP_VEHICLES
-  CAP_INVENTORY["Parts and inventory<br/>8 screens · 13 endpoints"]
+  CAP_INVENTORY["Parts and inventory<br/>9 screens · 22 endpoints"]
   OBJ_MARGIN --> CAP_INVENTORY
   CAP_PROCUREMENT["Procurement<br/>3 screens · 28 endpoints"]
   OBJ_MARGIN --> CAP_PROCUREMENT
@@ -62,7 +62,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
-  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>204 screens · 0 endpoints"]
+  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>203 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_DESIGNSYSTEM
 ```
 
@@ -73,7 +73,7 @@ flowchart LR
 | CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 26 | 25 | 128 | 18 | 12 |
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 4 | 4 | 20 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 5 | 5 | 9 | 1 | 11 |
-| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 8 | 8 | 13 | 1 | 9 |
+| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 9 | 9 | 22 | 2 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 9 | 9 | 59 | 10 | 5 |
@@ -87,7 +87,7 @@ flowchart LR
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 1 | 26 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 204 | 35 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 203 | 35 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-158 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+159 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -157,9 +157,9 @@ flowchart LR
 | --- | --- |
 | Permission modules | `inventory` |
 | Screen domains | `parts` |
-| Screens | 8 (8 data-backed) |
-| Endpoints | 13 |
-| Entities | `parts` |
+| Screens | 9 (9 data-backed) |
+| Endpoints | 22 |
+| Entities | `parts`, `warehouseZones` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, parts, accountant, procurement, test |
 | Rule guards | BR-INVENTORY-checkMovement, BR-INVENTORY-checkReceipt, BR-INVENTORY-checkReservation, BR-INVENTORY-checkReservationRelease, BR-INVENTORY-movementDelta |
 
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 204 (35 data-backed) |
+| Screens | 203 (35 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

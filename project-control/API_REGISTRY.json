@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 497,
-    "generated": 334,
-    "explicit": 163,
+    "endpoints": 506,
+    "generated": 342,
+    "explicit": 164,
     "unauthenticated": 6,
-    "withPermissionGuard": 468,
+    "withPermissionGuard": 477,
     "idempotent": 2,
-    "withTests": 132
+    "withTests": 134
   },
   "collections": [
     {
@@ -504,6 +504,35 @@
       "codeColumn": "sku",
       "defaultSort": {
         "column": "createdAt",
+        "dir": "asc"
+      },
+      "writable": true
+    },
+    {
+      "key": "warehouseZones",
+      "path": "warehouse-zones",
+      "table": "warehouseZones",
+      "module": "inventory",
+      "entity": "warehouse_zone",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "codeColumn": "code",
+      "defaultSort": {
+        "column": "code",
         "dir": "asc"
       },
       "writable": true
@@ -11088,7 +11117,8 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
         "TS-SERVER-TESTS-ERRORS-TEST-TS",
-        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS"
+        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS",
+        "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS"
       ]
     },
     {
@@ -11137,7 +11167,8 @@
         "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
         "TS-SERVER-TESTS-CUSTOMER-SELF-SCOPE-TEST-TS",
         "TS-SERVER-TESTS-ERRORS-TEST-TS",
-        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS"
+        "TS-SERVER-TESTS-INVENTORY-ENFORCEMENT-TEST-TS",
+        "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS"
       ]
     },
     {
@@ -18457,6 +18488,351 @@
       "tests": [
         "TS-SERVER-TESTS-EXPORT-TEST-TS"
       ]
+    },
+    {
+      "id": "API-WAREHOUSEZONES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/warehouse-zones",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "List the collection with search, sort, filter and pagination — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-INVENTORY",
+      "tests": [
+        "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-WAREHOUSEZONES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/warehouse-zones",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Create one row — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": [
+        "TS-SERVER-TESTS-WAREHOUSE-ZONES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-WAREHOUSEZONES-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/warehouse-zones/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Soft-delete one row — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-WAREHOUSEZONES-GETID",
+      "method": "GET",
+      "path": "/api/v1/warehouse-zones/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Read one row by ULID or business code — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-WAREHOUSEZONES-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/warehouse-zones/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Update one row (optimistic concurrency on version) — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-GET-WAREHOUSE-ZONES-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/warehouse-zones/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "inventory",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "inventory",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-WAREHOUSEZONES-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/warehouse-zones/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Soft-delete many rows — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-WAREHOUSEZONES-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/warehouse-zones/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Apply one patch to many rows — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": []
+    },
+    {
+      "id": "API-WAREHOUSEZONES-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/warehouse-zones/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "inventory",
+      "purpose": "Export the filtered collection as a file — warehouse_zone.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "inventory",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "warehouse_zone",
+      "table": "warehouseZones",
+      "search": [
+        "code",
+        "name",
+        "nameAr"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "capacityUnits",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "kind"
+      ],
+      "defaultSort": {
+        "column": "code",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-INVENTORY",
+      "tests": []
     },
     {
       "id": "API-GET-HEALTH",

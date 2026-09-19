@@ -5427,4 +5427,18 @@ export const AR_OVERRIDES: Record<string, string> = {
   "awaiting a reply": "في انتظار الرد",
   "days": "يوم",
   "Respond to quotation requests from other garages": "استجب لطلبات عروض السعر من الورش الأخرى",
+
+  // Internal Warehouse (BLK-004) — real warehouse zones with a utilisation
+  // derived from the parts assigned to each bay, replacing the hardcoded
+  // `ZONES` array whose capacity, utilisation and item counts were invented.
+  "Stored": "المخزَّن",
+  "Not yet put away": "لم تُخزَّن بعد",
+  "Counted from the first": "محسوب من أول",
+  "Item counts and utilisation are counted from the parts assigned to each zone; capacity is recorded on the zone. One part is stored in one zone.":
+    "تُحسب أعداد الأصناف ونسبة الاستخدام من القطع المخصّصة لكل منطقة، أما السعة فهي مُسجّلة على المنطقة نفسها. وتُخزَّن القطعة في منطقة واحدة.",
+  "Return to Service": "إعادة إلى الخدمة",
+  "Zone under maintenance": "المنطقة تحت الصيانة",
+  "Zone back in service": "عادت المنطقة إلى الخدمة",
+  "Could not update zone": "تعذر تحديث المنطقة",
+  "parts": "قطعة",
 }

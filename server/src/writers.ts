@@ -57,6 +57,8 @@ import {
   timesheetUpdate,
   vehicleCreate,
   vehicleUpdate,
+  warehouseZoneCreate,
+  warehouseZoneUpdate,
   warrantyCreate,
   warrantyUpdate,
   notificationCreate,
@@ -81,6 +83,7 @@ import {
   partsNetworkRequests,
   payrollRuns,
   suppliers,
+  warehouseZones,
 } from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
@@ -180,10 +183,52 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   parts: {
     create: partCreate,
     update: partUpdate,
-    async toColumns(input, _ctx, existing) {
+    async toColumns(input, ctx, existing) {
       const { openingStock, ...rest } = input as Record<string, unknown>
+      /* A part may only be put away in one of *this* tenant's zones (BLK-004).
+       * The composite `(org_id, zone_code)` foreign key would already refuse a
+       * foreign or unknown bay, but it would refuse it as a database error;
+       * checking here turns that into the ordinary `not_found` a client can
+       * act on. An explicit `null` is allowed — that is "taken back out of the
+       * bay", not a missing zone. */
+      if (rest.zoneCode != null) {
+        const [zone] = await ctx.tx
+          .select({ code: warehouseZones.code })
+          .from(warehouseZones)
+          .where(
+            and(eq(warehouseZones.code, rest.zoneCode as string), isNull(warehouseZones.deletedAt)),
+          )
+          .limit(1)
+        if (!zone) throw notFound('Warehouse zone')
+      }
       if (existing) return passthrough(rest)
       return { ...rest, onHand: openingStock ?? 0, reserved: 0 }
+    },
+  },
+
+  /* Warehouse zones (BLK-004) — the bays stock is put away in. A flat
+   * tenant-owned directory under `inventory`, writable through the generic
+   * router: RBAC (`inventory:c/e/d`), tenant RLS, audit and optimistic
+   * concurrency all come from it, and this writer only names what is specific
+   * to a zone.
+   *
+   * There is no `itemCount` or `utilization` column to write, by design: both
+   * are derived from the `parts` assigned to the zone, so neither can be
+   * posted and neither can drift. `maintenanceSince` is never accepted as
+   * input either — it is derived from the status transition, exactly as
+   * `equipmentWarranties.claimedAt` is, and cleared again when the bay comes
+   * back into service, so it always records when the zone actually went out of
+   * service rather than a date someone typed. */
+  warehouseZones: {
+    create: warehouseZoneCreate,
+    update: warehouseZoneUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && !value.code) value.code = await nextZoneCode(ctx.tx)
+      if ('status' in value) {
+        value.maintenanceSince = value.status === 'maintenance' ? new Date() : null
+      }
+      return value
     },
   },
 
@@ -649,6 +694,16 @@ export async function loadNetworkRequest(tx: Tx, id: string) {
 async function nextWarrantyNumber(tx: Tx): Promise<string> {
   const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(equipmentWarranties)
   return `WRN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** The next `ZN-0001` within the tenant, for a zone created without a code of
+ *  its own. A bay usually already carries a code painted on it (`A1`), which a
+ *  caller supplies; this is the fallback, counted rather than guessed so two
+ *  zones never collide on the unique `(org_id, code)` constraint
+ *  `parts.zone_code` references. */
+async function nextZoneCode(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(warehouseZones)
+  return `ZN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
 /** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two

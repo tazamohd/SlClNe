@@ -12,13 +12,13 @@
 
 **Status:** GENERATED · **Source of truth:** the route files · **Sources as of:** 2026-09-19
 
-497 endpoints under `/api/v1`, plus the two unauthenticated probes.
+506 endpoints under `/api/v1`, plus the two unauthenticated probes.
 
 ## How the surface is built
 
-**334 of them are generated.** `server/src/registry.ts` describes each of the 63 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 63 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
+**342 of them are generated.** `server/src/registry.ts` describes each of the 64 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 64 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
 
-**163 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
+**164 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
 
 ## Cross-cutting contract
 
@@ -63,7 +63,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 | estimates | 29 | 14 | 15 | 29 |
 | hr | 48 | 40 | 8 | 48 |
 | insurance | 22 | 12 | 10 | 22 |
-| inventory | 13 | 8 | 5 | 13 |
+| inventory | 22 | 16 | 6 | 22 |
 | invoices | 14 | 6 | 8 | 14 |
 | jobcards | 90 | 62 | 28 | 90 |
 | network | 37 | 32 | 5 | 37 |

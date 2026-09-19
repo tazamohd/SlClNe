@@ -740,6 +740,39 @@ export type PartRow = WithMeta<(typeof T.PARTS)[number]> & {
   priceHalalas?: number
   costHalalas?: number | null
   backorderable?: boolean
+  /** The `warehouseZones.code` this part is racked in, or null when it has not
+   *  been put away yet (BLK-004). This is the field `InternalWarehouse.tsx`
+   *  groups on, which is what makes each zone's item count and utilisation
+   *  *derived* from the stock rather than a number typed onto the zone. Unlike
+   *  the other extras here it is present in the fixture build too (see
+   *  `PART_ZONE_CODES`), because Golden Path 7 asserts a real per-zone
+   *  utilisation with no API at all. */
+  zoneCode?: string | null
+}
+
+/** A warehouse zone — a bay, rack or bin stock is put away in (BLK-004), as
+ *  `GET /warehouse-zones` presents it. No design fixture; the shape is
+ *  declared here rather than inferred, like `EquipmentWarrantyRow`.
+ *
+ *  Note what is absent: no `itemCount`, no `utilization`. Those are facts about
+ *  stock, not about the bay, and `screens/inventory/InternalWarehouse.tsx`
+ *  derives them by grouping `parts` on `zoneCode`, so they cannot drift from
+ *  the inventory they describe. `capacityUnits` is the one recorded number, and
+ *  correctly so: how many units a bay holds is a property of the bay.
+ *
+ *  Writable through the generic collection: the lifecycle move a bay makes
+ *  (`active` ⇄ `maintenance`) is a plain `PATCH`, and `maintenanceSince` is
+ *  derived server-side from that transition rather than accepted as input. */
+export interface WarehouseZoneRow extends EntityMeta {
+  id: string
+  code: string
+  name: string
+  nameAr: string | null
+  kind: 'storage' | 'receiving' | 'shipping' | 'cold' | 'hazmat'
+  capacityUnits: number
+  status: 'active' | 'maintenance' | 'closed'
+  maintenanceSince: string | null
+  notes: string | null
 }
 
 /** `scheduledDate`/`startMinute` are the machine values `timeLabel` is
@@ -791,6 +824,7 @@ export interface Repository {
   customers: Collection<CustomerRow>
   fleets: Collection<WithMeta<(typeof T.FLEETS)[number]>>
   parts: Collection<PartRow>
+  warehouseZones: Collection<WarehouseZoneRow>
   technicians: Collection<WithMeta<(typeof T.TECHS)[number]>>
   services: Collection<WithMeta<(typeof T.SERVICES)[number]>>
   leads: Collection<WithMeta<(typeof T.LEADS)[number]>>
@@ -864,6 +898,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   invoicePayments: 'payments',
   receipts: 'receipts',
   parts: 'inventory',
+  warehouseZones: 'warehouse-zones',
   technicians: 'technicians',
   departments: 'admin/departments',
   leads: 'crm/leads',
@@ -1079,6 +1114,64 @@ function fixture<TRow>(seed: readonly TRow[]): Collection<TRow> {
   }
 }
 
+/** Which warehouse zone each design-bundle part is racked in (BLK-004), by
+ *  SKU. The prototype had no zones, so this assignment lives here rather than
+ *  in the generated fixture — filters and pads on the main floor, the smaller
+ *  service items on the mezzanine.
+ *
+ *  Mirrored by `PART_ZONE_CODES` in `server/scripts/seed.ts`, which assigns the
+ *  same zone to the same SKU; `server/tests/repository-swap.test.ts` compares
+ *  the fixture rows against the seeded ones field by field, so the two copies
+ *  cannot drift apart unnoticed. */
+export const PART_ZONE_CODES: Readonly<Record<string, string>> = {
+  'OF-TY-118': 'A1',
+  'BP-FR-220': 'A1',
+  'AF-UN-002': 'A2',
+  'SP-SET-04': 'A2',
+}
+
+/** The six warehouse zones the fixture build serves (BLK-004).
+ *
+ *  Every other collection new to BLK-004 ships an **empty** fixture, because
+ *  `server/tests/repository-swap.test.ts` asserts each collection's live rows
+ *  are exactly this fixture's rows plus `SEED_COHERENCE_EXTRAS`. Zones are the
+ *  exception on purpose: Golden Path 7 (`app/e2e/inventory-receiving.spec.ts`)
+ *  asserts a real numeric utilisation per zone in a build with **no API**, so an
+ *  empty fixture here would leave the screen with nothing real to render. The
+ *  answer is not to weaken the assertion but to ship the same six zones the
+ *  server seeds: `server/scripts/seed.ts` inserts these rows, in this order,
+ *  with `SEED_COHERENCE_EXTRAS.warehouseZones = 0`, and both
+ *  `repository-swap.test.ts` and `seed-fidelity.test.ts` compare the two copies
+ *  field by field.
+ *
+ *  The names and capacities are ported from the array `InternalWarehouse.tsx`
+ *  used to render (they are plausible shop bays, not invented people or
+ *  customers). What is deliberately *not* ported is that array's `utilized` and
+ *  `itemCount`: those are derived from the parts assigned to each zone, so a
+ *  zone row has no place to record them. */
+export const WAREHOUSE_ZONE_FIXTURE: readonly WarehouseZoneRow[] = [
+  { id: 'A1', code: 'A1', name: 'Main Floor', nameAr: 'الصالة الرئيسية', kind: 'storage', capacityUnits: 500, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A2', code: 'A2', name: 'Mezzanine', nameAr: 'الميزانين', kind: 'storage', capacityUnits: 200, status: 'active', maintenanceSince: null, notes: null },
+  /* One bay genuinely out of service, so the lifecycle the screen can drive is
+   * visible in the demo build too. `maintenanceSince` matches the seed's fixed
+   * timestamp exactly — through the API it is derived from the status
+   * transition and never posted. */
+  {
+    id: 'A3',
+    code: 'A3',
+    name: 'Cold Storage',
+    nameAr: 'التخزين المبرد',
+    kind: 'cold',
+    capacityUnits: 80,
+    status: 'maintenance',
+    maintenanceSince: '2026-09-10T06:00:00.000Z',
+    notes: 'Compressor service; chiller offline.',
+  },
+  { id: 'A4', code: 'A4', name: 'Hazmat', nameAr: 'المواد الخطرة', kind: 'hazmat', capacityUnits: 50, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A5', code: 'A5', name: 'Receiving', nameAr: 'الاستلام', kind: 'receiving', capacityUnits: 150, status: 'active', maintenanceSince: null, notes: null },
+  { id: 'A6', code: 'A6', name: 'Shipping', nameAr: 'الشحن', kind: 'shipping', capacityUnits: 120, status: 'active', maintenanceSince: null, notes: null },
+]
+
 /** Demo data straight from the design bundle. Same rows every screen in the
  *  prototypes showed, so a rebuilt screen can be diffed against its `.dc.html`
  *  original without accounting for different content — and the same rows
@@ -1126,7 +1219,15 @@ export const mockRepository: Repository = {
   cannedJobs: fixture<CannedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
-  parts: fixture(T.PARTS),
+  /* The design bundle's parts, each with the bay it is racked in (BLK-004).
+   * `zoneCode` is absent from the generated fixture — the prototype had no
+   * warehouse zones — so it is added here rather than left undefined, because
+   * Golden Path 7 asserts a real numeric utilisation per zone in a build with
+   * no API, and a fixture with no zone assignment could only ever show 0%. */
+  parts: fixture<PartRow>(
+    T.PARTS.map((part) => ({ ...part, zoneCode: PART_ZONE_CODES[part.sku] ?? null }) as PartRow),
+  ),
+  warehouseZones: fixture<WarehouseZoneRow>(WAREHOUSE_ZONE_FIXTURE),
   technicians: fixture(T.TECHS),
   services: fixture(T.SERVICES),
   leads: fixture(T.LEADS),
