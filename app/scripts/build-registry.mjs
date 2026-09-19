@@ -392,7 +392,7 @@ const stateImplemented = (() => {
         const src = fs.readFileSync(full, 'utf8')
         const hasLoading = src.includes('Loading') && (src.includes('isLoading') || src.includes('<Loading'))
         const hasError = src.includes('ErrorState') || (src.includes('isError') && src.includes('error'))
-        const hasEmpty = src.includes('EmptyState') || src.includes('empty') && (src.includes('length === 0') || src.includes('.length'))
+        const hasEmpty = src.includes('EmptyState') || src.includes('GapCard') || src.includes('empty') && (src.includes('length === 0') || src.includes('.length'))
         if (!hasLoading && !hasError && !hasEmpty) continue
         for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) {
           map.set(m[1], { loading: hasLoading, error: hasError, empty: hasEmpty })
@@ -432,6 +432,32 @@ const stateImplemented = (() => {
 const SEAM_CALL =
   /\buse(PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
 const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
+
+/** Screens that render the honest gap state instead of fixture rows: the
+ *  `GapCard` component (BLK-004 bucket C) or the hand-written card the
+ *  wave 6-9 triage left behind, recognisable by its "no data source yet"
+ *  line. Neither reads the repository seam, so `dataBacked` is false, but
+ *  neither renders invented data either — the thing MOCK_ONLY names. They
+ *  carry NO_BACKEND instead: the collection does not exist yet to wire. */
+const honestGapScreens = (() => {
+  const set = new Set()
+  const screensDir = path.join(APP, 'src/screens')
+  if (!fs.existsSync(screensDir)) return set
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full); continue }
+      if (!entry.name.endsWith('.tsx')) continue
+      const src = fs.readFileSync(full, 'utf8')
+      if (!src.includes('<GapCard') && !src.includes('no data source yet')) continue
+      if (SEAM_ANY.test(src)) continue
+      for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) set.add(m[1])
+    }
+  }
+  walk(screensDir)
+  return set
+})()
+
 
 /** The other way through the seam: `screens/accounting/useFinanceReports.ts`'s
  *  hooks read a server-computed aggregate (`financeReports.trialBalance()` and
@@ -942,6 +968,22 @@ const KIT_COMPONENT = routesSrc.match(/<(\w+)\s+def=\{/)?.[1] ?? null
 const factsFor = (map, name, route) =>
   map.get(name) ?? (KIT_COMPONENT && KIT_ROUTES.has(route) ? map.get(KIT_COMPONENT) : undefined)
 
+/** Does the visitor to this route see the honest gap state? Resolved the same
+ *  way as every other fact: through the barrel alias (registry name → component
+ *  name), or through the kit view where the kit renders the route. The kit
+ *  itself counts as honest: `definitions.ts` reproduces the reference app's
+ *  empties with every stat at zero rather than inventing rows. */
+const honestGapByRegistryName = (() => {
+  const set = new Set(honestGapScreens)
+  for (const [screenName, componentName] of BARREL_ALIASES) {
+    if (set.has(componentName)) set.add(screenName)
+  }
+  return set
+})()
+const isHonestGap = (name, route) =>
+  honestGapByRegistryName.has(name) ||
+  (!IMPL.domains.has(name) && KIT_COMPONENT !== null && KIT_ROUTES.has(route))
+
 const tabletStateOf = (name, route, built) => {
   if (!built) return 'MISSING'
   if (SMOKE_TABLET_ROUTES.has(route)) return 'DONE'
@@ -1253,8 +1295,10 @@ for (const e of entries) {
    * of them could ever call `useCollection`, kept it from closing. They carry
    * CONTENT_ONLY instead so the registry still says why `dataBacked` is false. */
   const contentSurface = e.surface === 'auth' || e.surface === 'public'
-  if (product && rendered && !e.dataBacked && !contentSurface) f.push('MOCK_ONLY')
+  const noBackend = isHonestGap(e.name, e.route)
+  if (product && rendered && !e.dataBacked && !contentSurface && !noBackend) f.push('MOCK_ONLY')
   if (product && rendered && !e.dataBacked && contentSurface) f.push('CONTENT_ONLY')
+  if (product && rendered && !e.dataBacked && !contentSurface && noBackend) f.push('NO_BACKEND')
   if (product && e.surface !== 'auth' && e.surface !== 'public' && !e.module) f.push('NO_RBAC_MODULE')
 }
 
@@ -1391,6 +1435,7 @@ const totals = {
   designedMobileOwed: count(entries, (e) => e.flags.includes('MOBILE_MISSING')),
   untested: count(entries, (e) => e.flags.includes('UNTESTED')),
   mockOnly: count(entries, (e) => e.flags.includes('MOCK_ONLY')),
+  noBackend: count(entries, (e) => e.flags.includes('NO_BACKEND')),
   dataBacked: count(entries, (e) => e.dataBacked),
   e2eCovered: count(entries, (e) => e.tests.e2e),
   contentAsserted: count(entries, (e) => e.e2eContent),
@@ -1532,7 +1577,9 @@ const blockers = [
   !patsRotationConfirmed && { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
     detail: 'Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.', owner: '06', wave: 'W0' },
   totals.mockOnly && { id: 'BLK-004', severity: 'CRITICAL', title: `${totals.mockOnly} rendered capabilities are mock-only`,
-    detail: 'They render, but read fixtures rather than an API. Auth and public pages read no collection by design and are not counted. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
+    detail: 'They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
+  totals.noBackend && { id: 'BLK-013', severity: 'HIGH', title: `${totals.noBackend} rendered capabilities have no backend collection yet`,
+    detail: 'They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it.', owner: '05', wave: 'W3' },
   totals.untested && { id: 'BLK-005', severity: 'CRITICAL', title: `${totals.untested} product capabilities have no route check`,
     detail: 'Route coverage is generated from this registry once the test harness lands.', owner: '07', wave: 'W1' },
   totals.renderedWithoutAssertion && { id: 'BLK-012', severity: 'HIGH',
@@ -1674,6 +1721,7 @@ outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
 const FLAG_MEANINGS = {
   PLACEHOLDER: 'product route renders PendingScreen',
   MOCK_ONLY: 'renders, but from fixtures rather than an API',
+  NO_BACKEND: 'shows the honest gap state: no collection exists yet for it to read',
   CONTENT_ONLY: 'auth or public surface: renders content, reads no collection by design',
   UNTESTED: 'no route check in the smoke suite',
   TABLET_MISSING: 'no md:/lg: layout in the source — nothing written for 768–1024',

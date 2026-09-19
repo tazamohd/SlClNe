@@ -1,117 +1,34 @@
-import { useState } from 'react'
-import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
-import { Select } from '@/components/ui/Select'
-import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { GapCard } from '@/components/ui/GapCard'
 
-const MOCK_CHATBOTS = [
-  { id: 'CB-01', name: 'Service Booking Bot', channel: 'Website', language: 'AR/EN', status: 'Active', conversations: 3420, satisfaction: 92 },
-  { id: 'CB-02', name: 'WhatsApp Assistant', channel: 'WhatsApp', language: 'AR/EN', status: 'Active', conversations: 5680, satisfaction: 89 },
-  { id: 'CB-03', name: 'Parts Inquiry Bot', channel: 'Website', language: 'AR', status: 'Active', conversations: 1240, satisfaction: 86 },
-  { id: 'CB-04', name: 'Internal Help Desk', channel: 'Slack', language: 'EN', status: 'Active', conversations: 890, satisfaction: 94 },
-  { id: 'CB-05', name: 'Insurance Claims Bot', channel: 'Mobile App', language: 'AR/EN', status: 'Beta', conversations: 320, satisfaction: 78 },
-] as const
-
-const MOCK_STATS = [
-  { period: 'Today', conversations: 142, resolved: 128, escalated: 14 },
-  { period: 'This Week', conversations: 876, resolved: 798, escalated: 78 },
-  { period: 'This Month', conversations: 3420, resolved: 3112, escalated: 308 },
-] as const
-
-const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Active: ['var(--tint-blue)', 'var(--salis-blue)'],
-  Beta: ['var(--tint-orange)', 'var(--salis-orange)'],
-}
-
-type StatRow = (typeof MOCK_STATS)[number]
-type ChatbotRow = (typeof MOCK_CHATBOTS)[number]
-
-const statsColumns: Column<StatRow>[] = [
-  { header: 'Period', cell: (row) => row.period },
-  { header: 'Conversations', cell: (row) => row.conversations.toLocaleString() },
-  { header: 'Resolved', cell: (row) => row.resolved.toLocaleString() },
-  { header: 'Escalated', cell: (row) => String(row.escalated) },
-]
-
+/** AI Chatbot.
+ *
+ *  Rendered invented rows and figures from local constants until BLK-004
+ *  bucket C (2026-09). No collection in `packages/contract` or
+ *  `API_REGISTRY.json` serves this screen, so it now shows the honest gap
+ *  state (`GapCard`) instead of fixture data presented as real. Wire it to
+ *  `aIChatbot` once the API serves it. */
 export function AIChatbot() {
   const { t } = usePreferences()
-  const [filter, setFilter] = useState('All')
+  const isMobile = useIsMobile()
+  const gap = <GapCard icon="Bot" collection="aIChatbot" />
 
-  const filtered = filter === 'All' ? MOCK_CHATBOTS : MOCK_CHATBOTS.filter(c => c.status === filter)
-  const totalConversations = MOCK_CHATBOTS.reduce((a, c) => a + c.conversations, 0)
-  const avgSatisfaction = Math.round(MOCK_CHATBOTS.reduce((a, c) => a + c.satisfaction, 0) / MOCK_CHATBOTS.length)
-
-  const kpis = [
-    { label: t('Chatbots'), value: String(MOCK_CHATBOTS.length), icon: 'Bot', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Conversations'), value: totalConversations.toLocaleString(), icon: 'MessageSquare', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Satisfaction'), value: `${avgSatisfaction}%`, icon: 'ThumbsUp', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Resolution'), value: '91%', icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  ]
-
-  const chatbotColumns: Column<ChatbotRow>[] = [
-    { header: 'ID', cell: (c) => c.id, code: true },
-    { header: 'Name', cell: (c) => t(c.name) },
-    { header: 'Channel', cell: (c) => c.channel },
-    { header: 'Language', cell: (c) => c.language },
-    { header: 'Status', cell: (c) => { const [bg, fg] = STATUS_COLORS[c.status] ?? STATUS_COLORS.Beta; return <Badge background={bg} color={fg}>{t(c.status)}</Badge> } },
-    { header: 'Conversations', cell: (c) => c.conversations.toLocaleString() },
-    { header: 'Satisfaction', cell: (c) => `${c.satisfaction}%` },
-  ]
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="Bot" title={t('AI Chatbot')} subtitle={t('Chatbot configuration and performance stats')} />
+        {gap}
+      </div>
+    )
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="Bot" title={t('AI Chatbot')} subtitle={t('Chatbot configuration and performance stats')} />
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map(k => (
-          <KpiCard key={k.label} {...k} />
-        ))}
-      </div>
-
-      <h2 className="text-[15px] font-bold text-heading">{t('Conversation Stats')}</h2>
-      <DataTable
-        caption="Conversation statistics"
-        columns={statsColumns}
-        rows={[...MOCK_STATS]}
-        rowKey={(row) => row.period}
-        mobileCard={(row) => (
-          <>
-            <MobileCardHeader title={t(row.period)} />
-            <MobileCardRow label={t('Conversations')}>{row.conversations.toLocaleString()}</MobileCardRow>
-            <MobileCardRow label={t('Resolved')}>{row.resolved.toLocaleString()}</MobileCardRow>
-            <MobileCardRow label={t('Escalated')}>{row.escalated}</MobileCardRow>
-          </>
-        )}
-      />
-
-      <div className="flex items-center justify-between">
-        <h2 className="text-[15px] font-bold text-heading">{t('Chatbot Configurations')}</h2>
-        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-          <option value="All">{t('All')}</option>
-          <option value="Active">{t('Active')}</option>
-          <option value="Beta">{t('Beta')}</option>
-        </Select>
-      </div>
-      <DataTable
-        caption="Chatbot configurations"
-        columns={chatbotColumns}
-        rows={[...filtered]}
-        rowKey={(row) => row.id}
-        mobileCard={(row) => {
-          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Beta
-          return (
-            <>
-              <MobileCardHeader title={t(row.name)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
-              <MobileCardRow label={t('Channel')}>{row.channel}</MobileCardRow>
-              <MobileCardRow label={t('Conversations')}>{row.conversations.toLocaleString()}</MobileCardRow>
-              <MobileCardRow label={t('Satisfaction')}>{row.satisfaction}%</MobileCardRow>
-            </>
-          )
-        }}
-      />
+      {gap}
     </div>
   )
 }

@@ -1086,6 +1086,8 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Connect and publish to social channels": "الاتصال والنشر على القنوات الاجتماعية",
   "Connect the API": "اتصل بواجهة API",
   "Connect the API — no data source yet:": "اتصل بواجهة API — لا مصدر بيانات بعد:",
+  "No data source connected yet": "لا يوجد مصدر بيانات متصل بعد",
+  "This screen has no collection the API serves yet. Nothing is shown here rather than invented rows.": "لا توجد مجموعة بيانات تخدمها الواجهة البرمجية لهذه الشاشة بعد. لا يُعرض شيء هنا بدلاً من صفوف مختلقة.",
   "Connected Devices": "الأجهزة المتصلة",
   "Connected Systems": "الأنظمة المتصلة",
   "Connected accounts": "الحسابات المتصلة",

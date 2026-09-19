@@ -1,90 +1,34 @@
-import { useState } from 'react'
-import { KpiCard } from '@/components/ui/KpiCard'
-import { Badge } from '@/components/ui/Badge'
-import { Select } from '@/components/ui/Select'
-import { DataTable, type Column } from '@/components/ui/DataTable'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
+import { useIsMobile } from '@/lib/useMediaQuery'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { MobilePageHeader } from '@/components/shell/MobileShell'
+import { GapCard } from '@/components/ui/GapCard'
 
-const MOCK_ALERTS = [
-  { id: 'FRD-001', type: 'Invoice Anomaly', description: 'Duplicate invoice amount from same vendor', riskScore: 95, amount: 'SAR 24,500', entity: 'Parts Supplier Co.', status: 'Flagged', detectedAt: '2026-08-17 14:22' },
-  { id: 'FRD-002', type: 'Claim Pattern', description: 'Suspicious warranty claim frequency', riskScore: 87, amount: 'SAR 18,200', entity: 'Customer C-4521', status: 'Under Review', detectedAt: '2026-08-17 11:05' },
-  { id: 'FRD-003', type: 'Price Manipulation', description: 'Labor rate exceeds market threshold', riskScore: 78, amount: 'SAR 3,400', entity: 'Technician T-089', status: 'Dismissed', detectedAt: '2026-08-16 16:30' },
-  { id: 'FRD-004', type: 'Ghost Inventory', description: 'Parts marked used but no work order', riskScore: 92, amount: 'SAR 7,800', entity: 'Warehouse B', status: 'Flagged', detectedAt: '2026-08-16 09:45' },
-  { id: 'FRD-005', type: 'Identity Mismatch', description: 'Customer ID does not match vehicle owner', riskScore: 65, amount: 'SAR 5,100', entity: 'Customer C-7832', status: 'Under Review', detectedAt: '2026-08-15 13:20' },
-  { id: 'FRD-006', type: 'Payment Anomaly', description: 'Multiple refunds to same account', riskScore: 88, amount: 'SAR 12,600', entity: 'Account A-9912', status: 'Flagged', detectedAt: '2026-08-15 10:15' },
-] as const
-
-const STATUS_COLORS: Record<string, readonly [string, string]> = {
-  Flagged: ['var(--tint-orange)', 'var(--salis-orange)'],
-  'Under Review': ['var(--tint-blue)', 'var(--salis-blue)'],
-  Dismissed: ['var(--tint-neutral)', 'var(--text-muted)'],
-}
-
-type AlertRow = (typeof MOCK_ALERTS)[number]
-
+/** ML Fraud Detection.
+ *
+ *  Rendered invented rows and figures from local constants until BLK-004
+ *  bucket C (2026-09). No collection in `packages/contract` or
+ *  `API_REGISTRY.json` serves this screen, so it now shows the honest gap
+ *  state (`GapCard`) instead of fixture data presented as real. Wire it to
+ *  `mLFraudDetection` once the API serves it. */
 export function MLFraudDetection() {
   const { t } = usePreferences()
-  const [filter, setFilter] = useState('All')
+  const isMobile = useIsMobile()
+  const gap = <GapCard icon="ShieldAlert" collection="mLFraudDetection" />
 
-  const filtered = filter === 'All' ? MOCK_ALERTS : MOCK_ALERTS.filter(a => a.status === filter)
-  const flagged = MOCK_ALERTS.filter(a => a.status === 'Flagged').length
-  const avgRisk = Math.round(MOCK_ALERTS.reduce((a, d) => a + d.riskScore, 0) / MOCK_ALERTS.length)
-
-  const kpis = [
-    { label: t('Total Alerts'), value: String(MOCK_ALERTS.length), icon: 'ShieldAlert', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Flagged'), value: String(flagged), icon: 'Shield', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Avg Risk Score'), value: `${avgRisk}`, icon: 'Activity', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Model Accuracy'), value: '97.2%', icon: 'Target', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  ]
-
-  const columns: Column<AlertRow>[] = [
-    { header: 'ID', cell: (a) => a.id, code: true },
-    { header: 'Type', cell: (a) => t(a.type) },
-    { header: 'Description', cell: (a) => t(a.description) },
-    { header: 'Risk', cell: (a) => `${a.riskScore}` },
-    { header: 'Amount', cell: (a) => a.amount },
-    { header: 'Status', cell: (a) => { const [bg, fg] = STATUS_COLORS[a.status] ?? STATUS_COLORS.Dismissed; return <Badge background={bg} color={fg}>{t(a.status)}</Badge> } },
-    { header: 'Detected', cell: (a) => a.detectedAt },
-  ]
+  if (isMobile) {
+    return (
+      <div className="flex animate-fade-up flex-col gap-4 motion-reduce:animate-none">
+        <MobilePageHeader icon="ShieldAlert" title={t('ML Fraud Detection')} subtitle={t('Machine learning-based fraud detection dashboard')} />
+        {gap}
+      </div>
+    )
+  }
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
       <PageHeader icon="ShieldAlert" title={t('ML Fraud Detection')} subtitle={t('Machine learning-based fraud detection dashboard')} />
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {kpis.map(k => (
-          <KpiCard key={k.label} {...k} />
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between">
-        <h2 className="text-[15px] font-bold text-heading">{t('Fraud Alerts')}</h2>
-        <Select value={filter} onChange={e => setFilter(e.target.value)} aria-label={t('Filter by status')}>
-          <option value="All">{t('All')}</option>
-          <option value="Flagged">{t('Flagged')}</option>
-          <option value="Under Review">{t('Under Review')}</option>
-          <option value="Dismissed">{t('Dismissed')}</option>
-        </Select>
-      </div>
-      <DataTable
-        caption="Fraud detection alerts"
-        columns={columns}
-        rows={[...filtered]}
-        rowKey={(row) => row.id}
-        mobileCard={(row) => {
-          const [bg, fg] = STATUS_COLORS[row.status] ?? STATUS_COLORS.Dismissed
-          return (
-            <>
-              <MobileCardHeader title={t(row.type)} trailing={<Badge background={bg} color={fg}>{t(row.status)}</Badge>} />
-              <MobileCardRow label={t('Risk Score')}>{row.riskScore}</MobileCardRow>
-              <MobileCardRow label={t('Amount')}>{row.amount}</MobileCardRow>
-              <MobileCardRow label={t('Entity')}>{row.entity}</MobileCardRow>
-            </>
-          )
-        }}
-      />
+      {gap}
     </div>
   )
 }

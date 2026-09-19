@@ -31,7 +31,7 @@ This report exists to be read before anything else in the set is relied on. It i
 | Test suites catalogued | 212 containing 2409 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
-| Direct contradictions between registers | 0 |
+| Direct contradictions between registers | 2 |
 
 ## What is not verified
 
@@ -85,9 +85,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 157 screens read design fixtures rather than the API
+### 5. 40 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 157 of 436 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 40 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -129,7 +129,14 @@ The registries under `project-control/` are each generated at their own time by 
 | `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
 | `project-control/BASELINE.json` | 2026-09-03 | 16 |
 
-_No cross-register contradictions detected._
+Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
+
+| Claim | Current reality |
+| --- | --- |
+| RELEASE_GATES.json gate RB-01 quotes 1 open blockers | BLOCKERS.json currently holds 2 |
+| RELEASE_GATES.json gate RB-02 quotes 1 open blockers | BLOCKERS.json currently holds 2 |
+
+A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
 
 ## Gaps in the documentation itself
 
@@ -197,5 +204,5 @@ _None — every required document is present._
 3. **Confirm the 23 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 365 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 157 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 40 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.
