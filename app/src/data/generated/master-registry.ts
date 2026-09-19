@@ -7470,7 +7470,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

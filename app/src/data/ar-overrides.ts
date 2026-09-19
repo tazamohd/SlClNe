@@ -5579,4 +5579,15 @@ export const AR_OVERRIDES: Record<string, string> = {
     "الوعاء الزكوي حساب لصافي الثروة على قائمة مركز مالي معدَّلة وفق قواعد الهيئة. ولا شيء هنا ينفّذ هذا الحساب، ورقم حقوق الملكية في الدفاتر ليس وعاءً زكويًا — لذلك لا يُقدَّر أي رقم بديلاً عنه.",
   "The statutory zakat rate on an assessed base is 2.5%. It is stated here as law, not as a setting: no computation in this system applies it to anything.":
     "نسبة الزكاة النظامية على الوعاء المربوط هي 2.5%. وهي مذكورة هنا كحكم نظامي لا كإعداد: لا توجد في هذا النظام أي عملية حسابية تطبّقها على شيء.",
+  // Customer-App-Booking (BLK-004) — the service catalogue read from the real
+  // `services` collection, and the one honest statement that this screen does
+  // not book. The invented prices, durations and time slots it used to render
+  // are gone, so none of their strings appear here.
+  "Services offered": "الخدمات المتاحة",
+  "Services offered by the workshop": "الخدمات التي تقدمها الورشة",
+  "No services listed": "لا توجد خدمات مدرجة",
+  "The workshop has not published a service list yet.": "لم تنشر الورشة قائمة خدمات بعد.",
+  "This screen lists what the workshop offers. Appointments are not booked here — the booking form checks which times are still free and confirms with the workshop.":
+    "تعرض هذه الشاشة ما تقدمه الورشة. لا تُحجز المواعيد هنا — نموذج الحجز يتحقق من الأوقات المتاحة ويؤكد الموعد مع الورشة.",
+  "Go to booking": "الانتقال إلى الحجز",
 }

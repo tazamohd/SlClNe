@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 228,
-    "cases": 2521,
+    "suites": 229,
+    "cases": 2524,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1411,
+      "UNIT_OR_API": 1414,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2108,6 +2108,28 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-CUSTOMER-APP-BOOKING-TEST-TSX",
+      "file": "app/tests/component/customer-app-booking.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "CustomerAppBooking (fixture build)"
+      ],
+      "cases": [
+        "renders the service catalogue from the services collection",
+        "renders no invented service, price, duration or time slot",
+        "does not present itself as bookable, and routes to the form that books"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [
+        "/customer-app-booking",
+        "/customer-portal/booking"
+      ],
+      "touchesRoles": [
+        "customer"
       ]
     },
     {
