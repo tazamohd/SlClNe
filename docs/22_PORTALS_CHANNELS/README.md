@@ -8,7 +8,7 @@
 
 # Portals and channels
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Customer, technician, supplier, procurement, kiosk, call centre, website, mobile.
 

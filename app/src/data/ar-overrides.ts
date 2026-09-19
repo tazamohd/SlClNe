@@ -5074,4 +5074,12 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading workspaces...": "جارٍ تحميل مساحات العمل...",
   "No branches are set up on this account yet.": "لم يتم إعداد أي فروع لهذا الحساب بعد.",
   "No workspaces yet": "لا توجد مساحات عمل بعد",
+
+  // Wave 9 — honest-gap and fake-success fixes for the ai domain screens.
+  // (AutomationRules/WorkflowBuilder/PromptLibrary's own titles are
+  // already covered above by PR 152's independently-converted versions
+  // of those screens, which merged into main first and superseded this
+  // wave's ModelSettings.tsx rewrite — see FEATUREMAP_TRIAGE.md wave 9.)
+  "AI Analytics has no data source yet": "لا يوجد مصدر بيانات لتحليلات الذكاء الاصطناعي بعد",
+  "AI Assistant is not available on this deployment yet": "مساعد الذكاء الاصطناعي غير متاح في هذا الإصدار حاليًا",
 }

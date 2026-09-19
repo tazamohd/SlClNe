@@ -12,7 +12,7 @@
 
 # Domain — AI and automation
 
-**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-AI · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
@@ -74,7 +74,7 @@ _No lifecycle in the contract belongs to this domain._
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-AgentDashboard | `/agent-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-AgentRegistry | `/agent-registry` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-AIAnalytics | `/aianalytics` | app | **mock** | — | — | — | verified | yes |
+| D-AIAnalytics | `/aianalytics` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-AIAssistant | `/aiassistant` | app | **mock** | — | — | — | verified | yes |
 | D-AutomationRules | `/automation-rules` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-ConversationHistory | `/conversation-history` | app | yes | yes | yes | yes | PARTIAL | yes |

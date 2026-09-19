@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "totals": {
     "capabilities": 430,
     "product": 367,
@@ -16,9 +16,9 @@
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 180,
     "hasErrorState": 144,
-    "hasEmptyState": 224,
+    "hasEmptyState": 225,
     "tabletVerified": 4,
-    "arabicVerified": 75,
+    "arabicVerified": 74,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "tools/docs/generators/control.mjs",
   "statusValues": [
     "MISSING",
@@ -296,7 +296,7 @@
     {
       "path": "00_DOCUMENT_CONTROL/DOCUMENTATION_GAP_REPORT.md",
       "section": "00_DOCUMENT_CONTROL",
-      "bytes": 17925,
+      "bytes": 17923,
       "lines": 209,
       "type": "GENERATED",
       "archived": false,
@@ -1176,7 +1176,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/AI.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 4910,
+      "bytes": 4911,
       "lines": 103,
       "type": "GENERATED",
       "archived": false,
@@ -1946,7 +1946,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 61686,
+      "bytes": 61685,
       "lines": 439,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

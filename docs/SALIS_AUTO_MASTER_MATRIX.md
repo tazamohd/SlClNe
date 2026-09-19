@@ -10,7 +10,7 @@
 | AdvancedSettings | `/advanced-settings` | app | settings | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 4 roles | route | IMPLEMENTED |
 | AgentDashboard | `/agent-dashboard` | app | ai | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | AgentRegistry | `/agent-registry` | app | aiadmin | DONE | PARTIAL | DONE | PARTIAL | PARTIAL | DONE | 3 roles | route | IMPLEMENTED |
-| AIAnalytics | `/aianalytics` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
+| AIAnalytics | `/aianalytics` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | AIAssistant | `/aiassistant` | app | ai | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | AppointmentCalendar | `/appointment-calendar` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |
 | Appointments | `/appointments` | app | appointments | DONE | MISSING | DONE | PARTIAL | PARTIAL | DONE | 8 roles | route | IMPLEMENTED |

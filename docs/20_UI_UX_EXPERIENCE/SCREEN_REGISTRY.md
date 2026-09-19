@@ -7,7 +7,7 @@
 
 # Screen registry
 
-**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-18
+**Status:** GENERATED (a view over a registry this documentation does not own) · **Sources as of:** 2026-09-19
 
 `project-control/MASTER_REGISTRY.json` is built by `app/scripts/build-registry.mjs` from the screen sources and the design bundle. This document is a reading of it, not a second copy — the numbers below change when that registry is rebuilt, never when someone edits this file.
 
@@ -26,8 +26,8 @@
 | Content-asserted (not just routed) | 430 | 430 |
 | Has a loading state | 180 | 430 |
 | Has an error state | 144 | 430 |
-| Has an empty state | 224 | 430 |
-| Arabic verified | 75 | 430 |
+| Has an empty state | 225 | 430 |
+| Arabic verified | 74 | 430 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 430 |
 | Golden paths passing | 23 of 23 | — |
@@ -66,7 +66,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 1 | 1 | 1 | 2 | 1 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
-| CAP-AI | 10 | 4 | 4 | 4 | 8 | 3 |
+| CAP-AI | 10 | 4 | 4 | 4 | 9 | 2 |
 | CAP-PLATFORM | 35 | 6 | 13 | 6 | 22 | 11 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 13 |
 | CAP-WEBSITE | 34 | 0 | 0 | 0 | 0 | 21 |
