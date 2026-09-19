@@ -86,7 +86,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-020 | `/vehicles-list` | app | yes | yes | yes | yes | verified | yes |
 | F-021 | `/vehicle-inspections` | app | **mock** | — | — | yes | verified | yes |
 | F-022 | `/vehicle-checklist` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-023 | `/vehicle-history` | app | **mock** | — | — | — | verified | yes |
+| F-023 | `/vehicle-history` | app | yes | yes | — | — | PARTIAL | yes |
 | F-024 | `/vehicle-health-monitoring` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-025 | `/vehicle-tracking` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-026 | `/vehicle-storage` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -249,8 +249,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **158 of 198 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **138 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **157 of 198 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **137 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

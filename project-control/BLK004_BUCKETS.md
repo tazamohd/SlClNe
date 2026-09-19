@@ -692,6 +692,87 @@ Exported the hook, which is all the existing inheritance logic needed.
 | ZATCA-Settings | `/zatca-settings` | featuremap |
 | Zakat-Settings | `/zakat-settings` | featuremap |
 
+## Bucket G: Vehicle-History real wiring, Cash-Flow-Statement detection fix (2026-09-19)
+
+Two screens closed, one a real rewiring and one a registry-detection gap
+that had nothing wrong with its actual behavior.
+
+- **`Vehicle-History`** showed six invented rows — fake dates, fake
+  technicians ("Ahmad Al-Harbi" etc.), fake costs — for every visitor
+  alike. Its route (`/vehicle-history`) carries no vehicle id anywhere in
+  the app (nothing links to it with one), so rather than inventing a
+  per-vehicle scope that doesn't exist yet, it is now honestly a
+  fleet-wide service timeline: the real `jobs` collection's
+  completed/delivered rows, each joined to its own invoice
+  (`invoices.jobCardId === job._id`, the same join `JobDetail.tsx`
+  already uses) for its real cost, and to `technicians` for the
+  assignee's real name. A column with nothing real behind it on a given
+  row — no fixture technician id, no matching invoice, no `_createdAt` on
+  a demo build — reads "—" rather than a fabricated figure. The removed
+  "Total Spent" card is not replaced with a client-side sum: `invoices`
+  is a paginated collection (`MAX_PAGE_SIZE`), so summing the page a
+  browser holds would silently undercount on any shop with more history
+  than one page, the same reason `TechnicianLeaderboards` (BLK-004
+  bucket, earlier) refused to sum invoiced value client-side and left it
+  to a server aggregate that doesn't exist for this screen either. A
+  `partial` flag (mirroring `TechnicianLeaderboards`' own) names that gap
+  instead of hiding it.
+- **`Cash-Flow-Statement`** was never actually a mock: it already renders
+  `ReportGap`, `accounting/ReportControls.tsx`'s honest "no server
+  aggregate to show" card, because no journal entry in the schema carries
+  an operating/investing/financing classification to report on (see the
+  screen's own comment). It rendered no `useCollection`/`useTrialBalance`
+  call at all — because there is nothing to call — so `honestGapScreens`
+  never recognized it, the same class of detection gap `GapCard`/
+  `NetworkGapPanel`/`ConnectApi` were added for. Added `<ReportGap` to
+  `GAP_MARKERS`; the screen's own code did not change.
+
+**BLK-004: 26 → 24** from this bucket's own two fixes. A concurrent branch
+(F-042/F-043/F-044, merged as PR #160 into the same main this bucket
+rebased onto) independently wired `ZATCA-Settings` to the real
+organization VAT/CR number, so the count on the merged main after this
+bucket is **23**, not 24 — `ZATCA-Settings` is gone from the list below
+because of that other work, not this one.
+
+### Remaining MOCK_ONLY after bucket G (23)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Tools | `/tools` | featuremap |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+Every remaining screen needs either a genuine product decision (the six
+settings/compliance forms — no interactive control at all, needs a
+settings-table design) or a new backend collection/schema
+(`Retained-Earnings` needs a P&L/net-income aggregate, a dividends
+record and closing-entry logic that don't exist; `Tasks`,
+`Data-Backup`/`Data-Import-Export`, the `CustomerApp.*` screens,
+`Barcode-Scanner`/`Voice-Command*` native features, and
+`Native.Android`/`Native.iOS` placeholders all need something that isn't
+in the schema today). None of these should be forced through without
+that decision.
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |

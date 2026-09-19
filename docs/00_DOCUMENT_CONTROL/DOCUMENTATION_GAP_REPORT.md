@@ -27,8 +27,8 @@ This report exists to be read before anything else in the set is relied on. It i
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 28 |
 | Screens registered and mapped to a capability | 436 of 436 |
-| Screens wired to the live API | 173 of 436 |
-| Test suites catalogued | 227 containing 2519 cases |
+| Screens wired to the live API | 174 of 436 |
+| Test suites catalogued | 228 containing 2521 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -88,9 +88,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 23 screens read design fixtures rather than the API
+### 5. 21 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 23 of 436 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 21 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -200,5 +200,5 @@ _None — every required document is present._
 3. **Confirm the 26 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 386 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 23 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 21 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

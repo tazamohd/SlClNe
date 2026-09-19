@@ -11,17 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 23,
-    "noBackend": 117,
-    "dataBacked": 173,
+    "mockOnly": 21,
+    "noBackend": 118,
+    "dataBacked": 174,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 201,
+    "hasLoadingState": 202,
     "hasErrorState": 163,
     "hasEmptyState": 270,
     "tabletVerified": 4,
-    "arabicVerified": 123,
+    "arabicVerified": 122,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -29,7 +29,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 38,
-    "crudRead": 157,
+    "crudRead": 158,
     "crudUpdate": 38,
     "crudDelete": 30,
     "unregisteredDesigns": 0,
@@ -17495,18 +17495,22 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "invoices",
+        "jobs",
+        "technicians"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -17532,7 +17536,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "ARABIC_MISSING",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25094,7 +25098,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
