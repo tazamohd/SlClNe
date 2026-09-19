@@ -11,17 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 20,
-    "noBackend": 118,
-    "dataBacked": 175,
+    "mockOnly": 15,
+    "noBackend": 123,
+    "dataBacked": 172,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 203,
-    "hasErrorState": 164,
-    "hasEmptyState": 271,
+    "hasLoadingState": 200,
+    "hasErrorState": 161,
+    "hasEmptyState": 269,
     "tabletVerified": 4,
-    "arabicVerified": 122,
+    "arabicVerified": 121,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -29,7 +29,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 38,
-    "crudRead": 159,
+    "crudRead": 158,
     "crudUpdate": 38,
     "crudDelete": 30,
     "unregisteredDesigns": 0,
@@ -738,7 +738,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -2718,7 +2718,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2784,7 +2784,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2850,7 +2850,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2916,7 +2916,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -3049,7 +3049,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6875,7 +6875,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6941,7 +6941,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23162,18 +23162,16 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "services"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
-        "read": true,
+        "read": false,
         "update": false,
         "delete": false
       },
@@ -23199,6 +23197,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
+        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27103,14 +27102,8 @@
       "route": "/zatca-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": "accounting",
-      "permissions": [
-        "owner:vax",
-        "manager:vx",
-        "accountant:vcedax",
-        "superadmin:v",
-        "test:vcedax"
-      ],
+      "module": null,
+      "permissions": [],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27164,7 +27157,8 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING"
+        "TABLET_MISSING",
+        "NO_RBAC_MODULE"
       ]
     },
     {
@@ -27174,14 +27168,8 @@
       "route": "/vat-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": "accounting",
-      "permissions": [
-        "owner:vax",
-        "manager:vx",
-        "accountant:vcedax",
-        "superadmin:v",
-        "test:vcedax"
-      ],
+      "module": null,
+      "permissions": [],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27199,16 +27187,13 @@
       "responsive": "PARTIAL",
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
-      "emptyState": "DONE",
-      "errorState": "DONE",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "accounting/tax/return",
-        "organization"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
         "read": false,
@@ -27236,7 +27221,9 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING"
+        "TABLET_MISSING",
+        "MOCK_ONLY",
+        "NO_RBAC_MODULE"
       ]
     },
     {
@@ -27246,14 +27233,8 @@
       "route": "/zakat-settings",
       "surface": "app",
       "shell": "AppShell",
-      "module": "accounting",
-      "permissions": [
-        "owner:vax",
-        "manager:vx",
-        "accountant:vcedax",
-        "superadmin:v",
-        "test:vcedax"
-      ],
+      "module": null,
+      "permissions": [],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -27269,17 +27250,15 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "DONE",
+      "loadingState": "MISSING",
       "emptyState": "MISSING",
-      "errorState": "DONE",
+      "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": true,
-      "dataSource": [
-        "organization"
-      ],
+      "dataBacked": false,
+      "dataSource": [],
       "crud": {
         "create": false,
         "read": false,
@@ -27307,7 +27286,10 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING"
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY",
+        "NO_RBAC_MODULE"
       ]
     },
     {

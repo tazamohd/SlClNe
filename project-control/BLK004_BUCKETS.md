@@ -773,6 +773,78 @@ record and closing-entry logic that don't exist; `Tasks`,
 in the schema today). None of these should be forced through without
 that decision.
 
+## Bucket H: seven registry misdetections, no screen changed (2026-09-19)
+
+None of these seven screens were ever fabricating data — every one was
+already an honest gap or real identity/build content, just using a shape
+the detector didn't recognize. A second-opinion sweep of the remaining
+list (after bucket G) found them; no screen's own code changed here,
+only `app/scripts/build-registry.mjs`'s classification.
+
+- **`CustomerApp.Wallet`/`.Orders`/`.Marketplace`/`.Notifications`**
+  (`customer-app/CustomerApp.tsx`) already render `EmptyState` with
+  honest "not available yet" copy explaining exactly what's missing
+  (no product catalog/cart/checkout; no customer-addressed notification
+  audience on the `notifications` table). `<EmptyState` itself is far
+  too broad to add as a marker — 132 files render it for an ordinary
+  "no rows yet" case on real data — so the narrower `'not available
+  yet'` string was added to `GAP_MARKERS` instead: four files carry it
+  in the whole app, all of them already-documented gaps.
+- **`AIAssistant`** shows a toast, "AI Assistant is not available on
+  this deployment yet", on every send — no AI/chat endpoint exists
+  anywhere in the contract, so there's no transcript to render, and the
+  suggestion prompts above the composer are static copy, not
+  invented data. Added that toast's exact phrase to `GAP_MARKERS` too
+  (two files total, the other already `CONTENT_ONLY` via the auth
+  surface).
+- **`CustomerApp.Profile`** is a navigation menu built from
+  `useSession()`'s real `userName`/`roleLabel` plus a logout button —
+  no business rows at all, the same shape `User-Settings` already
+  carries `CONTENT_ONLY` for. Widened `identityContent` to cover it by
+  name.
+- **`Native.Android`/`Native.iOS`** render `native-build.ts`, a
+  build-time constant `scripts/check-native-claims.mjs` verifies against
+  the actual native projects — version against the manifest/plist, each
+  capability against an installed Capacitor plugin, each gap against one
+  being absent. There is no collection to be `dataBacked` by; the number
+  is honest because a CI gate fails if it drifts, not because a server
+  returned it — the same shape `RolesPermissions`'s `staticMatrixContent`
+  already carries. Added a `verifiedBuildContent` case for both by name.
+
+**BLK-004: 23 → 15.**
+
+### Remaining MOCK_ONLY after bucket H (15)
+
+| Screen | Route | Domain |
+|---|---|---|
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Tools | `/tools` | featuremap |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+A second-opinion sweep of all 15 (not just skimmed by name) confirmed
+each is genuinely category (c): a new backend collection/schema or a
+product decision, not a wiring pass. The four settings/compliance forms
+plus `Security-Settings`/`System-Settings` need a real settings-table
+design; `Retained-Earnings`/`VAT-Settings`/`Zakat-Settings` need real
+aggregation/computation engines the ledger doesn't have yet;
+`Tasks`/`Data-Backup`/`Data-Import-Export`/`Dashboard-Widgets`/
+`Customer-App-Booking` need collections that don't exist;
+`Barcode-Scanner`/`Voice-Command-Interface`/`Voice-Commands` need a
+device/speech integration with nothing in the schema to hook into. None
+of these should be forced through without that decision.
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |
