@@ -51,7 +51,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 `jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 27 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
-### 3. 25 authenticated endpoints state no permission guard in the handler
+### 3. 26 authenticated endpoints state no permission guard in the handler
 
 | Method | Path | Declared in |
 | --- | --- | --- |
@@ -80,6 +80,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 | POST | `/api/v1/auth/sso/start` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/switch-role` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/verify-otp` | `server/src/auth/routes.ts` |
+| GET | `/api/v1/organization` | `server/src/routes/organization.ts` |
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
@@ -170,7 +171,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/16_SYSTEM_DESIGN/README.md` | 1157 |
 | `docs/17_API_INTEGRATION/endpoints/admin.md` | 886 |
 | `docs/17_API_INTEGRATION/endpoints/audit.md` | 796 |
-| `docs/17_API_INTEGRATION/endpoints/platform.md` | 948 |
+| `docs/17_API_INTEGRATION/endpoints/platform.md` | 1043 |
 | `docs/18_DATABASE/README.md` | 522 |
 | `docs/19_SECURITY/README.md` | 1032 |
 | `docs/20_UI_UX_EXPERIENCE/README.md` | 932 |
@@ -196,7 +197,7 @@ _None — every required document is present._
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 27 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
-3. **Confirm the 25 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
+3. **Confirm the 26 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 386 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 23 screens to the API**, which is the bulk of the product work still outstanding.

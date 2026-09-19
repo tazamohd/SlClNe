@@ -1,9 +1,7 @@
-/** The organization's own tax identity, and the VAT rate it is charged under.
+/** `GET /organization` — the caller's own tenant's registration identity, and
+ *  the VAT rate its invoices are priced at.
  *
- *  One read, because the compliance screens were displaying both of these as
- *  hardcoded literals (BLK-004): a VAT registration number invented in a
- *  component, and a `15%` that merely coincided with the rate the server
- *  enforces. Three different kinds of fact meet on those screens, and this
+ *  Three different kinds of fact meet on the compliance screens, and this
  *  endpoint keeps them apart rather than flattening them into one "settings"
  *  blob:
  *
@@ -16,10 +14,12 @@
  *     produces. Null is returned as null, never as a plausible-looking number:
  *     "not recorded" is a state the screen must be able to show, because it is
  *     the state in which invoicing is blocked.
- *  2. **Enforced** — `vatRateBps`, `env.VAT_RATE_BPS`. The *same* read the
+ *  2. **Enforced** — `vatRateBps`, from `env.VAT_RATE_BPS`. The *same* read the
  *     invoice pricing rule and the tax-return endpoint make, so a screen
  *     showing it cannot quote a rate the ledger did not charge. A deployment
- *     that runs at a different rate makes this number move with it.
+ *     running at another rate makes this number move with it. The compliance
+ *     screens previously printed a literal `15%` that merely *coincided* with
+ *     it (BLK-004).
  *  3. **Derived** — nothing here. Every monetary total belongs to
  *     `routes/finance-reports.ts`, which sums it in SQL over the whole tenant
  *     scope; this endpoint returns no money.
@@ -31,18 +31,30 @@
  *  genuine administrative act, but it belongs to whatever owns organization
  *  administration, not to a tax screen, and no such write exists yet.
  *
- *  Gated on `accounting:v` — the same grant `GET /accounting/tax/return`
- *  requires, held by owner, superadmin, manager and accountant. Tax
- *  registration identity is read by the people who file, not by the workshop
- *  floor.
+ *  **Authenticated but ungated**, the same as `GET /auth/me`. Two changes built
+ *  this endpoint independently and disagreed here: one gated it on
+ *  `accounting:v` by analogy with `GET /accounting/tax/return`. That analogy
+ *  does not hold. The tax-return endpoint returns *monetary totals*; this one
+ *  returns the organization's own name, its own registration numbers and the
+ *  rate — every one of which `POST /invoices/:id/issue` stamps onto each
+ *  invoice the workshop hands out, including to the technician who worked the
+ *  job and the customer who pays it. A gate over data printed on every invoice
+ *  protects nothing and only looks protective. The compliance *screens* are
+ *  separately mapped to `accounting` in `SCREEN_MODULE`, which is a real
+ *  narrowing and stands.
+ *
+ *  `organizations` is not itself a `tenant`-shaped table — it *is* the tenant —
+ *  so this reads it the way `routes/invoices.ts`'s issue path already does:
+ *  scoped to `principal.orgId` inside the caller's `withTenant` transaction,
+ *  not through the generic collection router (whose every entry requires an
+ *  RBAC module).
  */
-import { eq } from 'drizzle-orm'
+import { and, eq, isNull } from 'drizzle-orm'
 import type { FastifyInstance } from 'fastify'
 import { organizations } from '../db/schema'
 import { withTenant } from '../db/tenant'
-import { notFound } from '../http/errors'
 import { principalOf } from '../http/context'
-import { requirePermission } from '../security/permissions'
+import { notFound } from '../http/errors'
 import type { Database } from '../db/client'
 import type { Env } from '../env'
 
@@ -52,10 +64,8 @@ export interface OrganizationDeps {
 }
 
 export function registerOrganizationRoutes(app: FastifyInstance, deps: OrganizationDeps): void {
-  /* ------------------------------------------- GET /organization/tax-profile */
-  app.get('/organization/tax-profile', async (request) => {
+  app.get('/organization', async (request) => {
     const principal = principalOf(request)
-    requirePermission(principal, 'accounting', 'v')
 
     return withTenant(deps.db, principal, async (tx) => {
       const [row] = await tx
@@ -66,7 +76,7 @@ export function registerOrganizationRoutes(app: FastifyInstance, deps: Organizat
           crNumber: organizations.crNumber,
         })
         .from(organizations)
-        .where(eq(organizations.id, principal.orgId))
+        .where(and(eq(organizations.id, principal.orgId), isNull(organizations.deletedAt)))
         .limit(1)
       if (!row) throw notFound('Organization')
 

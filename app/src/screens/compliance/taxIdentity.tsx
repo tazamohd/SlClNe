@@ -31,7 +31,7 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 
 /** One key for the organization read, so the three screens share one cache
  *  entry rather than fetching the same row three times. */
-export const ORG_TAX_PROFILE_KEY = ['organization', 'tax-profile'] as const
+export const ORG_TAX_PROFILE_KEY = ['organization'] as const
 
 /** Basis points as a percentage string — `1500` → `15.00`. The rate is carried
  *  in bps end to end so it is exact; this is the only place it becomes a

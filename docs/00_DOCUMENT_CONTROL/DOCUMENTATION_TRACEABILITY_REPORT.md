@@ -25,7 +25,7 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | Capability → endpoint | 528 | 528 | Permission module |
 | Capability → screen | 436 | 436 | Permission module, or screen domain where the screen has none |
 | Endpoint → entity | 358 | 528 | Table name via the collection definition |
-| Endpoint → permission | 497 | 528 | `requirePermission` call in the handler |
+| Endpoint → permission | 496 | 528 | `requirePermission` call in the handler |
 | Entity → relationship | 80 | 84 | Column name resolving to a table name |
 | Rule → enforcing function | 30 | 30 | The exported function itself |
 | Endpoint → test | 142 | 528 | Path string appearing in a spec file |

@@ -3,9 +3,10 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { isLive, repository } from '@/data/repository'
-import { useCreate, type RowOf } from '@/data/useCollection'
+import { useCollection, useCreate, type RowOf } from '@/data/useCollection'
 import { todayIso, type CustomerRow, type VehicleRow } from './portal-data'
 
 type Step = 'identify' | 'vehicle' | 'service' | 'done'
@@ -127,15 +128,6 @@ function toFound(row: VehicleRow): FoundVehicle {
   }
 }
 
-const FIXTURE_SERVICES = [
-  { id: 's1', label: 'Oil Change', icon: 'Droplets' },
-  { id: 's2', label: 'Tire Rotation', icon: 'CircleDot' },
-  { id: 's3', label: 'Brake Inspection', icon: 'ShieldCheck' },
-  { id: 's4', label: 'Full Service', icon: 'Wrench' },
-  { id: 's5', label: 'AC Service', icon: 'Thermometer' },
-  { id: 's6', label: 'Battery Check', icon: 'Battery' },
-]
-
 /** Self-service customer check-in kiosk. Large touch targets, simple step flow:
  *  Identify (phone/plate) -> Select Vehicle -> Confirm Service -> Done.
  *
@@ -147,10 +139,15 @@ export function KioskCheckIn() {
   const { t } = usePreferences()
 
   const create = useCreate('appointments')
+  const services = useCollection('services')
+  const serviceRows = (services.data ?? []) as readonly RowOf<'services'>[]
   const [step, setStep] = useState<Step>('identify')
   const [phone, setPhone] = useState('')
   const [plate, setPlate] = useState('')
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null)
+  /* The service catalog (`services` collection) presents as `[icon, label]`
+   * tuples with no row id — see server/src/registry.ts — so the label itself
+   * is the selection, the same as CustomerPortalBooking's service picker. */
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [confirmError, setConfirmError] = useState<string | null>(null)
   const [identity, setIdentity] = useState<Identity>(EMPTY_IDENTITY)
@@ -189,8 +186,8 @@ export function KioskCheckIn() {
     setStep('service')
   }
 
-  function handleSelectService(id: string) {
-    setSelectedService(id)
+  function handleSelectService(label: string) {
+    setSelectedService(label)
   }
 
   /** Registers the walk-in as an appointment through the same create seam the
@@ -200,7 +197,6 @@ export function KioskCheckIn() {
   async function handleConfirm() {
     if (!selectedService) return
     const vehicle = identity.vehicles.find((v) => v.id === selectedVehicle)
-    const service = FIXTURE_SERVICES.find((s) => s.id === selectedService)
     const now = new Date()
     const timeLabel = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
     setConfirmError(null)
@@ -219,7 +215,7 @@ export function KioskCheckIn() {
           ...(vehicle?.customerId && vehicle.id ? { vehicleId: vehicle.id } : {}),
           vehicleLabel: vehicle?.make || plate.trim() || 'Unidentified vehicle',
           plate: vehicle?.plate ?? plate.trim(),
-          serviceLabel: service?.label ?? '',
+          serviceLabel: selectedService ?? '',
           bay: 'Bay 1',
           status: 'awaiting',
         } as unknown as Partial<RowOf<'appointments'>>,
@@ -331,6 +327,10 @@ export function KioskCheckIn() {
             />
           ) : step === 'service' ? (
             <ServiceStep
+              rows={serviceRows}
+              loading={services.isLoading}
+              loadError={services.error?.message}
+              onRetry={() => void services.refetch()}
               selected={selectedService}
               onSelect={handleSelectService}
               onConfirm={() => void handleConfirm()}
@@ -550,6 +550,10 @@ function VehicleStep({
 }
 
 function ServiceStep({
+  rows,
+  loading,
+  loadError,
+  onRetry,
   selected,
   onSelect,
   onConfirm,
@@ -557,8 +561,12 @@ function ServiceStep({
   pending,
   error,
 }: {
+  rows: readonly RowOf<'services'>[]
+  loading: boolean
+  loadError: string | undefined
+  onRetry: () => void
   selected: string | null
-  onSelect: (id: string) => void
+  onSelect: (label: string) => void
   onConfirm: () => void
   onBack: () => void
   pending: boolean
@@ -573,24 +581,30 @@ function ServiceStep({
         <p className="mt-1 text-sm text-muted">{t('What brings you in today?')}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        {FIXTURE_SERVICES.map((svc) => (
-          <button
-            key={svc.id}
-            type="button"
-            onClick={() => onSelect(svc.id)}
-            className={
-              'flex min-h-[80px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-4 text-center transition-all ' +
-              (selected === svc.id
-                ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
-                : 'border-border bg-card text-heading hover:border-salis-blue hover:shadow-md')
-            }
-          >
-            <Icon name={svc.icon} size={24} aria-hidden />
-            <span className="font-action text-sm font-medium">{t(svc.label)}</span>
-          </button>
-        ))}
-      </div>
+      {loading ? (
+        <Loading inline label={t('Loading services...')} />
+      ) : loadError ? (
+        <ErrorState description={loadError} onRetry={onRetry} />
+      ) : (
+        <div className="grid grid-cols-2 gap-3">
+          {rows.map(([icon, label]) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => onSelect(label)}
+              className={
+                'flex min-h-[80px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border p-4 text-center transition-all ' +
+                (selected === label
+                  ? 'border-salis-blue bg-salis-blue/[.08] text-salis-blue shadow-[0_0_0_3px_rgba(10,94,215,.15)]'
+                  : 'border-border bg-card text-heading hover:border-salis-blue hover:shadow-md')
+              }
+            >
+              <Icon name={icon} size={24} aria-hidden />
+              <span className="font-action text-sm font-medium">{t(label)}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {error ? (
         <p className="text-center font-action text-sm text-salis-orange" role="alert">

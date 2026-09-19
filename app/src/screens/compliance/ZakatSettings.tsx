@@ -35,7 +35,7 @@ import { NoteLine, ORG_TAX_PROFILE_KEY, RecordedValue, TaxRow } from './taxIdent
  *
  *  So this screen declares the gap and shows the one thing it can stand behind:
  *  the registration this organization would file under, read from its own row
- *  through `GET /organization/tax-profile`. The statutory rate is stated as a
+ *  through `GET /organization`. The statutory rate is stated as a
  *  fact of Saudi law in the note below rather than rendered as a configured
  *  value, because nothing in this system applies it to anything — unlike VAT,
  *  which the server genuinely charges at the rate it is configured with.

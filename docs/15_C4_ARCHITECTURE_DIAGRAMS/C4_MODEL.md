@@ -119,7 +119,7 @@ sequenceDiagram
 
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
-| accounting | 38 | CAP-ACCOUNTING |
+| accounting | 37 | CAP-ACCOUNTING |
 | admin | 2 | CAP-PLATFORM |
 | ai | 8 | CAP-AI |
 | appointments | 9 | CAP-WORKSHOP |
@@ -138,7 +138,7 @@ sequenceDiagram
 | jobcards | 90 | CAP-WORKSHOP |
 | network | 37 | CAP-PLATFORM |
 | payments | 11 | CAP-BILLING |
-| platform | 3 | CAP-PLATFORM |
+| platform | 4 | CAP-PLATFORM |
 | procurement | 28 | CAP-PROCUREMENT |
 | settings | 8 | CAP-PLATFORM |
 | technicians | 4 | CAP-HR |

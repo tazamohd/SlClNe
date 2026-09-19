@@ -13,7 +13,7 @@
     "generated": 358,
     "explicit": 170,
     "unauthenticated": 6,
-    "withPermissionGuard": 497,
+    "withPermissionGuard": 496,
     "idempotent": 2,
     "withTests": 142
   },
@@ -2278,7 +2278,7 @@
       "capability": "CAP-ACCOUNTING",
       "tests": [
         "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS",
-        "TS-SERVER-TESTS-ORGANIZATION-TAX-PROFILE-TEST-TS"
+        "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS"
       ]
     },
     {
@@ -13839,16 +13839,16 @@
       "tests": []
     },
     {
-      "id": "API-GET-ORGANIZATION-TAX-PROFILE",
+      "id": "API-GET-ORGANIZATION",
       "method": "GET",
-      "path": "/api/v1/organization/tax-profile",
+      "path": "/api/v1/organization",
       "source": "server/src/routes/organization.ts",
       "kind": "EXPLICIT",
-      "domain": "accounting",
+      "domain": "platform",
       "purpose": null,
       "authentication": "Bearer access token (required)",
-      "permissionModule": "accounting",
-      "permissionAction": "v",
+      "permissionModule": null,
+      "permissionAction": null,
       "requiresApproval": false,
       "tenantScope": "org_id via Postgres row-level security",
       "branchScope": "branch_id where the principal is branch-scoped",
@@ -13856,9 +13856,9 @@
       "audited": false,
       "transactional": false,
       "validates": false,
-      "capability": "CAP-ACCOUNTING",
+      "capability": "CAP-PLATFORM",
       "tests": [
-        "TS-SERVER-TESTS-ORGANIZATION-TAX-PROFILE-TEST-TS"
+        "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS"
       ]
     },
     {

@@ -22,8 +22,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | e2e covered | 436 |
 | content asserted | 436 |
 | rendered without assertion | 0 |
-| has loading state | 200 |
-| has error state | 162 |
+| has loading state | 201 |
+| has error state | 163 |
 | has empty state | 270 |
 | tablet verified | 4 |
 | arabic verified | 123 |
@@ -34,7 +34,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 38 |
-| crud read | 156 |
+| crud read | 157 |
 | crud update | 38 |
 | crud delete | 30 |
 | unregistered designs | 0 |

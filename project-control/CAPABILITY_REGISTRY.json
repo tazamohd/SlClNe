@@ -593,7 +593,7 @@
       ],
       "objective": "OBJ-CASH",
       "objectiveName": "Shorten the cash cycle",
-      "endpointCount": 60,
+      "endpointCount": 59,
       "endpoints": [
         "API-CHARTOFACCOUNTS-GET-LIST",
         "API-CHARTOFACCOUNTS-GETID",
@@ -645,7 +645,6 @@
         "API-GET-LOAN-REPAYMENTS-ID-HISTORY",
         "API-LOANREPAYMENTS-GETEXPORT",
         "API-GET-LOANS-SUMMARY",
-        "API-GET-ORGANIZATION-TAX-PROFILE",
         "API-SAVEDREPORTS-GET-LIST",
         "API-SAVEDREPORTS-POST-LIST",
         "API-SAVEDREPORTS-DELETEID",
@@ -1141,7 +1140,7 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 72,
+      "endpointCount": 73,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
         "API-DEPARTMENTS-POST-LIST",
@@ -1175,6 +1174,7 @@
         "API-NOTIFICATIONS-POSTBULK-DELETE",
         "API-NOTIFICATIONS-POSTBULK-UPDATE",
         "API-NOTIFICATIONS-GETEXPORT",
+        "API-GET-ORGANIZATION",
         "API-PARTSNETWORKMEMBERS-GET-LIST",
         "API-PARTSNETWORKMEMBERS-POST-LIST",
         "API-PARTSNETWORKMEMBERS-DELETEID",

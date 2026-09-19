@@ -6788,32 +6788,31 @@
       ]
     },
     {
-      "id": "TS-SERVER-TESTS-ORGANIZATION-TAX-PROFILE-TEST-TS",
-      "file": "server/tests/organization-tax-profile.test.ts",
+      "id": "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS",
+      "file": "server/tests/organization-read.test.ts",
       "kind": "UNIT_OR_API",
       "surface": "server",
       "describes": [
-        "GET /organization/tax-profile"
+        "GET /organization"
       ],
       "cases": [
-        "returns the caller organization’s own recorded registration numbers",
+        "returns the seeded organization\\'s real VAT number, not a fabricated one",
+        "reports an unset CR number as null rather than inventing one",
+        "answers for any authenticated role — the screen carries no RBAC module",
+        "401s with no token",
         "reports the VAT rate this deployment enforces, not a literal",
-        "is the same rate the tax-return endpoint reports",
-        "returns null — never a plausible number — for an organization with none recorded",
-        "never returns another tenant’s registration number",
-        "refuses a role without accounting view — tax registration is not floor data",
-        "refuses an unauthenticated caller"
+        "is the same rate the tax-return endpoint charges at",
+        "never returns another organization's identity"
       ],
       "caseCount": 7,
       "touchesPaths": [
-        "/api/v1/organization/tax-profile",
-        "/api/v1/accounting/tax/return"
+        "/organization",
+        "/accounting/tax/return"
       ],
       "touchesRoles": [
-        "accountant",
+        "owner",
         "technician",
-        "frontdesk",
-        "parts"
+        "accountant"
       ]
     },
     {

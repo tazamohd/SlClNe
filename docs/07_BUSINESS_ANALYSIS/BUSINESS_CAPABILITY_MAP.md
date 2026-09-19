@@ -40,7 +40,7 @@ flowchart LR
   OBJ_MARGIN --> CAP_PROCUREMENT
   CAP_BILLING["Invoicing and payments<br/>6 screens · 25 endpoints"]
   OBJ_CASH --> CAP_BILLING
-  CAP_ACCOUNTING["Accounting and finance<br/>12 screens · 60 endpoints"]
+  CAP_ACCOUNTING["Accounting and finance<br/>12 screens · 59 endpoints"]
   OBJ_CASH --> CAP_ACCOUNTING
   CAP_HR["HR and payroll<br/>13 screens · 71 endpoints"]
   OBJ_CAPACITY --> CAP_HR
@@ -54,7 +54,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_PORTALS
   CAP_AI["AI and automation<br/>19 screens · 8 endpoints"]
   OBJ_THROUGHPUT --> CAP_AI
-  CAP_PLATFORM["Administration and platform<br/>35 screens · 72 endpoints"]
+  CAP_PLATFORM["Administration and platform<br/>35 screens · 73 endpoints"]
   OBJ_CONTROL --> CAP_PLATFORM
   CAP_IDENTITY["Identity and access<br/>19 screens · 28 endpoints"]
   OBJ_CONTROL --> CAP_IDENTITY
@@ -76,14 +76,14 @@ flowchart LR
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 9 | 9 | 22 | 2 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 12 | 12 | 60 | 10 | 5 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 12 | 12 | 59 | 10 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 13 | 13 | 71 | 8 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 2 | 6 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 9 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
-| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 11 | 72 | 9 | 14 |
+| CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 11 | 73 | 9 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 1 | 28 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
@@ -200,7 +200,7 @@ flowchart LR
 | Permission modules | `accounting`, `insurance` |
 | Screen domains | — |
 | Screens | 12 (12 data-backed) |
-| Endpoints | 60 |
+| Endpoints | 59 |
 | Entities | `chartOfAccounts`, `expenses`, `journalEntries`, `bankStatements`, `equipmentWarranties`, `insuranceClaims`, `insurancePolicies`, `loanContracts`, `loanRepayments`, `savedReports` |
 | Roles with any grant | owner, superadmin, manager, accountant, test |
 | Rule guards | — |
@@ -298,7 +298,7 @@ flowchart LR
 | Permission modules | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` |
 | Screen domains | `admin` |
 | Screens | 35 (11 data-backed) |
-| Endpoints | 72 |
+| Endpoints | 73 |
 | Entities | `departments`, `branches`, `integrations`, `oemTools`, `notifications`, `partsNetworkMembers`, `partsNetworkOrders`, `partsNetworkQuotations`, `partsNetworkRequests` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, hr, frontdesk, callcenter, procurement, supplier, test |
 | Rule guards | — |

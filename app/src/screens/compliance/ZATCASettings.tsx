@@ -24,7 +24,7 @@ import { VAT_RATE_BPS } from '@/screens/finance/money'
  *  ── What it holds now ────────────────────────────────────────────────────
  *
  *  **The seller VAT number, read from the organization's own row** through
- *  `GET /organization/tax-profile` — the same value `POST /invoices/:id/issue`
+ *  `GET /organization` — the same value `POST /invoices/:id/issue`
  *  stamps onto an invoice and into its ZATCA QR payload, and refuses to issue
  *  without. An organization that has recorded none shows as **not recorded**.
  *  The commercial-registration number is recorded the same way and shown beside

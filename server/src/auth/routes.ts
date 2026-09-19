@@ -108,11 +108,6 @@ const registerBody = z.object({
 })
 
 const switchRoleBody = z.object({ role: z.string().trim().min(1).max(32) })
-const updateProfileBody = z.object({ name: z.string().trim().min(1, 'Please enter your name.').max(200) })
-const changePasswordBody = z.object({
-  currentPassword: z.string().min(1).max(200),
-  newPassword: z.string().min(1).max(200),
-})
 
 const refreshBody = z.object({ refreshToken: z.string().min(10).max(4096) })
 const forgotBody = z.object({ email: z.string().trim().min(3).max(254) })
@@ -129,6 +124,14 @@ const verifyOtpBody = z.object({
   otp: z.string().trim().regex(/^\d{6}$/, 'A one-time code is six digits.'),
 })
 const revokeAllBody = z.object({ keepCurrent: z.boolean().optional(), sessionId: z.string().optional() })
+
+const updateProfileBody = z.object({
+  name: z.string().trim().min(1, 'Please enter your name.').max(200),
+})
+const changePasswordBody = z.object({
+  currentPassword: z.string().min(1).max(200),
+  newPassword: z.string().min(1).max(200),
+})
 
 const staffCreateBody = z.object({
   name: z.string().trim().min(1, 'Please enter a name.').max(200),

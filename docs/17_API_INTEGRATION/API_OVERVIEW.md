@@ -49,7 +49,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 
 | Domain | Endpoints | Generated | Explicit | With a stated permission guard |
 | --- | --- | --- | --- | --- |
-| accounting | 38 | 28 | 10 | 38 |
+| accounting | 37 | 28 | 9 | 37 |
 | admin | 2 | 0 | 2 | 2 |
 | ai | 8 | 6 | 2 | 8 |
 | appointments | 9 | 8 | 1 | 9 |
@@ -68,7 +68,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 | jobcards | 90 | 62 | 28 | 90 |
 | network | 37 | 32 | 5 | 37 |
 | payments | 11 | 6 | 5 | 11 |
-| platform | 3 | 0 | 3 | 0 |
+| platform | 4 | 0 | 4 | 0 |
 | procurement | 28 | 14 | 14 | 28 |
 | settings | 8 | 6 | 2 | 8 |
 | technicians | 4 | 3 | 1 | 4 |

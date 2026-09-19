@@ -42,7 +42,7 @@ import { NoteLine, ORG_TAX_PROFILE_KEY, RecordedValue, TaxRow, percentOfBps } fr
  *  A VAT number *is* legitimately recorded: it lives on the organization's row,
  *  and `POST /invoices/:id/issue` stamps it onto the invoice and its ZATCA QR
  *  and refuses to issue when it is absent. So it is read from that row through
- *  `GET /organization/tax-profile`, and an organization that has recorded none
+ *  `GET /organization`, and an organization that has recorded none
  *  is shown as **not recorded**, with the consequence named. No stand-in.
  *
  *  **The summary was invented tax totals.** Output VAT over a period is an

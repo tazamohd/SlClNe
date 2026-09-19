@@ -27,10 +27,13 @@
 // source, same reasoning as "DeclinedJobs"
 // module and its grants already existed — VAT / ZATCA / Zakat Settings,
 // BLK-004 — the three tax-compliance screens read
-// `GET /organization/tax-profile` and `GET /accounting/tax/return`, both gated
-// server-side on `accounting:v`, so gating the screens on the same module means
-// no role can open a screen whose data it would be refused; this narrows
-// access (they were ungated) and widens nothing — none of the seven has a
+// `GET /accounting/tax/return`, which is gated server-side on `accounting:v`,
+// so gating the screens on the same module means no role can open a screen
+// whose data it would be refused; this narrows access (they were ungated) and
+// widens nothing. Their other read, `GET /organization`, is authenticated but
+// deliberately ungated — it returns the org's own registration numbers and the
+// VAT rate, all of which are stamped onto every invoice the workshop hands
+// out, so a gate there would protect nothing (see the route's docstring) — none of the seven has a
 // design source, same reasoning as "DeclinedJobs"
 // already in this file) — a full
 // `node scripts/port-design-data.mjs` run also touched

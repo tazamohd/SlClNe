@@ -1865,7 +1865,7 @@ export function createFinanceReports(baseUrl: string): FinanceReportsApi {
 
 /* ------------------------------------------- organization tax identity */
 
-/** `GET /organization/tax-profile` — what the organization has *recorded* about
+/** `GET /organization` — what the organization has *recorded* about
  *  its own tax identity, plus the VAT rate the deployment *enforces*.
  *
  *  The two are different kinds of fact and the field names keep them apart.
@@ -1901,7 +1901,7 @@ export function createOrganizationApi(baseUrl: string): OrganizationApi {
   const root = baseUrl.replace(/\/$/, '')
   return {
     async taxProfile() {
-      return request<OrgTaxProfile>(`${root}/organization/tax-profile`)
+      return request<OrgTaxProfile>(`${root}/organization`)
     },
   }
 }

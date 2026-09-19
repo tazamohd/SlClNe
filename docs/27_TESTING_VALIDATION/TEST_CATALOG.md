@@ -253,7 +253,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/ledger-posting.test.ts` | UNIT_OR_API | 7 | accountant, procurement |
 | `server/tests/notifications.test.ts` | UNIT_OR_API | 12 | advisor, test, technician, customer |
 | `server/tests/obd-otp.test.ts` | UNIT_OR_API | 10 | manager, parts |
-| `server/tests/organization-tax-profile.test.ts` | UNIT_OR_API | 7 | accountant, technician, frontdesk, parts |
+| `server/tests/organization-read.test.ts` | UNIT_OR_API | 7 | owner, technician, accountant |
 | `server/tests/parts-network.test.ts` | UNIT_OR_API | 34 | procurement, supplier, technician, parts |
 | `server/tests/procurement.test.ts` | INVENTORY_INTEGRITY | 11 | owner, procurement, manager, technician |
 | `server/tests/rbac-lab.test.ts` | SECURITY | 3 | — |
