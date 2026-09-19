@@ -12,11 +12,11 @@
 
 # Domain — HR and payroll
 
-**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-HR · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CAPACITY** (Use technician capacity well). It comprises 5 screens, 52 API endpoints and 3 entities, gated by the `hr`, `technicians` permission modules.
+This domain serves the objective **OBJ-CAPACITY** (Use technician capacity well). It comprises 11 screens, 52 API endpoints and 3 entities, gated by the `hr`, `technicians` permission modules.
 
 
 ## Actors
@@ -137,6 +137,12 @@ _No lifecycle in the contract belongs to this domain._
 | D-TechnicianKB | `/technician-kb` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Technicians | `/technicians` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-TechnicianSchedule | `/technician-schedule` | app | yes | yes | yes | yes | verified | yes |
+| F-135 | `/hr-management` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-136 | `/staff-directory` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-139 | `/timesheet-management` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-140 | `/timeclock-payroll` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-141 | `/payroll-management` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 

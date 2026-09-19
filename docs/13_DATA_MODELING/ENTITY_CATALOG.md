@@ -8,7 +8,7 @@
 
 # Entity catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
 77 tables. 72 are tenant-scoped (carry `org_id`) and 73 have row-level security enabled and forced.
 
@@ -54,7 +54,7 @@
 | ENT-PURCHASE-ORDERS | `purchase_orders` | 23 | yes | yes | yes | yes | yes | yes | 3 | 0 |
 | ENT-PURCHASE-ORDER-LINES | `purchase_order_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-TECHNICIANS | `technicians` | 14 | yes | yes | yes | yes | yes | yes | — | 3 |
-| ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 3 |
+| ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-LEADS | `leads` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-OPPORTUNITIES | `opportunities` | 16 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-CAMPAIGNS | `campaigns` | 22 | yes | yes | yes | yes | yes | yes | 2 | 8 |

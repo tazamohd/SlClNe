@@ -12,11 +12,11 @@
 
 # Domain — Design system and reference surfaces
 
-**Status:** GENERATED · **Capability:** CAP-DESIGNSYSTEM · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-DESIGNSYSTEM · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 232 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 204 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -73,7 +73,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-001 | `/dashboard-home` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-002 | `/welcome-page` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-003 | `/dashboard-main` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-004 | `/customers-list` | app | yes | yes | yes | yes | verified | yes |
 | F-006 | `/customer-loyalty` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-007 | `/customer-reviews-ratings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-008 | `/referral-program` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -81,7 +80,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-011 | `/customer-ltv-analysis` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-013 | `/appointment-reminders` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-014 | `/calendar` | app | yes | yes | yes | — | PARTIAL | yes |
-| F-015 | `/workshop-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
 | F-016 | `/ai-scheduling` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-017 | `/smart-assignment` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-018 | `/routing-optimizer` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -124,7 +122,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-061 | `/spare-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-062 | `/barcode-scanner` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-063 | `/internal-warehouse` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-064 | `/interactive-3-d-parts` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-065 | `/parts-marketplace` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-066 | `/dynamic-pricing` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-067 | `/intelligent-price-optimizer` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -137,16 +134,12 @@ _No lifecycle in the contract belongs to this domain._
 | F-079 | `/purchase-agent-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-082 | `/purchase-agent-payments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-083 | `/purchase-agent-delivery` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-084 | `/purchase-agent-orders` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-085 | `/purchase-agent-suppliers` | app | yes | yes | yes | yes | verified | yes |
 | F-086 | `/purchase-agent-inventory` | app | yes | yes | yes | — | PARTIAL | yes |
 | F-087 | `/purchase-agent-price-compare` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-088 | `/purchase-agent-tracking` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-089 | `/purchase-agent-reports` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-092 | `/technician-portal-time-clock` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-093 | `/technician-portal-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-094 | `/technician-portal-documentation` | app | **mock** | — | — | yes | PARTIAL | yes |
@@ -157,15 +150,11 @@ _No lifecycle in the contract belongs to this domain._
 | F-099 | `/technician-management` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-100 | `/technician-leaderboards` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-101 | `/technician-performance` | app | **mock** | — | — | — | verified | yes |
-| F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-103 | `/technician-app-home` | app | yes | yes | — | yes | verified | yes |
-| F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-105 | `/technician-app-clock` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-106 | `/technician-app-lookup` | app | yes | yes | yes | — | PARTIAL | yes |
 | F-107 | `/technician-app-profile` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-108 | `/client-portal-dashboard` | app | yes | yes | — | yes | PARTIAL | yes |
-| F-109 | `/client-portal-vehicles` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-110 | `/client-portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-111 | `/client-portal-invoices` | app | yes | yes | yes | yes | verified | yes |
 | F-112 | `/client-portal-profile` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-113 | `/client-portal-service-history` | app | yes | yes | yes | — | PARTIAL | yes |
@@ -186,14 +175,8 @@ _No lifecycle in the contract belongs to this domain._
 | F-132 | `/profit-analysis` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-133 | `/kpi-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-134 | `/productivity-tracker` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-135 | `/hr-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-136 | `/staff-directory` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-137 | `/staff-scheduling` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-138 | `/staff-performance-review` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-139 | `/timesheet-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-140 | `/timeclock-payroll` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-141 | `/payroll-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-142 | `/leave-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-146 | `/general-ledger` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -219,10 +202,8 @@ _No lifecycle in the contract belongs to this domain._
 | F-167 | `/accounting-integration` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-168 | `/financial-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-170 | `/contract-management` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-171 | `/insurance-claims` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-172 | `/marketing-hub` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-173 | `/marketing-automation` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-174 | `/email-marketing-campaigns` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-175 | `/social-media-integration` | app | **mock** | — | — | — | verified | yes |
 | F-176 | `/social-media-monitoring` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-177 | `/google-my-business` | app | **mock** | — | — | — | verified | yes |
@@ -240,15 +221,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-190 | `/franchise-management` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-191 | `/globalization-layer` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-192 | `/multi-location-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-193 | `/ai-automation` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-194 | `/ai-chatbot` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-195 | `/ai-chatbot-assistant` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-196 | `/ai-service-advisor` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-197 | `/voice-commands` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-198 | `/voice-command-interface` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-199 | `/smart-damage-assessment` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-200 | `/ml-fraud-detection` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-201 | `/neural-network-prediction` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-202 | `/emerging-technologies` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-203 | `/next-gen-technologies` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-204 | `/io-t-dashboard` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -283,8 +255,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **181 of 232 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **159 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **172 of 204 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **150 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

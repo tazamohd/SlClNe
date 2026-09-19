@@ -8,7 +8,7 @@
 
 # Database design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 PostgreSQL, accessed through Drizzle ORM. 77 tables, 1303 columns, 25 migrations.
 

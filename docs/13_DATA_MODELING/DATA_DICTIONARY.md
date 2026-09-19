@@ -8,7 +8,7 @@
 
 # Data dictionary
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
 Every column of every table, 1303 in total.
 

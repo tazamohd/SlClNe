@@ -12,7 +12,7 @@
 
 # Documentation traceability report
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Whether the traceability chain actually resolves, measured rather than asserted. The chain itself and the full matrix are in [the requirements traceability matrix](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md); this is the summary a reader needs before deciding how much to trust the set.
 
@@ -22,17 +22,17 @@ Whether the traceability chain actually resolves, measured rather than asserted.
 | --- | --- | --- | --- |
 | Objective → capability | 18 | 18 | Declared in `tools/docs/lib/model.mjs` — the only hand-asserted link |
 | Capability → requirement | 18 | 18 | One functional requirement generated per capability |
-| Capability → endpoint | 449 | 449 | Permission module |
-| Capability → screen | 430 | 430 | Permission module, or screen domain where the screen has none |
-| Endpoint → entity | 297 | 449 | Table name via the collection definition |
-| Endpoint → permission | 422 | 449 | `requirePermission` call in the handler |
+| Capability → endpoint | 460 | 460 | Permission module |
+| Capability → screen | 436 | 436 | Permission module, or screen domain where the screen has none |
+| Endpoint → entity | 302 | 460 | Table name via the collection definition |
+| Endpoint → permission | 431 | 460 | `requirePermission` call in the handler |
 | Entity → relationship | 73 | 77 | Column name resolving to a table name |
 | Rule → enforcing function | 30 | 30 | The exported function itself |
-| Endpoint → test | 120 | 449 | Path string appearing in a spec file |
+| Endpoint → test | 124 | 460 | Path string appearing in a spec file |
 
 ## Where it is intact
 
-Every screen and every endpoint maps to a capability — 430 and 449 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
+Every screen and every endpoint maps to a capability — 436 and 460 respectively, with no orphans. That is enforced: `docs:check` fails when a screen or an endpoint maps to nothing, so a new endpoint with an unmapped permission module breaks the build on the day it is added rather than becoming an untraced orphan found during an audit.
 
 Every business rule names the function that enforces it, every entity is catalogued from the schema, and every permission cell is read from the matrix the server enforces with.
 
@@ -40,7 +40,7 @@ Every business rule names the function that enforces it, every entity is catalog
 
 **The top link is asserted, not derived.** Objectives and their mapping to capabilities are declared by a human; everything below is parsed from code. There is no elicited requirements baseline in this workspace to derive the top link from, so the chain has no business-need anchor. This is the largest structural gap in the documentation.
 
-**Endpoint-to-test matching is by path string.** 329 of 449 endpoints have no spec file naming their path. A test reaching an endpoint through a helper or a golden path does not match, so this over-reports — and it is still the right number to drive down.
+**Endpoint-to-test matching is by path string.** 336 of 460 endpoints have no spec file naming their path. A test reaching an endpoint through a helper or a golden path does not match, so this over-reports — and it is still the right number to drive down.
 
 **2 rule guard(s) have no test naming them**, and 5 capabilities have no linked test suite.
 

@@ -7,9 +7,9 @@
 
 # RBAC matrix
 
-**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `packages/contract/src/rbac.ts` · **Sources as of:** 2026-09-19
 
-30 modules × 15 roles = 450 cells, of which 223 carry at least one grant.
+33 modules × 15 roles = 495 cells, of which 216 carry at least one grant.
 
 ## Grant alphabet
 
@@ -53,9 +53,12 @@ This is not a naming quibble. A router that checked `x` on `DELETE` under the fi
 | portalcustomer | v | v | v | v | · | · | · | · | · | v | v | · | · | vx | vcedax |
 | portalsupplier | v | v | v | · | · | · | v | · | · | · | · | v | vx | · | vcedax |
 | portalprocure | v | v | v | · | · | · | v | v | · | · | · | vx | · | · | vcedax |
-| ai | vcedax | vcedax | vce | v | · | · | · | v | · | · | · | · | · | · | vcedax |
-| aiadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
-| admin | vcedax | vcedax | v | · | · | · | · | · | · | · | · | · | · | · | vcedax |
+| s    * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:    * these were gated on `accounting`, which conflated ledger authority with    * claim adjudication; no dedicated role exists to hold different grants    * here yet, so every cell below is copied verbatim from what `accounting`    * granted, on its own column so the two can diverge without touching    * ledger access. */    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,   /* AI platform administration — model/provider config, agent registry,    * automation rules, workflow builder, cross-org conversation history — kept    * apart from ordinary `ai` use so a Branch Manager or Service Advisor who    * may run an assistant can never reach what configures the platform. */    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,    | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| ,   /* Department directory only — split from `admin` (F-038) so Staff-Directory/    * HR-Management/Departments (all `hr`-module screens) can read and, for hr,    * create departments without also opening `admin` | · | · | · | · | · | · | · | · | · | · | · | · | · | · | · |
+| departments | vcedax | vcedax | v | · | · | · | · | v | vc | · | · | · | · | · | vcedax |
 | settings | vcedax | vcedax | ve | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | superadmin | vcedax | vcedax | · | · | · | · | · | · | · | · | · | · | · | · | vcedax |
 | audit | vx | vx | vx | · | · | · | · | vx | · | · | · | · | · | · | vcedax |

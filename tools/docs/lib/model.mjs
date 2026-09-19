@@ -41,14 +41,14 @@ const CAPABILITIES = [
   { id: 'CAP-INVENTORY', name: 'Parts and inventory', modules: ['inventory'], domains: ['parts'], objective: 'OBJ-MARGIN' },
   { id: 'CAP-PROCUREMENT', name: 'Procurement', modules: ['procurement'], objective: 'OBJ-MARGIN' },
   { id: 'CAP-BILLING', name: 'Invoicing and payments', modules: ['invoices', 'payments'], objective: 'OBJ-CASH' },
-  { id: 'CAP-ACCOUNTING', name: 'Accounting and finance', modules: ['accounting'], objective: 'OBJ-CASH' },
+  { id: 'CAP-ACCOUNTING', name: 'Accounting and finance', modules: ['accounting', 'insurance'], objective: 'OBJ-CASH' },
   { id: 'CAP-HR', name: 'HR and payroll', modules: ['hr', 'technicians'], objective: 'OBJ-CAPACITY' },
   { id: 'CAP-CRM', name: 'CRM and sales', modules: ['crm', 'callcenter'], objective: 'OBJ-RETENTION' },
   { id: 'CAP-REPORTING', name: 'Reporting and analytics', modules: ['reports', 'execreports'], objective: 'OBJ-VISIBILITY' },
   { id: 'CAP-GOVERNANCE', name: 'Approvals and governance', modules: ['approvals', 'audit'], objective: 'OBJ-CONTROL' },
   { id: 'CAP-PORTALS', name: 'Portals and channels', modules: ['portaltech', 'portalcustomer', 'portalsupplier', 'portalprocure', 'kiosk'], domains: ['portals'], objective: 'OBJ-RETENTION' },
   { id: 'CAP-AI', name: 'AI and automation', modules: ['ai', 'aiadmin'], objective: 'OBJ-THROUGHPUT' },
-  { id: 'CAP-PLATFORM', name: 'Administration and platform', modules: ['admin', 'settings', 'superadmin', 'dashboard', 'network', 'ungated', 'platform'], domains: ['admin'], objective: 'OBJ-CONTROL' },
+  { id: 'CAP-PLATFORM', name: 'Administration and platform', modules: ['admin', 'departments', 'settings', 'superadmin', 'dashboard', 'network', 'ungated', 'platform'], domains: ['admin'], objective: 'OBJ-CONTROL' },
   // Four capabilities carry screens but no permission module of their own.
   // The screen registry files them under `domain` instead: authentication is
   // pre-authorization by definition, the public website is unauthenticated,

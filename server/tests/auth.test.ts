@@ -484,6 +484,186 @@ describe('password recovery', () => {
   })
 })
 
+describe('POST /admin/staff — garage-employee accounts (Phase A)', () => {
+  async function ownerToken() {
+    return (await login('owner@salisauto.sa')).json().accessToken as string
+  }
+
+  it('creates a staff account directly, active immediately, with a one-time password', async () => {
+    const token = await ownerToken()
+    const email = `direct-${Date.now()}@salisauto.sa`
+    const response = await post(
+      '/admin/staff',
+      { name: 'Direct Hire', email, role: 'parts', mode: 'direct' },
+      token,
+    )
+    expect(response.statusCode, response.body).toBe(201)
+    const body = response.json()
+    expect(body.mode).toBe('direct')
+    expect(body.user.role).toBe('parts')
+    expect(body.temporaryPassword).toBeTypeOf('string')
+    expect(body.temporaryPassword.length).toBeGreaterThanOrEqual(12)
+
+    // The password works, and it works right away — no separate activation.
+    const signIn = await login(email, body.temporaryPassword)
+    expect(signIn.statusCode, signIn.body).toBe(200)
+    expect(signIn.json().user.role).toBe('parts')
+  })
+
+  it('invites a staff account, which cannot sign in until the invite is accepted', async () => {
+    const token = await ownerToken()
+    const email = `invite-${Date.now()}@salisauto.sa`
+    const response = await post(
+      '/admin/staff',
+      { name: 'Invited Hire', email, role: 'technician', mode: 'invite' },
+      token,
+    )
+    expect(response.statusCode, response.body).toBe(201)
+    expect(response.json().mode).toBe('invite')
+    expect(response.json().expiresAt).toBeTypeOf('string')
+
+    // Nothing usable exists yet: there is no password, so login fails rather
+    // than succeeding on none.
+    expect((await login(email, 'anything-at-all')).statusCode).toBe(401)
+
+    const inviteToken = codes.codeFor(email)
+    expect(inviteToken).toBeTypeOf('string')
+
+    const preview = await get(`/auth/invite/${inviteToken}`)
+    expect(preview.statusCode, preview.body).toBe(200)
+    expect(preview.json().email).toBe(email)
+    expect(preview.json().name).toBe('Invited Hire')
+
+    const weak = await post(`/auth/invite/${inviteToken}/accept`, { password: 'short' })
+    expect(weak.statusCode).toBe(400)
+
+    const newPassword = 'a-brand-new-and-quite-long-password'
+    const accepted = await post(`/auth/invite/${inviteToken}/accept`, { password: newPassword })
+    expect(accepted.statusCode, accepted.body).toBe(200)
+
+    // Spent: a second accept on the same link fails.
+    expect((await post(`/auth/invite/${inviteToken}/accept`, { password: newPassword })).statusCode).toBe(400)
+
+    const signIn = await login(email, newPassword)
+    expect(signIn.statusCode, signIn.body).toBe(200)
+    expect(signIn.json().user.role).toBe('technician')
+  })
+
+  it('refuses a role this endpoint may not create', async () => {
+    const token = await ownerToken()
+    for (const role of ['owner', 'superadmin', 'customer', 'supplier', 'test']) {
+      const response = await post(
+        '/admin/staff',
+        { name: 'X', email: `refused-${role}@salisauto.sa`, role, mode: 'direct' },
+        token,
+      )
+      expect(response.statusCode, `${role} → ${response.body}`).toBe(400)
+      expect(response.json().error.field).toBe('role')
+    }
+  })
+
+  it('refuses an email already in use', async () => {
+    const token = await ownerToken()
+    const response = await post(
+      '/admin/staff',
+      { name: 'Duplicate', email: 'owner@salisauto.sa', role: 'parts', mode: 'direct' },
+      token,
+    )
+    expect(response.statusCode).toBe(409)
+  })
+
+  it('is refused for a role without admin:c — the matrix gives manager view-only', async () => {
+    const managerToken = (await login('manager@salisauto.sa', OTHER_PASSWORD)).json().accessToken
+    const response = await post(
+      '/admin/staff',
+      { name: 'X', email: `manager-attempt-${Date.now()}@salisauto.sa`, role: 'parts', mode: 'direct' },
+      managerToken,
+    )
+    expect(response.statusCode).toBe(403)
+  })
+
+  it('lists the organization’s staff — readable by manager, excludes customers', async () => {
+    const managerToken = (await login('manager@salisauto.sa', OTHER_PASSWORD)).json().accessToken
+    const response = await get('/admin/staff', managerToken)
+    expect(response.statusCode, response.body).toBe(200)
+    const roles = (response.json().users as { role: string }[]).map((u) => u.role)
+    expect(roles).toContain('owner')
+    expect(roles).not.toContain('customer')
+  })
+})
+
+describe('POST /customers/:id/portal-access — staff-granted customer login (Phase B)', () => {
+  async function ownerToken() {
+    return (await login('owner@salisauto.sa')).json().accessToken as string
+  }
+
+  async function createCustomer(token: string, email?: string) {
+    const response = await post(
+      '/customers',
+      {
+        name: 'Portal Access Test Customer',
+        phone: `+9665${Math.floor(Math.random() * 1e8)}`,
+        ...(email ? { email } : {}),
+      },
+      token,
+    )
+    expect(response.statusCode, response.body).toBe(201)
+    return response.json()._id as string
+  }
+
+  it('grants a login, leaving the public self-signup path untouched', async () => {
+    const token = await ownerToken()
+    const email = `pac-${Date.now()}@example.com`
+    const customerId = await createCustomer(token, email)
+
+    const response = await post(`/customers/${customerId}/portal-access`, {}, token)
+    expect(response.statusCode, response.body).toBe(201)
+    expect(response.json().user.role).toBe('customer')
+    expect(response.json().expiresAt).toBeTypeOf('string')
+
+    // No password yet: login fails until the invite is accepted.
+    expect((await login(email, 'anything-at-all')).statusCode).toBe(401)
+
+    const inviteToken = codes.codeFor(email)
+    const newPassword = 'a-brand-new-and-quite-long-password'
+    const accepted = await post(`/auth/invite/${inviteToken}/accept`, { password: newPassword })
+    expect(accepted.statusCode, accepted.body).toBe(200)
+
+    const signIn = await login(email, newPassword)
+    expect(signIn.statusCode, signIn.body).toBe(200)
+    expect(signIn.json().user.role).toBe('customer')
+
+    // The public self-signup route is unaffected by any of this.
+    expect((await post('/public/customers/register', {
+      garageId: SEED.orgId,
+      name: 'Someone Else',
+      phone: `+9665${Math.floor(Math.random() * 1e8)}`,
+      email: `unaffected-${Date.now()}@example.com`,
+      password: 'a-perfectly-fine-password',
+    })).statusCode).toBe(202)
+  })
+
+  it('refuses a customer with no email on file', async () => {
+    const token = await ownerToken()
+    const customerId = await createCustomer(token)
+    const response = await post(`/customers/${customerId}/portal-access`, {}, token)
+    expect(response.statusCode).toBe(400)
+  })
+
+  it('refuses to grant access twice', async () => {
+    const token = await ownerToken()
+    const customerId = await createCustomer(token, `pac-${Date.now()}@example.com`)
+    expect((await post(`/customers/${customerId}/portal-access`, {}, token)).statusCode).toBe(201)
+    expect((await post(`/customers/${customerId}/portal-access`, {}, token)).statusCode).toBe(409)
+  })
+
+  it('404s for a customer that does not exist', async () => {
+    const token = await ownerToken()
+    const response = await post('/customers/not-a-real-id/portal-access', {}, token)
+    expect(response.statusCode).toBe(404)
+  })
+})
+
 describe('SSO, WebAuthn, social and TOTP', () => {
   it('refuse visibly, naming the configuration that is missing', async () => {
     const cases: [string, RegExp][] = [

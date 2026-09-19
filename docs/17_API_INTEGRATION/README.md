@@ -8,7 +8,7 @@
 
 # API and integration
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 The API surface, per domain, generated from the routers.
 
@@ -22,12 +22,15 @@ The API surface, per domain, generated from the routers.
 | [`endpoints/ai.md`](endpoints/ai.md) | generated |
 | [`endpoints/appointments.md`](endpoints/appointments.md) | generated |
 | [`endpoints/approvals.md`](endpoints/approvals.md) | generated |
+| [`endpoints/audit.md`](endpoints/audit.md) | generated |
 | [`endpoints/auth.md`](endpoints/auth.md) | generated |
 | [`endpoints/crm.md`](endpoints/crm.md) | generated |
 | [`endpoints/customers.md`](endpoints/customers.md) | generated |
 | [`endpoints/dashboard.md`](endpoints/dashboard.md) | generated |
+| [`endpoints/departments.md`](endpoints/departments.md) | generated |
 | [`endpoints/estimates.md`](endpoints/estimates.md) | generated |
 | [`endpoints/hr.md`](endpoints/hr.md) | generated |
+| [`endpoints/insurance.md`](endpoints/insurance.md) | generated |
 | [`endpoints/inventory.md`](endpoints/inventory.md) | generated |
 | [`endpoints/invoices.md`](endpoints/invoices.md) | generated |
 | [`endpoints/jobcards.md`](endpoints/jobcards.md) | generated |

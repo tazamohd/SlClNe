@@ -225,21 +225,21 @@ describe('ledger balance', () => {
     expect(unpaid).toBeGreaterThan(0)
   })
 
-  it('says out loud that the seeded balance sheet does not balance', async () => {
-    // DEFECT (reported, not fixed): the design's account balances were written
-    // to look plausible, not to satisfy Assets = Liabilities + Equity. They are
-    // out by SAR 257,050. The screen is honest about it rather than hiding the
-    // gap, and this pins that behaviour: when the seed data is replaced with a
-    // balanced set the warning must disappear, and this test says so.
+  it('F-008 fixed: the seeded balance sheet balances, and shows no warning', async () => {
+    // Was a DEFECT: the design's account balances were written to look
+    // plausible, not to satisfy Assets = Liabilities + Equity — out by
+    // SAR 257,050. Fixed at the source (project/gms-data.js's Owner's Equity
+    // row); this pins the balanced state so a future edit that reintroduces
+    // an imbalance fails here instead of shipping silently.
     renderScreen(FinancialReports, { role: 'accountant' })
     await screen.findByText(EXPENSES_DATA[0].category)
 
     const assets = accountTotal('Assets')
     const claims = accountTotal('Liabilities') + accountTotal('Equity')
-    expect(Math.abs(claims - assets)).toBeCloseTo(257_050, 2)
+    expect(Math.abs(claims - assets)).toBeCloseTo(0, 2)
     expect(
-      screen.getByText('Assets do not equal liabilities plus equity in the seeded ledger.')
-    ).toBeInTheDocument()
+      screen.queryByText('Assets do not equal liabilities plus equity in the seeded ledger.')
+    ).not.toBeInTheDocument()
   })
 })
 

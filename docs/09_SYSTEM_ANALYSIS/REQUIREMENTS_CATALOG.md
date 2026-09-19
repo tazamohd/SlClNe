@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 161 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 164 requirements
 
 ## What these requirements are, and what they are not
 
@@ -36,24 +36,24 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 
 | ID | Statement | Capability | Endpoints | Screens | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| FR-WORKSHOP-001 | The system provides workshop operations through 19 screens and 128 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 128 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-CUSTOMERS-001 | The system provides customer management through 3 screens and 19 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 19 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-VEHICLES-001 | The system provides vehicle management through 4 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-INVENTORY-001 | The system provides parts and inventory through 7 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 7 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PROCUREMENT-001 | The system provides procurement through 1 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 1 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-WORKSHOP-001 | The system provides workshop operations through 26 screens and 128 API endpoints, gated by the `jobcards`, `appointments`, `estimates` permission modules. | CAP-WORKSHOP | 128 | 26 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-CUSTOMERS-001 | The system provides customer management through 4 screens and 20 API endpoints, gated by the `customers` permission module. | CAP-CUSTOMERS | 20 | 4 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-VEHICLES-001 | The system provides vehicle management through 5 screens and 9 API endpoints, gated by the `vehicles` permission module. | CAP-VEHICLES | 9 | 5 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-INVENTORY-001 | The system provides parts and inventory through 8 screens and 13 API endpoints, gated by the `inventory` permission module. | CAP-INVENTORY | 13 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PROCUREMENT-001 | The system provides procurement through 3 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-ACCOUNTING-001 | The system provides accounting and finance through 8 screens and 59 API endpoints, gated by the `accounting` permission module. | CAP-ACCOUNTING | 59 | 8 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-HR-001 | The system provides hr and payroll through 5 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 5 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-CRM-001 | The system provides crm and sales through 12 screens and 51 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 51 | 12 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-ACCOUNTING-001 | The system provides accounting and finance through 9 screens and 59 API endpoints, gated by the `accounting`, `insurance` permission modules. | CAP-ACCOUNTING | 59 | 9 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-HR-001 | The system provides hr and payroll through 11 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 11 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-CRM-001 | The system provides crm and sales through 13 screens and 51 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 51 | 13 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 5 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 5 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 6 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 6 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-PORTALS-001 | The system provides portals and channels through 11 screens and 0 API endpoints, gated by the `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` permission modules. | CAP-PORTALS | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-AI-001 | The system provides ai and automation through 10 screens and 8 API endpoints, gated by the `ai`, `aiadmin` permission modules. | CAP-AI | 8 | 10 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-PLATFORM-001 | The system provides administration and platform through 35 screens and 28 API endpoints, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 28 | 35 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-IDENTITY-001 | The system provides identity and access through 19 screens and 24 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 24 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-WEBSITE-001 | The system provides public website and acquisition through 34 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 34 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-AI-001 | The system provides ai and automation through 19 screens and 8 API endpoints, gated by the `ai`, `aiadmin` permission modules. | CAP-AI | 8 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-PLATFORM-001 | The system provides administration and platform through 35 screens and 35 API endpoints, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules. | CAP-PLATFORM | 35 | 35 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-IDENTITY-001 | The system provides identity and access through 19 screens and 26 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 26 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-WEBSITE-001 | The system provides public website and acquisition through 39 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 39 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 232 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 232 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 204 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 204 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-RULE-APPROVALS-checkApprovalCeiling | A value above the role's ceiling must escalate rather than be approved. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkQcIndependence | A technician cannot pass QC on a repair they performed. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkSelfApproval | The approver must not be the submitter — the first and most-broken SOD pair, and the one that lets a single person move money on their own say-so. | — | — | — | `packages/contract/src/rules/approvals.ts` |
@@ -87,8 +87,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | NFR-REL-001 | A replayed Idempotency-Key returns the stored response and creates no second business effect; the same key with a different body is refused. | server/src/http/idempotency.ts + idempotency_keys unique index | CODE_AND_SCHEMA |
 | NFR-REL-002 | Concurrent updates are resolved optimistically on a database-maintained version column; a stale write is refused, not silently applied. | bump_version trigger on every tenant table | DATABASE_CONSTRAINT |
 | NFR-A11Y-001 | Colour-contrast violations do not increase. The axe sweep is ratcheted per route and per viewport. | project-control/BASELINE.json axeColourContrastNodes + app/e2e/a11y.spec.ts | RATCHETED_BASELINE |
-| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 75 of 430, rtlHazards 0 | MEASURED_REGISTRY |
-| NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 430 of 430 | MEASURED_REGISTRY |
+| NFR-I18N-001 | Arabic and RTL are verified per screen, and RTL hazards are held at zero. | project-control/STATUS.json — arabicVerified 74 of 436, rtlHazards 0 | MEASURED_REGISTRY |
+| NFR-UX-001 | Every registered capability renders and has an end-to-end assertion on its content, not merely on its route. | project-control/STATUS.json — contentAsserted 436 of 436 | MEASURED_REGISTRY |
 | NFR-PERF-001 | Bundle size and golden-path timings stay within the recorded ratchet. | app/scripts/check-bundle.mjs, app/scripts/golden-paths.mjs | RATCHETED_BASELINE |
 | NFR-OPS-001 | The service exposes liveness and readiness probes that are reachable without a token. | GET /health, GET /ready (server/src/routes/health.ts) | CODE |
 
@@ -201,9 +201,12 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | SR-RBAC-PORTALCUSTOMER | Access to `portalcustomer` is granted to 8 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PORTALSUPPLIER | Access to `portalsupplier` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-PORTALPROCURE | Access to `portalprocure` is granted to 7 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-AI | Access to `ai` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-AIADMIN | Access to `aiadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
-| SR-RBAC-ADMIN | Access to `admin` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-S    * FOUR COLLECTIONS AND THE CLAIM LIFECYCLE (SUBMIT/APPROVE/REJECT/PAY). F-034:    * THESE WERE GATED ON `ACCOUNTING`, WHICH CONFLATED LEDGER AUTHORITY WITH    * CLAIM ADJUDICATION; NO DEDICATED ROLE EXISTS TO HOLD DIFFERENT GRANTS    * HERE YET, SO EVERY CELL BELOW IS COPIED VERBATIM FROM WHAT `ACCOUNTING`    * GRANTED, ON ITS OWN COLUMN SO THE TWO CAN DIVERGE WITHOUT TOUCHING    * LEDGER ACCESS. */    | Access to `s    * four collections and the claim lifecycle (submit/approve/reject/pay). F-034:    * these were gated on `accounting`, which conflated ledger authority with    * claim adjudication; no dedicated role exists to hold different grants    * here yet, so every cell below is copied verbatim from what `accounting`    * granted, on its own column so the two can diverge without touching    * ledger access. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,   /* AI PLATFORM ADMINISTRATION — MODEL/PROVIDER CONFIG, AGENT REGISTRY,    * AUTOMATION RULES, WORKFLOW BUILDER, CROSS-ORG CONVERSATION HISTORY — KEPT    * APART FROM ORDINARY `AI` USE SO A BRANCH MANAGER OR SERVICE ADVISOR WHO    * MAY RUN AN ASSISTANT CAN NEVER REACH WHAT CONFIGURES THE PLATFORM. */    | Access to `,   /* AI platform administration — model/provider config, agent registry,    * automation rules, workflow builder, cross-org conversation history — kept    * apart from ordinary `ai` use so a Branch Manager or Service Advisor who    * may run an assistant can never reach what configures the platform. */   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,    | Access to `,   ` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-,   /* DEPARTMENT DIRECTORY ONLY — SPLIT FROM `ADMIN` (F-038) SO STAFF-DIRECTORY/    * HR-MANAGEMENT/DEPARTMENTS (ALL `HR`-MODULE SCREENS) CAN READ AND, FOR HR,    * CREATE DEPARTMENTS WITHOUT ALSO OPENING `ADMIN` | Access to `,   /* Department directory only — split from `admin` (F-038) so Staff-Directory/    * HR-Management/Departments (all `hr`-module screens) can read and, for hr,    * create departments without also opening `admin`` is granted to 0 of 15 roles, with the grants in the RBAC matrix. |
+| SR-RBAC-DEPARTMENTS | Access to `departments` is granted to 6 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-SETTINGS | Access to `settings` is granted to 4 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-SUPERADMIN | Access to `superadmin` is granted to 3 of 15 roles, with the grants in the RBAC matrix. |
 | SR-RBAC-AUDIT | Access to `audit` is granted to 5 of 15 roles, with the grants in the RBAC matrix. |

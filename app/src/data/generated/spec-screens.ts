@@ -3,7 +3,7 @@
 import type { SpecScreen } from '../types'
 
 /** The product's full feature map — 235 screens parsed from
- *  project/spec/. 24 have a matching `.dc.html` design;
+ *  project/spec/. 33 have a matching `.dc.html` design;
  *  the rest have only a screenshot and a templated spec. */
 export const SPEC_SCREENS: readonly SpecScreen[] = [
   {
@@ -2126,7 +2126,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "AI-Automation",
     "screenshot": "spec-shots/193-AI-Automation.png"
   },
   {
@@ -2137,7 +2137,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "AI-Chatbot",
     "screenshot": "spec-shots/194-AI-Chatbot.png"
   },
   {
@@ -2148,7 +2148,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "AI-Chatbot-Assistant",
     "screenshot": "spec-shots/195-AI-Chatbot-Assistant.png"
   },
   {
@@ -2159,7 +2159,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "AI-Service-Advisor",
     "screenshot": "spec-shots/196-AI-Service-Advisor.png"
   },
   {
@@ -2170,7 +2170,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "Voice-Commands",
     "screenshot": "spec-shots/197-Voice-Commands.png"
   },
   {
@@ -2181,7 +2181,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "Voice-Command-Interface",
     "screenshot": "spec-shots/198-Voice-Command-Interface.png"
   },
   {
@@ -2192,7 +2192,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "Smart-Damage-Assessment",
     "screenshot": "spec-shots/199-Smart-Damage-Assessment.png"
   },
   {
@@ -2203,7 +2203,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "ML-Fraud-Detection",
     "screenshot": "spec-shots/200-ML-Fraud-Detection.png"
   },
   {
@@ -2214,7 +2214,7 @@ export const SPEC_SCREENS: readonly SpecScreen[] = [
     "purpose": null,
     "roles": null,
     "group": null,
-    "designScreen": null,
+    "designScreen": "Neural-Network-Prediction",
     "screenshot": "spec-shots/201-Neural-Network-Prediction.png"
   },
   {

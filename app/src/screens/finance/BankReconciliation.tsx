@@ -73,7 +73,7 @@ export function BankReconciliation() {
   const rows = useMemo(
     () =>
       receipts.filter((receipt) =>
-        inDateRange(rowDateIso(receipt as Record<string, unknown>, 'receiptDate'), from, to),
+        inDateRange(rowDateIso(receipt as unknown as Record<string, unknown>, 'receiptDate'), from, to),
       ),
     [receipts, from, to],
   )
@@ -105,7 +105,7 @@ export function BankReconciliation() {
         receipt.customer,
         receipt.invoice,
         receipt.method,
-        fromHalalas(receiptHalalas(receipt)).toFixed(2),
+        fromHalalas(receiptHalalas(receipt as unknown as Record<string, unknown>)).toFixed(2),
         receipt.status,
       ]),
     )
@@ -120,7 +120,7 @@ export function BankReconciliation() {
     { header: 'Method', cell: (r) => t(r.method) },
     {
       header: 'Amount',
-      cell: (r) => <Money sar={fromHalalas(receiptHalalas(r))} className="font-semibold" />,
+      cell: (r) => <Money sar={fromHalalas(receiptHalalas(r as unknown as Record<string, unknown>))} className="font-semibold" />,
     },
     { header: 'Status', cell: (r) => <ReceiptStatus value={r.status} /> },
   ]
@@ -156,7 +156,7 @@ export function BankReconciliation() {
                     <span className="font-mono" dir="ltr">{r.invoice}</span>
                   </MobileCardRow>
                   <MobileCardRow label={t('Amount')}>
-                    <Money sar={fromHalalas(receiptHalalas(r))} className="font-semibold text-heading" />
+                    <Money sar={fromHalalas(receiptHalalas(r as unknown as Record<string, unknown>))} className="font-semibold text-heading" />
                   </MobileCardRow>
                 </>
               )}
@@ -240,7 +240,7 @@ export function BankReconciliation() {
                   </span>
                 </MobileCardRow>
                 <MobileCardRow label={t('Amount')}>
-                  <Money sar={fromHalalas(receiptHalalas(r))} className="font-semibold text-heading" />
+                  <Money sar={fromHalalas(receiptHalalas(r as unknown as Record<string, unknown>))} className="font-semibold text-heading" />
                 </MobileCardRow>
               </>
             )}

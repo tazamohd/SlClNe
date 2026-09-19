@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn'
 import { hapticSelection } from '@/lib/native'
 import { Icon } from '@/components/ui/Icon'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { DemoBadge } from './DemoBadge'
 
 /** The customer-facing phone app.
  *
@@ -39,6 +40,7 @@ export function CustomerAppShell({ children }: { children: ReactNode }) {
             <Icon name="Wrench" size={16} />
           </span>
           <span className="flex-1 font-display text-sm font-bold text-heading">SALIS AUTO</span>
+          <DemoBadge compact />
           <button
             type="button"
             onClick={toggleTheme}

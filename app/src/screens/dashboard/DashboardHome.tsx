@@ -30,7 +30,7 @@ export function DashboardHome() {
   }).format(new Date())
 
   const revenue = useMemo(
-    () => jobs.reduce((sum, j) => sum + parseSar((j as Record<string, string>).total ?? '0'), 0),
+    () => jobs.reduce((sum, j) => sum + parseSar((j as unknown as Record<string, string>).total ?? '0'), 0),
     [jobs]
   )
   const todayJobs = useMemo(

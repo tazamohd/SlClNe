@@ -15,10 +15,15 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **AgentRegistry** | `/agent-registry` | 🖥📱 `AgentRegistry.dc.html` · `AgentRegistry.Mobile.dc.html` | Deployed AI agents |
 | **AIAnalytics** | `/aianalytics` | 🖥📱 `AIAnalytics.dc.html` · `AIAnalytics.Mobile.dc.html` | AI usage & cost analytics |
 | **AIAssistant** | `/aiassistant` | 🖥📱 `AIAssistant.dc.html` · `AIAssistant.Mobile.dc.html` | Conversational AI helper |
+| **AI-Automation** | `/ai-automation` | 🖥 `AI-Automation.dc.html` | AI-driven workshop automation rules |
+| **AI-Chatbot** | `/ai-chatbot` | 🖥 `AI-Chatbot.dc.html` | Customer-facing AI chatbot |
+| **AI-Chatbot-Assistant** | `/ai-chatbot-assistant` | 🖥 `AI-Chatbot-Assistant.dc.html` | Staff-facing AI chatbot assistant |
+| **AI-Service-Advisor** | `/ai-service-advisor` | 🖥 `AI-Service-Advisor.dc.html` | AI-assisted service advisor recommendations |
 | **AppointmentCalendar** | `/appointment-calendar` | 🖥📱 `AppointmentCalendar.dc.html` · `AppointmentCalendar.Mobile.dc.html` | Calendar view of bookings |
 | **Appointments** | `/appointments` | 🖥📱 `Appointments.dc.html` · `Appointments.Mobile.dc.html` | Booking list |
 | **ApprovalInbox** | `/approval-inbox` | 🖥 `ApprovalInbox.dc.html` | Approve/reject items above your delegated limit |
 | **AuditLog** | `/audit-log` | 🖥📱 `AuditLog.dc.html` · `AuditLog.Mobile.dc.html` | System audit trail |
+| **DeclinedJobs** | `/declined-jobs` | 🖥 | Track declined estimate lines for advisor follow-up and recovered revenue |
 | **AutomationRules** | `/automation-rules` | 🖥📱 `AutomationRules.dc.html` · `AutomationRules.Mobile.dc.html` | Trigger-based automations |
 | **Backup** | `/backup` | 🖥📱 `Backup.dc.html` · `Backup.Mobile.dc.html` | Backups & exports |
 | **BankReconciliation** | `/bank-reconciliation` | 🖥📱 `BankReconciliation.dc.html` · `BankReconciliation.Mobile.dc.html` | Bank feed reconciliation |
@@ -79,7 +84,9 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **Login** | `/login` | 🖥📱 `Login.dc.html` · `Login.Mobile.dc.html` | Sign in — 14 demo roles fill credentials |
 | **LogoutConfirmation** | `/logout-confirmation` | 🖥📱 `LogoutConfirmation.dc.html` · `LogoutConfirmation.Mobile.dc.html` | Confirm sign-out |
 | **Maintenance** | `/maintenance` | 🖥📱 `Maintenance.dc.html` · `Maintenance.Mobile.dc.html` | System maintenance banner |
+| **ML-Fraud-Detection** | `/ml-fraud-detection` | 🖥 `ML-Fraud-Detection.dc.html` | Machine-learning fraud detection on claims/transactions |
 | **ModelSettings** | `/model-settings` | 🖥📱 `ModelSettings.dc.html` · `ModelSettings.Mobile.dc.html` | AI model config |
+| **Neural-Network-Prediction** | `/neural-network-prediction` | 🖥 `Neural-Network-Prediction.dc.html` | Neural-network demand/failure prediction |
 | **NotificationCenter** | `/notification-center` | 🖥📱 `NotificationCenter.dc.html` · `NotificationCenter.Mobile.dc.html` | System notifications inbox |
 | **OBDDiagnostics** | `/obddiagnostics` | 🖥 `OBDDiagnostics.dc.html` | Live vehicle sensor stream + DTC lookup |
 | **OEMIntegrations** | `/oemintegrations` | 🖥 `OEMIntegrations.dc.html` | OEM diagnostic tool integrations |
@@ -110,6 +117,7 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **SalesReports** | `/sales-reports` | 🖥📱 `SalesReports.dc.html` · `SalesReports.Mobile.dc.html` | Revenue reports |
 | **SessionExpired** | `/session-expired` | 🖥📱 `SessionExpired.dc.html` · `SessionExpired.Mobile.dc.html` | Re-authenticate after idle |
 | **Settings** | `/settings` | 🖥📱 `Settings.dc.html` · `Settings.Mobile.dc.html` | General tenant settings |
+| **Smart-Damage-Assessment** | `/smart-damage-assessment` | 🖥 `Smart-Damage-Assessment.dc.html` | AI vehicle damage assessment from photos |
 | **SMSCampaigns** | `/smscampaigns` | 🖥📱 `SMSCampaigns.dc.html` · `SMSCampaigns.Mobile.dc.html` | SMS campaign composer |
 | **SocialLogin** | `/social-login` | 🖥📱 `SocialLogin.dc.html` · `SocialLogin.Mobile.dc.html` | Google/Apple sign-in |
 | **Splash** | `/splash` | 🖥📱 `Splash.dc.html` · `Splash.Mobile.dc.html` | App launch — brand splash |
@@ -130,6 +138,8 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **UsersTeams** | `/users-teams` | 🖥📱 `UsersTeams.dc.html` · `UsersTeams.Mobile.dc.html` | Users & teams |
 | **VehicleDetail** | `/vehicle-detail` | 🖥📱 `VehicleDetail.dc.html` · `VehicleDetail.Mobile.dc.html` | Vehicle 360 (history, docs, insurance) |
 | **Vehicles** | `/vehicles` | 🖥📱 `Vehicles.dc.html` · `Vehicles.Mobile.dc.html` | Vehicle registry |
+| **Voice-Commands** | `/voice-commands` | 🖥 `Voice-Commands.dc.html` | Voice-activated hands-free workshop controls |
+| **Voice-Command-Interface** | `/voice-command-interface` | 🖥 `Voice-Command-Interface.dc.html` | Voice recognition configuration and training |
 | **Welcome** | `/welcome` | 🖥📱 `Welcome.dc.html` · `Welcome.Mobile.dc.html` | First-run welcome |
 | **WhatsAppCampaigns** | `/whats-app-campaigns` | 🖥📱 `WhatsAppCampaigns.dc.html` · `WhatsAppCampaigns.Mobile.dc.html` | WhatsApp campaign composer |
 | **WorkflowBuilder** | `/workflow-builder` | 🖥📱 `WorkflowBuilder.dc.html` · `WorkflowBuilder.Mobile.dc.html` | Visual workflow designer |
@@ -158,7 +168,7 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **CustomerApp.ServiceTracking** | `/customer-app/service-tracking` | 🖥 `CustomerApp.ServiceTracking.dc.html` | Customer mobile app — ServiceTracking |
 | **CustomerApp.Wallet** | `/customer-app/wallet` | 🖥 `CustomerApp.Wallet.dc.html` | Customer mobile app — Wallet |
 
-## PublicPortal (34 screens)
+## PublicPortal (39 screens)
 
 | Screen | Route | Files | Purpose |
 |---|---|---|---|
@@ -169,12 +179,15 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **PublicPortal.BookDemo** | `/public-portal/book-demo` | 🖥 | Public website — Book a demo form |
 | **PublicPortal.Blog** | `/public-portal/blog` | 🖥 `PublicPortal.Blog.dc.html` | Public website — Blog |
 | **PublicPortal.Careers** | `/public-portal/careers` | 🖥 | Public website — Careers |
+| **PublicPortal.CompanyStory** | `/public-portal/story` | 🖥 | Public website — Our Story (company origin, principles, dispatches) |
+| **PublicPortal.ComparePlans** | `/public-portal/compare-plans` | 🖥 | Public website — Compare plans in detail |
 | **PublicPortal.Contact** | `/public-portal/contact` | 🖥 `PublicPortal.Contact.dc.html` | Public website — Contact |
 | **PublicPortal.CRM** | `/public-portal/crm` | 🖥 | Public website — CRM product page |
 | **PublicPortal.CustomerPortal** | `/public-portal/customer-portal` | 🖥 | Public website — Customer Portal product page |
 | **PublicPortal.FAQ** | `/public-portal/faq` | 🖥 `PublicPortal.FAQ.dc.html` | Public website — FAQ |
 | **PublicPortal.Features** | `/public-portal/features` | 🖥 | Public website — Features overview |
 | **PublicPortal.Fleet** | `/public-portal/fleet` | 🖥 | Public website — Fleet Management product page |
+| **PublicPortal.GettingStarted** | `/public-portal/getting-started` | 🖥 | Public website — Getting started, onboarding walkthrough |
 | **PublicPortal.Industries** | `/public-portal/industries` | 🖥 | Public website — Industries served |
 | **PublicPortal.Insurance** | `/public-portal/insurance` | 🖥 `PublicPortal.Insurance.dc.html` | Public website — Insurance |
 | **PublicPortal.Integrations** | `/public-portal/integrations` | 🖥 | Public website — Integration partners |
@@ -183,14 +196,18 @@ Legend: 🖥 desktop only · 📱 mobile only · 🖥📱 both.
 | **PublicPortal.PartsAccessories** | `/public-portal/parts-accessories` | 🖥 | Public website — Services, Parts & Accessories |
 | **PublicPortal.DealsOffers** | `/public-portal/deals-offers` | 🖥 | Public website — Deals & Offers |
 | **PublicPortal.MiniERP** | `/public-portal/mini-erp` | 🖥 | Public website — Mini ERP product page |
+| **PublicPortal.Platform** | `/public-portal/platform` | 🖥 | Public website — Platform architecture deep-dive |
 | **PublicPortal.Pricing** | `/public-portal/pricing` | 🖥 | Public website — Pricing plans |
 | **PublicPortal.Products** | `/public-portal/products` | 🖥 | Public website — Product suite overview |
 | **PublicPortal.RequestDemo** | `/public-portal/request-demo` | 🖥 | Public website — Request a demo form |
 | **PublicPortal.Resources** | `/public-portal/resources` | 🖥 | Public website — Resources & learning hub |
+| **PublicPortal.RoiCalculator** | `/public-portal/roi-calculator` | 🖥 | Public website — ROI calculator |
+| **PublicPortal.Security** | `/public-portal/security` | 🖥 | Public website — Security & data |
 | **PublicPortal.Services** | `/public-portal/services` | 🖥 `PublicPortal.Services.dc.html` | Public website — Services |
 | **PublicPortal.Solutions** | `/public-portal/solutions` | 🖥 | Public website — Solutions overview |
 | **PublicPortal.SpareParts** | `/public-portal/spare-parts` | 🖥 | Public website — Spare Parts product page |
 | **PublicPortal.SupplierPortal** | `/public-portal/supplier-portal` | 🖥 | Public website — Supplier Portal product page |
+| **PublicPortal.SupplyChain** | `/public-portal/supply-chain` | 🖥 | Public website — Supply chain, requisition to issue |
 | **PublicPortal.Support** | `/public-portal/support` | 🖥 `PublicPortal.Support.dc.html` | Public website — Support |
 | **PublicPortal.TechnicianPortal** | `/public-portal/technician-portal` | 🖥 | Public website — Technician Portal product page |
 | **PublicPortal.Workshop** | `/public-portal/workshop` | 🖥 | Public website — Workshop Management product page |

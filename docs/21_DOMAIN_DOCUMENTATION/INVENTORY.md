@@ -12,11 +12,11 @@
 
 # Domain — Parts and inventory
 
-**Status:** GENERATED · **Capability:** CAP-INVENTORY · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-INVENTORY · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 7 screens, 13 API endpoints and 1 entities, gated by the `inventory` permission module.
+This domain serves the objective **OBJ-MARGIN** (Protect parts and labour margin). It comprises 8 screens, 13 API endpoints and 1 entities, gated by the `inventory` permission module.
 
 
 ## Actors
@@ -93,10 +93,11 @@ _No lifecycle in the contract belongs to this domain._
 | D-PartsNetwork.Quotations | `/parts-network/quotations` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-PartsNetwork.Requests | `/parts-network/requests` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-PartsNetwork.SendRequest | `/parts-network/send-request` | app | **mock** | yes | yes | yes | PARTIAL | yes |
+| F-064 | `/interactive-3-d-parts` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **6 of 7 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **6 of 8 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **10 of 13 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **4 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.

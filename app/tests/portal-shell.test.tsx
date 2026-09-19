@@ -77,9 +77,12 @@ describe('PortalShell', () => {
   })
 
   it('binds an unregistered surface through portalShellFor without editing the table', () => {
+    // procurement-portal was this example until F-024 gave it a real SURFACES
+    // entry (it was AppShell, not PortalShell, until then) — a made-up route
+    // keeps this test about the escape hatch itself, not a real surface.
     const Bound = portalShellFor({
-      base: '/procurement-portal',
-      title: 'Procurement Portal',
+      base: '/vendor-portal',
+      title: 'Vendor Portal',
       icon: 'Package',
       nav: [],
     })
@@ -89,15 +92,15 @@ describe('PortalShell', () => {
           path="*"
           element={
             <Bound>
-              <p>proc body</p>
+              <p>vendor body</p>
             </Bound>
           }
         />
       </Routes>,
-      { route: '/procurement-portal', role: 'procurement' }
+      { route: '/vendor-portal', role: 'procurement' }
     )
-    expect(screen.getByText('Procurement Portal')).toBeInTheDocument()
-    expect(screen.getByText('proc body')).toBeInTheDocument()
+    expect(screen.getByText('Vendor Portal')).toBeInTheDocument()
+    expect(screen.getByText('vendor body')).toBeInTheDocument()
   })
 
   it('still renders working chrome for a portal route nobody registered', () => {

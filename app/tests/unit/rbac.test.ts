@@ -28,7 +28,7 @@ import { REGISTRY } from '@/data/generated/master-registry'
 import type { Action, RoleId } from '@/data/types'
 
 /** The permission engine, exercised across the whole matrix rather than at a
- *  handful of hand-picked points: 15 roles × 30 modules × 5 actions, generated
+ *  handful of hand-picked points: 15 roles × 32 modules × 5 actions, generated
  *  from `PERMS` so a module or role added to the design bundle is covered the
  *  day it lands.
  *
@@ -47,9 +47,9 @@ const ACTIONS: Action[] = ['v', 'c', 'e', 'x', 'a']
 const UNLIMITED: RoleId[] = ['owner', 'superadmin']
 
 describe('matrix shape', () => {
-  it('is the documented 15 roles × 30 modules × 5 actions', () => {
+  it('is the documented 15 roles × 32 modules × 5 actions', () => {
     expect(ROLE_IDS).toHaveLength(15)
-    expect(MODULES).toHaveLength(30)
+    expect(MODULES).toHaveLength(32)
     expect(ACTIONS).toHaveLength(5)
     expect(new Set(ROLE_IDS).size).toBe(ROLE_IDS.length)
   })
@@ -74,7 +74,7 @@ describe('matrix shape', () => {
 })
 
 describe('can()', () => {
-  it('agrees with the matrix for all 2,250 role × module × action combinations', () => {
+  it('agrees with the matrix for all role × module × action combinations', () => {
     let checked = 0
     for (const module of MODULES) {
       for (const role of ROLE_IDS) {
@@ -87,7 +87,7 @@ describe('can()', () => {
         }
       }
     }
-    expect(checked).toBe(15 * 30 * 5)
+    expect(checked).toBe(ROLE_IDS.length * MODULES.length * ACTIONS.length)
   })
 
   it('never confers a write without the matching read', () => {

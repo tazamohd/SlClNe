@@ -323,11 +323,11 @@ describe('§A10 · ledger', () => {
 // ── Reports ─────────────────────────────────────────────────────────────────
 
 describe('§A10 · reports', () => {
-  it('F-008 · the seeded chart of accounts does not balance, and stays visible', () => {
-    // Owned by agent 05 and deliberately not papered over. Assets fall short of
-    // liabilities plus equity by SAR 257,050. `FinancialReports` says so on
-    // screen; this pins the figure so a silent "correction" to the seed — or a
-    // display that starts hiding it — fails here.
+  it('F-008 fixed · the seeded chart of accounts balances', () => {
+    // Was: assets fell short of liabilities plus equity by SAR 257,050, a
+    // typo-grade Owner's Equity fixture value in project/gms-data.js. Fixed
+    // at the source and re-ported; this pins the identity so a future edit
+    // to the seed that breaks it again fails here.
     const total = (type: string) =>
       ACCOUNTS_COA.filter((account) => account.type === type).reduce(
         (sum, account) => sum + (toHalalas(account.balance) ?? 0),
@@ -338,9 +338,9 @@ describe('§A10 · reports', () => {
     const equity = total('Equity')
 
     expect(assets).toBe(SAR(2_683_500))
-    expect(liabilities + equity).toBe(SAR(2_940_550))
-    expect(liabilities + equity - assets).toBe(SAR(257_050))
-    expect(assets).not.toBe(liabilities + equity)
+    expect(liabilities + equity).toBe(SAR(2_683_500))
+    expect(liabilities + equity - assets).toBe(0)
+    expect(assets).toBe(liabilities + equity)
   })
 
   it('reports revenue and expense as the ledger holds them, without netting them off', () => {

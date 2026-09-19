@@ -1504,6 +1504,11 @@ const EXPECTED_TEXT = {
   '/public-portal/roi-calculator': "PublicPortal · RoiCalculator",
   '/public-portal/security': "PublicPortal · Security",
   '/declined-jobs': "DeclinedJobs",
+  '/public-portal/story': "PublicPortal · CompanyStory",
+  '/public-portal/compare-plans': "PublicPortal · ComparePlans",
+  '/public-portal/getting-started': "PublicPortal · GettingStarted",
+  '/public-portal/platform': "PublicPortal · Platform",
+  '/public-portal/supply-chain': "PublicPortal · SupplyChain",
   '/customer-portal/health-check-report': "HealthCheckReport",
   '/canned-jobs': "CannedJobs",
 }
@@ -1583,6 +1588,11 @@ Object.assign(EXPECTED_TEXT, {
   '/public-portal/support': 'Support',
   '/public-portal/technician-portal': 'Technician Portal',
   '/public-portal/workshop': 'Workshop Management',
+  '/public-portal/story': 'Our Story',
+  '/public-portal/compare-plans': 'Compare Plans',
+  '/public-portal/getting-started': 'Getting Started',
+  '/public-portal/platform': 'Platform Architecture',
+  '/public-portal/supply-chain': 'Supply Chain',
   // UI reference pages render the component name, not the dotted path
   '/ui/activity-feed': 'ActivityFeed',
   '/ui/advanced-filters': 'AdvancedFilters',
@@ -1711,13 +1721,25 @@ const failures = []
   for (const entry of REGISTRY) {
     problems = []
     await page.goto(BASE + entry.route, { waitUntil: 'domcontentloaded' })
-    await page
-      .waitForFunction(() => {
+    const isRendered = () =>
+      page.waitForFunction(() => {
         const main = document.querySelector('main')
         const body = document.body.innerText.trim()
         return body.length > 20 && (!main || main.innerText.trim().length > 20)
       }, null, { timeout: 10_000 })
-      .catch(() => problems.push('page rendered blank'))
+
+    /* A route that's still blank after 10s is nearly always a CI runner
+     * momentarily slower than local (a lazy-loaded chunk still fetching or
+     * parsing under load), not a real rendering bug — the specific route
+     * that trips it changes from run to run on an unchanged commit
+     * (/towing-assistance and /technician-mobile one run, /ui/empty-states
+     * the next). One reload-and-recheck absorbs that without weakening the
+     * assertion: a route that is genuinely broken is still blank after the
+     * reload and still fails here. */
+    await isRendered().catch(async () => {
+      await page.reload({ waitUntil: 'domcontentloaded' })
+      await isRendered().catch(() => problems.push('page rendered blank'))
+    })
 
     /* The wait above only proves the page is not blank, and a data-backed
      * screen clears twenty characters on its shell and loading state alone —

@@ -94,6 +94,98 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-AI-Automation",
+    "name": "AI-Automation",
+    "title": "AI-Automation",
+    "route": "/ai-automation",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "ai",
+    "owner": "15",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-AI-Chatbot",
+    "name": "AI-Chatbot",
+    "title": "AI-Chatbot",
+    "route": "/ai-chatbot",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "ai",
+    "owner": "15",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-AI-Chatbot-Assistant",
+    "name": "AI-Chatbot-Assistant",
+    "title": "AI-Chatbot-Assistant",
+    "route": "/ai-chatbot-assistant",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "ai",
+    "owner": "15",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-AI-Service-Advisor",
+    "name": "AI-Service-Advisor",
+    "title": "AI-Service-Advisor",
+    "route": "/ai-service-advisor",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "ai",
+    "owner": "15",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-AIAnalytics",
     "name": "AIAnalytics",
     "title": "AIAnalytics",
@@ -108,6 +200,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -217,6 +310,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "DUPLICATE",
       "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
@@ -284,6 +378,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1072,6 +1167,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-DeclinedJobs",
+    "name": "DeclinedJobs",
+    "title": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "estimates",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "DUPLICATE",
+      "TABLET_MISSING",
+      "ARABIC_MISSING"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-Departments",
     "name": "Departments",
     "title": "Departments",
@@ -1539,6 +1657,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -1915,6 +2034,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-ML-Fraud-Detection",
+    "name": "ML-Fraud-Detection",
+    "title": "ML-Fraud-Detection",
+    "route": "/ml-fraud-detection",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-ModelSettings",
     "name": "ModelSettings",
     "title": "ModelSettings",
@@ -1982,6 +2124,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     ],
     "inNav": false,
     "designSource": "project/Native.iOS.dc.html",
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-Neural-Network-Prediction",
+    "name": "Neural-Network-Prediction",
+    "title": "Neural-Network-Prediction",
+    "route": "/neural-network-prediction",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
     "designMobileSource": null,
     "featureMapSource": null
   },
@@ -2415,7 +2580,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "title": "ProcurementPortal",
     "route": "/procurement-portal",
     "surface": "portal",
-    "shell": "AppShell",
+    "shell": "PortalShell",
     "module": "portalprocure",
     "category": "PRODUCT",
     "domain": "portals",
@@ -2437,7 +2602,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "title": "ProcurementPortal · Requisitions",
     "route": "/procurement-portal/requisitions",
     "surface": "portal",
-    "shell": "AppShell",
+    "shell": "PortalShell",
     "module": "portalprocure",
     "category": "PRODUCT",
     "domain": "portals",
@@ -2671,6 +2836,49 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-PublicPortal.CompanyStory",
+    "name": "PublicPortal.CompanyStory",
+    "title": "PublicPortal · CompanyStory",
+    "route": "/public-portal/story",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.ComparePlans",
+    "name": "PublicPortal.ComparePlans",
+    "title": "PublicPortal · ComparePlans",
+    "route": "/public-portal/compare-plans",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-PublicPortal.Contact",
     "name": "PublicPortal.Contact",
     "title": "PublicPortal · Contact",
@@ -2812,6 +3020,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.GettingStarted",
+    "name": "PublicPortal.GettingStarted",
+    "title": "PublicPortal · GettingStarted",
+    "route": "/public-portal/getting-started",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -2964,6 +3194,27 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.Platform",
+    "name": "PublicPortal.Platform",
+    "title": "PublicPortal · Platform",
+    "route": "/public-portal/platform",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3179,6 +3430,28 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "MOCK_ONLY"
+    ],
+    "inNav": false,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-PublicPortal.SupplyChain",
+    "name": "PublicPortal.SupplyChain",
+    "title": "PublicPortal · SupplyChain",
+    "route": "/public-portal/supply-chain",
+    "surface": "public",
+    "shell": "PublicShell",
+    "module": null,
+    "category": "PRODUCT",
+    "domain": "website",
+    "owner": "17",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": false,
@@ -3533,6 +3806,29 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "inNav": true,
     "designSource": "project/Settings.dc.html",
     "designMobileSource": "project/Settings.Mobile.dc.html",
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-Smart-Damage-Assessment",
+    "name": "Smart-Damage-Assessment",
+    "title": "Smart-Damage-Assessment",
+    "route": "/smart-damage-assessment",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "TABLET_MISSING",
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
     "featureMapSource": null
   },
   {
@@ -4548,6 +4844,50 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "featureMapSource": null
   },
   {
+    "screenId": "D-Voice-Command-Interface",
+    "name": "Voice-Command-Interface",
+    "title": "Voice-Command-Interface",
+    "route": "/voice-command-interface",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
+    "screenId": "D-Voice-Commands",
+    "name": "Voice-Commands",
+    "title": "Voice-Commands",
+    "route": "/voice-commands",
+    "surface": "app",
+    "shell": "AppShell",
+    "module": "ai",
+    "category": "PRODUCT",
+    "domain": "admin",
+    "owner": "—",
+    "mobileType": "B-responsive",
+    "status": "IMPLEMENTED",
+    "flags": [
+      "ARABIC_MISSING",
+      "MOCK_ONLY"
+    ],
+    "inNav": true,
+    "designSource": null,
+    "designMobileSource": null,
+    "featureMapSource": null
+  },
+  {
     "screenId": "D-Welcome",
     "name": "Welcome",
     "title": "Welcome",
@@ -4855,15 +5195,14 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/customers-list",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "customers",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "NO_RBAC_MODULE"
+      "TABLET_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -5044,7 +5383,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/workshop-calendar",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -5052,8 +5391,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6053,7 +6391,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/interactive-3-d-parts",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "inventory",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6061,8 +6399,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6357,7 +6694,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/purchase-agent-payments",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "procurement",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6365,8 +6702,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6427,15 +6763,13 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/purchase-agent-suppliers",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "procurement",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
-    "flags": [
-      "NO_RBAC_MODULE"
-    ],
+    "flags": [],
     "inNav": false,
     "designSource": null,
     "designMobileSource": null,
@@ -6543,7 +6877,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-portal-dashboard",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6551,8 +6885,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6566,7 +6899,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-portal-my-jobs",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6574,8 +6907,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6827,7 +7159,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-mobile",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6835,8 +7167,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6872,7 +7203,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-app-jobs",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "jobcards",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6880,8 +7211,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -6988,7 +7318,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/client-portal-vehicles",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "vehicles",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -6996,8 +7326,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7011,7 +7340,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/client-portal-appointments",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "appointments",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7019,8 +7348,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7500,7 +7828,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/hr-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7508,8 +7836,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7523,7 +7850,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/staff-directory",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7531,8 +7858,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7594,7 +7920,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/timesheet-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7602,8 +7928,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7617,7 +7942,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/timeclock-payroll",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7625,8 +7950,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7640,7 +7964,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/payroll-management",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7648,8 +7972,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -7663,7 +7986,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/leave-requests",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7671,8 +7994,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8289,7 +8611,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/insurance-claims",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "insurance",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -8297,8 +8619,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8359,7 +8680,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/email-marketing-campaigns",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "crm",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -8367,8 +8688,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,
@@ -8773,204 +9093,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "designSource": null,
     "designMobileSource": null,
     "featureMapSource": "project/spec-shots/192-Multi-Location-Dashboard.png"
-  },
-  {
-    "screenId": "F-193",
-    "name": "AI-Automation",
-    "title": "AI Automation",
-    "route": "/ai-automation",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "PRODUCT",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/193-AI-Automation.png"
-  },
-  {
-    "screenId": "F-194",
-    "name": "AI-Chatbot",
-    "title": "AI Chatbot",
-    "route": "/ai-chatbot",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/194-AI-Chatbot.png"
-  },
-  {
-    "screenId": "F-195",
-    "name": "AI-Chatbot-Assistant",
-    "title": "AI Chatbot Assistant",
-    "route": "/ai-chatbot-assistant",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/195-AI-Chatbot-Assistant.png"
-  },
-  {
-    "screenId": "F-196",
-    "name": "AI-Service-Advisor",
-    "title": "AI Service Advisor",
-    "route": "/ai-service-advisor",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/196-AI-Service-Advisor.png"
-  },
-  {
-    "screenId": "F-197",
-    "name": "Voice-Commands",
-    "title": "Voice Commands",
-    "route": "/voice-commands",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/197-Voice-Commands.png"
-  },
-  {
-    "screenId": "F-198",
-    "name": "Voice-Command-Interface",
-    "title": "Voice Command Interface",
-    "route": "/voice-command-interface",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/198-Voice-Command-Interface.png"
-  },
-  {
-    "screenId": "F-199",
-    "name": "Smart-Damage-Assessment",
-    "title": "Smart Damage Assessment",
-    "route": "/smart-damage-assessment",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/199-Smart-Damage-Assessment.png"
-  },
-  {
-    "screenId": "F-200",
-    "name": "ML-Fraud-Detection",
-    "title": "ML Fraud Detection",
-    "route": "/ml-fraud-detection",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/200-ML-Fraud-Detection.png"
-  },
-  {
-    "screenId": "F-201",
-    "name": "Neural-Network-Prediction",
-    "title": "Neural Network Prediction",
-    "route": "/neural-network-prediction",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/201-Neural-Network-Prediction.png"
   },
   {
     "screenId": "F-202",

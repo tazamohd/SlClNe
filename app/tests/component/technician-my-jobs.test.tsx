@@ -22,8 +22,12 @@ describe('TechnicianPortalMyJobs', () => {
   it('renders each row as a reachable action, wired to open a job', async () => {
     renderWithProviders(<TechnicianPortalMyJobs />, { role: 'technician' })
     await screen.findByText('A3F8B2C1')
-    // DataTable gives a row with onRowClick real button semantics, not a
-    // static table cell — the same wiring workshop/JobCards.tsx relies on.
-    expect(screen.getAllByRole('button').length).toBeGreaterThan(0)
+    // DataTable gives an onRowClick row a real tabIndex and Enter/Space
+    // handling, not a static table cell — the same wiring workshop/JobCards.tsx
+    // relies on. Not `role="button"` (an Actions column can carry a real
+    // `<button>`, and a widget role must not nest another one) — `tabIndex`
+    // is what puts it in the tab order.
+    const rows = screen.getAllByRole('row').filter((row) => row.getAttribute('tabindex') === '0')
+    expect(rows.length).toBeGreaterThan(0)
   })
 })

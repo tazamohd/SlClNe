@@ -5,9 +5,9 @@
  *  RLS transaction, never over a page the client holds, and money stays integer
  *  halalas — nothing here divides by 100.
  *
- *  Gated on `accounting:v` — the RBAC matrix has no `insurance`/`loans` module,
- *  and `accounting` is the module the Insurance/Loan report consumers (accountant,
- *  owner, manager, superadmin) hold view on. These endpoints exist so the report
+ *  Gated on `insurance:v` (F-034 — split from `accounting`, whose accountant/
+ *  owner/manager/superadmin cells are exactly the Insurance/Loan report
+ *  audience, copied onto their own column). These endpoints exist so the report
  *  screens (agent 13) have a real source; this slice does not build those screens.
  */
 import { sql, type SQL } from 'drizzle-orm'
@@ -35,7 +35,7 @@ export function registerProductReportRoutes(app: FastifyInstance, deps: RouteDep
    * every claim in the tenant scope. What the Insurance report shows. */
   app.get('/insurance/claims/summary', async (request) => {
     const principal = principalOf(request)
-    requirePermission(principal, 'accounting', 'v')
+    requirePermission(principal, 'insurance', 'v')
 
     return withTenant(deps.db, principal, async (tx) => {
       const [totals] = await rows<{
@@ -93,7 +93,7 @@ export function registerProductReportRoutes(app: FastifyInstance, deps: RouteDep
    * SQL so the client never adds up a page. What the Loan report shows. */
   app.get('/loans/summary', async (request) => {
     const principal = principalOf(request)
-    requirePermission(principal, 'accounting', 'v')
+    requirePermission(principal, 'insurance', 'v')
 
     return withTenant(deps.db, principal, async (tx) => {
       const [contracts] = await rows<{

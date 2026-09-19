@@ -68,6 +68,11 @@ export interface ZodForm<TValues extends Record<string, unknown>> {
   submit: (event?: FormEvent) => void
   /** Back to `initial`, or to `next` when the record was saved and reloaded. */
   reset: (next?: TValues) => void
+  /** A `Field` calls this on mount, so a refused submit only moves focus to a
+   *  name that actually rendered one — never to a zod issue path with no
+   *  matching control on screen. Returns the unregister function for the
+   *  effect's cleanup. */
+  registerField: (name: string) => () => void
 }
 
 /** Two values count as the same when they are the same scalar, or arrays with
@@ -121,6 +126,18 @@ export function useZodForm<TIn extends Record<string, unknown>, TOut>(options: {
   const submitHandler = useRef(onSubmit)
   submitHandler.current = onSubmit
 
+  // Which field names actually have a rendered `Field` right now — so a zod
+  // issue path that names something off-screen (a schema key with no matching
+  // control, a nested/array path a form of flat fields never expected) can be
+  // told apart from a real, displayed one.
+  const registeredFields = useRef<Set<string>>(new Set())
+  const registerField = useCallback((name: string) => {
+    registeredFields.current.add(name)
+    return () => {
+      registeredFields.current.delete(name)
+    }
+  }, [])
+
   const dirtyFields = useMemo(() => {
     const out: Record<string, boolean> = {}
     for (const key of Object.keys(values)) {
@@ -170,7 +187,18 @@ export function useZodForm<TIn extends Record<string, unknown>, TOut>(options: {
         const mapped = errorsFromZod(parsed.error)
         setErrors(mapped.fields)
         setFormError(mapped.form)
-        focusFirstError(id, Object.keys(mapped.fields))
+        // Only move focus to a name a `Field` actually rendered. Some screens
+        // read `form.errors[name]` themselves for a field with no `<Field>` —
+        // an array-level error over a hand-rolled table, e.g.
+        // InvoiceCreate.tsx's `lines` — so a name being unregistered does not
+        // mean its message is unseen, only that this generic focus step has
+        // nowhere on the DOM to send focus. Without this filter, an
+        // unregistered name sorting first in iteration order could silently
+        // eat the focus move a *registered* field's error was owed.
+        focusFirstError(
+          id,
+          Object.keys(mapped.fields).filter((name) => registeredFields.current.has(name))
+        )
         return
       }
 
@@ -222,6 +250,7 @@ export function useZodForm<TIn extends Record<string, unknown>, TOut>(options: {
     markTouched,
     submit,
     reset,
+    registerField,
   }
 }
 
@@ -429,6 +458,10 @@ export function Field({
 }: FieldProps) {
   const { t } = usePreferences()
   const form = useFormContext()
+
+  // Registers this name as "really on screen" for the submit-refusal path
+  // above — see `registerField`'s doc comment.
+  useEffect(() => form.registerField(name), [form, name])
 
   const id = fieldId(form.id, name)
   const messageId = `${id}-message`

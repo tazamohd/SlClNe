@@ -417,48 +417,40 @@ export function httpMovementApi(): MovementApi | null {
 
 /* ══════════════════════════════════════════════════════ reading a part's row */
 
-/** The API row carries more than the fixture row does. Read through accessors
- *  so the screen works against both without claiming a number it never got:
- *  `null` means "this dataset does not say", which is not the same as zero. */
-interface PartExtras {
-  _id?: string
-  reserved?: number
-  available?: number
-  priceHalalas?: number
-  costHalalas?: number | null
-  backorderable?: boolean
-}
-
-const extras = (part: Part): PartExtras => part as Part & PartExtras
+/** The API row carries columns the design fixture never had — `reserved`,
+ *  `available`, `priceHalalas`, `costHalalas`, `backorderable` and entity
+ *  metadata, all typed on `Repository` itself now (F-020). These accessors
+ *  stay because a fixture row genuinely lacks the values, and `null`/absent
+ *  means "this dataset does not say", which is not the same as zero. */
 
 /** How the movement endpoints address this part. Both accept the ULID or the
  *  SKU, and the SKU is the only one the fixtures have. */
 export function partRef(part: Part): string {
-  return extras(part)._id ?? part.sku
+  return part._id ?? part.sku
 }
 
 function reservedOf(part: Part): number | null {
-  const value = extras(part).reserved
+  const value = part.reserved
   return typeof value === 'number' ? value : null
 }
 
 function availableOf(part: Part): number | null {
-  const value = extras(part).available
+  const value = part.available
   return typeof value === 'number' ? value : part.stock - (reservedOf(part) ?? 0)
 }
 
 function priceHalalasOf(part: Part): number {
-  const value = extras(part).priceHalalas
+  const value = part.priceHalalas
   return typeof value === 'number' ? value : Math.round(parseSar(part.price) * 100)
 }
 
 function costHalalasOf(part: Part): number | null {
-  const value = extras(part).costHalalas
+  const value = part.costHalalas
   return typeof value === 'number' ? value : null
 }
 
 function backorderableOf(part: Part): boolean {
-  return extras(part).backorderable === true
+  return part.backorderable === true
 }
 
 /* ═════════════════════════════════════════════════════════════════ the screen */

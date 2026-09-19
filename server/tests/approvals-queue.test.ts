@@ -166,7 +166,7 @@ describe('GET /approvals carries every source with a ceiling-gated approve route
     expect(po.statusCode, po.body).toBe(201)
     const purchaseOrder = po.json() as { code: string }
 
-    /* The claim needs a policy that exists in this tenant; accounting:c is the
+    /* The claim needs a policy that exists in this tenant; insurance:c is the
      * accountant's, so it is raised by them — again, not the manager. */
     const accountant = await harness.token('accountant')
     const policies = await get('/insurance-policies?pageSize=1', accountant)
@@ -193,7 +193,7 @@ describe('GET /approvals carries every source with a ceiling-gated approve route
     const raised = await raisePending()
     const queue = await queueFor('accountant')
 
-    /* The accountant holds view on estimates, procurement and accounting, so
+    /* The accountant holds view on estimates, procurement and insurance, so
      * all four sources are in reach of one read. */
     const req = queue.rows.find((row) => row.reference === raised.requisition)
     const po = queue.rows.find((row) => row.reference === raised.purchaseOrder)
@@ -214,7 +214,7 @@ describe('GET /approvals carries every source with a ceiling-gated approve route
     expect(po?.party).toBe('Gulf Parts Co.')
 
     expect(claim?.kind).toBe('insurance_claim')
-    expect(claim?.module).toBe('accounting')
+    expect(claim?.module).toBe('insurance')
     expect(claim?.amountHalalas).toBe(raised.claimHalalas)
 
     expect(est?.kind).toBe('estimate')
@@ -258,21 +258,21 @@ describe('GET /approvals carries every source with a ceiling-gated approve route
 
   it('withholds a source the caller cannot view, without withholding the queue', async () => {
     const raised = await raisePending()
-    /* advisor: approvals `va`, estimates `vce`, procurement `''`, accounting
+    /* advisor: approvals `va`, estimates `vce`, procurement `''`, insurance
      * `''`. They see the queue and its estimates, and no procurement or
-     * accounting row leaks through the `approvals:v` gate. */
+     * insurance row leaks through the `approvals:v` gate. */
     const queue = await queueFor('advisor')
     expect(queue.rows.some((row) => row.reference === 'EST-0230')).toBe(true)
     expect(queue.rows.some((row) => row.reference === raised.requisition)).toBe(false)
     expect(queue.rows.some((row) => row.reference === raised.purchaseOrder)).toBe(false)
     expect(queue.rows.some((row) => row.reference === raised.claim)).toBe(false)
     expect(queue.summary.byModule.procurement).toBeUndefined()
-    expect(queue.summary.byModule.accounting).toBeUndefined()
+    expect(queue.summary.byModule.insurance).toBeUndefined()
   })
 
   it("answers the caller's standing per module, not per queue", async () => {
     const raised = await raisePending()
-    /* manager: procurement `vcax` (may approve) but accounting `vx` (may see a
+    /* manager: procurement `vcax` (may approve) but insurance `vx` (may see a
      * claim, may not approve it). One read, two honest answers. */
     const queue = await queueFor('manager')
     const po = queue.rows.find((row) => row.reference === raised.purchaseOrder)!
@@ -282,7 +282,7 @@ describe('GET /approvals carries every source with a ceiling-gated approve route
     expect(po.approval.withinCeiling).toBe(true)
     expect(claim.approval.canApprove).toBe(false)
     /* Not the ceiling refusing — SAR 7,000 is well inside SAR 50,000. The
-     * manager simply holds no `accounting:a`. */
+     * manager simply holds no `insurance:a`. */
     expect(claim.approval.withinCeiling).toBe(true)
     expect(claim.approval.isSubmitter).toBe(false)
   })

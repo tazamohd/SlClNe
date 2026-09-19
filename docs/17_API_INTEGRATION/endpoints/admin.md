@@ -10,19 +10,15 @@
 
 # API — admin
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 4 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 2 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/admin/departments` | admin:v | token | `departments` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/admin/departments/:id` | admin:v | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
-| GET | `/api/v1/admin/departments/:id/history` | admin:v | token | — | — | — | `server/src/routes/history.ts` |
-| GET | `/api/v1/admin/departments/export` | admin:x | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/admin/staff` | admin:v | token | — | — | 1 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/admin/staff` | admin:c | token | — | — | 1 | `server/src/auth/routes.ts` |
 
 ## Query contract for generated collection routes
 
-| Collection | Path | Searchable (`?q=`) | Sortable (`?sort=`) | Filterable (`?filter[x]=`) | Default sort | Writable |
-| --- | --- | --- | --- | --- | --- | --- |
-| departments | `/admin/departments` | `name`, `head`, `costCenter` | `name`, `headcount`, `createdAt` | — | createdAt asc | read-only |
+_No generated collection routes in this domain._
 
 An unknown `?sort=` key is a 400, not a silent fallback, so a typo is visible instead of ignored.

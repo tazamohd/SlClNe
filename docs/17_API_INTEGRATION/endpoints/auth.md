@@ -10,7 +10,7 @@
 
 # API — auth
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 24 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 26 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -19,6 +19,8 @@
 | POST | `/api/v1/auth/biometric/challenge` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/enrol` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/forgot-password` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
+| GET | `/api/v1/auth/invite/:token` | — | token | — | — | — | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/invite/:token/accept` | — | token | — | — | — | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/login` | — | token | — | — | 13 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/logout` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
@@ -35,7 +37,7 @@
 | POST | `/api/v1/auth/sso/start` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/switch-role` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/verify-otp` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
-| POST | `/api/v1/public/customers/register` | — | public | — | — | 5 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/public/customers/register` | — | public | — | — | 6 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/public/customers/resend-otp` | — | public | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/public/customers/verify-otp` | — | public | — | — | 1 | `server/src/auth/routes.ts` |
 

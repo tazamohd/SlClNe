@@ -122,7 +122,8 @@ function NoMatches({ query, icon, title, description, action }: {
 }
 
 // ── Customers ───────────────────────────────────────────────────────────────
-type Customer = RowOf<'customers'> & { email?: string | null }
+/** `email` is typed on `Repository` itself now (F-020). */
+type Customer = RowOf<'customers'>
 
 const CUSTOMER_EXPORT_COLUMNS: ExportColumn[] = [
   { key: 'name', label: 'Name' },
@@ -377,7 +378,8 @@ export function Customers() {
 }
 
 // ── Vehicles ────────────────────────────────────────────────────────────────
-type Vehicle = RowOf<'vehicles'> & { vin?: string | null; mileageKm?: number }
+/** `vin`/`mileageKm` are typed on `Repository` itself now (F-020). */
+type Vehicle = RowOf<'vehicles'>
 
 export function Vehicles() {
   const { t } = usePreferences()

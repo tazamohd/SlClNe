@@ -822,11 +822,12 @@ async function main() {
       ` Scope note: this proves the arithmetic engine and the money endpoints — totals derived from ` +
       `lines rather than trusted from the client, tax on the discounted net, one rounding at the total, ` +
       `payment never exceeding the balance, no double-billing under a repeated Idempotency-Key, and ` +
-      `only one of two simultaneous payments taking the last of a balance. It does not clear the ` +
-      `seeded ledger: FINDINGS.json F-008 (MEDIUM, open) records that the seeded chart of accounts does ` +
-      `not balance, and tests/finance-reports.test.ts asserts the trial balance reports that imbalance ` +
-      `honestly rather than forcing it to zero. That is seed data, not a calculation defect, and it is ` +
-      `a separate open finding.`
+      `only one of two simultaneous payments taking the last of a balance. FINDINGS.json F-008 (RESOLVED) ` +
+      `covered the balance-sheet identity (assets = liabilities + equity), which tests/finance-reports.test.ts ` +
+      `now asserts holds exactly (differenceHalalas 0, balanced true). The full five-account-type trial ` +
+      `balance still legitimately doesn't tie — this fixture carries no period-close entries, so its ` +
+      `residual equals exactly the period's unclosed net income, which the same test asserts honestly ` +
+      `rather than forcing to zero. That is expected seed behaviour, not a calculation defect.`
   }
   gate('RB-06', 'No financial calculation corruption', financeMath)
 

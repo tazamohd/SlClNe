@@ -12,11 +12,11 @@
 
 # Domain — Workshop operations
 
-**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-WORKSHOP · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 19 screens, 128 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
+This domain serves the objective **OBJ-THROUGHPUT** (Increase workshop throughput). It comprises 26 screens, 128 API endpoints and 3 entities, gated by the `jobcards`, `appointments`, `estimates` permission modules.
 
 
 ## Actors
@@ -231,6 +231,7 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-CannedJobs | `/canned-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-HealthCheckReport | `/customer-portal/health-check-report` | app | **mock** | yes | yes | yes | PARTIAL | yes |
 | D-CustomerApproval | `/customer-approval` | app | yes | yes | yes | yes | PARTIAL | yes |
+| D-DeclinedJobs | `/declined-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-DiagnosticReport | `/diagnostic-report` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-EstimateDetail | `/estimate-detail` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Estimates | `/estimates` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -244,10 +245,16 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-WorkshopInspection | `/workshop-inspection` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-WorkshopQC | `/workshop-qc` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-WorkshopSignature | `/workshop-signature` | app | yes | — | — | — | verified | yes |
+| F-015 | `/workshop-calendar` | app | yes | yes | yes | — | PARTIAL | yes |
+| F-090 | `/technician-portal-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-091 | `/technician-portal-my-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-102 | `/technician-mobile` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-104 | `/technician-app-jobs` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-110 | `/client-portal-appointments` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **1 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **1 of 26 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **103 of 128 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`appointmentStatus`, `declinedJobStatus`, `estimateStatus`, `inspectionMediaStage`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **9 of 12 relationships have no foreign key.** Integrity depends on application code; nothing cascades.

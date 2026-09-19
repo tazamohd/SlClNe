@@ -546,6 +546,13 @@ export const PERMS: PermissionMatrix = {
     "superadmin": "v",
     "test": "vcedax"
   },
+  "insurance": {
+    "owner": "vax",
+    "manager": "vx",
+    "accountant": "vcedax",
+    "superadmin": "v",
+    "test": "vcedax"
+  },
   "ai": {
     "owner": "vcedax",
     "manager": "vce",
@@ -562,6 +569,14 @@ export const PERMS: PermissionMatrix = {
   "admin": {
     "owner": "vcedax",
     "manager": "v",
+    "superadmin": "vcedax",
+    "test": "vcedax"
+  },
+  "departments": {
+    "owner": "vcedax",
+    "manager": "v",
+    "hr": "vc",
+    "accountant": "v",
     "superadmin": "vcedax",
     "test": "vcedax"
   },
@@ -668,6 +683,8 @@ export const SCREEN_MODULE: Record<string, string> = {
   "Technicians": "technicians",
   "TechnicianSchedule": "technicians",
   "Departments": "hr",
+  "Staff-Directory": "hr",
+  "HR-Management": "hr",
   "LeadPipeline": "crm",
   "LeadDetail": "crm",
   "Opportunities": "crm",
@@ -700,16 +717,16 @@ export const SCREEN_MODULE: Record<string, string> = {
   "ConversationHistory": "aiadmin",
   "ModelSettings": "aiadmin",
   "AIAnalytics": "ai",
-  "AIAutomation": "ai",
-  "AIChatbot": "ai",
-  "AIChatbotAssistant": "ai",
-  "AIServiceAdvisor": "ai",
-  "SmartDamageAssessment": "ai",
-  "MLFraudDetection": "ai",
-  "NeuralNetworkPrediction": "ai",
-  "VoiceCommands": "ai",
-  "VoiceCommandInterface": "ai",
   "AutomationRules": "aiadmin",
+  "AI-Automation": "ai",
+  "AI-Chatbot": "ai",
+  "AI-Chatbot-Assistant": "ai",
+  "AI-Service-Advisor": "ai",
+  "Smart-Damage-Assessment": "ai",
+  "ML-Fraud-Detection": "ai",
+  "Neural-Network-Prediction": "ai",
+  "Voice-Commands": "ai",
+  "Voice-Command-Interface": "ai",
   "Organizations": "superadmin",
   "Branches": "admin",
   "UsersTeams": "admin",
@@ -733,7 +750,24 @@ export const SCREEN_MODULE: Record<string, string> = {
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",
   "OEMIntegrations": "settings",
-  "SystemIntegrations": "settings"
+  "SystemIntegrations": "settings",
+  "Insurance-Claims": "insurance",
+  "Payroll-Management": "hr",
+  "Timesheet-Management": "hr",
+  "Timeclock-Payroll": "hr",
+  "Leave-Requests": "hr",
+  "Interactive-3D-Parts": "inventory",
+  "Purchase-Agent-Payments": "procurement",
+  "Purchase-Agent-Suppliers": "procurement",
+  "Client-Portal-Appointments": "appointments",
+  "Client-Portal-Vehicles": "vehicles",
+  "Technician-App-Jobs": "jobcards",
+  "Technician-Mobile": "jobcards",
+  "Technician-Portal-Dashboard": "jobcards",
+  "Technician-Portal-My-Jobs": "jobcards",
+  "Workshop-Calendar": "jobcards",
+  "Email-Marketing-Campaigns": "crm",
+  "Customers-List": "customers"
 }
 
 /** Field-level redaction: which roles may NOT see each field. */
