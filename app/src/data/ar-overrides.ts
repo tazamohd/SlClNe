@@ -14,6 +14,9 @@
 // estimate = عرض سعر. Brand names, env vars and units (SALIS AUTO, SAR,
 // VITE_API_URL, YYYY-MM, ZATCA, OBD, IFRS, API) are left verbatim.
 export const AR_OVERRIDES: Record<string, string> = {
+  // ── Vehicle History real wiring (BLK-004 bucket G, 2026-09) ────────────────
+  "More records exist than this page shows.": "توجد سجلات أخرى لا تظهر في هذه الصفحة.",
+
   // ── Demo-environment badge (2026-09) ───────────────────────────────────────
   "Demo": "تجريبي",
   "Demo environment — no real data": "بيئة تجريبية — لا توجد بيانات حقيقية",

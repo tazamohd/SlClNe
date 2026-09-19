@@ -466,12 +466,16 @@ const localFunctionBodies = (src) => {
 }
 
 /** Every marker a screen renders itself, cross-file: `GapCard` (this bucket's
- *  own component), `hr/bits.tsx`'s `ConnectApi` (used across HR), and the
- *  literal "no data source yet" line a hand-written card carries in its own
- *  JSX. A file-local wrapper — `network/PartsNetwork.tsx`'s `GapPanel`,
- *  `hr/StaffGap.tsx`'s `GapShell` — is resolved per file below, the same way
- *  `dataBackedScreens` resolves a wrapper that mounts a sibling. */
-const GAP_MARKERS = ['<GapCard', '<NetworkGapPanel', '<ConnectApi', 'no data source yet']
+ *  own component), `hr/bits.tsx`'s `ConnectApi` (used across HR),
+ *  `accounting/ReportControls.tsx`'s `ReportGap` (the same honest-gap card for
+ *  a report with no server aggregate behind it — `CashFlowStatement` renders
+ *  only this, no `useTrialBalance()`/collection call, because no journal entry
+ *  carries an activity classification to report on), and the literal "no data
+ *  source yet" line a hand-written card carries in its own JSX. A file-local
+ *  wrapper — `network/PartsNetwork.tsx`'s `GapPanel`, `hr/StaffGap.tsx`'s
+ *  `GapShell` — is resolved per file below, the same way `dataBackedScreens`
+ *  resolves a wrapper that mounts a sibling. */
+const GAP_MARKERS = ['<GapCard', '<NetworkGapPanel', '<ConnectApi', '<ReportGap', 'no data source yet']
 const rendersGapMarker = (body) => GAP_MARKERS.some((m) => body.includes(m))
 
 const honestGapScreens = (() => {

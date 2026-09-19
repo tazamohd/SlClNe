@@ -258,7 +258,7 @@
 | Vehicles List | `/vehicles-list` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Vehicle Inspections | `/vehicle-inspections` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Vehicle Checklist | `/vehicle-checklist` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
-| Vehicle History | `/vehicle-history` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Vehicle History | `/vehicle-history` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Vehicle Health Monitoring | `/vehicle-health-monitoring` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Vehicle Tracking | `/vehicle-tracking` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | Vehicle Storage | `/vehicle-storage` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

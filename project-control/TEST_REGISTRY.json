@@ -12,14 +12,14 @@
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
     "suites": 226,
-    "cases": 2498,
+    "cases": 2495,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1388,
+      "UNIT_OR_API": 1385,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -5470,6 +5470,24 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-WORKSHOP-VEHICLE-HISTORY-TEST-TSX",
+      "file": "app/tests/workshop-vehicle-history.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "VehicleHistory"
+      ],
+      "cases": [
+        "shows real completed/delivered job rows, not the old invented technicians",
+        "drops any job still open (pending/in_progress), not just the invented rows"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "manager"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-API-TEST-TS",
       "file": "server/tests/api.test.ts",
       "kind": "UNIT_OR_API",
@@ -6734,30 +6752,6 @@
       "touchesRoles": [
         "manager",
         "parts"
-      ]
-    },
-    {
-      "id": "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS",
-      "file": "server/tests/organization-read.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "server",
-      "describes": [
-        "GET /organization"
-      ],
-      "cases": [
-        "returns the seeded organization\\'s real VAT number, not a fabricated one",
-        "reports an unset CR number as null rather than inventing one",
-        "answers for any authenticated role — the screen carries no RBAC module",
-        "401s with no token",
-        "never returns another organization's identity"
-      ],
-      "caseCount": 5,
-      "touchesPaths": [
-        "/organization"
-      ],
-      "touchesRoles": [
-        "owner",
-        "technician"
       ]
     },
     {
