@@ -28,7 +28,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | HR and payroll | [CAP-HR](HR.md) | 11 | 52 | 6 | 11 of 11 |
 | CRM and sales | [CAP-CRM](CRM.md) | 13 | 51 | 6 | 11 of 13 |
 | Reporting and analytics | [CAP-REPORTING](REPORTING.md) | 11 | 0 | 0 | 11 of 11 |
-| Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 6 | 1 | 1 of 2 |
+| Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 6 | 1 | 2 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
 | AI and automation | [CAP-AI](AI.md) | 19 | 8 | 2 | 4 of 19 |
 | Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 72 | 9 | 9 of 35 |

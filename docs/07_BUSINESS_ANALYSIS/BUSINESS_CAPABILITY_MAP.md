@@ -80,7 +80,7 @@ flowchart LR
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 11 | 11 | 52 | 6 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
-| CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 6 | 1 | 9 |
+| CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 2 | 6 | 1 | 9 |
 | CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 9 | 72 | 9 | 14 |
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-157 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+158 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -255,7 +255,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `approvals`, `audit` |
 | Screen domains | — |
-| Screens | 2 (1 data-backed) |
+| Screens | 2 (2 data-backed) |
 | Endpoints | 6 |
 | Entities | `approvalLines` |
 | Roles with any grant | owner, superadmin, manager, advisor, parts, accountant, hr, procurement, test |

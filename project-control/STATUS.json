@@ -9,8 +9,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 158,
-    "dataBacked": 157,
+    "mockOnly": 157,
+    "dataBacked": 158,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
@@ -48,7 +48,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 316,
-      "dataBacked": 142
+      "dataBacked": 143
     },
     "call-center": {
       "total": 2,
@@ -122,7 +122,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 26,
-      "dataBacked": 9
+      "dataBacked": 10
     },
     "ai": {
       "total": 14,
@@ -292,7 +292,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 1,
-      "dataBacked": 0
+      "dataBacked": 1
     },
     "accounting": {
       "total": 8,

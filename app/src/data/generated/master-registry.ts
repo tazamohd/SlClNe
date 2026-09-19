@@ -378,8 +378,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/AuditLog.dc.html",

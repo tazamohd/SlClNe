@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 158,
-    "dataBacked": 157,
+    "mockOnly": 157,
+    "dataBacked": 158,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
@@ -937,6 +937,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "approvals",
         "estimates"
       ],
       "crud": {
@@ -1238,8 +1239,10 @@
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "audit-log"
+      ],
       "crud": {
         "create": false,
         "read": false,
@@ -1268,8 +1271,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -3098,7 +3100,9 @@
       "dataBacked": true,
       "dataSource": [
         "approvalLines",
-        "estimates"
+        "estimates",
+        "estimates/:id/request-approval-otp",
+        "estimates/:id/verify-approval-otp"
       ],
       "crud": {
         "create": false,
@@ -4172,7 +4176,8 @@
       "dataBacked": true,
       "dataSource": [
         "declinedJobs",
-        "estimates"
+        "estimates",
+        "estimates/:id/history"
       ],
       "crud": {
         "create": false,
@@ -7139,6 +7144,8 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "diagnostics/devices/:id/readings",
+        "diagnostics/integrations",
         "dtcCodes",
         "obdDevices"
       ],
@@ -7962,6 +7969,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "parts-network/quotations/:id/accept",
         "partsNetworkQuotations",
         "partsNetworkRequests"
       ],
@@ -15993,6 +16001,7 @@
       "dataSource": [
         "invoiceLines",
         "invoices",
+        "jobs/:id/history",
         "technicians"
       ],
       "crud": {
@@ -16070,6 +16079,7 @@
       "dataBacked": true,
       "dataSource": [
         "jobs",
+        "reports/workshop",
         "technicians"
       ],
       "crud": {
@@ -26367,6 +26377,7 @@
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
+        "insurance/claims/summary",
         "insuranceClaims",
         "insurancePolicies"
       ],

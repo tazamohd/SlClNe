@@ -452,6 +452,111 @@ const REPORT_HOOK_ENDPOINT = {
   LoansSummary: 'loans/summary',
 }
 
+/** One endpoint label, in the shape `dataSource` already uses: no leading
+ *  slash, no query string, and an interpolated id written as `:id` so two calls
+ *  on the same route collapse to one label rather than to as many labels as
+ *  there were ids in the source.
+ *
+ *  `null` when the path opens with an interpolation — a factory that takes the
+ *  route from its caller — because there is no endpoint to name and `:id` would
+ *  name nothing. Callers skip it, so nothing is recorded: the seam may be real
+ *  but this cannot say what it reads, and saying nothing is the smaller claim. */
+const endpointLabel = (raw) => {
+  const label = raw
+    .replace(/\$\{[^}]*\}/g, ':id')
+    .replace(/[?`].*$/, '')
+    .replace(/^\/+|\/+$/g, '')
+  return label && !label.startsWith(':') ? label : null
+}
+
+/** The third way through the seam: the bespoke, live-only API objects
+ *  `data/repository.ts` exports beside the repository itself — `auditLogApi`,
+ *  `approvals`, `workshopReports`, `diagnostics` and their siblings. Each is
+ *  declared `API_URL ? create…(API_URL) : null`, so it is the HTTP client or it
+ *  is nothing: there is no fixture behind one, by design, because an audit trail
+ *  or a QC pass rate invented locally would be the fabrication that seam
+ *  refuses. The screens that read them call the object directly, inside
+ *  `useQuery`, rather than through a `useCollection` family hook, so `SEAM_CALL`
+ *  never saw them. `admin/AuditLog` — wired to a real, tested `GET /audit-log`,
+ *  with no fixture anywhere in its path — carried MOCK_ONLY, "renders, but from
+ *  fixtures rather than an API", which was not an approximation of the truth
+ *  about it but the reverse of it (F-041).
+ *
+ *  Derived from `repository.ts`, not listed here, and that is the one place this
+ *  improves on `REPORT_HOOK_ENDPOINT` above. A hand-written list of a growing
+ *  set is a measurement that stops being true without saying so: `auditLogApi`
+ *  was the eleventh such object and nothing told the registry it existed. All
+ *  eleven share one declaration shape and one URL shape, so the file that owns
+ *  them can be read instead, and a twelfth is picked up by the next
+ *  `npm run registry` with no edit here.
+ *
+ *  What is recorded is the endpoint the *called method* requests —
+ *  `approvals.list()` is `approvals`, `diagnostics.integrations()` is
+ *  `diagnostics/integrations` — so the registry says what a screen is backed by
+ *  and not merely that it is. Seven screens that already read a collection were
+ *  silent about their bespoke read until now, which is a quieter version of the
+ *  same defect: `WorkshopReports` said it was backed by `jobs` and `technicians`
+ *  and not by the server-computed report it actually displays.
+ *
+ *  A screen that imports an accessor only to null-check it and show the honest
+ *  gap notice makes no call and is credited with nothing; `accounting/GapReports`
+ *  does exactly that and keeps its flag. It measures wiring like the hooks
+ *  above: that the screen asks this endpoint for this data, not that what comes
+ *  back is rendered correctly. */
+const BESPOKE_APIS = (() => {
+  const apis = new Map() // accessor → Map<method, endpoints[]>
+  let src = ''
+  try { src = readApp('src/data/repository.ts') } catch (_) { return apis }
+
+  for (const [, accessor, factory] of src.matchAll(
+    /export const (\w+)\s*:\s*[\w<>,[\] ]+\|\s*null\s*=\s*API_URL[\s\n]*\?[\s\n]*(\w+)\(API_URL\)/g)) {
+    const start = src.indexOf(`export function ${factory}(`)
+    if (start < 0) continue
+    const close = src.indexOf('\n}\n', start)
+    let body = src.slice(start, close < 0 ? src.length : close)
+    /* A factory may route its URLs through a local helper — `const device = (id)
+     * => `${root}/diagnostics/devices/${id}`` — so the paths are one expansion
+     * away rather than in the method. Inlining that helper once reaches them
+     * without interpreting the file. */
+    for (const [, name, template] of body.matchAll(/const (\w+) = \([^)]*\) =>\s*`([^`]*)`/g)) {
+      body = body.replace(new RegExp(`\\$\\{${name}\\([^}]*\\)\\}`, 'g'), template)
+    }
+    /* Methods sit at four spaces inside the returned object literal; a
+     * continuation line inside one is indented further. Anchoring on that keeps
+     * `reportUrl(` on its own line from reading as a method of its own and
+     * taking the endpoint with it. */
+    const methods = [...body.matchAll(/\n {4}(?:async )?(\w+)\(/g)]
+    const byMethod = new Map()
+    methods.forEach((m, i) => {
+      const segment = body.slice(m.index, i + 1 < methods.length ? methods[i + 1].index : body.length)
+      const endpoints = new Set()
+      const record = (raw) => { const label = endpointLabel(raw); if (label) endpoints.add(label) }
+      for (const hit of segment.matchAll(/\$\{root\}(\/[^`]*)/g)) record(hit[1])
+      for (const hit of segment.matchAll(/reportUrl\(baseUrl,\s*'([^']+)'/g)) record(hit[1])
+      if (endpoints.size) byMethod.set(m[1], [...endpoints])
+    })
+    if (byMethod.size) apis.set(accessor, byMethod)
+  }
+  return apis
+})()
+
+/** Names this file imports from `data/repository`. A screen is credited for
+ *  `approvals.list()` only when `approvals` is that module's export, because
+ *  these are ordinary words: seventeen screen files say "approvals" or
+ *  "diagnostics" in a heading, a feature blurb or a gap notice, and one more
+ *  keeps a local `diagnostics` basket of parts. The import is what separates
+ *  the four that hold the accessor from the eighteen that hold the word. */
+const repositoryImports = (src) => {
+  const names = new Set()
+  for (const m of src.matchAll(/import\s+(?:type\s+)?\{([^}]*)\}\s*from\s*['"][^'"]*data\/repository['"]/g)) {
+    for (const clause of m[1].split(',')) {
+      const local = clause.trim().replace(/^type\s+/, '').split(/\s+as\s+/)
+      names.add((local[1] ?? local[0]).trim())
+    }
+  }
+  return names
+}
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -518,11 +623,19 @@ const dataBackedScreens = (() => {
    *  export owns the source from its own signature to the next one. */
   const scan = (src) => {
     const direct = new Map()
+    const imported = repositoryImports(src)
     for (const [name, body] of exportBodies(src)) {
       const calls = [...body.matchAll(SEAM_CALL)]
       const reportCalls = [...body.matchAll(REPORT_HOOK_CALL)]
       const keys = new Set(calls.map((c) => c[2]))
       for (const call of reportCalls) keys.add(REPORT_HOOK_ENDPOINT[call[1]])
+      /* A method call on a bespoke accessor this file imports. `!`, `?.` and a
+       * bare dot all appear at these call sites; an unknown method name adds
+       * nothing, so a renamed accessor fails closed rather than guessing. */
+      for (const [, object, method] of body.matchAll(/\b(\w+)\s*[!?]?\.\s*(\w+)\s*\(/g)) {
+        if (!imported.has(object)) continue
+        for (const endpoint of BESPOKE_APIS.get(object)?.get(method) ?? []) keys.add(endpoint)
+      }
       const crud = crudFrom(calls, body)
       if (reportCalls.length) crud.read = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
@@ -554,7 +667,12 @@ const dataBackedScreens = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)) continue
+        /* Cheap reject, and it has to admit every seam the scan can find or the
+         * scan never runs on the file that holds one. The last clause is wide on
+         * purpose: importing from `data/repository` only makes a file worth
+         * scanning, and the scan then decides on a call. */
+        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)
+          && !/data\/repository['"]/.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
           const prev = map.get(name)
