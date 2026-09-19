@@ -31,8 +31,8 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 6 | 1 | 2 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 9 of 11 |
 | AI and automation | [CAP-AI](AI.md) | 19 | 8 | 2 | 4 of 19 |
-| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 72 | 9 | 10 of 35 |
+| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 72 | 9 | 11 of 35 |
 | Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 28 | 0 | 1 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 39 | 0 | 0 | 0 of 39 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
-| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 201 | 0 | 0 | 38 of 201 |
+| Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 201 | 0 | 0 | 39 of 201 |

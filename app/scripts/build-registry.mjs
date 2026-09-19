@@ -656,6 +656,12 @@ const HEALTH_CHECK_API_CALL = /\bfetchHealthCheckReport\(/
  *  isn't `useCollection`. */
 const PROFILE_API_CALL = /\b(?:updateProfile|changePassword)\(/
 
+/** `admin/api.ts`'s `listStaff` — real, live-only, the same
+ *  `screens/*\/api.ts` convention `PROCUREMENT_API_CALL` and
+ *  `HEALTH_CHECK_API_CALL` already read through. `UsersTeams.tsx` calls it
+ *  for the whole of its table; `SEAM_CALL` only knows `useCollection`. */
+const STAFF_API_CALL = /\blistStaff\(/
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -732,8 +738,10 @@ const dataBackedScreens = (() => {
       if (usesHealthCheckApi) keys.add('inspectionFindings')
       const usesProfileApi = PROFILE_API_CALL.test(body)
       if (usesProfileApi) keys.add('auth/me')
+      const usesStaffApi = STAFF_API_CALL.test(body)
+      if (usesStaffApi) keys.add('admin/staff')
       const crud = crudFrom(calls, body)
-      if (reportCalls.length || usesProcurementApi || usesHealthCheckApi) crud.read = true
+      if (reportCalls.length || usesProcurementApi || usesHealthCheckApi || usesStaffApi) crud.read = true
       if (usesProfileApi) crud.update = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
     }
@@ -775,6 +783,7 @@ const dataBackedScreens = (() => {
           && !PROCUREMENT_API_CALL.test(src)
           && !HEALTH_CHECK_API_CALL.test(src)
           && !PROFILE_API_CALL.test(src)
+          && !STAFF_API_CALL.test(src)
           && !/data\/repository['"]/.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
@@ -1371,7 +1380,26 @@ for (const e of entries) {
    * blocker 62 screens larger than the wiring work it names and, since none
    * of them could ever call `useCollection`, kept it from closing. They carry
    * CONTENT_ONLY instead so the registry still says why `dataBacked` is false. */
-  const contentSurface = e.surface === 'auth' || e.surface === 'public'
+  /* `RolesPermissions` is the one screen whose entire content is
+   * `@/data/rbac` — the compiled RBAC matrix `packages/contract/src/rbac.ts`
+   * generates at build time. Changing what it shows is a contract change and
+   * a regeneration (RB-13's own review notes say as much), never a runtime
+   * write, so there is no collection for it to be `dataBacked` by design —
+   * the same reason the auth/public surfaces carry CONTENT_ONLY rather than
+   * MOCK_ONLY. Named rather than a general "imports @/data/rbac" rule: most
+   * of that import's other readers are action screens using it alongside a
+   * real collection, where the rule must not fire. */
+  const staticMatrixContent = e.name === 'RolesPermissions'
+  /* `UserSettings` reads the signed-in identity (`useSession`) and the two
+   * real preferences (`usePreferences`'s language/theme) — live-vs-demo data
+   * exactly like `dataBackedScreens` credits, just not through
+   * `useCollection`, and not a business collection either: there is nothing
+   * here for a `useCollection` call to read even in principle. Named rather
+   * than widening `SEAM_ANY` to `useSession`/`usePreferences` generally,
+   * which would over-credit any screen that merely renders the current
+   * language toggle alongside real fabricated business rows. */
+  const identityContent = e.name === 'User-Settings'
+  const contentSurface = e.surface === 'auth' || e.surface === 'public' || staticMatrixContent || identityContent
   const noBackend = isHonestGap(e.name, e.route)
   if (product && rendered && !e.dataBacked && !contentSurface && !noBackend) f.push('MOCK_ONLY')
   if (product && rendered && !e.dataBacked && contentSurface) f.push('CONTENT_ONLY')

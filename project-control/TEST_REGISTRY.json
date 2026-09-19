@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 221,
-    "cases": 2487,
+    "suites": 224,
+    "cases": 2492,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1377,
+      "UNIT_OR_API": 1382,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -4603,6 +4603,60 @@
         "/v1/jobs"
       ],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-SETTINGS-ROLE-MANAGEMENT-DEMO-TEST-TSX",
+      "file": "app/tests/settings-role-management-demo.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "RoleManagement — fixture build"
+      ],
+      "cases": [
+        "shows the real permission counts, and says a staff count isn't available rather than inventing one"
+      ],
+      "caseCount": 1,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-SETTINGS-ROLE-MANAGEMENT-TEST-TSX",
+      "file": "app/tests/settings-role-management.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "RoleManagement — live"
+      ],
+      "cases": [
+        "lists every real role with a permission count from the matrix, not an invented one",
+        "counts staff per role from the real list, not a hardcoded number"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "technician"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-SETTINGS-USER-SETTINGS-TEST-TSX",
+      "file": "app/tests/settings-user-settings.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "UserSettings"
+      ],
+      "cases": [
+        "renders the demo role's own name and real language/theme, not the old fixed person",
+        "reflects Arabic once the language preference is Arabic"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "manager"
+      ]
     },
     {
       "id": "TS-APP-TESTS-TEST-ACCOUNT-TEST-TSX",

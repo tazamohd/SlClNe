@@ -240,9 +240,9 @@ _No lifecycle in the contract belongs to this domain._
 | F-222 | `/data-backup` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-224 | `/user-profile` | app | yes | — | — | — | verified | yes |
 | F-225 | `/system-settings` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-226 | `/user-settings` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-226 | `/user-settings` | app | **mock** | — | — | — | verified | yes |
 | F-228 | `/security-settings` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-229 | `/role-management` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-229 | `/role-management` | app | yes | — | — | yes | verified | yes |
 | F-230 | `/tasks` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-231 | `/task-management` | app | **mock** | — | — | yes | verified | yes |
 | F-232 | `/tools` | app | **mock** | — | — | — | PARTIAL | yes |
@@ -252,7 +252,7 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **163 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **162 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
 - **142 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence

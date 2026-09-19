@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-221 spec files containing 2487 test cases.
+224 spec files containing 2492 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 146 | 1377 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 149 | 1382 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 47 | 623 |
-| app | 131 | 1487 |
+| app | 134 | 1492 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -198,6 +198,9 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/screen-seam-wiring.test.tsx` | UNIT_OR_API | 18 | owner, accountant |
 | `app/tests/service-worker-registration.test.ts` | UNIT_OR_API | 6 | — |
 | `app/tests/service-worker.test.ts` | UNIT_OR_API | 17 | — |
+| `app/tests/settings-role-management-demo.test.tsx` | UNIT_OR_API | 1 | owner |
+| `app/tests/settings-role-management.test.tsx` | UNIT_OR_API | 2 | owner, technician |
+| `app/tests/settings-user-settings.test.tsx` | UNIT_OR_API | 2 | manager |
 | `app/tests/test-account.test.tsx` | UNIT_OR_API | 17 | test, superadmin, owner, supplier |
 | `app/tests/unit/contract-primitives.test.ts` | CONTRACT | 50 | — |
 | `app/tests/unit/contract-rules.test.ts` | CONTRACT | 107 | qc |
