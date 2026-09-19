@@ -341,6 +341,25 @@ Grouped by what they actually need:
   and `RolesPermissions`, already partly exist per PR #128's admin/staff
   routes; the rest do not).
 
+## Bucket B: main moved under this branch — merged, not re-fought (2026-09-19)
+
+A concurrent session's PR #155 landed on main while this pass was in
+flight: a real `warehouseZones` collection plus a `zone_code` reference on
+`parts`, closing `Internal-Warehouse` honestly (derived item counts, not
+recorded ones — see 4397971's own message) without touching golden path 7.
+It also generalised `build-registry.mjs`'s file-admission gate to a
+"file imports from `data/repository`" catch-all, which conflicted with this
+branch's named `HEALTH_CHECK_API_CALL` clause in the same spot. Resolved by
+keeping both: the broad import check as the general net, the named clause
+kept alongside it for the same reason `PROCUREMENT_API_CALL` is named rather
+than folded away — a reader asking "why does this file get scanned" finds
+the specific answer, not just the general one.
+
+**BLK-004: 37 → 36** (Internal-Warehouse's fix landed on main independently
+of this branch; the 37 above already reflected this branch's own two fixes
+before the merge). BLK-013 (NO_BACKEND): 129 → 117 (Internal-Warehouse
+leaves the honest-gap count entirely, since it's dataBacked now, not gap).
+
 ## Bucket B, second pass: DONE (2026-09-19)
 
 **Another registry detection gap, same shape as the first pass.**
