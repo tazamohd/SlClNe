@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 431,
-    "generated": 281,
-    "explicit": 150,
+    "endpoints": 440,
+    "generated": 289,
+    "explicit": 151,
     "unauthenticated": 6,
-    "withPermissionGuard": 404,
+    "withPermissionGuard": 413,
     "idempotent": 2,
-    "withTests": 116
+    "withTests": 118
   },
   "collections": [
     {
@@ -967,6 +967,35 @@
         "dir": "asc"
       },
       "writable": false
+    },
+    {
+      "key": "equipmentWarranties",
+      "path": "equipment-warranties",
+      "table": "equipmentWarranties",
+      "module": "accounting",
+      "entity": "equipment_warranty",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "codeColumn": "warrantyNumber",
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "writable": true
     },
     {
       "key": "employees",
@@ -8141,6 +8170,351 @@
       "idempotent": false,
       "audited": true,
       "capability": "CAP-HR",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/equipment-warranties",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "List the collection with search, sort, filter and pagination — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-EQUIPMENT-WARRANTIES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/equipment-warranties",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Create one row — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": [
+        "TS-SERVER-TESTS-EQUIPMENT-WARRANTIES-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/equipment-warranties/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Soft-delete one row — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-GETID",
+      "method": "GET",
+      "path": "/api/v1/equipment-warranties/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Read one row by ULID or business code — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/equipment-warranties/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Update one row (optimistic concurrency on version) — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-GET-EQUIPMENT-WARRANTIES-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/equipment-warranties/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "accounting",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "accounting",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/equipment-warranties/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Soft-delete many rows — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/equipment-warranties/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Apply one patch to many rows — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
+      "tests": []
+    },
+    {
+      "id": "API-EQUIPMENTWARRANTIES-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/equipment-warranties/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "accounting",
+      "purpose": "Export the filtered collection as a file — equipment_warranty.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "accounting",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "equipment_warranty",
+      "table": "equipmentWarranties",
+      "search": [
+        "warrantyNumber",
+        "itemName",
+        "provider"
+      ],
+      "sortable": [
+        "warrantyNumber",
+        "itemName",
+        "endDate",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "status",
+        "coverage"
+      ],
+      "defaultSort": {
+        "column": "endDate",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-ACCOUNTING",
       "tests": []
     },
     {

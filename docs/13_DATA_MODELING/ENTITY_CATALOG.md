@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
 
-75 tables. 70 are tenant-scoped (carry `org_id`) and 71 have row-level security enabled and forced.
+76 tables. 71 are tenant-scoped (carry `org_id`) and 72 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -72,6 +72,7 @@
 | ENT-INSURANCE-CLAIMS | `insurance_claims` | 24 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-LOAN-CONTRACTS | `loan_contracts` | 18 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-LOAN-REPAYMENTS | `loan_repayments` | 17 | yes | yes | yes | yes | yes | yes | 2 | 0 |
+| ENT-EQUIPMENT-WARRANTIES | `equipment_warranties` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-EMPLOYEES | `employees` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-PAYROLL-RUNS | `payroll_runs` | 17 | yes | yes | yes | yes | yes | yes | 4 | 0 |
 | ENT-PAYROLL-LINES | `payroll_lines` | 16 | yes | yes | yes | yes | yes | yes | 4 | 0 |

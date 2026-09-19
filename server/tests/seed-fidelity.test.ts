@@ -103,6 +103,9 @@ const FIXTURES: Record<string, readonly unknown[]> = {
    *  seeded; every row is born from `POST /canned-jobs`, so the collection
    *  serves an empty set until a test or an advisor creates a package. */
   cannedJobs: [],
+  /** No design fixture — equipment warranties are new (BLK-004). The
+   *  collection serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  equipmentWarranties: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and

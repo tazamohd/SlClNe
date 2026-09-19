@@ -12,7 +12,7 @@
 
 ## The one thing to read first
 
-Of 192 relationships in the model, **68 are backed by a database foreign key** and **124 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 194 relationships in the model, **69 are backed by a database foreign key** and **125 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -162,6 +162,8 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-LOAN-REPAYMENTS-ORG-ID | `loan_repayments` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-LOAN-REPAYMENTS-BRANCH-ID | `loan_repayments` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
 | REL-LOAN-REPAYMENTS-LOAN-CONTRACT-ID | `loan_repayments` | `loan_contract_id` | `loan_contracts` | many-to-one | mandatory | **INFERRED** | yes |
+| REL-EQUIPMENT-WARRANTIES-ORG-ID | `equipment_warranties` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-EQUIPMENT-WARRANTIES-BRANCH-ID | `equipment_warranties` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-ORG-ID | `employees` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-EMPLOYEES-BRANCH-ID | `employees` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-DEPARTMENT-ID | `employees` | `department_id` | `departments` | many-to-one | optional | **INFERRED** | no |

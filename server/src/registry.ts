@@ -1038,6 +1038,39 @@ export const COLLECTIONS: readonly CollectionDef[] = [
     }),
   }),
 
+  /* Equipment warranties (BLK-004) — cover on the shop's own tools and fixed
+   * assets, not a customer's vehicle. Writable through the generic router,
+   * the same shape `suppliers` gets: a flat directory with no lines, no
+   * derived money and one lifecycle move (active -> claimed), so it needs
+   * no bespoke router the way estimates or purchase orders do. */
+  define({
+    key: 'equipmentWarranties',
+    path: 'equipment-warranties',
+    table: s.equipmentWarranties,
+    module: 'accounting',
+    entity: 'equipment_warranty',
+    search: ['warrantyNumber', 'itemName', 'provider'],
+    sortable: ['warrantyNumber', 'itemName', 'endDate', 'status', 'createdAt'],
+    filterable: ['status', 'coverage'],
+    defaultSort: { column: 'endDate', dir: 'asc' },
+    codeColumn: 'warrantyNumber',
+    writable: true,
+    present: (row) => ({
+      ...meta(row),
+      id: row.warrantyNumber,
+      warrantyNumber: row.warrantyNumber,
+      itemName: row.itemName,
+      provider: row.provider,
+      coverage: row.coverage,
+      start: dateUS(row.startDate),
+      end: dateUS(row.endDate),
+      status: row.status,
+      claimedAt: row.claimedAt ? new Date(row.claimedAt as string | Date).toISOString() : null,
+      claimNotes: row.claimNotes ?? null,
+      notes: row.notes ?? null,
+    }),
+  }),
+
   /* ------------------------------------------------------------------- HR */
   define({
     /** Employees (vertical B) — staff who belong to a department (the existing

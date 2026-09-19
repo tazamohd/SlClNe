@@ -5051,6 +5051,18 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading expenses…": "جارٍ تحميل المصروفات…",
   "Loading sales…": "جارٍ تحميل المبيعات…",
 
+  // Equipment warranties (BLK-004) — a real writable directory replacing
+  // WarrantyManagement.tsx's fabricated "Connected" mock rows.
+  "Delete Warranty?": "هل تريد حذف الضمان؟",
+  "Hydraulic Lift #1": "رافعة هيدروليكية رقم ١",
+  "LiftMaster Co": "شركة ليفت ماستر",
+  "Only used once the status is Claimed.": "تُستخدم فقط عند أن تكون الحالة \"مُطالَب به\".",
+  "Warranty deleted": "تم حذف الضمان",
+  "Could not update warranty": "تعذر تحديث الضمان",
+  "Mark as Claimed": "وضع علامة كمطالَب به",
+  "Updating...": "جارٍ التحديث...",
+  "Warranty marked as claimed": "تم وضع علامة على الضمان كمطالَب به",
+
   // Wave 8 — honest-gap, real-wire and fake-success fixes for the auth domain screens.
   "You've been invited to join a workspace.": "لقد تمت دعوتك للانضمام إلى مساحة عمل.",
   "Accepting invites online is not available on this deployment yet — ask whoever invited you for another way to join.": "قبول الدعوات عبر الإنترنت غير متاح في هذا الإصدار حاليًا — اطلب من الشخص الذي دعاك طريقة أخرى للانضمام.",
