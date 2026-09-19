@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 524,
+    "endpoints": 525,
     "generated": 358,
-    "explicit": 166,
+    "explicit": 167,
     "unauthenticated": 6,
-    "withPermissionGuard": 495,
+    "withPermissionGuard": 496,
     "idempotent": 2,
-    "withTests": 138
+    "withTests": 139
   },
   "collections": [
     {
@@ -17287,6 +17287,29 @@
       "capability": "CAP-WORKSHOP",
       "tests": [
         "TS-SERVER-TESTS-DECLINED-JOBS-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-GET-REPORTS-TECHNICIAN-LEADERBOARD",
+      "method": "GET",
+      "path": "/api/v1/reports/technician-leaderboard",
+      "source": "server/src/routes/technician-leaderboard.ts",
+      "kind": "EXPLICIT",
+      "domain": "hr",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "hr",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-HR",
+      "tests": [
+        "TS-SERVER-TESTS-TECHNICIAN-LEADERBOARD-TEST-TS"
       ]
     },
     {

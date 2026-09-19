@@ -10,7 +10,7 @@
 
 # API — hr
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 66 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 67 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -53,6 +53,7 @@
 | POST | `/api/v1/payroll/runs/bulk-delete` | hr:d | token | `payrollRuns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/payroll/runs/bulk-update` | hr:e | token | `payrollRuns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/payroll/runs/export` | hr:x | token | `payrollRuns` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/reports/technician-leaderboard` | hr:v | token | — | — | 1 | `server/src/routes/technician-leaderboard.ts` |
 | GET | `/api/v1/timesheets` | hr:v | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/timesheets` | hr:c | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | DELETE | `/api/v1/timesheets/:id` | hr:d | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |

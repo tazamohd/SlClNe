@@ -7078,7 +7078,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "route": "/technician-leaderboards",
     "surface": "app",
     "shell": "AppShell",
-    "module": null,
+    "module": "hr",
     "category": "PRODUCT",
     "domain": "featuremap",
     "owner": "08–17",
@@ -7086,9 +7086,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
+      "ARABIC_MISSING"
     ],
     "inNav": false,
     "designSource": null,

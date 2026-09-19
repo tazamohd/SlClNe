@@ -22,13 +22,13 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 84 of 84 |
 | Relationships documented | 212 (78 FK-backed, 134 convention only) |
-| Endpoints documented | 524 of 524 |
-| Endpoints with a linked test | 138 of 524 |
+| Endpoints documented | 525 of 525 |
+| Endpoints with a linked test | 139 of 525 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 28 |
 | Screens registered and mapped to a capability | 436 of 436 |
-| Screens wired to the live API | 163 of 436 |
-| Test suites catalogued | 217 containing 2462 cases |
+| Screens wired to the live API | 164 of 436 |
+| Test suites catalogued | 219 containing 2476 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -85,9 +85,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 35 screens read design fixtures rather than the API
+### 5. 34 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 35 of 436 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 34 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -197,5 +197,5 @@ _None — every required document is present._
 3. **Confirm the 23 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 386 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 35 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 34 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

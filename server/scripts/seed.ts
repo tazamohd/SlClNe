@@ -740,22 +740,34 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
 
   /* F-027: a few customer feedback rows so the read-back the capture form's
    * screen lists has coherent tenant-scoped data. Counted in
-   * SEED_COHERENCE_EXTRAS (the design bundle carries no feedback fixture). */
+   * SEED_COHERENCE_EXTRAS (the design bundle carries no feedback fixture).
+   *
+   * BLK-004: each row now names the job it is feedback *about*, by the same
+   * customer-name join the seeded estimates and invoices already use — each
+   * design customer has exactly one job on the board. Without that link a
+   * rating is a loose star with nothing behind it, and
+   * `GET /reports/technician-leaderboard` — which reaches the technician
+   * through `customer_feedback.job_card_id` → `job_cards.assigned_tech_id` —
+   * could only ever report "no rated jobs". A customer with no job card keeps a
+   * null, rather than being attached to somebody else's work. */
   await tx.insert(s.customerFeedback).values([
     row({
       rating: 5,
       comment: 'Excellent service, my car was ready ahead of schedule.',
       customerName: 'Ahmed Al-Rashid',
+      jobCardId: jobIdByCustomer.get('Ahmed Al-Rashid') ?? null,
     }),
     row({
       rating: 4,
       comment: 'Friendly staff and clear pricing. Waiting area could be better.',
       customerName: 'Layla Al-Sulaiman',
+      jobCardId: jobIdByCustomer.get('Layla Al-Sulaiman') ?? null,
     }),
     row({
       rating: 5,
       comment: 'Diagnostics were thorough and the estimate was honest.',
       customerName: 'Fahad Al-Qahtani',
+      jobCardId: jobIdByCustomer.get('Fahad Al-Qahtani') ?? null,
     }),
   ])
 

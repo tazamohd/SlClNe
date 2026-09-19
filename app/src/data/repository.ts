@@ -2001,6 +2001,63 @@ export function createWorkshopReports(baseUrl: string): WorkshopReportsApi {
   }
 }
 
+/* ------------------------------------------ technician leaderboard aggregate */
+
+/** One technician's derived performance figures, as
+ *  `GET /reports/technician-leaderboard` returns them (BLK-004).
+ *
+ *  Every field is computed by the server from records the workshop holds — job
+ *  cards grouped by `assignedTechId`, the invoices raised against those jobs and
+ *  the customer feedback left on them. None of it is stored against the
+ *  technician, and there is deliberately no `rank`: a rank is an ordering over
+ *  these numbers, so the screen derives it from the order rather than reading a
+ *  column that could disagree with the figures beside it. */
+export interface TechnicianLeaderboardRow {
+  technicianId: string
+  name: string
+  specialty: string | null
+  jobsAssigned: number
+  jobsCompleted: number
+  /** Invoices raised against their completed jobs, excluding draft/cancelled. */
+  invoiceCount: number
+  invoicedHalalas: number
+  /** How many of their jobs a customer rated — the denominator of the average. */
+  ratedJobs: number
+  /** Tenths (4.6 reads as 46), or null when none of their jobs is rated. */
+  avgRatingTenths: number | null
+}
+
+export interface TechnicianLeaderboard {
+  /** The metric the server ordered by, named rather than implied. */
+  rankedBy: string
+  /** The job statuses counted as completed work. */
+  completedStatuses: string[]
+  /** Invoice statuses left out of the invoiced total. */
+  excludedInvoiceStatuses: string[]
+  counted: {
+    technicians: number
+    jobCards: number
+    assignedJobCards: number
+    completedJobCards: number
+    ratedJobCards: number
+    invoices: number
+  }
+  rows: TechnicianLeaderboardRow[]
+}
+
+export interface HrReportsApi {
+  technicianLeaderboard(): Promise<TechnicianLeaderboard>
+}
+
+export function createHrReports(baseUrl: string): HrReportsApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async technicianLeaderboard() {
+      return request<TechnicianLeaderboard>(`${root}/reports/technician-leaderboard`)
+    },
+  }
+}
+
 /* --------------------------------------------- insurance claim lifecycle */
 
 /** The insurance-claim lifecycle actions (vertical A). Live only: each action
@@ -2307,6 +2364,15 @@ export const approvals: ApprovalsApi | null = API_URL ? createApprovalsApi(API_U
 export const workshopReports: WorkshopReportsApi | null = API_URL
   ? createWorkshopReports(API_URL)
   : null
+
+/** The server-computed technician leaderboard (BLK-004), live only against the
+ *  API. Null on the fixtures, for the same reason as the workshop analytics
+ *  above: the invoiced value of a technician's completed jobs is a cross-record
+ *  money total, and §5b puts that on the server. In that build the screen
+ *  derives its job counts and ratings from the real `jobs`, `technicians` and
+ *  `feedback` collections — tallies a client may compute — and shows the money
+ *  column as unavailable rather than summing the page of invoices it holds. */
+export const hrReports: HrReportsApi | null = API_URL ? createHrReports(API_URL) : null
 
 /** The OBD device commands and integration status (F-029), live only. Null on
  *  the fixtures: a device command touches an external bridge, and even live it

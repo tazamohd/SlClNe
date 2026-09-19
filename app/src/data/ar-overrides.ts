@@ -5475,4 +5475,33 @@ export const AR_OVERRIDES: Record<string, string> = {
   // exists but carries no customer audience.
   "Job, appointment, invoice and stock alerts appear here as the system files them.": "تظهر هنا تنبيهات أوامر العمل والمواعيد والفواتير والمخزون عند تسجيلها في النظام.",
   "The workshop notification feed is staff-only, and no customer-addressed notifications exist on the backend yet.": "تنبيهات الورشة مخصصة للموظفين فقط، ولا توجد إشعارات موجهة للعملاء في الخدمات الخلفية بعد.",
+  // Technician Leaderboards (BLK-004) — a ranking derived from recorded job
+  // cards, customer feedback and invoices, replacing ten invented technicians
+  // with invented job counts, ratings, "efficiency" and revenue.
+  "Loading leaderboard...": "جارٍ تحميل لوحة المتصدّرين...",
+  "Could not load the leaderboard": "تعذر تحميل لوحة المتصدّرين",
+  "No completed jobs to rank yet": "لا توجد أعمال مكتملة للترتيب بعد",
+  "A technician appears here once a job card assigned to them reaches completed or delivered. Nothing is ranked until then.":
+    "يظهر الفني هنا عندما تصل بطاقة عمل مُسندة إليه إلى حالة مكتمل أو مُسلَّم. ولا يُرتَّب شيء قبل ذلك.",
+  "Jobs Assigned": "الأعمال المُسندة",
+  "Job Feedback": "تقييم العمل",
+  "no rated jobs": "لا توجد أعمال مُقيَّمة",
+  "How this ranking is derived": "كيف اشتُق هذا الترتيب",
+  "Ranked by completed jobs — a job card assigned to the technician whose status is completed or delivered. Counted over":
+    "الترتيب حسب الأعمال المكتملة — بطاقة عمل مُسندة إلى الفني وحالتها مكتمل أو مُسلَّم. محسوب على",
+  "job cards": "بطاقة عمل",
+  "one page of the collection, so this is a partial count":
+    "صفحة واحدة من السجلات، لذا فهذا عدّ جزئي",
+  "of the technicians on the roster have no completed job in what was counted and are not ranked.":
+    "من الفنيين في القائمة ليس لديهم عمل مكتمل ضمن ما تم عدّه، ولذلك لا يظهرون في الترتيب.",
+  "Job feedback is the customer’s rating of the visit, averaged over the rated jobs shown in brackets — not an appraisal of the technician, and not a stored rating.":
+    "تقييم العمل هو تقييم العميل للزيارة، ومتوسطه محسوب على الأعمال المُقيَّمة الموضّحة بين قوسين — وليس تقييمًا لأداء الفني، وليس تقييمًا مُخزَّنًا.",
+  "No job on this board has been rated by a customer yet, so every feedback figure reads “—”.":
+    "لم يُقيِّم أي عميل عملًا في هذه اللوحة بعد، لذا تظهر كل قيم التقييم بعلامة «—».",
+  "Invoiced is the value of the invoices raised against those completed jobs, summed by the server — not commission, and not the technician’s earnings:":
+    "المفوتر هو قيمة الفواتير الصادرة مقابل تلك الأعمال المكتملة، ويجمعها الخادم — وليس عمولة ولا أرباح الفني:",
+  "Invoiced is a cross-record money total, so it is computed by the server and reads “—” until this build has an API behind it:":
+    "المفوتر إجمالي مالي عبر عدة سجلات، لذا يحسبه الخادم ويظهر بعلامة «—» إلى أن تتوفر واجهة برمجية لهذه النسخة:",
+  "Efficiency is not shown: it needs estimated against actual labour hours per job, which no record carries.":
+    "لا تُعرض الكفاءة: فهي تحتاج إلى ساعات العمل المقدّرة مقابل الفعلية لكل عمل، وهي بيانات لا يسجلها أي سجل.",
 }

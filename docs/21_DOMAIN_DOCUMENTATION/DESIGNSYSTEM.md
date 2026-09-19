@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 202 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 201 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -147,7 +147,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-097 | `/technician-portal-guides` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-098 | `/technician-portal-software` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-099 | `/technician-management` | app | **mock** | — | — | yes | verified | yes |
-| F-100 | `/technician-leaderboards` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-101 | `/technician-performance` | app | **mock** | — | — | yes | verified | yes |
 | F-103 | `/technician-app-home` | app | yes | yes | — | yes | verified | yes |
 | F-105 | `/technician-app-clock` | app | **mock** | — | — | yes | PARTIAL | yes |
@@ -253,8 +252,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **165 of 202 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **143 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **164 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **142 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

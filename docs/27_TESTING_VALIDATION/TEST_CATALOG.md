@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-217 spec files containing 2462 test cases.
+219 spec files containing 2476 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 142 | 1352 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 144 | 1366 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 46 | 609 |
-| app | 128 | 1476 |
+| server | 47 | 617 |
+| app | 129 | 1482 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -124,6 +124,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/Select.test.tsx` | UNIT_OR_API | 9 | — |
 | `app/tests/component/States.test.tsx` | UNIT_OR_API | 13 | — |
 | `app/tests/component/Tabs.test.tsx` | UNIT_OR_API | 12 | — |
+| `app/tests/component/technician-leaderboards.test.tsx` | UNIT_OR_API | 6 | owner |
 | `app/tests/component/technician-my-jobs.test.tsx` | UNIT_OR_API | 2 | technician |
 | `app/tests/component/Tooltip.test.tsx` | UNIT_OR_API | 7 | — |
 | `app/tests/component/training-lms.test.tsx` | UNIT_OR_API | 6 | hr, technician |
@@ -255,6 +256,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/security.test.ts` | SECURITY | 13 | — |
 | `server/tests/seed-coherence.test.ts` | DATA_FIDELITY | 12 | — |
 | `server/tests/seed-fidelity.test.ts` | DATA_FIDELITY | 3 | owner |
+| `server/tests/technician-leaderboard.test.ts` | UNIT_OR_API | 8 | manager, owner, advisor, technician, qc, frontdesk, supplier, hr, accountant |
 | `server/tests/training-lms.test.ts` | UNIT_OR_API | 21 | hr, technician, customer |
 | `server/tests/warehouse-zones.test.ts` | UNIT_OR_API | 16 | parts, technician, customer |
 | `server/tests/workshop-qc.test.ts` | UNIT_OR_API | 7 | qc, manager, technician, hr |

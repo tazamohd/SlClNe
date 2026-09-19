@@ -36,6 +36,7 @@ import { registerProcurementRoutes } from './routes/procurement'
 import { registerProductReportRoutes } from './routes/product-reports'
 import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
+import { registerTechnicianLeaderboardRoutes } from './routes/technician-leaderboard'
 import { registerWorkshopReportRoutes } from './routes/workshop-reports'
 import { registerDeclinedJobsReportRoutes } from './routes/declined-jobs-report'
 import { registerDeliveryRoutes } from './routes/delivery'
@@ -391,6 +392,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerAuditLogRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })
+      registerTechnicianLeaderboardRoutes(api, { db: deps.db })
       registerDeclinedJobsReportRoutes(api, { db: deps.db, env: deps.env })
       registerObdRoutes(api, { db: deps.db, bridge: obdBridge, messaging: messagingTransport, config: integrationConfig })
       registerEstimateOtpRoutes(api, { db: deps.db })

@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 524,
-    "endpointsTotal": 524
+    "endpointsMapped": 525,
+    "endpointsTotal": 525
   },
   "capabilities": [
     {
@@ -702,7 +702,7 @@
       ],
       "objective": "OBJ-CAPACITY",
       "objectiveName": "Use technician capacity well",
-      "endpointCount": 70,
+      "endpointCount": 71,
       "endpoints": [
         "API-EMPLOYEES-GET-LIST",
         "API-EMPLOYEES-POST-LIST",
@@ -743,6 +743,7 @@
         "API-PAYROLLRUNS-POSTBULK-DELETE",
         "API-PAYROLLRUNS-POSTBULK-UPDATE",
         "API-PAYROLLRUNS-GETEXPORT",
+        "API-GET-REPORTS-TECHNICIAN-LEADERBOARD",
         "API-TECHNICIANS-GET-LIST",
         "API-TECHNICIANS-GETID",
         "API-GET-TECHNICIANS-ID-HISTORY",
@@ -775,13 +776,14 @@
         "API-TRAININGENROLMENTS-POSTBULK-UPDATE",
         "API-TRAININGENROLMENTS-GETEXPORT"
       ],
-      "screenCount": 12,
+      "screenCount": 13,
       "screens": [
         "D-Departments",
         "D-HRPayroll",
         "D-TechnicianKB",
         "D-Technicians",
         "D-TechnicianSchedule",
+        "F-100",
         "F-135",
         "F-136",
         "F-139",
@@ -790,7 +792,7 @@
         "F-142",
         "F-143"
       ],
-      "dataBackedScreens": 12,
+      "dataBackedScreens": 13,
       "entities": [
         "employees",
         "leaveRequests",
@@ -1449,7 +1451,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 202,
+      "screenCount": 201,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1550,7 +1552,6 @@
         "F-097",
         "F-098",
         "F-099",
-        "F-100",
         "F-101",
         "F-103",
         "F-105",

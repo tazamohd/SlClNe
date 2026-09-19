@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 217,
-    "cases": 2462,
+    "suites": 219,
+    "cases": 2476,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1352,
+      "UNIT_OR_API": 1366,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2475,6 +2475,28 @@
       "caseCount": 12,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-TECHNICIAN-LEADERBOARDS-TEST-TSX",
+      "file": "app/tests/component/technician-leaderboards.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "TechnicianLeaderboards (fixture build)"
+      ],
+      "cases": [
+        "ranks technicians by the completed jobs actually assigned to them",
+        "moves a technician up the board when one more of their jobs is completed",
+        "averages the customer feedback left on their jobs, and shows what it is over",
+        "leaves a technician with nothing completed off the board and says so",
+        "shows the empty state, not a ranking, when no completed job is assigned to anyone",
+        "does not present a metric it cannot derive: no efficiency, and money left to the server"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-TECHNICIAN-MY-JOBS-TEST-TSX",
@@ -6924,6 +6946,40 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-TECHNICIAN-LEADERBOARD-TEST-TS",
+      "file": "server/tests/technician-leaderboard.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "GET /reports/technician-leaderboard"
+      ],
+      "cases": [
+        "counts a technician’s completed jobs, and only the completed ones",
+        "sums the invoiced value of the completed jobs, and leaves drafts out",
+        "averages the customer feedback left on their jobs, in tenths, and null when none",
+        "carries no rank, no efficiency and no stored rating — and orders by completed jobs",
+        "says how much was counted, and the totals agree with the rows",
+        "is tenant-scoped: a neighbour org sees none of this org’s technicians or money",
+        "refuses the roles that may see the technician roster but not staff performance",
+        "allows the roles the hr module already grants view to"
+      ],
+      "caseCount": 8,
+      "touchesPaths": [
+        "/api/v1/reports/technician-leaderboard"
+      ],
+      "touchesRoles": [
+        "manager",
+        "owner",
+        "advisor",
+        "technician",
+        "qc",
+        "frontdesk",
+        "supplier",
+        "hr",
+        "accountant"
       ]
     },
     {
