@@ -12,13 +12,13 @@
 
 **Status:** GENERATED · **Source of truth:** the route files · **Sources as of:** 2026-09-19
 
-506 endpoints under `/api/v1`, plus the two unauthenticated probes.
+508 endpoints under `/api/v1`, plus the two unauthenticated probes.
 
 ## How the surface is built
 
 **342 of them are generated.** `server/src/registry.ts` describes each of the 64 collections once — its table, the permission module that gates it, the columns `?q=` searches and `?sort=`/`?filter[]=` accept, and how a row is presented — and `server/src/routes/collections.ts` produces the uniform routes from that description. The alternative, 64 hand-written routers, guarantees that one of them forgets the soft-delete filter or the permission check.
 
-**164 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
+**166 are written out.** Anything with behaviour of its own: estimates and invoices carry line items, derived money and idempotency; procurement carries approval ceilings; authentication is its own surface.
 
 ## Cross-cutting contract
 
@@ -55,7 +55,7 @@ Everything reachable without a token, in full. This list is short on purpose and
 | appointments | 9 | 8 | 1 | 9 |
 | approvals | 5 | 3 | 2 | 5 |
 | audit | 1 | 0 | 1 | 1 |
-| auth | 26 | 0 | 26 | 0 |
+| auth | 28 | 0 | 28 | 0 |
 | crm | 51 | 43 | 8 | 51 |
 | customers | 20 | 16 | 4 | 20 |
 | dashboard | 13 | 11 | 2 | 13 |

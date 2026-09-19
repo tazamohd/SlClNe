@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 214,
-    "cases": 2431,
+    "suites": 216,
+    "cases": 2442,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1321,
+      "UNIT_OR_API": 1332,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1657,6 +1657,43 @@
       "caseCount": 8,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-ADMIN-PROFILE-DEMO-TEST-TSX",
+      "file": "app/tests/admin-profile-demo.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Profile — fixture build"
+      ],
+      "cases": [
+        "says the deployment has no API rather than faking a save"
+      ],
+      "caseCount": 1,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-ADMIN-PROFILE-TEST-TSX",
+      "file": "app/tests/admin-profile.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Profile — live"
+      ],
+      "cases": [
+        "saves a changed name through PATCH /auth/me, not a fake toast",
+        "changes the password through POST /auth/change-password and ends the session",
+        "surfaces a server-refused current password on the field, and revokes nothing",
+        "rejects a new password shorter than the server's own policy before ever calling it"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
     },
     {
       "id": "TS-APP-TESTS-ADMIN-USERS-TEAMS-TEST-TSX",
@@ -5508,6 +5545,8 @@
         "POST /auth/refresh — rotation and reuse detection",
         "sessions and revocation",
         "GET /auth/me",
+        "PATCH /auth/me",
+        "POST /auth/change-password",
         "one-time codes",
         "password recovery",
         "POST /admin/staff — garage-employee accounts (Phase A)",
@@ -5538,6 +5577,12 @@
         "logs out idempotently and tells the caller nothing either way",
         "returns the signed-in user, the role and its entitlements",
         "refuses without a token",
+        "updates the caller's own name and nothing else",
+        "rejects a blank name and refuses without a token",
+        "changes the caller's password and signs every device out",
+        "refuses a wrong current password without revoking anything",
+        "enforces the password policy on the new password",
+        "refuses without a token",
         "issues a code, keeps only its digest and verifies it once",
         "throttles a resend to 60 seconds (README §6b)",
         "gives up after too many wrong guesses",
@@ -5558,7 +5603,7 @@
         "reports each provider’s state rather than leaving it to be inferred",
         "serves the sign-in routes without a token and nothing else"
       ],
-      "caseCount": 41,
+      "caseCount": 47,
       "touchesPaths": [
         "/auth/login",
         "/auth/me",
@@ -5567,6 +5612,7 @@
         "/auth/sessions",
         "/auth/sessions/revoke-all",
         "/auth/logout",
+        "/auth/change-password",
         "/auth/request-otp",
         "/auth/verify-otp",
         "/api/v1/auth/request-otp",

@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 506,
-    "endpointsTotal": 506
+    "endpointsMapped": 508,
+    "endpointsTotal": 508
   },
   "capabilities": [
     {
@@ -1227,7 +1227,7 @@
         "D-UsersTeams",
         "D-Welcome"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 10,
       "entities": [
         "departments",
         "branches",
@@ -1269,18 +1269,20 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 26,
+      "endpointCount": 28,
       "endpoints": [
         "API-POST-AUTH-2FA-ENROL",
         "API-POST-AUTH-2FA-VERIFY",
         "API-POST-AUTH-BIOMETRIC-CHALLENGE",
         "API-POST-AUTH-BIOMETRIC-ENROL",
+        "API-POST-AUTH-CHANGE-PASSWORD",
         "API-POST-AUTH-FORGOT-PASSWORD",
         "API-GET-AUTH-INVITE-TOKEN",
         "API-POST-AUTH-INVITE-TOKEN-ACCEPT",
         "API-POST-AUTH-LOGIN",
         "API-POST-AUTH-LOGOUT",
         "API-GET-AUTH-ME",
+        "API-PATCH-AUTH-ME",
         "API-GET-AUTH-PROVIDERS",
         "API-POST-AUTH-REFRESH",
         "API-POST-AUTH-REGISTER",
@@ -1634,7 +1636,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 36,
+      "dataBackedScreens": 37,
       "entities": [],
       "rules": [],
       "roles": [],

@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 506,
+    "endpoints": 508,
     "generated": 342,
-    "explicit": 164,
+    "explicit": 166,
     "unauthenticated": 6,
     "withPermissionGuard": 477,
     "idempotent": 2,
-    "withTests": 134
+    "withTests": 136
   },
   "collections": [
     {
@@ -3503,6 +3503,29 @@
       ]
     },
     {
+      "id": "API-POST-AUTH-CHANGE-PASSWORD",
+      "method": "POST",
+      "path": "/api/v1/auth/change-password",
+      "source": "server/src/auth/routes.ts",
+      "kind": "EXPLICIT",
+      "domain": "auth",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": null,
+      "permissionAction": null,
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-IDENTITY",
+      "tests": [
+        "TS-SERVER-TESTS-AUTH-TEST-TS"
+      ]
+    },
+    {
       "id": "API-POST-AUTH-FORGOT-PASSWORD",
       "method": "POST",
       "path": "/api/v1/auth/forgot-password",
@@ -3629,6 +3652,30 @@
     {
       "id": "API-GET-AUTH-ME",
       "method": "GET",
+      "path": "/api/v1/auth/me",
+      "source": "server/src/auth/routes.ts",
+      "kind": "EXPLICIT",
+      "domain": "auth",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": null,
+      "permissionAction": null,
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-IDENTITY",
+      "tests": [
+        "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
+        "TS-SERVER-TESTS-AUTH-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PATCH-AUTH-ME",
+      "method": "PATCH",
       "path": "/api/v1/auth/me",
       "source": "server/src/auth/routes.ts",
       "kind": "EXPLICIT",

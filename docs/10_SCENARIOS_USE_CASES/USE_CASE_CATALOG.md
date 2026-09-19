@@ -15,7 +15,7 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-72 behavioural use cases.
+74 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -25,10 +25,12 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-AUTH-2FA-VERIFY | POST /auth/2fa/verify | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-BIOMETRIC-CHALLENGE | POST /auth/biometric/challenge | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-BIOMETRIC-ENROL | POST /auth/biometric/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
+| UC-POST-AUTH-CHANGE-PASSWORD | POST /auth/change-password | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-FORGOT-PASSWORD | POST /auth/forgot-password | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-INVITE-TOKEN-ACCEPT | POST /auth/invite/:token/accept | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-LOGIN | POST /auth/login | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-LOGOUT | POST /auth/logout | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
+| UC-PATCH-AUTH-ME | PATCH /auth/me | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-REFRESH | POST /auth/refresh | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-REGISTER | POST /auth/register | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-REQUEST-OTP | POST /auth/request-otp | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |

@@ -24,6 +24,8 @@ Conventions:
 - `POST /auth/sso/start`, `POST /auth/sso/callback` — enterprise SSO.
 - `POST /auth/social/:provider` — Google, Apple.
 - `GET /auth/me` — the signed-in user, role, entitlements. `user.baseRole` is the account's own role, which differs from `user.role` only while the test account is acting as another one.
+- `PATCH /auth/me` — body: `{name}`. The only self-editable field; email is the sign-in identity and isn't changed here. Returns the same `{user, entitlements}` shape `GET /auth/me` does.
+- `POST /auth/change-password` — body: `{currentPassword, newPassword}`. Verifies the current password before hashing the new one, `400` naming `error.field` (`current`/`next`) otherwise. Every session is revoked on success, this account's included — the caller signs itself out.
 
 ## Public (unauthenticated)
 - `POST /public/garage-applications` — a business applies to join the platform.
