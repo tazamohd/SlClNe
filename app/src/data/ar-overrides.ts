@@ -2053,6 +2053,7 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Loading parts...": "جارٍ تحميل القطع...",
   "Loading reports...": "جارٍ تحميل التقارير...",
   "Loading saved reports…": "جارٍ تحميل التقارير المحفوظة…",
+  "Loading services...": "جارٍ تحميل الخدمات...",
   "Loading statements...": "جارٍ تحميل القوائم المالية...",
   "Loading the ledger roll-up…": "جارٍ تحميل تجميع دفتر الأستاذ…",
   "Loading vehicles...": "جارٍ تحميل المركبات...",

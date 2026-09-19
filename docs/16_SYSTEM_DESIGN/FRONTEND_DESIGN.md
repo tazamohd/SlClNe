@@ -33,8 +33,8 @@ Four states a data-backed screen needs, and the counts that have them:
 
 | State | Screens with it | Why it matters |
 | --- | --- | --- |
-| Loading | 193 of 436 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
-| Error | 156 of 436 | A failed fetch with no error state is a blank screen the user cannot act on |
+| Loading | 194 of 436 | A screen that renders empty while fetching reads as "no data" and is indistinguishable from a real empty result |
+| Error | 157 of 436 | A failed fetch with no error state is a blank screen the user cannot act on |
 | Empty | 265 of 436 | Zero rows is a normal state and needs its own design, not a table with no rows |
 | Permission | enforced by `RequireAccess` | A screen a role may not see must not render and then fail; it must not be reachable |
 

@@ -33,7 +33,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Test cases | 2440 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
-| Unresolved findings | 0 of 42 | `FINDINGS.json` |
+| Unresolved findings | 0 of 43 | `FINDINGS.json` |
 | Release gates passing | 11 of 14 | `RELEASE_GATES.json` |
 
 ## The one number that matters most

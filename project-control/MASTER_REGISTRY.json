@@ -17,8 +17,8 @@
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 193,
-    "hasErrorState": 156,
+    "hasLoadingState": 194,
+    "hasErrorState": 157,
     "hasEmptyState": 265,
     "tabletVerified": 4,
     "arabicVerified": 118,
@@ -29,7 +29,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 37,
-    "crudRead": 151,
+    "crudRead": 152,
     "crudUpdate": 36,
     "crudDelete": 29,
     "unregisteredDesigns": 0,
@@ -6086,18 +6086,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "appointments"
+        "appointments",
+        "services"
       ],
       "crud": {
         "create": true,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
