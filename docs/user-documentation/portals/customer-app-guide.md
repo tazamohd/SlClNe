@@ -288,12 +288,16 @@ Control which notifications you receive:
 
 ## Signing Up as a New Customer
 
-If you do not have an account yet:
+If you do not have an account yet, there are two live ways to get one:
+
+**Sign up yourself:**
 
 1. Scan the QR code at the workshop, or follow a link to the garage's signup page.
 2. Fill in the registration form with your name, phone, and email.
 3. Enter the 6-digit **OTP** sent to your phone to verify your identity.
 4. You land on the Customer App with an empty Garage -- add your first vehicle to get started.
+
+**Or have the garage add you:** if the workshop already created your customer record (say, from a phone booking) and you gave them your email, they can grant you portal access from their side — you get an email with a link to set your password, no OTP involved. Ask the front desk if you're not sure whether this has already happened for you.
 
 See [Onboarding Flows](../workflows/onboarding-flows.md) for the detailed signup path.
 

@@ -2,21 +2,26 @@
 
 This document describes the three onboarding paths in SALIS AUTO: how a new garage joins the platform, how a customer signs up, and how a supplier gets approved. Each path ends with the new user accessing their dedicated interface.
 
+> **Status key**: 🟢 **Live** — the route/screen described exists and works today. 🟡 **Planned** — the schema exists (`server/src/db/schema.ts`'s `garage_applications` / `supplier_applications` tables) but no route reads or writes it yet; the section describes the intended shape, not current behaviour. Checked against the codebase 2026-09.
+
 ---
 
 ## Overview
 
-| Path | Who | Entry Point | Result |
-|---|---|---|---|
-| Path A | Garage owner | Marketing page application | Full organization with branches, users, and operational access |
-| Path B | Customer | QR code or signup link | Customer App with vehicles, appointments, and service tracking |
-| Path C | Supplier | Supplier application form | Supplier Portal with catalog, orders, and invoicing |
+| Path | Who | Entry Point | Result | Status |
+|---|---|---|---|---|
+| Path A | Garage owner | Marketing page application | Full organization with branches, users, and operational access | 🟡 Planned (see note in Path A) |
+| Path B | Customer | QR code, signup link, or added by garage staff | Customer App with vehicles, appointments, and service tracking | 🟢 Live |
+| Path C | Supplier | Supplier application form | Supplier Portal with catalog, orders, and invoicing | 🟡 Planned — see [Portals domain doc](../../21_DOMAIN_DOCUMENTATION/PORTALS.md) |
+| Path D | Garage employee (technician, procurement, and other internal roles) | Added by the garage's own owner/manager | Operational access scoped to their role | 🟢 Live |
 
 ---
 
-## Path A: Garage Onboarding
+## Path A: Garage Onboarding 🟡 Planned
 
 This is the path for an existing automotive workshop that wants to use SALIS AUTO as their management platform.
+
+> **Not live yet.** `server/src/db/schema.ts` defines a `garage_applications` table for exactly this queue, but no route reads or writes it — there is no `POST /public/garage-applications`, no applications queue in the Super Admin console, and no automatic organization-creation-on-approval. The only way an organization exists today is `POST /auth/register` (`app/src/screens/auth/Register.tsx`): a person fills in their own name, email and password and gets a brand-new organization with themselves as its `owner`, immediately — no application, no review, no separate credential email. Steps 1-2 below describe the intended review flow. Whatever the Onboarding Wizard (steps 4-5) actually does today is outside what this pass verified — treat it as unconfirmed until someone checks it against the code.
 
 ### Step 1: Submit Application
 
@@ -137,9 +142,9 @@ After completing the wizard, the owner lands on the Dashboard and the organizati
 
 ---
 
-## Path B: Customer Signup
+## Path B: Customer Signup 🟢 Live
 
-This is the path for a vehicle owner who wants to use the Customer App to book services, track repairs, and manage their vehicles.
+This is the path for a vehicle owner who wants to use the Customer App to book services, track repairs, and manage their vehicles. This is one of two live ways a customer gets a login — see "Inviting Customers" under Post-Onboarding below for the other.
 
 ### Step 1: Entry Point
 
@@ -202,9 +207,11 @@ See [Customer App Guide](../portals/customer-app-guide.md) for full details.
 
 ---
 
-## Path C: Supplier Onboarding
+## Path C: Supplier Onboarding 🟡 Planned
 
 This is the path for a parts supplier who wants to receive purchase orders from SALIS AUTO workshops.
+
+> **Not live yet.** `server/src/db/schema.ts` defines a `supplier_applications` table matching the fields below, but — like `garage_applications` — nothing reads or writes it: no `POST /public/supplier-applications`, no review queue, no account creation on approval. There is currently **no way for a `supplier`-role account to be created at all**. What exists today is unrelated and more limited: a garage's own Procurement Agent can add a row to that garage's private supplier/vendor list (`Inventory > Suppliers`) for purchase-order purposes — this does not create a login, a Supplier Portal account, or anything the supplier company itself can sign into. Building the supplier company as its own account holder (its own login, its own staff, usable across more than one garage, with a real garage↔supplier messaging channel) is planned as a separate, larger piece of work, kept isolated from the live paths in this document until it ships — see [External-Partner Tenancy Design (SYS-ARCH-006)](../../system/architecture/supplier-tenancy-design.md) for the proposed architecture.
 
 ### Step 1: Submit Application
 
@@ -274,15 +281,35 @@ Each onboarding path results in a specific role with defined scope:
 | Path | Role | Scope | What They See |
 |---|---|---|---|
 | A (Garage) | Owner | All | Everything in their organization |
-| A (Staff) | Varies | Branch or All | Per-role module access |
 | B (Customer) | Customer | Self | Only their own vehicles, appointments, invoices |
-| C (Supplier) | Supplier | External | Only their own orders, catalog, invoices |
+| C (Supplier) 🟡 Planned | Supplier | External | Only their own orders, catalog, invoices |
+| D (Staff) | Varies | Branch or All | Per-role module access |
 
 ### Data Isolation
 
 - **Customer data** is scoped to the garage they signed up with. A customer who visits multiple garages on the platform has separate accounts.
-- **Supplier data** is scoped to their own transactions. They cannot see other suppliers' data or workshop operations.
+- **Supplier data** would be scoped to their own transactions once Path C ships — describes the intended isolation, not a live account type.
 - **Staff data** is scoped by role: branch-scoped roles see only their branch; all-scoped roles see the entire organization.
+
+---
+
+## Path D: Garage Employee Accounts 🟢 Live
+
+This is how a technician, procurement agent, or any other internal staff role (manager, advisor, QC, parts, accountant, HR, front desk, call centre) gets a login — treated as a garage employee, the same way Path A's owner is, rather than as a self-service signup. There is no public application form for this path; only someone who already holds `admin:c` (today: `owner`, `superadmin`, or the `test` account — the permission matrix gives `manager` view-only on `admin`) can create one.
+
+### Step 1: Add Staff
+
+1. Owner navigates to **Admin > Users & Teams** (`/users-teams`) and clicks **Add Staff**.
+2. Fills in name, email, and role (one of the ten internal roles above — not `owner`, `superadmin`, `supplier`, `customer`, or `test`, each of which has its own path).
+3. Chooses how the account gets its first credential:
+   - **Create now**: the account is active immediately with a generated password, shown once in the dialog for the owner to relay directly. Nothing is emailed.
+   - **Email an invite**: the account is created `pending`; an email with a set-your-password link is sent, and the account activates when that link is used.
+4. Saves — `POST /admin/staff` (`server/src/auth/routes.ts`).
+
+### Step 2: First Login
+
+- **Direct**: the new hire signs in with the password they were handed.
+- **Invited**: the new hire follows the emailed link to `/invite-acceptance?token=...`, sets their password, and is redirected to sign in.
 
 ---
 
@@ -290,30 +317,24 @@ Each onboarding path results in a specific role with defined scope:
 
 After the initial onboarding, additional users are added through the administrative interface:
 
-### Adding Staff (Path A continuation)
+### Adding Staff
 
-1. Owner or Super Admin navigates to **Admin > Users & Teams** (`/users-teams`).
-2. Clicks **Add User**.
-3. Fills in name, email, phone, role, and branch.
-4. Saves. The user receives credentials by email.
+See Path D above — this *is* the "adding staff" flow, not a separate one; there is no other route to a technician, procurement, or other internal-role account.
 
-### Inviting Customers (Path B alternative)
+### Inviting Customers (Path B alternative) 🟢 Live
 
-Instead of self-signup, staff can create customer accounts:
+Instead of self-signup, staff can grant an existing customer record a login:
 
-1. Service Advisor or Receptionist navigates to **CRM > Customers**.
-2. Clicks **Add Customer**.
-3. Enters customer details.
-4. The customer receives an email or SMS with login instructions.
+1. Service Advisor, Front Desk, Call Centre or Manager navigates to **CRM > Customers** and adds or opens a customer record — this uses the ordinary customer collection, not a special onboarding form.
+2. Opens the customer and clicks **Grant Portal Access**.
+3. Requires an email on file for that customer — the invite is an email link (`POST /customers/:id/portal-access`, `server/src/auth/service.ts`'s `grantCustomerPortalAccess`), not an SMS. A customer with no email keeps the phone-OTP self-signup path (Path B above) open to them instead.
+4. The customer receives the invite email and sets their password at `/invite-acceptance?token=...`, the same acceptance screen Path D uses.
 
-### Inviting Suppliers (Path C alternative)
+This does not replace or change the public self-signup OTP flow in Path B — it is a second, independent way to reach the same `users`/`customers` tables.
 
-Instead of self-application, the Procurement Agent can add suppliers:
+### Inviting Suppliers (Path C alternative) 🟡 Planned
 
-1. Navigate to **Inventory > Suppliers**.
-2. Click **Add Supplier**.
-3. Enter company details and categories.
-4. The supplier receives credentials by email.
+Not live — see the note under Path C. Today, **Inventory > Suppliers > Add Supplier** creates a row in the garage's own vendor list for purchasing purposes only; it does not create a login, and the supplier company cannot sign into anything as a result of it.
 
 ---
 

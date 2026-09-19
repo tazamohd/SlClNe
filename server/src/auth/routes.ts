@@ -28,14 +28,18 @@ import { badRequest } from '../http/errors'
 import { metaOf, principalOf } from '../http/context'
 import { GRANT_ACTIONS, describeAction } from '../security/actions'
 import { ceilingHalalas } from '../security/approvals'
+import { requirePermission } from '../security/permissions'
 import type { AuthConfig } from './config'
 import { ProviderNotConfigured, providerStatus, type Providers } from './providers'
 import { ResendTooSoon, TransportUnavailable } from './otp'
 import {
   AuthFailure,
+  CustomerPortalAccessRefused,
   LockedOut,
   RegistrationRefused,
   RoleSwitchRefused,
+  StaffCreationRefused,
+  STAFF_ROLES,
   type AuthService,
   type RequestFacts,
 } from './service'
@@ -66,7 +70,11 @@ const PUBLIC_AUTH_PATHS = [
   '/public/customers/resend-otp',
 ] as const
 
-const PUBLIC_AUTH_PREFIXES = ['/auth/social/'] as const
+/* `/auth/invite/:token` (preview) and `/auth/invite/:token/accept` are public
+ * for the same reason `/public/customers/verify-otp` is: the person holding
+ * the link has not signed in yet — the link *is* how they get their first
+ * credential. The token itself, not a session, is what authorizes these. */
+const PUBLIC_AUTH_PREFIXES = ['/auth/social/', '/auth/invite/'] as const
 
 /** Does this request path skip the access-token check?
  *
@@ -116,6 +124,18 @@ const verifyOtpBody = z.object({
   otp: z.string().trim().regex(/^\d{6}$/, 'A one-time code is six digits.'),
 })
 const revokeAllBody = z.object({ keepCurrent: z.boolean().optional(), sessionId: z.string().optional() })
+
+const staffCreateBody = z.object({
+  name: z.string().trim().min(1, 'Please enter a name.').max(200),
+  email: z.string().trim().min(3).max(254).email('Please enter a valid email address.'),
+  role: z.enum(STAFF_ROLES as [string, ...string[]]),
+  branchId: z.string().trim().min(1).max(40).optional(),
+  mode: z.enum(['direct', 'invite']),
+})
+
+const inviteAcceptBody = z.object({
+  password: z.string().min(1).max(200),
+})
 
 function parse<T extends z.ZodTypeAny>(schema: T, body: unknown): z.infer<T> {
   const parsed = schema.safeParse(body ?? {})
@@ -266,6 +286,33 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
     return reply.code(200).send({
       message: 'Your password has been changed and every session has been signed out.',
     })
+  })
+
+  app.get('/auth/invite/:token', veryStrictLimit, async (request, reply) => {
+    const { token } = request.params as { token: string }
+    const invite = await service.previewInvite(token)
+    if (!invite) {
+      return reply.code(404).send({
+        error: {
+          code: 'not_found',
+          message: 'That invite link is invalid or has expired.',
+          requestId: request.id,
+        },
+      })
+    }
+    return reply.code(200).send(invite)
+  })
+
+  app.post('/auth/invite/:token/accept', veryStrictLimit, async (request, reply) => {
+    const { token } = request.params as { token: string }
+    const body = parse(inviteAcceptBody, request.body)
+    const result = await service.acceptInvite({ token, password: body.password }, facts(request))
+    if (!result.ok) {
+      return reply.code(400).send({
+        error: { code: 'bad_request', message: result.reason, requestId: request.id },
+      })
+    }
+    return reply.code(200).send({ message: 'Your password has been set. Sign in to continue.' })
   })
 
   app.post('/auth/request-otp', veryStrictLimit, async (request, reply) => {
@@ -518,6 +565,89 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
       facts(request),
     )
     return { revoked: count }
+  })
+
+  app.get('/admin/staff', async (request) => {
+    const principal = principalOf(request)
+    requirePermission(principal, 'admin', 'v')
+    const staff = await service.listStaffUsers(principal)
+    return { users: staff.map((u) => ({ ...presentUser(u), status: u.status })) }
+  })
+
+  /** A garage's own employee account — `admin:c`, so today only `owner`,
+   *  `superadmin` and `test` may call it (the matrix gives `manager` view-only
+   *  on `admin`). Widening that is a design-bundle change, not a hand-edit
+   *  here — `rbac-parity.test.ts` would fail against the un-regenerated
+   *  frontend copy the moment the two disagreed. */
+  app.post('/admin/staff', async (request, reply) => {
+    const principal = principalOf(request)
+    requirePermission(principal, 'admin', 'c')
+    const body = parse(staffCreateBody, request.body)
+    try {
+      const result = await service.createStaffUser(principal, body, facts(request))
+      if (result.mode === 'direct') {
+        return reply.code(201).send({
+          mode: 'direct',
+          user: presentUser(result.user),
+          /* Shown once. Not persisted anywhere in plaintext past this response. */
+          temporaryPassword: result.temporaryPassword,
+        })
+      }
+      return reply.code(201).send({
+        mode: 'invite',
+        user: presentUser(result.user),
+        expiresAt: result.expiresAt.toISOString(),
+      })
+    } catch (error) {
+      if (error instanceof StaffCreationRefused) {
+        return reply.code(error.code === 'email_taken' ? 409 : 400).send({
+          error: {
+            code: error.code === 'email_taken' ? 'conflict' : 'bad_request',
+            message: error.message,
+            field: error.field,
+            requestId: request.id,
+          },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      throw error
+    }
+  })
+
+  /** The second way a customer gets an account (Phase B) — staff-granted,
+   *  beside the public phone-OTP self-signup. `customers:e`: granting a
+   *  login is a change to the customer record's standing, gated the same as
+   *  editing one, and already reaches everyone who can (`manager`, `advisor`,
+   *  `frontdesk`, `callcenter`, plus `owner`/`test`). */
+  app.post('/customers/:id/portal-access', async (request, reply) => {
+    const principal = principalOf(request)
+    requirePermission(principal, 'customers', 'e')
+    const { id } = request.params as { id: string }
+    try {
+      const result = await service.grantCustomerPortalAccess(principal, id, facts(request))
+      return reply.code(201).send({
+        user: presentUser(result.user),
+        expiresAt: result.expiresAt.toISOString(),
+      })
+    } catch (error) {
+      if (error instanceof CustomerPortalAccessRefused) {
+        const status =
+          error.code === 'not_found' ? 404 : error.code === 'no_email' ? 400 : 409
+        return reply.code(status).send({
+          error: {
+            code: status === 404 ? 'not_found' : status === 400 ? 'bad_request' : 'conflict',
+            message: error.message,
+            requestId: request.id,
+          },
+        })
+      }
+      if (error instanceof TransportUnavailable) {
+        return unavailable(reply, request, `${error.message} ${error.detail}`)
+      }
+      throw error
+    }
   })
 }
 

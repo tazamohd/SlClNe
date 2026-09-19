@@ -10,7 +10,7 @@
 
 # API — admin
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 4 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 6 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -18,6 +18,8 @@
 | GET | `/api/v1/admin/departments/:id` | admin:v | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/admin/departments/:id/history` | admin:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/admin/departments/export` | admin:x | token | `departments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/admin/staff` | admin:v | token | — | — | 1 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/admin/staff` | admin:c | token | — | — | 1 | `server/src/auth/routes.ts` |
 
 ## Query contract for generated collection routes
 

@@ -27,10 +27,10 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Reading design fixtures | 224 of 430 | `STATUS.json` |
 | End-to-end covered | 430 of 430 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
-| Arabic verified | 74 of 430 | `STATUS.json` |
+| Arabic verified | 73 of 430 | `STATUS.json` |
 | Tablet verified | 4 of 430 | `STATUS.json` |
-| API endpoints | 440 | the route files |
-| Test cases | 2305 | the spec files |
+| API endpoints | 445 | the route files |
+| Test cases | 2320 | the spec files |
 | Open risks | 10 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 12 of 35 | `FINDINGS.json` |

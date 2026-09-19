@@ -6,6 +6,16 @@ This guide is a detailed reference for the **Technician Portal** -- the dedicate
 
 ---
 
+## Getting Access
+
+There is no self-signup for this portal — a technician account is a garage employee account, created by the garage's owner (see [Onboarding Flows: Path D](../workflows/onboarding-flows.md#path-d-garage-employee-accounts-live)):
+
+1. The owner adds you from **Admin > Users & Teams**, choosing the `technician` role.
+2. Depending on how they chose to create it, you either get a password handed to you directly, or an email invite link to set your own password at `/invite-acceptance`.
+3. Sign in at `/login` once you have a password either way.
+
+---
+
 ## Portal Overview
 
 After logging in as a Technician, you land on the **Technician Portal** (`/technician-portal`). This portal is separate from the main application shell -- it uses a focused layout designed for workshop floor use, often on a tablet or phone.

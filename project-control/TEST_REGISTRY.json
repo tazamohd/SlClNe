@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 204,
-    "cases": 2305,
+    "suites": 206,
+    "cases": 2320,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1195,
+      "UNIT_OR_API": 1210,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1684,6 +1684,26 @@
       "caseCount": 8,
       "touchesPaths": [],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-ADMIN-USERS-TEAMS-TEST-TSX",
+      "file": "app/tests/admin-users-teams.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "UsersTeams — live"
+      ],
+      "cases": [
+        "lists staff from the API rather than the fixture rows",
+        "creates a staff account directly and shows the one-time password"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "parts",
+        "technician"
+      ]
     },
     {
       "id": "TS-APP-TESTS-COMPONENT-ACCORDION-TEST-TSX",
@@ -3516,6 +3536,23 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-INVITE-ACCEPTANCE-TEST-TSX",
+      "file": "app/tests/invite-acceptance.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "InviteAcceptance — live"
+      ],
+      "cases": [
+        "previews the invite, then accepts it and sets the password",
+        "refuses mismatched passwords without calling the server",
+        "shows an invalid-invitation state for an expired or unknown token"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": []
+    },
+    {
       "id": "TS-APP-TESTS-KIOSK-IDENTIFY-TEST-TSX",
       "file": "app/tests/kiosk-identify.test.tsx",
       "kind": "UNIT_OR_API",
@@ -5342,6 +5379,8 @@
         "GET /auth/me",
         "one-time codes",
         "password recovery",
+        "POST /admin/staff — garage-employee accounts (Phase A)",
+        "POST /customers/:id/portal-access — staff-granted customer login (Phase B)",
         "SSO, WebAuthn, social and TOTP",
         "the public/authenticated split"
       ],
@@ -5374,11 +5413,21 @@
         "refuses to pretend when no transport is configured",
         "answers identically for a known and an unknown address",
         "resets the password, enforces the policy and signs every device out",
+        "creates a staff account directly, active immediately, with a one-time password",
+        "invites a staff account, which cannot sign in until the invite is accepted",
+        "refuses a role this endpoint may not create",
+        "refuses an email already in use",
+        "is refused for a role without admin:c — the matrix gives manager view-only",
+        "lists the organization’s staff — readable by manager, excludes customers",
+        "grants a login, leaving the public self-signup path untouched",
+        "refuses a customer with no email on file",
+        "refuses to grant access twice",
+        "404s for a customer that does not exist",
         "refuse visibly, naming the configuration that is missing",
         "reports each provider’s state rather than leaving it to be inferred",
         "serves the sign-in routes without a token and nothing else"
       ],
-      "caseCount": 31,
+      "caseCount": 41,
       "touchesPaths": [
         "/auth/login",
         "/auth/me",
@@ -5392,6 +5441,10 @@
         "/api/v1/auth/request-otp",
         "/auth/forgot-password",
         "/auth/reset-password",
+        "/admin/staff",
+        "/customers",
+        "/public/customers/register",
+        "/customers/not-a-real-id/portal-access",
         "/auth/sso/start",
         "/auth/sso/callback",
         "/auth/biometric/enrol",
@@ -5399,14 +5452,18 @@
         "/auth/social/google",
         "/auth/2fa/enrol",
         "/auth/2fa/verify",
-        "/auth/providers",
-        "/customers"
+        "/auth/providers"
       ],
       "touchesRoles": [
         "owner",
         "manager",
         "technician",
-        "frontdesk"
+        "frontdesk",
+        "parts",
+        "superadmin",
+        "customer",
+        "supplier",
+        "test"
       ]
     },
     {
