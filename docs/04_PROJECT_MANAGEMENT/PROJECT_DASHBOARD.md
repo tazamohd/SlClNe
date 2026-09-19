@@ -30,7 +30,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | Arabic verified | 122 of 436 | `STATUS.json` |
 | Tablet verified | 4 of 436 | `STATUS.json` |
 | API endpoints | 529 | the route files |
-| Test cases | 2541 | the spec files |
+| Test cases | 2546 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 0 of 46 | `FINDINGS.json` |
@@ -74,7 +74,7 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | RB-07 — No inventory corruption | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/inventory-enforcement.test.ts, tests/procurement.test.ts, tests/rules.test |
 | RB-08 — No authentication bypass | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 54 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/auth.test.ts, tests/isolation.test.ts, tests/security.test.ts); whole run  |
 | RB-09 — No critical security vulnerability | pass | `npm audit --json` in app/, server/ and packages/contract/ — app: 0 critical, 0 high, 8 moderate, 0 low; server: 0 critical, 0 high, 4 moderate, 0 low; packages/contract: 0 critical, 0 high, 0 moderate, 0 low. No critica |
-| RB-10 — No exposed secret (three chat-exposed PATs rotated) | pass | built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2683 files, 31.9 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, goog |
+| RB-10 — No exposed secret (three chat-exposed PATs rotated) | pass | built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2684 files, 31.9 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, goog |
 | RB-11 — No major data loss path | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 7 mapped assertion(s) passed across 3 suite file(s) (tests/api.test.ts, tests/authz-matrix.test.ts, tests/writes.test.ts); whole run 770/770 passed, 0 fa |
 | RB-12 — Backup restore drill passed | _uncheckable_ | A restore drill is an operation against real infrastructure — take a backup of the production database, restore it into a clean instance, and verify the restored data — and no part of it can be decided from source. No dr |
 | RB-13 — No broken critical mobile workflow | pass | All 6 phone- and kiosk-facing golden path(s) pass in the mobile project (390x840) of the Playwright suite, per project-control/GOLDEN_PATHS.json (projects: desktop, mobile). Note this covers workflow completion at a phon |

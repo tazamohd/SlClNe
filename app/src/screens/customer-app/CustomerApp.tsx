@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   AppHeroCard,
@@ -22,6 +23,34 @@ import { isDone, isInProgress } from '@/screens/portals/portal-data'
 
 /** The eleven customer-app screens. They render inside `CustomerAppShell`,
  *  which supplies the 430px frame, header and bottom tab bar. */
+
+/** A plain statement about what this surface cannot do, and who does it
+ *  instead.
+ *
+ *  Four buttons on these screens used to navigate to the route they were
+ *  already on — "Add Vehicle", "Apply for Finance", "Policy Documents" and
+ *  "File a Claim" — so each rendered as a working control and did nothing. That
+ *  is the same failure as a fabricated value, told with a handler instead of a
+ *  constant: the control looks capable, the customer acts on it, and nothing
+ *  happens. It is worse than saying nothing, because a button invites the click.
+ *
+ *  None of the three could simply be re-pointed: a customer holds `v` on
+ *  `vehicles` and no grant at all on `insurance`, and no `loans` module exists
+ *  in the matrix — so there is no screen to send them to that would not answer
+ *  403. The honest control is therefore no control, plus the sentence a customer
+ *  actually needs: who can do this for them.
+ *
+ *  Deliberately not a `GapCard`/`ConnectApi` gap marker. Those tell the registry
+ *  a screen renders *no* real data, and these screens do — `vehicles`,
+ *  `insurancePolicies` and `loanContracts` are real reads. This is one missing
+ *  action on an otherwise data-backed screen, so it must not reclassify it. */
+function AppNote({ children }: { children: ReactNode }) {
+  return (
+    <p className="m-0 rounded-[14px] border border-border bg-inset px-3.5 py-3 text-[12.5px] leading-relaxed text-muted">
+      {children}
+    </p>
+  )
+}
 
 // ── Home ────────────────────────────────────────────────────────────────────
 export function CustomerAppHome() {
@@ -117,7 +146,6 @@ export function CustomerAppHome() {
 // ── Garage ──────────────────────────────────────────────────────────────────
 export function CustomerAppGarage() {
   const { t } = usePreferences()
-  const navigate = useNavigate()
   const { data: vehicles = [], isLoading, isError, error, refetch } = useCollection('vehicles')
 
   if (isLoading) return <Loading label="Loading..." />
@@ -155,10 +183,15 @@ export function CustomerAppGarage() {
           </div>
         </div>
       ))}
-      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/garage')}>
-        <Icon name="Plus" size={16} />
-        {t('Add Vehicle')}
-      </Button>
+      {/* No "Add Vehicle" button. `vehicles` grants `customer` `v` and nothing
+        * else — view, no create — so a customer cannot register a vehicle, and
+        * no customer-facing create surface exists to send them to. The button
+        * that used to sit here navigated to this same route, so it did nothing;
+        * replacing a no-op with a route to a screen that would 403 is not an
+        * improvement. What the customer needs to know is who *can* add one. */}
+      <AppNote>
+        {t('Vehicles are registered by the workshop. Ask them to add one and it appears here.')}
+      </AppNote>
     </>
   )
 }
@@ -193,7 +226,19 @@ export function CustomerAppAppointments() {
           }
         />
       ))}
-      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/appointments')}>
+      {/* Goes to the form that actually books. This button used to navigate to
+        * `/customer-app/appointments` — the route it is already on — so it was a
+        * no-op: the customer-app surface offered a "Book Service" button and no
+        * way to book. `portals/CustomerPortalBooking.tsx` is the one screen that
+        * writes an appointment (real `vehicles` and `services`, taken slots
+        * derived from real `appointments` on the chosen day, a real
+        * `POST /appointments`), so this points there rather than growing a second
+        * appointment-writer with its own idea of which bays are free. */}
+      <Button
+        size="lg"
+        className="w-full"
+        onClick={() => navigate('/customer-portal/booking')}
+      >
         <Icon name="CalendarPlus" size={16} />
         {t('Book Service')}
       </Button>
@@ -396,7 +441,6 @@ export function CustomerAppNotifications() {
  *  by, and row scoping belongs on the server, not invented here. */
 export function CustomerAppInsurance() {
   const { t } = usePreferences()
-  const navigate = useNavigate()
   const { data: policies = [], isLoading, isError, error, refetch } = useCollection('insurancePolicies')
 
   if (isLoading) return <Loading label="Loading..." />
@@ -426,15 +470,23 @@ export function CustomerAppInsurance() {
         </p>
       </AppHeroCard>
       <AppListRow icon="Car" title={policy.vehicleLabel} subtitle={policy.policyNumber} />
-      <AppListRow icon="FileText" title={t('Policy Documents')} subtitle={t('Download or share')} onClick={() => navigate('/customer-app/insurance')} />
-      <AppListRow icon="LifeBuoy" title={t('File a Claim')} subtitle={t('Start a new claim')} onClick={() => navigate('/customer-app/insurance')} />
+      {/* No "Policy Documents" or "File a Claim" row. Both navigated to this
+        * same route, so both did nothing, and neither has a destination to be
+        * pointed at: `insurance` grants `customer` the empty string — no access
+        * at all — and `POST /insurance-claims` requires `insurance:c`, held by
+        * owner, manager and accountant. Filing from here would need the matrix
+        * to carry a customer grant (or a `customerId`-scoped one) first, which
+        * is a permissions decision, not a routing fix. No document store or
+        * download endpoint exists for a policy either. */}
+      <AppNote>
+        {t('Claims are filed by the workshop or your insurer, not from this app. Policy documents are not held here.')}
+      </AppNote>
     </>
   )
 }
 
 export function CustomerAppLoans() {
   const { t } = usePreferences()
-  const navigate = useNavigate()
   const { data: contracts = [], isLoading, isError, error, refetch } = useCollection('loanContracts')
 
   if (isLoading) return <Loading label="Loading..." />
@@ -474,10 +526,16 @@ export function CustomerAppLoans() {
           </div>
         ))
       )}
-      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/loans')}>
-        <Icon name="Plus" size={16} />
-        {t('Apply for Finance')}
-      </Button>
+      {/* No "Apply for Finance" button. It navigated to this same route, and
+        * there is nothing to route it to: no finance application exists
+        * anywhere — no endpoint, no table, and no `loans` module in the RBAC
+        * enum at all (F-034). `loanContracts` is gated on `accounting`, which
+        * has no `customer` entry, so the read above 403s for a real customer
+        * session too. An apply button would be a control over a capability the
+        * system does not have. */}
+      <AppNote>
+        {t('Finance is arranged with the workshop or a lender. Applications are not taken in this app.')}
+      </AppNote>
     </>
   )
 }

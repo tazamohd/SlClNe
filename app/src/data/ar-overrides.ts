@@ -5608,4 +5608,14 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Reading the enforced tax rate…": "جارٍ قراءة نسبة الضريبة المطبَّقة…",
   "The enforced VAT rate can only be read from the API. This build has none, so nothing is shown in its place.":
     "لا يمكن قراءة نسبة ضريبة القيمة المضافة المطبَّقة إلا من الواجهة البرمجية. ولا تتوفر واجهة في هذه النسخة، لذلك لا يُعرض أي شيء بديلاً عنها.",
+  // Customer-app: the actions this surface does not perform, and who does them
+  // instead. Four buttons used to navigate to the route they were already on;
+  // none could be re-pointed, because a customer holds no grant that would let
+  // the destination answer anything but 403.
+  "Vehicles are registered by the workshop. Ask them to add one and it appears here.":
+    "تُسجَّل المركبات من قبل الورشة. اطلب منهم إضافة مركبة وستظهر هنا.",
+  "Claims are filed by the workshop or your insurer, not from this app. Policy documents are not held here.":
+    "تُقدَّم المطالبات من قبل الورشة أو شركة التأمين، وليس من هذا التطبيق. ولا تُحفظ مستندات الوثيقة هنا.",
+  "Finance is arranged with the workshop or a lender. Applications are not taken in this app.":
+    "يُرتَّب التمويل مع الورشة أو جهة التمويل. ولا تُستقبل الطلبات في هذا التطبيق.",
 }
