@@ -470,12 +470,34 @@ const localFunctionBodies = (src) => {
  *  `accounting/ReportControls.tsx`'s `ReportGap` (the same honest-gap card for
  *  a report with no server aggregate behind it — `CashFlowStatement` renders
  *  only this, no `useTrialBalance()`/collection call, because no journal entry
- *  carries an activity classification to report on), and the literal "no data
- *  source yet" line a hand-written card carries in its own JSX. A file-local
- *  wrapper — `network/PartsNetwork.tsx`'s `GapPanel`, `hr/StaffGap.tsx`'s
- *  `GapShell` — is resolved per file below, the same way `dataBackedScreens`
- *  resolves a wrapper that mounts a sibling. */
-const GAP_MARKERS = ['<GapCard', '<NetworkGapPanel', '<ConnectApi', '<ReportGap', 'no data source yet']
+ *  carries an activity classification to report on), the literal "no data
+ *  source yet" line a hand-written card carries in its own JSX, and "not
+ *  available yet" — the phrase `customer-app/CustomerApp.tsx`'s
+ *  `EmptyState`-based screens (`CustomerAppWallet`/`Orders`/`Marketplace`/
+ *  `Notifications`) use for the same honest-no-backend state, one line in each
+ *  export's own body rather than a shared component. `<EmptyState` itself is
+ *  not a marker: 132 files render it for an ordinary "no rows yet" case on
+ *  real, data-backed collections, so that tag alone says nothing about
+ *  whether a screen is honest or mock. "not available yet" is this narrow on
+ *  purpose — four files total, each already a documented gap
+ *  (`auth/SSOLogin.tsx`, `auth/ProfileCompletion.tsx`,
+ *  `network/Procurement.tsx`, and this bucket's four `CustomerApp` screens) —
+ *  rather than a phrase likely to appear in a fabricated screen's copy by
+ *  accident. A file-local wrapper — `network/PartsNetwork.tsx`'s `GapPanel`,
+ *  `hr/StaffGap.tsx`'s `GapShell` — is resolved per file below, the same way
+ *  `dataBackedScreens` resolves a wrapper that mounts a sibling. */
+const GAP_MARKERS = [
+  '<GapCard',
+  '<NetworkGapPanel',
+  '<ConnectApi',
+  '<ReportGap',
+  'no data source yet',
+  'not available yet',
+  /* `AIAssistant`'s toast: no AI/chat endpoint exists anywhere in the
+   * contract, so every send shows this instead of a transcript — the
+   * suggestion prompts above it are static copy, not fabricated data. */
+  'not available on this deployment yet',
+]
 const rendersGapMarker = (body) => GAP_MARKERS.some((m) => body.includes(m))
 
 const honestGapScreens = (() => {
@@ -1402,8 +1424,23 @@ for (const e of entries) {
    * than widening `SEAM_ANY` to `useSession`/`usePreferences` generally,
    * which would over-credit any screen that merely renders the current
    * language toggle alongside real fabricated business rows. */
-  const identityContent = e.name === 'User-Settings'
-  const contentSurface = e.surface === 'auth' || e.surface === 'public' || staticMatrixContent || identityContent
+  /* `CustomerApp.Profile` is the same shape as `User-Settings`: real signed-in
+   * identity (`useSession`'s `userName`/`roleLabel`) and a navigation menu,
+   * no business rows and nothing a `useCollection` call could read even in
+   * principle. */
+  const identityContent = e.name === 'User-Settings' || e.name === 'CustomerApp.Profile'
+  /* `Native.Android`/`Native.iOS` render `native-build.ts`, a build-time
+   * constant `scripts/check-native-claims.mjs` verifies against the actual
+   * native projects (version against the manifest/plist, each capability
+   * against an installed Capacitor plugin, each gap against one being
+   * absent) — the same "checked artifact, not a runtime row" shape
+   * `staticMatrixContent` already carries for the RBAC matrix. There is no
+   * collection for either screen to be `dataBacked` by; the number on the
+   * screen is honest because a CI gate would fail if it drifted from the
+   * project it describes, not because a server returned it. */
+  const verifiedBuildContent = e.name === 'Native.Android' || e.name === 'Native.iOS'
+  const contentSurface =
+    e.surface === 'auth' || e.surface === 'public' || staticMatrixContent || identityContent || verifiedBuildContent
   const noBackend = isHonestGap(e.name, e.route)
   if (product && rendered && !e.dataBacked && !contentSurface && !noBackend) f.push('MOCK_ONLY')
   if (product && rendered && !e.dataBacked && contentSurface) f.push('CONTENT_ONLY')

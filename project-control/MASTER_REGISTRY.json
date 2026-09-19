@@ -11,8 +11,8 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 20,
-    "noBackend": 118,
+    "mockOnly": 12,
+    "noBackend": 123,
     "dataBacked": 175,
     "e2eCovered": 436,
     "contentAsserted": 436,
@@ -738,7 +738,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -2718,7 +2718,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2784,7 +2784,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2850,7 +2850,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -2916,7 +2916,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -3049,7 +3049,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6875,7 +6875,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -6941,7 +6941,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "CONTENT_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
