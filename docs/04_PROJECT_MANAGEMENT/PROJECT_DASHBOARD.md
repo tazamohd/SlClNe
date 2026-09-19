@@ -23,14 +23,14 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 436 | `STATUS.json` |
 | Rendering | 436 of 436 | `STATUS.json` |
-| Wired to the API | 166 of 436 | `STATUS.json` |
-| Reading design fixtures | 30 of 436 | `STATUS.json` |
+| Wired to the API | 169 of 436 | `STATUS.json` |
+| Reading design fixtures | 27 of 436 | `STATUS.json` |
 | End-to-end covered | 436 of 436 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 121 of 436 | `STATUS.json` |
 | Tablet verified | 4 of 436 | `STATUS.json` |
-| API endpoints | 508 | the route files |
-| Test cases | 2447 | the spec files |
+| API endpoints | 527 | the route files |
+| Test cases | 2492 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 2 | `BLOCKERS.json` |
 | Unresolved findings | 0 of 41 | `FINDINGS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**30 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**27 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 30 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 27 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands. | 05 |
 | BLK-013 | HIGH | 117 rendered capabilities have no backend collection yet | They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it. | 05 |
 
 ## Open risks
@@ -74,8 +74,8 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | RB-07 — No inventory corruption | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 38 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/inventory-enforcement.test.ts, tests/procurement.test.ts, tests/rules.test |
 | RB-08 — No authentication bypass | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 48 mapped assertion(s) passed across 4 suite file(s) (tests/api.test.ts, tests/auth.test.ts, tests/isolation.test.ts, tests/security.test.ts); whole run  |
 | RB-09 — No critical security vulnerability | pass | `npm audit --json` in app/, server/ and packages/contract/ — app: 0 critical, 0 high, 8 moderate, 0 low; server: 0 critical, 0 high, 4 moderate, 0 low; packages/contract: 0 critical, 0 high, 0 moderate, 0 low. No critica |
-| RB-10 — No exposed secret (three chat-exposed PATs rotated) | pass | built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2659 files, 31.4 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, goog |
-| RB-11 — No major data loss path | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 7 mapped assertion(s) passed across 3 suite file(s) (tests/api.test.ts, tests/authz-matrix.test.ts, tests/writes.test.ts); whole run 717/717 passed, 0 fa |
+| RB-10 — No exposed secret (three chat-exposed PATs rotated) | pass | built-in prefix rules (gitleaks is not installed here) over the working tree only, not git history (2663 files, 31.6 MB, rules: github-pat, github-fine-grained-pat, aws-access-key-id, private-key-block, slack-token, goog |
+| RB-11 — No major data loss path | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 7 mapped assertion(s) passed across 3 suite file(s) (tests/api.test.ts, tests/authz-matrix.test.ts, tests/writes.test.ts); whole run 742/742 passed, 0 fa |
 | RB-12 — Backup restore drill passed | _uncheckable_ | A restore drill is an operation against real infrastructure — take a backup of the production database, restore it into a clean instance, and verify the restored data — and no part of it can be decided from source. No dr |
 | RB-13 — No broken critical mobile workflow | pass | All 6 phone- and kiosk-facing golden path(s) pass in the mobile project (390x840) of the Playwright suite, per project-control/GOLDEN_PATHS.json (projects: desktop, mobile). Note this covers workflow completion at a phon |
 | RB-14 — Invoice and payment workflows intact | pass | `npx vitest run --reporter=json --outputFile=<tmp> (in server/)` — 25 mapped assertion(s) passed across 5 suite file(s) (tests/api.test.ts, tests/collections.test.ts, tests/finance-reports.test.ts, tests/rules.test.ts, t |

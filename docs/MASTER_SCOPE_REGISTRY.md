@@ -16,15 +16,15 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 30 |
+| mock only | 27 |
 | no backend | 117 |
-| data backed | 166 |
+| data backed | 169 |
 | e2e covered | 436 |
 | content asserted | 436 |
 | rendered without assertion | 0 |
-| has loading state | 193 |
-| has error state | 156 |
-| has empty state | 266 |
+| has loading state | 196 |
+| has error state | 159 |
+| has empty state | 269 |
 | tablet verified | 4 |
 | arabic verified | 121 |
 | rtl hazards | 0 |
@@ -33,10 +33,10 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths passing | 23 |
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
-| crud create | 37 |
-| crud read | 152 |
-| crud update | 36 |
-| crud delete | 29 |
+| crud create | 38 |
+| crud read | 155 |
+| crud update | 38 |
+| crud delete | 30 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |
@@ -91,7 +91,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | dashboard | 4 | 4 |
 | estimates | 7 | 7 |
 | execreports | 5 | 5 |
-| hr | 8 | 8 |
+| hr | 10 | 10 |
 | insurance | 1 | 1 |
 | inventory | 3 | 3 |
 | invoices | 4 | 4 |
