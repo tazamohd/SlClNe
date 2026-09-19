@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 172 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 173 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -241,7 +241,7 @@
 | WorkshopSignature | `/workshop-signature` | app | jobcards | DONE | MISSING | DONE | VERIFIED | PARTIAL | DONE | 11 roles | route | IMPLEMENTED |
 | WorkspaceSelection | `/workspace-selection` | auth | — | DONE | MISSING | DONE | VERIFIED | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Dashboard Home | `/dashboard-home` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| Welcome Page | `/welcome-page` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Welcome Page | `/welcome-page` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Dashboard Main | `/dashboard-main` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Customers List | `/customers-list` | app | customers | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | DONE | 9 roles | route | IMPLEMENTED |
 | Customer Loyalty | `/customer-loyalty` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |

@@ -638,6 +638,60 @@ persistence endpoint (`Dashboard-Widgets`, `Data-Backup`,
 `Data-Import-Export`, `Tools`, `Voice-Command-Interface`, `Voice-Commands`,
 `Welcome-Page`).
 
+## Bucket F: Welcome-Page's quick stats, real collections (2026-09-19)
+
+`WelcomePage.tsx` showed four fixed numbers ("5"/"12"/"8"/"3") that never
+moved regardless of what the underlying data held, one of them
+("Notifications") backed by no collection at all. Rewired the three real
+ones — Appointments, Active Jobs, Pending Invoices — to `useCollection`
+reads, counted the exact same way `Dashboard.tsx`'s own `ManagerDashboard`
+already counts them (`st !== 'delivered' && st !== 'cancelled'` for an
+active job, `status === 'unpaid' || status === 'overdue'` for a pending
+invoice), rather than inventing a new rule for this screen. The
+notifications stat is dropped.
+
+Also a registry-detector fix: the new `useQuickStats` hook was a private,
+unexported helper `WelcomePage` called — `dataBackedScreens`'s
+wrapper-mount inheritance only resolves *other exported* functions in a
+file, so a private helper's `useCollection` calls were invisible to it.
+Exported the hook, which is all the existing inheritance logic needed.
+
+**BLK-004: 30 → 29.**
+
+### Remaining MOCK_ONLY after bucket F (29)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |
