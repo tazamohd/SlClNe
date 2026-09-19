@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-Every column of every table, 1303 in total.
+Every column of every table, 1399 in total.
 
 ## `organizations`
 
@@ -1388,6 +1388,150 @@ Notifications (BLK-004) — a per-tenant feed of job, appointment, invoice and s
 | --- | --- | --- |
 | `notifications_org_idx` | no | orgId, branchId, readAt |
 | `notifications_org_created_idx` | no | orgId, createdAt |
+
+## `parts_network_members`
+
+Parts Network (BLK-004) — a garage-to-garage / garage-to-dealer parts supply network: who this workshop trades parts with, what it asked the network for, what came back, and what an accepted quotation became. **Nothing here crosses the tenant boundary.** Every row below carries `org_id` and is visible only to that organization, under the same policy set `declined_jobs` / `equipment_warranties` / `notifications` carry. What is modelled is each tenant's *own record of its network activity* — the counterparty is a row in this tenant's own member directory, never a foreign `org_id`. `drizzle/0024_parts_network.sql` states at length why real cross-org sharing is out of scope rather than faked by widening `p_tenant`. Gated on the `network` module, which already expresses parts-network authority: `procurement`/`owner` hold the full set, `parts` holds `vced`, `supplier` holds `vce`, and `technician` holds nothing — so a technician can neither request nor order through the network. No grant was widened for this feature.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `name` | varchar(200) | NOT NULL | — | — | — |
+| `name_ar` | varchar(200) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | 'garage' | — |
+| `city` | varchar(120) | nullable | — | — | — |
+| `contact_name` | varchar(200) | nullable | — | — | — |
+| `contact_phone` | varchar(32) | nullable | — | — | — |
+| `contact_email` | varchar(254) | nullable | — | — | — |
+| `supplier_id` | varchar(ULID_LENGTH) | nullable | FK → suppliers | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `rating_tenths` | integer | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_members_org_code_idx` | yes | orgId, code |
+| `parts_network_members_org_idx` | no | orgId, branchId, status |
+
+## `parts_network_requests`
+
+A part request. `direction` is what makes the single-tenant model honest: `outgoing` is one this workshop broadcast to the network, `incoming` is one it recorded as having been sent to it by a member. Both are this tenant's own rows.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `direction` | varchar(16) | NOT NULL | — | 'outgoing' | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | nullable | — | — | — |
+| `part_sku` | varchar(64) | nullable | — | — | — |
+| `part_name` | varchar(200) | NOT NULL | — | — | — |
+| `part_number` | varchar(64) | nullable | — | — | — |
+| `qty` | integer | NOT NULL | — | 1 | — |
+| `urgency` | varchar(16) | NOT NULL | — | 'normal' | — |
+| `vehicle_info` | varchar(200) | nullable | — | — | — |
+| `job_code` | varchar(32) | nullable | — | — | — |
+| `needed_by` | date | nullable | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'open' | — |
+| `quotation_count` | integer | NOT NULL | — | 0 | — |
+| `quoted_at` | timestamptz | nullable | — | — | — |
+| `ordered_at` | timestamptz | nullable | — | — | — |
+| `closed_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_requests_org_code_idx` | yes | orgId, code |
+| `parts_network_requests_org_idx` | no | orgId, branchId, direction, status |
+
+## `parts_network_quotations`
+
+An offer against a request. Accepting one is the domain's single real invariant — the accepted quotation's siblings must be rejected, the request must move to `ordered`, and the order must be created, all atomically — so that transition has a bespoke router (`POST /parts-network/quotations/:id/accept`) rather than riding a generic `PATCH`. Everything else here is an ordinary column write.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `request_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | NOT NULL | — | — | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `qty_available` | integer | NOT NULL | — | 0 | — |
+| `lead_time_days` | integer | nullable | — | — | — |
+| `condition` | varchar(16) | NOT NULL | — | 'new' | — |
+| `warranty_months` | integer | nullable | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'pending' | — |
+| `accepted_at` | timestamptz | nullable | — | — | — |
+| `rejected_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_quotations_org_code_idx` | yes | orgId, code |
+| `parts_network_quotations_request_idx` | no | orgId, requestId, status |
+
+## `parts_network_orders`
+
+An accepted quotation, become an order. `direction` mirrors the request's: `outbound` is one this workshop placed with a member, `inbound` is one it is fulfilling for a member. "Incoming" on the screen is a *filtered read* over this table (outbound and in transit), not a table of its own — there is no fact an extra table would carry that `direction` plus `status` does not.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(32) | NOT NULL | — | — | — |
+| `request_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `quotation_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `member_name` | varchar(200) | NOT NULL | — | — | — |
+| `direction` | varchar(16) | NOT NULL | — | 'outbound' | — |
+| `part_name` | varchar(200) | NOT NULL | — | — | — |
+| `qty` | integer | NOT NULL | — | 1 | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `total_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `status` | varchar(24) | NOT NULL | — | 'placed' | — |
+| `tracking_ref` | varchar(64) | nullable | — | — | — |
+| `expected_at` | date | nullable | — | — | — |
+| `shipped_at` | timestamptz | nullable | — | — | — |
+| `received_at` | timestamptz | nullable | — | — | — |
+| `cancelled_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `parts_network_orders_org_code_idx` | yes | orgId, code |
+| `parts_network_orders_org_idx` | no | orgId, branchId, direction, status |
 
 ## `employees`
 

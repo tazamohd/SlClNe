@@ -12,7 +12,7 @@
 
 ## Money is an integer count of halalas
 
-Every money column is `bigint` named `*_halalas`. 34 tables carry money; 57 columns in total. There is no `numeric` money column and no floating-point money anywhere.
+Every money column is `bigint` named `*_halalas`. 36 tables carry money; 60 columns in total. There is no `numeric` money column and no floating-point money anywhere.
 
 The reason is narrow and sufficient: a `numeric` rounding surprise must not be able to reach a ledger. An integer count of the smallest unit has no rounding behaviour to be surprised by.
 
@@ -81,4 +81,4 @@ A rule that lives only in a component is a rule a second component will contradi
 
 ## Where a rule is missing
 
-20 of 21 lifecycles have no declared transition table, so the legality of a status change on an invoice, a purchase order or a claim rests on whatever the route handler checks. For documents that move money that is a control gap, and it is listed in the gap report as one.
+24 of 25 lifecycles have no declared transition table, so the legality of a status change on an invoice, a purchase order or a claim rests on whatever the route handler checks. For documents that move money that is a control gap, and it is listed in the gap report as one.

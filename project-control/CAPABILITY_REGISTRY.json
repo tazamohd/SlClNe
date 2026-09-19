@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 460,
-    "endpointsTotal": 460
+    "endpointsMapped": 497,
+    "endpointsTotal": 497
   },
   "capabilities": [
     {
@@ -408,7 +408,7 @@
         "D-PartsNetwork.SendRequest",
         "F-064"
       ],
-      "dataBackedScreens": 2,
+      "dataBackedScreens": 8,
       "entities": [
         "parts"
       ],
@@ -1103,7 +1103,7 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 35,
+      "endpointCount": 72,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
         "API-DEPARTMENTS-POST-LIST",
@@ -1137,6 +1137,43 @@
         "API-NOTIFICATIONS-POSTBULK-DELETE",
         "API-NOTIFICATIONS-POSTBULK-UPDATE",
         "API-NOTIFICATIONS-GETEXPORT",
+        "API-PARTSNETWORKMEMBERS-GET-LIST",
+        "API-PARTSNETWORKMEMBERS-POST-LIST",
+        "API-PARTSNETWORKMEMBERS-DELETEID",
+        "API-PARTSNETWORKMEMBERS-GETID",
+        "API-PARTSNETWORKMEMBERS-PATCHID",
+        "API-GET-PARTS-NETWORK-MEMBERS-ID-HISTORY",
+        "API-PARTSNETWORKMEMBERS-POSTBULK-DELETE",
+        "API-PARTSNETWORKMEMBERS-POSTBULK-UPDATE",
+        "API-PARTSNETWORKMEMBERS-GETEXPORT",
+        "API-PARTSNETWORKORDERS-GET-LIST",
+        "API-PARTSNETWORKORDERS-POST-LIST",
+        "API-PARTSNETWORKORDERS-DELETEID",
+        "API-PARTSNETWORKORDERS-GETID",
+        "API-PARTSNETWORKORDERS-PATCHID",
+        "API-GET-PARTS-NETWORK-ORDERS-ID-HISTORY",
+        "API-PARTSNETWORKORDERS-POSTBULK-DELETE",
+        "API-PARTSNETWORKORDERS-POSTBULK-UPDATE",
+        "API-PARTSNETWORKORDERS-GETEXPORT",
+        "API-PARTSNETWORKQUOTATIONS-GET-LIST",
+        "API-PARTSNETWORKQUOTATIONS-POST-LIST",
+        "API-PARTSNETWORKQUOTATIONS-DELETEID",
+        "API-PARTSNETWORKQUOTATIONS-GETID",
+        "API-PARTSNETWORKQUOTATIONS-PATCHID",
+        "API-POST-PARTS-NETWORK-QUOTATIONS-ID-ACCEPT",
+        "API-GET-PARTS-NETWORK-QUOTATIONS-ID-HISTORY",
+        "API-PARTSNETWORKQUOTATIONS-POSTBULK-DELETE",
+        "API-PARTSNETWORKQUOTATIONS-POSTBULK-UPDATE",
+        "API-PARTSNETWORKQUOTATIONS-GETEXPORT",
+        "API-PARTSNETWORKREQUESTS-GET-LIST",
+        "API-PARTSNETWORKREQUESTS-POST-LIST",
+        "API-PARTSNETWORKREQUESTS-DELETEID",
+        "API-PARTSNETWORKREQUESTS-GETID",
+        "API-PARTSNETWORKREQUESTS-PATCHID",
+        "API-GET-PARTS-NETWORK-REQUESTS-ID-HISTORY",
+        "API-PARTSNETWORKREQUESTS-POSTBULK-DELETE",
+        "API-PARTSNETWORKREQUESTS-POSTBULK-UPDATE",
+        "API-PARTSNETWORKREQUESTS-GETEXPORT",
         "API-POST-PUBLIC-LEADS",
         "API-GET-HEALTH",
         "API-GET-READY"
@@ -1179,13 +1216,17 @@
         "D-UsersTeams",
         "D-Welcome"
       ],
-      "dataBackedScreens": 7,
+      "dataBackedScreens": 9,
       "entities": [
         "departments",
         "branches",
         "integrations",
         "oemTools",
-        "notifications"
+        "notifications",
+        "partsNetworkMembers",
+        "partsNetworkOrders",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
       ],
       "rules": [],
       "roles": [
@@ -1583,7 +1624,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 32,
+      "dataBackedScreens": 35,
       "entities": [],
       "rules": [],
       "roles": [],

@@ -2360,8 +2360,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/PartsNetwork.dc.html",
@@ -2383,7 +2382,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2406,7 +2404,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2429,7 +2426,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2451,9 +2447,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2476,7 +2470,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2498,9 +2491,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -2522,9 +2513,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY"
+      "ARABIC_MISSING"
     ],
     "inNav": true,
     "designSource": "project/PartsSupplyNetwork.dc.html",
@@ -6562,7 +6551,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6585,7 +6573,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -6608,7 +6595,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "ARABIC_MISSING",
-      "MOCK_ONLY",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

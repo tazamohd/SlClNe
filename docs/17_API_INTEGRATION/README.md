@@ -34,6 +34,7 @@ The API surface, per domain, generated from the routers.
 | [`endpoints/inventory.md`](endpoints/inventory.md) | generated |
 | [`endpoints/invoices.md`](endpoints/invoices.md) | generated |
 | [`endpoints/jobcards.md`](endpoints/jobcards.md) | generated |
+| [`endpoints/network.md`](endpoints/network.md) | generated |
 | [`endpoints/payments.md`](endpoints/payments.md) | generated |
 | [`endpoints/platform.md`](endpoints/platform.md) | generated |
 | [`endpoints/procurement.md`](endpoints/procurement.md) | generated |

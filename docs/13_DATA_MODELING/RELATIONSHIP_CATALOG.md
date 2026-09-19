@@ -12,7 +12,7 @@
 
 ## The one thing to read first
 
-Of 196 relationships in the model, **70 are backed by a database foreign key** and **126 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
+Of 205 relationships in the model, **75 are backed by a database foreign key** and **130 are not**. The declared ones are almost entirely `org_id` — the tenancy anchor, spread into every tenant-owned table. Every other association between business entities is a `*_id` column with no constraint behind it.
 
 Referential integrity for those rests on application code and on row-level security, not on the database. That is a deliberate architectural position and it has consequences a reader needs to know about: an orphaned `customer_id` is possible, a cascade is not automatic, and a `DELETE` is a soft delete anyway. It is recorded here rather than smoothed over, because an ERD that draws all 164 lines identically implies a guarantee that 103 of them do not carry.
 
@@ -166,6 +166,15 @@ Referential integrity for those rests on application code and on row-level secur
 | REL-EQUIPMENT-WARRANTIES-BRANCH-ID | `equipment_warranties` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-NOTIFICATIONS-ORG-ID | `notifications` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-NOTIFICATIONS-BRANCH-ID | `notifications` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-PARTS-NETWORK-MEMBERS-ORG-ID | `parts_network_members` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-PARTS-NETWORK-MEMBERS-BRANCH-ID | `parts_network_members` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-PARTS-NETWORK-MEMBERS-SUPPLIER-ID | `parts_network_members` | `supplier_id` | `suppliers` | many-to-one | optional | DECLARED (FK) | no |
+| REL-PARTS-NETWORK-REQUESTS-ORG-ID | `parts_network_requests` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-PARTS-NETWORK-REQUESTS-BRANCH-ID | `parts_network_requests` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
+| REL-PARTS-NETWORK-QUOTATIONS-ORG-ID | `parts_network_quotations` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-PARTS-NETWORK-QUOTATIONS-BRANCH-ID | `parts_network_quotations` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | no |
+| REL-PARTS-NETWORK-ORDERS-ORG-ID | `parts_network_orders` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
+| REL-PARTS-NETWORK-ORDERS-BRANCH-ID | `parts_network_orders` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-ORG-ID | `employees` | `org_id` | `organizations` | many-to-one | mandatory | DECLARED (FK) | yes |
 | REL-EMPLOYEES-BRANCH-ID | `employees` | `branch_id` | `branches` | many-to-one | optional | **INFERRED** | yes |
 | REL-EMPLOYEES-DEPARTMENT-ID | `employees` | `department_id` | `departments` | many-to-one | optional | **INFERRED** | no |
@@ -233,6 +242,12 @@ A `*_id` column whose name does not resolve to a table. Some are legitimate (`au
 | `chart_of_accounts` | `parent_id` |
 | `journal_entries` | `source_id` |
 | `bank_statements` | `matched_receipt_id` |
+| `parts_network_requests` | `member_id` |
+| `parts_network_quotations` | `request_id` |
+| `parts_network_quotations` | `member_id` |
+| `parts_network_orders` | `request_id` |
+| `parts_network_orders` | `quotation_id` |
+| `parts_network_orders` | `member_id` |
 | `leave_requests` | `approver_id` |
 | `audit_log` | `actor_id` |
 | `audit_log` | `entity_id` |

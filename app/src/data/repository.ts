@@ -323,6 +323,109 @@ export interface NotificationRow extends EntityMeta {
   readAt: string | null
 }
 
+/* ------------------------------------------- parts supply network (BLK-004)
+ *
+ * The four collections behind the eight parts-network screens, which all
+ * rendered an honest "no data source yet" shell. No design fixture — the
+ * shapes are declared here rather than inferred, like `NotificationRow`.
+ *
+ * Nothing in this domain crosses the tenant boundary: every row belongs to one
+ * organization, and a `memberId` names a counterparty in *this* tenant's own
+ * directory, never a foreign org. `direction` is what makes that honest — an
+ * `incoming` request is one this workshop recorded as sent to it. See
+ * `server/drizzle/0024_parts_network.sql`. */
+
+/** A participant this workshop trades parts with. `supplierId` points at the
+ *  matching `suppliers` row when the member is also a vendor of record, rather
+ *  than duplicating the vendor concept. */
+export interface PartsNetworkMemberRow extends EntityMeta {
+  id: string
+  code: string
+  name: string
+  nameAr: string | null
+  kind: 'garage' | 'dealer' | 'store' | 'supplier'
+  city: string | null
+  contactName: string | null
+  contactPhone: string | null
+  contactEmail: string | null
+  supplierId: string | null
+  status: 'active' | 'pending' | 'suspended'
+  ratingTenths: number | null
+  /** `46` presented as `4.6`; null when unrated, never a fabricated default. */
+  rating: number | null
+  notes: string | null
+}
+
+/** A part request. `outgoing` went out to the network, `incoming` came in from
+ *  a member — the Incoming view is a filtered read over this one collection,
+ *  not a second table. `quotationCount` and every `*At` are server-maintained. */
+export interface PartsNetworkRequestRow extends EntityMeta {
+  id: string
+  code: string
+  direction: 'outgoing' | 'incoming'
+  memberId: string | null
+  memberName: string | null
+  partSku: string | null
+  partName: string
+  partNumber: string | null
+  qty: number
+  urgency: 'low' | 'normal' | 'high' | 'urgent'
+  vehicleInfo: string | null
+  jobCode: string | null
+  neededBy: string | null
+  status: 'open' | 'quoted' | 'ordered' | 'closed' | 'cancelled'
+  quotationCount: number
+  quotedAt: string | null
+  orderedAt: string | null
+  closedAt: string | null
+  notes: string | null
+}
+
+/** A member's offer against a request. `accepted` is unreachable through the
+ *  generic `PATCH` — accepting also rejects the siblings and raises the order,
+ *  so it goes through `partsNetwork.acceptQuotation` (live only). */
+export interface PartsNetworkQuotationRow extends EntityMeta {
+  id: string
+  code: string
+  requestId: string
+  memberId: string | null
+  memberName: string
+  unitPriceHalalas: number
+  unitPrice: string
+  qtyAvailable: number
+  leadTimeDays: number | null
+  condition: 'new' | 'used' | 'oem' | 'aftermarket'
+  warrantyMonths: number | null
+  status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
+  acceptedAt: string | null
+  rejectedAt: string | null
+  notes: string | null
+}
+
+/** An accepted quotation, become an order. `outbound` is one this workshop
+ *  placed, `inbound` one it is fulfilling; the total is computed server-side. */
+export interface PartsNetworkOrderRow extends EntityMeta {
+  id: string
+  code: string
+  requestId: string | null
+  quotationId: string | null
+  memberId: string | null
+  memberName: string
+  direction: 'outbound' | 'inbound'
+  partName: string
+  qty: number
+  unitPriceHalalas: number
+  totalHalalas: number
+  total: string
+  status: 'placed' | 'shipped' | 'received' | 'cancelled'
+  trackingRef: string | null
+  expectedAt: string | null
+  shippedAt: string | null
+  receivedAt: string | null
+  cancelledAt: string | null
+  notes: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -715,6 +818,10 @@ export interface Repository {
   purchaseOrders: Collection<PurchaseOrderRow>
   equipmentWarranties: Collection<EquipmentWarrantyRow>
   notifications: Collection<NotificationRow>
+  partsNetworkMembers: Collection<PartsNetworkMemberRow>
+  partsNetworkRequests: Collection<PartsNetworkRequestRow>
+  partsNetworkQuotations: Collection<PartsNetworkQuotationRow>
+  partsNetworkOrders: Collection<PartsNetworkOrderRow>
   receipts: Collection<WithMeta<(typeof T.RECEIPTS)[number]>>
   departments: Collection<WithMeta<(typeof T.DEPARTMENTS)[number]>>
   aiAgents: Collection<WithMeta<(typeof T.AI_AGENTS)[number]>>
@@ -784,6 +891,10 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   purchaseOrders: 'procurement/purchase-orders',
   equipmentWarranties: 'equipment-warranties',
   notifications: 'notifications',
+  partsNetworkMembers: 'parts-network/members',
+  partsNetworkRequests: 'parts-network/requests',
+  partsNetworkQuotations: 'parts-network/quotations',
+  partsNetworkOrders: 'parts-network/orders',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -1076,6 +1187,19 @@ export const mockRepository: Repository = {
    * rendering, the same generic write path the real API's `test` role
    * uses. */
   notifications: fixture<NotificationRow>([]),
+  /* No design fixture — the parts network is new (BLK-004). Empty, for the
+   * same reason `notifications` is: `tests/repository-swap.test.ts` asserts
+   * every collection's live rows are exactly this fixture's rows plus
+   * `SEED_COHERENCE_EXTRAS`, so a literal seed here would have to match the
+   * server's seeded rows verbatim or break that check. The generic
+   * create/update/delete genuinely works against these in demo mode, so
+   * `app/tests/component/parts-network.test.tsx` seeds them through
+   * `repository.partsNetworkRequests.create(...)` and friends before
+   * rendering — the same write path a live deployment uses. */
+  partsNetworkMembers: fixture<PartsNetworkMemberRow>([]),
+  partsNetworkRequests: fixture<PartsNetworkRequestRow>([]),
+  partsNetworkQuotations: fixture<PartsNetworkQuotationRow>([]),
+  partsNetworkOrders: fixture<PartsNetworkOrderRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),
@@ -2014,6 +2138,43 @@ export const productReports: ProductReportsApi | null = API_URL
  *  faked one would be the fake-completion this seam refuses. Agent 11's
  *  Procurement screens read this when `isLive` and show the honest gap otherwise. */
 export const procurement: ProcurementApi | null = API_URL ? createProcurementApi(API_URL) : null
+
+/** Accepting a parts-network quotation (BLK-004). Not a field write: it rejects
+ *  the request's other pending quotations, moves the request to `ordered` and
+ *  creates the order, all in one server transaction with its audit entry
+ *  (`server/src/routes/parts-network.ts`), and it is gated on `network:a`
+ *  because it commits money.
+ *
+ *  Live only, and `null` on the fixtures for the same reason
+ *  `procurement`/`insuranceClaimsApi` are: a mock that faked the acceptance
+ *  would leave the siblings pending, the request `quoted` and no order
+ *  anywhere — the false-success write BLK-004 forbids. The Quotations screen
+ *  shows an honest read-only notice instead of an Accept button when this is
+ *  null, rather than offering a button that cannot work. */
+export interface PartsNetworkApi {
+  acceptQuotation(
+    id: string,
+    body?: { qty?: number; expectedAt?: string; notes?: string },
+  ): Promise<{
+    quotation: PartsNetworkQuotationRow
+    order: PartsNetworkOrderRow
+    rejectedQuotationCodes: string[]
+  }>
+}
+
+export function createPartsNetworkApi(baseUrl: string): PartsNetworkApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async acceptQuotation(id, body = {}) {
+      return request(`${root}/parts-network/quotations/${encodeURIComponent(id)}/accept`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+    },
+  }
+}
+
+export const partsNetwork: PartsNetworkApi | null = API_URL ? createPartsNetworkApi(API_URL) : null
 
 /** True when writes will actually persist. A screen can use it to explain why
  *  a save button is unavailable rather than letting the click fail. */

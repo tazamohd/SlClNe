@@ -12,7 +12,7 @@
 
 ## What is and is not declared
 
-21 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 20 declare a set of states with no table of legal moves.
+25 lifecycles exist in the contract. **1 declares a machine-readable transition table**; the other 24 declare a set of states with no table of legal moves.
 
 That distinction matters more than it looks. Where a transition table exists, an illegal move is refused by a single guard that every caller goes through. Where only a state enum exists, the legal moves are whatever the route handlers happen to check — which may be complete, may be partial, and cannot be verified by reading one file. Drawing a confident diagram for those would assert a guarantee the code does not make, so this document shows their states and names what actually guards them.
 
@@ -172,6 +172,38 @@ Guarded by: `amortisedInstalmentHalalas` (packages/contract/src/rules/loans.ts),
 States: `due` · `paid` · `overdue`
 
 Guarded by: `amortisedInstalmentHalalas` (packages/contract/src/rules/loans.ts), `buildRepaymentPlan` (packages/contract/src/rules/loans.ts).
+
+### parts-network — `partsNetworkMemberStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/parts-network.ts`
+
+States: `active` · `pending` · `suspended`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
+
+### parts-network — `partsNetworkRequestStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/parts-network.ts`
+
+States: `open` · `quoted` · `ordered` · `closed` · `cancelled`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
+
+### parts-network — `partsNetworkQuotationStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/parts-network.ts`
+
+States: `pending` · `accepted` · `rejected` · `withdrawn`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
+
+### parts-network — `partsNetworkOrderStatus`
+
+**STATE SET ONLY** · `packages/contract/src/entities/parts-network.ts`
+
+States: `placed` · `shipped` · `received` · `cancelled`
+
+No rule guard in `packages/contract/src/rules` names this lifecycle. Any transition constraint is in the route handler, or absent.
 
 ### procurement — `supplierStatus`
 

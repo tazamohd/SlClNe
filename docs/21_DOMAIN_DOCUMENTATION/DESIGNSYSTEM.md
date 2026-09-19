@@ -128,9 +128,9 @@ _No lifecycle in the contract belongs to this domain._
 | F-068 | `/suppliers` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-069 | `/purchase-orders` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-070 | `/vendor-supplier-portal` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-071 | `/parts-network-dashboard` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-073 | `/parts-network-my-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
-| F-074 | `/parts-network-incoming-requests` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-071 | `/parts-network-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-073 | `/parts-network-my-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-074 | `/parts-network-incoming-requests` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-079 | `/purchase-agent-dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-080 | `/purchase-agent-tasks` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-081 | `/purchase-agent-quotations` | app | **mock** | — | — | yes | PARTIAL | yes |
@@ -255,8 +255,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **172 of 204 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **150 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **169 of 204 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **147 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

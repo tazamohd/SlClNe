@@ -8,15 +8,15 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-004 | CRITICAL | 236 rendered capabilities are mock-only | 05 | W2 |
+| BLK-004 | CRITICAL | 225 rendered capabilities are mock-only | 05 | W2 |
 
 ## Flags across the inventory
 
 | Flag | Count | Meaning |
 |---|---|---|
 | ARABIC_MISSING | 362 | Arabic not certified: an untranslated key, or keys built dynamically |
-| TABLET_MISSING | 307 | no md:/lg: layout in the source — nothing written for 768–1024 |
-| MOCK_ONLY | 236 | renders, but from fixtures rather than an API |
+| TABLET_MISSING | 304 | no md:/lg: layout in the source — nothing written for 768–1024 |
+| MOCK_ONLY | 225 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 174 | no RBAC module maps to this screen |
 | DUPLICATE | 2 | two entries claim one route |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |

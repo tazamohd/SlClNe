@@ -1168,6 +1168,178 @@ export const notifications = pgTable(
   }),
 )
 
+/* ---------------------------------------------------- parts supply network */
+
+/** Parts Network (BLK-004) — a garage-to-garage / garage-to-dealer parts
+ *  supply network: who this workshop trades parts with, what it asked the
+ *  network for, what came back, and what an accepted quotation became.
+ *
+ *  **Nothing here crosses the tenant boundary.** Every row below carries
+ *  `org_id` and is visible only to that organization, under the same policy
+ *  set `declined_jobs` / `equipment_warranties` / `notifications` carry. What
+ *  is modelled is each tenant's *own record of its network activity* — the
+ *  counterparty is a row in this tenant's own member directory, never a
+ *  foreign `org_id`. `drizzle/0024_parts_network.sql` states at length why
+ *  real cross-org sharing is out of scope rather than faked by widening
+ *  `p_tenant`.
+ *
+ *  Gated on the `network` module, which already expresses parts-network
+ *  authority: `procurement`/`owner` hold the full set, `parts` holds `vced`,
+ *  `supplier` holds `vce`, and `technician` holds nothing — so a technician
+ *  can neither request nor order through the network. No grant was widened
+ *  for this feature. */
+export const partsNetworkMembers = pgTable(
+  'parts_network_members',
+  {
+    ...tenant,
+    /** `NWM-0001`, assigned sequentially per tenant by `writers.ts`. */
+    code: varchar('code', { length: 32 }).notNull(),
+    name: varchar('name', { length: 200 }).notNull(),
+    nameAr: varchar('name_ar', { length: 200 }),
+    /** `garage` · `dealer` · `store` · `supplier`. */
+    kind: varchar('kind', { length: 16 }).notNull().default('garage'),
+    city: varchar('city', { length: 120 }),
+    contactName: varchar('contact_name', { length: 200 }),
+    contactPhone: varchar('contact_phone', { length: 32 }),
+    contactEmail: varchar('contact_email', { length: 254 }),
+    /** Reuse over invention: when a network member is also one of this
+     *  workshop's own vendors it points at that `suppliers` row rather than
+     *  duplicating the vendor concept. Null for a member that is only a
+     *  trading peer (another garage) and not a vendor of record. */
+    supplierId: varchar('supplier_id', { length: ULID_LENGTH }).references(() => suppliers.id, {
+      onDelete: 'set null',
+    }),
+    /** `active` · `pending` · `suspended`. */
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    /** Tenths, so a 4.6 rating is 46 — integer arithmetic, the same reason
+     *  money is halalas. Null when this workshop has not rated the member. */
+    ratingTenths: integer('rating_tenths'),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('parts_network_members_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('parts_network_members_org_idx').on(t.orgId, t.branchId, t.status),
+  }),
+)
+
+/** A part request. `direction` is what makes the single-tenant model honest:
+ *  `outgoing` is one this workshop broadcast to the network, `incoming` is one
+ *  it recorded as having been sent to it by a member. Both are this tenant's
+ *  own rows. */
+export const partsNetworkRequests = pgTable(
+  'parts_network_requests',
+  {
+    ...tenant,
+    /** `NRQ-0001`, assigned sequentially per tenant by `writers.ts`. */
+    code: varchar('code', { length: 32 }).notNull(),
+    /** `outgoing` (we asked the network) · `incoming` (a member asked us). */
+    direction: varchar('direction', { length: 16 }).notNull().default('outgoing'),
+    /** The counterparty, when there is one: who sent an `incoming` request, or
+     *  the single member an `outgoing` one was aimed at. Null for a broadcast. */
+    memberId: varchar('member_id', { length: ULID_LENGTH }),
+    /** Carried for display alongside `memberId`, denormalised the same way
+     *  `purchase_orders.supplier_name` is. */
+    memberName: varchar('member_name', { length: 200 }),
+    /** This workshop's own `parts.sku` when the request is sourcing a part it
+     *  stocks — a loose reference, not an FK, because the network trades parts
+     *  this workshop may never have carried. */
+    partSku: varchar('part_sku', { length: 64 }),
+    partName: varchar('part_name', { length: 200 }).notNull(),
+    /** The manufacturer's part number, which is what the network matches on. */
+    partNumber: varchar('part_number', { length: 64 }),
+    qty: integer('qty').notNull().default(1),
+    /** `low` · `normal` · `high` · `urgent`. */
+    urgency: varchar('urgency', { length: 16 }).notNull().default('normal'),
+    /** The vehicle the part is for, as the request form shows it. */
+    vehicleInfo: varchar('vehicle_info', { length: 200 }),
+    /** The job card this request is sourcing for, by its code. */
+    jobCode: varchar('job_code', { length: 32 }),
+    neededBy: date('needed_by'),
+    /** `open` → `quoted` → `ordered` → `closed`, or `cancelled`. */
+    status: varchar('status', { length: 16 }).notNull().default('open'),
+    /** Maintained by the server as quotations arrive, never posted. */
+    quotationCount: integer('quotation_count').notNull().default(0),
+    quotedAt: timestamp('quoted_at', { withTimezone: true }),
+    orderedAt: timestamp('ordered_at', { withTimezone: true }),
+    closedAt: timestamp('closed_at', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('parts_network_requests_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('parts_network_requests_org_idx').on(t.orgId, t.branchId, t.direction, t.status),
+  }),
+)
+
+/** An offer against a request. Accepting one is the domain's single real
+ *  invariant — the accepted quotation's siblings must be rejected, the request
+ *  must move to `ordered`, and the order must be created, all atomically — so
+ *  that transition has a bespoke router
+ *  (`POST /parts-network/quotations/:id/accept`) rather than riding a generic
+ *  `PATCH`. Everything else here is an ordinary column write. */
+export const partsNetworkQuotations = pgTable(
+  'parts_network_quotations',
+  {
+    ...tenant,
+    /** `NQT-0001`, assigned sequentially per tenant by `writers.ts`. */
+    code: varchar('code', { length: 32 }).notNull(),
+    requestId: varchar('request_id', { length: ULID_LENGTH }).notNull(),
+    memberId: varchar('member_id', { length: ULID_LENGTH }),
+    memberName: varchar('member_name', { length: 200 }).notNull(),
+    unitPriceHalalas: money('unit_price_halalas').notNull().default(0),
+    qtyAvailable: integer('qty_available').notNull().default(0),
+    leadTimeDays: integer('lead_time_days'),
+    /** `new` · `used` · `oem` · `aftermarket`. */
+    condition: varchar('condition', { length: 16 }).notNull().default('new'),
+    warrantyMonths: integer('warranty_months'),
+    /** `pending` → `accepted` | `rejected` | `withdrawn`. */
+    status: varchar('status', { length: 16 }).notNull().default('pending'),
+    acceptedAt: timestamp('accepted_at', { withTimezone: true }),
+    rejectedAt: timestamp('rejected_at', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('parts_network_quotations_org_code_idx').on(t.orgId, t.code),
+    byRequest: index('parts_network_quotations_request_idx').on(t.orgId, t.requestId, t.status),
+  }),
+)
+
+/** An accepted quotation, become an order. `direction` mirrors the request's:
+ *  `outbound` is one this workshop placed with a member, `inbound` is one it is
+ *  fulfilling for a member. "Incoming" on the screen is a *filtered read* over
+ *  this table (outbound and in transit), not a table of its own — there is no
+ *  fact an extra table would carry that `direction` plus `status` does not. */
+export const partsNetworkOrders = pgTable(
+  'parts_network_orders',
+  {
+    ...tenant,
+    /** `NOR-0001`, assigned sequentially per tenant by `writers.ts`. */
+    code: varchar('code', { length: 32 }).notNull(),
+    requestId: varchar('request_id', { length: ULID_LENGTH }),
+    quotationId: varchar('quotation_id', { length: ULID_LENGTH }),
+    memberId: varchar('member_id', { length: ULID_LENGTH }),
+    memberName: varchar('member_name', { length: 200 }).notNull(),
+    /** `outbound` (we buy) · `inbound` (we fulfil). */
+    direction: varchar('direction', { length: 16 }).notNull().default('outbound'),
+    partName: varchar('part_name', { length: 200 }).notNull(),
+    qty: integer('qty').notNull().default(1),
+    unitPriceHalalas: money('unit_price_halalas').notNull().default(0),
+    /** `qty × unitPriceHalalas`, computed by the server, never posted. */
+    totalHalalas: money('total_halalas').notNull().default(0),
+    /** `placed` → `shipped` → `received`, or `cancelled`. */
+    status: varchar('status', { length: 24 }).notNull().default('placed'),
+    trackingRef: varchar('tracking_ref', { length: 64 }),
+    expectedAt: date('expected_at'),
+    shippedAt: timestamp('shipped_at', { withTimezone: true }),
+    receivedAt: timestamp('received_at', { withTimezone: true }),
+    cancelledAt: timestamp('cancelled_at', { withTimezone: true }),
+    notes: text('notes'),
+  },
+  (t) => ({
+    codePerOrg: uniqueIndex('parts_network_orders_org_code_idx').on(t.orgId, t.code),
+    byOrg: index('parts_network_orders_org_idx').on(t.orgId, t.branchId, t.direction, t.status),
+  }),
+)
+
 /* ------------------------------------------------------------------- HR */
 
 /** Employees — a member of staff who belongs to a department (the existing

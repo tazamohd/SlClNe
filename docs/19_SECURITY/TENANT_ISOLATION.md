@@ -14,7 +14,7 @@
 
 Isolation is a database policy, not a `WHERE` clause. A `WHERE` clause is something a developer has to remember; a policy is something the database applies whether they remembered or not.
 
-**73 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 72 tenant-scoped tables, **0 lack a policy**.
+**77 tables have row-level security enabled**, all of them with `FORCE` so the migration role that owns the table is subject to the same policies — without `FORCE` the owner silently bypasses isolation. Of 76 tenant-scoped tables, **0 lack a policy**.
 
 ## Request context
 
@@ -114,6 +114,18 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `p_tenant` | `notifications` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
 | `r_branch` | `notifications` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
 | `r_self` | `notifications` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `parts_network_members` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `parts_network_members` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `parts_network_members` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `parts_network_requests` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `parts_network_requests` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `parts_network_requests` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `parts_network_quotations` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `parts_network_quotations` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `parts_network_quotations` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
+| `p_tenant` | `parts_network_orders` | PERMISSIVE | ALL | `app_scope() = 'platform' OR org_id = app_org()` |
+| `r_branch` | `parts_network_orders` | RESTRICTIVE | ALL | `app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()` |
+| `r_self` | `parts_network_orders` | RESTRICTIVE | ALL | `app_scope() <> 'self'` |
 
 ## Triggers
 
@@ -152,6 +164,10 @@ Multiple PERMISSIVE policies are OR-ed. A "branch scope" permissive policy besid
 | `canned_job_lines_bump_version` | `canned_job_lines` | `bump_version` | `server/drizzle/0020_canned_jobs.sql` |
 | `equipment_warranties_bump_version` | `equipment_warranties` | `bump_version` | `server/drizzle/0022_equipment_warranties.sql` |
 | `notifications_bump_version` | `notifications` | `bump_version` | `server/drizzle/0023_notifications.sql` |
+| `parts_network_members_bump_version` | `parts_network_members` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
+| `parts_network_requests_bump_version` | `parts_network_requests` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
+| `parts_network_quotations_bump_version` | `parts_network_quotations` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
+| `parts_network_orders_bump_version` | `parts_network_orders` | `bump_version` | `server/drizzle/0024_parts_network.sql` |
 
 ## Sequence: a request that reads tenant data
 

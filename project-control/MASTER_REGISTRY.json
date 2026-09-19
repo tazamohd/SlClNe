@@ -11,13 +11,13 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 236,
-    "dataBacked": 146,
+    "mockOnly": 225,
+    "dataBacked": 157,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 183,
-    "hasErrorState": 146,
+    "hasLoadingState": 191,
+    "hasErrorState": 154,
     "hasEmptyState": 227,
     "tabletVerified": 4,
     "arabicVerified": 74,
@@ -27,10 +27,10 @@
     "goldenPathsPassing": 23,
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
-    "crudCreate": 33,
-    "crudRead": 138,
-    "crudUpdate": 30,
-    "crudDelete": 26,
+    "crudCreate": 37,
+    "crudRead": 149,
+    "crudUpdate": 35,
+    "crudDelete": 29,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
     "productionReady": 0
@@ -7688,16 +7688,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -7722,8 +7727,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -7752,16 +7756,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -7787,7 +7794,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7817,18 +7823,20 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -7852,7 +7860,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7882,17 +7889,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -7917,7 +7926,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7942,7 +7950,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -7952,12 +7960,15 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
+        "read": true,
+        "update": true,
         "delete": false
       },
       "approval": false,
@@ -7981,9 +7992,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8013,18 +8022,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -8048,7 +8060,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8073,7 +8084,7 @@
       "mobileType": "B-responsive",
       "purpose": null,
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8083,11 +8094,13 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8112,9 +8125,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8147,7 +8158,7 @@
       "mobileType": "B-responsive",
       "purpose": "Admin-side supply-chain view",
       "desktop": "DONE",
-      "tablet": "MISSING",
+      "tablet": "PARTIAL",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
@@ -8157,11 +8168,14 @@
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -8186,9 +8200,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20314,16 +20326,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkOrders",
+        "partsNetworkQuotations",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20349,7 +20366,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20379,18 +20395,21 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
         "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
+        "read": true,
+        "update": true,
+        "delete": true
       },
       "approval": false,
       "export": false,
@@ -20414,7 +20433,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20444,16 +20462,19 @@
       "responsive": "PARTIAL",
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
-      "errorState": "MISSING",
+      "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
+      "dataBacked": true,
+      "dataSource": [
+        "partsNetworkMembers",
+        "partsNetworkRequests"
+      ],
       "crud": {
-        "create": false,
-        "read": false,
+        "create": true,
+        "read": true,
         "update": false,
         "delete": false
       },
@@ -20479,7 +20500,6 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
         "NO_RBAC_MODULE"
       ]
     },

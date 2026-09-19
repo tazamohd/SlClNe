@@ -62,6 +62,10 @@
       "opportunities",
       "organizations",
       "parts",
+      "parts_network_members",
+      "parts_network_orders",
+      "parts_network_quotations",
+      "parts_network_requests",
       "payments",
       "payroll_lines",
       "payroll_runs",
@@ -137,6 +141,10 @@
       "opportunities",
       "organizations",
       "parts",
+      "parts_network_members",
+      "parts_network_orders",
+      "parts_network_quotations",
+      "parts_network_requests",
       "payments",
       "payroll_lines",
       "payroll_runs",
@@ -869,6 +877,114 @@
         "predicate": "app_scope() <> 'self'",
         "purpose": null,
         "file": "server/drizzle/0023_notifications.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "parts_network_members",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "parts_network_members",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "parts_network_members",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "parts_network_requests",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "parts_network_requests",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "parts_network_requests",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "parts_network_quotations",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "parts_network_quotations",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "parts_network_quotations",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "parts_network_orders",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "parts_network_orders",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "parts_network_orders",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0024_parts_network.sql"
       }
     ],
     "triggers": [
@@ -1070,6 +1186,30 @@
         "table": "notifications",
         "function": "bump_version",
         "file": "server/drizzle/0023_notifications.sql"
+      },
+      {
+        "name": "parts_network_members_bump_version",
+        "table": "parts_network_members",
+        "function": "bump_version",
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "parts_network_requests_bump_version",
+        "table": "parts_network_requests",
+        "function": "bump_version",
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "parts_network_quotations_bump_version",
+        "table": "parts_network_quotations",
+        "function": "bump_version",
+        "file": "server/drizzle/0024_parts_network.sql"
+      },
+      {
+        "name": "parts_network_orders_bump_version",
+        "table": "parts_network_orders",
+        "function": "bump_version",
+        "file": "server/drizzle/0024_parts_network.sql"
       }
     ],
     "contextFunctions": [
@@ -1079,9 +1219,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 72,
-      "rlsEnabled": 73,
-      "forced": 73,
+      "tenantScopedTables": 76,
+      "rlsEnabled": 77,
+      "forced": 77,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -1110,7 +1250,8 @@
       "server/drizzle/0020_canned_jobs.sql",
       "server/drizzle/0021_campaign_messaging.sql",
       "server/drizzle/0022_equipment_warranties.sql",
-      "server/drizzle/0023_notifications.sql"
+      "server/drizzle/0023_notifications.sql",
+      "server/drizzle/0024_parts_network.sql"
     ]
   },
   "authenticationSurface": [

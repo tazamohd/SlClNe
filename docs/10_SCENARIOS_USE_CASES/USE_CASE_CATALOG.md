@@ -15,7 +15,7 @@
 
 One use case per write endpoint that has behaviour of its own. The generated collection routes — create, update, delete on a described collection — are uniform and are covered by a single pattern rather than 172 near-identical entries; that pattern is stated at the end.
 
-71 behavioural use cases.
+72 behavioural use cases.
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -75,6 +75,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 | UC-POST-JOBS-ID-TRANSITION | POST /jobs/:id/transition | owner, manager, advisor, technician, test | jobcards:e | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-LEAVE-REQUESTS-ID-APPROVE | POST /leave-requests/:id/approve | owner, hr, test | hr:a | — | — | — | yes | `server/src/routes/leave.ts` |
 | UC-POST-LEAVE-REQUESTS-ID-REJECT | POST /leave-requests/:id/reject | owner, hr, test | hr:a | — | — | — | — | `server/src/routes/leave.ts` |
+| UC-POST-PARTS-NETWORK-QUOTATIONS-ID-ACCEPT | POST /parts-network/quotations/:id/accept | owner, procurement, test | network:a | — | — | — | yes | `server/src/routes/parts-network.ts` |
 | UC-POST-PAYROLL-RUNS-ID-POST | POST /payroll/runs/:id/post | owner, hr, test | hr:e | — | — | — | — | `server/src/routes/payroll.ts` |
 | UC-POST-PROCUREMENT-PURCHASE-ORDERS | POST /procurement/purchase-orders | owner, manager, parts, procurement, test | procurement:c | — | — | — | yes | `server/src/routes/procurement.ts` |
 | UC-PATCH-PROCUREMENT-PURCHASE-ORDERS-ID | PATCH /procurement/purchase-orders/:id | owner, procurement, test | procurement:e | — | — | — | yes | `server/src/routes/procurement.ts` |

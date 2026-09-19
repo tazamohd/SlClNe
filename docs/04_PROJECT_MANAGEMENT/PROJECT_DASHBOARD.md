@@ -23,14 +23,14 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 | --- | --- | --- |
 | Registered capabilities | 436 | `STATUS.json` |
 | Rendering | 436 of 436 | `STATUS.json` |
-| Wired to the API | 146 of 436 | `STATUS.json` |
-| Reading design fixtures | 236 of 436 | `STATUS.json` |
+| Wired to the API | 157 of 436 | `STATUS.json` |
+| Reading design fixtures | 225 of 436 | `STATUS.json` |
 | End-to-end covered | 436 of 436 | `STATUS.json` |
 | Golden paths passing | 23 of 23 | `GOLDEN_PATHS.json` |
 | Arabic verified | 74 of 436 | `STATUS.json` |
 | Tablet verified | 4 of 436 | `STATUS.json` |
-| API endpoints | 460 | the route files |
-| Test cases | 2357 | the spec files |
+| API endpoints | 497 | the route files |
+| Test cases | 2409 | the spec files |
 | Open risks | 9 of 11 | `RISK_REGISTER.json` |
 | Open blockers | 1 | `BLOCKERS.json` |
 | Unresolved findings | 1 of 41 | `FINDINGS.json` |
@@ -38,13 +38,13 @@ A view over the canonical registers. Nothing here is entered by hand; if a numbe
 
 ## The one number that matters most
 
-**236 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
+**225 of 436 screens still read design fixtures rather than the API.** Everything else on this dashboard looks healthier than the project is, because "renders and is asserted" is a genuine achievement that is not the same as "works against the server". Read every other row against that one.
 
 ## Open blockers
 
 | ID | Severity | Title | What to do | Owner |
 | --- | --- | --- | --- | --- |
-| BLK-004 | CRITICAL | 236 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
+| BLK-004 | CRITICAL | 225 rendered capabilities are mock-only | They render, but read fixtures rather than an API. Cleared per capability as G4+ lands. | 05 |
 
 ## Open risks
 

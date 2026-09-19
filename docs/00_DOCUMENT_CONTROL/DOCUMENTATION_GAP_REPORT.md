@@ -17,18 +17,18 @@ This report exists to be read before anything else in the set is relied on. It i
 | Measure | Value |
 | --- | --- |
 | Required documents | 35 present of 35 |
-| Documents generated from source | 123 |
+| Documents generated from source | 124 |
 | Documents authored by hand | 290 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
-| Entities documented | 77 of 77 |
-| Relationships documented | 196 (70 FK-backed, 126 convention only) |
-| Endpoints documented | 460 of 460 |
-| Endpoints with a linked test | 124 of 460 |
+| Entities documented | 81 of 81 |
+| Relationships documented | 205 (75 FK-backed, 130 convention only) |
+| Endpoints documented | 497 of 497 |
+| Endpoints with a linked test | 132 of 497 |
 | Business rules documented | 30, each naming its enforcing function |
-| Lifecycles with a declared transition table | 1 of 21 |
+| Lifecycles with a declared transition table | 1 of 25 |
 | Screens registered and mapped to a capability | 436 of 436 |
-| Screens wired to the live API | 146 of 436 |
-| Test suites catalogued | 210 containing 2357 cases |
+| Screens wired to the live API | 157 of 436 |
+| Test suites catalogued | 212 containing 2409 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 2 |
@@ -45,11 +45,11 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 ### 1. Referential integrity is not in the database
 
-126 of 196 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
+130 of 205 relationships have no foreign key. Orphaned references are possible and the database will not refuse them. This is an architectural position, not an oversight, but it is load-bearing and undocumented elsewhere.
 
 ### 2. One lifecycle in eighteen declares its legal transitions
 
-`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 20 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
+`jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 24 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
 ### 3. 23 authenticated endpoints state no permission guard in the handler
 
@@ -81,13 +81,13 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 336 endpoints have no test matched to them by path
+### 4. 365 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 236 screens read design fixtures rather than the API
+### 5. 225 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 236 of 436 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 225 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -200,9 +200,9 @@ _None — every required document is present._
 ## Recommended next actions, in order
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
-2. **Declare transition tables for the remaining 20 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
+2. **Declare transition tables for the remaining 24 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 23 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 336 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 365 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 236 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 225 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

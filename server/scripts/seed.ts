@@ -140,6 +140,15 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
   /** Notifications (BLK-004) — no design fixture; a handful spanning every
    *  category (job, appointment, invoice, stock) and read/unread state. */
   notifications: 8,
+  /** Parts network (BLK-004) — no design fixture; the eight parts-network
+   *  screens all rendered an honest GAP state. A small coherent network: the
+   *  two seeded suppliers plus the `Neighbouring Garage` organization as
+   *  members, four requests (three outgoing, one incoming), the three
+   *  quotations that answer two of them, and the three orders. */
+  partsNetworkMembers: 3,
+  partsNetworkRequests: 4,
+  partsNetworkQuotations: 3,
+  partsNetworkOrders: 3,
 }
 
 /** The demo identities from `RBAC.md`, one per role. Passwords are **not** set here —
@@ -1257,6 +1266,7 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
   ]
   await tx.insert(s.suppliers).values(supplierRows)
   const aljazira = supplierRows[0]!
+  const gulfSpare = supplierRows[1]!
 
   /* The requisition and the lines it carries. Estimated unit prices are the
    * budget figures at request time; the PO sets the agreed price. */
@@ -1468,6 +1478,244 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       message: '12 units on hand, below the reorder level of 20 (SKU SP-SET-04).',
       link: 'SP-SET-04',
       readAt: new Date('2026-07-23T07:45:00Z'),
+    }),
+  ])
+
+  /* ------------------------------------------------------- parts network (BLK-004)
+   * A small, coherent supply network: three members, four requests, three
+   * quotations and three orders. No design bundle fixture carries any of these
+   * tables — the eight parts-network screens all rendered an honest "no data
+   * source yet" shell — so every row is a declared coherence extra
+   * (SEED_COHERENCE_EXTRAS), served after the (empty) fixture like the
+   * supplier directory.
+   *
+   * Nothing invented: the two supplier members *are* the two seeded suppliers
+   * and point at their `suppliers` rows through `supplierId`, the garage member
+   * is the `Neighbouring Garage` organization the seed already creates for the
+   * isolation tests, every `partSku` is a `T.PARTS` row, and every request's
+   * vehicle and `jobCode` are a `T.JOBS` row. Coherent, not merely present:
+   * NRQ-0001 is `quoted` with exactly the two quotations that name it,
+   * NRQ-0002 is `ordered` because NQT-0003 was accepted and NOR-0001 came out
+   * of it, and NOR-0001's total is `qty × unitPrice`.
+   *
+   * These rows belong to the primary tenant and to no one else. The
+   * `Neighbouring Garage` member below is *this* workshop's directory entry for
+   * that garage — a name and a phone number it keeps — not a window into that
+   * organization's own data, which stays invisible under RLS. See
+   * `drizzle/0024_parts_network.sql`. */
+  const networkMemberRows = [
+    row({
+      code: 'NWM-0001',
+      name: aljazira.name,
+      nameAr: aljazira.nameAr,
+      kind: 'supplier',
+      city: 'Riyadh',
+      contactName: aljazira.contactName,
+      contactPhone: aljazira.contactPhone,
+      contactEmail: aljazira.contactEmail,
+      /* Reuse over invention: the same vendor this workshop raises purchase
+       * orders against, related by FK rather than duplicated. */
+      supplierId: aljazira.id,
+      status: 'active',
+      ratingTenths: 46,
+      notes: 'Primary parts vendor; also quotes on network requests.',
+    }),
+    row({
+      code: 'NWM-0002',
+      name: gulfSpare.name,
+      nameAr: gulfSpare.nameAr,
+      kind: 'supplier',
+      city: 'Dammam',
+      contactName: gulfSpare.contactName,
+      contactPhone: gulfSpare.contactPhone,
+      contactEmail: gulfSpare.contactEmail,
+      supplierId: gulfSpare.id,
+      status: 'active',
+      ratingTenths: 42,
+    }),
+    row({
+      code: 'NWM-0003',
+      name: 'Neighbouring Garage',
+      kind: 'garage',
+      city: 'Riyadh',
+      status: 'active',
+      /* Unrated: this workshop has not traded enough with them to score them,
+       * and the screen shows no stars rather than a fabricated default. */
+      ratingTenths: null,
+      notes: 'Trades spare stock both ways; sends occasional requests.',
+    }),
+  ]
+  await tx.insert(s.partsNetworkMembers).values(networkMemberRows)
+  const [memberAlJazira, memberGulfSpare, memberNeighbour] = networkMemberRows as [
+    (typeof networkMemberRows)[number],
+    (typeof networkMemberRows)[number],
+    (typeof networkMemberRows)[number],
+  ]
+
+  const brakePadsRequest = row({
+    code: 'NRQ-0001',
+    direction: 'outgoing',
+    partSku: 'BP-FR-220',
+    partName: 'Brake Pads (Front)',
+    partNumber: 'BP-FR-220',
+    qty: 40,
+    urgency: 'high',
+    vehicleInfo: 'Toyota Camry 2022',
+    jobCode: 'A3F8B2C1',
+    neededBy: '2026-08-02',
+    /* Two quotations arrived, neither accepted yet. */
+    status: 'quoted',
+    quotationCount: 2,
+    quotedAt: new Date('2026-07-27T08:30:00Z'),
+    notes: 'Broadcast to the network — front pads below reorder level.',
+  })
+  const sparkPlugRequest = row({
+    code: 'NRQ-0002',
+    direction: 'outgoing',
+    memberId: memberAlJazira.id,
+    memberName: memberAlJazira.name,
+    partSku: 'SP-SET-04',
+    partName: 'Spark Plug Set',
+    partNumber: 'SP-SET-04',
+    qty: 20,
+    urgency: 'urgent',
+    vehicleInfo: 'Nissan Patrol 2021',
+    jobCode: 'B7E4D9A2',
+    neededBy: '2026-07-30',
+    /* NQT-0003 was accepted and NOR-0001 raised from it. */
+    status: 'ordered',
+    quotationCount: 1,
+    quotedAt: new Date('2026-07-25T11:00:00Z'),
+    orderedAt: new Date('2026-07-26T09:15:00Z'),
+  })
+  const airFilterRequest = row({
+    code: 'NRQ-0003',
+    direction: 'outgoing',
+    partSku: 'AF-UN-002',
+    partName: 'Air Filter (Universal)',
+    partNumber: 'AF-UN-002',
+    qty: 30,
+    urgency: 'normal',
+    vehicleInfo: 'Hyundai Sonata 2023',
+    jobCode: 'C2A9F4E3',
+    neededBy: '2026-08-10',
+    /* Still waiting on the network: no quotations, so the Quotations view has
+     * a genuinely empty case to render. */
+    status: 'open',
+  })
+  const incomingRequest = row({
+    code: 'NRQ-0004',
+    /* An `incoming` request: one this workshop recorded as having been sent to
+     * it by a member. Still its own row under its own `orgId` — the member is a
+     * directory entry, not another tenant. */
+    direction: 'incoming',
+    memberId: memberNeighbour.id,
+    memberName: memberNeighbour.name,
+    partSku: 'OF-TY-118',
+    partName: 'Oil Filter (Toyota)',
+    partNumber: 'OF-TY-118',
+    qty: 12,
+    urgency: 'normal',
+    neededBy: '2026-08-05',
+    status: 'open',
+    notes: 'Asked whether we can spare a dozen from the Riyadh shelf.',
+  })
+  await tx
+    .insert(s.partsNetworkRequests)
+    .values([brakePadsRequest, sparkPlugRequest, airFilterRequest, incomingRequest])
+
+  const acceptedQuotationAt = new Date('2026-07-26T09:15:00Z')
+  const acceptedQuotation = row({
+    code: 'NQT-0003',
+    requestId: sparkPlugRequest.id,
+    memberId: memberAlJazira.id,
+    memberName: memberAlJazira.name,
+    unitPriceHalalas: 13500,
+    qtyAvailable: 24,
+    leadTimeDays: 3,
+    condition: 'new',
+    warrantyMonths: 12,
+    status: 'accepted',
+    acceptedAt: acceptedQuotationAt,
+  })
+  await tx.insert(s.partsNetworkQuotations).values([
+    row({
+      code: 'NQT-0001',
+      requestId: brakePadsRequest.id,
+      memberId: memberAlJazira.id,
+      memberName: memberAlJazira.name,
+      /* The same SAR 85 a pad costs on PO-0001 — the network quote and the
+       * purchase order agree because they are the same vendor. */
+      unitPriceHalalas: 8500,
+      qtyAvailable: 40,
+      leadTimeDays: 2,
+      condition: 'new',
+      warrantyMonths: 12,
+      status: 'pending',
+    }),
+    row({
+      code: 'NQT-0002',
+      requestId: brakePadsRequest.id,
+      memberId: memberGulfSpare.id,
+      memberName: memberGulfSpare.name,
+      unitPriceHalalas: 9100,
+      qtyAvailable: 60,
+      leadTimeDays: 1,
+      condition: 'oem',
+      warrantyMonths: 24,
+      status: 'pending',
+      notes: 'OEM part, next-day from Dammam.',
+    }),
+    acceptedQuotation,
+  ])
+
+  await tx.insert(s.partsNetworkOrders).values([
+    row({
+      code: 'NOR-0001',
+      requestId: sparkPlugRequest.id,
+      quotationId: acceptedQuotation.id,
+      memberId: memberAlJazira.id,
+      memberName: memberAlJazira.name,
+      direction: 'outbound',
+      partName: 'Spark Plug Set',
+      qty: 20,
+      unitPriceHalalas: 13500,
+      /* `qty × unitPrice`, the figure the server computes — not a literal. */
+      totalHalalas: 20 * 13500,
+      status: 'shipped',
+      trackingRef: 'AJ-SHP-40218',
+      expectedAt: '2026-07-30',
+      shippedAt: new Date('2026-07-27T06:00:00Z'),
+      notes: 'Raised from NQT-0003.',
+    }),
+    row({
+      code: 'NOR-0002',
+      memberId: memberGulfSpare.id,
+      memberName: memberGulfSpare.name,
+      direction: 'outbound',
+      partName: 'Air Filter (Universal)',
+      qty: 30,
+      unitPriceHalalas: 7800,
+      totalHalalas: 30 * 7800,
+      status: 'received',
+      trackingRef: 'GS-SHP-11907',
+      expectedAt: '2026-07-18',
+      shippedAt: new Date('2026-07-15T07:30:00Z'),
+      receivedAt: new Date('2026-07-18T10:05:00Z'),
+      notes: 'Agreed directly with Gulf Spare, outside the quotation flow.',
+    }),
+    row({
+      code: 'NOR-0003',
+      memberId: memberNeighbour.id,
+      memberName: memberNeighbour.name,
+      /* `inbound`: this workshop is the one fulfilling. */
+      direction: 'inbound',
+      partName: 'Oil Filter (Toyota)',
+      qty: 12,
+      unitPriceHalalas: 4500,
+      totalHalalas: 12 * 4500,
+      status: 'placed',
+      expectedAt: '2026-08-05',
     }),
   ])
 }

@@ -9,13 +9,13 @@
   ],
   "handEdit": "Never. Edit the source, then regenerate.",
   "totals": {
-    "endpoints": 460,
-    "generated": 302,
-    "explicit": 158,
+    "endpoints": 497,
+    "generated": 334,
+    "explicit": 163,
     "unauthenticated": 6,
-    "withPermissionGuard": 431,
+    "withPermissionGuard": 468,
     "idempotent": 2,
-    "withTests": 124
+    "withTests": 132
   },
   "collections": [
     {
@@ -1018,6 +1018,138 @@
         "severity"
       ],
       "codeColumn": null,
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "writable": true
+    },
+    {
+      "key": "partsNetworkMembers",
+      "path": "parts-network/members",
+      "table": "partsNetworkMembers",
+      "module": "network",
+      "entity": "parts_network_member",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "codeColumn": "code",
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "writable": true
+    },
+    {
+      "key": "partsNetworkRequests",
+      "path": "parts-network/requests",
+      "table": "partsNetworkRequests",
+      "module": "network",
+      "entity": "parts_network_request",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "codeColumn": "code",
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "writable": true
+    },
+    {
+      "key": "partsNetworkQuotations",
+      "path": "parts-network/quotations",
+      "table": "partsNetworkQuotations",
+      "module": "network",
+      "entity": "parts_network_quotation",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "codeColumn": "code",
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "writable": true
+    },
+    {
+      "key": "partsNetworkOrders",
+      "path": "parts-network/orders",
+      "table": "partsNetworkOrders",
+      "module": "network",
+      "entity": "parts_network_order",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "codeColumn": "code",
       "defaultSort": {
         "column": "createdAt",
         "dir": "desc"
@@ -13556,6 +13688,1553 @@
       "filterable": [
         "category",
         "severity"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/parts-network/members",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "List the collection with search, sort, filter and pagination — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/parts-network/members",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Create one row — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/parts-network/members/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete one row — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-GETID",
+      "method": "GET",
+      "path": "/api/v1/parts-network/members/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Read one row by ULID or business code — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/parts-network/members/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Update one row (optimistic concurrency on version) — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-GET-PARTS-NETWORK-MEMBERS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/parts-network/members/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "network",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/members/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete many rows — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/members/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Apply one patch to many rows — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKMEMBERS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/parts-network/members/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Export the filtered collection as a file — parts_network_member.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_member",
+      "table": "partsNetworkMembers",
+      "search": [
+        "code",
+        "name",
+        "city",
+        "contactName"
+      ],
+      "sortable": [
+        "code",
+        "name",
+        "kind",
+        "city",
+        "status",
+        "ratingTenths",
+        "createdAt"
+      ],
+      "filterable": [
+        "kind",
+        "status"
+      ],
+      "defaultSort": {
+        "column": "name",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/parts-network/orders",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "List the collection with search, sort, filter and pagination — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/parts-network/orders",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Create one row — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/parts-network/orders/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete one row — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-GETID",
+      "method": "GET",
+      "path": "/api/v1/parts-network/orders/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Read one row by ULID or business code — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/parts-network/orders/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Update one row (optimistic concurrency on version) — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-GET-PARTS-NETWORK-ORDERS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/parts-network/orders/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "network",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/orders/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete many rows — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/orders/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Apply one patch to many rows — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKORDERS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/parts-network/orders/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Export the filtered collection as a file — parts_network_order.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_order",
+      "table": "partsNetworkOrders",
+      "search": [
+        "code",
+        "memberName",
+        "partName",
+        "trackingRef"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "partName",
+        "totalHalalas",
+        "status",
+        "expectedAt",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "memberId",
+        "requestId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/parts-network/quotations",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "List the collection with search, sort, filter and pagination — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/parts-network/quotations",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Create one row — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/parts-network/quotations/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete one row — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-GETID",
+      "method": "GET",
+      "path": "/api/v1/parts-network/quotations/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Read one row by ULID or business code — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/parts-network/quotations/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Update one row (optimistic concurrency on version) — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-POST-PARTS-NETWORK-QUOTATIONS-ID-ACCEPT",
+      "method": "POST",
+      "path": "/api/v1/parts-network/quotations/:id/accept",
+      "source": "server/src/routes/parts-network.ts",
+      "kind": "EXPLICIT",
+      "domain": "network",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "network",
+      "permissionAction": "a",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": true,
+      "transactional": false,
+      "validates": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-GET-PARTS-NETWORK-QUOTATIONS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/parts-network/quotations/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "network",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/quotations/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete many rows — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/quotations/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Apply one patch to many rows — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKQUOTATIONS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/parts-network/quotations/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Export the filtered collection as a file — parts_network_quotation.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_quotation",
+      "table": "partsNetworkQuotations",
+      "search": [
+        "code",
+        "memberName"
+      ],
+      "sortable": [
+        "code",
+        "memberName",
+        "unitPriceHalalas",
+        "leadTimeDays",
+        "status",
+        "createdAt"
+      ],
+      "filterable": [
+        "requestId",
+        "status",
+        "condition",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "unitPriceHalalas",
+        "dir": "asc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-GET-LIST",
+      "method": "GET",
+      "path": "/api/v1/parts-network/requests",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "List the collection with search, sort, filter and pagination — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-POST-LIST",
+      "method": "POST",
+      "path": "/api/v1/parts-network/requests",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Create one row — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "c",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": [
+        "TS-APP-E2E-INVENTORY-SPEC-TS",
+        "TS-APP-E2E-PARTS-PROCUREMENT-SPEC-TS",
+        "TS-APP-E2E-SUPPLIER-PORTAL-SPEC-TS",
+        "TS-SERVER-TESTS-PARTS-NETWORK-TEST-TS"
+      ]
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-DELETEID",
+      "method": "DELETE",
+      "path": "/api/v1/parts-network/requests/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete one row — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-GETID",
+      "method": "GET",
+      "path": "/api/v1/parts-network/requests/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Read one row by ULID or business code — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-PATCHID",
+      "method": "PATCH",
+      "path": "/api/v1/parts-network/requests/:id",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Update one row (optimistic concurrency on version) — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-GET-PARTS-NETWORK-REQUESTS-ID-HISTORY",
+      "method": "GET",
+      "path": "/api/v1/parts-network/requests/:id/history",
+      "source": "server/src/routes/history.ts",
+      "kind": "EXPLICIT",
+      "domain": "network",
+      "purpose": null,
+      "authentication": "Bearer access token (required)",
+      "permissionModule": "network",
+      "permissionAction": "v",
+      "requiresApproval": false,
+      "tenantScope": "org_id via Postgres row-level security",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "idempotent": false,
+      "audited": false,
+      "transactional": false,
+      "validates": false,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-POSTBULK-DELETE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/requests/bulk-delete",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Soft-delete many rows — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "d",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-POSTBULK-UPDATE",
+      "method": "POST",
+      "path": "/api/v1/parts-network/requests/bulk-update",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Apply one patch to many rows — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "e",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
+      ],
+      "defaultSort": {
+        "column": "createdAt",
+        "dir": "desc"
+      },
+      "idempotent": false,
+      "audited": true,
+      "capability": "CAP-PLATFORM",
+      "tests": []
+    },
+    {
+      "id": "API-PARTSNETWORKREQUESTS-GETEXPORT",
+      "method": "GET",
+      "path": "/api/v1/parts-network/requests/export",
+      "source": "server/src/routes/collections.ts (generated from server/src/registry.ts)",
+      "kind": "GENERATED",
+      "domain": "network",
+      "purpose": "Export the filtered collection as a file — parts_network_request.",
+      "authentication": "Bearer access token (required; app.ts authenticates by default)",
+      "permissionModule": "network",
+      "permissionAction": "x",
+      "tenantScope": "org_id via Postgres row-level security (server/drizzle/0001_rls.sql)",
+      "branchScope": "branch_id where the principal is branch-scoped",
+      "entity": "parts_network_request",
+      "table": "partsNetworkRequests",
+      "search": [
+        "code",
+        "partName",
+        "partNumber",
+        "memberName",
+        "vehicleInfo"
+      ],
+      "sortable": [
+        "code",
+        "partName",
+        "qty",
+        "urgency",
+        "status",
+        "neededBy",
+        "createdAt"
+      ],
+      "filterable": [
+        "direction",
+        "status",
+        "urgency",
+        "memberId"
       ],
       "defaultSort": {
         "column": "createdAt",

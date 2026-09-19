@@ -61,9 +61,27 @@ import {
   warrantyUpdate,
   notificationCreate,
   notificationUpdate,
+  partsNetworkMemberCreate,
+  partsNetworkMemberUpdate,
+  partsNetworkOrderCreate,
+  partsNetworkOrderUpdate,
+  partsNetworkQuotationCreate,
+  partsNetworkQuotationUpdate,
+  partsNetworkRequestCreate,
+  partsNetworkRequestUpdate,
 } from '@salis/contract'
 import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
-import { appointments, employees, equipmentWarranties, payrollRuns, suppliers } from './db/schema'
+import {
+  appointments,
+  employees,
+  equipmentWarranties,
+  partsNetworkMembers,
+  partsNetworkOrders,
+  partsNetworkQuotations,
+  partsNetworkRequests,
+  payrollRuns,
+  suppliers,
+} from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
 
@@ -394,6 +412,131 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
     },
   },
 
+  /* ------------------------------------------- parts supply network (BLK-004)
+   *
+   * Four tenant-owned collections behind the eight parts-network screens that
+   * rendered an honest GAP state. RBAC (`network:c/e/d`), tenant RLS, audit and
+   * optimistic concurrency all come from the generic router; what is specific
+   * to this domain is here.
+   *
+   * Every `code` is counted within the tenant so two rows never collide on the
+   * unique `(org_id, code)` index, and every status timestamp is derived from
+   * the transition rather than accepted as input — the discipline
+   * `equipmentWarranties.claimedAt` set. Accepting a quotation is *not* here:
+   * it is a multi-row invariant and lives in `routes/parts-network.ts`.
+   */
+  partsNetworkMembers: {
+    create: partsNetworkMemberCreate,
+    update: partsNetworkMemberUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'member')
+      /* A member may only point at one of *this* tenant's suppliers. RLS would
+       * already hide a foreign row from the read below, so the lookup failing
+       * is the same answer as it not existing — refused either way rather than
+       * written and silently unreadable. */
+      if (value.supplierId != null) {
+        const [supplier] = await ctx.tx
+          .select({ id: suppliers.id })
+          .from(suppliers)
+          .where(and(eq(suppliers.id, value.supplierId as string), isNull(suppliers.deletedAt)))
+          .limit(1)
+        if (!supplier) throw notFound('Supplier')
+      }
+      return value
+    },
+  },
+
+  partsNetworkRequests: {
+    create: partsNetworkRequestCreate,
+    update: partsNetworkRequestUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'request')
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        /* The member's name is carried for display, denormalised the way
+         * `purchase_orders.supplierName` is — and taken from the member row,
+         * never from the request body, so it cannot disagree with the
+         * directory. */
+        value.memberName = member.name
+      }
+      /* Each lifecycle move stamps its own time and clears the ones that no
+       * longer apply, so a reopened request never carries a stale `closedAt`. */
+      if ('status' in value) {
+        const status = value.status
+        value.quotedAt = status === 'quoted' || status === 'ordered' ? new Date() : null
+        value.orderedAt = status === 'ordered' ? new Date() : null
+        value.closedAt = status === 'closed' || status === 'cancelled' ? new Date() : null
+      }
+      return value
+    },
+  },
+
+  partsNetworkQuotations: {
+    create: partsNetworkQuotationCreate,
+    update: partsNetworkQuotationUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) {
+        value.code = await nextPartsNetworkCode(ctx.tx, 'quotation')
+        const request = await loadNetworkRequest(ctx.tx, value.requestId as string)
+        if (request.status === 'closed' || request.status === 'cancelled') {
+          throw ruleViolated(`Request ${request.code} is ${request.status} and takes no more quotations.`)
+        }
+        /* A quotation arriving is what moves a request from `open` to
+         * `quoted`, and the count is maintained here rather than posted — the
+         * same reason a purchase order's total is summed server-side. Kept in
+         * one transaction with the insert, so the count can never drift from
+         * the rows it counts. */
+        await ctx.tx
+          .update(partsNetworkRequests)
+          .set({
+            quotationCount: sql`${partsNetworkRequests.quotationCount} + 1`,
+            status: request.status === 'open' ? 'quoted' : request.status,
+            quotedAt: request.quotedAt ?? new Date(),
+            updatedBy: ctx.principal.userId,
+          })
+          .where(eq(partsNetworkRequests.id, request.id))
+      }
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        value.memberName = member.name
+      }
+      /* `accepted` is unreachable here — the contract's update schema omits it,
+       * because accepting also rejects the siblings and raises the order. */
+      if ('status' in value) {
+        value.rejectedAt = value.status === 'rejected' ? new Date() : null
+      }
+      return value
+    },
+  },
+
+  partsNetworkOrders: {
+    create: partsNetworkOrderCreate,
+    update: partsNetworkOrderUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'order')
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        value.memberName = member.name
+      }
+      /* The total is `qty × unitPrice`, computed from whichever of the two the
+       * patch carries plus whatever the row already holds — never posted. */
+      const qty = Number(value.qty ?? existing?.qty ?? 1)
+      const unit = Number(value.unitPriceHalalas ?? existing?.unitPriceHalalas ?? 0)
+      value.totalHalalas = qty * unit
+      if ('status' in value) {
+        const status = value.status
+        value.shippedAt = status === 'shipped' || status === 'received' ? new Date() : null
+        value.receivedAt = status === 'received' ? new Date() : null
+        value.cancelledAt = status === 'cancelled' ? new Date() : null
+      }
+      return value
+    },
+  },
+
   /* Declined Job Tracking & Follow-Up (Sprint 1, P0). `create` is `z.never()`
    * (see `registry.ts`) — every row is born from an estimate decline action,
    * never a generic `POST`. `PATCH` carries only the follow-up lifecycle, and
@@ -457,6 +600,48 @@ const RESOLVED_DECLINED_JOB_STATUSES = new Set(['approved_later', 'permanently_d
 async function nextSupplierCode(tx: Tx): Promise<string> {
   const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(suppliers)
   return `SUP-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** The next parts-network code within the tenant (`NWM-0001`, `NRQ-0001`,
+ *  `NQT-0001`, `NOR-0001`). Counted, not a placeholder, so two rows never
+ *  collide on their table's unique `(org_id, code)` index. */
+const PARTS_NETWORK_CODE = {
+  member: { prefix: 'NWM', table: partsNetworkMembers },
+  request: { prefix: 'NRQ', table: partsNetworkRequests },
+  quotation: { prefix: 'NQT', table: partsNetworkQuotations },
+  order: { prefix: 'NOR', table: partsNetworkOrders },
+} as const
+
+async function nextPartsNetworkCode(
+  tx: Tx,
+  kind: keyof typeof PARTS_NETWORK_CODE,
+): Promise<string> {
+  const { prefix, table } = PARTS_NETWORK_CODE[kind]
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(table)
+  return `${prefix}-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** A member of *this* tenant's network directory. RLS already hides another
+ *  organization's rows, so a miss here and a foreign id are the same answer:
+ *  404, never a write that references something unreadable. */
+export async function loadNetworkMember(tx: Tx, id: string) {
+  const [row] = await tx
+    .select()
+    .from(partsNetworkMembers)
+    .where(and(eq(partsNetworkMembers.id, id), isNull(partsNetworkMembers.deletedAt)))
+    .limit(1)
+  if (!row) throw notFound('Network member')
+  return row
+}
+
+export async function loadNetworkRequest(tx: Tx, id: string) {
+  const [row] = await tx
+    .select()
+    .from(partsNetworkRequests)
+    .where(and(eq(partsNetworkRequests.id, id), isNull(partsNetworkRequests.deletedAt)))
+    .limit(1)
+  if (!row) throw notFound('Network request')
+  return row
 }
 
 /** The next `WRN-0001` within the tenant. Counted, not a placeholder, so two

@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-77 tables. 72 are tenant-scoped (carry `org_id`) and 73 have row-level security enabled and forced.
+81 tables. 76 are tenant-scoped (carry `org_id`) and 77 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -74,6 +74,10 @@
 | ENT-LOAN-REPAYMENTS | `loan_repayments` | 17 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-EQUIPMENT-WARRANTIES | `equipment_warranties` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-NOTIFICATIONS | `notifications` | 15 | yes | yes | yes | yes | yes | yes | — | 8 |
+| ENT-PARTS-NETWORK-MEMBERS | `parts_network_members` | 21 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-PARTS-NETWORK-REQUESTS | `parts_network_requests` | 27 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-PARTS-NETWORK-QUOTATIONS | `parts_network_quotations` | 22 | yes | yes | yes | yes | yes | yes | 1 | 0 |
+| ENT-PARTS-NETWORK-ORDERS | `parts_network_orders` | 26 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-EMPLOYEES | `employees` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-PAYROLL-RUNS | `payroll_runs` | 17 | yes | yes | yes | yes | yes | yes | 4 | 0 |
 | ENT-PAYROLL-LINES | `payroll_lines` | 16 | yes | yes | yes | yes | yes | yes | 4 | 0 |

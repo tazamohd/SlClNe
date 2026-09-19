@@ -109,6 +109,12 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   /** No design fixture — notifications are new (BLK-004). The collection
    *  serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
   notifications: [],
+  /** No design fixture — the parts network is new (BLK-004). Each collection
+   *  serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  partsNetworkMembers: [],
+  partsNetworkRequests: [],
+  partsNetworkQuotations: [],
+  partsNetworkOrders: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and
