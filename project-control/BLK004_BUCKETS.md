@@ -466,6 +466,88 @@ new backend collection or computation (`Tasks`, `Vehicle-History`,
 `Native.Android`/`iOS`). Bucket B is done as a wiring pass; what's left is
 product scoping work, one collection or endpoint at a time.
 
+## Bucket D: real self-service profile edit and password change (2026-09-19)
+
+Where the other buckets stopped at "this screen has no backend, product
+scoping needed", this one does the scoping: `Profile` (`/profile`) and
+`UserProfile` (`/user-profile`) both had a real, narrow gap a small
+backend addition closes cleanly.
+
+- **Server.** Two new authenticated routes: `PATCH /auth/me` (name only —
+  `nameAr` is written nowhere `GET /auth/me` reads back, so it stays
+  untouched) and `POST /auth/change-password` (verifies the current
+  password, enforces the real 12-character policy, revokes every session
+  including the caller's own, same reasoning `resetPassword` already
+  uses). Both follow `server/src/auth/service.ts`'s existing conventions
+  exactly and are audited. 7 new tests against a real Postgres.
+- **`Profile.tsx`** was a fake-success form: "Save Changes" always toasted
+  success without persisting the name or checking the current password
+  against anything. Wired to the two new routes through
+  `SessionProvider`'s new `updateProfile`/`changePassword` (same pattern
+  as `switchRole`/`revokeAllDevices`). Also fixed a latent bug where the
+  name field's initial value never resynced once a live session finished
+  its async bootstrap, and raised the local password-length check from 8
+  to 12 to match the server's actual policy.
+- **`UserProfile.tsx`** rendered one hardcoded person regardless of who
+  was signed in, plus three fabricated stats. Rewired to `useSession()`
+  (real name/email/role) and `useCollection('branches')` (real branch
+  name); `department`, `joinedDate`, `lastLogin` and the stats had no
+  real column or collection and are dropped rather than re-invented.
+- **Registry.** `PROFILE_API_CALL` added beside `PROCUREMENT_API_CALL` /
+  `HEALTH_CHECK_API_CALL` — same non-`useCollection` seam shape.
+
+**BLK-004: 37 → 34.**
+
+### Remaining MOCK_ONLY after bucket D (34)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Role-Management | `/role-management` | featuremap |
+| RolesPermissions | `/roles-permissions` | admin |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
+| User-Settings | `/user-settings` | featuremap |
+| UsersTeams | `/users-teams` | admin |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Welcome-Page | `/welcome-page` | featuremap |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+Of these, `RolesPermissions` / `UsersTeams` (PR #128's admin/staff routes
+already exist, just not wired to these two screens) and `System-Settings` /
+`Security-Settings` / `VAT-Settings` / `ZATCA-Settings` / `Zakat-Settings`
+/ `Financial-Settings` (each is a single-row settings form, the same shape
+`Profile` just closed) look like the next tractable slice — a persistence
+endpoint per settings group, not a new subsystem. The rest still need a new
+collection: `Tasks`, `Vehicle-History`, `Cash-Flow-Statement`,
+`Retained-Earnings`, `Notifications`, `CustomerApp.*`, `AIAssistant`,
+`Barcode-Scanner`, `Customer-App-Booking`, `Technician-Leaderboards`,
+`Training-LMS`, `Native.Android`/`iOS`.
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |
