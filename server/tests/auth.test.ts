@@ -50,6 +50,18 @@ function get(url: string, token?: string) {
   })
 }
 
+function patch(url: string, body: unknown, token?: string) {
+  return app.inject({
+    method: 'PATCH',
+    url: `/api/v1${url}`,
+    headers: {
+      'content-type': 'application/json',
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
+    payload: JSON.stringify(body ?? {}),
+  })
+}
+
 async function login(email: string, password = PASSWORD) {
   return post('/auth/login', { email, password })
 }
@@ -377,6 +389,100 @@ describe('GET /auth/me', () => {
 
   it('refuses without a token', async () => {
     expect((await get('/auth/me')).statusCode).toBe(401)
+  })
+})
+
+describe('PATCH /auth/me', () => {
+  it("updates the caller's own name and nothing else", async () => {
+    const session = (await login('owner@salisauto.sa')).json()
+    const res = await patch('/auth/me', { name: '  Khalid Al-Salis  ' }, session.accessToken)
+    expect(res.statusCode, res.body).toBe(200)
+    expect(res.json().user.name).toBe('Khalid Al-Salis')
+
+    // Persisted, not just echoed back.
+    const again = (await get('/auth/me', session.accessToken)).json()
+    expect(again.user.name).toBe('Khalid Al-Salis')
+
+    // Restore the seed name so later tests reading it aren't surprised.
+    await patch('/auth/me', { name: 'Khalid Al-Salis' }, session.accessToken)
+  })
+
+  it('rejects a blank name and refuses without a token', async () => {
+    const session = (await login('manager@salisauto.sa', OTHER_PASSWORD)).json()
+    const blank = await patch('/auth/me', { name: '   ' }, session.accessToken)
+    expect(blank.statusCode).toBe(400)
+    expect((await patch('/auth/me', { name: 'Someone' })).statusCode).toBe(401)
+  })
+})
+
+describe('POST /auth/change-password', () => {
+  it("changes the caller's password and signs every device out", async () => {
+    const email = 'manager@salisauto.sa'
+    const live = (await login(email, OTHER_PASSWORD)).json()
+    const other = (await login(email, OTHER_PASSWORD)).json()
+
+    const next = 'a-different-and-also-quite-long-password'
+    const done = await post(
+      '/auth/change-password',
+      { currentPassword: OTHER_PASSWORD, newPassword: next },
+      live.accessToken,
+    )
+    expect(done.statusCode, done.body).toBe(200)
+
+    // Every session opened before the change is dead, including the one that
+    // made the request.
+    expect((await post('/auth/refresh', { refreshToken: live.refreshToken })).statusCode).toBe(401)
+    expect((await post('/auth/refresh', { refreshToken: other.refreshToken })).statusCode).toBe(401)
+
+    // The old password no longer works, the new one does.
+    expect((await login(email, OTHER_PASSWORD)).statusCode).toBe(401)
+    expect((await login(email, next)).statusCode).toBe(200)
+
+    // Restore the seed password so later tests logging in as this role aren't
+    // surprised, using the same self-service route just proven to work.
+    const restored = (await login(email, next)).json()
+    const revert = await post(
+      '/auth/change-password',
+      { currentPassword: next, newPassword: OTHER_PASSWORD },
+      restored.accessToken,
+    )
+    expect(revert.statusCode, revert.body).toBe(200)
+  })
+
+  it('refuses a wrong current password without revoking anything', async () => {
+    const email = 'tech@salisauto.sa'
+    const live = (await login(email)).json()
+
+    const wrong = await post(
+      '/auth/change-password',
+      { currentPassword: 'not-the-real-password', newPassword: 'irrelevant-but-long-enough' },
+      live.accessToken,
+    )
+    expect(wrong.statusCode).toBe(400)
+    expect(wrong.json().error.field).toBe('current')
+
+    // The session the wrong attempt was made from is still alive.
+    expect((await get('/auth/me', live.accessToken)).statusCode).toBe(200)
+    // And the real password still works.
+    expect((await login(email)).statusCode).toBe(200)
+  })
+
+  it('enforces the password policy on the new password', async () => {
+    const live = (await login('tech@salisauto.sa')).json()
+    const weak = await post(
+      '/auth/change-password',
+      { currentPassword: PASSWORD, newPassword: 'short' },
+      live.accessToken,
+    )
+    expect(weak.statusCode).toBe(400)
+    expect(weak.json().error.field).toBe('next')
+    expect(weak.json().error.message).toMatch(/at least 12/)
+  })
+
+  it('refuses without a token', async () => {
+    expect(
+      (await post('/auth/change-password', { currentPassword: 'x', newPassword: 'y' })).statusCode,
+    ).toBe(401)
   })
 })
 

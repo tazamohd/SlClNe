@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 525,
-    "endpointsTotal": 525
+    "endpointsMapped": 527,
+    "endpointsTotal": 527
   },
   "capabilities": [
     {
@@ -227,7 +227,7 @@
         "F-104",
         "F-110"
       ],
-      "dataBackedScreens": 25,
+      "dataBackedScreens": 26,
       "entities": [
         "appointments",
         "cannedJobs",
@@ -1250,7 +1250,7 @@
         "D-UsersTeams",
         "D-Welcome"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 10,
       "entities": [
         "departments",
         "branches",
@@ -1292,18 +1292,20 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 26,
+      "endpointCount": 28,
       "endpoints": [
         "API-POST-AUTH-2FA-ENROL",
         "API-POST-AUTH-2FA-VERIFY",
         "API-POST-AUTH-BIOMETRIC-CHALLENGE",
         "API-POST-AUTH-BIOMETRIC-ENROL",
+        "API-POST-AUTH-CHANGE-PASSWORD",
         "API-POST-AUTH-FORGOT-PASSWORD",
         "API-GET-AUTH-INVITE-TOKEN",
         "API-POST-AUTH-INVITE-TOKEN-ACCEPT",
         "API-POST-AUTH-LOGIN",
         "API-POST-AUTH-LOGOUT",
         "API-GET-AUTH-ME",
+        "API-PATCH-AUTH-ME",
         "API-GET-AUTH-PROVIDERS",
         "API-POST-AUTH-REFRESH",
         "API-POST-AUTH-REGISTER",
@@ -1655,7 +1657,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 37,
+      "dataBackedScreens": 38,
       "entities": [],
       "rules": [],
       "roles": [],

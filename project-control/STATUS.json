@@ -9,9 +9,9 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 34,
+    "mockOnly": 31,
     "noBackend": 117,
-    "dataBacked": 164,
+    "dataBacked": 167,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
@@ -27,7 +27,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 38,
-    "crudRead": 154,
+    "crudRead": 155,
     "crudUpdate": 38,
     "crudDelete": 30,
     "unregisteredDesigns": 0,
@@ -49,7 +49,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 316,
-      "dataBacked": 148
+      "dataBacked": 151
     },
     "call-center": {
       "total": 2,
@@ -123,7 +123,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 26,
-      "dataBacked": 10
+      "dataBacked": 12
     },
     "ai": {
       "total": 14,
@@ -219,7 +219,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 202,
-      "dataBacked": 60
+      "dataBacked": 61
     }
   },
   "byModule": {
@@ -285,7 +285,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 16,
-      "dataBacked": 15
+      "dataBacked": 16
     },
     "audit": {
       "total": 1,
@@ -365,7 +365,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 4,
-      "dataBacked": 3
+      "dataBacked": 4
     },
     "hr": {
       "total": 10,
