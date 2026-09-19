@@ -920,6 +920,64 @@ endpoint for a screen with a real control (`Dashboard-Widgets`, `Data-Backup`,
 `Data-Import-Export`, `Tools`, `Voice-Command-Interface`, `Voice-Commands`).
 
 
+## Bucket J: Financial-Settings, a second copy of the VAT-literal bug (2026-09-19)
+
+`Financial-Settings` was the first of bucket I's two flagged candidates.
+It didn't need a settings-table decision either, and it needed even less
+new work than `Security-Settings` did: no new endpoint at all.
+
+- **`Tax Rate: '15%'`** was a second, independent copy of the exact
+  hardcoded-VAT-literal bug the tax-compliance screens carried before
+  their own fix — this screen simply never got the same fix. Rewired to
+  `organizationApi.taxProfile()`, the accessor `VATSettings`/
+  `ZATCASettings`/`ZakatSettings` already use. No new server route.
+- **`Currency`** (`SAR`) and **`Invoice Numbering`** (`Sequential`,
+  `Invoice Prefix: 'INV-'`) turned out to have real backing on inspection:
+  `HALALAS_PER_SAR` is a code-enforced, parity-tested constant (not a
+  per-org setting), and `routes/invoices.ts`'s `nextCode()` genuinely
+  assigns `INV-<year>-<sequence>`. Both are shown as facts rather than
+  editable rows — the same "enforced, not recorded" shape bucket I
+  established, not a new pattern.
+- **`Fiscal Year Start: 'January 1'`** and **`Payment Terms: 'Net 30'`**
+  have no real backing at all: no fiscal year concept exists anywhere in
+  the schema, and `dueDate` is required per invoice precisely because
+  there is no default term (`routes/invoices.ts`'s own comment: "payment
+  terms are a commercial decision"). Dropped outright.
+- **`Rounding: '2 decimal places'`** was never its own setting — just
+  `HALALAS_PER_SAR`'s two decimal places restated under a different
+  label. Folded into the `Currency` fact rather than kept as a separate,
+  synthetic row.
+
+**BLK-004: 11 -> 10.**
+
+### Remaining MOCK_ONLY after bucket J (10)
+
+| Screen | Route | Domain |
+|---|---|---|
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Tools | `/tools` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+
+`System-Settings` is next worth checking directly, the same way: its
+`General` section carries `Company Name` (real, `organizationApi`'s own
+`name` field) and `Language` (real, `usePreferences()`), and its
+`Security` section duplicates `Security-Settings`' own three fields —
+all readable off `securityApi.summary()`/`organizationApi.taxProfile()`
+with no new server work. Its `Notifications` section (`Email`/`SMS`/`Push
+Notifications` toggles) has no real backing at all and would be dropped
+the same way `Fiscal Year Start`/`Payment Terms` were here. The rest are
+unchanged: a new backend collection (`Retained-Earnings`, `Tasks`,
+`Barcode-Scanner`) or an actual write endpoint for a screen with a real
+control (`Dashboard-Widgets`, `Data-Backup`, `Data-Import-Export`,
+`Tools`, `Voice-Command-Interface`, `Voice-Commands`).
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |

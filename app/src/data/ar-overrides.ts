@@ -5600,4 +5600,12 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Sign-in Session Length": "مدة جلسة تسجيل الدخول",
   "The enforced password, lockout and session policy can only be read from the API. This build has none, so nothing is shown in its place.":
     "لا يمكن قراءة سياسة كلمة المرور والقفل والجلسة المطبَّقة إلا من الواجهة البرمجية. ولا تتوفر واجهة في هذه النسخة، لذلك لا يُعرض أي شيء بديلاً عنها.",
+  "Could not read the tax rate": "تعذر قراءة نسبة الضريبة",
+  "Enforced financial configuration": "الإعدادات المالية المطبَّقة",
+  "INV-<year>-<sequence>, assigned by the server": "INV-<السنة>-<التسلسل>، يحدِّدها الخادم",
+  "Invoice Numbering": "ترقيم الفواتير",
+  "Invoice VAT Rate": "نسبة ضريبة القيمة المضافة على الفواتير",
+  "Reading the enforced tax rate…": "جارٍ قراءة نسبة الضريبة المطبَّقة…",
+  "The enforced VAT rate can only be read from the API. This build has none, so nothing is shown in its place.":
+    "لا يمكن قراءة نسبة ضريبة القيمة المضافة المطبَّقة إلا من الواجهة البرمجية. ولا تتوفر واجهة في هذه النسخة، لذلك لا يُعرض أي شيء بديلاً عنها.",
 }

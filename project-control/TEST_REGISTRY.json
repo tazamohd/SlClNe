@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 231,
-    "cases": 2537,
+    "suites": 232,
+    "cases": 2541,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 226,
-      "UNIT_OR_API": 1414,
+      "UNIT_OR_API": 1418,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -4693,6 +4693,26 @@
         "/v1/jobs"
       ],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-APP-TESTS-SETTINGS-FINANCIAL-SETTINGS-TEST-TSX",
+      "file": "app/tests/settings-financial-settings.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "FinancialSettings"
+      ],
+      "cases": [
+        "fixture: reads no tax rate at all rather than showing a hand-picked one",
+        "live: shows the rate this deployment enforces — 5%, not the old 15% literal",
+        "live: shows the real invoice-numbering scheme and currency fact, not the old fixture rows",
+        "live: a failed read is an error state, never a substituted rate"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
     },
     {
       "id": "TS-APP-TESTS-SETTINGS-ROLE-MANAGEMENT-DEMO-TEST-TSX",

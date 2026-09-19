@@ -197,7 +197,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-165 | `/expenses-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-166 | `/sales-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-167 | `/accounting-integration` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-168 | `/financial-settings` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-168 | `/financial-settings` | app | yes | yes | yes | — | PARTIAL | yes |
 | F-170 | `/contract-management` | app | **mock** | — | — | yes | verified | yes |
 | F-172 | `/marketing-hub` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-173 | `/marketing-automation` | app | **mock** | — | — | yes | verified | yes |
@@ -249,8 +249,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **155 of 198 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **135 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **154 of 198 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **134 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 176 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 177 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -387,7 +387,7 @@
 | Expenses Management | `/expenses-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Sales Management | `/sales-management` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Accounting Integration | `/accounting-integration` | app | — | DONE | PARTIAL | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
-| Financial Settings | `/financial-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Financial Settings | `/financial-settings` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Warranty Management | `/warranty-management` | app | accounting | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
 | Contract Management | `/contract-management` | app | — | DONE | MISSING | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | Insurance Claims | `/insurance-claims` | app | insurance | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 5 roles | route | IMPLEMENTED |
