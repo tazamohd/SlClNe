@@ -341,6 +341,131 @@ Grouped by what they actually need:
   and `RolesPermissions`, already partly exist per PR #128's admin/staff
   routes; the rest do not).
 
+## Bucket B: main moved under this branch — merged, not re-fought (2026-09-19)
+
+A concurrent session's PR #155 landed on main while this pass was in
+flight: a real `warehouseZones` collection plus a `zone_code` reference on
+`parts`, closing `Internal-Warehouse` honestly (derived item counts, not
+recorded ones — see 4397971's own message) without touching golden path 7.
+It also generalised `build-registry.mjs`'s file-admission gate to a
+"file imports from `data/repository`" catch-all, which conflicted with this
+branch's named `HEALTH_CHECK_API_CALL` clause in the same spot. Resolved by
+keeping both: the broad import check as the general net, the named clause
+kept alongside it for the same reason `PROCUREMENT_API_CALL` is named rather
+than folded away — a reader asking "why does this file get scanned" finds
+the specific answer, not just the general one.
+
+**BLK-004: 37 → 36** (Internal-Warehouse's fix landed on main independently
+of this branch; the 37 above already reflected this branch's own two fixes
+before the merge). BLK-013 (NO_BACKEND): 129 → 117 (Internal-Warehouse
+leaves the honest-gap count entirely, since it's dataBacked now, not gap).
+
+## Bucket B, second pass: DONE (2026-09-19)
+
+**Another registry detection gap, same shape as the first pass.**
+`workshop/inspection-api.ts`'s `fetchHealthCheckReport` is a real
+`GET /jobs/:id/health-check-report` call — live-only, rejecting with a named
+error rather than a fixture fallback when it isn't — read via `useQuery` in
+`CustomerHealthCheckReport.tsx`, so `SEAM_CALL` never saw a collection key to
+credit it by. Added `HEALTH_CHECK_API_CALL` beside `PROCUREMENT_API_CALL`.
+
+**Investigated the rest of the previous pass's list and found each one
+genuinely blocked, not a missed wiring job:**
+
+- **`Tasks` (`TasksList.tsx`).** The only real task collection is `crmTasks`,
+  whose `type` values (`call`/`meeting`/`document`/`task`) and sales-oriented
+  content are what `CRMTasks.tsx` already renders under that name. `Tasks`'
+  own categories (Maintenance/Follow-up/Administrative/Inspection) don't
+  exist in that data — wiring `Tasks` to `crmTasks` would show CRM outreach
+  rows under invented operational categories, the same mislabelling problem
+  bucket A and C exist to catch. Needs its own ops-task collection, not a
+  wire to an existing one.
+- **`Vehicle-History` (`VehicleHistory.tsx`).** Takes no vehicle in its route
+  or props — it is an orphaned static page, linked from nowhere, so there is
+  no vehicle to show history *for*. Even granting it a vehicle picker,
+  `jobs` carries no `vehicleId` foreign key (only a free-text `veh` string
+  like `"Toyota Camry 2022"`), so a job cannot be reliably matched to a
+  vehicle record without guessing by string match. Needs a real
+  `jobs.vehicleId` column before this is wireable at all.
+- **`Internal-Warehouse`.** No zones/locations concept exists anywhere in
+  `packages/contract`, `API_REGISTRY.json`, or `server/drizzle/` — the
+  closest real thing, `inventory` movements, tracks quantity, not physical
+  zone/capacity. It also can't become a `GapCard` without breaking
+  golden path 7 (`e2e/inventory-receiving.spec.ts`), which asserts a
+  "Receiving" zone and a numeric utilisation figure — a real fix here means
+  either building zone tracking or rewriting that golden path, both product
+  decisions past a wiring pass.
+- **`Cash-Flow-Statement` / `Retained-Earnings`.** Multi-year opening/closing
+  balances and net-income-by-period aren't something `chartOfAccounts` /
+  `journalEntries` give you directly the way `useTrialBalance` derives a
+  balance from posted entries — they need real period-close accounting logic
+  (accumulated retained earnings across fiscal years, cash-flow
+  classification of movements), which is new financial computation, not
+  wiring to what exists.
+- **`Notifications` / `CustomerApp.Notifications`.** No notifications
+  endpoint anywhere in `API_REGISTRY.json` — confirmed no hidden seam like
+  the two found above.
+- **`AIAssistant`.** Already honest (PR #151): no fabricated transcript, a
+  toast on send. It doesn't fit the GAP-marker shape (no list/table with an
+  empty state to show) because it's an interactive chat shell, not a report
+  — MOCK_ONLY here is a known, accepted limit of what the flag can
+  distinguish, not a bug.
+
+**BLK-004: 38 → 37.** BLK-013 (NO_BACKEND): 129 (unchanged: a detection-gap
+fix moves a screen straight to dataBacked, not through NO_BACKEND).
+
+### Remaining MOCK_ONLY after bucket B second pass (37)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| Internal-Warehouse | `/internal-warehouse` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| Profile | `/profile` | admin |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Role-Management | `/role-management` | featuremap |
+| RolesPermissions | `/roles-permissions` | admin |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
+| User-Profile | `/user-profile` | featuremap |
+| User-Settings | `/user-settings` | featuremap |
+| UsersTeams | `/users-teams` | admin |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Welcome-Page | `/welcome-page` | featuremap |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+All 37 are now confirmed blocked on a real product or schema decision, not a
+missed wire: settings/profile forms need a persistence endpoint (`Profile`,
+`RolesPermissions`, `UsersTeams`, `System-Settings`, etc.), the rest need a
+new backend collection or computation (`Tasks`, `Vehicle-History`,
+`Internal-Warehouse`, `Cash-Flow-Statement`, `Retained-Earnings`,
+`Notifications`, `CustomerApp.*`, `AIAssistant`, `Barcode-Scanner`,
+`Customer-App-Booking`, `Technician-Leaderboards`, `Training-LMS`,
+`Native.Android`/`iOS`). Bucket B is done as a wiring pass; what's left is
+product scoping work, one collection or endpoint at a time.
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |

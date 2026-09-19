@@ -643,6 +643,13 @@ const repositoryImports = (src) => {
  *  call of its own to be credited by. */
 const PROCUREMENT_API_CALL = /\bprocurementApi\(\)/
 
+/** `workshop/inspection-api.ts`'s `fetchHealthCheckReport` is the same shape
+ *  again: a real `GET /jobs/:id/health-check-report` call, live-only,
+ *  rejecting with a named error rather than a fixture fallback when it
+ *  isn't. `CustomerHealthCheckReport.tsx` reads it via `useQuery`, so
+ *  `SEAM_CALL` never sees a collection key to credit. */
+const HEALTH_CHECK_API_CALL = /\bfetchHealthCheckReport\(/
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -715,8 +722,10 @@ const dataBackedScreens = (() => {
        * test for that reason, not as a duplicate of one. */
       const usesProcurementApi = PROCUREMENT_API_CALL.test(body)
       if (usesProcurementApi) { keys.add('requisitions'); keys.add('purchaseOrders') }
+      const usesHealthCheckApi = HEALTH_CHECK_API_CALL.test(body)
+      if (usesHealthCheckApi) keys.add('inspectionFindings')
       const crud = crudFrom(calls, body)
-      if (reportCalls.length || usesProcurementApi) crud.read = true
+      if (reportCalls.length || usesProcurementApi || usesHealthCheckApi) crud.read = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
@@ -746,13 +755,16 @@ const dataBackedScreens = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        /* Cheap reject, and it has to admit every seam the scan can find or the
+/* Cheap reject, and it has to admit every seam the scan can find or the
          * scan never runs on the file that holds one — so this is the union of
          * every seam's admission test, not any one of them. The last clause is
          * wide on purpose: importing from `data/repository` only makes a file
-         * worth scanning, and the scan then decides on a call. */
+         * worth scanning, and the scan then decides on a call — it is what
+         * lets `HEALTH_CHECK_API_CALL` (inspection-api.ts's own file imports
+         * `RepositoryError` from here) through without a fourth named clause. */
         if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)
           && !PROCUREMENT_API_CALL.test(src)
+          && !HEALTH_CHECK_API_CALL.test(src)
           && !/data\/repository['"]/.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
