@@ -19,7 +19,7 @@ One use case per write endpoint that has behaviour of its own. The generated col
 
 | UC | Goal | Primary actor | Permission | Approval | Idempotent | Transactional | Validates | Implemented in |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| UC-POST-ADMIN-STAFF | POST /admin/staff | owner, superadmin, test | admin:c | — | — | — | — | `server/src/auth/routes.ts` |
+| UC-POST-ADMIN-STAFF | POST /admin/staff | — | admin:c | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-APPOINTMENTS-ID-JOB-CARD | POST /appointments/:id/job-card | owner, manager, advisor, frontdesk, test | jobcards:c | — | — | — | yes | `server/src/routes/workshop.ts` |
 | UC-POST-AUTH-2FA-ENROL | POST /auth/2fa/enrol | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |
 | UC-POST-AUTH-2FA-VERIFY | POST /auth/2fa/verify | — | public / auth | — | — | — | — | `server/src/auth/routes.ts` |

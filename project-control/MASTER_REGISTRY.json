@@ -3,24 +3,24 @@
   "generator": "app/scripts/build-registry.mjs",
   "note": "Discovered from the repository. Never hand-edit; re-run the generator.",
   "totals": {
-    "capabilities": 430,
-    "product": 367,
+    "capabilities": 436,
+    "product": 381,
     "referenceOnly": 28,
-    "externalDependency": 35,
-    "rendered": 430,
+    "externalDependency": 27,
+    "rendered": 436,
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 224,
-    "dataBacked": 144,
-    "e2eCovered": 430,
-    "contentAsserted": 430,
+    "mockOnly": 237,
+    "dataBacked": 145,
+    "e2eCovered": 436,
+    "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 180,
-    "hasErrorState": 144,
-    "hasEmptyState": 225,
+    "hasLoadingState": 182,
+    "hasErrorState": 145,
+    "hasEmptyState": 227,
     "tabletVerified": 4,
-    "arabicVerified": 73,
+    "arabicVerified": 74,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -28,8 +28,8 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 33,
-    "crudRead": 136,
-    "crudUpdate": 28,
+    "crudRead": 137,
+    "crudUpdate": 29,
     "crudDelete": 25,
     "unregisteredDesigns": 0,
     "orphanScreenFiles": 0,
@@ -311,6 +311,294 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING"
+      ]
+    },
+    {
+      "screenId": "D-AI-Automation",
+      "name": "AI-Automation",
+      "title": "AI-Automation",
+      "route": "/ai-automation",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "ai",
+      "owner": "15",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "AI-driven workshop automation rules",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-AI-Chatbot",
+      "name": "AI-Chatbot",
+      "title": "AI-Chatbot",
+      "route": "/ai-chatbot",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "ai",
+      "owner": "15",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Customer-facing AI chatbot",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-AI-Chatbot-Assistant",
+      "name": "AI-Chatbot-Assistant",
+      "title": "AI-Chatbot-Assistant",
+      "route": "/ai-chatbot-assistant",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "ai",
+      "owner": "15",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Staff-facing AI chatbot assistant",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-AI-Service-Advisor",
+      "name": "AI-Service-Advisor",
+      "title": "AI-Service-Advisor",
+      "route": "/ai-service-advisor",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "ai",
+      "owner": "15",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "AI-assisted service advisor recommendations",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -755,6 +1043,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "DUPLICATE",
         "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
@@ -942,9 +1231,9 @@
       "tablet": "MISSING",
       "mobile": "DONE",
       "responsive": "DONE",
-      "arabic": "VERIFIED",
+      "arabic": "PARTIAL",
       "rtl": "PARTIAL",
-      "loadingState": "MISSING",
+      "loadingState": "DONE",
       "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
@@ -979,6 +1268,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -3416,13 +3706,28 @@
       "arabic": "PARTIAL",
       "rtl": "PARTIAL",
       "loadingState": "DONE",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "DONE",
       "successState": "MISSING",
       "accessibility": "MISSING",
       "dataBacked": true,
       "dataSource": [
-        "jobs"
+        "appointments",
+        "customers",
+        "declinedJobs",
+        "departments",
+        "employees",
+        "estimates",
+        "invoices",
+        "jobs",
+        "leads",
+        "leaveRequests",
+        "opportunities",
+        "parts",
+        "purchaseOrders",
+        "requisitions",
+        "suppliers",
+        "technicians"
       ],
       "crud": {
         "create": false,
@@ -3451,6 +3756,84 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "ARABIC_MISSING"
+      ]
+    },
+    {
+      "screenId": "D-DeclinedJobs",
+      "name": "DeclinedJobs",
+      "title": "DeclinedJobs",
+      "route": "/declined-jobs",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "estimates",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vceax",
+        "advisor:vce",
+        "technician:v",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:v",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "DONE",
+      "emptyState": "DONE",
+      "errorState": "DONE",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": true,
+      "dataSource": [
+        "declinedJobs"
+      ],
+      "crud": {
+        "create": false,
+        "read": true,
+        "update": true,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "DUPLICATE",
+        "TABLET_MISSING",
         "ARABIC_MISSING"
       ]
     },
@@ -6287,6 +6670,78 @@
       ]
     },
     {
+      "screenId": "D-ML-Fraud-Detection",
+      "name": "ML-Fraud-Detection",
+      "title": "ML-Fraud-Detection",
+      "route": "/ml-fraud-detection",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Machine-learning fraud detection on claims/transactions",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
       "screenId": "D-ModelSettings",
       "name": "ModelSettings",
       "title": "ModelSettings",
@@ -6485,6 +6940,78 @@
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
+      ]
+    },
+    {
+      "screenId": "D-Neural-Network-Prediction",
+      "name": "Neural-Network-Prediction",
+      "title": "Neural-Network-Prediction",
+      "route": "/neural-network-prediction",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Neural-network demand/failure prediction",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
       ]
     },
     {
@@ -7806,7 +8333,7 @@
       "title": "ProcurementPortal",
       "route": "/procurement-portal",
       "surface": "portal",
-      "shell": "AppShell",
+      "shell": "PortalShell",
       "module": "portalprocure",
       "permissions": [
         "owner:v",
@@ -7882,7 +8409,7 @@
       "title": "ProcurementPortal · Requisitions",
       "route": "/procurement-portal/requisitions",
       "surface": "portal",
-      "shell": "AppShell",
+      "shell": "PortalShell",
       "module": "portalprocure",
       "permissions": [
         "owner:v",
@@ -8607,6 +9134,133 @@
       ]
     },
     {
+      "screenId": "D-PublicPortal.CompanyStory",
+      "name": "PublicPortal.CompanyStory",
+      "title": "PublicPortal · CompanyStory",
+      "route": "/public-portal/story",
+      "surface": "public",
+      "shell": "PublicShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "website",
+      "owner": "17",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Public website — Our Story (company origin, principles, dispatches)",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-PublicPortal.ComparePlans",
+      "name": "PublicPortal.ComparePlans",
+      "title": "PublicPortal · ComparePlans",
+      "route": "/public-portal/compare-plans",
+      "surface": "public",
+      "shell": "PublicShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "website",
+      "owner": "17",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Public website — Compare plans in detail",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
       "screenId": "D-PublicPortal.Contact",
       "name": "PublicPortal.Contact",
       "title": "PublicPortal · Contact",
@@ -9046,6 +9700,70 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-PublicPortal.GettingStarted",
+      "name": "PublicPortal.GettingStarted",
+      "title": "PublicPortal · GettingStarted",
+      "route": "/public-portal/getting-started",
+      "surface": "public",
+      "shell": "PublicShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "website",
+      "owner": "17",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Public website — Getting started, onboarding walkthrough",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -9492,6 +10210,69 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-PublicPortal.Platform",
+      "name": "PublicPortal.Platform",
+      "title": "PublicPortal · Platform",
+      "route": "/public-portal/platform",
+      "surface": "public",
+      "shell": "PublicShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "website",
+      "owner": "17",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Public website — Platform architecture deep-dive",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
         "MOCK_ONLY"
       ]
     },
@@ -10127,6 +10908,70 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-PublicPortal.SupplyChain",
+      "name": "PublicPortal.SupplyChain",
+      "title": "PublicPortal · SupplyChain",
+      "route": "/public-portal/supply-chain",
+      "surface": "public",
+      "shell": "PublicShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "website",
+      "owner": "17",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Public website — Supply chain, requisition to issue",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "ARABIC_MISSING",
         "MOCK_ONLY"
       ]
     },
@@ -11182,6 +12027,78 @@
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-Smart-Damage-Assessment",
+      "name": "Smart-Damage-Assessment",
+      "title": "Smart-Damage-Assessment",
+      "route": "/smart-damage-assessment",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "AI vehicle damage assessment from photos",
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -14359,6 +15276,148 @@
       ]
     },
     {
+      "screenId": "D-Voice-Command-Interface",
+      "name": "Voice-Command-Interface",
+      "title": "Voice-Command-Interface",
+      "route": "/voice-command-interface",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Voice recognition configuration and training",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
+      "screenId": "D-Voice-Commands",
+      "name": "Voice-Commands",
+      "title": "Voice-Commands",
+      "route": "/voice-commands",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": "ai",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vce",
+        "advisor:v",
+        "accountant:v",
+        "superadmin:vcedax",
+        "test:vcedax"
+      ],
+      "category": "PRODUCT",
+      "domain": "admin",
+      "owner": "—",
+      "source": [
+        "design"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": null,
+      "mobileType": "B-responsive",
+      "purpose": "Voice-activated hands-free workshop controls",
+      "desktop": "DONE",
+      "tablet": "PARTIAL",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "PARTIAL",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "MISSING",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": true,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "ARABIC_MISSING",
+        "MOCK_ONLY"
+      ]
+    },
+    {
       "screenId": "D-Welcome",
       "name": "Welcome",
       "title": "Welcome",
@@ -15380,8 +16439,18 @@
       "route": "/customers-list",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "customers",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "technician:v",
+        "accountant:vx",
+        "frontdesk:vce",
+        "callcenter:vce",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -15435,8 +16504,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "TABLET_MISSING",
-        "NO_RBAC_MODULE"
+        "TABLET_MISSING"
       ]
     },
     {
@@ -15909,8 +16977,20 @@
       "route": "/workshop-calendar",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -15965,8 +17045,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -18742,8 +19821,18 @@
       "route": "/interactive-3-d-parts",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "inventory",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:v",
+        "technician:v",
+        "parts:vcedax",
+        "accountant:vx",
+        "procurement:vcex",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -18798,8 +19887,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -19602,8 +20690,17 @@
       "route": "/purchase-agent-payments",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "procurement",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcax",
+        "parts:vc",
+        "accountant:vax",
+        "procurement:vcedax",
+        "supplier:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -19658,8 +20755,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -19802,8 +20898,17 @@
       "route": "/purchase-agent-suppliers",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "procurement",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcax",
+        "parts:vc",
+        "accountant:vax",
+        "procurement:vcedax",
+        "supplier:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -19856,9 +20961,7 @@
       "blockers": [],
       "dependencies": [],
       "evidence": [],
-      "flags": [
-        "NO_RBAC_MODULE"
-      ]
+      "flags": []
     },
     {
       "screenId": "F-086",
@@ -20132,8 +21235,20 @@
       "route": "/technician-portal-dashboard",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20188,8 +21303,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20199,8 +21313,20 @@
       "route": "/technician-portal-my-jobs",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20255,8 +21381,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -20924,8 +22049,20 @@
       "route": "/technician-mobile",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -20980,8 +22117,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21058,8 +22194,20 @@
       "route": "/technician-app-jobs",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "jobcards",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vcea",
+        "technician:ve",
+        "qc:va",
+        "parts:v",
+        "accountant:vx",
+        "frontdesk:vc",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21114,8 +22262,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21392,8 +22539,19 @@
       "route": "/client-portal-vehicles",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "vehicles",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "technician:v",
+        "qc:v",
+        "accountant:v",
+        "frontdesk:vce",
+        "callcenter:v",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21448,8 +22606,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -21459,8 +22616,17 @@
       "route": "/client-portal-appointments",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "appointments",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedax",
+        "advisor:vced",
+        "technician:v",
+        "frontdesk:vced",
+        "callcenter:vced",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -21515,8 +22681,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -22848,8 +24013,15 @@
       "route": "/hr-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -22905,8 +24077,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -22916,8 +24087,15 @@
       "route": "/staff-directory",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -22973,8 +24151,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23116,8 +24293,15 @@
       "route": "/timesheet-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23172,8 +24356,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23183,8 +24366,15 @@
       "route": "/timeclock-payroll",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23239,8 +24429,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23250,8 +24439,15 @@
       "route": "/payroll-management",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23308,8 +24504,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -23319,8 +24514,15 @@
       "route": "/leave-requests",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "hr",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vx",
+        "hr:vcedax",
+        "accountant:vx",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -23375,8 +24577,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25113,8 +26314,14 @@
       "route": "/insurance-claims",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "insurance",
+      "permissions": [
+        "owner:vax",
+        "manager:vx",
+        "accountant:vcedax",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -25170,8 +26377,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -25314,8 +26520,15 @@
       "route": "/email-marketing-campaigns",
       "surface": "app",
       "shell": "AppShell",
-      "module": null,
-      "permissions": [],
+      "module": "crm",
+      "permissions": [
+        "owner:vcedax",
+        "manager:vcedx",
+        "advisor:vce",
+        "callcenter:vced",
+        "superadmin:v",
+        "test:vcedax"
+      ],
       "category": "PRODUCT",
       "domain": "featuremap",
       "owner": "08–17",
@@ -25370,8 +26583,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "NO_RBAC_MODULE"
+        "ARABIC_MISSING"
       ]
     },
     {
@@ -26491,598 +27703,6 @@
         "ARABIC_MISSING",
         "MOCK_ONLY",
         "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-193",
-      "name": "AI-Automation",
-      "title": "AI Automation",
-      "route": "/ai-automation",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "PRODUCT",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/193-AI-Automation.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-194",
-      "name": "AI-Chatbot",
-      "title": "AI Chatbot",
-      "route": "/ai-chatbot",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/194-AI-Chatbot.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: LLM provider credential"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-195",
-      "name": "AI-Chatbot-Assistant",
-      "title": "AI Chatbot Assistant",
-      "route": "/ai-chatbot-assistant",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/195-AI-Chatbot-Assistant.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: LLM provider credential"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-196",
-      "name": "AI-Service-Advisor",
-      "title": "AI Service Advisor",
-      "route": "/ai-service-advisor",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/196-AI-Service-Advisor.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: LLM provider credential"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-197",
-      "name": "Voice-Commands",
-      "title": "Voice Commands",
-      "route": "/voice-commands",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/197-Voice-Commands.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "PARTIAL",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: speech provider credential"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-198",
-      "name": "Voice-Command-Interface",
-      "title": "Voice Command Interface",
-      "route": "/voice-command-interface",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/198-Voice-Command-Interface.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "PARTIAL",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: speech provider credential"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-199",
-      "name": "Smart-Damage-Assessment",
-      "title": "Smart Damage Assessment",
-      "route": "/smart-damage-assessment",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/199-Smart-Damage-Assessment.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: computer-vision damage-assessment model"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-200",
-      "name": "ML-Fraud-Detection",
-      "title": "ML Fraud Detection",
-      "route": "/ml-fraud-detection",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/200-ML-Fraud-Detection.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: trained fraud-detection model service"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
-      ]
-    },
-    {
-      "screenId": "F-201",
-      "name": "Neural-Network-Prediction",
-      "title": "Neural Network Prediction",
-      "route": "/neural-network-prediction",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "EXTERNAL_DEPENDENCY",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/201-Neural-Network-Prediction.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [
-        "EXTERNAL_DEPENDENCY: trained model-serving infrastructure"
-      ],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING"
       ]
     },
     {

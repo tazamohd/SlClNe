@@ -14,13 +14,13 @@
 
 | Measure | Value |
 | --- | --- |
-| Documents in `docs/` | 410 |
-| In the numbered architecture | 139 |
+| Documents in `docs/` | 413 |
+| In the numbered architecture | 142 |
 | In the pre-existing folders (classified, not yet migrated) | 271 |
-| Machine-generated from source | 120 |
+| Machine-generated from source | 123 |
 | Authored | 290 |
-| Substantive (> 1.2 kB) | 378 |
-| Thin — placeholder or stub | 32 |
+| Substantive (> 1.2 kB) | 379 |
+| Thin — placeholder or stub | 34 |
 | Required documents present | 35 of 35 |
 
 ## What is generated, and therefore cannot go stale silently
@@ -29,14 +29,14 @@
 | --- | --- | --- |
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 76 tables |
 | Relationship catalogue | `server/src/db/schema.ts` | 194 relationships |
-| API reference | the route files | 445 endpoints |
-| RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 450 cells |
+| API reference | the route files | 451 endpoints |
+| RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 495 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 21 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 76 policies |
-| Test catalogue | the spec files | 206 suites |
-| Screen registry view | `project-control/MASTER_REGISTRY.json` | 430 screens |
-| Capability map, requirements, traceability | all of the above | 160 requirements |
+| Test catalogue | the spec files | 208 suites |
+| Screen registry view | `project-control/MASTER_REGISTRY.json` | 436 screens |
+| Capability map, requirements, traceability | all of the above | 163 requirements |
 
 `node tools/docs/check.mjs` regenerates all of it and fails if the checked-in copy differs. A generated document cannot drift from the code without breaking the build.
 

@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 206,
-    "cases": 2320,
+    "suites": 208,
+    "cases": 2341,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1210,
+      "UNIT_OR_API": 1231,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1497,33 +1497,6 @@
       "touchesRoles": []
     },
     {
-      "id": "TS-APP-SRC-DATA-AUTH-TEST-TS",
-      "file": "app/src/data/auth.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "app",
-      "describes": [
-        "demoPassword",
-        "authenticate — mock mode (no API base URL)",
-        "authenticate — API mode (base URL set)"
-      ],
-      "cases": [
-        "is the design demo password in mock mode",
-        "is the backend's seeded password in API mode",
-        "signs in a demo role with the shared password",
-        "rejects a wrong password with an AuthError",
-        "rejects an unknown email with an AuthError",
-        "posts to /auth/login and returns the server session",
-        "surfaces a 401 as an ApiError"
-      ],
-      "caseCount": 7,
-      "touchesPaths": [
-        "/dashboard"
-      ],
-      "touchesRoles": [
-        "owner"
-      ]
-    },
-    {
       "id": "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
       "file": "app/src/data/http/client.test.ts",
       "kind": "UNIT_OR_API",
@@ -2070,6 +2043,46 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-DASHBOARD-ROLE-ADAPTIVE-TEST-TSX",
+      "file": "app/tests/component/dashboard-role-adaptive.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Dashboard — role-adaptive"
+      ],
+      "cases": [
+        "owner sees the full operational-and-financial overview",
+        "superadmin and test fall back to the same operational overview as owner",
+        "manager sees branch operations, not the revenue KPI",
+        "advisor sees the customer-facing queue: estimates, appointments, declined jobs",
+        "technician sees only their own job queue — real job codes, no revenue",
+        "qc sees the job queue by real status, never a fabricated \"awaiting QC\" count",
+        "parts sees stock health, not revenue or customers",
+        "accountant sees receivables and revenue — the two things this role holds",
+        "hr sees headcount and leave requests, never a pay figure",
+        "frontdesk sees the front-of-house queue",
+        "callcenter sees leads and opportunities, not a call-log figure no collection backs",
+        "procurement sees requisitions and purchase orders"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "superadmin",
+        "test",
+        "manager",
+        "advisor",
+        "technician",
+        "qc",
+        "parts",
+        "accountant",
+        "hr",
+        "frontdesk",
+        "callcenter",
+        "procurement"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-DATATABLE-TEST-TSX",
       "file": "app/tests/component/DataTable.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2088,6 +2101,7 @@
         "renders a footer summary under the table",
         "opens a row with Enter and with Space, not only with a click",
         "leaves rows out of the tab order when there is nothing to open",
+        "never nests a real button inside a row carrying an interactive role",
         "replaces the table with the designed card list below 860px",
         "keeps the table when the screen gave no card design",
         "makes each card tappable when rows open something",
@@ -2095,7 +2109,7 @@
         "switches layouts live when the viewport crosses the breakpoint",
         "renders every row of the card list, not a truncated one"
       ],
-      "caseCount": 14,
+      "caseCount": 15,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2180,6 +2194,7 @@
         "marks the offending control invalid and wires its message up for a screen reader",
         "moves focus to the first field it refused",
         "clears a message as soon as the field is fixed, not at the next submit",
+        "does not let a zod issue for an unrendered field steal focus from a real one",
         "shows the hint while the field is happy",
         "passes parsed values through once every rule is satisfied",
         "attaches a server error to the field that caused it",
@@ -2192,7 +2207,7 @@
         "offers a placeholder option so a select cannot look pre-answered",
         "accumulates a multiselect as chips with checkbox semantics"
       ],
-      "caseCount": 16,
+      "caseCount": 17,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2901,7 +2916,7 @@
         "books an invoice as receivable, revenue and output VAT, and it balances",
         "books a payment as cash against receivable, and it balances",
         "every seeded journal entry balances",
-        "F-008 · the seeded chart of accounts does not balance, and stays visible",
+        "F-008 fixed · the seeded chart of accounts balances",
         "reports revenue and expense as the ledger holds them, without netting them off",
         "reads every seeded invoice amount as a finite, non-negative figure",
         "DEFECT · the detail invoice’s header disagrees with its own line items",
@@ -3807,7 +3822,7 @@
         "/technician-portal",
         "/logout-confirmation",
         "/customer-portal/booking",
-        "/procurement-portal",
+        "/vendor-portal",
         "/unmapped-portal"
       ],
       "touchesRoles": [
@@ -4066,10 +4081,11 @@
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
+        "ComparePlans names real plans and invents no branch/user/SLA figures",
         "catalogue cards are informational, not links to nowhere",
         "Blog has no fabricated posts — an honest empty state instead"
       ],
-      "caseCount": 14,
+      "caseCount": 15,
       "touchesPaths": [
         "/public-portal/request-demo",
         "/public-portal/contact"
@@ -4187,7 +4203,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 30 modules",
+        "defines exactly 32 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "every role has required metadata fields",
@@ -4749,7 +4765,7 @@
         "sums debits and credits from the entries and reports the batch balanced",
         "reports the report and the ledger the same revenue figure",
         "derives receivable from the invoices that are not paid",
-        "says out loud that the seeded balance sheet does not balance",
+        "F-008 fixed: the seeded balance sheet balances, and shows no warning",
         "splits outstanding from collected using the invoice status, not a fixed figure",
         "weights the pipeline by probability, so the forecast sits below the gross",
         "averages the deal size over the opportunities it actually has"
@@ -4900,10 +4916,10 @@
         "navFor unknown and edge roles"
       ],
       "cases": [
-        "is the documented 15 roles × 30 modules × 5 actions",
+        "is the documented 15 roles × 32 modules × 5 actions",
         "grants no action to a role the module never names",
         "denies an unknown module and an unknown role outright",
-        "agrees with the matrix for all 2,250 role × module × action combinations",
+        "agrees with the matrix for all role × module × action combinations",
         "never confers a write without the matching read",
         "uses exactly six grant letters — one more than the Action union declares",
         "confines grant letters to the declared Action union",
@@ -5070,9 +5086,11 @@
       "cases": [
         "is the one its domain barrel declares, for every screen that declares one",
         "leaves the kiosk bare, because its terminal is public",
-        "still puts the actual portals in PortalShell"
+        "still puts the actual portals in PortalShell",
+        "puts the procurement portal in PortalShell, not the operational AppShell (F-024)",
+        "routes every screen name a domain barrel declares"
       ],
-      "caseCount": 3,
+      "caseCount": 5,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -5319,6 +5337,33 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-AUDIT-LOG-READ-TEST-TS",
+      "file": "server/tests/audit-log-read.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "GET /audit-log"
+      ],
+      "cases": [
+        "refuses a role with no view grant on audit (403)",
+        "returns only the caller organization\\'s entries, never another tenant\\'s",
+        "joins the actor's name from the users table",
+        "classifies session and password_reset rows as auth, unattended/non-api rows as system, everything else as data",
+        "?category=auth narrows to session and password_reset rows only",
+        "?q= searches action, entity and reason",
+        "caps the result at ?limit="
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/audit-log"
+      ],
+      "touchesRoles": [
+        "technician",
+        "owner",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
       "file": "server/tests/auth-test-account.test.ts",
       "kind": "UNIT_OR_API",
@@ -5479,8 +5524,8 @@
         "segregation of duties over the audit trail (F-004)"
       ],
       "cases": [
-        "matches on every one of the 450 module × role cells, string for string",
-        "answers every one of the 2,700 role × module × action questions from the table",
+        "matches on every module × role cell, string for string",
+        "answers every role × module × action question from the table",
         "fails closed on an unknown module and an unknown role",
         "is six letters, and x is export while d is delete",
         "names the roles the wrong reading would have handed a delete grant",
@@ -5859,6 +5904,31 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-DEPARTMENTS-WRITE-TEST-TS",
+      "file": "server/tests/departments-write.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "F-039: departments takes writes through the generic router"
+      ],
+      "cases": [
+        "lets hr create a department, defaulting headcount to zero",
+        "writes an audit row for the create",
+        "refuses create to a role with only a view grant on departments",
+        "lets an owner edit and delete, but refuses hr — the \"vc\" grant is create-only"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [
+        "/api/v1/admin/departments"
+      ],
+      "touchesRoles": [
+        "hr",
+        "owner",
+        "manager",
+        "accountant"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-DOCUMENT-CHAIN-TEST-TS",
       "file": "server/tests/document-chain.test.ts",
       "kind": "UNIT_OR_API",
@@ -6034,7 +6104,7 @@
         "refuses a role without the invoices grant",
         "reports output VAT as the sum of charged VAT, at the configured rate",
         "does not include another tenant in the return, and is accounting-gated",
-        "surfaces F-008: the seeded ledger is out by SAR 257,050 and is not forced to balance",
+        "the balance sheet identity holds (F-008 fixed); the full trial balance still carries the period\\'s unclosed net income, honestly",
         "is tenant-scoped: a tenant with no chart of accounts gets zeros, not ours",
         "refuses a role without the accounting grant"
       ],
@@ -6174,12 +6244,12 @@
         "${c.principal} @ ${c.rateBps}bps over ${c.term}m: whole halalas, schedule ties",
         "zero-rate charges no interest",
         "computes one month of interest as an integer half-up",
-        "serves the coherent policies, claims, contracts and repayments to accounting",
-        "refuses a role without the accounting view grant",
+        "serves the coherent policies, claims, contracts and repayments to the insurance grant",
+        "refuses a role without the insurance view grant",
         "gives every claim a policy that exists (coherence)",
         "gives each contract a full schedule whose amounts amortise the principal",
         "summarises claims by status and loans outstanding, in SQL over the tenant",
-        "refuses the aggregates to a role without accounting view",
+        "refuses the aggregates to a role without insurance view",
         "submits, refuses self-approval (SOD), approves via a different approver, then pays",
         "refuses an approval above the role ceiling",
         "rejects a claim with a reason, and refuses a reason-less rejection",
@@ -6585,7 +6655,7 @@
         "no receipt is an orphan",
         "INV-2026-0142 agrees with itself",
         "F-030 — appointments reconcile with the technician roster",
-        "F-008 stays visible"
+        "F-008 resolved: the chart of accounts balances"
       ],
       "cases": [
         "gives every estimate a job card that exists",
@@ -6599,7 +6669,7 @@
         "gives every appointment a technician_id that resolves to a real technician row",
         "links each appointment to the technician whose name it shows",
         "groups the whole schedule under the roster, leaving no appointment unassigned",
-        "does not balance the chart of accounts on the sly"
+        "holds assets = liabilities + equity on the seeded chart of accounts"
       ],
       "caseCount": 12,
       "touchesPaths": [],
