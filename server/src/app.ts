@@ -24,6 +24,7 @@ import { registerEstimateOtpRoutes } from './routes/estimate-otp'
 import { registerObdRoutes } from './routes/obd'
 import { registerFinanceReportRoutes } from './routes/finance-reports'
 import { registerOrganizationRoutes } from './routes/organization'
+import { registerSecurityRoutes } from './routes/security'
 import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerHistoryRoutes } from './routes/history'
@@ -385,6 +386,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerInvoiceRoutes(api, { db: deps.db })
       registerFinanceReportRoutes(api, { db: deps.db, env: deps.env })
       registerOrganizationRoutes(api, { db: deps.db, env: deps.env })
+      registerSecurityRoutes(api, { db: deps.db, authConfig: auth.config })
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerInspectionRoutes(api, { db: deps.db, mediaStore })

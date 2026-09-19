@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 230,
-    "cases": 2529,
+    "suites": 233,
+    "cases": 2546,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
-      "SECURITY": 213,
-      "UNIT_OR_API": 1419,
+      "SECURITY": 226,
+      "UNIT_OR_API": 1423,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -4723,6 +4723,26 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-SETTINGS-FINANCIAL-SETTINGS-TEST-TSX",
+      "file": "app/tests/settings-financial-settings.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "FinancialSettings"
+      ],
+      "cases": [
+        "fixture: reads no tax rate at all rather than showing a hand-picked one",
+        "live: shows the rate this deployment enforces — 5%, not the old 15% literal",
+        "live: shows the real invoice-numbering scheme and currency fact, not the old fixture rows",
+        "live: a failed read is an error state, never a substituted rate"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-SETTINGS-ROLE-MANAGEMENT-DEMO-TEST-TSX",
       "file": "app/tests/settings-role-management-demo.test.tsx",
       "kind": "UNIT_OR_API",
@@ -4756,6 +4776,28 @@
       "touchesRoles": [
         "owner",
         "technician"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-SETTINGS-SECURITY-SETTINGS-TEST-TSX",
+      "file": "app/tests/settings-security-settings.test.tsx",
+      "kind": "SECURITY",
+      "surface": "app",
+      "describes": [
+        "SecuritySettings"
+      ],
+      "cases": [
+        "fixture: reads no policy at all rather than showing a hand-picked one",
+        "live: shows the real enforced password minimum and login-lockout figures",
+        "live: shows the real active-session count, not a hardcoded zero",
+        "live: no fabricated feature survives — 2FA, IP allow-listing or audit retention",
+        "live: a lockout duration that is not a whole number of minutes shows in seconds",
+        "live: a failed read is an error state, never a substituted figure"
+      ],
+      "caseCount": 6,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner"
       ]
     },
     {
@@ -7126,6 +7168,33 @@
         "supplier",
         "customer",
         "advisor"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-SECURITY-SUMMARY-TEST-TS",
+      "file": "server/tests/security-summary.test.ts",
+      "kind": "SECURITY",
+      "surface": "server",
+      "describes": [
+        "GET /security/summary"
+      ],
+      "cases": [
+        "reports the real MIN_PASSWORD_LENGTH, not a hand-picked figure",
+        "reports the login throttle\\'s real attempt and lockout figures",
+        "reports the real refresh-token lifetime in days",
+        "answers for any authenticated role — the screen carries no RBAC module",
+        "401s with no token",
+        "reports zero active sessions for an organization that truly has none",
+        "counts a real login session, and counts it again after a second login"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/security/summary",
+        "/auth/login"
+      ],
+      "touchesRoles": [
+        "owner",
+        "technician"
       ]
     },
     {
