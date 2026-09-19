@@ -57,11 +57,34 @@ import {
   timesheetUpdate,
   vehicleCreate,
   vehicleUpdate,
+  warehouseZoneCreate,
+  warehouseZoneUpdate,
   warrantyCreate,
   warrantyUpdate,
+  notificationCreate,
+  notificationUpdate,
+  partsNetworkMemberCreate,
+  partsNetworkMemberUpdate,
+  partsNetworkOrderCreate,
+  partsNetworkOrderUpdate,
+  partsNetworkQuotationCreate,
+  partsNetworkQuotationUpdate,
+  partsNetworkRequestCreate,
+  partsNetworkRequestUpdate,
 } from '@salis/contract'
 import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
-import { appointments, employees, equipmentWarranties, payrollRuns, suppliers } from './db/schema'
+import {
+  appointments,
+  employees,
+  equipmentWarranties,
+  partsNetworkMembers,
+  partsNetworkOrders,
+  partsNetworkQuotations,
+  partsNetworkRequests,
+  payrollRuns,
+  suppliers,
+  warehouseZones,
+} from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
 
@@ -160,10 +183,52 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   parts: {
     create: partCreate,
     update: partUpdate,
-    async toColumns(input, _ctx, existing) {
+    async toColumns(input, ctx, existing) {
       const { openingStock, ...rest } = input as Record<string, unknown>
+      /* A part may only be put away in one of *this* tenant's zones (BLK-004).
+       * The composite `(org_id, zone_code)` foreign key would already refuse a
+       * foreign or unknown bay, but it would refuse it as a database error;
+       * checking here turns that into the ordinary `not_found` a client can
+       * act on. An explicit `null` is allowed — that is "taken back out of the
+       * bay", not a missing zone. */
+      if (rest.zoneCode != null) {
+        const [zone] = await ctx.tx
+          .select({ code: warehouseZones.code })
+          .from(warehouseZones)
+          .where(
+            and(eq(warehouseZones.code, rest.zoneCode as string), isNull(warehouseZones.deletedAt)),
+          )
+          .limit(1)
+        if (!zone) throw notFound('Warehouse zone')
+      }
       if (existing) return passthrough(rest)
       return { ...rest, onHand: openingStock ?? 0, reserved: 0 }
+    },
+  },
+
+  /* Warehouse zones (BLK-004) — the bays stock is put away in. A flat
+   * tenant-owned directory under `inventory`, writable through the generic
+   * router: RBAC (`inventory:c/e/d`), tenant RLS, audit and optimistic
+   * concurrency all come from it, and this writer only names what is specific
+   * to a zone.
+   *
+   * There is no `itemCount` or `utilization` column to write, by design: both
+   * are derived from the `parts` assigned to the zone, so neither can be
+   * posted and neither can drift. `maintenanceSince` is never accepted as
+   * input either — it is derived from the status transition, exactly as
+   * `equipmentWarranties.claimedAt` is, and cleared again when the bay comes
+   * back into service, so it always records when the zone actually went out of
+   * service rather than a date someone typed. */
+  warehouseZones: {
+    create: warehouseZoneCreate,
+    update: warehouseZoneUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && !value.code) value.code = await nextZoneCode(ctx.tx)
+      if ('status' in value) {
+        value.maintenanceSince = value.status === 'maintenance' ? new Date() : null
+      }
+      return value
     },
   },
 
@@ -370,6 +435,153 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
     },
   },
 
+  /* Notifications (BLK-004). A tenant-owned directory, writable through the
+   * generic router — RBAC (`dashboard:c/e/d`), tenant RLS, audit and
+   * optimistic concurrency all come from it. `read` is a write-only
+   * convenience: the client sends a boolean, never a timestamp, and it is
+   * translated to `readAt` here — never accepted as input directly — the
+   * same discipline `equipmentWarranties.claimedAt` uses, so a read
+   * timestamp always records when the row actually moved rather than a date
+   * a client made up. Marking a notification unread again (`read: false`)
+   * clears `readAt` rather than leaving a stale one behind. */
+  notifications: {
+    create: notificationCreate,
+    update: notificationUpdate,
+    async toColumns(input) {
+      const value = { ...input } as Record<string, unknown>
+      if ('read' in value) {
+        value.readAt = value.read ? new Date() : null
+      }
+      delete value.read
+      return value
+    },
+  },
+
+  /* ------------------------------------------- parts supply network (BLK-004)
+   *
+   * Four tenant-owned collections behind the eight parts-network screens that
+   * rendered an honest GAP state. RBAC (`network:c/e/d`), tenant RLS, audit and
+   * optimistic concurrency all come from the generic router; what is specific
+   * to this domain is here.
+   *
+   * Every `code` is counted within the tenant so two rows never collide on the
+   * unique `(org_id, code)` index, and every status timestamp is derived from
+   * the transition rather than accepted as input — the discipline
+   * `equipmentWarranties.claimedAt` set. Accepting a quotation is *not* here:
+   * it is a multi-row invariant and lives in `routes/parts-network.ts`.
+   */
+  partsNetworkMembers: {
+    create: partsNetworkMemberCreate,
+    update: partsNetworkMemberUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'member')
+      /* A member may only point at one of *this* tenant's suppliers. RLS would
+       * already hide a foreign row from the read below, so the lookup failing
+       * is the same answer as it not existing — refused either way rather than
+       * written and silently unreadable. */
+      if (value.supplierId != null) {
+        const [supplier] = await ctx.tx
+          .select({ id: suppliers.id })
+          .from(suppliers)
+          .where(and(eq(suppliers.id, value.supplierId as string), isNull(suppliers.deletedAt)))
+          .limit(1)
+        if (!supplier) throw notFound('Supplier')
+      }
+      return value
+    },
+  },
+
+  partsNetworkRequests: {
+    create: partsNetworkRequestCreate,
+    update: partsNetworkRequestUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'request')
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        /* The member's name is carried for display, denormalised the way
+         * `purchase_orders.supplierName` is — and taken from the member row,
+         * never from the request body, so it cannot disagree with the
+         * directory. */
+        value.memberName = member.name
+      }
+      /* Each lifecycle move stamps its own time and clears the ones that no
+       * longer apply, so a reopened request never carries a stale `closedAt`. */
+      if ('status' in value) {
+        const status = value.status
+        value.quotedAt = status === 'quoted' || status === 'ordered' ? new Date() : null
+        value.orderedAt = status === 'ordered' ? new Date() : null
+        value.closedAt = status === 'closed' || status === 'cancelled' ? new Date() : null
+      }
+      return value
+    },
+  },
+
+  partsNetworkQuotations: {
+    create: partsNetworkQuotationCreate,
+    update: partsNetworkQuotationUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) {
+        value.code = await nextPartsNetworkCode(ctx.tx, 'quotation')
+        const request = await loadNetworkRequest(ctx.tx, value.requestId as string)
+        if (request.status === 'closed' || request.status === 'cancelled') {
+          throw ruleViolated(`Request ${request.code} is ${request.status} and takes no more quotations.`)
+        }
+        /* A quotation arriving is what moves a request from `open` to
+         * `quoted`, and the count is maintained here rather than posted — the
+         * same reason a purchase order's total is summed server-side. Kept in
+         * one transaction with the insert, so the count can never drift from
+         * the rows it counts. */
+        await ctx.tx
+          .update(partsNetworkRequests)
+          .set({
+            quotationCount: sql`${partsNetworkRequests.quotationCount} + 1`,
+            status: request.status === 'open' ? 'quoted' : request.status,
+            quotedAt: request.quotedAt ?? new Date(),
+            updatedBy: ctx.principal.userId,
+          })
+          .where(eq(partsNetworkRequests.id, request.id))
+      }
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        value.memberName = member.name
+      }
+      /* `accepted` is unreachable here — the contract's update schema omits it,
+       * because accepting also rejects the siblings and raises the order. */
+      if ('status' in value) {
+        value.rejectedAt = value.status === 'rejected' ? new Date() : null
+      }
+      return value
+    },
+  },
+
+  partsNetworkOrders: {
+    create: partsNetworkOrderCreate,
+    update: partsNetworkOrderUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing) value.code = await nextPartsNetworkCode(ctx.tx, 'order')
+      if (value.memberId != null) {
+        const member = await loadNetworkMember(ctx.tx, value.memberId as string)
+        value.memberName = member.name
+      }
+      /* The total is `qty × unitPrice`, computed from whichever of the two the
+       * patch carries plus whatever the row already holds — never posted. */
+      const qty = Number(value.qty ?? existing?.qty ?? 1)
+      const unit = Number(value.unitPriceHalalas ?? existing?.unitPriceHalalas ?? 0)
+      value.totalHalalas = qty * unit
+      if ('status' in value) {
+        const status = value.status
+        value.shippedAt = status === 'shipped' || status === 'received' ? new Date() : null
+        value.receivedAt = status === 'received' ? new Date() : null
+        value.cancelledAt = status === 'cancelled' ? new Date() : null
+      }
+      return value
+    },
+  },
+
   /* Declined Job Tracking & Follow-Up (Sprint 1, P0). `create` is `z.never()`
    * (see `registry.ts`) — every row is born from an estimate decline action,
    * never a generic `POST`. `PATCH` carries only the follow-up lifecycle, and
@@ -435,11 +647,63 @@ async function nextSupplierCode(tx: Tx): Promise<string> {
   return `SUP-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
+/** The next parts-network code within the tenant (`NWM-0001`, `NRQ-0001`,
+ *  `NQT-0001`, `NOR-0001`). Counted, not a placeholder, so two rows never
+ *  collide on their table's unique `(org_id, code)` index. */
+const PARTS_NETWORK_CODE = {
+  member: { prefix: 'NWM', table: partsNetworkMembers },
+  request: { prefix: 'NRQ', table: partsNetworkRequests },
+  quotation: { prefix: 'NQT', table: partsNetworkQuotations },
+  order: { prefix: 'NOR', table: partsNetworkOrders },
+} as const
+
+async function nextPartsNetworkCode(
+  tx: Tx,
+  kind: keyof typeof PARTS_NETWORK_CODE,
+): Promise<string> {
+  const { prefix, table } = PARTS_NETWORK_CODE[kind]
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(table)
+  return `${prefix}-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** A member of *this* tenant's network directory. RLS already hides another
+ *  organization's rows, so a miss here and a foreign id are the same answer:
+ *  404, never a write that references something unreadable. */
+export async function loadNetworkMember(tx: Tx, id: string) {
+  const [row] = await tx
+    .select()
+    .from(partsNetworkMembers)
+    .where(and(eq(partsNetworkMembers.id, id), isNull(partsNetworkMembers.deletedAt)))
+    .limit(1)
+  if (!row) throw notFound('Network member')
+  return row
+}
+
+export async function loadNetworkRequest(tx: Tx, id: string) {
+  const [row] = await tx
+    .select()
+    .from(partsNetworkRequests)
+    .where(and(eq(partsNetworkRequests.id, id), isNull(partsNetworkRequests.deletedAt)))
+    .limit(1)
+  if (!row) throw notFound('Network request')
+  return row
+}
+
 /** The next `WRN-0001` within the tenant. Counted, not a placeholder, so two
  *  warranties never collide on the unique `(org_id, warranty_number)` index. */
 async function nextWarrantyNumber(tx: Tx): Promise<string> {
   const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(equipmentWarranties)
   return `WRN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** The next `ZN-0001` within the tenant, for a zone created without a code of
+ *  its own. A bay usually already carries a code painted on it (`A1`), which a
+ *  caller supplies; this is the fallback, counted rather than guessed so two
+ *  zones never collide on the unique `(org_id, code)` constraint
+ *  `parts.zone_code` references. */
+async function nextZoneCode(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(warehouseZones)
+  return `ZN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
 /** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two

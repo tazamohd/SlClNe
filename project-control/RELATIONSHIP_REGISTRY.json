@@ -8,10 +8,10 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "caveat": "Only relationships marked DECLARED are backed by a database foreign key. INFERRED relationships are naming-convention links with no constraint behind them; referential integrity for those rests on application code and row-level security.",
   "totals": {
-    "relationships": 194,
-    "declared": 69,
-    "inferred": 125,
-    "orphanReferenceColumns": 14
+    "relationships": 207,
+    "declared": 76,
+    "inferred": 131,
+    "orphanReferenceColumns": 20
   },
   "orphanReferences": [
     {
@@ -53,6 +53,30 @@
     {
       "table": "bank_statements",
       "column": "matched_receipt_id"
+    },
+    {
+      "table": "parts_network_requests",
+      "column": "member_id"
+    },
+    {
+      "table": "parts_network_quotations",
+      "column": "request_id"
+    },
+    {
+      "table": "parts_network_quotations",
+      "column": "member_id"
+    },
+    {
+      "table": "parts_network_orders",
+      "column": "request_id"
+    },
+    {
+      "table": "parts_network_orders",
+      "column": "quotation_id"
+    },
+    {
+      "table": "parts_network_orders",
+      "column": "member_id"
     },
     {
       "table": "leave_requests",
@@ -2220,6 +2244,201 @@
     {
       "id": "REL-EQUIPMENT-WARRANTIES-BRANCH-ID",
       "from": "equipment_warranties",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-WAREHOUSE-ZONES-ORG-ID",
+      "from": "warehouse_zones",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-WAREHOUSE-ZONES-BRANCH-ID",
+      "from": "warehouse_zones",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-NOTIFICATIONS-ORG-ID",
+      "from": "notifications",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-NOTIFICATIONS-BRANCH-ID",
+      "from": "notifications",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-MEMBERS-ORG-ID",
+      "from": "parts_network_members",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-MEMBERS-BRANCH-ID",
+      "from": "parts_network_members",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-MEMBERS-SUPPLIER-ID",
+      "from": "parts_network_members",
+      "fromColumn": "supplier_id",
+      "to": "suppliers",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-REQUESTS-ORG-ID",
+      "from": "parts_network_requests",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-REQUESTS-BRANCH-ID",
+      "from": "parts_network_requests",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-QUOTATIONS-ORG-ID",
+      "from": "parts_network_quotations",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-QUOTATIONS-BRANCH-ID",
+      "from": "parts_network_quotations",
+      "fromColumn": "branch_id",
+      "to": "branches",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "optional",
+      "enforcement": "INFERRED",
+      "onDelete": "application-enforced; no database cascade",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": false,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-ORDERS-ORG-ID",
+      "from": "parts_network_orders",
+      "fromColumn": "org_id",
+      "to": "organizations",
+      "toColumn": "id",
+      "cardinality": "many-to-one",
+      "optionality": "mandatory",
+      "enforcement": "DECLARED",
+      "onDelete": "database default (no action)",
+      "tenantScope": "org_id",
+      "branchScope": "branch_id",
+      "indexed": true,
+      "evidence": "server/src/db/schema.ts"
+    },
+    {
+      "id": "REL-PARTS-NETWORK-ORDERS-BRANCH-ID",
+      "from": "parts_network_orders",
       "fromColumn": "branch_id",
       "to": "branches",
       "toColumn": "id",

@@ -130,7 +130,16 @@ export type DataScope = z.infer<typeof dataScope>
  *  collections, and what keeps a customer out of them is the deny-by-default
  *  `r_self` policy, not this table. */
 export const PERMS: Readonly<Record<ModuleId, Readonly<Record<RoleId, string>>>> = {
-  'dashboard': { 'owner': 'vx', 'superadmin': 'vx', 'manager': 'vx', 'advisor': 'v', 'technician': 'v', 'qc': 'v', 'parts': 'v', 'accountant': 'vx', 'hr': 'v', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': 'v', 'supplier': '', 'customer': '', 'test': 'vcedax' },
+  /* `e`/`d` added to every role that already holds `v` here (BLK-004,
+   * Notification Center — same hand-applied-exception discipline the header
+   * comment above describes for `SCREEN_MODULE`, applied here instead
+   * because notifications need write letters `dashboard` never carried).
+   * Marking a notification read or dismissing it is a personal act on a
+   * user's own tenant-visible feed, not a business-record edit, so it rides
+   * on the same broad view grant every operating role already holds on this
+   * module rather than gating it behind a narrower one. `supplier`/
+   * `customer` stay blank: neither role has a notification feed. */
+  'dashboard': { 'owner': 'vedx', 'superadmin': 'vedx', 'manager': 'vedx', 'advisor': 'ved', 'technician': 'ved', 'qc': 'ved', 'parts': 'ved', 'accountant': 'vedx', 'hr': 'ved', 'frontdesk': 'ved', 'callcenter': 'ved', 'procurement': 'ved', 'supplier': '', 'customer': '', 'test': 'vcedax' },
   'jobcards': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vcea', 'technician': 've', 'qc': 'va', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'vc', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },
   'appointments': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vcedax', 'advisor': 'vced', 'technician': 'v', 'qc': '', 'parts': '', 'accountant': '', 'hr': '', 'frontdesk': 'vced', 'callcenter': 'vced', 'procurement': '', 'supplier': '', 'customer': 'vc', 'test': 'vcedax' },
   'estimates': { 'owner': 'vcedax', 'superadmin': 'v', 'manager': 'vceax', 'advisor': 'vce', 'technician': 'v', 'qc': '', 'parts': 'v', 'accountant': 'vx', 'hr': '', 'frontdesk': 'v', 'callcenter': 'v', 'procurement': '', 'supplier': '', 'customer': 'v', 'test': 'vcedax' },

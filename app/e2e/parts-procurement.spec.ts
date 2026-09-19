@@ -3,15 +3,20 @@ import { seedRole, gotoReady, bodyText } from './helpers'
 
 /** A part is needed for a job: procurement raises a request, suppliers
  *  quote against it, the quotes are compared and a purchase order is cut —
- *  that was the design's intent. Whether it can happen for real depends on
- *  a cross-shop parts-network backend (members, requests, quotes, orders)
- *  that turned out not to exist anywhere (BLK-004, project-control/
- *  SOURCE_RECONCILIATION.md): no route, no contract type, no table. The
- *  quotations screen's sort-by-rating used to reorder three invented
- *  supplier rows — a real re-sort of fake data is still a fake result, so
- *  it was replaced with an honest "no quotes received yet" state along
- *  with the rest of the parts-network screens, and there is nothing left
- *  to sort.
+ *  that was the design's intent. The cross-shop parts-network backend it
+ *  depends on (members, requests, quotations, orders) did not exist when
+ *  this spec was written, so every view was an honest gap state. It exists
+ *  now — four real collections behind `/parts-network/*` — and the
+ *  assertions below moved with it: the quotations screen reads
+ *  `partsNetworkQuotations` and renders an `EmptyState` when that
+ *  collection has no rows, which is what a build with no API configured
+ *  sees, since the fixture collection is deliberately empty rather than
+ *  seeded to match the server.
+ *
+ *  What must not come back is the sort-by-rating that used to reorder three
+ *  invented supplier rows — a real re-sort of fake data is still a fake
+ *  result. The `Rating` control's absence is still asserted for that
+ *  reason, not as an accident of the rewrite.
  *
  *  The purchase order itself is unaffected — it is a real create form
  *  against this workshop's own single-tenant suppliers/procurement, a
@@ -29,11 +34,11 @@ test.describe('Parts Procurement (Golden Path 6)', () => {
     expect(await bodyText(page)).toContain('My Requests')
   })
 
-  test('quotations screen is an honest gap state, not invented supplier rows', async ({ page }) => {
+  test('quotations screen is a real collection, empty here, not invented supplier rows', async ({ page }) => {
     await gotoReady(page, '/parts-network/quotations')
     const text = await bodyText(page)
     expect(text).toContain('Quotations')
-    expect(text).toContain('No quotes received yet')
+    expect(text).toContain('No quotations yet')
     await expect(page.getByRole('radio', { name: 'Rating' })).toHaveCount(0)
   })
 
@@ -49,7 +54,7 @@ test.describe('Parts Procurement (Golden Path 6)', () => {
 })
 
 test.describe('Parts procurement lifecycle', () => {
-  test('raise request → honest quotations gap → confirm the PO', async ({ context, page }) => {
+  test('raise request → empty quotations list → confirm the PO', async ({ context, page }) => {
     test.setTimeout(90_000)
     await seedRole(context, 'owner')
 
@@ -57,10 +62,11 @@ test.describe('Parts procurement lifecycle', () => {
     await gotoReady(page, '/parts-network/requests')
     expect(await bodyText(page)).toContain('My Requests')
 
-    // 2. No parts-network backend exists to bring quotes back — the screen
-    //    says so rather than inventing a comparison.
+    // 2. Quotes come back from members answering the request, which needs a
+    //    server. With no API configured the collection is genuinely empty,
+    //    so the screen says that rather than inventing a comparison.
     await gotoReady(page, '/parts-network/quotations')
-    expect(await bodyText(page)).toContain('No quotes received yet')
+    expect(await bodyText(page)).toContain('No quotations yet')
 
     // 3. The purchase order lives in this workshop's own procurement, a
     //    separate domain the parts network's absence doesn't block.

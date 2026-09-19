@@ -13,7 +13,7 @@
     {
       "id": "BLK-013",
       "severity": "HIGH",
-      "title": "129 rendered capabilities have no backend collection yet",
+      "title": "117 rendered capabilities have no backend collection yet",
       "detail": "They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it.",
       "owner": "05",
       "wave": "W3"

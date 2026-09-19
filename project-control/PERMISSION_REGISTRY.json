@@ -312,18 +312,18 @@
   },
   "matrix": {
     "dashboard": {
-      "owner": "vx",
-      "superadmin": "vx",
-      "manager": "vx",
-      "advisor": "v",
-      "technician": "v",
-      "qc": "v",
-      "parts": "v",
-      "accountant": "vx",
-      "hr": "v",
-      "frontdesk": "v",
-      "callcenter": "v",
-      "procurement": "v",
+      "owner": "vedx",
+      "superadmin": "vedx",
+      "manager": "vedx",
+      "advisor": "ved",
+      "technician": "ved",
+      "qc": "ved",
+      "parts": "ved",
+      "accountant": "vedx",
+      "hr": "ved",
+      "frontdesk": "ved",
+      "callcenter": "ved",
+      "procurement": "ved",
       "supplier": "",
       "customer": "",
       "test": "vcedax"
@@ -792,9 +792,11 @@
     {
       "module": "dashboard",
       "role": "owner",
-      "grant": "vx",
+      "grant": "vedx",
       "actions": [
         "view",
+        "edit",
+        "delete",
         "export"
       ],
       "denied": false
@@ -802,9 +804,11 @@
     {
       "module": "dashboard",
       "role": "superadmin",
-      "grant": "vx",
+      "grant": "vedx",
       "actions": [
         "view",
+        "edit",
+        "delete",
         "export"
       ],
       "denied": false
@@ -812,9 +816,11 @@
     {
       "module": "dashboard",
       "role": "manager",
-      "grant": "vx",
+      "grant": "vedx",
       "actions": [
         "view",
+        "edit",
+        "delete",
         "export"
       ],
       "denied": false
@@ -822,45 +828,55 @@
     {
       "module": "dashboard",
       "role": "advisor",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "technician",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "qc",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "parts",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "accountant",
-      "grant": "vx",
+      "grant": "vedx",
       "actions": [
         "view",
+        "edit",
+        "delete",
         "export"
       ],
       "denied": false
@@ -868,36 +884,44 @@
     {
       "module": "dashboard",
       "role": "hr",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "frontdesk",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "callcenter",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },
     {
       "module": "dashboard",
       "role": "procurement",
-      "grant": "v",
+      "grant": "ved",
       "actions": [
-        "view"
+        "view",
+        "edit",
+        "delete"
       ],
       "denied": false
     },

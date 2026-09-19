@@ -8,6 +8,7 @@
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import * as T from '../../app/src/data/generated/tables'
+import { WAREHOUSE_ZONE_FIXTURE } from '../../app/src/data/repository'
 import { SEED_COHERENCE_EXTRAS } from '../scripts/seed'
 import { COLLECTIONS } from '../src/registry'
 import { startHarness, type Harness } from './harness'
@@ -27,6 +28,12 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   customers: T.CUSTOMERS,
   fleets: T.FLEETS,
   parts: T.PARTS,
+  /** Warehouse zones (BLK-004) are the one new table with a real app-side
+   *  fixture rather than an empty one: Golden Path 7 asserts a numeric
+   *  per-zone utilisation in a build with no API, so the app ships the same six
+   *  zones the seed inserts. Comparing against that fixture here is what keeps
+   *  the two copies from drifting. */
+  warehouseZones: WAREHOUSE_ZONE_FIXTURE,
   technicians: T.TECHS,
   services: T.SERVICES,
   leads: T.LEADS,
@@ -106,6 +113,15 @@ const FIXTURES: Record<string, readonly unknown[]> = {
   /** No design fixture — equipment warranties are new (BLK-004). The
    *  collection serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
   equipmentWarranties: [],
+  /** No design fixture — notifications are new (BLK-004). The collection
+   *  serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  notifications: [],
+  /** No design fixture — the parts network is new (BLK-004). Each collection
+   *  serves the seeded coherence rows (SEED_COHERENCE_EXTRAS). */
+  partsNetworkMembers: [],
+  partsNetworkRequests: [],
+  partsNetworkQuotations: [],
+  partsNetworkOrders: [],
 }
 
 /** Keeps only the keys the fixture carries: the API adds `_id`, `_version` and

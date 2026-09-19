@@ -31,6 +31,7 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
 
   // ─── Inventory and team ──────────────────────────────────────────────────
   parts: '/inventory',
+  warehouseZones: '/warehouse-zones',
   technicians: '/technicians',
 
   // ─── CRM ─────────────────────────────────────────────────────────────────
@@ -45,6 +46,11 @@ export const ENDPOINTS: Record<CollectionKey, string | null> = {
   journalEntries: '/accounting/journal-entries',
   expenses: '/accounting/expenses',
   equipmentWarranties: '/equipment-warranties',
+  notifications: '/notifications',
+  partsNetworkMembers: '/parts-network/members',
+  partsNetworkRequests: '/parts-network/requests',
+  partsNetworkQuotations: '/parts-network/quotations',
+  partsNetworkOrders: '/parts-network/orders',
 
   // ─── AI platform and knowledge base ──────────────────────────────────────
   aiAgents: '/ai/agents',

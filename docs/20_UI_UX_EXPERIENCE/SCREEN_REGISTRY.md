@@ -20,12 +20,12 @@
 | Reference-only | 28 | 436 |
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
-| Data-backed (live API) | 149 | 436 |
+| Data-backed (live API) | 161 | 436 |
 | Mock-only (design fixtures) | 37 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
-| Has a loading state | 183 | 436 |
-| Has an error state | 146 | 436 |
+| Has a loading state | 193 | 436 |
+| Has an error state | 156 | 436 |
 | Has an empty state | 265 | 436 |
 | Arabic verified | 119 | 436 |
 | RTL hazards | 0 | — |
@@ -41,7 +41,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 316 | 133 | 89 |
+| app | 316 | 145 | 89 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 8 | 4 |
@@ -54,24 +54,24 @@ Every screen renders and every screen has an end-to-end assertion on its content
 
 | Capability | Screens | Data-backed | Loading | Error | Empty | Arabic verified |
 | --- | --- | --- | --- | --- | --- | --- |
-| CAP-WORKSHOP | 26 | 26 | 25 | 24 | 21 | 2 |
+| CAP-WORKSHOP | 26 | 25 | 25 | 24 | 21 | 2 |
 | CAP-CUSTOMERS | 4 | 4 | 4 | 4 | 4 | 1 |
 | CAP-VEHICLES | 5 | 5 | 5 | 5 | 5 | 0 |
-| CAP-INVENTORY | 8 | 3 | 4 | 4 | 8 | 0 |
+| CAP-INVENTORY | 9 | 9 | 9 | 9 | 9 | 0 |
 | CAP-PROCUREMENT | 3 | 3 | 3 | 3 | 3 | 1 |
 | CAP-BILLING | 6 | 6 | 6 | 4 | 4 | 2 |
 | CAP-ACCOUNTING | 9 | 9 | 9 | 9 | 7 | 0 |
 | CAP-HR | 11 | 11 | 11 | 11 | 10 | 1 |
 | CAP-CRM | 13 | 11 | 11 | 11 | 13 | 0 |
 | CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
-| CAP-GOVERNANCE | 2 | 1 | 2 | 1 | 2 | 0 |
+| CAP-GOVERNANCE | 2 | 2 | 2 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 9 | 8 | 8 | 8 | 0 |
 | CAP-AI | 19 | 4 | 4 | 4 | 16 | 9 |
-| CAP-PLATFORM | 35 | 6 | 13 | 6 | 23 | 11 |
+| CAP-PLATFORM | 35 | 9 | 15 | 8 | 23 | 11 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 204 | 33 | 55 | 31 | 121 | 57 |
+| CAP-DESIGNSYSTEM | 203 | 36 | 58 | 34 | 120 | 57 |
 
 ## Full registry
 

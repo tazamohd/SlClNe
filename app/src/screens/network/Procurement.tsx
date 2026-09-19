@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 
-import { FeatureHeader, Section, StatRow, TabBar } from '@/components/shell/FeatureScreen'
+import { FeatureHeader, Section, StatRow } from '@/components/shell/FeatureScreen'
 
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -41,99 +41,6 @@ import {
 } from '@/data/repository'
 import { approvalLimit, canApprove as roleCanApprove, sodCounterpart } from '@/data/rbac'
 import { NETWORK_STATUS, PRIORITY_TONE, type Requisition } from '@/data/network'
-
-// ── Send request / Quotations ────────────────────────────────────────────────
-//
-// Both screens belong to the same parts-network marketplace as
-// screens/network/PartsNetwork.tsx: a proposed garage-to-garage sourcing
-// network with no backend behind it (no matching route in
-// project-control/API_REGISTRY.json, no type in packages/contract/, no table
-// in server/drizzle/ — see project-control/SOURCE_RECONCILIATION.md). The
-// design's versions faked success here specifically: submitting a request
-// showed "Request sent" with no request persisted anywhere, and "Accept &
-// Order" against a hardcoded quote list showed "Order placed" with no order
-// placed — exactly the false-success write project-control/BLOCKERS.json's
-// BLK-004 forbids. Converted to the ConnectApi/StaffGap.tsx GAP convention
-// used elsewhere for screens whose backend doesn't exist yet.
-
-function NetworkGapPanel({
-  icon,
-  title,
-  description,
-  collection,
-}: {
-  icon: string
-  title: string
-  description: string
-  collection: string
-}) {
-  const { t } = usePreferences()
-  return (
-    <>
-      <EmptyState icon={icon} title={t(title)} description={t(description)} />
-      <p className="mt-3 flex flex-wrap items-start justify-center gap-1.5 text-[11px] text-muted">
-        <Icon name="Info" size={12} className="mt-0.5 flex-shrink-0 text-salis-blue" />
-        {t('Connect the API — no data source yet:')}{' '}
-        <span dir="ltr" className="font-mono text-body">
-          {collection}
-        </span>
-      </p>
-    </>
-  )
-}
-
-export function PartsNetworkSendRequest() {
-  const { t } = usePreferences()
-  const navigate = useNavigate()
-
-  return (
-    <>
-      <FeatureHeader
-        icon="Send"
-        title={t('Send Request')}
-        subtitle={t('Ask the network for a price on a part')}
-      />
-
-      <Section title={t('Part Details')}>
-        <NetworkGapPanel
-          icon="Send"
-          title="Requesting quotes isn’t available yet"
-          description="Sending a request needs a network of other garages and dealers to send it to, which has no backend yet — filling in this form couldn’t reach anyone."
-          collection="partsNetworkRequests"
-        />
-      </Section>
-
-      <div className="flex justify-end">
-        <Button variant="outline" size="lg" onClick={() => navigate('/parts-network')}>
-          {t('Back')}
-        </Button>
-      </div>
-    </>
-  )
-}
-
-export function PartsNetworkQuotations() {
-  const { t } = usePreferences()
-
-  return (
-    <>
-      <FeatureHeader
-        icon="FileText"
-        title={t('Quotations')}
-        subtitle={t('Compare quotes received from the network')}
-      />
-
-      <Section title={t('Quotations')}>
-        <NetworkGapPanel
-          icon="FileText"
-          title="No quotes received yet"
-          description="Quotes from other network members would appear here once a request has been sent and answered — neither exists as a backend collection yet."
-          collection="partsNetworkQuotes"
-        />
-      </Section>
-    </>
-  )
-}
 
 /* ═══════════════════════════════ procurement: the live transport (F-022) */
 
@@ -1527,80 +1434,6 @@ export function ProcurementPortal() {
           </p>
         ) : null}
       </Section>
-    </>
-  )
-}
-
-/** Group-buying and fulfilment view across partner garages. */
-export function PartsSupplyNetwork() {
-  const { t } = usePreferences()
-  const tabs = [
-    { id: 'partners', label: 'Network Partners', icon: 'Users' },
-    { id: 'fulfillment', label: 'Fulfillment Orders', icon: 'Package' },
-    { id: 'shipments', label: 'Shipments', icon: 'Truck' },
-    { id: 'warehouses', label: 'Warehouses', icon: 'Warehouse' },
-  ]
-  const [tab, setTab] = useState(tabs[0].id)
-
-  return (
-    <>
-      <FeatureHeader
-        icon="Network"
-        title={t('Parts Supply Network')}
-        subtitle={t('Partner warehouses, fulfilment and shipment tracking')}
-      />
-
-      <TabBar tabs={tabs} value={tab} onChange={setTab} />
-
-      <StatRow
-        stats={[
-          { label: 'Partners', value: 0, caption: 'Connected', highlight: true },
-          { label: 'Open Fulfilments', value: 0, caption: 'In progress', tone: 'info' },
-          { label: 'In Transit', value: 0, caption: 'Shipments', tone: 'info' },
-          { label: 'Warehouses', value: 0, caption: 'Stocking points' },
-        ]}
-      />
-
-      {tab === 'partners' && (
-        <Section title={t('Network Partners')}>
-          <NetworkGapPanel
-            icon="Users"
-            title="No network partners"
-            description="Partner garages appear here once they join the supply network — the same network `PartsNetworkSendRequest`/`PartsNetworkQuotations` have no backend for either."
-            collection="partsNetworkPartners"
-          />
-        </Section>
-      )}
-      {tab === 'fulfillment' && (
-        <Section title={t('Fulfillment Orders')}>
-          <NetworkGapPanel
-            icon="Package"
-            title="No fulfillment orders"
-            description="Group-buy and fulfillment orders appear here once placed, once a network exists to place them with."
-            collection="partsNetworkFulfillment"
-          />
-        </Section>
-      )}
-      {tab === 'shipments' && (
-        <Section title={t('Shipments')}>
-          <NetworkGapPanel
-            icon="Truck"
-            title="No shipments in transit"
-            description="Shipments and delivery tracking appear here once orders are dispatched through the network."
-            collection="partsNetworkShipments"
-          />
-        </Section>
-      )}
-      {tab === 'warehouses' && (
-        <Section title={t('Warehouses')}>
-          <NetworkGapPanel
-            icon="Warehouse"
-            title="No warehouses registered"
-            description="Partner warehouse locations and stock levels appear here once a partner registers one."
-            collection="partsNetworkWarehouses"
-          />
-        </Section>
-      )}
     </>
   )
 }

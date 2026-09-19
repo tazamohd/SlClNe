@@ -17,13 +17,13 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | designed mobile owed | 0 |
 | untested | 0 |
 | mock only | 37 |
-| no backend | 129 |
-| data backed | 149 |
+| no backend | 117 |
+| data backed | 161 |
 | e2e covered | 436 |
 | content asserted | 436 |
 | rendered without assertion | 0 |
-| has loading state | 183 |
-| has error state | 146 |
+| has loading state | 193 |
+| has error state | 156 |
 | has empty state | 265 |
 | tablet verified | 4 |
 | arabic verified | 119 |
@@ -33,10 +33,10 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths passing | 23 |
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
-| crud create | 33 |
-| crud read | 138 |
-| crud update | 29 |
-| crud delete | 25 |
+| crud create | 37 |
+| crud read | 151 |
+| crud update | 36 |
+| crud delete | 29 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
 | production ready | 0 |
@@ -93,7 +93,7 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | execreports | 5 | 5 |
 | hr | 8 | 8 |
 | insurance | 1 | 1 |
-| inventory | 2 | 2 |
+| inventory | 3 | 3 |
 | invoices | 4 | 4 |
 | jobcards | 16 | 16 |
 | kiosk | 1 | 1 |
