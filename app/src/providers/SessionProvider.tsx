@@ -116,6 +116,12 @@ export type RegisterResult =
 
 export type SwitchRoleResult = { ok: true; role: RoleId } | { ok: false; message: string }
 
+export type UpdateProfileResult = { ok: true } | { ok: false; message: string }
+
+export type ChangePasswordResult =
+  | { ok: true }
+  | { ok: false; message: string; field?: 'current' | 'next' }
+
 export interface SessionDevice {
   id: string
   current: boolean
@@ -156,6 +162,13 @@ interface SessionValue {
   /** Act as `next`. Live mode asks the server, which re-checks and audits the
    *  switch; demo mode rewrites the stored role. */
   switchRole: (next: RoleId) => Promise<SwitchRoleResult>
+  /** `PATCH /auth/me` — the only self-editable field is the display name. */
+  updateProfile: (name: string) => Promise<UpdateProfileResult>
+  /** `POST /auth/change-password`. Every session is revoked on success,
+   *  including this one — the caller is signed out locally right after, same
+   *  as `revokeAllDevices` ending its own session when the current device is
+   *  among those revoked. */
+  changePassword: (currentPassword: string, newPassword: string) => Promise<ChangePasswordResult>
   /** Create an account from scratch and sign in as it. */
   register: (input: RegisterInput) => Promise<RegisterResult>
   /** Live mode. The role in the success case comes from the server's response,
@@ -440,6 +453,63 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [adopt, demoBaseRole, reportSessionInvalid],
   )
 
+  const updateProfile = useCallback(
+    async (name: string): Promise<UpdateProfileResult> => {
+      if (!LIVE) return { ok: false, message: 'Set the API URL to update your profile.' }
+      if (!accessTokenRef.current) return { ok: false, message: 'You are not signed in.' }
+      const result = await authFetch('/me', {
+        method: 'PATCH',
+        body: JSON.stringify({ name }),
+        token: accessTokenRef.current,
+      })
+      if (result.status === 401) reportSessionInvalid()
+      if (!result.ok) {
+        return {
+          ok: false,
+          message:
+            result.status === 0
+              ? 'The server could not be reached.'
+              : errorMessage(result.body, 'That update was refused.'),
+        }
+      }
+      const body = result.body as { user?: SessionUser }
+      if (body.user) setUser(body.user)
+      return { ok: true }
+    },
+    [reportSessionInvalid],
+  )
+
+  const changePassword = useCallback(
+    async (currentPassword: string, newPassword: string): Promise<ChangePasswordResult> => {
+      if (!LIVE) return { ok: false, message: 'Set the API URL to change your password.' }
+      if (!accessTokenRef.current) return { ok: false, message: 'You are not signed in.' }
+      const result = await authFetch('/change-password', {
+        method: 'POST',
+        body: JSON.stringify({ currentPassword, newPassword }),
+        token: accessTokenRef.current,
+      })
+      if (!result.ok) {
+        const body = result.body as { error?: { message?: string; field?: string } } | null
+        const field = body?.error?.field
+        return {
+          ok: false,
+          message:
+            result.status === 0
+              ? 'The server could not be reached.'
+              : errorMessage(result.body, 'That password change was refused.'),
+          field: field === 'current' || field === 'next' ? field : undefined,
+        }
+      }
+      /* The server just revoked every session, this one included — the token
+       * this request was authorized with is already dead. Ending the session
+       * locally is catching up to what the server already did, not choosing
+       * to sign out. */
+      clearSession('anonymous')
+      return { ok: true }
+    },
+    [clearSession],
+  )
+
   const register = useCallback(
     async (input: RegisterInput): Promise<RegisterResult> => {
       if (!LIVE) {
@@ -546,6 +616,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       baseRole,
       canSwitchRole: baseRole === SWITCHABLE_BASE_ROLE,
       switchRole,
+      updateProfile,
+      changePassword,
       register,
       signInWithPassword,
       signOut,
@@ -564,6 +636,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     baseRole,
     demoAccount,
     switchRole,
+    updateProfile,
+    changePassword,
     register,
     rtl,
     signedIn,

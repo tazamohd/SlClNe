@@ -10,7 +10,7 @@
 
 # API — auth
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 26 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 28 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -18,12 +18,14 @@
 | POST | `/api/v1/auth/2fa/verify` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/challenge` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/enrol` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/change-password` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/forgot-password` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/invite/:token` | — | token | — | — | — | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/invite/:token/accept` | — | token | — | — | — | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/login` | — | token | — | — | 13 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/logout` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
+| PATCH | `/api/v1/auth/me` | — | token | — | — | 2 | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/providers` | — | token | — | — | 1 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/refresh` | — | token | — | — | 3 | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/register` | — | token | — | — | 5 | `server/src/auth/routes.ts` |

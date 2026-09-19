@@ -20,8 +20,8 @@
 | Reference-only | 28 | 436 |
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
-| Data-backed (live API) | 162 | 436 |
-| Mock-only (design fixtures) | 36 | 436 |
+| Data-backed (live API) | 164 | 436 |
+| Mock-only (design fixtures) | 34 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
 | Has a loading state | 193 | 436 |
@@ -34,14 +34,14 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **36 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **34 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 316 | 146 | 89 |
+| app | 316 | 148 | 89 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 8 | 4 |
@@ -67,11 +67,11 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-GOVERNANCE | 2 | 2 | 2 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 9 | 8 | 8 | 8 | 0 |
 | CAP-AI | 19 | 4 | 4 | 4 | 16 | 9 |
-| CAP-PLATFORM | 35 | 9 | 15 | 8 | 23 | 11 |
+| CAP-PLATFORM | 35 | 10 | 15 | 8 | 23 | 10 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 203 | 36 | 58 | 34 | 120 | 57 |
+| CAP-DESIGNSYSTEM | 203 | 37 | 58 | 34 | 120 | 58 |
 
 ## Full registry
 

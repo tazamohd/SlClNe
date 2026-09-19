@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-214 spec files containing 2431 test cases.
+216 spec files containing 2442 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 139 | 1321 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 141 | 1332 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 45 | 588 |
-| app | 126 | 1466 |
+| server | 45 | 594 |
+| app | 128 | 1471 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -94,6 +94,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/accounting-gap-reports.test.tsx` | UNIT_OR_API | 2 | accountant |
 | `app/tests/accounting-report-screens.test.tsx` | UNIT_OR_API | 8 | accountant, owner |
 | `app/tests/accounting-reporting.test.ts` | UNIT_OR_API | 8 | — |
+| `app/tests/admin-profile-demo.test.tsx` | UNIT_OR_API | 1 | owner |
+| `app/tests/admin-profile.test.tsx` | UNIT_OR_API | 4 | owner |
 | `app/tests/admin-users-teams.test.tsx` | UNIT_OR_API | 2 | owner, parts, technician |
 | `app/tests/component/Accordion.test.tsx` | UNIT_OR_API | 11 | — |
 | `app/tests/component/Badge.test.tsx` | UNIT_OR_API | 6 | — |
@@ -216,7 +218,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 13 | manager, advisor, technician, owner, accountant, procurement, hr |
 | `server/tests/audit-log-read.test.ts` | UNIT_OR_API | 7 | technician, owner, customer |
 | `server/tests/auth-test-account.test.ts` | UNIT_OR_API | 19 | test, technician, customer, accountant, manager, owner, superadmin |
-| `server/tests/auth.test.ts` | UNIT_OR_API | 41 | owner, manager, technician, frontdesk, parts, superadmin, customer, supplier, test |
+| `server/tests/auth.test.ts` | UNIT_OR_API | 47 | owner, manager, technician, frontdesk, parts, superadmin, customer, supplier, test |
 | `server/tests/authz-matrix.test.ts` | SECURITY | 20 | owner, accountant, manager, superadmin, qc, technician |
 | `server/tests/authz-sod.test.ts` | SECURITY | 7 | manager, qc, parts |
 | `server/tests/canned-jobs.test.ts` | UNIT_OR_API | 12 | advisor, manager, technician, customer |

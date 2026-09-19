@@ -108,6 +108,11 @@ const registerBody = z.object({
 })
 
 const switchRoleBody = z.object({ role: z.string().trim().min(1).max(32) })
+const updateProfileBody = z.object({ name: z.string().trim().min(1, 'Please enter your name.').max(200) })
+const changePasswordBody = z.object({
+  currentPassword: z.string().min(1).max(200),
+  newPassword: z.string().min(1).max(200),
+})
 
 const refreshBody = z.object({ refreshToken: z.string().min(10).max(4096) })
 const forgotBody = z.object({ email: z.string().trim().min(3).max(254) })
@@ -512,6 +517,39 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
       return { user: null, entitlements: null }
     }
     return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
+  })
+
+  app.patch('/auth/me', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(updateProfileBody, request.body)
+    try {
+      const user = await service.updateProfile(principal, { name: body.name }, facts(request))
+      return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
+    } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  /** Every session dies on success (see the service method's own docstring),
+   *  so this is the one authenticated route whose caller must expect its own
+   *  access token to stop being renewable right after a 200 — the response
+   *  carries no new tokens to replace it with, on purpose: the client signs
+   *  itself out and returns to login rather than being handed a session that
+   *  survived a password nothing set. */
+  app.post('/auth/change-password', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(changePasswordBody, request.body)
+    const result = await service.changePassword(
+      principal,
+      { currentPassword: body.currentPassword, newPassword: body.newPassword },
+      facts(request),
+    )
+    if (!result.ok) {
+      return reply.code(400).send({
+        error: { code: 'invalid_credentials', message: result.reason, field: result.field, requestId: request.id },
+      })
+    }
+    return { ok: true }
   })
 
   app.post('/auth/switch-role', async (request, reply) => {

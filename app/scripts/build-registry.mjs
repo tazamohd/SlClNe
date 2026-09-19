@@ -650,6 +650,12 @@ const PROCUREMENT_API_CALL = /\bprocurementApi\(\)/
  *  `SEAM_CALL` never sees a collection key to credit. */
 const HEALTH_CHECK_API_CALL = /\bfetchHealthCheckReport\(/
 
+/** `admin/Profile.tsx`'s own two calls, `useSession()`'s `updateProfile`/
+ *  `changePassword` — a real `PATCH /auth/me` / `POST /auth/change-password`
+ *  pair, live-only, the same shape yet again: a seam through a hook that
+ *  isn't `useCollection`. */
+const PROFILE_API_CALL = /\b(?:updateProfile|changePassword)\(/
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -724,8 +730,11 @@ const dataBackedScreens = (() => {
       if (usesProcurementApi) { keys.add('requisitions'); keys.add('purchaseOrders') }
       const usesHealthCheckApi = HEALTH_CHECK_API_CALL.test(body)
       if (usesHealthCheckApi) keys.add('inspectionFindings')
+      const usesProfileApi = PROFILE_API_CALL.test(body)
+      if (usesProfileApi) keys.add('auth/me')
       const crud = crudFrom(calls, body)
       if (reportCalls.length || usesProcurementApi || usesHealthCheckApi) crud.read = true
+      if (usesProfileApi) crud.update = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
@@ -765,6 +774,7 @@ const dataBackedScreens = (() => {
         if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)
           && !PROCUREMENT_API_CALL.test(src)
           && !HEALTH_CHECK_API_CALL.test(src)
+          && !PROFILE_API_CALL.test(src)
           && !/data\/repository['"]/.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
