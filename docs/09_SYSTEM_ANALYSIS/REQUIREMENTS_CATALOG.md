@@ -12,7 +12,7 @@
 
 # Requirements catalogue
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 169 requirements
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 171 requirements
 
 ## What these requirements are, and what they are not
 
@@ -43,7 +43,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-PROCUREMENT-001 | The system provides procurement through 3 screens and 28 API endpoints, gated by the `procurement` permission module. | CAP-PROCUREMENT | 28 | 3 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-BILLING-001 | The system provides invoicing and payments through 6 screens and 25 API endpoints, gated by the `invoices`, `payments` permission modules. | CAP-BILLING | 25 | 6 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-ACCOUNTING-001 | The system provides accounting and finance through 9 screens and 59 API endpoints, gated by the `accounting`, `insurance` permission modules. | CAP-ACCOUNTING | 59 | 9 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-HR-001 | The system provides hr and payroll through 11 screens and 52 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 52 | 11 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-HR-001 | The system provides hr and payroll through 12 screens and 70 API endpoints, gated by the `hr`, `technicians` permission modules. | CAP-HR | 70 | 12 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CRM-001 | The system provides crm and sales through 13 screens and 51 API endpoints, gated by the `crm`, `callcenter` permission modules. | CAP-CRM | 51 | 13 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-REPORTING-001 | The system provides reporting and analytics through 11 screens and 0 API endpoints, gated by the `reports`, `execreports` permission modules. | CAP-REPORTING | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-GOVERNANCE-001 | The system provides approvals and governance through 2 screens and 6 API endpoints, gated by the `approvals`, `audit` permission modules. | CAP-GOVERNANCE | 6 | 2 | `project-control/CAPABILITY_REGISTRY.json` |
@@ -53,7 +53,7 @@ It does **not** answer: *what did the business ask for, and did we build it.* Th
 | FR-IDENTITY-001 | The system provides identity and access through 19 screens and 26 API endpoints, gated by the `auth` permission module. | CAP-IDENTITY | 26 | 19 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-WEBSITE-001 | The system provides public website and acquisition through 39 screens and 0 API endpoints, gated by the domain permission modules. | CAP-WEBSITE | — | 39 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-CUSTOMERAPP-001 | The system provides customer mobile application through 11 screens and 0 API endpoints, gated by the domain permission modules. | CAP-CUSTOMERAPP | — | 11 | `project-control/CAPABILITY_REGISTRY.json` |
-| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 203 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 203 | `project-control/CAPABILITY_REGISTRY.json` |
+| FR-DESIGNSYSTEM-001 | The system provides design system and reference surfaces through 202 screens and 0 API endpoints, gated by the domain permission modules. | CAP-DESIGNSYSTEM | — | 202 | `project-control/CAPABILITY_REGISTRY.json` |
 | FR-RULE-APPROVALS-checkApprovalCeiling | A value above the role's ceiling must escalate rather than be approved. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkQcIndependence | A technician cannot pass QC on a repair they performed. | — | — | — | `packages/contract/src/rules/approvals.ts` |
 | FR-RULE-APPROVALS-checkSelfApproval | The approver must not be the submitter — the first and most-broken SOD pair, and the one that lets a single person move money on their own say-so. | — | — | — | `packages/contract/src/rules/approvals.ts` |
@@ -156,6 +156,8 @@ Each one names what measures it. An NFR with nothing measuring it would be an as
 | DR-PAYROLL-LINES | `payroll_lines` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-TIMESHEETS | `timesheets` holds 16 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-LEAVE-REQUESTS | `leave_requests` holds 19 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-TRAINING-COURSES | `training_courses` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
+| DR-TRAINING-ENROLMENTS | `training_enrolments` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-OBD-DEVICES | `obd_devices` holds 20 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-OBD-DTC-READINGS | `obd_dtc_readings` holds 18 columns, is tenant-scoped on `org_id` and is protected by row-level security. |
 | DR-DTC-CODES | `dtc_codes` holds 15 columns, is tenant-scoped on `org_id` and is protected by row-level security. |

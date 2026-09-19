@@ -10,7 +10,7 @@
 
 # API — hr
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 48 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 66 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -62,6 +62,24 @@
 | POST | `/api/v1/timesheets/bulk-delete` | hr:d | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | POST | `/api/v1/timesheets/bulk-update` | hr:e | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/timesheets/export` | hr:x | token | `timesheets` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/courses` | hr:v | token | `trainingCourses` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/training/courses` | hr:c | token | `trainingCourses` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/training/courses/:id` | hr:d | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/courses/:id` | hr:v | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/training/courses/:id` | hr:e | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/courses/:id/history` | hr:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/training/courses/bulk-delete` | hr:d | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/training/courses/bulk-update` | hr:e | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/courses/export` | hr:x | token | `trainingCourses` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/enrolments` | hr:v | token | `trainingEnrolments` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/training/enrolments` | hr:c | token | `trainingEnrolments` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| DELETE | `/api/v1/training/enrolments/:id` | hr:d | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/enrolments/:id` | hr:v | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| PATCH | `/api/v1/training/enrolments/:id` | hr:e | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/enrolments/:id/history` | hr:v | token | — | — | — | `server/src/routes/history.ts` |
+| POST | `/api/v1/training/enrolments/bulk-delete` | hr:d | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| POST | `/api/v1/training/enrolments/bulk-update` | hr:e | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
+| GET | `/api/v1/training/enrolments/export` | hr:x | token | `trainingEnrolments` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 
 ## Query contract for generated collection routes
 
@@ -72,5 +90,7 @@
 | payrollLines | `/payroll/lines` | `employeeName` | `employeeName`, `netHalalas`, `createdAt` | `payrollRunId`, `employeeId` | createdAt asc | yes |
 | timesheets | `/timesheets` | `employeeName` | `workDate`, `employeeName`, `minutes`, `createdAt` | `employeeId`, `status` | workDate desc | yes |
 | leaveRequests | `/leave-requests` | `employeeName`, `type` | `startDate`, `employeeName`, `status`, `createdAt` | `employeeId`, `status`, `type` | startDate desc | yes |
+| trainingCourses | `/training/courses` | `code`, `title`, `titleAr` | `code`, `title`, `category`, `durationMinutes`, `status`, `createdAt` | `status`, `category` | code asc | yes |
+| trainingEnrolments | `/training/enrolments` | `employeeName`, `courseCode` | `employeeName`, `courseCode`, `status`, `completedAt`, `createdAt` | `courseCode`, `employeeId`, `status` | createdAt asc | yes |
 
 An unknown `?sort=` key is a 400, not a silent fallback, so a typo is visible instead of ignored.

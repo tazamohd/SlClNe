@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 203 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 202 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -176,7 +176,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-134 | `/productivity-tracker` | app | **mock** | — | — | yes | verified | yes |
 | F-137 | `/staff-scheduling` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-138 | `/staff-performance-review` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-146 | `/general-ledger` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-148 | `/trial-balance` | app | yes | yes | yes | yes | PARTIAL | yes |
@@ -254,8 +253,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **167 of 203 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **145 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **166 of 202 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **144 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

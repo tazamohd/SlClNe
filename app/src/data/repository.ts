@@ -620,6 +620,52 @@ export interface LeaveRequestRow extends EntityMeta {
   approverId: string | null
 }
 
+/** A training course, as `GET /training/courses` presents it (BLK-004). No
+ *  design fixture, so the shape is declared here like `EmployeeRow`.
+ *
+ *  Note what is absent: no `enrolled` and no `completion`. Those are aggregates
+ *  over `trainingEnrolments`, not properties of a course, and
+ *  `screens/hr/TrainingLMS.tsx` counts the roster for them — so neither can
+ *  drift from the enrolments it describes. `durationMinutes` is the one recorded
+ *  number, and correctly so: how long a course takes to sit is a property of the
+ *  course, and no roster knows it.
+ *
+ *  Writable through the generic collection: publishing and archiving are plain
+ *  `PATCH`es, and `publishedAt`/`archivedAt` are derived server-side from the
+ *  status transition rather than accepted as input. */
+export interface TrainingCourseRow extends EntityMeta {
+  /** The catalogue code, `TRN-0001` — the id the detail route accepts. */
+  id: string
+  code: string
+  title: string
+  titleAr: string | null
+  category: 'safety' | 'technical' | 'customer_service' | 'compliance'
+  durationMinutes: number
+  status: 'draft' | 'active' | 'archived'
+  publishedAt: string | null
+  archivedAt: string | null
+  notes: string | null
+}
+
+/** One employee's enrolment on one course, as `GET /training/enrolments`
+ *  presents it (BLK-004). This is the collection a course's head count and
+ *  completion percentage are *counted from*: `enrolled` is the rows naming a
+ *  course minus the withdrawn ones, and completion is how many of those are
+ *  `completed`.
+ *
+ *  `withdrawn` is a state rather than a deletion — somebody who started and
+ *  stopped is a fact about the course — and is excluded from both the count and
+ *  the completion denominator. `completedAt` is derived from the status
+ *  transition server-side, never posted. */
+export interface TrainingEnrolmentRow extends EntityMeta {
+  courseCode: string
+  employeeId: string
+  employeeName: string
+  status: 'enrolled' | 'in_progress' | 'completed' | 'withdrawn'
+  completedAt: string | null
+  notes: string | null
+}
+
 /** A supplier, as `GET /procurement/suppliers` presents it (F-022). No design
  *  fixture — the parts network carried only free-text supplier names — so the
  *  shape is declared here, like `BranchRow`. Writable through the collection;
@@ -847,6 +893,8 @@ export interface Repository {
   payrollLines: Collection<PayrollLineRow>
   timesheets: Collection<TimesheetRow>
   leaveRequests: Collection<LeaveRequestRow>
+  trainingCourses: Collection<TrainingCourseRow>
+  trainingEnrolments: Collection<TrainingEnrolmentRow>
   suppliers: Collection<SupplierRow>
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
@@ -921,6 +969,8 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   payrollLines: 'payroll/lines',
   timesheets: 'timesheets',
   leaveRequests: 'leave-requests',
+  trainingCourses: 'training/courses',
+  trainingEnrolments: 'training/enrolments',
   suppliers: 'procurement/suppliers',
   requisitions: 'procurement/requisitions',
   purchaseOrders: 'procurement/purchase-orders',
@@ -1130,6 +1180,50 @@ export const PART_ZONE_CODES: Readonly<Record<string, string>> = {
   'SP-SET-04': 'A2',
 }
 
+/** The eight training courses the fixture build serves (BLK-004).
+ *
+ *  Most collections new to BLK-004 ship an **empty** fixture, because
+ *  `server/tests/repository-swap.test.ts` asserts each collection's live rows are
+ *  exactly this fixture's rows plus `SEED_COHERENCE_EXTRAS`. The course
+ *  catalogue is an exception on purpose, the same one `WAREHOUSE_ZONE_FIXTURE`
+ *  below is: Golden Path 14 (`app/e2e/employee-onboarding.spec.ts`) asserts the
+ *  catalogue contains `Workplace Safety Essentials` in a build with **no API**,
+ *  so an empty fixture here would leave the screen with nothing real to render.
+ *  The answer is not to weaken the assertion but to ship the same eight courses
+ *  the server seeds: `server/scripts/seed.ts` inserts these rows, in this order,
+ *  with `SEED_COHERENCE_EXTRAS.trainingCourses = 0`, and both
+ *  `repository-swap.test.ts` and `seed-fidelity.test.ts` compare the two copies
+ *  field by field.
+ *
+ *  The titles, categories and durations are ported from the array
+ *  `TrainingLMS.tsx` used to render (course names, not invented people). What is
+ *  deliberately *not* ported is that array's `enrolled` and `completion`: both
+ *  are counted from `trainingEnrolments`, so a course row has no place to record
+ *  them. One title is not verbatim — the mock's `Regulatory Compliance 2024` is
+ *  `Regulatory Compliance 2026` here, so a course published in 2026 is not named
+ *  after a compliance year two years gone.
+ *
+ *  There is no matching enrolment fixture, and so no head count in this build:
+ *  an enrolment names an employee, and the app's `employees` fixture is
+ *  deliberately empty (the prototype had no staff records). Inventing fixture
+ *  employees to make the percentages look busy is exactly the fabrication this
+ *  change removes, so a fixture build reads 0 enrolled and no completion figure —
+ *  which is what "nobody is enrolled" honestly looks like. */
+export const TRAINING_COURSE_FIXTURE: readonly TrainingCourseRow[] = [
+  { id: 'TRN-0001', code: 'TRN-0001', title: 'Workplace Safety Essentials', titleAr: 'أساسيات السلامة في مكان العمل', category: 'safety', durationMinutes: 240, status: 'active', publishedAt: '2026-01-15T08:00:00.000Z', archivedAt: null, notes: null },
+  { id: 'TRN-0002', code: 'TRN-0002', title: 'Advanced Engine Diagnostics', titleAr: 'تشخيص المحركات المتقدم', category: 'technical', durationMinutes: 480, status: 'active', publishedAt: '2026-02-01T08:00:00.000Z', archivedAt: null, notes: null },
+  { id: 'TRN-0003', code: 'TRN-0003', title: 'Customer Communication Skills', titleAr: 'مهارات التواصل مع العملاء', category: 'customer_service', durationMinutes: 180, status: 'active', publishedAt: '2026-02-20T08:00:00.000Z', archivedAt: null, notes: null },
+  { id: 'TRN-0004', code: 'TRN-0004', title: 'Regulatory Compliance 2026', titleAr: 'الالتزام التنظيمي 2026', category: 'compliance', durationMinutes: 120, status: 'active', publishedAt: '2026-03-05T08:00:00.000Z', archivedAt: null, notes: null },
+  { id: 'TRN-0005', code: 'TRN-0005', title: 'Electrical Systems Overview', titleAr: 'نظرة عامة على الأنظمة الكهربائية', category: 'technical', durationMinutes: 360, status: 'active', publishedAt: '2026-03-18T08:00:00.000Z', archivedAt: null, notes: null },
+  /* Two courses still being written, so the publish move the screen can drive is
+   * visible in the demo build too. */
+  { id: 'TRN-0006', code: 'TRN-0006', title: 'Fire Safety Procedures', titleAr: 'إجراءات السلامة من الحرائق', category: 'safety', durationMinutes: 90, status: 'draft', publishedAt: null, archivedAt: null, notes: null },
+  { id: 'TRN-0007', code: 'TRN-0007', title: 'Hybrid Vehicle Maintenance', titleAr: 'صيانة المركبات الهجينة', category: 'technical', durationMinutes: 600, status: 'draft', publishedAt: null, archivedAt: null, notes: null },
+  /* Retired from the catalogue. Its roster outlives it on the server: who has
+   * done a course is a fact the course being withdrawn does not undo. */
+  { id: 'TRN-0008', code: 'TRN-0008', title: 'Service Desk Best Practices', titleAr: 'أفضل ممارسات مكتب الخدمة', category: 'customer_service', durationMinutes: 150, status: 'archived', publishedAt: '2025-06-01T08:00:00.000Z', archivedAt: '2026-06-30T08:00:00.000Z', notes: null },
+]
+
 /** The six warehouse zones the fixture build serves (BLK-004).
  *
  *  Every other collection new to BLK-004 ships an **empty** fixture, because
@@ -1262,6 +1356,13 @@ export const mockRepository: Repository = {
   payrollLines: fixture<PayrollLineRow>([]),
   timesheets: fixture<TimesheetRow>([]),
   leaveRequests: fixture<LeaveRequestRow>([]),
+  /* The course catalogue is the one HR collection with a real fixture, because
+   * Golden Path 14 asserts a course *title* in a build with no API (see
+   * `TRAINING_COURSE_FIXTURE`). The roster stays empty: an enrolment names an
+   * employee, and there are no fixture employees to name — so this build shows
+   * no head count rather than an invented one. */
+  trainingCourses: fixture<TrainingCourseRow>(TRAINING_COURSE_FIXTURE),
+  trainingEnrolments: fixture<TrainingEnrolmentRow>([]),
   /* No design fixture for any procurement table (F-022) — the procurement
    * server did not exist in the prototype. An empty read-only collection is the
    * honest mock; the live API serves the seeded coherent rows, and the writes

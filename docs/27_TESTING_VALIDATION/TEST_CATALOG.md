@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-214 spec files containing 2431 test cases.
+216 spec files containing 2458 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 139 | 1321 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 141 | 1348 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -35,8 +35,8 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Surface | Suites | Cases |
 | --- | --- | --- |
-| server | 45 | 588 |
-| app | 126 | 1466 |
+| server | 46 | 609 |
+| app | 127 | 1472 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -125,6 +125,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/component/Tabs.test.tsx` | UNIT_OR_API | 12 | — |
 | `app/tests/component/technician-my-jobs.test.tsx` | UNIT_OR_API | 2 | technician |
 | `app/tests/component/Tooltip.test.tsx` | UNIT_OR_API | 7 | — |
+| `app/tests/component/training-lms.test.tsx` | UNIT_OR_API | 6 | hr, technician |
 | `app/tests/component/warranty-management.test.tsx` | UNIT_OR_API | 3 | accountant, technician |
 | `app/tests/component/WorkflowStepper.test.tsx` | UNIT_OR_API | 6 | — |
 | `app/tests/component/workshop-approval-gaps.test.tsx` | UNIT_OR_API | 5 | owner, advisor, customer, technician |
@@ -253,6 +254,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `server/tests/security.test.ts` | SECURITY | 13 | — |
 | `server/tests/seed-coherence.test.ts` | DATA_FIDELITY | 12 | — |
 | `server/tests/seed-fidelity.test.ts` | DATA_FIDELITY | 3 | owner |
+| `server/tests/training-lms.test.ts` | UNIT_OR_API | 21 | hr, technician, customer |
 | `server/tests/warehouse-zones.test.ts` | UNIT_OR_API | 16 | parts, technician, customer |
 | `server/tests/workshop-qc.test.ts` | UNIT_OR_API | 7 | qc, manager, technician, hr |
 | `server/tests/workshop-reports.test.ts` | UNIT_OR_API | 6 | manager, qc, owner, supplier |

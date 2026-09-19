@@ -143,6 +143,23 @@ export const SEED_COHERENCE_EXTRAS: Readonly<Record<string, number>> = {
    *  `tests/repository-swap.test.ts` both compare the two copies field by
    *  field and neither can drift from the other unnoticed. */
   warehouseZones: 0,
+  /** Training courses (BLK-004) — **zero extras, deliberately**, for the same
+   *  reason as the warehouse zones above: the eight courses are a fixture the
+   *  app itself ships (`TRAINING_COURSE_FIXTURE` in
+   *  `app/src/data/repository.ts`), because Golden Path 14 asserts the catalogue
+   *  contains `Workplace Safety Essentials` in a build with no API at all. The
+   *  seed inserts exactly those eight rows, in that order, so
+   *  `tests/seed-fidelity.test.ts` and `tests/repository-swap.test.ts` compare
+   *  the two copies field by field and neither can drift unnoticed. */
+  trainingCourses: 0,
+  /** Training enrolments (BLK-004) — the roster every head count and completion
+   *  percentage on the Training screen is counted from. No app fixture (it would
+   *  have to name employees, and the app's `employees` fixture is empty by
+   *  design — the prototype had no staff records), so all eighteen rows are
+   *  extras: five seeded employees spread unevenly across six of the eight
+   *  courses, including one withdrawal, so the derived figures differ per
+   *  course. */
+  trainingEnrolments: 18,
   /** Equipment warranties (BLK-004) — no design fixture; one of each status a
    *  screen needs to render (active, expired, claimed). */
   equipmentWarranties: 8,
@@ -1093,6 +1110,102 @@ export async function seed(tx: Tx, orgId: string, branchId: string | null): Prom
       decidedAt: new Date('2026-08-01T08:30:00Z'),
     }),
   ])
+
+  /* ------------------------------------------------- training LMS (BLK-004)
+   * The course catalogue and the roster against it. `TrainingLMS.tsx` rendered
+   * these eight courses as a hardcoded array in which each `enrolled` head
+   * count and each `completion` percentage was invented; the titles, categories
+   * and durations are ported from it (plausible course names, not invented
+   * people), and the two numbers deliberately are not — there is nowhere to
+   * record them, because they are counted from the enrolments below.
+   *
+   * These rows must stay identical, and in this order, to
+   * `TRAINING_COURSE_FIXTURE` in `app/src/data/repository.ts`: the app ships the
+   * same eight courses as its no-API fixture, because Golden Path 14 asserts the
+   * catalogue contains `Workplace Safety Essentials` in a build with no API.
+   * `tests/seed-fidelity.test.ts` and `tests/repository-swap.test.ts` compare the
+   * two copies field by field, so they cannot drift.
+   *
+   * One title is not ported verbatim: the mock's `Regulatory Compliance 2024` is
+   * seeded as `Regulatory Compliance 2026`, so a course published in 2026 is not
+   * named after a compliance year two years gone. */
+  await tx.insert(s.trainingCourses).values([
+    row({ code: 'TRN-0001', title: 'Workplace Safety Essentials', titleAr: 'أساسيات السلامة في مكان العمل', category: 'safety', durationMinutes: 240, status: 'active', publishedAt: new Date('2026-01-15T08:00:00.000Z') }),
+    row({ code: 'TRN-0002', title: 'Advanced Engine Diagnostics', titleAr: 'تشخيص المحركات المتقدم', category: 'technical', durationMinutes: 480, status: 'active', publishedAt: new Date('2026-02-01T08:00:00.000Z') }),
+    row({ code: 'TRN-0003', title: 'Customer Communication Skills', titleAr: 'مهارات التواصل مع العملاء', category: 'customer_service', durationMinutes: 180, status: 'active', publishedAt: new Date('2026-02-20T08:00:00.000Z') }),
+    row({ code: 'TRN-0004', title: 'Regulatory Compliance 2026', titleAr: 'الالتزام التنظيمي 2026', category: 'compliance', durationMinutes: 120, status: 'active', publishedAt: new Date('2026-03-05T08:00:00.000Z') }),
+    row({ code: 'TRN-0005', title: 'Electrical Systems Overview', titleAr: 'نظرة عامة على الأنظمة الكهربائية', category: 'technical', durationMinutes: 360, status: 'active', publishedAt: new Date('2026-03-18T08:00:00.000Z') }),
+    /* Two courses still being written, so the publish move the screen can drive
+     * is visible in the demo data as well as in a test. */
+    row({ code: 'TRN-0006', title: 'Fire Safety Procedures', titleAr: 'إجراءات السلامة من الحرائق', category: 'safety', durationMinutes: 90, status: 'draft' }),
+    row({ code: 'TRN-0007', title: 'Hybrid Vehicle Maintenance', titleAr: 'صيانة المركبات الهجينة', category: 'technical', durationMinutes: 600, status: 'draft' }),
+    /* Retired from the catalogue, but its roster stays: who has done a course is
+     * a fact that outlives the course. */
+    row({
+      code: 'TRN-0008',
+      title: 'Service Desk Best Practices',
+      titleAr: 'أفضل ممارسات مكتب الخدمة',
+      category: 'customer_service',
+      durationMinutes: 150,
+      status: 'archived',
+      publishedAt: new Date('2025-06-01T08:00:00.000Z'),
+      archivedAt: new Date('2026-06-30T08:00:00.000Z'),
+    }),
+  ])
+
+  /* The roster — one row per (employee, course), and the only place a head count
+   * or a completion rate comes from. The spread is deliberately uneven so the
+   * derived figures differ course by course (80%, 33%, 100%, 50%, 0%, and two
+   * courses with no denominator at all) rather than all reading alike, which is
+   * what a stored percentage would have let slide.
+   *
+   * Only the five seeded employees appear; no new people are invented. A
+   * withdrawn enrolment is on the list on purpose: it is excluded from both the
+   * head count and the completion denominator, so Electrical Systems Overview
+   * reads one enrolled and 0%, not two enrolled and 0%. */
+  const enrolmentDefs: readonly {
+    course: string
+    employee: string
+    status: string
+    completedAt?: string
+  }[] = [
+    { course: 'TRN-0001', employee: 'Ahmed Al-Rashid', status: 'completed', completedAt: '2026-01-28T11:00:00.000Z' },
+    { course: 'TRN-0001', employee: 'Fatima Al-Zahrani', status: 'completed', completedAt: '2026-02-04T11:00:00.000Z' },
+    { course: 'TRN-0001', employee: 'Nasser Al-Dosari', status: 'completed', completedAt: '2026-02-11T11:00:00.000Z' },
+    { course: 'TRN-0001', employee: 'Omar Al-Ghamdi', status: 'completed', completedAt: '2026-02-18T11:00:00.000Z' },
+    { course: 'TRN-0001', employee: 'Saeed Al-Zahrani', status: 'in_progress' },
+
+    { course: 'TRN-0002', employee: 'Ahmed Al-Rashid', status: 'completed', completedAt: '2026-03-10T11:00:00.000Z' },
+    { course: 'TRN-0002', employee: 'Saeed Al-Zahrani', status: 'in_progress' },
+    { course: 'TRN-0002', employee: 'Nasser Al-Dosari', status: 'enrolled' },
+
+    { course: 'TRN-0003', employee: 'Fatima Al-Zahrani', status: 'completed', completedAt: '2026-03-02T11:00:00.000Z' },
+    { course: 'TRN-0003', employee: 'Omar Al-Ghamdi', status: 'completed', completedAt: '2026-03-09T11:00:00.000Z' },
+
+    { course: 'TRN-0004', employee: 'Ahmed Al-Rashid', status: 'completed', completedAt: '2026-03-20T11:00:00.000Z' },
+    { course: 'TRN-0004', employee: 'Fatima Al-Zahrani', status: 'completed', completedAt: '2026-03-24T11:00:00.000Z' },
+    { course: 'TRN-0004', employee: 'Nasser Al-Dosari', status: 'enrolled' },
+    { course: 'TRN-0004', employee: 'Omar Al-Ghamdi', status: 'in_progress' },
+
+    { course: 'TRN-0005', employee: 'Saeed Al-Zahrani', status: 'enrolled' },
+    { course: 'TRN-0005', employee: 'Nasser Al-Dosari', status: 'withdrawn' },
+
+    { course: 'TRN-0008', employee: 'Fatima Al-Zahrani', status: 'completed', completedAt: '2025-07-02T11:00:00.000Z' },
+    { course: 'TRN-0008', employee: 'Ahmed Al-Rashid', status: 'in_progress' },
+  ]
+  await tx.insert(s.trainingEnrolments).values(
+    enrolmentDefs.map((e) =>
+      row({
+        courseCode: e.course,
+        employeeId: employeeByName.get(e.employee)!.id,
+        /* Read from the employee here exactly as `writers.ts` reads it through
+         * the API, so the roster never carries a name nobody employs. */
+        employeeName: employeeByName.get(e.employee)!.name,
+        status: e.status,
+        completedAt: e.completedAt ? new Date(e.completedAt) : null,
+      }),
+    ),
+  )
 
   await tx.insert(s.aiAgents).values(
     T.AI_AGENTS.map((a) =>

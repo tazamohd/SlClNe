@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 506,
-    "endpointsTotal": 506
+    "endpointsMapped": 524,
+    "endpointsTotal": 524
   },
   "capabilities": [
     {
@@ -702,7 +702,7 @@
       ],
       "objective": "OBJ-CAPACITY",
       "objectiveName": "Use technician capacity well",
-      "endpointCount": 52,
+      "endpointCount": 70,
       "endpoints": [
         "API-EMPLOYEES-GET-LIST",
         "API-EMPLOYEES-POST-LIST",
@@ -755,9 +755,27 @@
         "API-GET-TIMESHEETS-ID-HISTORY",
         "API-TIMESHEETS-POSTBULK-DELETE",
         "API-TIMESHEETS-POSTBULK-UPDATE",
-        "API-TIMESHEETS-GETEXPORT"
+        "API-TIMESHEETS-GETEXPORT",
+        "API-TRAININGCOURSES-GET-LIST",
+        "API-TRAININGCOURSES-POST-LIST",
+        "API-TRAININGCOURSES-DELETEID",
+        "API-TRAININGCOURSES-GETID",
+        "API-TRAININGCOURSES-PATCHID",
+        "API-GET-TRAINING-COURSES-ID-HISTORY",
+        "API-TRAININGCOURSES-POSTBULK-DELETE",
+        "API-TRAININGCOURSES-POSTBULK-UPDATE",
+        "API-TRAININGCOURSES-GETEXPORT",
+        "API-TRAININGENROLMENTS-GET-LIST",
+        "API-TRAININGENROLMENTS-POST-LIST",
+        "API-TRAININGENROLMENTS-DELETEID",
+        "API-TRAININGENROLMENTS-GETID",
+        "API-TRAININGENROLMENTS-PATCHID",
+        "API-GET-TRAINING-ENROLMENTS-ID-HISTORY",
+        "API-TRAININGENROLMENTS-POSTBULK-DELETE",
+        "API-TRAININGENROLMENTS-POSTBULK-UPDATE",
+        "API-TRAININGENROLMENTS-GETEXPORT"
       ],
-      "screenCount": 11,
+      "screenCount": 12,
       "screens": [
         "D-Departments",
         "D-HRPayroll",
@@ -769,16 +787,19 @@
         "F-139",
         "F-140",
         "F-141",
-        "F-142"
+        "F-142",
+        "F-143"
       ],
-      "dataBackedScreens": 11,
+      "dataBackedScreens": 12,
       "entities": [
         "employees",
         "leaveRequests",
         "payrollLines",
         "payrollRuns",
         "technicians",
-        "timesheets"
+        "timesheets",
+        "trainingCourses",
+        "trainingEnrolments"
       ],
       "rules": [
         "BR-HR-payrollLineNetHalalas",
@@ -1428,7 +1449,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 203,
+      "screenCount": 202,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1558,7 +1579,6 @@
         "F-134",
         "F-137",
         "F-138",
-        "F-143",
         "F-144",
         "F-146",
         "F-148",

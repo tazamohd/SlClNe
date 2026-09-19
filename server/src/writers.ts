@@ -55,6 +55,10 @@ import {
   supplierUpdate,
   timesheetCreate,
   timesheetUpdate,
+  trainingCourseCreate,
+  trainingCourseUpdate,
+  trainingEnrolmentCreate,
+  trainingEnrolmentUpdate,
   vehicleCreate,
   vehicleUpdate,
   warehouseZoneCreate,
@@ -83,6 +87,8 @@ import {
   partsNetworkRequests,
   payrollRuns,
   suppliers,
+  trainingCourses,
+  trainingEnrolments,
   warehouseZones,
 } from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
@@ -388,6 +394,111 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       if (!existing) {
         value.employeeName = (await loadEmployee(ctx.tx, String(value.employeeId))).name
         value.status = 'submitted'
+      }
+      return value
+    },
+  },
+
+  /* Training (BLK-004) — the course catalogue. A flat directory under the
+   * existing `hr` module, writable through the generic router: RBAC (`hr:c/e/d`),
+   * tenant RLS, audit and optimistic concurrency all come from it, so this
+   * writer only names what is specific to a course.
+   *
+   * There is no head count and no completion column to write, by design: both
+   * are counted from `training_enrolments`, so neither can be posted and neither
+   * can drift. `publishedAt`/`archivedAt` are never accepted as input either —
+   * they are derived from the status transition, the same discipline
+   * `equipmentWarranties.claimedAt` and `warehouseZones.maintenanceSince` use,
+   * so a publication date is always the date something happened. */
+  trainingCourses: {
+    create: trainingCourseCreate,
+    update: trainingCourseUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && !value.code) value.code = await nextCourseCode(ctx.tx)
+      if ('status' in value) {
+        const status = value.status
+        /* `publishedAt` is when the course first went into the catalogue, so a
+         * course that is already published keeps its original date; taking it
+         * back to draft clears it, because then it is not published at all. */
+        if (status === 'active') {
+          value.publishedAt = (existing?.publishedAt as Date | null | undefined) ?? new Date()
+          value.archivedAt = null
+        } else if (status === 'archived') {
+          value.archivedAt = new Date()
+        } else {
+          value.publishedAt = null
+          value.archivedAt = null
+        }
+      }
+      return value
+    },
+  },
+
+  /* Training enrolments (BLK-004) — one row per (employee, course), and the
+   * rows every head count and completion percentage on `TrainingLMS.tsx` is
+   * counted from. Three rules live here because each needs to read another row
+   * inside the request's transaction:
+   *
+   *   1. the course must be one of *this* tenant's, and must be published —
+   *      a draft is not a course anyone can be sent on yet, and an archived one
+   *      has been retired;
+   *   2. the employee must be a real `employees` row, and their name is read
+   *      from it rather than posted alongside the id;
+   *   3. the same employee cannot be enrolled on the same course twice, which
+   *      is what makes a count over these rows a head count.
+   *
+   * The composite foreign keys in `drizzle/0026_training_lms.sql` already refuse
+   * a foreign or unknown course or employee, but they refuse it as a database
+   * error; checking here turns that into the ordinary `not_found` a client can
+   * act on. `completedAt` is derived from the status transition and cleared
+   * again if the enrolment moves back out of `completed`, never posted. */
+  trainingEnrolments: {
+    create: trainingEnrolmentCreate,
+    update: trainingEnrolmentUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+
+      if (!existing) {
+        const courseCode = String(value.courseCode)
+        const [course] = await ctx.tx
+          .select({ code: trainingCourses.code, status: trainingCourses.status })
+          .from(trainingCourses)
+          .where(
+            and(eq(trainingCourses.code, courseCode), isNull(trainingCourses.deletedAt)),
+          )
+          .limit(1)
+        if (!course) throw notFound('Training course')
+        if (course.status !== 'active') {
+          throw ruleViolated(
+            course.status === 'archived'
+              ? 'That course has been archived; nobody can be enrolled on it.'
+              : 'That course is still a draft; publish it before enrolling anyone.',
+            'courseCode',
+          )
+        }
+
+        const employeeId = String(value.employeeId)
+        value.employeeName = (await loadEmployee(ctx.tx, employeeId)).name
+
+        const [duplicate] = await ctx.tx
+          .select({ id: trainingEnrolments.id })
+          .from(trainingEnrolments)
+          .where(
+            and(
+              eq(trainingEnrolments.courseCode, courseCode),
+              eq(trainingEnrolments.employeeId, employeeId),
+              isNull(trainingEnrolments.deletedAt),
+            ),
+          )
+          .limit(1)
+        if (duplicate) {
+          throw conflict('That employee is already enrolled on this course.')
+        }
+      }
+
+      if ('status' in value) {
+        value.completedAt = value.status === 'completed' ? new Date() : null
       }
       return value
     },
@@ -704,6 +815,15 @@ async function nextWarrantyNumber(tx: Tx): Promise<string> {
 async function nextZoneCode(tx: Tx): Promise<string> {
   const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(warehouseZones)
   return `ZN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** The next `TRN-0001` within the tenant, for a course created without a
+ *  catalogue code of its own (BLK-004). Counted rather than guessed, so two
+ *  courses never collide on the unique `(org_id, code)` constraint that every
+ *  `training_enrolments.course_code` references. */
+async function nextCourseCode(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(trainingCourses)
+  return `TRN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
 /** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two

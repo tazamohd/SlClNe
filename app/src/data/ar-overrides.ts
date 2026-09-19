@@ -5441,4 +5441,33 @@ export const AR_OVERRIDES: Record<string, string> = {
   "Zone back in service": "عادت المنطقة إلى الخدمة",
   "Could not update zone": "تعذر تحديث المنطقة",
   "parts": "قطعة",
+
+  // Training LMS (BLK-004) — a real course catalogue with head counts and
+  // completion percentages counted from the enrolment roster, replacing the
+  // hardcoded `MOCK_COURSES` array whose `enrolled` and `completion` were
+  // invented.
+  "Enrolments": "التسجيلات",
+  "Who is on which course": "من المسجَّل في أي دورة",
+  "Enrol": "تسجيل",
+  "Enrolling...": "جارٍ التسجيل...",
+  "Publish": "نشر",
+  "Mark Completed": "تحديد كمكتمل",
+  "Withdraw": "إلغاء التسجيل",
+  "Select a course": "اختر دورة",
+  "Employee enrolled": "تم تسجيل الموظف",
+  "Marked as completed": "تم التحديد كمكتمل",
+  "Enrolment withdrawn": "تم إلغاء التسجيل",
+  "Course published": "تم نشر الدورة",
+  "Course archived": "تمت أرشفة الدورة",
+  "Could not enrol employee": "تعذر تسجيل الموظف",
+  "Could not update course": "تعذر تحديث الدورة",
+  "Could not update enrolment": "تعذر تحديث التسجيل",
+  "No courses in the catalogue yet": "لا توجد دورات في الكتالوج بعد",
+  "No enrolments yet": "لا توجد تسجيلات بعد",
+  "Enrolments are what the head counts and completion figures above are counted from.":
+    "التسجيلات هي ما تُحسب منه أعداد المسجَّلين ونسب الإكمال أعلاه.",
+  "Enrolled counts and completion are counted from the enrolments below; the title, category, duration and status are recorded on the course. A course nobody is enrolled on shows no completion figure rather than a nil one.":
+    "تُحسب أعداد المسجَّلين ونسبة الإكمال من التسجيلات أدناه، أما العنوان والتصنيف والمدة والحالة فهي مُسجّلة على الدورة نفسها. والدورة التي لا يوجد بها أي مسجَّل لا تُعرض لها نسبة إكمال بدلاً من عرض نسبة صفرية.",
+  "enrolments": "تسجيل",
+  "Unknown employee": "موظف غير معروف",
 }

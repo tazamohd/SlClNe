@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-Every column of every table, 1417 in total.
+Every column of every table, 1450 in total.
 
 ## `organizations`
 
@@ -1591,6 +1591,7 @@ Employees — a member of staff who belongs to a department (the existing `depar
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `employees_org_number_idx` | yes | orgId, employeeNumber |
+| `employees_org_id_key` | yes | orgId, id |
 | `employees_org_idx` | no | orgId, branchId, status |
 
 ## `payroll_runs`
@@ -1705,6 +1706,64 @@ Leave requests — a range of days an employee asks off. The approval (approve /
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `leave_requests_employee_idx` | no | orgId, employeeId, status |
+
+## `training_courses`
+
+Training courses (BLK-004) — the staff course catalogue `TrainingLMS.tsx` rendered as a hardcoded eight-row array in which every `enrolled` head count and every `completion` percentage was invented, and from which it then computed its KPIs. This table records only what is a property of the *course*: code, title, subject, how long it takes to sit, and where it is in its publish/archive lifecycle. It carries **no head count and no completion percentage** — both are aggregates over `training_enrolments`, so a column here would be a second, drifting answer to a question the roster already answers, and would be wrong the moment anyone enrolled or finished. `duration_minutes` is the one recorded number, and correctly so: nothing in the roster knows how long a course takes. Zero means "not stated", which the screen renders as a dash rather than `0 hrs`. `published_at`/`archived_at` are derived from the status transition in `writers.ts`, never posted. Gated on `hr`.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `code` | varchar(16) | NOT NULL | — | — | — |
+| `title` | varchar(200) | NOT NULL | — | — | — |
+| `title_ar` | varchar(200) | nullable | — | — | — |
+| `category` | varchar(24) | NOT NULL | — | 'safety' | — |
+| `duration_minutes` | integer | NOT NULL | — | 0 | — |
+| `status` | varchar(16) | NOT NULL | — | 'draft' | — |
+| `published_at` | timestamptz | nullable | — | — | — |
+| `archived_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `training_courses_org_code_idx` | yes | orgId, code |
+| `training_courses_org_idx` | no | orgId, branchId, status |
+
+## `training_enrolments`
+
+Training enrolments (BLK-004) — one row per (employee, course). This is the table that makes a course's head count and completion rate *derived*: the count is the enrolments naming a course, and the completion is how many of them reached `completed`. Neither number is stored anywhere, so neither can drift from the roster it describes. Both references are composite in `drizzle/0026_training_lms.sql` — `(org_id, course_code)` → `training_courses (org_id, code)` and `(org_id, employee_id)` → `employees (org_id, id)` — so each is same-tenant by construction rather than by a writer remembering to check. `employee_name` is read from the referenced employee at enrolment, the denormalised shape `timesheets`/`leave_requests` already carry. `completed_at` is derived from the status transition and cleared when the enrolment moves back out of `completed`. `withdrawn` is a state rather than a deletion, and is excluded from both the head count and the completion denominator. Gated on `hr`.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `course_code` | varchar(16) | NOT NULL | — | — | — |
+| `employee_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `employee_name` | varchar(200) | NOT NULL | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'enrolled' | — |
+| `completed_at` | timestamptz | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `training_enrolments_org_course_employee_idx` | yes | orgId, courseCode, employeeId |
+| `training_enrolments_org_idx` | no | orgId, branchId, status |
+| `training_enrolments_employee_idx` | no | orgId, employeeId |
 
 ## `obd_devices`
 

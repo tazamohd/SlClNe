@@ -83,6 +83,8 @@
       "support_tickets",
       "technicians",
       "timesheets",
+      "training_courses",
+      "training_enrolments",
       "user_sessions",
       "users",
       "vehicles",
@@ -163,6 +165,8 @@
       "support_tickets",
       "technicians",
       "timesheets",
+      "training_courses",
+      "training_enrolments",
       "user_sessions",
       "users",
       "vehicles",
@@ -1014,6 +1018,60 @@
         "predicate": "app_scope() <> 'self'",
         "purpose": null,
         "file": "server/drizzle/0025_warehouse_zones.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "training_courses",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "training_courses",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "training_courses",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "p_tenant",
+        "appliesTo": "training_enrolments",
+        "type": "PERMISSIVE",
+        "command": "ALL",
+        "predicate": "app_scope() = 'platform' OR org_id = app_org()",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "r_branch",
+        "appliesTo": "training_enrolments",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() NOT IN ('branch','own','self','assigned','external') OR branch_id IS NULL OR branch_id = app_branch()",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "r_self",
+        "appliesTo": "training_enrolments",
+        "type": "RESTRICTIVE",
+        "command": "ALL",
+        "predicate": "app_scope() <> 'self'",
+        "purpose": null,
+        "file": "server/drizzle/0026_training_lms.sql"
       }
     ],
     "triggers": [
@@ -1245,6 +1303,18 @@
         "table": "warehouse_zones",
         "function": "bump_version",
         "file": "server/drizzle/0025_warehouse_zones.sql"
+      },
+      {
+        "name": "training_courses_bump_version",
+        "table": "training_courses",
+        "function": "bump_version",
+        "file": "server/drizzle/0026_training_lms.sql"
+      },
+      {
+        "name": "training_enrolments_bump_version",
+        "table": "training_enrolments",
+        "function": "bump_version",
+        "file": "server/drizzle/0026_training_lms.sql"
       }
     ],
     "contextFunctions": [
@@ -1254,9 +1324,9 @@
       "app_scope()"
     ],
     "coverage": {
-      "tenantScopedTables": 77,
-      "rlsEnabled": 78,
-      "forced": 78,
+      "tenantScopedTables": 79,
+      "rlsEnabled": 80,
+      "forced": 80,
       "tenantScopedWithoutRls": [],
       "rlsWithoutForce": []
     },
@@ -1287,7 +1357,8 @@
       "server/drizzle/0022_equipment_warranties.sql",
       "server/drizzle/0023_notifications.sql",
       "server/drizzle/0024_parts_network.sql",
-      "server/drizzle/0025_warehouse_zones.sql"
+      "server/drizzle/0025_warehouse_zones.sql",
+      "server/drizzle/0026_training_lms.sql"
     ]
   },
   "authenticationSurface": [

@@ -10,7 +10,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-PostgreSQL, accessed through Drizzle ORM. 82 tables, 1417 columns, 27 migrations.
+PostgreSQL, accessed through Drizzle ORM. 84 tables, 1450 columns, 28 migrations.
 
 ## Migrations
 
@@ -43,24 +43,25 @@ PostgreSQL, accessed through Drizzle ORM. 82 tables, 1417 columns, 27 migrations
 | `server/drizzle/0023_notifications.sql` | — |
 | `server/drizzle/0024_parts_network.sql` | — |
 | `server/drizzle/0025_warehouse_zones.sql` | — |
+| `server/drizzle/0026_training_lms.sql` | — |
 
 ## Structural guarantees
 
 | Guarantee | Mechanism | Coverage |
 | --- | --- | --- |
-| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 78 tables |
-| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 78 tables |
+| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 80 tables |
+| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 80 tables |
 | Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 11 tables |
-| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 78 tables |
+| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 80 tables |
 | Optimistic concurrency | `bump_version` BEFORE UPDATE trigger | every table in the tenant array |
 | Audit immutability | Trigger raising `insufficient_privilege` on UPDATE/DELETE | `audit_log` |
 | Idempotency | Unique index on `(org_id, key, endpoint)` + stored response | `idempotency_keys` |
-| Soft delete | `deleted_at`, filtered by the generic router | 75 tables |
+| Soft delete | `deleted_at`, filtered by the generic router | 77 tables |
 | Money integrity | `bigint` halalas, never `numeric` | 36 tables carry money |
 
 ## Referential integrity — read this before drawing conclusions from an ERD
 
-Only **76 of 207** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 131 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
+Only **78 of 212** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 134 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
 
 The practical consequences: an orphaned reference is possible and will not be refused by the database; deleting a parent does not clean up children (though deletes are soft anyway); and a join that assumes a row exists needs to handle its absence.
 
@@ -149,12 +150,18 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `parts_network_orders` | `parts_network_orders_org_code_idx` | yes | orgId, code |
 | `parts_network_orders` | `parts_network_orders_org_idx` | no | orgId, branchId, direction, status |
 | `employees` | `employees_org_number_idx` | yes | orgId, employeeNumber |
+| `employees` | `employees_org_id_key` | yes | orgId, id |
 | `employees` | `employees_org_idx` | no | orgId, branchId, status |
 | `payroll_runs` | `payroll_runs_org_period_idx` | yes | orgId, period |
 | `payroll_runs` | `payroll_runs_org_idx` | no | orgId, branchId, status |
 | `payroll_lines` | `payroll_lines_run_idx` | no | orgId, payrollRunId |
 | `timesheets` | `timesheets_employee_idx` | no | orgId, employeeId, workDate |
 | `leave_requests` | `leave_requests_employee_idx` | no | orgId, employeeId, status |
+| `training_courses` | `training_courses_org_code_idx` | yes | orgId, code |
+| `training_courses` | `training_courses_org_idx` | no | orgId, branchId, status |
+| `training_enrolments` | `training_enrolments_org_course_employee_idx` | yes | orgId, courseCode, employeeId |
+| `training_enrolments` | `training_enrolments_org_idx` | no | orgId, branchId, status |
+| `training_enrolments` | `training_enrolments_employee_idx` | no | orgId, employeeId |
 | `obd_dtc_readings` | `obd_dtc_readings_device_idx` | no | orgId, deviceId |
 | `otp_challenges` | `otp_destination_idx` | no | destination, createdAt |
 | `audit_log` | `audit_entity_idx` | no | orgId, entity, entityId |

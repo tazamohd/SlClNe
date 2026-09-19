@@ -22,7 +22,7 @@ An executive or an agent should be able to understand the state of this project 
 | [Business capability map](../07_BUSINESS_ANALYSIS/BUSINESS_CAPABILITY_MAP.md) | What the product does, by capability |
 | [Master architecture](../14_SOLUTION_ARCHITECTURE/MASTER_ARCHITECTURE.md) | How it is built, current versus target |
 | [Requirements traceability](../09_SYSTEM_ANALYSIS/REQUIREMENTS_TRACEABILITY_MATRIX.md) | Objective → capability → API → test, and where the chain breaks |
-| [API overview](../17_API_INTEGRATION/API_OVERVIEW.md) | The 506-endpoint surface and its cross-cutting contract |
+| [API overview](../17_API_INTEGRATION/API_OVERVIEW.md) | The 524-endpoint surface and its cross-cutting contract |
 | [RBAC matrix](../19_SECURITY/RBAC_MATRIX.md) | Who may do what, and the six-letter grant alphabet |
 | [Production readiness](../30_RELEASE_CERTIFICATION/PRODUCTION_READINESS.md) | What still blocks a release |
 
@@ -95,13 +95,13 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 
 | Registry | Holds | Generated from |
 | --- | --- | --- |
-| `project-control/ENTITY_REGISTRY.json` | 82 tables with every column | `server/src/db/schema.ts` |
-| `project-control/RELATIONSHIP_REGISTRY.json` | 207 relationships, declared versus inferred | `server/src/db/schema.ts` |
-| `project-control/API_REGISTRY.json` | 506 endpoints with guards and scopes | the route files |
+| `project-control/ENTITY_REGISTRY.json` | 84 tables with every column | `server/src/db/schema.ts` |
+| `project-control/RELATIONSHIP_REGISTRY.json` | 212 relationships, declared versus inferred | `server/src/db/schema.ts` |
+| `project-control/API_REGISTRY.json` | 524 endpoints with guards and scopes | the route files |
 | `project-control/PERMISSION_REGISTRY.json` | 495 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
 | `project-control/BUSINESS_RULES.json` | 30 rules, each naming its function | `packages/contract/src/rules/*.ts` |
-| `project-control/STATE_MACHINE_REGISTRY.json` | 26 lifecycles | `packages/contract/src/entities/*.ts` |
-| `project-control/TEST_REGISTRY.json` | 214 suites, 2431 cases | the spec files |
+| `project-control/STATE_MACHINE_REGISTRY.json` | 28 lifecycles | `packages/contract/src/entities/*.ts` |
+| `project-control/TEST_REGISTRY.json` | 216 suites, 2458 cases | the spec files |
 | `project-control/CAPABILITY_REGISTRY.json` | 18 capabilities linked to everything below them | modules + screen domains |
 | `project-control/SECURITY_REGISTRY.json` | RLS policies, triggers, unauthenticated surface | `server/drizzle/*.sql` |
 | `project-control/MASTER_REGISTRY.json` | 436 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |

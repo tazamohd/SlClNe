@@ -2,7 +2,7 @@
 
 # SALIS AUTO — Master Capability Matrix
 
-436 capabilities · 436 rendering · 0 placeholder · 161 data-backed.
+436 capabilities · 436 rendering · 0 placeholder · 162 data-backed.
 
 | Capability | Route | Surface | Module | Desktop | Tablet | Mobile | AR | RTL | Data | RBAC | Tests | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -364,7 +364,7 @@
 | Timeclock Payroll | `/timeclock-payroll` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Payroll Management | `/payroll-management` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Leave Requests | `/leave-requests` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
-| Training LMS | `/training-lms` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
+| Training LMS | `/training-lms` | app | hr | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 6 roles | route | IMPLEMENTED |
 | Wearable Integration | `/wearable-integration` | app | — | PARTIAL | MISSING | PARTIAL | PARTIAL | PARTIAL | MISSING | — | route | EXTERNAL_DEPENDENCY |
 | General Ledger | `/general-ledger` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
 | Trial Balance | `/trial-balance` | app | — | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | — | route | IMPLEMENTED |
