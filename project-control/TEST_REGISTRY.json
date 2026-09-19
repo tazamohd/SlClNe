@@ -951,11 +951,11 @@
       "cases": [
         "Parts Procurement (Golden Path 6)",
         "parts network requests page loads",
-        "quotations screen is an honest gap state, not invented supplier rows",
+        "quotations screen is a real collection, empty here, not invented supplier rows",
         "parts network orders page loads",
         "the purchase order is a real form whose number the server assigns",
         "Parts procurement lifecycle",
-        "raise request → honest quotations gap → confirm the PO"
+        "raise request → empty quotations list → confirm the PO"
       ],
       "caseCount": 7,
       "touchesPaths": [
