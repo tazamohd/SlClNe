@@ -22,13 +22,13 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 82 of 82 |
 | Relationships documented | 207 (76 FK-backed, 131 convention only) |
-| Endpoints documented | 508 of 508 |
-| Endpoints with a linked test | 136 of 508 |
+| Endpoints documented | 509 of 509 |
+| Endpoints with a linked test | 137 of 509 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 26 |
 | Screens registered and mapped to a capability | 436 of 436 |
-| Screens wired to the live API | 161 of 436 |
-| Test suites catalogued | 215 containing 2440 cases |
+| Screens wired to the live API | 162 of 436 |
+| Test suites catalogued | 216 containing 2445 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -51,7 +51,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 `jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 25 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
-### 3. 25 authenticated endpoints state no permission guard in the handler
+### 3. 26 authenticated endpoints state no permission guard in the handler
 
 | Method | Path | Declared in |
 | --- | --- | --- |
@@ -80,6 +80,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 | POST | `/api/v1/auth/sso/start` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/switch-role` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/verify-otp` | `server/src/auth/routes.ts` |
+| GET | `/api/v1/organization` | `server/src/routes/organization.ts` |
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
@@ -87,9 +88,9 @@ Some of these guard through a shared helper or a `preHandler` this parser does n
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 37 screens read design fixtures rather than the API
+### 5. 36 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 37 of 436 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 36 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -170,7 +171,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/16_SYSTEM_DESIGN/README.md` | 1157 |
 | `docs/17_API_INTEGRATION/endpoints/admin.md` | 886 |
 | `docs/17_API_INTEGRATION/endpoints/audit.md` | 796 |
-| `docs/17_API_INTEGRATION/endpoints/platform.md` | 948 |
+| `docs/17_API_INTEGRATION/endpoints/platform.md` | 1043 |
 | `docs/18_DATABASE/README.md` | 522 |
 | `docs/19_SECURITY/README.md` | 1032 |
 | `docs/20_UI_UX_EXPERIENCE/README.md` | 932 |
@@ -196,8 +197,8 @@ _None — every required document is present._
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 25 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
-3. **Confirm the 25 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
+3. **Confirm the 26 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 372 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 37 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 36 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

@@ -1641,6 +1641,35 @@ export function createAuditLogApi(baseUrl: string): AuditLogApi {
   }
 }
 
+/* --------------------------------------------------------- organization */
+
+/** The caller's own tenant's registration identity, as `GET /organization`
+ *  presents it. Null fields are honest: not every organization has set a
+ *  VAT or CR number yet (issuing an invoice without one is refused —
+ *  `server/src/routes/invoices.ts` — so a null here is "not configured",
+ *  not a loading state). */
+export interface OrganizationInfo {
+  name: string
+  vatNumber: string | null
+  crNumber: string | null
+}
+
+/** The organization's own registration identity (ZATCASettings,
+ *  VATSettings). Live only: it is the tenant row itself, not a fixture
+ *  collection, and there is no demo organization to invent one for. */
+export interface OrganizationInfoApi {
+  get(): Promise<OrganizationInfo>
+}
+
+export function createOrganizationInfo(baseUrl: string): OrganizationInfoApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async get() {
+      return request<OrganizationInfo>(`${root}/organization`)
+    },
+  }
+}
+
 /* ------------------------------------------------- financial aggregates */
 
 export interface ReportRange {
@@ -2193,6 +2222,13 @@ export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : 
  *  without fabricating history. AuditLog reads this when `isLive` and shows
  *  the honest gap otherwise. */
 export const auditLogApi: AuditLogApi | null = API_URL ? createAuditLogApi(API_URL) : null
+
+/** The organization's own registration identity (BLK-004), live only. Null
+ *  on the fixtures: it is the tenant row itself, so a screen reads it when
+ *  `isLive` and keeps its demo/placeholder values otherwise. */
+export const organizationInfo: OrganizationInfoApi | null = API_URL
+  ? createOrganizationInfo(API_URL)
+  : null
 
 /** The unified approval queue (F-029), live only against the API. Null on the
  *  fixtures: a per-caller approval standing is a server computation, and a mock

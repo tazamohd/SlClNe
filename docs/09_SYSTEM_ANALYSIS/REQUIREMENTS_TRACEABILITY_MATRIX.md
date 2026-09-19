@@ -39,7 +39,7 @@ Every link below is derived from a real identifier — a permission module, a ta
 | OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 6 | 9 | 2 | 4 | 2 |
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
 | OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 0 | 19 | 0 | 1 |
-| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 9 | 72 | 14 | 35 | 0 | 13 |
+| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 9 | 73 | 14 | 35 | 0 | 14 |
 | OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 28 | 0 | 19 | 0 | 17 |
 | OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 39 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
@@ -74,7 +74,7 @@ The honest part of a traceability matrix is the list of links that do not exist.
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
-### Endpoints with no linked test (372 of 508)
+### Endpoints with no linked test (372 of 509)
 
 Linkage here is by path match between a spec file and a route. A test that exercises an endpoint indirectly — through a helper, or through a golden path — will not match, so this over-reports. It is still the right number to drive down.
 
