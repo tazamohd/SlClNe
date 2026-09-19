@@ -176,13 +176,15 @@ Implemented in `app/scripts/build-registry.mjs`: auth and public surfaces now ca
 Two halves, both in `app/scripts/build-registry.mjs`:
 
 - **Rule.** A screen that renders the honest gap state (the new `GapCard` component, the hand-written wave 6-9 card, or the feature kit's zero-stat view from `definitions.ts`) reads no fixtures, so it is no longer MOCK_ONLY. It carries `NO_BACKEND` and is counted under a new blocker, BLK-013, so the gap stays visible instead of hidden.
-- **Conversion.** 55 fixture-only screens were replaced with a `GapCard` stub that keeps the page header, the mobile branch and the route's expected text. Each stub names the collection it should read once the API serves it.
+- **Conversion.** 53 fixture-only screens were replaced with a `GapCard` stub that keeps the page header, the mobile branch and the route's expected text. Each stub names the collection it should read once the API serves it.
 
-**BLK-004: 170 → 41.** BLK-013 (NO_BACKEND): 129.
+**BLK-004: 170 → 43.** BLK-013 (NO_BACKEND): 127.
+
+InternalWarehouse and TrainingLMS were converted and then restored: golden paths 7 (Inventory receiving) and 14 (Employee onboarding) assert on their content, so they need real data (bucket B), not an empty state.
 
 Skipped on purpose (25), because they are forms, tools, profiles, navigation hubs, multi-screen files, or already wired outside the seam: DashboardWidgets, DataBackup, DataImportExport, RolesPermissions, Tools, UsersTeams, VoiceCommandInterface, VoiceCommands, VATSettings, ZATCASettings, ZakatSettings, CustomerAppBooking, WelcomePage, PartsNetwork.tsx (4 screens), Procurement.tsx, BarcodeScanner, ClientPortalProfile, TechnicianAppProfile, TechnicianPortalProfile, FinancialSettings, RoleManagement, SecuritySettings, SystemSettings, UserProfile, UserSettings.
 
-### Remaining MOCK_ONLY after bucket C (41)
+### Remaining MOCK_ONLY after bucket C (43)
 
 | Screen | Route | Domain |
 |---|---|---|
@@ -200,6 +202,7 @@ Skipped on purpose (25), because they are forms, tools, profiles, navigation hub
 | Data-Import-Export | `/data-import-export` | featuremap |
 | Financial-Settings | `/financial-settings` | featuremap |
 | HealthCheckReport | `/customer-portal/health-check-report` | admin |
+| Internal-Warehouse | `/internal-warehouse` | featuremap |
 | Native.Android | `/native/android` | portals |
 | Native.iOS | `/native/i-os` | portals |
 | Notifications | `/notifications` | featuremap |
@@ -217,6 +220,7 @@ Skipped on purpose (25), because they are forms, tools, profiles, navigation hub
 | Tasks | `/tasks` | featuremap |
 | Technician-Leaderboards | `/technician-leaderboards` | featuremap |
 | Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
 | User-Profile | `/user-profile` | featuremap |
 | User-Settings | `/user-settings` | featuremap |
 | UsersTeams | `/users-teams` | admin |

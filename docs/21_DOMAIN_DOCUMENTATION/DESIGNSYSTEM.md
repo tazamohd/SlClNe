@@ -121,7 +121,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-060 | `/automated-reordering` | app | **mock** | — | — | yes | verified | yes |
 | F-061 | `/spare-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-062 | `/barcode-scanner` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-063 | `/internal-warehouse` | app | **mock** | — | — | yes | verified | yes |
+| F-063 | `/internal-warehouse` | app | **mock** | — | — | yes | PARTIAL | yes |
 | F-065 | `/parts-marketplace` | app | **mock** | — | — | yes | verified | yes |
 | F-066 | `/dynamic-pricing` | app | **mock** | — | — | yes | verified | yes |
 | F-067 | `/intelligent-price-optimizer` | app | **mock** | — | — | yes | verified | yes |
@@ -177,7 +177,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-134 | `/productivity-tracker` | app | **mock** | — | — | yes | verified | yes |
 | F-137 | `/staff-scheduling` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-138 | `/staff-performance-review` | app | **mock** | — | — | — | PARTIAL | yes |
-| F-143 | `/training-lms` | app | **mock** | — | — | yes | verified | yes |
+| F-143 | `/training-lms` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-144 | `/wearable-integration` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-146 | `/general-ledger` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-148 | `/trial-balance` | app | yes | yes | yes | yes | PARTIAL | yes |
