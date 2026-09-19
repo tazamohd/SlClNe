@@ -11,7 +11,7 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 237,
+    "mockOnly": 170,
     "dataBacked": 145,
     "e2eCovered": 436,
     "contentAsserted": 436,
@@ -99,7 +99,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -1616,7 +1616,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -2110,7 +2110,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -2174,7 +2174,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -4124,7 +4124,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -4853,7 +4853,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -5434,7 +5434,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -6257,7 +6257,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -6538,7 +6538,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -6602,7 +6602,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -6666,7 +6666,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -7302,7 +7302,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -7586,7 +7586,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -7650,7 +7650,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8324,7 +8324,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8616,7 +8616,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8751,7 +8751,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8814,7 +8814,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8877,7 +8877,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -8940,7 +8940,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9003,7 +9003,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9067,7 +9067,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9130,7 +9130,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9193,7 +9193,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9257,7 +9257,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9321,7 +9321,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9384,7 +9384,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9447,7 +9447,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9511,7 +9511,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9574,7 +9574,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9637,7 +9637,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9700,7 +9700,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9764,7 +9764,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9828,7 +9828,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9892,7 +9892,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -9956,7 +9956,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10019,7 +10019,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10083,7 +10083,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10146,7 +10146,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10210,7 +10210,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10273,7 +10273,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10337,7 +10337,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10400,7 +10400,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10464,7 +10464,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10528,7 +10528,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10592,7 +10592,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10656,7 +10656,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10719,7 +10719,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10782,7 +10782,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10845,7 +10845,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10908,7 +10908,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -10972,7 +10972,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11035,7 +11035,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11098,7 +11098,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11161,7 +11161,7 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11438,7 +11438,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11503,7 +11503,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11722,7 +11722,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11787,7 +11787,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -11991,7 +11991,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -12269,7 +12269,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -12333,7 +12333,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -12398,7 +12398,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -13343,7 +13343,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -13407,7 +13407,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -15046,7 +15046,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {
@@ -15478,7 +15478,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY"
+        "CONTENT_ONLY"
       ]
     },
     {

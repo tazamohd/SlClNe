@@ -6,7 +6,9 @@
 - **Bucket B, 50 screens: wire to an existing contract entity.** One PR per entity group, merged serially.
 - **Bucket C, 112 screens: no entity exists.** Convert to the honest `EmptyState` GAP pattern already used in waves 6 to 9, in one mechanical PR, or decide the feature is out of scope and retire the screen.
 
-## Bucket A: reclassify
+## Bucket A: reclassify — DONE
+
+Implemented in `app/scripts/build-registry.mjs`: auth and public surfaces now carry `CONTENT_ONLY` instead of `MOCK_ONLY`. BLK-004 fell from 237 to 170 (67 screens; the registry had grown since the 62 counted below).
 
 | Screen | Route | Domain |
 |---|---|---|
