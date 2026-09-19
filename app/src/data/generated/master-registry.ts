@@ -5530,7 +5530,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
-      "MOCK_ONLY",
+      "ARABIC_MISSING",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,
@@ -8106,7 +8106,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "flags": [
       "TABLET_MISSING",
       "ARABIC_MISSING",
-      "MOCK_ONLY",
+      "NO_BACKEND",
       "NO_RBAC_MODULE"
     ],
     "inNav": false,

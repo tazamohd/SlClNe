@@ -12,7 +12,7 @@
 
 **Status:** GENERATED · **Sources as of:** 2026-09-19
 
-226 spec files containing 2498 test cases.
+227 spec files containing 2500 test cases.
 
 ## What this document claims, and what it does not
 
@@ -22,7 +22,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 
 | Kind | Suites | Cases | What it protects |
 | --- | --- | --- | --- |
-| UNIT_OR_API | 151 | 1388 | Handler behaviour, repository seam, presentation |
+| UNIT_OR_API | 152 | 1390 | Handler behaviour, repository seam, presentation |
 | E2E | 33 | 306 | Whole journeys through the browser, including content assertions |
 | INVENTORY_INTEGRITY | 13 | 197 | Stock movement, reservation, procurement receipt arithmetic |
 | FINANCIAL_INTEGRITY | 12 | 195 | Money arithmetic, VAT, invoice and payment consistency |
@@ -36,7 +36,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | Surface | Suites | Cases |
 | --- | --- | --- |
 | server | 48 | 628 |
-| app | 135 | 1493 |
+| app | 136 | 1495 |
 | browser | 43 | 377 |
 
 ## Suites
@@ -221,6 +221,7 @@ It claims the suites **exist and contain these cases**, because it was generated
 | `app/tests/unit/storage.test.ts` | UNIT_OR_API | 9 | — |
 | `app/tests/unit/workshop-api.test.ts` | UNIT_OR_API | 7 | qc |
 | `app/tests/unit/workshop-stages.test.ts` | UNIT_OR_API | 5 | qc |
+| `app/tests/workshop-vehicle-history.test.tsx` | UNIT_OR_API | 2 | manager |
 | `server/tests/api.test.ts` | UNIT_OR_API | 45 | frontdesk, technician, owner, manager, accountant, advisor, parts, customer |
 | `server/tests/approvals-queue.test.ts` | UNIT_OR_API | 13 | manager, advisor, technician, owner, accountant, procurement, hr |
 | `server/tests/audit-log-read.test.ts` | UNIT_OR_API | 7 | technician, owner, customer |

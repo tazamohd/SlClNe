@@ -20,28 +20,28 @@
 | Reference-only | 28 | 436 |
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
-| Data-backed (live API) | 171 | 436 |
-| Mock-only (design fixtures) | 25 | 436 |
+| Data-backed (live API) | 172 | 436 |
+| Mock-only (design fixtures) | 23 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
-| Has a loading state | 199 | 436 |
+| Has a loading state | 200 | 436 |
 | Has an error state | 161 | 436 |
 | Has an empty state | 269 | 436 |
-| Arabic verified | 122 | 436 |
+| Arabic verified | 121 | 436 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 436 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **25 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **23 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 316 | 155 | 89 |
+| app | 316 | 156 | 89 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
 | portal | 8 | 8 | 4 |
@@ -71,7 +71,7 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 201 | 41 | 61 | 36 | 122 | 61 |
+| CAP-DESIGNSYSTEM | 201 | 42 | 62 | 36 | 122 | 60 |
 
 ## Full registry
 
