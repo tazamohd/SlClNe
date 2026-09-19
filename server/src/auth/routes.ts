@@ -125,6 +125,14 @@ const verifyOtpBody = z.object({
 })
 const revokeAllBody = z.object({ keepCurrent: z.boolean().optional(), sessionId: z.string().optional() })
 
+const updateProfileBody = z.object({
+  name: z.string().trim().min(1, 'Please enter your name.').max(200),
+})
+const changePasswordBody = z.object({
+  currentPassword: z.string().min(1).max(200),
+  newPassword: z.string().min(1).max(200),
+})
+
 const staffCreateBody = z.object({
   name: z.string().trim().min(1, 'Please enter a name.').max(200),
   email: z.string().trim().min(3).max(254).email('Please enter a valid email address.'),
@@ -512,6 +520,28 @@ export function registerAuthRoutes(app: FastifyInstance, deps: AuthRouteDeps): v
       return { user: null, entitlements: null }
     }
     return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
+  })
+
+  app.patch('/auth/me', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(updateProfileBody, request.body)
+    try {
+      const user = await service.updateProfile(principal, body, facts(request))
+      return { user: presentUser(user), entitlements: entitlementsFor(user.role) }
+    } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
+  })
+
+  app.post('/auth/change-password', async (request, reply) => {
+    const principal = principalOf(request)
+    const body = parse(changePasswordBody, request.body)
+    try {
+      await service.changeOwnPassword(principal, body, facts(request))
+      return reply.code(204).send()
+    } catch (error) {
+      return authFailureReply(reply, request, error)
+    }
   })
 
   app.post('/auth/switch-role', async (request, reply) => {

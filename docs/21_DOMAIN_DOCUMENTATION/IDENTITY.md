@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 19 screens, 26 API endpoints and 0 entities, gated by the `auth` permission module.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 19 screens, 28 API endpoints and 0 entities, gated by the `auth` permission module.
 
 
 ## Actors
@@ -39,14 +39,16 @@ _No entity is owned exclusively by this domain._
 | POST | `/api/v1/auth/2fa/verify` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/biometric/challenge` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/biometric/enrol` | — | explicit | — | 1 |
+| POST | `/api/v1/auth/change-password` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/forgot-password` | — | explicit | — | 2 |
 | GET | `/api/v1/auth/invite/:token` | — | explicit | — | **0** |
 | POST | `/api/v1/auth/invite/:token/accept` | — | explicit | — | **0** |
-| POST | `/api/v1/auth/login` | — | explicit | — | 13 |
+| POST | `/api/v1/auth/login` | — | explicit | — | 14 |
 | POST | `/api/v1/auth/logout` | — | explicit | — | 1 |
-| GET | `/api/v1/auth/me` | — | explicit | — | 2 |
+| GET | `/api/v1/auth/me` | — | explicit | — | 3 |
+| PATCH | `/api/v1/auth/me` | — | explicit | — | 3 |
 | GET | `/api/v1/auth/providers` | — | explicit | — | 1 |
-| POST | `/api/v1/auth/refresh` | — | explicit | — | 3 |
+| POST | `/api/v1/auth/refresh` | — | explicit | — | 4 |
 | POST | `/api/v1/auth/register` | — | explicit | — | 5 |
 | POST | `/api/v1/auth/request-otp` | — | explicit | — | 1 |
 | POST | `/api/v1/auth/reset-password` | — | explicit | — | 1 |
@@ -97,7 +99,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **18 of 19 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **4 of 26 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **4 of 28 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **18 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 

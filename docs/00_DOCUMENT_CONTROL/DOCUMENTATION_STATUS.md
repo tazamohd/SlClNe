@@ -29,12 +29,12 @@
 | --- | --- | --- |
 | Entity catalogue, data dictionary, ERDs | `server/src/db/schema.ts` | 82 tables |
 | Relationship catalogue | `server/src/db/schema.ts` | 207 relationships |
-| API reference | the route files | 506 endpoints |
+| API reference | the route files | 508 endpoints |
 | RBAC matrix, roles, SOD, field redaction | `packages/contract/src/rbac.ts` | 495 cells |
 | Business rules | `packages/contract/src/rules/*.ts` | 30 rules |
 | State machines | `packages/contract/src/entities/*.ts` | 26 lifecycles |
 | Isolation and policies | `server/drizzle/*.sql` | 94 policies |
-| Test catalogue | the spec files | 214 suites |
+| Test catalogue | the spec files | 215 suites |
 | Screen registry view | `project-control/MASTER_REGISTRY.json` | 436 screens |
 | Capability map, requirements, traceability | all of the above | 169 requirements |
 

@@ -116,6 +116,9 @@ export type RegisterResult =
 
 export type SwitchRoleResult = { ok: true; role: RoleId } | { ok: false; message: string }
 
+export type ProfileUpdateResult = { ok: true } | { ok: false; message: string }
+export type PasswordChangeResult = { ok: true } | { ok: false; message: string }
+
 export interface SessionDevice {
   id: string
   current: boolean
@@ -156,6 +159,12 @@ interface SessionValue {
   /** Act as `next`. Live mode asks the server, which re-checks and audits the
    *  switch; demo mode rewrites the stored role. */
   switchRole: (next: RoleId) => Promise<SwitchRoleResult>
+  /** Live mode only: `PATCH /auth/me`. Demo mode has no server-side user row
+   *  to write, so it refuses rather than pretending a name stuck. */
+  updateProfile: (name: string) => Promise<ProfileUpdateResult>
+  /** Live mode only: `POST /auth/change-password`, verified against the
+   *  password already on file — not the token-carried `resetPassword` flow. */
+  changePassword: (currentPassword: string, newPassword: string) => Promise<PasswordChangeResult>
   /** Create an account from scratch and sign in as it. */
   register: (input: RegisterInput) => Promise<RegisterResult>
   /** Live mode. The role in the success case comes from the server's response,
@@ -520,6 +529,52 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return revoked
   }, [clearSession])
 
+  const updateProfile = useCallback(
+    async (name: string): Promise<ProfileUpdateResult> => {
+      if (!LIVE || !accessTokenRef.current) {
+        return { ok: false, message: 'Connect a live API to save profile changes.' }
+      }
+      const result = await authFetch('/me', {
+        method: 'PATCH',
+        body: JSON.stringify({ name }),
+        token: accessTokenRef.current,
+      })
+      if (result.status === 401) reportSessionInvalid()
+      if (!result.ok) {
+        return { ok: false, message: errorMessage(result.body, 'That name could not be saved.') }
+      }
+      const body = result.body as { user?: SessionUser }
+      if (body.user) setUser(body.user)
+      return { ok: true }
+    },
+    [reportSessionInvalid],
+  )
+
+  const changePassword = useCallback(
+    async (currentPassword: string, newPassword: string): Promise<PasswordChangeResult> => {
+      if (!LIVE || !accessTokenRef.current) {
+        return { ok: false, message: 'Connect a live API to change your password.' }
+      }
+      const result = await authFetch('/change-password', {
+        method: 'POST',
+        body: JSON.stringify({ currentPassword, newPassword }),
+        token: accessTokenRef.current,
+      })
+      if (!result.ok) {
+        return {
+          ok: false,
+          message: errorMessage(result.body, 'That password could not be changed.'),
+        }
+      }
+      /* Every session was just revoked server-side, this one's included — the
+       * same invariant `resetPassword` already holds the app to. The access
+       * token still works until it naturally expires; the next silent renew
+       * is what actually ends it, so the caller is not booted mid-save. */
+      return { ok: true }
+    },
+    [],
+  )
+
   const role: RoleId = LIVE ? (user?.role ?? DEFAULT_ROLE) : demoRole
   const baseRole: RoleId = LIVE
     ? (isRoleId(user?.baseRole) ? user.baseRole : (user?.role ?? DEFAULT_ROLE))
@@ -546,6 +601,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       baseRole,
       canSwitchRole: baseRole === SWITCHABLE_BASE_ROLE,
       switchRole,
+      updateProfile,
+      changePassword,
       register,
       signInWithPassword,
       signOut,
@@ -564,6 +621,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     baseRole,
     demoAccount,
     switchRole,
+    updateProfile,
+    changePassword,
     register,
     rtl,
     signedIn,

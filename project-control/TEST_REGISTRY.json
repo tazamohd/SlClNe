@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 214,
-    "cases": 2431,
+    "suites": 215,
+    "cases": 2440,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1321,
+      "UNIT_OR_API": 1330,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -5447,6 +5447,39 @@
         "technician",
         "owner",
         "customer"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-AUTH-PROFILE-TEST-TS",
+      "file": "server/tests/auth-profile.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "PATCH /auth/me",
+        "POST /auth/change-password"
+      ],
+      "cases": [
+        "updates the caller's own name and returns it in the response",
+        "rejects an empty name (400) rather than clearing it",
+        "401s with no token",
+        "never lets a caller change another org member by writing an id into the body",
+        "changes the password when the current one is correct, and the new one works",
+        "refuses with 401 when the current password is wrong, and leaves the real one usable",
+        "revokes every session, including the refresh token used to sign in",
+        "rejects a new password that fails the password policy (400)",
+        "401s with no token"
+      ],
+      "caseCount": 9,
+      "touchesPaths": [
+        "/auth/login",
+        "/auth/me",
+        "/api/v1/auth/me",
+        "/auth/change-password",
+        "/auth/refresh"
+      ],
+      "touchesRoles": [
+        "owner",
+        "manager"
       ]
     },
     {

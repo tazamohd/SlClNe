@@ -171,7 +171,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-PartsNetwork | `/parts-network` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PartsSupplyNetwork | `/parts-supply-network` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-PrivacyPolicy | `/privacy-policy` | auth | **mock** | — | — | — | verified | yes |
-| D-Profile | `/profile` | app | **mock** | — | — | — | verified | yes |
+| D-Profile | `/profile` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-RBACSpec | `/rbacspec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-RolesPermissions | `/roles-permissions` | app | **mock** | — | — | — | PARTIAL | yes |
 | D-SessionExpired | `/session-expired` | auth | **mock** | — | — | — | verified | yes |

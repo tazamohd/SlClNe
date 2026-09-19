@@ -10,13 +10,18 @@ import { usePreferences } from '@/providers/PreferencesProvider'
 import { useSession } from '@/providers/SessionProvider'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
-const MIN_PW = 8
+/** The server's `MIN_PASSWORD_LENGTH` (`server/src/auth/password.ts`). A
+ *  client that accepted a shorter password would only find out it was
+ *  refused after the round trip — this form field-blocks it locally too, like
+ *  every other password form in the app. */
+const MIN_PASSWORD_LENGTH = 12
 
 function validatePassword(t: (s: string) => string, current: string, next: string, confirm: string) {
   const errors: { current?: string; next?: string; confirm?: string } = {}
   if (!current) errors.current = t('Required')
   if (!next) errors.next = t('Required')
-  else if (next.length < MIN_PW) errors.next = t('At least 8 characters')
+  else if (next.length < MIN_PASSWORD_LENGTH)
+    errors.next = `${t('Must be at least')} ${MIN_PASSWORD_LENGTH} ${t('characters')}`
   if (!confirm) errors.confirm = t('Required')
   else if (confirm !== next) errors.confirm = t('Passwords do not match')
   return errors
@@ -24,7 +29,7 @@ function validatePassword(t: (s: string) => string, current: string, next: strin
 
 export function Profile() {
   const { t, language, theme } = usePreferences()
-  const { userName, roleLabel, user } = useSession()
+  const { userName, roleLabel, user, live, updateProfile, changePassword } = useSession()
   const isMobile = useIsMobile()
   const toast = useToast()
 
@@ -34,9 +39,11 @@ export function Profile() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [pwErrors, setPwErrors] = useState<{ current?: string; next?: string; confirm?: string }>({})
+  const [saving, setSaving] = useState(false)
 
-  function handleSave() {
-    if (currentPassword || newPassword || confirmPassword) {
+  async function handleSave() {
+    const changingPassword = Boolean(currentPassword || newPassword || confirmPassword)
+    if (changingPassword) {
       const errors = validatePassword(t, currentPassword, newPassword, confirmPassword)
       setPwErrors(errors)
       if (Object.keys(errors).length > 0) {
@@ -44,11 +51,41 @@ export function Profile() {
         return
       }
     }
-    toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
-    setCurrentPassword('')
-    setNewPassword('')
-    setConfirmPassword('')
-    setPwErrors({})
+
+    if (!live) {
+      toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setPwErrors({})
+      return
+    }
+
+    setSaving(true)
+    try {
+      if (fullName.trim() && fullName.trim() !== userName) {
+        const result = await updateProfile(fullName.trim())
+        if (!result.ok) {
+          toast.show({ title: t('Could not save your name'), description: result.message, error: true })
+          return
+        }
+      }
+      if (changingPassword) {
+        const result = await changePassword(currentPassword, newPassword)
+        if (!result.ok) {
+          setPwErrors({ current: result.message })
+          toast.show({ title: t('Could not change your password'), description: result.message, error: true })
+          return
+        }
+      }
+      toast.show({ title: t('Profile updated'), description: t('Your changes have been saved.') })
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setPwErrors({})
+    } finally {
+      setSaving(false)
+    }
   }
 
   if (isMobile) {
@@ -134,9 +171,9 @@ export function Profile() {
           </div>
         </Card>
 
-        <Button className="self-end" onClick={handleSave}>
+        <Button className="self-end" onClick={handleSave} disabled={saving}>
           <Icon name="Check" size={16} />
-          {t('Save Changes')}
+          {t(saving ? 'Saving...' : 'Save Changes')}
         </Button>
       </div>
     )
@@ -217,9 +254,9 @@ export function Profile() {
         </div>
       </Card>
 
-      <Button className="self-end" onClick={handleSave}>
+      <Button className="self-end" onClick={handleSave} disabled={saving}>
         <Icon name="Check" size={16} />
-        {t('Save Changes')}
+        {t(saving ? 'Saving...' : 'Save Changes')}
       </Button>
     </div>
   )

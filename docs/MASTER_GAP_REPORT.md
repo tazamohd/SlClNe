@@ -15,7 +15,7 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | Flag | Count | Meaning |
 |---|---|---|
-| ARABIC_MISSING | 317 | Arabic not certified: an untranslated key, or keys built dynamically |
+| ARABIC_MISSING | 318 | Arabic not certified: an untranslated key, or keys built dynamically |
 | TABLET_MISSING | 305 | no md:/lg: layout in the source — nothing written for 768–1024 |
 | NO_RBAC_MODULE | 173 | no RBAC module maps to this screen |
 | NO_BACKEND | 117 | shows the honest gap state: no collection exists yet for it to read |

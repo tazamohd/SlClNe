@@ -124,7 +124,7 @@
 | PrivacyPolicy | `/privacy-policy` | auth | ungated | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | ProcurementPortal | `/procurement-portal` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
 | ProcurementPortal · Requisitions | `/procurement-portal/requisitions` | portal | portalprocure | DONE | MISSING | PARTIAL | PARTIAL | PARTIAL | DONE | 7 roles | route | IMPLEMENTED |
-| Profile | `/profile` | app | dashboard | DONE | MISSING | DONE | VERIFIED | PARTIAL | MISSING | 13 roles | route | IMPLEMENTED |
+| Profile | `/profile` | app | dashboard | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 13 roles | route | IMPLEMENTED |
 | ProfileCompletion | `/profile-completion` | auth | — | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | — | route | IMPLEMENTED |
 | PromptLibrary | `/prompt-library` | app | ai | DONE | MISSING | DONE | PARTIAL | PARTIAL | MISSING | 6 roles | route | IMPLEMENTED |
 | PublicPortal · About | `/public-portal/about` | public | — | DONE | PARTIAL | PARTIAL | VERIFIED | PARTIAL | MISSING | — | route | IMPLEMENTED |

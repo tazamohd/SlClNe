@@ -22,13 +22,13 @@ This report exists to be read before anything else in the set is relied on. It i
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 82 of 82 |
 | Relationships documented | 207 (76 FK-backed, 131 convention only) |
-| Endpoints documented | 506 of 506 |
-| Endpoints with a linked test | 134 of 506 |
+| Endpoints documented | 508 of 508 |
+| Endpoints with a linked test | 136 of 508 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 26 |
 | Screens registered and mapped to a capability | 436 of 436 |
 | Screens wired to the live API | 161 of 436 |
-| Test suites catalogued | 214 containing 2431 cases |
+| Test suites catalogued | 215 containing 2440 cases |
 | Capabilities with no linked test suite | 5 |
 | Canonical registers at least 3 days behind the newest | 2 of 9 |
 | Direct contradictions between registers | 0 |
@@ -51,7 +51,7 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 `jobCard.JOB_STAGE_TRANSITIONS` has a transition table a single guard enforces. The other 25 lifecycles declare a state enum only; their legal moves are whatever the route handlers check. Those are listed individually in `docs/12_UML_BPMN_MODELS/STATE_MACHINES.md`.
 
-### 3. 23 authenticated endpoints state no permission guard in the handler
+### 3. 25 authenticated endpoints state no permission guard in the handler
 
 | Method | Path | Declared in |
 | --- | --- | --- |
@@ -59,12 +59,14 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 | POST | `/api/v1/auth/2fa/verify` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/challenge` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/biometric/enrol` | `server/src/auth/routes.ts` |
+| POST | `/api/v1/auth/change-password` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/forgot-password` | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/invite/:token` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/invite/:token/accept` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/login` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/logout` | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/me` | `server/src/auth/routes.ts` |
+| PATCH | `/api/v1/auth/me` | `server/src/auth/routes.ts` |
 | GET | `/api/v1/auth/providers` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/refresh` | `server/src/auth/routes.ts` |
 | POST | `/api/v1/auth/register` | `server/src/auth/routes.ts` |
@@ -122,7 +124,7 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `GOLDEN_PATHS.json` at 2026-09-19; 2 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `RELEASE_GATES.json` at 2026-09-19; 2 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
@@ -194,7 +196,7 @@ _None — every required document is present._
 
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 25 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
-3. **Confirm the 23 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
+3. **Confirm the 25 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
 4. **Drive the 372 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
 6. **Connect the remaining 37 screens to the API**, which is the bulk of the product work still outstanding.
