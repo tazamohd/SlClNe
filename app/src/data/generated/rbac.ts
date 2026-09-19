@@ -738,7 +738,6 @@ export const SCREEN_MODULE: Record<string, string> = {
   "HealthCheckReport": "jobcards",
   "Warranty-Management": "accounting",
   "CustomerApproval": "estimates",
-  "DeclinedJobs": "estimates",
   "OBDDiagnostics": "jobcards",
   "DiagnosticReport": "jobcards",
   "OEMIntegrations": "settings",

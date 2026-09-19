@@ -16,27 +16,27 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 19 API endpoints and 3 entities, gated by the `admin`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 24 API endpoints and 3 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
 
 | Role | Data scope | Approval ceiling | Grants in this domain |
 | --- | --- | --- | --- |
-| owner | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
-| superadmin | platform | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
-| manager | branch | SAR 50,000 | `admin:v` `settings:ve` `dashboard:vx` `network:vcedx` |
+| owner | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:vcedax` |
+| superadmin | platform | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vx` `network:v` |
+| manager | branch | SAR 50,000 | `departments:v` `settings:ve` `dashboard:vx` `network:vcedx` |
 | advisor | branch | SAR 5,000 | `dashboard:v` |
 | technician | own | may not approve | `dashboard:v` |
 | qc | branch | may not approve | `dashboard:v` |
 | parts | branch | SAR 10,000 | `dashboard:v` `network:vced` |
-| accountant | all | SAR 25,000 | `dashboard:vx` |
-| hr | all | SAR 15,000 | `dashboard:v` |
+| accountant | all | SAR 25,000 | `departments:v` `dashboard:vx` |
+| hr | all | SAR 15,000 | `departments:vc` `dashboard:v` |
 | frontdesk | branch | may not approve | `dashboard:v` |
 | callcenter | all | may not approve | `dashboard:v` |
 | procurement | all | SAR 20,000 | `dashboard:v` `network:vcedax` |
 | supplier | external | may not approve | `network:vce` |
-| test | all | unlimited | `admin:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
+| test | all | unlimited | `departments:vcedax` `settings:vcedax` `superadmin:vcedax` `dashboard:vcedax` `network:vcedax` |
 
 The grant says *which module*. The data scope says *which rows*, and it is enforced by row-level security rather than by the grant.
 
@@ -65,10 +65,15 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 
 | Method | Path | Permission | Kind | Idempotent | Tests |
 | --- | --- | --- | --- | --- | --- |
-| GET | `/api/v1/admin/departments` | admin:v | generated | — | 1 |
-| GET | `/api/v1/admin/departments/:id` | admin:v | generated | — | **0** |
-| GET | `/api/v1/admin/departments/:id/history` | admin:v | explicit | — | **0** |
-| GET | `/api/v1/admin/departments/export` | admin:x | generated | — | **0** |
+| GET | `/api/v1/admin/departments` | departments:v | generated | — | 2 |
+| POST | `/api/v1/admin/departments` | departments:c | generated | — | 2 |
+| DELETE | `/api/v1/admin/departments/:id` | departments:d | generated | — | **0** |
+| GET | `/api/v1/admin/departments/:id` | departments:v | generated | — | **0** |
+| PATCH | `/api/v1/admin/departments/:id` | departments:e | generated | — | **0** |
+| GET | `/api/v1/admin/departments/:id/history` | departments:v | explicit | — | **0** |
+| POST | `/api/v1/admin/departments/bulk-delete` | departments:d | generated | — | **0** |
+| POST | `/api/v1/admin/departments/bulk-update` | departments:e | generated | — | **0** |
+| GET | `/api/v1/admin/departments/export` | departments:x | generated | — | **0** |
 | GET | `/api/v1/branches` | dashboard:v | generated | — | 2 |
 | GET | `/api/v1/branches/:id` | dashboard:v | generated | — | **0** |
 | GET | `/api/v1/branches/:id/history` | dashboard:v | explicit | — | **0** |
@@ -101,7 +106,7 @@ _No lifecycle in the contract belongs to this domain._
 | D-AdvancedSettings | `/advanced-settings` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-Backup | `/backup` | app | **mock** | — | — | yes | PARTIAL | yes |
 | D-Branches | `/branches` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-Dashboard | `/dashboard` | app | yes | yes | yes | — | PARTIAL | yes |
+| D-Dashboard | `/dashboard` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-Error404 | `/error404` | auth | **mock** | — | — | — | verified | yes |
 | D-FlowSpec | `/flow-spec` | reference | **mock** | yes | — | yes | PARTIAL | yes |
 | D-GlobalSearch | `/global-search` | app | yes | yes | — | yes | PARTIAL | yes |
@@ -136,7 +141,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **29 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **14 of 19 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **18 of 24 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **3 of 6 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **22 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.

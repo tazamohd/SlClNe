@@ -8,24 +8,24 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 
 | Metric | Count |
 |---|---|
-| capabilities | 430 |
-| product | 367 |
+| capabilities | 436 |
+| product | 381 |
 | reference only | 28 |
-| external dependency | 35 |
-| rendered | 430 |
+| external dependency | 27 |
+| rendered | 436 |
 | placeholder | 0 |
 | designed mobile owed | 0 |
 | untested | 0 |
-| mock only | 224 |
-| data backed | 144 |
-| e2e covered | 430 |
-| content asserted | 430 |
+| mock only | 237 |
+| data backed | 145 |
+| e2e covered | 436 |
+| content asserted | 436 |
 | rendered without assertion | 0 |
-| has loading state | 180 |
-| has error state | 144 |
-| has empty state | 225 |
+| has loading state | 182 |
+| has error state | 145 |
+| has empty state | 227 |
 | tablet verified | 4 |
-| arabic verified | 74 |
+| arabic verified | 75 |
 | rtl hazards | 0 |
 | golden paths | 23 |
 | golden paths measured | yes |
@@ -33,8 +33,8 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | golden paths failing | 0 |
 | golden paths unwritten | 0 |
 | crud create | 33 |
-| crud read | 136 |
-| crud update | 28 |
+| crud read | 137 |
+| crud update | 29 |
 | crud delete | 25 |
 | unregistered designs | 0 |
 | orphan screen files | 0 |
@@ -45,22 +45,22 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Surface | Total | Rendering | Placeholder | Mobile owed | Route-tested |
 |---|---|---|---|---|---|
 | auth | 29 | 29 | 0 | 0 | 29 |
-| app | 315 | 315 | 0 | 0 | 315 |
+| app | 316 | 316 | 0 | 0 | 316 |
 | call-center | 2 | 2 | 0 | 0 | 2 |
 | customer-app | 11 | 11 | 0 | 0 | 11 |
 | portal | 8 | 8 | 0 | 0 | 8 |
 | reference | 28 | 28 | 0 | 0 | 28 |
 | kiosk | 1 | 1 | 0 | 0 | 1 |
 | native | 2 | 2 | 0 | 0 | 2 |
-| public | 34 | 34 | 0 | 0 | 34 |
+| public | 39 | 39 | 0 | 0 | 39 |
 
 ## By domain
 
 | Domain | Agent | Group | Progress | Rendering | Total |
 |---|---|---|---|---|---|
 | Auth & onboarding | 06 | G3 | `████████████████████` 100% | 29 | 29 |
-| Administration | 25 | G9 | `████████████████████` 100% | 20 | 20 |
-| AI & automation | 15 | G9 | `████████████████████` 100% | 10 | 10 |
+| Administration | 25 | G9 | `████████████████████` 100% | 26 | 26 |
+| AI & automation | 15 | G9 | `████████████████████` 100% | 14 | 14 |
 | Workshop & Mini ERP | 08 | G5 | `████████████████████` 100% | 22 | 22 |
 | Accounting & reporting | 12 | G7 | `████████████████████` 100% | 23 | 23 |
 | Portals, call centre & kiosk | 16 | G10 | `████████████████████` 100% | 13 | 13 |
@@ -69,9 +69,9 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | Shared UI & reference | 04 | G2 | `████████████████████` 100% | 28 | 28 |
 | HR & payroll | 14 | G8 | `████████████████████` 100% | 1 | 1 |
 | Parts & inventory | 10 | G6 | `████████████████████` 100% | 10 | 10 |
-| Public website | 17 | G11 | `████████████████████` 100% | 34 | 34 |
+| Public website | 17 | G11 | `████████████████████` 100% | 39 | 39 |
 | Procurement | 11 | G6 | `████████████████████` 100% | 1 | 1 |
-| Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 211 | 211 |
+| Feature map (no design) | 08–17 | G12 | `████████████████████` 100% | 202 | 202 |
 
 ## By RBAC module
 
@@ -79,21 +79,22 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 |---|---|---|
 | accounting | 8 | 8 |
 | admin | 4 | 4 |
-| ai | 5 | 5 |
+| ai | 14 | 14 |
 | aiadmin | 5 | 5 |
-| appointments | 2 | 2 |
+| appointments | 3 | 3 |
 | approvals | 1 | 1 |
 | audit | 1 | 1 |
 | callcenter | 2 | 2 |
-| crm | 10 | 10 |
-| customers | 3 | 3 |
+| crm | 11 | 11 |
+| customers | 4 | 4 |
 | dashboard | 4 | 4 |
-| estimates | 6 | 6 |
+| estimates | 7 | 7 |
 | execreports | 5 | 5 |
-| hr | 2 | 2 |
-| inventory | 1 | 1 |
+| hr | 8 | 8 |
+| insurance | 1 | 1 |
+| inventory | 2 | 2 |
 | invoices | 4 | 4 |
-| jobcards | 11 | 11 |
+| jobcards | 16 | 16 |
 | kiosk | 1 | 1 |
 | network | 2 | 2 |
 | payments | 2 | 2 |
@@ -101,10 +102,10 @@ Every capability the product must ship, by surface and domain. Regenerate rather
 | portalprocure | 2 | 2 |
 | portalsupplier | 2 | 2 |
 | portaltech | 2 | 2 |
-| procurement | 1 | 1 |
+| procurement | 3 | 3 |
 | reports | 6 | 6 |
 | settings | 6 | 6 |
 | superadmin | 3 | 3 |
 | technicians | 3 | 3 |
 | ungated | 16 | 16 |
-| vehicles | 4 | 4 |
+| vehicles | 5 | 5 |

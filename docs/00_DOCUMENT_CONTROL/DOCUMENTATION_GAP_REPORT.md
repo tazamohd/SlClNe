@@ -17,21 +17,21 @@ This report exists to be read before anything else in the set is relied on. It i
 | Measure | Value |
 | --- | --- |
 | Required documents | 35 present of 35 |
-| Documents generated from source | 120 |
+| Documents generated from source | 123 |
 | Documents authored by hand | 289 |
 | Documents marked VERIFIED | **0** — see "What is not verified" below |
 | Entities documented | 76 of 76 |
 | Relationships documented | 194 (69 FK-backed, 125 convention only) |
-| Endpoints documented | 440 of 440 |
-| Endpoints with a linked test | 118 of 440 |
+| Endpoints documented | 446 of 446 |
+| Endpoints with a linked test | 120 of 446 |
 | Business rules documented | 30, each naming its enforcing function |
 | Lifecycles with a declared transition table | 1 of 21 |
-| Screens registered and mapped to a capability | 430 of 430 |
-| Screens wired to the live API | 144 of 430 |
-| Test suites catalogued | 204 containing 2305 cases |
+| Screens registered and mapped to a capability | 436 of 436 |
+| Screens wired to the live API | 145 of 436 |
+| Test suites catalogued | 206 containing 2326 cases |
 | Capabilities with no linked test suite | 5 |
-| Canonical registers at least 3 days behind the newest | 5 of 9 |
-| Direct contradictions between registers | 3 |
+| Canonical registers at least 3 days behind the newest | 2 of 9 |
+| Direct contradictions between registers | 2 |
 
 ## What is not verified
 
@@ -79,13 +79,13 @@ Marking documents VERIFIED because a generator wrote them is precisely the self-
 
 Some of these guard through a shared helper or a `preHandler` this parser does not follow, so the number over-reports. Each still needs a human to confirm which.
 
-### 4. 322 endpoints have no test matched to them by path
+### 4. 326 endpoints have no test matched to them by path
 
 Matching is by path string, so a test that reaches an endpoint through a helper or a golden path does not match. The number over-reports and is still the right one to drive down.
 
-### 5. 224 screens read design fixtures rather than the API
+### 5. 237 screens read design fixtures rather than the API
 
-Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 224 of 430 are not yet connected to live data.
+Measured in `project-control/STATUS.json`, not asserted here. Every screen renders and every screen has a content assertion — and 237 of 436 are not yet connected to live data.
 
 ## Implementation findings surfaced by documenting the system
 
@@ -120,23 +120,19 @@ One of them is closed only in part, and says so rather than reading as finished:
 
 ## The canonical registers disagree with each other
 
-The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `STATUS.json` at 2026-09-19; 5 registers are at least 3 days behind it.
+The registries under `project-control/` are each generated at their own time by their own tooling, and nothing makes them agree. The newest is `BLOCKERS.json` at 2026-09-19; 2 registers are at least 3 days behind it.
 
 | Register | Generated | Days behind the newest |
 | --- | --- | --- |
-| `project-control/RISK_REGISTER.json` | 2026-08-11 | 39 |
 | `project-control/DEPENDENCIES.json` | 2026-08-11 | 39 |
-| `project-control/FINDINGS.json` | 2026-08-12 | 38 |
-| `project-control/RELEASE_GATES.json` | 2026-09-02 | 17 |
 | `project-control/BASELINE.json` | 2026-09-03 | 16 |
 
 Staleness alone would be tolerable. These are direct contradictions — one register quoting another's numbers from an earlier state, and reading as authoritative while disagreeing with the register it cites:
 
 | Claim | Current reality |
 | --- | --- |
-| RELEASE_GATES.json gate RB-01 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
-| RELEASE_GATES.json gate RB-02 quotes 5 open blockers | BLOCKERS.json currently holds 1 |
-| RELEASE_GATES.json gate RB-13 reports 4 failing golden paths | GOLDEN_PATHS.json records 23 of 23 passing and 0 failing |
+| RELEASE_GATES.json gate RB-01 quotes 2 open blockers | BLOCKERS.json currently holds 1 |
+| RELEASE_GATES.json gate RB-02 quotes 2 open blockers | BLOCKERS.json currently holds 1 |
 
 A contradiction between two canonical registers is worse than a single stale document, because it carries the authority of two sources. It is reported rather than resolved here: picking a winner would hide the disagreement, which is the fact a reader most needs. Regenerating the stale registers is the fix, and it belongs to their owners rather than to the documentation toolchain.
 
@@ -154,7 +150,7 @@ Market sizing, competitor positioning, pricing and financial projections are bus
 
 ZATCA, VAT and privacy material states *system requirements* — what the software does and must do. Where the question is whether that satisfies a legal obligation, it is marked `LEGAL_REVIEW_REQUIRED` rather than answered.
 
-### 31 documents are thin
+### 32 documents are thin
 
 Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an index, an ADR with a one-line decision); others are placeholders. They are listed so the difference can be judged rather than assumed.
 
@@ -175,6 +171,7 @@ Under 1.2 kB: a heading and a sentence or two. Some are legitimately short (an i
 | `docs/14_SOLUTION_ARCHITECTURE/README.md` | 567 |
 | `docs/15_C4_ARCHITECTURE_DIAGRAMS/README.md` | 531 |
 | `docs/16_SYSTEM_DESIGN/README.md` | 1157 |
+| `docs/17_API_INTEGRATION/endpoints/audit.md` | 796 |
 | `docs/17_API_INTEGRATION/endpoints/platform.md` | 948 |
 | `docs/18_DATABASE/README.md` | 522 |
 | `docs/19_SECURITY/README.md` | 1032 |
@@ -202,7 +199,7 @@ _None — every required document is present._
 1. **Establish a requirements baseline.** Everything else in this set traces to the implementation; nothing traces to a stated business need. This is the largest structural gap.
 2. **Declare transition tables for the remaining 20 lifecycles**, or document in each domain document where the transition is guarded. An invoice or a purchase order moving between states unguarded is a financial-control gap, not a documentation one.
 3. **Confirm the 21 endpoints with no stated guard.** Each is either guarded through a helper (fix the documentation) or genuinely open (fix the code).
-4. **Drive the 322 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
+4. **Drive the 326 path-unmatched endpoints down**, starting with the write endpoints that move money or stock.
 5. **Decide the foreign-key position explicitly.** Either add constraints or record an ADR saying integrity is the application's job and why.
-6. **Connect the remaining 224 screens to the API**, which is the bulk of the product work still outstanding.
+6. **Connect the remaining 237 screens to the API**, which is the bulk of the product work still outstanding.
 7. **Complete the documentation migration** in `DOCUMENTATION_MIGRATION_MANIFEST.md`, one section per change so each move is reviewable.

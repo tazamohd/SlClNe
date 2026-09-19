@@ -310,6 +310,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "DUPLICATE",
       "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
@@ -377,6 +378,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "status": "IMPLEMENTED",
     "flags": [
       "TABLET_MISSING",
+      "ARABIC_MISSING",
       "MOCK_ONLY"
     ],
     "inNav": true,
@@ -1178,6 +1180,7 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "mobileType": "B-responsive",
     "status": "IMPLEMENTED",
     "flags": [
+      "DUPLICATE",
       "TABLET_MISSING",
       "ARABIC_MISSING"
     ],
@@ -9090,204 +9093,6 @@ export const REGISTRY: readonly RegistryEntry[] = [
     "designSource": null,
     "designMobileSource": null,
     "featureMapSource": "project/spec-shots/192-Multi-Location-Dashboard.png"
-  },
-  {
-    "screenId": "F-193",
-    "name": "AI-Automation",
-    "title": "AI Automation",
-    "route": "/ai-automation",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "PRODUCT",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING",
-      "MOCK_ONLY",
-      "NO_RBAC_MODULE"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/193-AI-Automation.png"
-  },
-  {
-    "screenId": "F-194",
-    "name": "AI-Chatbot",
-    "title": "AI Chatbot",
-    "route": "/ai-chatbot",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/194-AI-Chatbot.png"
-  },
-  {
-    "screenId": "F-195",
-    "name": "AI-Chatbot-Assistant",
-    "title": "AI Chatbot Assistant",
-    "route": "/ai-chatbot-assistant",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/195-AI-Chatbot-Assistant.png"
-  },
-  {
-    "screenId": "F-196",
-    "name": "AI-Service-Advisor",
-    "title": "AI Service Advisor",
-    "route": "/ai-service-advisor",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/196-AI-Service-Advisor.png"
-  },
-  {
-    "screenId": "F-197",
-    "name": "Voice-Commands",
-    "title": "Voice Commands",
-    "route": "/voice-commands",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/197-Voice-Commands.png"
-  },
-  {
-    "screenId": "F-198",
-    "name": "Voice-Command-Interface",
-    "title": "Voice Command Interface",
-    "route": "/voice-command-interface",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/198-Voice-Command-Interface.png"
-  },
-  {
-    "screenId": "F-199",
-    "name": "Smart-Damage-Assessment",
-    "title": "Smart Damage Assessment",
-    "route": "/smart-damage-assessment",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/199-Smart-Damage-Assessment.png"
-  },
-  {
-    "screenId": "F-200",
-    "name": "ML-Fraud-Detection",
-    "title": "ML Fraud Detection",
-    "route": "/ml-fraud-detection",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/200-ML-Fraud-Detection.png"
-  },
-  {
-    "screenId": "F-201",
-    "name": "Neural-Network-Prediction",
-    "title": "Neural Network Prediction",
-    "route": "/neural-network-prediction",
-    "surface": "app",
-    "shell": "AppShell",
-    "module": null,
-    "category": "EXTERNAL_DEPENDENCY",
-    "domain": "featuremap",
-    "owner": "08–17",
-    "mobileType": "B-responsive",
-    "status": "IMPLEMENTED",
-    "flags": [
-      "TABLET_MISSING",
-      "ARABIC_MISSING"
-    ],
-    "inNav": false,
-    "designSource": null,
-    "designMobileSource": null,
-    "featureMapSource": "project/spec-shots/201-Neural-Network-Prediction.png"
   },
   {
     "screenId": "F-202",

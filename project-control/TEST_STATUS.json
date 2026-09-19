@@ -1,25 +1,25 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "suites": {
     "unit": {
       "runner": "vitest",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W1 — Agent 07"
     },
     "component": {
       "runner": "vitest+RTL",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W1 — Agent 07"
     },
     "integration": {
       "runner": "vitest+MSW",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W1 — Agent 07"
     },
     "api": {
@@ -32,8 +32,8 @@
     "routeSmoke": {
       "runner": "playwright",
       "present": true,
-      "covered": 430,
-      "of": 430,
+      "covered": 436,
+      "of": 436,
       "note": "scripts/smoke.mjs — route checks parsed from the spec"
     },
     "goldenPaths": {
@@ -47,35 +47,35 @@
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W3 — Agent 18"
     },
     "tablet": {
       "runner": "playwright",
       "present": true,
-      "covered": 430,
-      "of": 430,
-      "note": "e2e/tablet.spec.ts — 8 viewports x 430 screens (every registered capability), plus a rotation across the 860px breakpoint"
+      "covered": 436,
+      "of": 436,
+      "note": "e2e/tablet.spec.ts — 8 viewports x 436 screens (every registered capability), plus a rotation across the 860px breakpoint"
     },
     "rtl": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W3 — Agent 19"
     },
     "a11y": {
       "runner": "axe",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W3 — Agent 20"
     },
     "visual": {
       "runner": "playwright",
       "present": false,
       "covered": 0,
-      "of": 430,
+      "of": 436,
       "note": "W3 — Agent 23"
     },
     "security": {

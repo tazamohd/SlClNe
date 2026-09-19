@@ -10,7 +10,7 @@
 
 # API — audit
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 1 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 1 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |

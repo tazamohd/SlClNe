@@ -1204,15 +1204,6 @@ const { all: screenFiles, reached } = reachableScreenFiles()
  *    yet for that reason."
  */
 const RETAINED_REFERENCE = [
-  'src/screens/public/landing/CommandDeck.tsx',
-  'src/screens/public/landing/PageNav.tsx',
-  'src/screens/public/landing/useLandingMotion.ts',
-  'src/screens/public/landing/pages/AccessPage.tsx',
-  'src/screens/public/landing/pages/ChannelPage.tsx',
-  'src/screens/public/landing/pages/GridPage.tsx',
-  'src/screens/public/landing/pages/IndexPage.tsx',
-  'src/screens/public/landing/pages/OriginPage.tsx',
-  'src/screens/public/landing/pages/SystemPage.tsx',
   'src/screens/public/landing/homepage/SocialProofBand.tsx',
 ].map((f) => path.normalize(f))
 

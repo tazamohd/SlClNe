@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "open": 1,
   "blockers": [
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "224 rendered capabilities are mock-only",
+      "title": "237 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
