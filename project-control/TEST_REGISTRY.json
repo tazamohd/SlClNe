@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 229,
-    "cases": 2524,
+    "suites": 230,
+    "cases": 2526,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1414,
+      "UNIT_OR_API": 1416,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -2108,6 +2108,27 @@
       ],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-CUSTOMER-APP-BOOKING-ENTRY-TEST-TSX",
+      "file": "app/tests/component/customer-app-booking-entry.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Customer-app booking entry point"
+      ],
+      "cases": [
+        "sends \"Book Service\" to a screen that can actually book, not back to itself",
+        "does not route the customer to the appointments list it is already showing"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [
+        "/customer-app/appointments",
+        "/customer-portal/booking"
+      ],
+      "touchesRoles": [
+        "customer"
       ]
     },
     {

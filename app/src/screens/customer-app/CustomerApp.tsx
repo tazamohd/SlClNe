@@ -193,7 +193,19 @@ export function CustomerAppAppointments() {
           }
         />
       ))}
-      <Button size="lg" className="w-full" onClick={() => navigate('/customer-app/appointments')}>
+      {/* Goes to the form that actually books. This button used to navigate to
+        * `/customer-app/appointments` — the route it is already on — so it was a
+        * no-op: the customer-app surface offered a "Book Service" button and no
+        * way to book. `portals/CustomerPortalBooking.tsx` is the one screen that
+        * writes an appointment (real `vehicles` and `services`, taken slots
+        * derived from real `appointments` on the chosen day, a real
+        * `POST /appointments`), so this points there rather than growing a second
+        * appointment-writer with its own idea of which bays are free. */}
+      <Button
+        size="lg"
+        className="w-full"
+        onClick={() => navigate('/customer-portal/booking')}
+      >
         <Icon name="CalendarPlus" size={16} />
         {t('Book Service')}
       </Button>
