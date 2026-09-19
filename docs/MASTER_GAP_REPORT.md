@@ -8,7 +8,7 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-004 | CRITICAL | 237 rendered capabilities are mock-only | 05 | W2 |
+| BLK-004 | CRITICAL | 170 rendered capabilities are mock-only | 05 | W2 |
 
 ## Flags across the inventory
 
@@ -16,8 +16,9 @@ Computed from the registry. Every line is a query, not an opinion.
 |---|---|---|
 | ARABIC_MISSING | 362 | Arabic not certified: an untranslated key, or keys built dynamically |
 | TABLET_MISSING | 307 | no md:/lg: layout in the source — nothing written for 768–1024 |
-| MOCK_ONLY | 237 | renders, but from fixtures rather than an API |
 | NO_RBAC_MODULE | 174 | no RBAC module maps to this screen |
+| MOCK_ONLY | 170 | renders, but from fixtures rather than an API |
+| CONTENT_ONLY | 67 | auth or public surface: renders content, reads no collection by design |
 | DUPLICATE | 2 | two entries claim one route |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | MOBILE_MISSING | 0 | a .Mobile design exists and is not built |

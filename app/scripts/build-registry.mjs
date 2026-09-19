@@ -1127,7 +1127,16 @@ for (const e of entries) {
   if (rendered && e.rtl === 'MISSING') f.push('RTL_BROKEN')
   if (product && !e.tests.e2e) f.push('UNTESTED')
   if (product && e.tests.e2e && !e.e2eContent && rendered) f.push('NO_CONTENT_ASSERTION')
-  if (product && rendered && !e.dataBacked) f.push('MOCK_ONLY')
+  /* MOCK_ONLY names a screen that renders business rows from fixtures when it
+   * should be reading them through the repository seam. The auth and public
+   * surfaces read no collection by design: a login form talks to /auth, a
+   * pricing page has no rows to fetch. Counting them under BLK-004 made the
+   * blocker 62 screens larger than the wiring work it names and, since none
+   * of them could ever call `useCollection`, kept it from closing. They carry
+   * CONTENT_ONLY instead so the registry still says why `dataBacked` is false. */
+  const contentSurface = e.surface === 'auth' || e.surface === 'public'
+  if (product && rendered && !e.dataBacked && !contentSurface) f.push('MOCK_ONLY')
+  if (product && rendered && !e.dataBacked && contentSurface) f.push('CONTENT_ONLY')
   if (product && e.surface !== 'auth' && e.surface !== 'public' && !e.module) f.push('NO_RBAC_MODULE')
 }
 
@@ -1405,7 +1414,7 @@ const blockers = [
   !patsRotationConfirmed && { id: 'BLK-003', severity: 'BLOCKER', title: 'Three GitHub PATs were exposed in chat and are not confirmed rotated',
     detail: 'Rotate, then add secret scanning to CI. Do not reuse the exposed credentials.', owner: '06', wave: 'W0' },
   totals.mockOnly && { id: 'BLK-004', severity: 'CRITICAL', title: `${totals.mockOnly} rendered capabilities are mock-only`,
-    detail: 'They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
+    detail: 'They render, but read fixtures rather than an API. Auth and public pages read no collection by design and are not counted. Cleared per capability as G4+ lands.', owner: '05', wave: 'W2' },
   totals.untested && { id: 'BLK-005', severity: 'CRITICAL', title: `${totals.untested} product capabilities have no route check`,
     detail: 'Route coverage is generated from this registry once the test harness lands.', owner: '07', wave: 'W1' },
   totals.renderedWithoutAssertion && { id: 'BLK-012', severity: 'HIGH',
@@ -1547,6 +1556,7 @@ outputs.push(write(path.join(DOCS, 'MASTER_SCOPE_REGISTRY.md'),
 const FLAG_MEANINGS = {
   PLACEHOLDER: 'product route renders PendingScreen',
   MOCK_ONLY: 'renders, but from fixtures rather than an API',
+  CONTENT_ONLY: 'auth or public surface: renders content, reads no collection by design',
   UNTESTED: 'no route check in the smoke suite',
   TABLET_MISSING: 'no md:/lg: layout in the source — nothing written for 768–1024',
   ARABIC_MISSING: 'Arabic not certified: an untranslated key, or keys built dynamically',

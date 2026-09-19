@@ -45,6 +45,9 @@ export type RegistryFlag =
   | 'NO_CONTENT_ASSERTION'
   | 'DESKTOP_ONLY' | 'MOBILE_MISSING' | 'TABLET_MISSING'
   | 'ARABIC_MISSING' | 'RTL_BROKEN' | 'MOCK_ONLY' | 'NO_RBAC_MODULE'
+  /** An auth or public screen with no repository read. Not MOCK_ONLY: those
+   *  surfaces read no collection by design, so there is nothing to wire. */
+  | 'CONTENT_ONLY'
 
 /** The slice of the registry the app itself reads. The full record — coverage
  *  per dimension, CRUD, tests, evidence — lives in
