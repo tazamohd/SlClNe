@@ -1019,7 +1019,7 @@
         "D-TechnicianPortal",
         "D-TechnicianPortal.JobDetail"
       ],
-      "dataBackedScreens": 8,
+      "dataBackedScreens": 9,
       "entities": [],
       "rules": [],
       "roles": [
@@ -1634,7 +1634,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 35,
+      "dataBackedScreens": 36,
       "entities": [],
       "rules": [],
       "roles": [],

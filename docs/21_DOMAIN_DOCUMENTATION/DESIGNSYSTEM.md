@@ -119,7 +119,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-058 | `/smart-parts-recommendations` | app | **mock** | — | — | yes | verified | yes |
 | F-059 | `/smart-inventory-forecasting` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-060 | `/automated-reordering` | app | **mock** | — | — | yes | verified | yes |
-| F-061 | `/spare-parts` | app | **mock** | — | — | yes | PARTIAL | yes |
+| F-061 | `/spare-parts` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-062 | `/barcode-scanner` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-065 | `/parts-marketplace` | app | **mock** | — | — | yes | verified | yes |
 | F-066 | `/dynamic-pricing` | app | **mock** | — | — | yes | verified | yes |
@@ -254,8 +254,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **168 of 203 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **146 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **167 of 203 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **145 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

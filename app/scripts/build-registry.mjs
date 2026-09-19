@@ -439,6 +439,41 @@ const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete
  *  line. Neither reads the repository seam, so `dataBacked` is false, but
  *  neither renders invented data either — the thing MOCK_ONLY names. They
  *  carry NO_BACKEND instead: the collection does not exist yet to wire. */
+const exportBodies = (src) => {
+  const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
+  const bodies = new Map()
+  starts.forEach((m, i) => {
+    bodies.set(m[1], src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length))
+  })
+  return bodies
+}
+
+/** Does this body render or call `name`? The same test the in-file wrapper rule
+ *  uses, lifted out so the cross-file pass cannot answer it differently. */
+const mounts = (body, name) => new RegExp(`<${name}\\b|\\b${name}\\s*\\(`).test(body)
+
+/** Every function declaration in the file (not only its exports), the same
+ *  slice-to-next-start scan `exportBodies` does. A private helper component
+ *  like `GapPanel` never appears in `exportBodies`, but it is exactly what
+ *  `honestGapScreens` needs to see through to credit the screens that mount it. */
+const localFunctionBodies = (src) => {
+  const starts = [...src.matchAll(/(?:^|\n)function\s+(\w+)/g)]
+  const bodies = new Map()
+  starts.forEach((m, i) => {
+    bodies.set(m[1], src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length))
+  })
+  return bodies
+}
+
+/** Every marker a screen renders itself, cross-file: `GapCard` (this bucket's
+ *  own component), `hr/bits.tsx`'s `ConnectApi` (used across HR), and the
+ *  literal "no data source yet" line a hand-written card carries in its own
+ *  JSX. A file-local wrapper — `network/PartsNetwork.tsx`'s `GapPanel`,
+ *  `hr/StaffGap.tsx`'s `GapShell` — is resolved per file below, the same way
+ *  `dataBackedScreens` resolves a wrapper that mounts a sibling. */
+const GAP_MARKERS = ['<GapCard', '<NetworkGapPanel', '<ConnectApi', 'no data source yet']
+const rendersGapMarker = (body) => GAP_MARKERS.some((m) => body.includes(m))
+
 const honestGapScreens = (() => {
   const set = new Set()
   const screensDir = path.join(APP, 'src/screens')
@@ -449,9 +484,25 @@ const honestGapScreens = (() => {
       if (entry.isDirectory()) { walk(full); continue }
       if (!entry.name.endsWith('.tsx')) continue
       const src = fs.readFileSync(full, 'utf8')
-      if (!src.includes('<GapCard') && !src.includes('no data source yet')) continue
-      if (SEAM_ANY.test(src)) continue
-      for (const m of src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)) set.add(m[1])
+      if (!GAP_MARKERS.some((m) => src.includes(m))) continue
+      /* Every function in the file, not just its exports: a wrapper such as
+       * `GapPanel`/`GapShell` is never itself a screen, but its own body is
+       * where the marker actually lives, and an export credits by mounting
+       * it, one level, the same rule `dataBackedScreens`' wrapper pass uses. */
+      const bodies = new Map([...exportBodies(src), ...localFunctionBodies(src)])
+      const localGapWrappers = [...bodies].filter(([, body]) => rendersGapMarker(body)).map(([name]) => name)
+      /* Per export, not per file: a file can hold one screen that reads the
+       * seam (network/Procurement.tsx's ProcurementPortal, via useCollection)
+       * beside three that render nothing but an honest gap (its
+       * PartsNetworkSendRequest/Quotations, PartsSupplyNetwork). A file-level
+       * SEAM_ANY check would have thrown out the honest three for the wired
+       * one's sake. */
+      for (const [name, body] of exportBodies(src)) {
+        if (SEAM_ANY.test(body)) continue
+        if (rendersGapMarker(body) || localGapWrappers.some((w) => w !== name && mounts(body, w))) {
+          set.add(name)
+        }
+      }
     }
   }
   walk(screensDir)
@@ -583,6 +634,15 @@ const repositoryImports = (src) => {
   return names
 }
 
+/** `network/Procurement.tsx`'s procurement seam predates `useCollection`: it
+ *  is a typed API object (`ProcurementApi`), null on a fixture build and a
+ *  real HTTP client otherwise (`repository.ts`'s `procurement`, gated on
+ *  `API_URL` the same way every collection is) — the same seam by a
+ *  different door, so `SEAM_CALL` never sees it. `ProcurementRequisitions`
+ *  is the one export that reads only through it with no `useCollection`
+ *  call of its own to be credited by. */
+const PROCUREMENT_API_CALL = /\bprocurementApi\(\)/
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -625,19 +685,6 @@ const crudFrom = (calls, body) => {
 /** Each exported function's own source, from its signature to the next one.
  *  `crm/Crm.tsx` exports ten screens, so a file-wide read would have credited
  *  every one of them with everything any of them does. */
-const exportBodies = (src) => {
-  const starts = [...src.matchAll(/export\s+(?:default\s+)?function\s+(\w+)/g)]
-  const bodies = new Map()
-  starts.forEach((m, i) => {
-    bodies.set(m[1], src.slice(m.index, i + 1 < starts.length ? starts[i + 1].index : src.length))
-  })
-  return bodies
-}
-
-/** Does this body render or call `name`? The same test the in-file wrapper rule
- *  uses, lifted out so the cross-file pass cannot answer it differently. */
-const mounts = (body, name) => new RegExp(`<${name}\\b|\\b${name}\\s*\\(`).test(body)
-
 const dataBackedScreens = (() => {
   const map = new Map()
   const screensDir = path.join(APP, 'src/screens')
@@ -662,8 +709,14 @@ const dataBackedScreens = (() => {
         if (!imported.has(object)) continue
         for (const endpoint of BESPOKE_APIS.get(object)?.get(method) ?? []) keys.add(endpoint)
       }
+      /* `procurementApi()` reaches the same `procurement` accessor through a
+       * call rather than a property, so the loop above cannot see it: it looks
+       * for `object.method(`, and here the object *is* the call. Kept as its own
+       * test for that reason, not as a duplicate of one. */
+      const usesProcurementApi = PROCUREMENT_API_CALL.test(body)
+      if (usesProcurementApi) { keys.add('requisitions'); keys.add('purchaseOrders') }
       const crud = crudFrom(calls, body)
-      if (reportCalls.length) crud.read = true
+      if (reportCalls.length || usesProcurementApi) crud.read = true
       direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
@@ -694,10 +747,12 @@ const dataBackedScreens = (() => {
       try {
         const src = fs.readFileSync(full, 'utf8')
         /* Cheap reject, and it has to admit every seam the scan can find or the
-         * scan never runs on the file that holds one. The last clause is wide on
-         * purpose: importing from `data/repository` only makes a file worth
-         * scanning, and the scan then decides on a call. */
+         * scan never runs on the file that holds one — so this is the union of
+         * every seam's admission test, not any one of them. The last clause is
+         * wide on purpose: importing from `data/repository` only makes a file
+         * worth scanning, and the scan then decides on a call. */
         if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)
+          && !PROCUREMENT_API_CALL.test(src)
           && !/data\/repository['"]/.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue

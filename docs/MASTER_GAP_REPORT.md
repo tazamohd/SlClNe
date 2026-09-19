@@ -8,7 +8,7 @@ Computed from the registry. Every line is a query, not an opinion.
 
 | ID | Severity | Title | Owner | Wave |
 |---|---|---|---|---|
-| BLK-004 | CRITICAL | 39 rendered capabilities are mock-only | 05 | W2 |
+| BLK-004 | CRITICAL | 37 rendered capabilities are mock-only | 05 | W2 |
 | BLK-013 | HIGH | 117 rendered capabilities have no backend collection yet | 05 | W3 |
 
 ## Flags across the inventory
@@ -20,7 +20,7 @@ Computed from the registry. Every line is a query, not an opinion.
 | NO_RBAC_MODULE | 173 | no RBAC module maps to this screen |
 | NO_BACKEND | 117 | shows the honest gap state: no collection exists yet for it to read |
 | CONTENT_ONLY | 67 | auth or public surface: renders content, reads no collection by design |
-| MOCK_ONLY | 39 | renders, but from fixtures rather than an API |
+| MOCK_ONLY | 37 | renders, but from fixtures rather than an API |
 | DUPLICATE | 2 | two entries claim one route |
 | DESKTOP_ONLY | 0 | renders on desktop with no mobile treatment |
 | MOBILE_MISSING | 0 | a .Mobile design exists and is not built |

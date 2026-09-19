@@ -20,12 +20,12 @@
 | Reference-only | 28 | 436 |
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
-| Data-backed (live API) | 159 | 436 |
-| Mock-only (design fixtures) | 39 | 436 |
+| Data-backed (live API) | 161 | 436 |
+| Mock-only (design fixtures) | 37 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
-| Has a loading state | 192 | 436 |
-| Has an error state | 155 | 436 |
+| Has a loading state | 193 | 436 |
+| Has an error state | 156 | 436 |
 | Has an empty state | 265 | 436 |
 | Arabic verified | 119 | 436 |
 | RTL hazards | 0 | — |
@@ -34,17 +34,17 @@
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **39 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **37 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
 | Surface | Screens | Data-backed | In navigation |
 | --- | --- | --- | --- |
 | auth | 29 | 1 | 0 |
-| app | 316 | 144 | 89 |
+| app | 316 | 145 | 89 |
 | call-center | 2 | 0 | 2 |
 | customer-app | 11 | 6 | 0 |
-| portal | 8 | 7 | 4 |
+| portal | 8 | 8 | 4 |
 | reference | 28 | 0 | 0 |
 | kiosk | 1 | 1 | 1 |
 | native | 2 | 0 | 0 |
@@ -65,13 +65,13 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-CRM | 13 | 11 | 11 | 11 | 13 | 0 |
 | CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 2 | 2 | 1 | 2 | 0 |
-| CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
+| CAP-PORTALS | 11 | 9 | 8 | 8 | 8 | 0 |
 | CAP-AI | 19 | 4 | 4 | 4 | 16 | 9 |
 | CAP-PLATFORM | 35 | 9 | 15 | 8 | 23 | 11 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 203 | 35 | 57 | 33 | 120 | 57 |
+| CAP-DESIGNSYSTEM | 203 | 36 | 58 | 34 | 120 | 57 |
 
 ## Full registry
 
