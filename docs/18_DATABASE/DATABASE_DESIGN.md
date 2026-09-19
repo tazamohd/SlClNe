@@ -8,9 +8,9 @@
 
 # Database design
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
-PostgreSQL, accessed through Drizzle ORM. 70 tables, 1178 columns, 19 migrations.
+PostgreSQL, accessed through Drizzle ORM. 76 tables, 1288 columns, 24 migrations.
 
 ## Migrations
 
@@ -35,24 +35,29 @@ PostgreSQL, accessed through Drizzle ORM. 70 tables, 1178 columns, 19 migrations
 | `server/drizzle/0015_journal_lines.sql` | — |
 | `server/drizzle/0016_document_chain.sql` | — |
 | `server/drizzle/0017_declined_jobs.sql` | — |
+| `server/drizzle/0018_inspection_findings.sql` | — |
+| `server/drizzle/0019_delivery_signoff.sql` | — |
+| `server/drizzle/0020_canned_jobs.sql` | — |
+| `server/drizzle/0021_campaign_messaging.sql` | — |
+| `server/drizzle/0022_equipment_warranties.sql` | — |
 
 ## Structural guarantees
 
 | Guarantee | Mechanism | Coverage |
 | --- | --- | --- |
-| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 66 tables |
-| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 66 tables |
-| Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 8 tables |
-| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 66 tables |
+| Tenant isolation | RLS policy `p_tenant` on `org_id`, PERMISSIVE | 72 tables |
+| Branch narrowing | RLS policy `r_branch`, RESTRICTIVE so it is AND-ed | 72 tables |
+| Row ownership | RLS policy `r_own` for the own/self/assigned scopes | 11 tables |
+| Owner cannot bypass | `FORCE ROW LEVEL SECURITY` | 72 tables |
 | Optimistic concurrency | `bump_version` BEFORE UPDATE trigger | every table in the tenant array |
 | Audit immutability | Trigger raising `insufficient_privilege` on UPDATE/DELETE | `audit_log` |
 | Idempotency | Unique index on `(org_id, key, endpoint)` + stored response | `idempotency_keys` |
-| Soft delete | `deleted_at`, filtered by the generic router | 63 tables |
-| Money integrity | `bigint` halalas, never `numeric` | 32 tables carry money |
+| Soft delete | `deleted_at`, filtered by the generic router | 69 tables |
+| Money integrity | `bigint` halalas, never `numeric` | 34 tables carry money |
 
 ## Referential integrity — read this before drawing conclusions from an ERD
 
-Only **63 of 177** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 114 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
+Only **69 of 194** relationships are backed by a database foreign key, and those are almost entirely `org_id`. The remaining 125 are `*_id` columns with no constraint. Integrity for those is the application's job, and there is no cascade.
 
 The practical consequences: an orphaned reference is possible and will not be refused by the database; deleting a parent does not clean up children (though deletes are soft anyway); and a join that assumes a row exists needs to handle its absence.
 
@@ -82,6 +87,12 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `declined_jobs` | `declined_jobs_org_idx` | no | orgId, branchId, status |
 | `declined_jobs` | `declined_jobs_estimate_idx` | no | orgId, estimateId |
 | `declined_jobs` | `declined_jobs_line_once_idx` | yes | orgId, estimateLineId |
+| `inspection_findings` | `inspection_findings_job_idx` | no | orgId, jobCardId |
+| `inspection_media` | `inspection_media_finding_idx` | no | orgId, findingId |
+| `inspection_media` | `inspection_media_job_idx` | no | orgId, jobCardId |
+| `delivery_signoffs` | `delivery_signoffs_job_idx` | no | orgId, jobCardId |
+| `canned_jobs` | `canned_jobs_org_idx` | no | orgId, branchId, active |
+| `canned_job_lines` | `canned_job_lines_job_idx` | no | orgId, cannedJobId |
 | `invoices` | `invoices_org_code_idx` | yes | orgId, code |
 | `invoices` | `invoices_org_idx` | no | orgId, branchId, status |
 | `invoices` | `invoices_estimate_idx` | no | orgId, estimateId |
@@ -119,6 +130,8 @@ The practical consequences: an orphaned reference is possible and will not be re
 | `loan_contracts` | `loan_contracts_org_number_idx` | yes | orgId, contractNumber |
 | `loan_contracts` | `loan_contracts_org_idx` | no | orgId, branchId, status |
 | `loan_repayments` | `loan_repayments_contract_idx` | no | orgId, loanContractId, sequence |
+| `equipment_warranties` | `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
+| `equipment_warranties` | `equipment_warranties_org_idx` | no | orgId, branchId, status |
 | `employees` | `employees_org_number_idx` | yes | orgId, employeeNumber |
 | `employees` | `employees_org_idx` | no | orgId, branchId, status |
 | `payroll_runs` | `payroll_runs_org_period_idx` | yes | orgId, period |

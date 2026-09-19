@@ -15,6 +15,7 @@ import { TechnicianPortal } from '../portals/TechnicianPortal'
 import { TechnicianPortalJobDetail } from '../portals/TechnicianPortalJobDetail'
 import { CustomerPortal } from '../portals/CustomerPortal'
 import { CustomerPortalBooking } from '../portals/CustomerPortalBooking'
+import { CustomerHealthCheckReport } from '../workshop/CustomerHealthCheckReport'
 import { SupplierPortal } from '../portals/SupplierPortal'
 import { SupplierPortalOrders } from '../portals/SupplierPortalOrders'
 import { KioskCheckIn } from '../portals/KioskCheckIn'
@@ -68,6 +69,7 @@ export const SCREENS: DomainScreens = {
   'TechnicianPortal.JobDetail': { component: TechnicianPortalJobDetail, shell: PortalShell },
   CustomerPortal: { component: CustomerPortal, shell: PortalShell },
   'CustomerPortal.Booking': { component: CustomerPortalBooking, shell: PortalShell },
+  'HealthCheckReport': { component: CustomerHealthCheckReport, shell: PortalShell },
   SupplierPortal: { component: SupplierPortal, shell: PortalShell },
   'SupplierPortal.Orders': { component: SupplierPortalOrders, shell: PortalShell },
   KioskCheckIn: { component: KioskCheckIn, shell: null },

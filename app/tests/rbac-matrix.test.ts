@@ -659,10 +659,17 @@ describe('critical permission boundaries', () => {
   })
 })
 
-// Client ↔ server data consistency used to be checked here by importing
-// server/src/auth/rbac-data.ts directly. That file was a dead, drifting copy
-// of the real enforcement data (server/tests/rbac-matrix.test.ts, deleted
-// alongside it) and is gone; the live comparison against what the server
-// actually enforces — @salis/contract — is server/tests/rbac-parity.test.ts,
-// which also checks roles, scope, approval ceiling, SOD pairs and field rules,
-// a strict superset of what this block asserted.
+// ---------------------------------------------------------------------------
+// Client ↔ server data consistency is covered by
+// server/tests/rbac-parity.test.ts, which compares this same client file
+// (app/src/data/generated/rbac.ts) against the canonical @salis/contract
+// PERMS/ROLES/SOD/FIELD_RULES the server actually enforces with — the real
+// second source of truth. A "client ↔ server" block here used to import
+// server/src/auth/rbac-data.ts, a duplicated, buggy copy of the permission
+// engine deleted in 694845f ("Remove the dead server RBAC copy that dropped
+// the delete action") specifically because it could drift from the real
+// one; keeping a test pointed at its corpse would just reintroduce the
+// two-copies risk that commit removed. There is nothing left for this file
+// to compare against that server/tests/rbac-parity.test.ts doesn't already
+// check from the correct source.
+// ---------------------------------------------------------------------------

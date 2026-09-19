@@ -8,9 +8,9 @@
 
 # Entity catalogue
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-70 tables. 65 are tenant-scoped (carry `org_id`) and 66 have row-level security enabled and forced.
+76 tables. 71 are tenant-scoped (carry `org_id`) and 72 have row-level security enabled and forced.
 
 ## Conventions the schema holds everywhere
 
@@ -37,6 +37,11 @@
 | ENT-ESTIMATES | `estimates` | 28 | yes | yes | yes | yes | yes | yes | 4 | 3 |
 | ENT-ESTIMATE-LINES | `estimate_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-DECLINED-JOBS | `declined_jobs` | 27 | yes | yes | yes | yes | yes | yes | 1 | 0 |
+| ENT-INSPECTION-FINDINGS | `inspection_findings` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-INSPECTION-MEDIA | `inspection_media` | 18 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-DELIVERY-SIGNOFFS | `delivery_signoffs` | 17 | yes | yes | yes | yes | yes | yes | — | 0 |
+| ENT-CANNED-JOBS | `canned_jobs` | 16 | yes | yes | yes | yes | yes | yes | 1 | 0 |
+| ENT-CANNED-JOB-LINES | `canned_job_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-INVOICES | `invoices` | 29 | yes | yes | yes | yes | yes | yes | 5 | 3 |
 | ENT-INVOICE-LINES | `invoice_lines` | 17 | yes | yes | yes | yes | yes | yes | 1 | 0 |
 | ENT-PAYMENTS | `payments` | 16 | yes | yes | yes | yes | yes | yes | 1 | 3 |
@@ -52,7 +57,7 @@
 | ENT-DEPARTMENTS | `departments` | 15 | yes | yes | yes | yes | yes | yes | — | 8 |
 | ENT-LEADS | `leads` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-OPPORTUNITIES | `opportunities` | 16 | yes | yes | yes | yes | yes | yes | 1 | 8 |
-| ENT-CAMPAIGNS | `campaigns` | 18 | yes | yes | yes | yes | yes | yes | 2 | 3 |
+| ENT-CAMPAIGNS | `campaigns` | 22 | yes | yes | yes | yes | yes | yes | 2 | 8 |
 | ENT-SEGMENTS | `segments` | 13 | yes | yes | yes | yes | yes | yes | — | 3 |
 | ENT-CRM-TASKS | `crm_tasks` | 15 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-PUBLIC-LEADS | `public_leads` | 16 | yes | yes | yes | yes | yes | yes | — | 0 |
@@ -67,6 +72,7 @@
 | ENT-INSURANCE-CLAIMS | `insurance_claims` | 24 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-LOAN-CONTRACTS | `loan_contracts` | 18 | yes | yes | yes | yes | yes | yes | 2 | 0 |
 | ENT-LOAN-REPAYMENTS | `loan_repayments` | 17 | yes | yes | yes | yes | yes | yes | 2 | 0 |
+| ENT-EQUIPMENT-WARRANTIES | `equipment_warranties` | 19 | yes | yes | yes | yes | yes | yes | — | 0 |
 | ENT-EMPLOYEES | `employees` | 17 | yes | yes | yes | yes | yes | yes | 1 | 8 |
 | ENT-PAYROLL-RUNS | `payroll_runs` | 17 | yes | yes | yes | yes | yes | yes | 4 | 0 |
 | ENT-PAYROLL-LINES | `payroll_lines` | 16 | yes | yes | yes | yes | yes | yes | 4 | 0 |

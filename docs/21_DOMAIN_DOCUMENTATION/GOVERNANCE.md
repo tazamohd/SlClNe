@@ -12,11 +12,11 @@
 
 # Domain — Approvals and governance
 
-**Status:** GENERATED · **Capability:** CAP-GOVERNANCE · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-GOVERNANCE · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 2 screens, 6 API endpoints and 0 entities, gated by the `approvals`, `audit` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 2 screens, 5 API endpoints and 0 entities, gated by the `approvals`, `audit` permission modules.
 
 
 ## Actors
@@ -50,7 +50,6 @@ _No entity is owned exclusively by this domain._
 | GET | `/api/v1/approvals/lines/:id` | approvals:v | generated | — | **0** |
 | GET | `/api/v1/approvals/lines/:id/history` | approvals:v | explicit | — | **0** |
 | GET | `/api/v1/approvals/lines/export` | approvals:x | generated | — | **0** |
-| GET | `/api/v1/audit-log` | audit:v | explicit | — | 1 |
 
 ## Business rules
 
@@ -70,19 +69,20 @@ _No lifecycle in the contract belongs to this domain._
 | Screen | Route | Surface | Data-backed | Loading | Error | Empty | Arabic | e2e |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D-ApprovalInbox | `/approval-inbox` | app | yes | yes | yes | yes | PARTIAL | yes |
-| D-AuditLog | `/audit-log` | app | **mock** | yes | — | yes | PARTIAL | yes |
+| D-AuditLog | `/audit-log` | app | **mock** | — | — | yes | verified | yes |
 
 ## Known gaps in this domain
 
 - **1 of 2 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **4 of 6 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **4 of 5 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **1 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/approvals.ts`, `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/routes/audit-log.ts` |
+| Endpoints and guards | `server/src/routes/approvals.ts`, `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | `packages/contract/src/rules/approvals.ts` |
 | Screens | `project-control/MASTER_REGISTRY.json` |

@@ -12,11 +12,11 @@
 
 # Domain — Accounting and finance
 
-**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Capability:** CAP-ACCOUNTING · **Sources as of:** 2026-09-19
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 8 screens, 50 API endpoints and 1 entities, gated by the `accounting`, `insurance` permission modules.
+This domain serves the objective **OBJ-CASH** (Shorten the cash cycle). It comprises 8 screens, 59 API endpoints and 1 entities, gated by the `accounting` permission module.
 
 
 ## Actors
@@ -69,28 +69,37 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | explicit | — | **0** |
 | POST | `/api/v1/bank-statements/:id/match` | accounting:e | explicit | — | **0** |
 | GET | `/api/v1/bank-statements/export` | accounting:x | generated | — | **0** |
-| GET | `/api/v1/insurance-claims` | insurance:v | generated | — | 3 |
-| POST | `/api/v1/insurance-claims` | insurance:c | explicit | — | 3 |
-| GET | `/api/v1/insurance-claims/:id` | insurance:v | generated | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/approve` | insurance:a | explicit | — | 1 |
-| GET | `/api/v1/insurance-claims/:id/history` | insurance:v | explicit | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/pay` | insurance:e | explicit | — | **0** |
-| POST | `/api/v1/insurance-claims/:id/reject` | insurance:a | explicit | — | 1 |
-| GET | `/api/v1/insurance-claims/export` | insurance:x | generated | — | **0** |
-| GET | `/api/v1/insurance-policies` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/insurance-policies/:id` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/insurance-policies/:id/history` | insurance:v | explicit | — | **0** |
-| GET | `/api/v1/insurance-policies/export` | insurance:x | generated | — | **0** |
-| GET | `/api/v1/insurance/claims/summary` | insurance:v | explicit | — | 1 |
-| GET | `/api/v1/loan-contracts` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/loan-contracts/:id` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/loan-contracts/:id/history` | insurance:v | explicit | — | **0** |
-| GET | `/api/v1/loan-contracts/export` | insurance:x | generated | — | **0** |
-| GET | `/api/v1/loan-repayments` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/loan-repayments/:id` | insurance:v | generated | — | **0** |
-| GET | `/api/v1/loan-repayments/:id/history` | insurance:v | explicit | — | **0** |
-| GET | `/api/v1/loan-repayments/export` | insurance:x | generated | — | **0** |
-| GET | `/api/v1/loans/summary` | insurance:v | explicit | — | 1 |
+| GET | `/api/v1/equipment-warranties` | accounting:v | generated | — | 1 |
+| POST | `/api/v1/equipment-warranties` | accounting:c | generated | — | 1 |
+| DELETE | `/api/v1/equipment-warranties/:id` | accounting:d | generated | — | **0** |
+| GET | `/api/v1/equipment-warranties/:id` | accounting:v | generated | — | **0** |
+| PATCH | `/api/v1/equipment-warranties/:id` | accounting:e | generated | — | **0** |
+| GET | `/api/v1/equipment-warranties/:id/history` | accounting:v | explicit | — | **0** |
+| POST | `/api/v1/equipment-warranties/bulk-delete` | accounting:d | generated | — | **0** |
+| POST | `/api/v1/equipment-warranties/bulk-update` | accounting:e | generated | — | **0** |
+| GET | `/api/v1/equipment-warranties/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/insurance-claims` | accounting:v | generated | — | 3 |
+| POST | `/api/v1/insurance-claims` | accounting:c | explicit | — | 3 |
+| GET | `/api/v1/insurance-claims/:id` | accounting:v | generated | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/approve` | accounting:a | explicit | — | 1 |
+| GET | `/api/v1/insurance-claims/:id/history` | accounting:v | explicit | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/pay` | accounting:e | explicit | — | **0** |
+| POST | `/api/v1/insurance-claims/:id/reject` | accounting:a | explicit | — | 1 |
+| GET | `/api/v1/insurance-claims/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/insurance-policies` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/insurance-policies/:id` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/insurance-policies/:id/history` | accounting:v | explicit | — | **0** |
+| GET | `/api/v1/insurance-policies/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/insurance/claims/summary` | accounting:v | explicit | — | 1 |
+| GET | `/api/v1/loan-contracts` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/loan-contracts/:id` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/loan-contracts/:id/history` | accounting:v | explicit | — | **0** |
+| GET | `/api/v1/loan-contracts/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/loan-repayments` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/loan-repayments/:id` | accounting:v | generated | — | **0** |
+| GET | `/api/v1/loan-repayments/:id/history` | accounting:v | explicit | — | **0** |
+| GET | `/api/v1/loan-repayments/export` | accounting:x | generated | — | **0** |
+| GET | `/api/v1/loans/summary` | accounting:v | explicit | — | 1 |
 | GET | `/api/v1/saved-reports` | accounting:v | generated | — | 1 |
 | POST | `/api/v1/saved-reports` | accounting:c | generated | — | 1 |
 | DELETE | `/api/v1/saved-reports/:id` | accounting:d | generated | — | **0** |
@@ -135,11 +144,11 @@ _No rule guard in `packages/contract/src/rules` is specific to this domain. Any 
 | D-FinancialStatements | `/financial-statements` | app | yes | yes | yes | — | PARTIAL | yes |
 | D-JournalEntries | `/journal-entries` | app | yes | yes | yes | yes | PARTIAL | yes |
 | D-TaxManagement | `/tax-management` | app | yes | yes | yes | yes | PARTIAL | yes |
-| F-171 | `/insurance-claims` | app | yes | yes | yes | yes | PARTIAL | yes |
+| F-169 | `/warranty-management` | app | yes | yes | yes | yes | PARTIAL | yes |
 
 ## Known gaps in this domain
 
-- **36 of 50 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **43 of 59 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 lifecycles (`insurancePolicyStatus`, `insuranceClaimStatus`, `loanContractStatus`, `loanRepaymentStatus`) declare states but no legal transitions.** An illegal move is refused only where a handler happens to check.
 - **1 of 2 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.

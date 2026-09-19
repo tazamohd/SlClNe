@@ -1,22 +1,14 @@
 {
   "generatedAt": "2026-09-18",
-  "open": 2,
+  "open": 1,
   "blockers": [
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "280 rendered capabilities are mock-only",
+      "title": "224 rendered capabilities are mock-only",
       "detail": "They render, but read fixtures rather than an API. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
-    },
-    {
-      "id": "BLK-010",
-      "severity": "MEDIUM",
-      "title": "1 screen files are unreachable from any route",
-      "detail": "src/screens/public/landing/homepage/SocialProofBand.tsx",
-      "owner": "02",
-      "wave": "W0"
     }
   ]
 }

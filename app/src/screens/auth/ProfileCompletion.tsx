@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { AuthLayout } from '@/components/shell/AuthLayout'
 import { usePreferences } from '@/providers/PreferencesProvider'
-import { isLive } from '@/data/repository'
 import { useIsMobile } from '@/lib/useMediaQuery'
 
 interface FieldErrors { name?: string; phone?: string }
@@ -17,7 +16,13 @@ function validate(values: { name: string; phone: string }): FieldErrors {
   return errors
 }
 
-/** Complete your profile after signup — avatar, name, phone. */
+/** Complete your profile after signup — avatar, name, phone.
+ *
+ *  Previously fired a fake "Profile updated" toast whenever `isLive`,
+ *  with no API call at all — there is no profile-update endpoint
+ *  anywhere in the API contract, live or not. Now shows the same honest
+ *  "not available yet" message unconditionally, instead of only when
+ *  offline. */
 export function ProfileCompletion() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -32,12 +37,7 @@ export function ProfileCompletion() {
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    if (!isLive) {
-      toast.show({ title: t('Profile completion is not available yet') })
-      return
-    }
-
-    toast.show({ title: t('Profile updated') })
+    toast.show({ title: t('Profile completion is not available yet') })
   }
 
   /** First letter of the name, or a fallback icon. */

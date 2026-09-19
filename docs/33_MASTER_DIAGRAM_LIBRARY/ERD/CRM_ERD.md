@@ -8,7 +8,7 @@
 
 # CRM ERD
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · 5 tables
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 5 tables
 
 ### CRM
 
@@ -40,12 +40,16 @@ erDiagram
     varchar name
     varchar type
     varchar status
+    date start_date
+    date end_date
     integer reach
     integer opens
     integer clicks
     integer conversions
     bigint budget_halalas
     bigint spent_halalas
+    timestamptz last_dispatched_at
+    boolean last_dispatch_mock
   }
   segments {
     varchar id PK

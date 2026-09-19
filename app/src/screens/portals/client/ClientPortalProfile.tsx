@@ -1,39 +1,45 @@
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
-import { Badge } from '@/components/ui/Badge'
+import { EmptyState } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
+import { useSession } from '@/providers/SessionProvider'
 import { MobileCard, MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
 
-const PROFILE = {
-  name: 'Abdullah Al-Qahtani',
-  email: 'abdullah.q@email.com',
-  phone: '+966 55 123 4567',
-  nationalId: '109XXXXXXX',
-  memberSince: '2023-03-15',
-  loyaltyTier: 'Gold',
-  totalVisits: 14,
-  preferredBranch: 'Riyadh - Olaya',
-}
-
-const PERSONAL_FIELDS = [
-  { label: 'Full Name', value: PROFILE.name, icon: 'User' },
-  { label: 'Email', value: PROFILE.email, icon: 'Mail' },
-  { label: 'Phone', value: PROFILE.phone, icon: 'Phone' },
-  { label: 'National ID', value: PROFILE.nationalId, icon: 'CreditCard' },
-]
-
-const MEMBERSHIP_FIELDS = [
-  { label: 'Member Since', value: PROFILE.memberSince },
-  { label: 'Loyalty Tier', value: PROFILE.loyaltyTier },
-  { label: 'Total Visits', value: String(PROFILE.totalVisits) },
-  { label: 'Preferred Branch', value: PROFILE.preferredBranch },
-]
-
+/* This screen was MOCK_ONLY (BLK-004): the name, email, phone, national ID,
+ * membership date, loyalty tier, visit count and preferred branch were all
+ * a hardcoded fake customer ("Abdullah Al-Qahtani").
+ *
+ * Full Name and Email are now the signed-in customer's own real identity
+ * from `useSession()` — the same source CustomerPortal.tsx's greeting
+ * already reads. Phone, national ID and loyalty/membership fields have no
+ * backing field or collection in Repository (app/src/data/repository.ts)
+ * or API_REGISTRY.json, so they're an honest GAP note rather than invented
+ * values. */
 export function ClientPortalProfile() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
+  const { userName, user } = useSession()
+
+  const personalFields = [
+    { label: 'Full Name', value: userName, icon: 'User' },
+    ...(user?.email ? [{ label: 'Email', value: user.email, icon: 'Mail' }] : []),
+  ]
+
+  const gapNote = (
+    <Card className="rounded-2xl p-6 shadow-sm">
+      <div className="mb-4 flex items-center gap-2">
+        <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
+        <h2 className="text-sm font-semibold text-heading">{t('Membership')}</h2>
+      </div>
+      <EmptyState
+        icon="Award"
+        title={t('Membership has no data source yet')}
+        description={t('Phone, national ID, loyalty tier, visit count and preferred branch are not recorded by any system this API exposes.')}
+      />
+    </Card>
+  )
 
   if (isMobile) {
     return (
@@ -44,24 +50,16 @@ export function ClientPortalProfile() {
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-tint-blue text-salis-blue">
               <Icon name="User" size={24} />
             </span>
-            <div>
-              <p className="text-[15px] font-bold text-heading">{PROFILE.name}</p>
-              <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t(PROFILE.loyaltyTier)}</Badge>
-            </div>
+            <p className="text-[15px] font-bold text-heading">{userName}</p>
           </div>
         </Card>
         <MobileCard>
           <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Personal Information')}</p>} />
-          {PERSONAL_FIELDS.map((f) => (
+          {personalFields.map((f) => (
             <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
           ))}
         </MobileCard>
-        <MobileCard>
-          <MobileCardHeader leading={<p className="text-[13px] font-semibold text-heading">{t('Membership')}</p>} />
-          {MEMBERSHIP_FIELDS.map((f) => (
-            <MobileCardRow key={f.label} label={t(f.label)} value={f.value} />
-          ))}
-        </MobileCard>
+        {gapNote}
       </div>
     )
   }
@@ -77,7 +75,7 @@ export function ClientPortalProfile() {
             <h2 className="text-sm font-semibold text-heading">{t('Personal Information')}</h2>
           </div>
           <div className="grid gap-4">
-            {PERSONAL_FIELDS.map((f) => (
+            {personalFields.map((f) => (
               <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
                 <div className="flex items-center gap-2">
                   <Icon name={f.icon} size={14} className="text-muted" />
@@ -89,24 +87,7 @@ export function ClientPortalProfile() {
           </div>
         </Card>
 
-        <Card className="rounded-2xl p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="flex rounded-lg bg-tint-blue p-1.5 text-salis-blue" aria-hidden><Icon name="Award" size={16} /></span>
-            <h2 className="text-sm font-semibold text-heading">{t('Membership')}</h2>
-          </div>
-          <div className="grid gap-4">
-            {MEMBERSHIP_FIELDS.map((f) => (
-              <div key={f.label} className="flex items-center justify-between border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                <span className="text-sm text-muted">{t(f.label)}</span>
-                {f.label === 'Loyalty Tier' ? (
-                  <Badge background="var(--tint-orange)" color="var(--salis-orange)">{t(f.value)}</Badge>
-                ) : (
-                  <span className="text-sm font-medium text-heading">{f.value}</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </Card>
+        {gapNote}
       </div>
     </div>
   )

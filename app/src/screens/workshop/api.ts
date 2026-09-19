@@ -251,6 +251,49 @@ export interface EstimateLineRow {
   sort: number
 }
 
+export interface EstimateLineInput {
+  description: string
+  descriptionAr?: string
+  kind: 'part' | 'labour'
+  qty: number
+  unitPriceHalalas: number
+  partSku?: string
+}
+
+async function patch<TResult>(path: string, body: unknown): Promise<TResult> {
+  if (!isLive) {
+    throw new RepositoryError(
+      'unsupported',
+      'The fixture repository cannot change an estimate. Set VITE_API_URL to run against the API.'
+    )
+  }
+  let response: Response
+  try {
+    response = await fetch(`${API_URL.replace(/\/$/, '')}/${path}`, {
+      method: 'PATCH',
+      headers: authHeaders(true),
+      body: JSON.stringify(body),
+      credentials: 'include',
+    })
+  } catch {
+    throw new RepositoryError('network', 'The server could not be reached.', { status: 0 })
+  }
+  const text = await response.text()
+  const parsed: unknown = text ? JSON.parse(text) : null
+  if (!response.ok) throw errorFrom(parsed, response.status)
+  return parsed as TResult
+}
+
+/** Replaces an estimate's line items — `PATCH /estimates/:id`'s existing
+ *  full-replace-and-recompute behaviour (`server/src/routes/estimates.ts`),
+ *  the same one editing an estimate's own lines already runs. Applying a
+ *  canned job (`CannedJobs.tsx`'s catalog) is this call with the existing
+ *  lines plus the package's own, not a second write path: appending would
+ *  need a new endpoint, replacing needs none. */
+export function replaceEstimateLines(ref: string, lines: EstimateLineInput[]): Promise<Record<string, unknown>> {
+  return patch(`estimates/${encodeURIComponent(ref)}`, { lines })
+}
+
 /** What to put in front of the user when a stage change is refused.
  *
  *  The API's own wording wins wherever it has any: it is the only party that

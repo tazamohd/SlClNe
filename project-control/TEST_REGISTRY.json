@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 193,
-    "cases": 2235,
+    "suites": 204,
+    "cases": 2305,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1125,
+      "UNIT_OR_API": 1195,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -188,7 +188,7 @@
       "describes": [
         "Call Center (Golden Path 22)",
         "Call center lifecycle",
-        "Call centre — the live queue"
+        "Call centre — no telephony backend"
       ],
       "cases": [
         "Call Center (Golden Path 22)",
@@ -196,8 +196,8 @@
         "call center logs page loads",
         "Call center lifecycle",
         "call center → call logs",
-        "Call centre — the live queue",
-        "the queue names every caller waiting, and this build cannot answer them"
+        "Call centre — no telephony backend",
+        "the console says plainly that it has no data source, rather than showing an invented queue"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -318,9 +318,9 @@
         "customer app garage loads",
         "customer app appointments loads",
         "customer app service tracking loads",
-        "customer app wallet loads with balance",
-        "customer app orders loads",
-        "customer app notifications loads",
+        "customer app wallet has no data source yet",
+        "customer app orders has no data source yet",
+        "customer app notifications has no data source yet",
         "customer app profile loads",
         "customer approval page loads with real approval lines",
         "Customer portal lifecycle",
@@ -951,11 +951,11 @@
       "cases": [
         "Parts Procurement (Golden Path 6)",
         "parts network requests page loads",
-        "quotations re-sort by rating when the sort chip is picked",
+        "quotations screen is an honest gap state, not invented supplier rows",
         "parts network orders page loads",
         "the purchase order is a real form whose number the server assigns",
         "Parts procurement lifecycle",
-        "raise request → compare quotations by rating → confirm the PO"
+        "raise request → honest quotations gap → confirm the PO"
       ],
       "caseCount": 7,
       "touchesPaths": [
@@ -1497,6 +1497,33 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-SRC-DATA-AUTH-TEST-TS",
+      "file": "app/src/data/auth.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "demoPassword",
+        "authenticate — mock mode (no API base URL)",
+        "authenticate — API mode (base URL set)"
+      ],
+      "cases": [
+        "is the design demo password in mock mode",
+        "is the backend's seeded password in API mode",
+        "signs in a demo role with the shared password",
+        "rejects a wrong password with an AuthError",
+        "rejects an unknown email with an AuthError",
+        "posts to /auth/login and returns the server session",
+        "surfaces a 401 as an ApiError"
+      ],
+      "caseCount": 7,
+      "touchesPaths": [
+        "/dashboard"
+      ],
+      "touchesRoles": [
+        "owner"
+      ]
+    },
+    {
       "id": "TS-APP-SRC-DATA-HTTP-CLIENT-TEST-TS",
       "file": "app/src/data/http/client.test.ts",
       "kind": "UNIT_OR_API",
@@ -1830,6 +1857,26 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-CRM-CAMPAIGN-SEND-TEST-TSX",
+      "file": "app/tests/component/crm-campaign-send.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "Campaigns — Send action (fixture build)"
+      ],
+      "cases": [
+        "offers Send only for an sms/whatsapp campaign that is not completed",
+        "a click does not fabricate a status change with no fixture row id to dispatch",
+        "hides Send from a role with no crm edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "owner",
+        "technician"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-CRM-CUSTOMERS-TEST-TSX",
       "file": "app/tests/component/crm-customers.test.tsx",
       "kind": "UNIT_OR_API",
@@ -1983,43 +2030,23 @@
       ]
     },
     {
-      "id": "TS-APP-TESTS-COMPONENT-DASHBOARD-ROLE-ADAPTIVE-TEST-TSX",
-      "file": "app/tests/component/dashboard-role-adaptive.test.tsx",
+      "id": "TS-APP-TESTS-COMPONENT-CUSTOMER-HEALTH-CHECK-REPORT-TEST-TSX",
+      "file": "app/tests/component/customer-health-check-report.test.tsx",
       "kind": "UNIT_OR_API",
       "surface": "app",
       "describes": [
-        "Dashboard — role-adaptive"
+        "CustomerHealthCheckReport (fixture build)"
       ],
       "cases": [
-        "owner sees the full operational-and-financial overview",
-        "superadmin and test fall back to the same operational overview as owner",
-        "manager sees branch operations, not the revenue KPI",
-        "advisor sees the customer-facing queue: estimates, appointments, declined jobs",
-        "technician sees only their own job queue — real job codes, no revenue",
-        "qc sees the job queue by real status, never a fabricated \"awaiting QC\" count",
-        "parts sees stock health, not revenue or customers",
-        "accountant sees receivables and revenue — the two things this role holds",
-        "hr sees headcount and leave requests, never a pay figure",
-        "frontdesk sees the front-of-house queue",
-        "callcenter sees leads and opportunities, not a call-log figure no collection backs",
-        "procurement sees requisitions and purchase orders"
+        "states the report is unavailable without a live API, not a fabricated finding",
+        "states the report is unavailable when no job id is on the link"
       ],
-      "caseCount": 12,
-      "touchesPaths": [],
+      "caseCount": 2,
+      "touchesPaths": [
+        "/customer-portal/health-check-report"
+      ],
       "touchesRoles": [
-        "owner",
-        "superadmin",
-        "test",
-        "manager",
-        "advisor",
-        "technician",
-        "qc",
-        "parts",
-        "accountant",
-        "hr",
-        "frontdesk",
-        "callcenter",
-        "procurement"
+        "customer"
       ]
     },
     {
@@ -2041,7 +2068,6 @@
         "renders a footer summary under the table",
         "opens a row with Enter and with Space, not only with a click",
         "leaves rows out of the tab order when there is nothing to open",
-        "never nests a real button inside a row carrying an interactive role",
         "replaces the table with the designed card list below 860px",
         "keeps the table when the screen gave no card design",
         "makes each card tappable when rows open something",
@@ -2049,7 +2075,7 @@
         "switches layouts live when the viewport crosses the breakpoint",
         "renders every row of the card list, not a truncated one"
       ],
-      "caseCount": 15,
+      "caseCount": 14,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2134,7 +2160,6 @@
         "marks the offending control invalid and wires its message up for a screen reader",
         "moves focus to the first field it refused",
         "clears a message as soon as the field is fixed, not at the next submit",
-        "does not let a zod issue for an unrendered field steal focus from a real one",
         "shows the hint while the field is happy",
         "passes parsed values through once every rule is satisfied",
         "attaches a server error to the field that caused it",
@@ -2147,7 +2172,7 @@
         "offers a placeholder option so a select cannot look pre-answered",
         "accumulates a multiselect as chips with checkbox semantics"
       ],
-      "caseCount": 17,
+      "caseCount": 16,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2347,6 +2372,26 @@
       "touchesRoles": []
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WARRANTY-MANAGEMENT-TEST-TSX",
+      "file": "app/tests/component/warranty-management.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WarrantyManagement (fixture build)"
+      ],
+      "cases": [
+        "creates a warranty through the form, and it appears in the list",
+        "marks an active warranty claimed, a real status write rather than an optimistic label",
+        "hides New Warranty, Edit and Mark as Claimed from a role with no accounting edit grant"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "accountant",
+        "technician"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKFLOWSTEPPER-TEST-TSX",
       "file": "app/tests/component/WorkflowStepper.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2416,6 +2461,25 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-CANNED-JOBS-TEST-TSX",
+      "file": "app/tests/component/workshop-canned-jobs.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "CannedJobs (fixture build)"
+      ],
+      "cases": [
+        "renders the real, empty catalog rather than a fabricated one",
+        "states honestly that the catalog cannot be saved without a live API",
+        "offers no \"New Package\" action with no live API to save one to"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DECLINED-JOBS-TEST-TSX",
       "file": "app/tests/component/workshop-declined-jobs.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2433,6 +2497,26 @@
       "touchesPaths": [],
       "touchesRoles": [
         "owner"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-DELIVERY-TEST-TSX",
+      "file": "app/tests/component/workshop-delivery.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopDelivery (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job and every checklist item",
+        "states honestly that no signature has been captured yet, with a real link to go capture one",
+        "takes a real odometer reading",
+        "will not claim a delivery it cannot persist"
+      ],
+      "caseCount": 4,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
       ]
     },
     {
@@ -2456,6 +2540,43 @@
       "touchesRoles": [
         "owner",
         "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-ESTIMATE-TEST-TSX",
+      "file": "app/tests/component/workshop-estimate.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopEstimate — applying a canned job (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job",
+        "offers no canned-job picker without a linked estimate to apply one to"
+      ],
+      "caseCount": 2,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-INSPECTION-TEST-TSX",
+      "file": "app/tests/component/workshop-inspection.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopInspection (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job, not a fabricated one",
+        "lists every checklist item across all six systems",
+        "is honestly read-only without a live API, not a click that silently does nothing"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "technician"
       ]
     },
     {
@@ -2629,6 +2750,25 @@
       ]
     },
     {
+      "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-SIGNATURE-TEST-TSX",
+      "file": "app/tests/component/workshop-signature.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "WorkshopSignature (fixture build)"
+      ],
+      "cases": [
+        "renders the real seeded job, not a fabricated one",
+        "keeps \"Confirm Signature\" disabled with no signature drawn",
+        "still refuses to submit after only checking the authorization box"
+      ],
+      "caseCount": 3,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "advisor"
+      ]
+    },
+    {
       "id": "TS-APP-TESTS-COMPONENT-WORKSHOP-STAGE-CHAIN-TEST-TSX",
       "file": "app/tests/component/workshop-stage-chain.test.tsx",
       "kind": "UNIT_OR_API",
@@ -2677,6 +2817,7 @@
       "surface": "app",
       "describes": [
         "CRM collections are writable server-side (F-027 landed)",
+        "campaign CRUD and dispatch are real server-side (build-order item 7, landed)",
         "customer feedback has a home server-side (F-027 landed)",
         "fleet contracts carry terms and are joinable (F-027 landed)"
       ],
@@ -2685,13 +2826,15 @@
         "LANDED: `opportunities` is writable and a lead→opportunity conversion route exists — LeadDetail can offer Convert to Opportunity",
         "LANDED: `crmTasks` is writable — POST /crm/tasks backs CRMCalendar New Task",
         "GAP: there is no lead activity or lead notes collection — GET/POST /crm/leads/:id/activity and /crm/leads/:id/notes are all missing, so LeadDetail shows honest empty rails",
+        "LANDED: `campaigns` is writable — POST/PATCH/DELETE /crm/campaigns back CampaignFormModal",
+        "LANDED: a campaign send route exists, refusing honestly rather than faking delivery",
         "LANDED: a `feedback` collection is registered at customer-feedback — POST /customer-feedback backs the capture form",
         "LANDED: the schema carries a customer_feedback table — storage and endpoint both exist",
         "LANDED: the fleets table has contract-term columns — type, value, dates and contact, so FleetContract can render them",
         "LANDED: `fleets` is writable and a renew-contract route exists — FleetContract can offer Renew",
         "LANDED: customers present `fleetId`, so a fleet can be joined to its vehicles client-side — FleetContract can list assigned vehicles"
       ],
-      "caseCount": 9,
+      "caseCount": 11,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -2738,7 +2881,7 @@
         "books an invoice as receivable, revenue and output VAT, and it balances",
         "books a payment as cash against receivable, and it balances",
         "every seeded journal entry balances",
-        "F-008 fixed · the seeded chart of accounts balances",
+        "F-008 · the seeded chart of accounts does not balance, and stays visible",
         "reports revenue and expense as the ledger holds them, without netting them off",
         "reads every seeded invoice amount as a finite, non-negative figure",
         "DEFECT · the detail invoice’s header disagrees with its own line items",
@@ -3627,7 +3770,7 @@
         "/technician-portal",
         "/logout-confirmation",
         "/customer-portal/booking",
-        "/vendor-portal",
+        "/procurement-portal",
         "/unmapped-portal"
       ],
       "touchesRoles": [
@@ -3886,8 +4029,8 @@
         "pages render at 390px without the desktop nav",
         "Support channels are live actions, not decorated dead ends",
         "Insurance quote CTAs lead to the contact page — no fake quote flow",
-        "ComparePlans names real plans and invents no branch/user/SLA figures",
-        "Blog and catalogue cards are informational, not links to nowhere"
+        "catalogue cards are informational, not links to nowhere",
+        "Blog has no fabricated posts — an honest empty state instead"
       ],
       "caseCount": 14,
       "touchesPaths": [
@@ -4007,7 +4150,7 @@
       ],
       "cases": [
         "defines exactly 15 roles",
-        "defines exactly 32 modules",
+        "defines exactly 30 modules",
         "ROLES ids match the expected list",
         "PERMS keys match the expected module list",
         "every role has required metadata fields",
@@ -4122,6 +4265,9 @@
       "describes": [
         "OEM Integrations reads oemTools",
         "System Integrations reads integrations",
+        "Accounting Integrations reads integrations, filtered to ERP",
+        "Marketing Hub reads campaigns",
+        "SMS Integration reads integrations, filtered to Messaging",
         "Expenses Management reads expenses",
         "Email Marketing Campaigns reads campaigns",
         "the reports hub reads savedReports"
@@ -4131,6 +4277,13 @@
         "GAP: drops the sync clock and record count it cannot source, and names the read",
         "renders the connectors and groups them by the category the data carries",
         "GAP: shows no adapter version or last-activity clock, and names the read",
+        "renders the real ERP connectors, none of them fabricated as Connected",
+        "GAP: shows no last-sync clock or record count, and names the read",
+        "renders the real campaigns, with totals computed from the rows",
+        "GAP: invents no hardcoded KPI tiles the old array used to print",
+        "renders the real messaging connectors, none of them fabricated as Connected",
+        "GAP: shows no sent-today or delivery-rate figure, and names the read",
+        "GAP: shows no fabricated message log, and names the missing data source",
         "shows each expense with the amount the server formatted",
         "GAP: invents no budget, and names the aggregate that would supply one",
         "counts records rather than summing money",
@@ -4139,7 +4292,7 @@
         "lists what the server holds, and says so honestly when it holds none",
         "keeps the report links, which are navigation rather than data"
       ],
-      "caseCount": 11,
+      "caseCount": 18,
       "touchesPaths": [
         "/sales-reports"
       ],
@@ -4559,7 +4712,7 @@
         "sums debits and credits from the entries and reports the batch balanced",
         "reports the report and the ledger the same revenue figure",
         "derives receivable from the invoices that are not paid",
-        "F-008 fixed: the seeded balance sheet balances, and shows no warning",
+        "says out loud that the seeded balance sheet does not balance",
         "splits outstanding from collected using the invoice status, not a fixed figure",
         "weights the pipeline by probability, so the forecast sits below the gross",
         "averages the deal size over the opportunities it actually has"
@@ -4710,10 +4863,10 @@
         "navFor unknown and edge roles"
       ],
       "cases": [
-        "is the documented 15 roles × 32 modules × 5 actions",
+        "is the documented 15 roles × 30 modules × 5 actions",
         "grants no action to a role the module never names",
         "denies an unknown module and an unknown role outright",
-        "agrees with the matrix for all role × module × action combinations",
+        "agrees with the matrix for all 2,250 role × module × action combinations",
         "never confers a write without the matching read",
         "uses exactly six grant letters — one more than the Action union declares",
         "confines grant letters to the declared Action union",
@@ -4760,7 +4913,7 @@
         "does not recognise UNKNOWN_ROLE.id as a valid RoleId",
         "returns UNKNOWN_ROLE from roleMeta for any unrecognised id",
         "reports the defence-in-depth fields as not live",
-        "reports the five live rules as live",
+        "reports the six live rules as live",
         "treats an unknown field as live — it is not on the defence-in-depth list",
         "DEFENCE_IN_DEPTH_FIELDS lists exactly two fields",
         "treats a zero-ceiling role as authority without money — any amount is refused",
@@ -4880,11 +5033,9 @@
       "cases": [
         "is the one its domain barrel declares, for every screen that declares one",
         "leaves the kiosk bare, because its terminal is public",
-        "still puts the actual portals in PortalShell",
-        "puts the procurement portal in PortalShell, not the operational AppShell (F-024)",
-        "routes every screen name a domain barrel declares"
+        "still puts the actual portals in PortalShell"
       ],
-      "caseCount": 5,
+      "caseCount": 3,
       "touchesPaths": [],
       "touchesRoles": []
     },
@@ -5131,33 +5282,6 @@
       ]
     },
     {
-      "id": "TS-SERVER-TESTS-AUDIT-LOG-READ-TEST-TS",
-      "file": "server/tests/audit-log-read.test.ts",
-      "kind": "UNIT_OR_API",
-      "surface": "server",
-      "describes": [
-        "GET /audit-log"
-      ],
-      "cases": [
-        "refuses a role with no view grant on audit (403)",
-        "returns only the caller organization\\'s entries, never another tenant\\'s",
-        "joins the actor's name from the users table",
-        "classifies session and password_reset rows as auth, unattended/non-api rows as system, everything else as data",
-        "?category=auth narrows to session and password_reset rows only",
-        "?q= searches action, entity and reason",
-        "caps the result at ?limit="
-      ],
-      "caseCount": 7,
-      "touchesPaths": [
-        "/audit-log"
-      ],
-      "touchesRoles": [
-        "technician",
-        "owner",
-        "customer"
-      ]
-    },
-    {
       "id": "TS-SERVER-TESTS-AUTH-TEST-ACCOUNT-TEST-TS",
       "file": "server/tests/auth-test-account.test.ts",
       "kind": "UNIT_OR_API",
@@ -5298,8 +5422,8 @@
         "segregation of duties over the audit trail (F-004)"
       ],
       "cases": [
-        "matches on every module × role cell, string for string",
-        "answers every role × module × action question from the table",
+        "matches on every one of the 450 module × role cells, string for string",
+        "answers every one of the 2,700 role × module × action questions from the table",
         "fails closed on an unknown module and an unknown role",
         "is six letters, and x is export while d is delete",
         "names the roles the wrong reading would have handed a delete grant",
@@ -5359,6 +5483,41 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-CANNED-JOBS-TEST-TS",
+      "file": "server/tests/canned-jobs.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "creating a canned job",
+        "updating a canned job",
+        "reading canned jobs"
+      ],
+      "cases": [
+        "lets an advisor create a package and prices it from the lines",
+        "lets a manager create one too",
+        "refuses a role that can only view estimates",
+        "rejects a body with no lines",
+        "rejects a body missing a name",
+        "changes a field without touching the price",
+        "replaces the lines and reprices when a new lines array is sent",
+        "can retire a package without touching its lines",
+        "refuses a role that can only view estimates",
+        "lists a created package through the generic collection route",
+        "returns the bundle lines",
+        "shows no canned jobs to a customer"
+      ],
+      "caseCount": 12,
+      "touchesPaths": [
+        "/canned-jobs"
+      ],
+      "touchesRoles": [
+        "advisor",
+        "manager",
+        "technician",
+        "customer"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-COLLECTIONS-TEST-TS",
       "file": "server/tests/collections.test.ts",
       "kind": "UNIT_OR_API",
@@ -5412,6 +5571,39 @@
         "/api/v1/kb/procedures"
       ],
       "touchesRoles": []
+    },
+    {
+      "id": "TS-SERVER-TESTS-CRM-CAMPAIGNS-TEST-TS",
+      "file": "server/tests/crm-campaigns.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "campaign CRUD — the write route the generic router was missing",
+        "POST /crm/campaigns/:id/send — messaging as EXTERNAL_DEPENDENCY",
+        "GET /diagnostics/integrations — messaging reported honestly"
+      ],
+      "cases": [
+        "creates a campaign through the generic collection route",
+        "updates a field without touching the others",
+        "deletes a campaign",
+        "refuses an empty name",
+        "refuses a role with no crm grant",
+        "the default transport refuses with a 503 naming the missing config",
+        "the mock transport dispatches, flips draft to running, and flags the response mock",
+        "refuses an email campaign — there is no email provider to dispatch to here",
+        "refuses to re-send a completed campaign",
+        "refuses a role with no crm edit grant",
+        "lists the messaging transport alongside OBD and OTP, unconfigured by default"
+      ],
+      "caseCount": 11,
+      "touchesPaths": [
+        "/crm/campaigns",
+        "/diagnostics/integrations"
+      ],
+      "touchesRoles": [
+        "manager",
+        "technician"
+      ]
     },
     {
       "id": "TS-SERVER-TESTS-CRM-FLEET-TEST-TS",
@@ -5577,28 +5769,36 @@
       ]
     },
     {
-      "id": "TS-SERVER-TESTS-DEPARTMENTS-WRITE-TEST-TS",
-      "file": "server/tests/departments-write.test.ts",
+      "id": "TS-SERVER-TESTS-DELIVERY-SIGNOFF-TEST-TS",
+      "file": "server/tests/delivery-signoff.test.ts",
       "kind": "UNIT_OR_API",
       "surface": "server",
       "describes": [
-        "F-039: departments takes writes through the generic router"
+        "capturing the signature",
+        "completing the checklist",
+        "reading a sign-off"
       ],
       "cases": [
-        "lets hr create a department, defaulting headcount to zero",
-        "writes an audit row for the create",
-        "refuses create to a role with only a view grant on departments",
-        "lets an owner edit and delete, but refuses hr — the \"vc\" grant is create-only"
+        "lets an advisor capture a signature for a job card",
+        "streams the identical signature bytes back",
+        "refuses a second signature for the same job card",
+        "refuses a file type outside the accepted signature type",
+        "refuses a role that holds create but not edit on job cards",
+        "refuses a technician the sign-off for a job that is not theirs",
+        "cannot be created directly through the generic collection route",
+        "moves the checklist and odometer through the generic PATCH",
+        "shows a customer their own vehicle's sign-off",
+        "refuses a technician the sign-off for a job that is not theirs"
       ],
-      "caseCount": 4,
+      "caseCount": 10,
       "touchesPaths": [
-        "/api/v1/admin/departments"
+        "/delivery-signoffs"
       ],
       "touchesRoles": [
-        "hr",
-        "owner",
-        "manager",
-        "accountant"
+        "advisor",
+        "frontdesk",
+        "technician",
+        "customer"
       ]
     },
     {
@@ -5639,6 +5839,36 @@
         "frontdesk",
         "manager",
         "callcenter"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-EQUIPMENT-WARRANTIES-TEST-TS",
+      "file": "server/tests/equipment-warranties.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "equipment warranty CRUD",
+        "the active -> claimed lifecycle move"
+      ],
+      "cases": [
+        "creates a warranty, assigning WRN-0001 and defaulting status to active",
+        "assigns sequential numbers to two warranties created back to back",
+        "updates a field without touching the others",
+        "deletes a warranty",
+        "is reachable by its human warranty number as well as its id",
+        "refuses an empty item name",
+        "refuses a role with no accounting create grant",
+        "marking a warranty claimed derives claimedAt server-side",
+        "moving off claimed clears claimedAt rather than leaving a stale date",
+        "refuses a role with no accounting edit grant"
+      ],
+      "caseCount": 10,
+      "touchesPaths": [
+        "/equipment-warranties"
+      ],
+      "touchesRoles": [
+        "accountant",
+        "technician"
       ]
     },
     {
@@ -5747,7 +5977,7 @@
         "refuses a role without the invoices grant",
         "reports output VAT as the sum of charged VAT, at the configured rate",
         "does not include another tenant in the return, and is accounting-gated",
-        "the balance sheet identity holds (F-008 fixed); the full trial balance still carries the period\\'s unclosed net income, honestly",
+        "surfaces F-008: the seeded ledger is out by SAR 257,050 and is not forced to balance",
         "is tenant-scoped: a tenant with no chart of accounts gets zeros, not ours",
         "refuses a role without the accounting grant"
       ],
@@ -5831,6 +6061,47 @@
       ]
     },
     {
+      "id": "TS-SERVER-TESTS-INSPECTION-FINDINGS-TEST-TS",
+      "file": "server/tests/inspection-findings.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "creating a finding",
+        "updating a finding",
+        "attaching photo evidence",
+        "the customer-facing health check report",
+        "tenant isolation"
+      ],
+      "cases": [
+        "lets a technician record a finding on their own assigned job",
+        "defaults severity to \"ok\" when the checklist point passed",
+        "refuses a technician recording a finding on a job that is not theirs",
+        "refuses a role that holds create but not edit on job cards",
+        "rejects a body missing the required fields",
+        "cannot be created directly through the generic collection route",
+        "moves severity and notes through the generic PATCH",
+        "stores an uploaded photo and streams the identical bytes back",
+        "honours ?stage=after",
+        "refuses a file type outside the DVHC allowlist",
+        "refuses a technician the evidence for a job that is not theirs",
+        "shows a customer their own vehicle's findings, never the internal note",
+        "refuses a customer another customer's job report",
+        "redacts the internal note on the generic collection route too, even though the row is visible",
+        "does not serve another organization's finding"
+      ],
+      "caseCount": 15,
+      "touchesPaths": [
+        "/inspection-findings"
+      ],
+      "touchesRoles": [
+        "technician",
+        "frontdesk",
+        "advisor",
+        "customer",
+        "manager"
+      ]
+    },
+    {
       "id": "TS-SERVER-TESTS-INSURANCE-LOANS-TEST-TS",
       "file": "server/tests/insurance-loans.test.ts",
       "kind": "UNIT_OR_API",
@@ -5846,12 +6117,12 @@
         "${c.principal} @ ${c.rateBps}bps over ${c.term}m: whole halalas, schedule ties",
         "zero-rate charges no interest",
         "computes one month of interest as an integer half-up",
-        "serves the coherent policies, claims, contracts and repayments to the insurance grant",
-        "refuses a role without the insurance view grant",
+        "serves the coherent policies, claims, contracts and repayments to accounting",
+        "refuses a role without the accounting view grant",
         "gives every claim a policy that exists (coherence)",
         "gives each contract a full schedule whose amounts amortise the principal",
         "summarises claims by status and loans outstanding, in SQL over the tenant",
-        "refuses the aggregates to a role without insurance view",
+        "refuses the aggregates to a role without accounting view",
         "submits, refuses self-approval (SOD), approves via a different approver, then pays",
         "refuses an approval above the role ceiling",
         "rejects a claim with a reason, and refuses a reason-less rejection",
@@ -6257,7 +6528,7 @@
         "no receipt is an orphan",
         "INV-2026-0142 agrees with itself",
         "F-030 — appointments reconcile with the technician roster",
-        "F-008 resolved: the chart of accounts balances"
+        "F-008 stays visible"
       ],
       "cases": [
         "gives every estimate a job card that exists",
@@ -6271,7 +6542,7 @@
         "gives every appointment a technician_id that resolves to a real technician row",
         "links each appointment to the technician whose name it shows",
         "groups the whole schedule under the roster, leaving no appointment unassigned",
-        "holds assets = liabilities + equity on the seeded chart of accounts"
+        "does not balance the chart of accounts on the sly"
       ],
       "caseCount": 12,
       "touchesPaths": [],

@@ -433,6 +433,25 @@ const SEAM_CALL =
   /\buse(PagedCollection|Collection|Entity|Create|Update|Delete|Bulk)\s*(?:<[^>]*>)?\s*\(\s*['"]([\w./-]+)['"]/g
 const SEAM_ANY = /\buse(?:PagedCollection|Collection|Entity|Create|Update|Delete|Bulk|Repository)\b/
 
+/** The other way through the seam: `screens/accounting/useFinanceReports.ts`'s
+ *  hooks read a server-computed aggregate (`financeReports.trialBalance()` and
+ *  siblings) rather than a collection, so they carry no `CollectionKey` for
+ *  `SEAM_CALL` to capture — a screen that calls only `useTrialBalance()` swept
+ *  the MOCK_ONLY floor the same way `FinancialReports` did before it called
+ *  `useCollection` in its own body. The label recorded in its place is the
+ *  endpoint the hook actually reads, for the same reason `dataSource` records
+ *  a collection name elsewhere: so the registry says what a screen is backed
+ *  by, not just that it is. */
+const REPORT_HOOK_CALL = /\buse(TrialBalance|InvoicesSummary|TaxReturn|InsuranceClaimsSummary|LoansSummary)\s*\(/g
+const REPORT_HOOK_ANY = /\buse(?:TrialBalance|InvoicesSummary|TaxReturn|InsuranceClaimsSummary|LoansSummary)\b/
+const REPORT_HOOK_ENDPOINT = {
+  TrialBalance: 'accounting/reports/trial-balance',
+  InvoicesSummary: 'invoices/summary',
+  TaxReturn: 'accounting/tax/return',
+  InsuranceClaimsSummary: 'insurance/claims/summary',
+  LoansSummary: 'loans/summary',
+}
+
 /** Which letter of CRUD each seam hook is.
  *
  *  `crud` was `{ create: false, read: built, update: false, delete: false }` on
@@ -501,11 +520,12 @@ const dataBackedScreens = (() => {
     const direct = new Map()
     for (const [name, body] of exportBodies(src)) {
       const calls = [...body.matchAll(SEAM_CALL)]
-      direct.set(name, {
-        body,
-        keys: [...new Set(calls.map((c) => c[2]))].sort(),
-        crud: crudFrom(calls, body),
-      })
+      const reportCalls = [...body.matchAll(REPORT_HOOK_CALL)]
+      const keys = new Set(calls.map((c) => c[2]))
+      for (const call of reportCalls) keys.add(REPORT_HOOK_ENDPOINT[call[1]])
+      const crud = crudFrom(calls, body)
+      if (reportCalls.length) crud.read = true
+      direct.set(name, { body, keys: [...keys].sort(), crud })
     }
     /* A screen that renders a sibling from the same file rather than fetching
      * for itself — the three Campaigns wrappers are exactly this — is backed by
@@ -534,7 +554,7 @@ const dataBackedScreens = (() => {
       if (!entry.name.endsWith('.tsx')) continue
       try {
         const src = fs.readFileSync(full, 'utf8')
-        if (!SEAM_ANY.test(src)) continue
+        if (!SEAM_ANY.test(src) && !REPORT_HOOK_ANY.test(src)) continue
         for (const [name, { keys, crud }] of scan(src)) {
           if (!keys.length) continue
           const prev = map.get(name)
@@ -852,7 +872,7 @@ const SURFACE_RULES = [
   [/^CallCenter/,               'call-center',  'AppShell',          'portals',     '16'],
   [/^(CustomerPortal|TechnicianPortal|SupplierPortal|ProcurementPortal)/, 'portal', 'PortalShell', 'portals', '16'],
   [/^CustomerApp\./,            'customer-app', 'CustomerAppShell',  'customerapp', '16'],
-  [/^(Splash|Welcome|LanguageSelection|RegionSelection|Login|Register|SSOLogin|SocialLogin|ForgotPassword|ResetPassword|OTPVerification|TwoFactorVerification|CreatePIN|BiometricSetup|RoleSelection|WorkspaceSelection|OrganizationSelection|ProfileCompletion|InviteAcceptance|Onboarding|TermsConditions|PrivacyPolicy|Maintenance|Error404|Unauthorized|SessionExpired|AccountLocked|LogoutConfirmation)$/,
+  [/^(Splash|Welcome|LanguageSelection|RegionSelection|Login|Register|SSOLogin|SocialLogin|ForgotPassword|ResetPassword|OTPVerification|TwoFactorVerification|CreatePIN|BiometricSetup|RoleSelection|WorkspaceSelection|OrganizationSelection|ProfileCompletion|InviteAcceptance|Onboarding|TermsConditions|PrivacyPolicy|CookiePolicy|Maintenance|Error404|Unauthorized|SessionExpired|AccountLocked|LogoutConfirmation)$/,
                                 'auth',         'AuthLayout',        'auth',        '06'],
   [/^(Dashboard|JobCards|JobDetail|JobCardDetail|Workshop|Appointments|AppointmentCalendar|OBDDiagnostics|DiagnosticReport|TechnicianKB|TechnicianSchedule|Technicians|Estimates|EstimateDetail|ApprovalInbox|CustomerApproval|WorkshopReports)/,
                                 'app',          'AppShell',          'workshop',    '08'],
@@ -888,7 +908,7 @@ const DOMAIN_GROUP = {
 }
 const DOMAIN_AGENT = {
   workshop: '08', crm: '09', parts: '10', procurement: '11', accounting: '12', hr: '14',
-  ai: '15', admin: '—', auth: '06', portals: '16', customerapp: '16', website: '17',
+  ai: '15', admin: '25', auth: '06', portals: '16', customerapp: '16', website: '17',
   ui: '04', featuremap: '08–17',
 }
 
@@ -909,6 +929,34 @@ const EXTERNAL = {
   'AR Repair Guide': 'AR device + tracked models',
   'AR Overlay': 'AR device + tracked models',
   'Drone Inspection ': 'drone hardware + flight service',
+  // Added in the featuremap triage pass (project-control/FEATUREMAP_TRIAGE.md):
+  // same test as the entries above — a named external system, not "this is
+  // unbuilt" or "the name says AI/smart". Ambiguous cases (predictive
+  // maintenance, dynamic pricing, routing optimisation, a plain VIN decode
+  // call) are left as PRODUCT backlog rather than guessed into this list.
+  'Vehicle Tracking': 'GPS/telematics device',
+  'Fleet Tracking': 'GPS/telematics device fleet',
+  'Telematics Integration': 'telematics provider integration',
+  'License Plate Recognition': 'camera + LPR vision service',
+  'Computer Vision QC': 'computer-vision model service',
+  'Video Consultations': 'video-calling provider (SDK + credentials)',
+  'Stripe Payment Processing': 'Stripe API credentials',
+  'Smart Damage Assessment': 'computer-vision damage-assessment model',
+  'ML Fraud Detection': 'trained fraud-detection model service',
+  'Neural Network Prediction': 'trained model-serving infrastructure',
+  'IoT Dashboard': 'IoT device fleet + telemetry ingestion',
+  'Edge Computing': 'edge compute infrastructure',
+  'Digital Twin Viewer': '3D twin model + live sensor feed',
+  'Sustainable Energy Monitoring': 'energy-monitoring hardware/sensors',
+  'Mobile Device Management': 'MDM platform integration',
+  'Document OCR': 'OCR provider credential',
+  'SMS Integration': 'SMS gateway credential',
+  'Social Media Integration': 'social platform API credentials',
+  'Social Media Monitoring': 'social listening provider credential',
+  'Google My Business': 'Google Business Profile API credential',
+  'AI Chatbot': 'LLM provider credential',
+  'AI Chatbot Assistant': 'LLM provider credential',
+  'AI Service Advisor': 'LLM provider credential',
 }
 
 /** The modules that are a portal rather than a module a portal reads from.
@@ -1138,19 +1186,35 @@ const { all: screenFiles, reached } = reachableScreenFiles()
 
 /** Unreachable on purpose, and reviewed as such.
  *
- *  Each file here is the pre-kit implementation of feature-map routes that
- *  render the generic `FeatureScreenView` today, kept as the reference for
- *  building the real screen. It stays unwired deliberately: routing one would
- *  put a legacy screen back in front of users. Removing an entry is how that
- *  reference retires; adding one needs the same argument, or this list becomes
- *  where dead code hides. Every other unreachable file is a bug.
+ *  A file here carries its own doc comment disclosing that it is deliberately
+ *  unwired, not forgotten. Remove an entry once that disclosure is retired —
+ *  the work it deferred lands, or the file is deleted; add one only with the
+ *  same kind of disclosure written at the file itself, or this list becomes
+ *  where dead code hides silently. Every other unreachable file is a bug.
  *
- *  Empty since the merge with main: the three files this list protected —
- *  admin/SystemScreens, emerging/EmergingTechScreens, enterprise/
- *  EnterpriseScreens — were deleted on main, which is the retirement the
- *  paragraph above describes. The mechanism stays for the next one.
+ *  - `landing/{CommandDeck,PageNav,useLandingMotion}` and `landing/pages/*`
+ *    (9 files) — the six-page "SALIS AUTO 2030" HUD tour the homepage
+ *    redesign replaced. `public/Landing.tsx`'s own doc comment: left in the
+ *    codebase, unlinked, "by the product owner's explicit decision" —
+ *    remapping that content onto the redesigned pages is a later
+ *    cascade-phase task, not an abandoned rewrite's leftovers.
+ *  - `landing/homepage/SocialProofBand.tsx` — a reserved social-proof
+ *    section with no real testimonials or logos to fill it yet. Its own doc
+ *    comment: "Phase 1 omits this section... not composed into Landing.tsx
+ *    yet for that reason."
  */
-const RETAINED_REFERENCE = [].map((f) => path.normalize(f))
+const RETAINED_REFERENCE = [
+  'src/screens/public/landing/CommandDeck.tsx',
+  'src/screens/public/landing/PageNav.tsx',
+  'src/screens/public/landing/useLandingMotion.ts',
+  'src/screens/public/landing/pages/AccessPage.tsx',
+  'src/screens/public/landing/pages/ChannelPage.tsx',
+  'src/screens/public/landing/pages/GridPage.tsx',
+  'src/screens/public/landing/pages/IndexPage.tsx',
+  'src/screens/public/landing/pages/OriginPage.tsx',
+  'src/screens/public/landing/pages/SystemPage.tsx',
+  'src/screens/public/landing/homepage/SocialProofBand.tsx',
+].map((f) => path.normalize(f))
 
 const unreached = screenFiles.filter((f) => !reached.has(f)).map((f) => path.relative(APP, f))
 const retainedFiles = unreached.filter((f) => RETAINED_REFERENCE.includes(f))

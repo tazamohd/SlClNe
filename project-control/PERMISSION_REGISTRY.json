@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "generator": "tools/docs/generators/registries.mjs",
   "regenerate": "node tools/docs/generate.mjs",
   "derivedFrom": [
@@ -292,6 +292,14 @@
         "procurement",
         "supplier",
         "customer"
+      ]
+    },
+    {
+      "field": "Inspection internal notes",
+      "fieldAr": "ملاحظات الفحص الداخلية",
+      "hiddenFrom": [
+        "customer",
+        "supplier"
       ]
     }
   ],

@@ -3,7 +3,25 @@
 import type { ScreenMeta } from '../types'
 
 /** Every designed screen with its canonical route. Parsed from
- *  handoff/SCREEN_MAP.md — 231 screens. */
+ *  handoff/SCREEN_MAP.md — 214 screens.
+ *
+ *  Two entries are hand-added rather than ported, for the same reason: no
+ *  design source exists for either capability, so there was nothing for
+ *  `port-design-data.mjs` to port.
+ *
+ *  - `DeclinedJobs` — Declined Job Tracking & Follow-Up (Sprint 1, P0).
+ *  - `HealthCheckReport` — the customer-facing DVHC report
+ *    (Sprint 2, P0).
+ *  - `CannedJobs` — predefined, priced service packages an advisor can
+ *    apply to an estimate (build-order item 5).
+ *
+ *  `npm run registry` (`build-registry.mjs`) still discovers each correctly
+ *  from its route plus its screen file; leaving them here rather than
+ *  inventing a `.dc.html` source is the honest choice (§3, §A25 — provenance
+ *  is never misrepresented). A future design-bundle regeneration should fold
+ *  these in properly. The array below must stay valid JSON (`build-registry.mjs`
+ *  parses it with `JSON.parse`, not a JS evaluator), so this note lives here
+ *  rather than as an inline comment next to either entry. */
 export const SCREENS: readonly ScreenMeta[] = [
   {
     "name": "AccountLocked",
@@ -82,6 +100,24 @@ export const SCREENS: readonly ScreenMeta[] = [
     "route": "/approval-inbox",
     "hasMobile": false,
     "purpose": "Approve/reject items above your delegated limit"
+  },
+  {
+    "name": "DeclinedJobs",
+    "route": "/declined-jobs",
+    "hasMobile": false,
+    "purpose": "Track declined estimate lines for advisor follow-up and recovered revenue"
+  },
+  {
+    "name": "CannedJobs",
+    "route": "/canned-jobs",
+    "hasMobile": false,
+    "purpose": "Maintain predefined, priced service packages and apply one to an estimate"
+  },
+  {
+    "name": "HealthCheckReport",
+    "route": "/customer-portal/health-check-report",
+    "hasMobile": true,
+    "purpose": "Customer-facing digital vehicle health check: findings, severity and photo/video evidence for one visit"
   },
   {
     "name": "AuditLog",

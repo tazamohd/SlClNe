@@ -740,42 +740,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "AI-Automation",
-          "route": "/ai-automation",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI-Chatbot",
-          "route": "/ai-chatbot",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI-Chatbot-Assistant",
-          "route": "/ai-chatbot-assistant",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "AI-Service-Advisor",
-          "route": "/ai-service-advisor",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "AIAnalytics",
           "route": "/aianalytics",
           "status": "built",
@@ -853,11 +817,38 @@
       "id": "admin",
       "label": "Administration",
       "group": "G9",
-      "agent": "—",
+      "agent": "25",
       "items": [
         {
           "name": "AdvancedSettings",
           "route": "/advanced-settings",
+          "status": "built",
+          "mobile": "designed",
+          "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "DeclinedJobs",
+          "route": "/declined-jobs",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "CannedJobs",
+          "route": "/canned-jobs",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "HealthCheckReport",
+          "route": "/customer-portal/health-check-report",
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
@@ -892,24 +883,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "CookiePolicy",
-          "route": "/cookie-policy",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "DeclinedJobs",
-          "route": "/declined-jobs",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "GlobalSearch",
           "route": "/global-search",
           "status": "built",
@@ -924,24 +897,6 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "ML-Fraud-Detection",
-          "route": "/ml-fraud-detection",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "Neural-Network-Prediction",
-          "route": "/neural-network-prediction",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1000,15 +955,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "Smart-Damage-Assessment",
-          "route": "/smart-damage-assessment",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "Subscription",
           "route": "/subscription",
           "status": "built",
@@ -1022,7 +968,7 @@
           "route": "/super-admin",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1052,24 +998,6 @@
           "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
-        },
-        {
-          "name": "Voice-Command-Interface",
-          "route": "/voice-command-interface",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "Voice-Commands",
-          "route": "/voice-commands",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
         }
       ]
     },
@@ -1094,6 +1022,15 @@
           "status": "built",
           "mobile": "designed",
           "mobileDone": true,
+          "source": "design",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "CookiePolicy",
+          "route": "/cookie-policy",
+          "status": "built",
+          "mobile": "responsive",
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1353,7 +1290,7 @@
           "route": "/call-center/logs",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": true,
+          "mobileDone": false,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1635,24 +1572,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal · CompanyStory",
-          "route": "/public-portal/story",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "PublicPortal · ComparePlans",
-          "route": "/public-portal/compare-plans",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "PublicPortal · Contact",
           "route": "/public-portal/contact",
           "status": "built",
@@ -1716,15 +1635,6 @@
           "category": "PRODUCT"
         },
         {
-          "name": "PublicPortal · GettingStarted",
-          "route": "/public-portal/getting-started",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
           "name": "PublicPortal · Industries",
           "route": "/public-portal/industries",
           "status": "built",
@@ -1781,15 +1691,6 @@
         {
           "name": "PublicPortal · PartsAccessories",
           "route": "/public-portal/parts-accessories",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "PublicPortal · Platform",
-          "route": "/public-portal/platform",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -1880,15 +1781,6 @@
         {
           "name": "PublicPortal · SupplierPortal",
           "route": "/public-portal/supplier-portal",
-          "status": "built",
-          "mobile": "responsive",
-          "mobileDone": false,
-          "source": "design",
-          "category": "PRODUCT"
-        },
-        {
-          "name": "PublicPortal · SupplyChain",
-          "route": "/public-portal/supply-chain",
           "status": "built",
           "mobile": "responsive",
           "mobileDone": false,
@@ -2377,7 +2269,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Vehicle Storage",
@@ -2404,7 +2296,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Tire Management",
@@ -2449,7 +2341,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Vehicle Walkaround",
@@ -2467,7 +2359,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Diagnostics OBD Hub",
@@ -2548,7 +2440,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Video Estimates",
@@ -2566,7 +2458,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Stripe Payment Processing",
@@ -2575,7 +2467,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Refund Management",
@@ -3583,7 +3475,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Social Media Monitoring",
@@ -3592,7 +3484,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Google My Business",
@@ -3601,7 +3493,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Chat",
@@ -3730,6 +3622,87 @@
           "category": "PRODUCT"
         },
         {
+          "name": "AI Automation",
+          "route": "/ai-automation",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "PRODUCT"
+        },
+        {
+          "name": "AI Chatbot",
+          "route": "/ai-chatbot",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "AI Chatbot Assistant",
+          "route": "/ai-chatbot-assistant",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "AI Service Advisor",
+          "route": "/ai-service-advisor",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Voice Commands",
+          "route": "/voice-commands",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Voice Command Interface",
+          "route": "/voice-command-interface",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Smart Damage Assessment",
+          "route": "/smart-damage-assessment",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "ML Fraud Detection",
+          "route": "/ml-fraud-detection",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
+          "name": "Neural Network Prediction",
+          "route": "/neural-network-prediction",
+          "status": "kit",
+          "mobile": "responsive",
+          "mobileDone": false,
+          "source": "spec",
+          "category": "EXTERNAL_DEPENDENCY"
+        },
+        {
           "name": "Emerging Technologies",
           "route": "/emerging-technologies",
           "status": "kit",
@@ -3754,7 +3727,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Edge Computing",
@@ -3763,7 +3736,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Twin Viewer",
@@ -3772,7 +3745,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Drone Inspection",
@@ -3844,7 +3817,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Digital Signage",
@@ -3871,7 +3844,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Document Management",
@@ -3889,7 +3862,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Data Import Export",
@@ -3997,7 +3970,7 @@
           "mobile": "responsive",
           "mobileDone": false,
           "source": "spec",
-          "category": "PRODUCT"
+          "category": "EXTERNAL_DEPENDENCY"
         },
         {
           "name": "Sales Guide",
@@ -4012,8 +3985,8 @@
     }
   ],
   "totals": {
-    "total": 433,
-    "built": 433,
-    "designedMobile": 113
+    "total": 430,
+    "built": 430,
+    "designedMobile": 114
   }
 }

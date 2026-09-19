@@ -186,6 +186,127 @@ export interface DeclinedJobRow extends EntityMeta {
   resolvedAt: string | null
 }
 
+/** One overlay drawn on a piece of DVHC evidence, in the media's own 0–1
+ *  fractional coordinates. Mirrors `packages/contract/src/entities/inspection.ts`'s
+ *  `inspectionAnnotation`. */
+export interface InspectionAnnotation {
+  type: 'arrow' | 'box' | 'text'
+  x: number
+  y: number
+  x2?: number
+  y2?: number
+  text?: string
+  color: 'blue' | 'orange'
+}
+
+/** A DVHC inspection finding, as `GET /inspection-findings` presents it
+ *  (Sprint 2, P0). No design fixture — the capability is new — so the shape is
+ *  declared here rather than inferred, like `DeclinedJobRow`. Read-only
+ *  through the collection except for `PATCH` (severity, notes, the estimate
+ *  line link); creation is only ever `POST /job-cards/:id/inspection-findings`
+ *  (`screens/workshop/inspection-api.ts`), never this collection's `POST`. */
+export interface InspectionFindingRow extends EntityMeta {
+  jobCardId: string
+  category: string
+  categoryAr: string | null
+  item: string
+  itemAr: string | null
+  severity: 'ok' | 'monitor' | 'attention' | 'urgent' | 'unsafe'
+  /** Shop-only. Server-redacted to `null` for a customer-scoped principal —
+   *  see `server/src/registry.ts`'s `REDACTIONS` — so this can genuinely be
+   *  `null` here even on a row the caller may otherwise fully read. */
+  internalNote: string | null
+  customerNote: string | null
+  estimateLineId: string | null
+  recordedBy: string | null
+}
+
+/** The photo/video evidence attached to a finding, as `GET /inspection-media`
+ *  presents it. `url` is the only way to reach the bytes — never a storage
+ *  path — and works the same way whether the row came from this collection or
+ *  from a health-check report. Read-only except for `PATCH` (`annotations`);
+ *  creation is only ever the multipart `POST /inspection-findings/:id/media`. */
+export interface InspectionMediaRow extends EntityMeta {
+  findingId: string
+  jobCardId: string
+  kind: 'photo' | 'video'
+  stage: 'before' | 'after'
+  mimeType: string
+  sizeBytes: number
+  annotations: InspectionAnnotation[]
+  uploadedBy: string | null
+  url: string
+}
+
+/** The six items `WorkshopDelivery.tsx`'s checklist walks. Mirrors
+ *  `packages/contract/src/entities/deliverySignoff.ts`'s
+ *  `deliverySignoffChecklist`. */
+export interface DeliverySignoffChecklist {
+  customerNotified: boolean
+  keysReturned: boolean
+  documentsReady: boolean
+  invoiceAttached: boolean
+  cleaned: boolean
+  qualityCheck: boolean
+}
+
+/** Customer sign-off at delivery, as `GET /delivery-signoffs` presents it
+ *  (Sprint 2, P0). No design fixture — the capability is new — so the shape
+ *  is declared here rather than inferred, like `InspectionFindingRow`.
+ *  Read-only through the collection except for `PATCH` (checklist,
+ *  odometer); creation is only ever the multipart
+ *  `POST /job-cards/:id/delivery-signoff` (`screens/workshop/delivery-api.ts`),
+ *  never this collection's `POST`. */
+export interface DeliverySignoffRow extends EntityMeta {
+  jobCardId: string
+  signedByName: string
+  agreedAt: string
+  checklist: DeliverySignoffChecklist
+  odometerOut: number | null
+  mimeType: string
+  sizeBytes: number
+  /** `GET /delivery-signoffs/:id/signature` — the only way to reach the
+   *  signature image's bytes, never a storage path. */
+  url: string
+}
+
+/** A canned job — a predefined, priced service package (build-order item
+ *  5), as `GET /canned-jobs` presents it. No design fixture — the capability
+ *  is new — so the shape is declared here rather than inferred, like
+ *  `DeclinedJobRow`. Read-only through the collection except for `PATCH`;
+ *  creation is only ever `POST /canned-jobs`
+ *  (`screens/workshop/canned-job-api.ts`), never this collection's `POST`. */
+export interface CannedJobRow extends EntityMeta {
+  name: string
+  nameAr: string | null
+  category: string | null
+  description: string | null
+  active: boolean
+  priceHalalas: number
+  lineCount: number
+}
+
+/** An equipment warranty — cover on the shop's own tools and fixed assets
+ *  (a lift, a scanner, a paint booth), never a customer's vehicle (BLK-004),
+ *  as `GET /equipment-warranties` presents it. No design fixture — the shape
+ *  is declared here rather than inferred, like `CannedJobRow`. Writable
+ *  through the generic collection: create, edit, delete and the one
+ *  lifecycle move (`active` → `claimed`) are all a plain `POST`/`PATCH`/
+ *  `DELETE` on this same collection, unlike `cannedJobs`, which needs a
+ *  bespoke route. */
+export interface EquipmentWarrantyRow extends EntityMeta {
+  warrantyNumber: string
+  itemName: string
+  provider: string
+  coverage: 'full' | 'limited' | 'extended'
+  start: string
+  end: string
+  status: 'active' | 'claimed' | 'expired'
+  claimedAt: string | null
+  claimNotes: string | null
+  notes: string | null
+}
+
 export interface BankStatementRow extends EntityMeta {
   date: string
   description: string
@@ -544,6 +665,10 @@ export interface Repository {
   appointments: Collection<AppointmentRow>
   estimates: Collection<EstimateRow>
   declinedJobs: Collection<DeclinedJobRow>
+  inspectionFindings: Collection<InspectionFindingRow>
+  inspectionMedia: Collection<InspectionMediaRow>
+  deliverySignoffs: Collection<DeliverySignoffRow>
+  cannedJobs: Collection<CannedJobRow>
   customers: Collection<CustomerRow>
   fleets: Collection<WithMeta<(typeof T.FLEETS)[number]>>
   parts: Collection<PartRow>
@@ -572,6 +697,7 @@ export interface Repository {
   suppliers: Collection<SupplierRow>
   requisitions: Collection<RequisitionRow>
   purchaseOrders: Collection<PurchaseOrderRow>
+  equipmentWarranties: Collection<EquipmentWarrantyRow>
   receipts: Collection<WithMeta<(typeof T.RECEIPTS)[number]>>
   departments: Collection<WithMeta<(typeof T.DEPARTMENTS)[number]>>
   aiAgents: Collection<WithMeta<(typeof T.AI_AGENTS)[number]>>
@@ -605,6 +731,10 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   appointments: 'appointments',
   estimates: 'estimates',
   declinedJobs: 'declined-jobs',
+  inspectionFindings: 'inspection-findings',
+  inspectionMedia: 'inspection-media',
+  deliverySignoffs: 'delivery-signoffs',
+  cannedJobs: 'canned-jobs',
   invoices: 'invoices',
   invoiceLines: 'invoice-lines',
   invoicePayments: 'payments',
@@ -635,6 +765,7 @@ export const ENDPOINTS: Readonly<Record<CollectionKey, string>> = {
   suppliers: 'procurement/suppliers',
   requisitions: 'procurement/requisitions',
   purchaseOrders: 'procurement/purchase-orders',
+  equipmentWarranties: 'equipment-warranties',
   aiAgents: 'ai/agents',
   conversations: 'ai/conversations',
   obdDevices: 'diagnostics/devices',
@@ -841,6 +972,29 @@ export const mockRepository: Repository = {
    * false), so there is nothing to seed here. The live API serves rows once a
    * line has actually been declined. */
   declinedJobs: fixture<DeclinedJobRow>([]),
+  /* No design fixture — DVHC is new (Sprint 2, P0). An empty read-only mock is
+   * the honest fixture, same reasoning as declinedJobs: every finding is born
+   * from `POST /job-cards/:id/inspection-findings` and every media row from a
+   * multipart upload, neither of which the fixture repository can perform
+   * (`isLive` is false) — `screens/workshop/inspection-api.ts` refuses both
+   * outright in that mode rather than routing through this collection. */
+  inspectionFindings: fixture<InspectionFindingRow>([]),
+  inspectionMedia: fixture<InspectionMediaRow>([]),
+  /* No design fixture — customer sign-off at delivery is new (Sprint 2, P0).
+   * An empty read-only mock is the honest fixture, same reasoning as
+   * inspectionFindings: every row is born from
+   * `POST /job-cards/:id/delivery-signoff`, which the fixture repository
+   * cannot perform (`isLive` is false) — `screens/workshop/delivery-api.ts`
+   * refuses it outright in that mode rather than routing through this
+   * collection. */
+  deliverySignoffs: fixture<DeliverySignoffRow>([]),
+  /* No design fixture — canned jobs are new (build-order item 5). An empty
+   * read-only mock is the honest fixture, same reasoning as declinedJobs:
+   * every row is born from `POST /canned-jobs`, which the fixture
+   * repository cannot perform (`isLive` is false) —
+   * `screens/workshop/canned-job-api.ts` refuses it outright in that mode
+   * rather than routing through this collection. */
+  cannedJobs: fixture<CannedJobRow>([]),
   customers: fixture(T.CUSTOMERS),
   fleets: fixture(T.FLEETS),
   parts: fixture(T.PARTS),
@@ -885,6 +1039,12 @@ export const mockRepository: Repository = {
   suppliers: fixture<SupplierRow>([]),
   requisitions: fixture<RequisitionRow>([]),
   purchaseOrders: fixture<PurchaseOrderRow>([]),
+  /* No design fixture — equipment warranties are new (BLK-004). Unlike
+   * `cannedJobs`/`declinedJobs`, a warranty is born from a plain create on
+   * this same collection rather than a bespoke route, so `fixture()`'s
+   * generic create/update/delete genuinely works here in demo mode too —
+   * session-local, same as everywhere else `isLive` is false. */
+  equipmentWarranties: fixture<EquipmentWarrantyRow>([]),
   receipts: fixture(T.RECEIPTS),
   departments: fixture(T.DEPARTMENTS),
   aiAgents: fixture(T.AI_AGENTS),

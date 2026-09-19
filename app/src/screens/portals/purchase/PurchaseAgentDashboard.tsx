@@ -1,53 +1,73 @@
 import { KpiCard } from '@/components/ui/KpiCard'
 import { Badge } from '@/components/ui/Badge'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { Loading, ErrorState } from '@/components/ui/States'
 import { MobileCardHeader, MobileCardRow } from '@/components/shell/MobileShell'
-import { Money, formatSar } from '@/components/ui/Money'
+import { Money } from '@/components/ui/Money'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-interface RecentOrder {
-  id: string
-  supplier: string
-  items: number
-  total: number
-  date: string
-  status: 'Delivered' | 'In Transit' | 'Pending' | 'Cancelled'
+type PurchaseOrder = RowOf<'purchaseOrders'>
+
+const STATUS_LABEL: Record<PurchaseOrder['status'], string> = {
+  draft: 'Draft',
+  approved: 'Approved',
+  sent: 'Sent',
+  receiving: 'Receiving',
+  received: 'Received',
+  closed: 'Closed',
 }
 
-const RECENT_ORDERS: RecentOrder[] = [
-  { id: 'PO-2401', supplier: 'Al-Futtaim Parts', items: 15, total: 12500, date: '2025-08-17', status: 'In Transit' },
-  { id: 'PO-2398', supplier: 'Brembo KSA', items: 8, total: 8400, date: '2025-08-15', status: 'Delivered' },
-  { id: 'PO-2395', supplier: 'NGK Middle East', items: 24, total: 3600, date: '2025-08-14', status: 'Delivered' },
-  { id: 'PO-2390', supplier: 'Gates Automotive', items: 5, total: 6200, date: '2025-08-12', status: 'Pending' },
-  { id: 'PO-2385', supplier: 'Denso Gulf', items: 12, total: 4800, date: '2025-08-10', status: 'Delivered' },
-]
-
-const STATUS_STYLES: Record<string, { bg: string; fg: string }> = {
-  Delivered: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  'In Transit': { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-  Pending: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-  Cancelled: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+const STATUS_STYLES: Record<PurchaseOrder['status'], { bg: string; fg: string }> = {
+  draft: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  approved: { bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+  sent: { bg: 'rgba(10,94,215,.15)', fg: 'var(--salis-blue)' },
+  receiving: { bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+  received: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
+  closed: { bg: 'var(--tint-neutral)', fg: 'var(--text-muted)' },
 }
 
+/* This screen was MOCK_ONLY (BLK-004): every KPI and every "recent order"
+ * row (a fictional Al-Futtaim Parts order, ...) was a hardcoded fixture.
+ *
+ * Reads the same `purchaseOrders`, `suppliers` and `requisitions`
+ * collections `ProcurementPortal` (Procurement.tsx) already reads, using
+ * the server's own status vocabulary (draft/approved/sent/receiving/
+ * received/closed) the same way PurchaseOrdersList.tsx does — not the
+ * design's unrelated one. "Monthly Spend" (a figure this API doesn't
+ * compute) becomes "Open Order Value": the real total of orders still
+ * with a supplier. */
 export function PurchaseAgentDashboard() {
   const { t } = usePreferences()
+  const orders = useCollection('purchaseOrders')
+  const suppliers = useCollection('suppliers')
+  const requisitions = useCollection('requisitions', { filter: { status: 'submitted' } })
+
+  const rows = (orders.data ?? []) as readonly PurchaseOrder[]
+  const open = rows.filter((po) => po.status === 'sent' || po.status === 'receiving')
+  const openValue = open.reduce((sum, po) => sum + po.totalHalalas, 0) / 100
+  const recent = rows.slice(0, 5)
+
+  const loading = orders.isLoading || suppliers.isLoading || requisitions.isLoading
 
   const kpis = [
-    { label: t('Open Orders'), value: '8', icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Monthly Spend'), value: formatSar(45200), icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
-    { label: t('Pending Approvals'), value: '3', icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Active Suppliers'), value: '12', icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Open Orders'), value: loading ? '…' : String(open.length), icon: 'ShoppingCart', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Open Order Value'), value: loading ? '…' : `SAR ${openValue.toLocaleString('en-US')}`, icon: 'Wallet', bg: 'var(--tint-bright)', fg: 'var(--salis-blue-bright)' },
+    { label: t('Pending Approvals'), value: loading ? '…' : String(requisitions.data?.length ?? 0), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Active Suppliers'), value: loading ? '…' : String(suppliers.data?.length ?? 0), icon: 'Users', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
   ]
 
-  const columns: Column<RecentOrder>[] = [
-    { header: t('Order'), cell: (o) => o.id },
-    { header: t('Supplier'), cell: (o) => o.supplier },
-    { header: t('Items'), cell: (o) => o.items },
-    { header: t('Total'), cell: (o) => <Money sar={o.total} /> },
-    { header: t('Date'), cell: (o) => o.date },
-    { header: t('Status'), cell: (o) => <Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge> },
+  const columns: Column<PurchaseOrder>[] = [
+    { header: t('Order'), cell: (o) => o.code, code: true },
+    { header: t('Supplier'), cell: (o) => o.supplierName },
+    { header: t('Total'), cell: (o) => <Money sar={o.totalHalalas / 100} /> },
+    { header: t('Ordered'), cell: (o) => o.orderedAt ?? '—' },
+    { header: t('Status'), cell: (o) => <Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(STATUS_LABEL[o.status])}</Badge> },
   ]
+
+  if (orders.isLoading) return <Loading label={t('Loading purchase orders...')} />
+  if (orders.isError) return <ErrorState description={orders.error?.message} onRetry={() => void orders.refetch()} />
 
   return (
     <div className="flex animate-fade-up flex-col gap-6 motion-reduce:animate-none">
@@ -62,14 +82,14 @@ export function PurchaseAgentDashboard() {
       <DataTable
         caption="Recent purchase orders"
         columns={columns}
-        rows={RECENT_ORDERS}
+        rows={recent}
         rowKey={(o) => o.id}
+        empty={<p className="py-8 text-center text-sm text-muted">{t('No purchase orders found')}</p>}
         mobileCard={(o) => (
           <>
-            <MobileCardHeader title={o.id} trailing={<Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(o.status)}</Badge>} />
-            <MobileCardRow label={t('Supplier')}>{o.supplier}</MobileCardRow>
-            <MobileCardRow label={t('Total')}><Money sar={o.total} /></MobileCardRow>
-            <MobileCardRow label={t('Date')}>{o.date}</MobileCardRow>
+            <MobileCardHeader title={o.code} code trailing={<Badge background={STATUS_STYLES[o.status].bg} color={STATUS_STYLES[o.status].fg}>{t(STATUS_LABEL[o.status])}</Badge>} />
+            <MobileCardRow label={t('Supplier')}>{o.supplierName}</MobileCardRow>
+            <MobileCardRow label={t('Total')}><Money sar={o.totalHalalas / 100} /></MobileCardRow>
           </>
         )}
       />

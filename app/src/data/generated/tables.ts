@@ -501,6 +501,8 @@ export const CAMPAIGNS = [
     "name": "Summer Service Offer",
     "type": "email",
     "status": "running",
+    "start": "",
+    "end": "",
     "reach": 2450,
     "opens": 1840,
     "clicks": 612,
@@ -512,6 +514,8 @@ export const CAMPAIGNS = [
     "name": "Ramadan Discount",
     "type": "sms",
     "status": "completed",
+    "start": "",
+    "end": "",
     "reach": 5200,
     "opens": 4800,
     "clicks": 0,
@@ -523,6 +527,8 @@ export const CAMPAIGNS = [
     "name": "New Customer Welcome",
     "type": "whatsapp",
     "status": "running",
+    "start": "",
+    "end": "",
     "reach": 890,
     "opens": 780,
     "clicks": 245,
@@ -534,6 +540,8 @@ export const CAMPAIGNS = [
     "name": "Fleet Owner Outreach",
     "type": "email",
     "status": "scheduled",
+    "start": "",
+    "end": "",
     "reach": 0,
     "opens": 0,
     "clicks": 0,
@@ -545,6 +553,8 @@ export const CAMPAIGNS = [
     "name": "Service Reminder",
     "type": "sms",
     "status": "running",
+    "start": "",
+    "end": "",
     "reach": 3100,
     "opens": 2900,
     "clicks": 0,
@@ -1238,11 +1248,38 @@ export const SYS_INTEGRATIONS = [
     "ar_detail": "مزامنة الدفاتر للمنشآت الصغيرة"
   },
   {
+    "name": "Xero",
+    "ar": "زيرو",
+    "cat": "ERP",
+    "icon": "BookOpen",
+    "status": "available",
+    "detail": "Cloud invoicing & reconciliation",
+    "ar_detail": "الفوترة السحابية والتسوية"
+  },
+  {
+    "name": "Oracle Financials",
+    "ar": "أوراكل للشؤون المالية",
+    "cat": "ERP",
+    "icon": "HardDrive",
+    "status": "available",
+    "detail": "GL consolidation & multi-entity close",
+    "ar_detail": "دمج دفتر الأستاذ وإقفال متعدد الكيانات"
+  },
+  {
+    "name": "Sage",
+    "ar": "سيج",
+    "cat": "ERP",
+    "icon": "Briefcase",
+    "status": "available",
+    "detail": "Payroll & fixed-asset ledgers",
+    "ar_detail": "دفاتر الرواتب والأصول الثابتة"
+  },
+  {
     "name": "WhatsApp Business",
     "ar": "واتساب للأعمال",
     "cat": "Messaging",
     "icon": "MessageCircle",
-    "status": "connected",
+    "status": "available",
     "detail": "Approvals, reminders, invoices",
     "ar_detail": "الاعتمادات والتذكيرات والفواتير"
   },
@@ -1251,7 +1288,7 @@ export const SYS_INTEGRATIONS = [
     "ar": "يونيفونيك للرسائل",
     "cat": "Messaging",
     "icon": "MessageSquare",
-    "status": "connected",
+    "status": "available",
     "detail": "OTP & transactional SMS",
     "ar_detail": "رموز التحقق والرسائل التشغيلية"
   }

@@ -373,6 +373,128 @@ export const declinedJobs = pgTable(
   }),
 )
 
+/** Digital Vehicle Health Check — inspection findings (Sprint 2, P0). One row
+ *  per checklist point on one job card; see `packages/contract/src/entities/inspection.ts`
+ *  for why `internalNote` and `customerNote` are kept apart. */
+export const inspectionFindings = pgTable(
+  'inspection_findings',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    category: varchar('category', { length: 64 }).notNull(),
+    categoryAr: varchar('category_ar', { length: 64 }),
+    item: varchar('item', { length: 120 }).notNull(),
+    itemAr: varchar('item_ar', { length: 120 }),
+    /** The DVHC ladder: ok, monitor, attention, urgent, unsafe. */
+    severity: varchar('severity', { length: 16 }).notNull().default('ok'),
+    internalNote: text('internal_note'),
+    customerNote: text('customer_note'),
+    /** The estimate line this finding was priced onto, once one exists. */
+    estimateLineId: varchar('estimate_line_id', { length: ULID_LENGTH }),
+    recordedBy: varchar('recorded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byJob: index('inspection_findings_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Photo/video evidence attached to an inspection finding. The bytes live on
+ *  disk (`server/src/storage/media.ts`); `storageKey` is the only pointer to
+ *  them a row carries — it is never returned to a client, which instead reads
+ *  `GET /inspection-media/:id/file`. */
+export const inspectionMedia = pgTable(
+  'inspection_media',
+  {
+    ...tenant,
+    findingId: varchar('finding_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the finding so RLS and queries never need the join
+     *  just to know which job card a piece of evidence belongs to. */
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    kind: varchar('kind', { length: 8 }).notNull(),
+    stage: varchar('stage', { length: 8 }).notNull().default('before'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+    /** Arrow/box/text overlays, in the media's own 0–1 fractional coordinates. */
+    annotations: jsonb('annotations').notNull().default(sql`'[]'::jsonb`),
+    uploadedBy: varchar('uploaded_by', { length: ULID_LENGTH }),
+  },
+  (t) => ({
+    byFinding: index('inspection_media_finding_idx').on(t.orgId, t.findingId),
+    byJob: index('inspection_media_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Customer sign-off at delivery (Sprint 2, P0). One row per job card — the
+ *  signature image lives on disk (`server/src/storage/media.ts`), `storageKey`
+ *  is the only pointer to it a row carries, and it is served only through
+ *  `GET /delivery-signoffs/:id/signature`. */
+export const deliverySignoffs = pgTable(
+  'delivery_signoffs',
+  {
+    ...tenant,
+    jobCardId: varchar('job_card_id', { length: ULID_LENGTH }).notNull(),
+    /** Denormalised from the job card at creation time, not trusted from the
+     *  request — the person signing on the shared device is a customer, not
+     *  the staff principal making the call. */
+    signedByName: varchar('signed_by_name', { length: 200 }).notNull(),
+    agreedAt: timestamp('agreed_at', { withTimezone: true }).notNull(),
+    /** `customerNotified`/`keysReturned`/`documentsReady`/`invoiceAttached`/
+     *  `cleaned`/`qualityCheck` — filled in once the advisor has walked it. */
+    checklist: jsonb('checklist').notNull().default(sql`'{}'::jsonb`),
+    odometerOut: integer('odometer_out'),
+    storageKey: varchar('storage_key', { length: 255 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    sizeBytes: integer('size_bytes').notNull(),
+  },
+  (t) => ({
+    byJob: index('delivery_signoffs_job_idx').on(t.orgId, t.jobCardId),
+  }),
+)
+
+/** Canned Jobs — predefined, priced service packages (build-order item 5).
+ *  `priceHalalas`/`lineCount` are stored, computed at write time from `lines`
+ *  the same way `estimates.subtotalHalalas` is computed from `estimate_lines`
+ *  — never derived from a join at read time. */
+export const cannedJobs = pgTable(
+  'canned_jobs',
+  {
+    ...tenant,
+    name: varchar('name', { length: 160 }).notNull(),
+    nameAr: varchar('name_ar', { length: 160 }),
+    category: varchar('category', { length: 64 }),
+    description: text('description'),
+    active: boolean('active').notNull().default(true),
+    priceHalalas: money('price_halalas').notNull().default(0),
+    lineCount: integer('line_count').notNull().default(0),
+  },
+  (t) => ({
+    byOrg: index('canned_jobs_org_idx').on(t.orgId, t.branchId, t.active),
+  }),
+)
+
+/** One line of a canned job's bundle — the same shape `estimate_lines`
+ *  carries, copied verbatim into an estimate when the package is applied
+ *  (never referenced live, so a later catalog price change cannot silently
+ *  move an estimate someone already priced from it). */
+export const cannedJobLines = pgTable(
+  'canned_job_lines',
+  {
+    ...tenant,
+    cannedJobId: varchar('canned_job_id', { length: ULID_LENGTH }).notNull(),
+    description: varchar('description', { length: 300 }).notNull(),
+    descriptionAr: varchar('description_ar', { length: 300 }),
+    kind: varchar('kind', { length: 16 }).notNull(),
+    qty: doublePrecision('qty').notNull(),
+    unitPriceHalalas: money('unit_price_halalas').notNull(),
+    partSku: varchar('part_sku', { length: 64 }),
+    sort: integer('sort').notNull().default(0),
+  },
+  (t) => ({
+    byCannedJob: index('canned_job_lines_job_idx').on(t.orgId, t.cannedJobId),
+  }),
+)
+
 export const invoices = pgTable(
   'invoices',
   {
@@ -668,12 +790,21 @@ export const campaigns = pgTable('campaigns', {
   name: varchar('name', { length: 200 }).notNull(),
   type: varchar('type', { length: 24 }).notNull(),
   status: varchar('status', { length: 24 }).notNull(),
+  startDate: date('start_date'),
+  endDate: date('end_date'),
   reach: integer('reach').notNull().default(0),
   opens: integer('opens').notNull().default(0),
   clicks: integer('clicks').notNull().default(0),
   conversions: integer('conversions').notNull().default(0),
   budgetHalalas: money('budget_halalas').notNull().default(0),
   spentHalalas: money('spent_halalas').notNull().default(0),
+  /** When `POST /crm/campaigns/:id/send` last dispatched this campaign to its
+   *  provider, and whether that dispatch came from the mock transport. Neither
+   *  column claims a recipient was reached — this deployment resolves no
+   *  audience for a campaign, so a dispatch confirms the provider accepted the
+   *  request, nothing about delivery. */
+  lastDispatchedAt: timestamp('last_dispatched_at', { withTimezone: true }),
+  lastDispatchMock: boolean('last_dispatch_mock'),
 })
 
 export const segments = pgTable('segments', {
@@ -969,6 +1100,37 @@ export const loanRepayments = pgTable(
   },
   (t) => ({
     byContract: index('loan_repayments_contract_idx').on(t.orgId, t.loanContractId, t.sequence),
+  }),
+)
+
+/** Equipment warranties — cover on the shop's own tools and fixed assets
+ *  (a lift, a scanner, a paint booth), not a customer's vehicle. Writable
+ *  through the generic router — `accounting:c/e/d` — same as `suppliers`:
+ *  a flat directory with one lifecycle move (`active` → `claimed`), not a
+ *  document with lines. `claimedAt` is server-derived from the status
+ *  transition (`writers.ts`), the same discipline `declined_jobs.resolvedAt`
+ *  uses, so a claim date can never be typed in rather than recorded when it
+ *  actually happened. */
+export const equipmentWarranties = pgTable(
+  'equipment_warranties',
+  {
+    ...tenant,
+    warrantyNumber: varchar('warranty_number', { length: 32 }).notNull(),
+    itemName: varchar('item_name', { length: 200 }).notNull(),
+    provider: varchar('provider', { length: 200 }).notNull(),
+    /** `full` · `limited` · `extended`. */
+    coverage: varchar('coverage', { length: 24 }).notNull().default('full'),
+    startDate: date('start_date').notNull(),
+    endDate: date('end_date').notNull(),
+    /** `active` · `claimed` · `expired`. */
+    status: varchar('status', { length: 16 }).notNull().default('active'),
+    claimedAt: timestamp('claimed_at', { withTimezone: true }),
+    claimNotes: text('claim_notes'),
+    notes: text('notes'),
+  },
+  (t) => ({
+    numberPerOrg: uniqueIndex('equipment_warranties_org_number_idx').on(t.orgId, t.warrantyNumber),
+    byOrg: index('equipment_warranties_org_idx').on(t.orgId, t.branchId, t.status),
   }),
 )
 

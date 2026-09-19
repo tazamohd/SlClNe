@@ -58,6 +58,17 @@ describe('CRM collections are writable server-side (F-027 landed)', () => {
   })
 })
 
+describe('campaign CRUD and dispatch are real server-side (build-order item 7, landed)', () => {
+  it('LANDED: `campaigns` is writable — POST/PATCH/DELETE /crm/campaigns back CampaignFormModal', () => {
+    expect(defineBlock('campaigns')).toMatch(/writable:\s*true/)
+  })
+
+  it('LANDED: a campaign send route exists, refusing honestly rather than faking delivery', () => {
+    expect(routeFiles).toMatch(/campaigns\/:id\/send/)
+    expect(routeFiles).toMatch(/MessagingUnavailable/)
+  })
+})
+
 describe('customer feedback has a home server-side (F-027 landed)', () => {
   it('LANDED: a `feedback` collection is registered at customer-feedback — POST /customer-feedback backs the capture form', () => {
     expect(registry).toMatch(/key:\s*'feedback'/)

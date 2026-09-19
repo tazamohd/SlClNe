@@ -12,7 +12,7 @@
 
 # Requirements traceability matrix
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 ## The chain
 
@@ -26,24 +26,24 @@ Every link below is derived from a real identifier — a permission module, a ta
 
 | Objective | Capability | Requirement | Entities | Endpoints | Permissioned roles | Screens | Rules | Linked test suites |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 14 | 88 | 12 | 23 | 0 | 21 |
-| OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 4 | 0 | 14 |
-| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 5 | 0 | 8 |
-| OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 8 | 5 | 11 |
-| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 3 | 4 | 3 |
+| OBJ-THROUGHPUT | CAP-WORKSHOP | FR-WORKSHOP-001 | 18 | 128 | 12 | 19 | 0 | 25 |
+| OBJ-RETENTION | CAP-CUSTOMERS | FR-CUSTOMERS-001 | 2 | 19 | 9 | 3 | 0 | 14 |
+| OBJ-THROUGHPUT | CAP-VEHICLES | FR-VEHICLES-001 | 1 | 9 | 11 | 4 | 0 | 8 |
+| OBJ-MARGIN | CAP-INVENTORY | FR-INVENTORY-001 | 1 | 13 | 9 | 7 | 5 | 11 |
+| OBJ-MARGIN | CAP-PROCUREMENT | FR-PROCUREMENT-001 | 3 | 28 | 8 | 1 | 4 | 3 |
 | OBJ-CASH | CAP-BILLING | FR-BILLING-001 | 4 | 25 | 9 | 6 | 0 | 13 |
-| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 9 | 50 | 5 | 8 | 0 | 12 |
-| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 11 | 2 | 8 |
-| OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 45 | 7 | 13 | 0 | 6 |
+| OBJ-CASH | CAP-ACCOUNTING | FR-ACCOUNTING-001 | 10 | 59 | 5 | 8 | 0 | 13 |
+| OBJ-CAPACITY | CAP-HR | FR-HR-001 | 6 | 52 | 10 | 5 | 2 | 8 |
+| OBJ-RETENTION | CAP-CRM | FR-CRM-001 | 6 | 51 | 7 | 12 | 0 | 7 |
 | OBJ-VISIBILITY | CAP-REPORTING | FR-REPORTING-001 | 0 | 0 | 10 | 11 | 0 | **0** |
-| OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 6 | 9 | 2 | 4 | 2 |
+| OBJ-CONTROL | CAP-GOVERNANCE | FR-GOVERNANCE-001 | 1 | 5 | 9 | 2 | 4 | 1 |
 | OBJ-RETENTION | CAP-PORTALS | FR-PORTALS-001 | 0 | 0 | 14 | 11 | 0 | **0** |
-| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 0 | 19 | 0 | 1 |
-| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 24 | 14 | 36 | 0 | 7 |
-| OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 18 | 0 | 16 |
-| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 39 | 0 | **0** |
+| OBJ-THROUGHPUT | CAP-AI | FR-AI-001 | 2 | 8 | 6 | 10 | 0 | 1 |
+| OBJ-CONTROL | CAP-PLATFORM | FR-PLATFORM-001 | 4 | 19 | 14 | 35 | 0 | 6 |
+| OBJ-CONTROL | CAP-IDENTITY | FR-IDENTITY-001 | 0 | 24 | 0 | 19 | 0 | 16 |
+| OBJ-RETENTION | CAP-WEBSITE | FR-WEBSITE-001 | 0 | 0 | 0 | 34 | 0 | **0** |
 | OBJ-RETENTION | CAP-CUSTOMERAPP | FR-CUSTOMERAPP-001 | 0 | 0 | 0 | 11 | 0 | **0** |
-| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 205 | 0 | **0** |
+| OBJ-VISIBILITY | CAP-DESIGNSYSTEM | FR-DESIGNSYSTEM-001 | 0 | 0 | 0 | 232 | 0 | **0** |
 
 ## Reverse: from an artefact back to why it exists
 
@@ -68,13 +68,13 @@ The honest part of a traceability matrix is the list of links that do not exist.
 | --- | --- | --- |
 | CAP-REPORTING | 0 | 11 |
 | CAP-PORTALS | 0 | 11 |
-| CAP-WEBSITE | 0 | 39 |
+| CAP-WEBSITE | 0 | 34 |
 | CAP-CUSTOMERAPP | 0 | 11 |
-| CAP-DESIGNSYSTEM | 0 | 205 |
+| CAP-DESIGNSYSTEM | 0 | 232 |
 
 A capability with endpoints but no linked suite is a real gap. A capability with **no endpoints** — the website, the design system, the feature map — is linked through the screen registry’s end-to-end coverage instead, which is the appropriate evidence for a surface with no API behind it.
 
-### Endpoints with no linked test (281 of 391)
+### Endpoints with no linked test (322 of 440)
 
 Linkage here is by path match between a spec file and a route. A test that exercises an endpoint indirectly — through a helper, or through a golden path — will not match, so this over-reports. It is still the right number to drive down.
 
@@ -89,13 +89,9 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/accounting/journal-entries/:id` | accounting:v |
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x |
-| DELETE | `/api/v1/admin/departments/:id` | departments:d |
-| GET | `/api/v1/admin/departments/:id` | departments:v |
-| PATCH | `/api/v1/admin/departments/:id` | departments:e |
-| GET | `/api/v1/admin/departments/:id/history` | departments:v |
-| POST | `/api/v1/admin/departments/bulk-delete` | departments:d |
-| POST | `/api/v1/admin/departments/bulk-update` | departments:e |
-| GET | `/api/v1/admin/departments/export` | departments:x |
+| GET | `/api/v1/admin/departments/:id` | admin:v |
+| GET | `/api/v1/admin/departments/:id/history` | admin:v |
+| GET | `/api/v1/admin/departments/export` | admin:x |
 | GET | `/api/v1/ai/agents/:id` | ai:v |
 | GET | `/api/v1/ai/agents/:id/history` | ai:v |
 | GET | `/api/v1/ai/agents/export` | ai:x |
@@ -123,8 +119,18 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | GET | `/api/v1/branches/:id` | dashboard:v |
 | GET | `/api/v1/branches/:id/history` | dashboard:v |
 | GET | `/api/v1/branches/export` | dashboard:x |
+| GET | `/api/v1/canned-jobs/:id` | estimates:v |
+| PATCH | `/api/v1/canned-jobs/:id` | estimates:e |
+| GET | `/api/v1/canned-jobs/:id/history` | estimates:v |
+| GET | `/api/v1/canned-jobs/:id/lines` | estimates:v |
+| GET | `/api/v1/canned-jobs/export` | estimates:x |
+| DELETE | `/api/v1/crm/campaigns/:id` | crm:d |
 | GET | `/api/v1/crm/campaigns/:id` | crm:v |
+| PATCH | `/api/v1/crm/campaigns/:id` | crm:e |
 | GET | `/api/v1/crm/campaigns/:id/history` | crm:v |
+| POST | `/api/v1/crm/campaigns/:id/send` | crm:e |
+| POST | `/api/v1/crm/campaigns/bulk-delete` | crm:d |
+| POST | `/api/v1/crm/campaigns/bulk-update` | crm:e |
 | GET | `/api/v1/crm/campaigns/export` | crm:x |
 | DELETE | `/api/v1/crm/leads/:id` | crm:d |
 | GET | `/api/v1/crm/leads/:id` | crm:v |
@@ -134,14 +140,8 @@ Linkage here is by path match between a spec file and a route. A test that exerc
 | POST | `/api/v1/crm/leads/bulk-delete` | crm:d |
 | POST | `/api/v1/crm/leads/bulk-update` | crm:e |
 | GET | `/api/v1/crm/leads/export` | crm:x |
-| DELETE | `/api/v1/crm/opportunities/:id` | crm:d |
-| GET | `/api/v1/crm/opportunities/:id` | crm:v |
-| PATCH | `/api/v1/crm/opportunities/:id` | crm:e |
-| GET | `/api/v1/crm/opportunities/:id/history` | crm:v |
-| POST | `/api/v1/crm/opportunities/bulk-delete` | crm:d |
-| POST | `/api/v1/crm/opportunities/bulk-update` | crm:e |
 
-_…and 221 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
+_…and 262 more. The full list is in `project-control/API_REGISTRY.json` — every endpoint whose `tests` array is empty._
 
 ### Rule guards with no test naming them (2 of 17)
 

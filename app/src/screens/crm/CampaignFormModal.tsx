@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { campaignCreate } from '@contract'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { DESTRUCTIVE_BUTTON, Modal, useModal } from '@/components/ui/Modal'
@@ -16,14 +17,32 @@ import { NoWritesNotice, asPatch, rowId, serverFieldError } from '../registry/wr
 
 type Campaign = RowOf<'campaigns'>
 
-const campaignForm = z.object({
-  name: z.string().min(1).max(200),
-  type: z.string().max(64).optional(),
-  status: z.string().max(32).default('draft'),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  budget: z.string().optional(),
-})
+/** `budgetHalalas` is typed as-is, the same convention
+ *  `OpportunityFormModal.tsx`'s `valueHalalas` field uses — not a SAR string a
+ *  client converts, since the contract already carries the raw integer. */
+const campaignForm = z
+  .object({
+    name: z.string(),
+    type: z.string(),
+    status: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
+    budgetHalalas: z.string(),
+  })
+  .transform((values) => {
+    const startDate = values.startDate.trim()
+    const endDate = values.endDate.trim()
+    const budgetHalalas = values.budgetHalalas.trim()
+    return {
+      name: values.name.trim(),
+      type: values.type || 'email',
+      status: values.status || 'draft',
+      ...(startDate ? { startDate } : {}),
+      ...(endDate ? { endDate } : {}),
+      ...(budgetHalalas ? { budgetHalalas: Number(budgetHalalas) } : {}),
+    }
+  })
+  .pipe(campaignCreate)
 
 type CampaignFormValues = z.input<typeof campaignForm>
 
@@ -68,7 +87,7 @@ export function CampaignFormModal({
       status: existingRecord?.status ?? 'draft',
       startDate: '',
       endDate: '',
-      budget: existingRecord?.budget != null ? String(existingRecord.budget) : '',
+      budgetHalalas: '',
     } satisfies CampaignFormValues,
     async onSubmit(values) {
       try {
@@ -168,7 +187,7 @@ export function CampaignFormModal({
         <Field name="status" label="Status" kind="select" options={STATUS_OPTIONS} />
         <Field name="startDate" label="Start Date" kind="date" />
         <Field name="endDate" label="End Date" kind="date" />
-        <Field name="budget" label="Budget" placeholder="5000" />
+        <Field name="budgetHalalas" label="Budget" kind="currency" />
         <button type="submit" className="sr-only" tabIndex={-1} aria-hidden disabled={busy}>
           {t(editing ? 'Save Changes' : 'Create Campaign')}
         </button>

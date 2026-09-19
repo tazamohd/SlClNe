@@ -127,6 +127,41 @@
       "when": 1789704639174,
       "tag": "0017_declined_jobs",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1789791039174,
+      "tag": "0018_inspection_findings",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1789877439174,
+      "tag": "0019_delivery_signoff",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1789963839174,
+      "tag": "0020_canned_jobs",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1789739388709,
+      "tag": "0021_campaign_messaging",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1789999000000,
+      "tag": "0022_equipment_warranties",
+      "breakpoints": true
     }
   ]
 }

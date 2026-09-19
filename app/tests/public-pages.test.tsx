@@ -216,13 +216,7 @@ describe('Tier A public pages', () => {
     }
   })
 
-  it('Blog and catalogue cards are informational, not links to nowhere', () => {
-    const Blog = componentOf('PublicPortal.Blog')
-    const { unmount } = renderPublic(<Blog />)
-    // Six post cards, none of them anchors.
-    expect(screen.getAllByRole('article')).toHaveLength(6)
-    unmount()
-
+  it('catalogue cards are informational, not links to nowhere', () => {
     const PartsAccessories = componentOf('PublicPortal.PartsAccessories')
     renderPublic(<PartsAccessories />)
     // Six services + eight parts + six accessories, each a plain tile.
@@ -230,5 +224,13 @@ describe('Tier A public pages', () => {
     expect(screen.getByRole('region', { name: 'Services' })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Parts' })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Accessories' })).toBeInTheDocument()
+  })
+
+  it('Blog has no fabricated posts — an honest empty state instead', () => {
+    const Blog = componentOf('PublicPortal.Blog')
+    renderPublic(<Blog />)
+    expect(screen.queryAllByRole('article')).toHaveLength(0)
+    expect(screen.getByText('No posts published yet')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'contact us' })).toHaveAttribute('href', '/public-portal/contact')
   })
 })

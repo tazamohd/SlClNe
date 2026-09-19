@@ -236,6 +236,7 @@ export const SCREEN_ENTRIES = composeScreens({
     'JobCardDetail',
     'ApprovalInbox',
     'DeclinedJobs',
+    'CannedJobs',
     'EstimateDetail',
     'AppointmentCalendar',
     'TechnicianSchedule',
@@ -377,6 +378,7 @@ export const SCREEN_ENTRIES = composeScreens({
     () => import('@/screens/domains/portals'),
     [
       'TechnicianPortal', 'TechnicianPortal.JobDetail', 'CustomerPortal', 'CustomerPortal.Booking',
+      'HealthCheckReport',
       'SupplierPortal', 'SupplierPortal.Orders',
       'Client-Portal-Dashboard', 'Client-Portal-Vehicles', 'Client-Portal-Appointments',
       'Client-Portal-Invoices', 'Client-Portal-Profile', 'Client-Portal-Service-History',

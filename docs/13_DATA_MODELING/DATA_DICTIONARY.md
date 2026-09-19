@@ -8,9 +8,9 @@
 
 # Data dictionary
 
-**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Source of truth:** `server/src/db/schema.ts` · **Sources as of:** 2026-09-19
 
-Every column of every table, 1178 in total.
+Every column of every table, 1288 in total.
 
 ## `organizations`
 
@@ -381,6 +381,149 @@ Declined Job Tracking & Follow-Up (Sprint 1, P0). A row per estimate line — or
 | `declined_jobs_org_idx` | no | orgId, branchId, status |
 | `declined_jobs_estimate_idx` | no | orgId, estimateId |
 | `declined_jobs_line_once_idx` | yes | orgId, estimateLineId |
+
+## `inspection_findings`
+
+Digital Vehicle Health Check — inspection findings (Sprint 2, P0). One row per checklist point on one job card; see `packages/contract/src/entities/inspection.ts` for why `internalNote` and `customerNote` are kept apart.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `job_card_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `category` | varchar(64) | NOT NULL | — | — | — |
+| `category_ar` | varchar(64) | nullable | — | — | — |
+| `item` | varchar(120) | NOT NULL | — | — | — |
+| `item_ar` | varchar(120) | nullable | — | — | — |
+| `severity` | varchar(16) | NOT NULL | — | 'ok' | — |
+| `internal_note` | text | nullable | — | — | — |
+| `customer_note` | text | nullable | — | — | — |
+| `estimate_line_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `recorded_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `inspection_findings_job_idx` | no | orgId, jobCardId |
+
+## `inspection_media`
+
+Photo/video evidence attached to an inspection finding. The bytes live on disk (`server/src/storage/media.ts`); `storageKey` is the only pointer to them a row carries — it is never returned to a client, which instead reads `GET /inspection-media/:id/file`.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `finding_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `job_card_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `kind` | varchar(8) | NOT NULL | — | — | — |
+| `stage` | varchar(8) | NOT NULL | — | 'before' | — |
+| `storage_key` | varchar(255) | NOT NULL | — | — | — |
+| `mime_type` | varchar(100) | NOT NULL | — | — | — |
+| `size_bytes` | integer | NOT NULL | — | — | — |
+| `annotations` | jsonb | NOT NULL | — | sql`'[]'::jsonb` | — |
+| `uploaded_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `inspection_media_finding_idx` | no | orgId, findingId |
+| `inspection_media_job_idx` | no | orgId, jobCardId |
+
+## `delivery_signoffs`
+
+Customer sign-off at delivery (Sprint 2, P0). One row per job card — the signature image lives on disk (`server/src/storage/media.ts`), `storageKey` is the only pointer to it a row carries, and it is served only through `GET /delivery-signoffs/:id/signature`.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `job_card_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `signed_by_name` | varchar(200) | NOT NULL | — | — | — |
+| `agreed_at` | timestamptz | NOT NULL | — | — | — |
+| `checklist` | jsonb | NOT NULL | — | sql`'{}'::jsonb` | — |
+| `odometer_out` | integer | nullable | — | — | — |
+| `storage_key` | varchar(255) | NOT NULL | — | — | — |
+| `mime_type` | varchar(100) | NOT NULL | — | — | — |
+| `size_bytes` | integer | NOT NULL | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `delivery_signoffs_job_idx` | no | orgId, jobCardId |
+
+## `canned_jobs`
+
+Canned Jobs — predefined, priced service packages (build-order item 5). `priceHalalas`/`lineCount` are stored, computed at write time from `lines` the same way `estimates.subtotalHalalas` is computed from `estimate_lines` — never derived from a join at read time.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `name` | varchar(160) | NOT NULL | — | — | — |
+| `name_ar` | varchar(160) | nullable | — | — | — |
+| `category` | varchar(64) | nullable | — | — | — |
+| `description` | text | nullable | — | — | — |
+| `active` | boolean | NOT NULL | — | true | — |
+| `price_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `line_count` | integer | NOT NULL | — | 0 | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `canned_jobs_org_idx` | no | orgId, branchId, active |
+
+## `canned_job_lines`
+
+One line of a canned job's bundle — the same shape `estimate_lines` carries, copied verbatim into an estimate when the package is applied (never referenced live, so a later catalog price change cannot silently move an estimate someone already priced from it).
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `canned_job_id` | varchar(ULID_LENGTH) | NOT NULL | ref (no constraint) | — | — |
+| `description` | varchar(300) | NOT NULL | — | — | — |
+| `description_ar` | varchar(300) | nullable | — | — | — |
+| `kind` | varchar(16) | NOT NULL | — | — | — |
+| `qty` | double precision | NOT NULL | — | — | — |
+| `unit_price_halalas` | bigint | NOT NULL | — | — | money — integer halalas |
+| `part_sku` | varchar(64) | nullable | — | — | — |
+| `sort` | integer | NOT NULL | — | 0 | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `canned_job_lines_job_idx` | no | orgId, cannedJobId |
 
 ## `invoices`
 
@@ -802,12 +945,16 @@ A request to buy, raised into a purchase order once approved (F-022). The estima
 | `name` | varchar(200) | NOT NULL | — | — | — |
 | `type` | varchar(24) | NOT NULL | — | — | — |
 | `status` | varchar(24) | NOT NULL | — | — | — |
+| `start_date` | date | nullable | — | — | — |
+| `end_date` | date | nullable | — | — | — |
 | `reach` | integer | NOT NULL | — | 0 | — |
 | `opens` | integer | NOT NULL | — | 0 | — |
 | `clicks` | integer | NOT NULL | — | 0 | — |
 | `conversions` | integer | NOT NULL | — | 0 | — |
 | `budget_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
 | `spent_halalas` | bigint | NOT NULL | — | 0 | money — integer halalas |
+| `last_dispatched_at` | timestamptz | nullable | — | — | — |
+| `last_dispatch_mock` | boolean | nullable | — | — | — |
 
 ## `segments`
 
@@ -1183,6 +1330,37 @@ Loan repayments — the month-by-month schedule a contract's instalment implies.
 | Index | Unique | Columns |
 | --- | --- | --- |
 | `loan_repayments_contract_idx` | no | orgId, loanContractId, sequence |
+
+## `equipment_warranties`
+
+Equipment warranties — cover on the shop's own tools and fixed assets (a lift, a scanner, a paint booth), not a customer's vehicle. Writable through the generic router — `accounting:c/e/d` — same as `suppliers`: a flat directory with one lifecycle move (`active` → `claimed`), not a document with lines. `claimedAt` is server-derived from the status transition (`writers.ts`), the same discipline `declined_jobs.resolvedAt` uses, so a claim date can never be typed in rather than recorded when it actually happened.
+
+| Column | Type | Null | Key | Default | Notes |
+| --- | --- | --- | --- | --- | --- |
+| `id` | varchar(ULID_LENGTH) | nullable | PK | — | — |
+| `org_id` | varchar(ULID_LENGTH) | NOT NULL | FK → organizations | — | — |
+| `branch_id` | varchar(ULID_LENGTH) | nullable | ref (no constraint) | — | — |
+| `created_at` | timestamptz | NOT NULL | — | now() | — |
+| `updated_at` | timestamptz | NOT NULL | — | now() | — |
+| `created_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `updated_by` | varchar(ULID_LENGTH) | nullable | — | — | — |
+| `deleted_at` | timestamptz | nullable | — | — | — |
+| `version` | integer | NOT NULL | — | 1 | — |
+| `warranty_number` | varchar(32) | NOT NULL | — | — | — |
+| `item_name` | varchar(200) | NOT NULL | — | — | — |
+| `provider` | varchar(200) | NOT NULL | — | — | — |
+| `coverage` | varchar(24) | NOT NULL | — | 'full' | — |
+| `start_date` | date | NOT NULL | — | — | — |
+| `end_date` | date | NOT NULL | — | — | — |
+| `status` | varchar(16) | NOT NULL | — | 'active' | — |
+| `claimed_at` | timestamptz | nullable | — | — | — |
+| `claim_notes` | text | nullable | — | — | — |
+| `notes` | text | nullable | — | — | — |
+
+| Index | Unique | Columns |
+| --- | --- | --- |
+| `equipment_warranties_org_number_idx` | yes | orgId, warrantyNumber |
+| `equipment_warranties_org_idx` | no | orgId, branchId, status |
 
 ## `employees`
 

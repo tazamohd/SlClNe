@@ -561,7 +561,8 @@ export const FIELD_RULES=[
  {field:"Supplier purchase price", ar:"سعر الشراء من المورد",    hidden:["advisor","technician","qc","frontdesk","callcenter","customer"]},
  {field:"Customer contact details",ar:"بيانات اتصال العميل",     hidden:["technician","qc","supplier"]},
  {field:"Bank account details",    ar:"بيانات الحساب البنكي",    hidden:["advisor","technician","qc","parts","frontdesk","callcenter","hr","procurement","supplier","customer"]},
- {field:"Branch P&L",              ar:"أرباح وخسائر الفرع",      hidden:["advisor","technician","qc","parts","frontdesk","callcenter","procurement","supplier","customer"]}
+ {field:"Branch P&L",              ar:"أرباح وخسائر الفرع",      hidden:["advisor","technician","qc","parts","frontdesk","callcenter","procurement","supplier","customer"]},
+ {field:"Inspection internal notes",ar:"ملاحظات الفحص الداخلية",  hidden:["customer","supplier"]}
 ];
 
 // segregation of duties — combinations that must never sit with one person

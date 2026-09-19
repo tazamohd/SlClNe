@@ -12,6 +12,8 @@ import { formatSar, parseSar } from '@/components/ui/Money'
 import { useToast } from '@/components/ui/Toast'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { useCollection, type RowOf } from '@/data/useCollection'
+import { RepositoryError } from '@/data/repository'
+import { uploadDeliverySignature } from './delivery-api'
 import { useJobStage } from './useJobStage'
 import { StageNotice } from './StageNotice'
 
@@ -19,17 +21,18 @@ import { StageNotice } from './StageNotice'
  *  fixture row carries only the pre-formatted `amount`. */
 type Invoice = RowOf<'invoices'> & { _id?: string; totalHalalas?: number }
 
-/** Customer e-signature on handover.
+/** Customer e-signature on handover (Sprint 2, P0 backlog item 4).
  *
  *  The design showed a "tap to sign" placeholder; this captures an actual
- *  signature on a canvas, because a handover record with no signature in it
- *  isn't a handover record. Strokes are kept as paths so the result can be
- *  serialised and stored once file storage exists (README §10) — no
- *  signature-on-delivery endpoint exists yet, so "Confirm Signature" still
- *  only moves the customer on to `WorkshopDelivery` rather than persisting
- *  anything. The job summary above it is real: the job card, customer,
- *  vehicle and service come from `jobs`, and the total from the invoice
- *  raised for this job card, same as `WorkshopDelivery` reads it. */
+ *  signature on a canvas and uploads it as a real PNG through
+ *  `POST /job-cards/:id/delivery-signoff` — a handover record with no
+ *  signature in it isn't a handover record. A second signature for the same
+ *  job is refused by the server (already captured), which this screen
+ *  treats as success rather than an error: the record exists either way, so
+ *  the customer moves on to `WorkshopDelivery` exactly as if this were the
+ *  first submission. The job summary above it is real: the job card,
+ *  customer, vehicle and service come from `jobs`, and the total from the
+ *  invoice raised for this job card, same as `WorkshopDelivery` reads it. */
 export function WorkshopSignature() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
@@ -40,6 +43,7 @@ export function WorkshopSignature() {
   const drawing = useRef(false)
   const [hasSignature, setHasSignature] = useState(false)
   const [agreed, setAgreed] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const invoices = useCollection('invoices', { filter: { jobCardId: stage.job?._id ?? '' } })
   const invoice = ((invoices.data ?? []) as readonly Invoice[])[0]
@@ -98,12 +102,42 @@ export function WorkshopSignature() {
     setHasSignature(false)
   }
 
-  const ready = hasSignature && agreed
+  const ready = hasSignature && agreed && !submitting
 
-  function confirm() {
+  function canvasToPng(): Promise<Blob | null> {
+    return new Promise((resolve) => {
+      const canvas = canvasRef.current
+      if (!canvas) {
+        resolve(null)
+        return
+      }
+      canvas.toBlob((blob) => resolve(blob), 'image/png')
+    })
+  }
+
+  async function confirm() {
     if (!ready || !stage.job) return
-    toast.show({ title: t('Signature captured'), description: t('Ready for Delivery') })
-    setTimeout(() => navigate(`/workshop-delivery?id=${encodeURIComponent(stage.job!.id)}`), 700)
+    const jobId = stage.job.id
+    setSubmitting(true)
+    try {
+      const blob = await canvasToPng()
+      if (!blob) throw new Error('Could not read the signature canvas.')
+      await uploadDeliverySignature(jobId, blob)
+      toast.show({ title: t('Signature captured'), description: t('Ready for Delivery') })
+      navigate(`/workshop-delivery?id=${encodeURIComponent(jobId)}`)
+    } catch (cause) {
+      if (cause instanceof RepositoryError && cause.code === 'conflict') {
+        /* A signature already exists for this job — the record is there
+         * either way, so this is not a failure from the customer's side. */
+        toast.show({ title: t('Signature captured'), description: t('Ready for Delivery') })
+        navigate(`/workshop-delivery?id=${encodeURIComponent(jobId)}`)
+        return
+      }
+      const message = cause instanceof RepositoryError ? cause.message : t('The signature could not be saved.')
+      toast.show({ title: t('Signature not saved'), description: message, error: true })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -192,9 +226,9 @@ export function WorkshopSignature() {
         </label>
       </Card>
 
-      <Button size="lg" className="self-end" onClick={confirm} disabled={!ready}>
+      <Button size="lg" className="self-end" onClick={() => void confirm()} disabled={!ready}>
         <Icon name="CheckCircle" size={18} />
-        {t('Confirm Signature')}
+        {submitting ? t('Saving...') : t('Confirm Signature')}
       </Button>
     </div>
   )

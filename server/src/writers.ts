@@ -12,6 +12,8 @@ import { z } from 'zod'
 import {
   appointmentCreate,
   appointmentUpdate,
+  campaignCreate,
+  campaignUpdate,
   crmTaskCreate,
   crmTaskUpdate,
   customerCreate,
@@ -20,12 +22,18 @@ import {
   declinedJobUpdate,
   departmentCreate,
   departmentUpdate,
+  deliverySignoffCreate,
+  deliverySignoffUpdate,
   employeeCreate,
   employeeUpdate,
   feedbackCreate,
   feedbackUpdate,
   fleetCreate,
   fleetUpdate,
+  inspectionFindingCreate,
+  inspectionFindingUpdate,
+  inspectionMediaCreate,
+  inspectionMediaUpdate,
   jobCardCreate,
   jobCardUpdate,
   leadCreate,
@@ -49,9 +57,11 @@ import {
   timesheetUpdate,
   vehicleCreate,
   vehicleUpdate,
+  warrantyCreate,
+  warrantyUpdate,
 } from '@salis/contract'
 import { checkBayFree, payrollLineNetHalalas } from '@salis/contract/rules'
-import { appointments, employees, payrollRuns, suppliers } from './db/schema'
+import { appointments, employees, equipmentWarranties, payrollRuns, suppliers } from './db/schema'
 import { badRequest, conflict, notFound, ruleViolated } from './http/errors'
 import type { Principal, Tx } from './db/tenant'
 
@@ -170,6 +180,12 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
   opportunities: {
     create: opportunityCreate,
     update: opportunityUpdate,
+    toColumns: passthrough,
+  },
+
+  campaigns: {
+    create: campaignCreate,
+    update: campaignUpdate,
     toColumns: passthrough,
   },
 
@@ -329,6 +345,31 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
     },
   },
 
+  /* Equipment warranties (BLK-004). A tenant-owned directory, writable
+   * through the generic router — RBAC (`accounting:c/e/d`), tenant RLS,
+   * audit and optimistic concurrency all come from it. The server assigns
+   * `WRN-0001` within the tenant when a number is not supplied, so two
+   * warranties never collide on the unique `(org_id, warranty_number)`
+   * index. `claimedAt` is never accepted as input — like
+   * `declined_jobs.resolvedAt`, it is derived from the status transition, so
+   * it always records when a warranty actually moved to `claimed` rather
+   * than a date someone typed in, and clears if the status ever moves away
+   * from `claimed` again. */
+  equipmentWarranties: {
+    create: warrantyCreate,
+    update: warrantyUpdate,
+    async toColumns(input, ctx, existing) {
+      const value = { ...input } as Record<string, unknown>
+      if (!existing && !value.warrantyNumber) {
+        value.warrantyNumber = await nextWarrantyNumber(ctx.tx)
+      }
+      if ('status' in value) {
+        value.claimedAt = value.status === 'claimed' ? new Date() : null
+      }
+      return value
+    },
+  },
+
   /* Declined Job Tracking & Follow-Up (Sprint 1, P0). `create` is `z.never()`
    * (see `registry.ts`) — every row is born from an estimate decline action,
    * never a generic `POST`. `PATCH` carries only the follow-up lifecycle, and
@@ -347,6 +388,42 @@ export const WRITERS: Readonly<Record<string, Writer>> = {
       return value
     },
   },
+
+  /* Digital Vehicle Health Check (Sprint 2, P0). `create` is `z.never()` for
+   * both — a finding is born from `POST /job-cards/:id/inspection-findings`,
+   * media from the multipart upload route (`server/src/routes/inspection.ts`)
+   * — never a generic `POST`, because neither the finding's `jobCardId` nor a
+   * file's bytes belong in a JSON body the generic writer would trust as-is. */
+  inspectionFindings: {
+    create: inspectionFindingCreate,
+    update: inspectionFindingUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
+
+  inspectionMedia: {
+    create: inspectionMediaCreate,
+    update: inspectionMediaUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
+
+  /* Customer sign-off at delivery (Sprint 2, P0). `create` is `z.never()` —
+   * a row is born from `POST /job-cards/:id/delivery-signoff`
+   * (`server/src/routes/delivery.ts`), never a generic `POST`, because
+   * neither the job card nor a signature image's bytes belong in a JSON body
+   * the generic writer would trust as-is. `update` only ever carries the
+   * checklist and the odometer reading; the signature, who signed and when
+   * are fixed at creation. */
+  deliverySignoffs: {
+    create: deliverySignoffCreate,
+    update: deliverySignoffUpdate,
+    async toColumns(input) {
+      return { ...input }
+    },
+  },
 }
 
 const RESOLVED_DECLINED_JOB_STATUSES = new Set(['approved_later', 'permanently_declined', 'expired'])
@@ -356,6 +433,13 @@ const RESOLVED_DECLINED_JOB_STATUSES = new Set(['approved_later', 'permanently_d
 async function nextSupplierCode(tx: Tx): Promise<string> {
   const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(suppliers)
   return `SUP-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
+}
+
+/** The next `WRN-0001` within the tenant. Counted, not a placeholder, so two
+ *  warranties never collide on the unique `(org_id, warranty_number)` index. */
+async function nextWarrantyNumber(tx: Tx): Promise<string> {
+  const [row] = await tx.select({ value: sql<number>`count(*)::int` }).from(equipmentWarranties)
+  return `WRN-${String((row?.value ?? 0) + 1).padStart(4, '0')}`
 }
 
 /** The next `EMP-0001` within the tenant. Counted, not a placeholder, so two

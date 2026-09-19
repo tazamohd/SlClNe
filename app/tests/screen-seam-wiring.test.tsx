@@ -4,8 +4,11 @@ import { renderScreen } from './helpers/render'
 import { setViewportWidth } from '@/test-setup'
 import { OEMIntegrations } from '@/screens/admin/OEMIntegrations'
 import { SystemIntegrations } from '@/screens/admin/SystemIntegrations'
+import { AccountingIntegration } from '@/screens/accounting/AccountingIntegration'
 import { ExpensesManagement } from '@/screens/accounting/ExpensesManagement'
 import { EmailMarketingCampaigns } from '@/screens/marketing/EmailMarketingCampaigns'
+import { MarketingHub } from '@/screens/marketing/MarketingHub'
+import { SMSIntegration } from '@/screens/integrations/SMSIntegration'
 import { Reports } from '@/screens/accounting/ReportSuite'
 
 /** Screens moved off a hardcoded local array and onto the repository seam.
@@ -65,6 +68,82 @@ describe('System Integrations reads integrations', () => {
     expect(screen.queryByText('v3.1')).not.toBeInTheDocument()
     expect(screen.queryByText(/5 min ago/)).not.toBeInTheDocument()
     expect(screen.getByText(/GET \/diagnostics\/integrations/)).toBeInTheDocument()
+  })
+})
+
+describe('Accounting Integrations reads integrations, filtered to ERP', () => {
+  it('renders the real ERP connectors, none of them fabricated as Connected', async () => {
+    renderScreen(AccountingIntegration, { role: 'owner' })
+
+    expect(await screen.findByText('QuickBooks')).toBeInTheDocument()
+    expect(screen.getByText('SAP Business One')).toBeInTheDocument()
+    // No live adapter exists, so nothing here is the fabricated "Connected".
+    expect(screen.queryByText('Connected')).not.toBeInTheDocument()
+    // Rows outside ERP (e.g. ZATCA under Government) stay on their own screen.
+    expect(screen.queryByText('ZATCA E-Invoicing')).not.toBeInTheDocument()
+  })
+
+  it('GAP: shows no last-sync clock or record count, and names the read', async () => {
+    renderScreen(AccountingIntegration, { role: 'owner' })
+    await screen.findByText('QuickBooks')
+
+    // The old array's invented figures.
+    expect(screen.queryByText('2026-08-18 09:30')).not.toBeInTheDocument()
+    expect(screen.queryByText('12,450')).not.toBeInTheDocument()
+    expect(screen.getByText(/GET \/diagnostics\/integrations/)).toBeInTheDocument()
+  })
+})
+
+describe('Marketing Hub reads campaigns', () => {
+  it('renders the real campaigns, with totals computed from the rows', async () => {
+    renderScreen(MarketingHub, { role: 'owner' })
+
+    expect(await screen.findByText('Summer Service Offer')).toBeInTheDocument()
+    expect(screen.getByText('Ramadan Discount')).toBeInTheDocument()
+    // 2,450 + 5,200 + 890 + 0 + 3,100 = 11,640, the fixture's real total.
+    expect(screen.getByText('11,640')).toBeInTheDocument()
+  })
+
+  it('GAP: invents no hardcoded KPI tiles the old array used to print', async () => {
+    renderScreen(MarketingHub, { role: 'owner' })
+    await screen.findByText('Summer Service Offer')
+
+    expect(screen.queryByText('45,200')).not.toBeInTheDocument()
+    expect(screen.queryByText('3.8%')).not.toBeInTheDocument()
+    // A campaign the old fixed array invented and this collection never seeded.
+    expect(screen.queryByText('Instagram Ad Campaign')).not.toBeInTheDocument()
+  })
+})
+
+describe('SMS Integration reads integrations, filtered to Messaging', () => {
+  it('renders the real messaging connectors, none of them fabricated as Connected', async () => {
+    renderScreen(SMSIntegration, { role: 'owner' })
+
+    expect(await screen.findByText('WhatsApp Business')).toBeInTheDocument()
+    expect(screen.getByText('Unifonic SMS')).toBeInTheDocument()
+    expect(screen.queryByText('Connected')).not.toBeInTheDocument()
+    // Providers the old fixed array invented that this deployment never wires.
+    expect(screen.queryByText('Twilio')).not.toBeInTheDocument()
+    expect(screen.queryByText('Taqnyat')).not.toBeInTheDocument()
+  })
+
+  it('GAP: shows no sent-today or delivery-rate figure, and names the read', async () => {
+    renderScreen(SMSIntegration, { role: 'owner' })
+    await screen.findByText('WhatsApp Business')
+
+    expect(screen.queryByText('124')).not.toBeInTheDocument()
+    expect(screen.queryByText('98.5%')).not.toBeInTheDocument()
+    expect(screen.getByText(/GET \/diagnostics\/integrations/)).toBeInTheDocument()
+  })
+
+  it('GAP: shows no fabricated message log, and names the missing data source', async () => {
+    renderScreen(SMSIntegration, { role: 'owner' })
+    await screen.findByText('WhatsApp Business')
+
+    // The old array's six invented log rows, one of them a fabricated
+    // "Delivered" OTP that asserted a transport this deployment refuses.
+    expect(screen.queryByText('SMS-4019')).not.toBeInTheDocument()
+    expect(screen.queryByText('Message Log has no data source yet')).toBeInTheDocument()
   })
 })
 

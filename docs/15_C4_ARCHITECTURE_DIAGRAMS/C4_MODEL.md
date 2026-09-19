@@ -10,7 +10,7 @@
 
 # C4 model
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18 · **Scope:** CURRENT implementation
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · **Scope:** CURRENT implementation
 
 Everything on these diagrams exists in the repository today. Nothing planned is drawn.
 
@@ -43,9 +43,9 @@ flowchart TB
 flowchart TB
   browser["Web browser / Capacitor shell<br/>iOS + Android"]
   spa["<b>SPA</b><br/>React 18 + Vite + React Router<br/>TanStack Query, Zustand<br/>app/"]
-  api["<b>API</b><br/>Fastify 5 on Node<br/>391 endpoints under /api/v1<br/>server/"]
+  api["<b>API</b><br/>Fastify 5 on Node<br/>440 endpoints under /api/v1<br/>server/"]
   contract["<b>Shared contract</b><br/>Zod entities, RBAC matrix,<br/>business rules<br/>packages/contract/"]
-  db[("<b>PostgreSQL</b><br/>70 tables<br/>Row-level security on 66<br/>Drizzle ORM")]
+  db[("<b>PostgreSQL</b><br/>76 tables<br/>Row-level security on 72<br/>Drizzle ORM")]
   browser --> spa
   spa -->|"HTTPS, Bearer token"| api
   spa -.->|"types, RBAC, rules"| contract
@@ -65,8 +65,8 @@ flowchart TB
     authn["authn onRequest hook<br/>authenticated by default"]
   end
   subgraph routing[Routing]
-    generic["collections.ts<br/>254 generated routes<br/>from registry.ts"]
-    explicit["137 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
+    generic["collections.ts<br/>289 generated routes<br/>from registry.ts"]
+    explicit["151 explicit routes<br/>estimates, invoices, procurement,<br/>HR, insurance, loans, OBD, auth"]
   end
   subgraph guards[Guards]
     perms["security/permissions.ts<br/>module + action"]
@@ -119,22 +119,20 @@ sequenceDiagram
 
 | Domain | Endpoints | Capability |
 | --- | --- | --- |
-| accounting | 28 | CAP-ACCOUNTING |
+| accounting | 59 | CAP-ACCOUNTING |
+| admin | 4 | CAP-PLATFORM |
 | ai | 8 | CAP-AI |
 | appointments | 9 | CAP-WORKSHOP |
 | approvals | 5 | CAP-GOVERNANCE |
-| audit | 1 | CAP-GOVERNANCE |
 | auth | 24 | CAP-IDENTITY |
-| crm | 45 | CAP-CRM |
+| crm | 51 | CAP-CRM |
 | customers | 19 | CAP-CUSTOMERS |
 | dashboard | 4 | CAP-PLATFORM |
-| departments | 9 | CAP-PLATFORM |
-| estimates | 22 | CAP-WORKSHOP |
+| estimates | 29 | CAP-WORKSHOP |
 | hr | 48 | CAP-HR |
-| insurance | 22 | CAP-ACCOUNTING |
 | inventory | 13 | CAP-INVENTORY |
 | invoices | 14 | CAP-BILLING |
-| jobcards | 57 | CAP-WORKSHOP |
+| jobcards | 90 | CAP-WORKSHOP |
 | payments | 11 | CAP-BILLING |
 | platform | 3 | CAP-PLATFORM |
 | procurement | 28 | CAP-PROCUREMENT |

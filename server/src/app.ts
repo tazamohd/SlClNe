@@ -8,8 +8,10 @@
  */
 import cors from '@fastify/cors'
 import helmet from '@fastify/helmet'
+import multipart from '@fastify/multipart'
 import rateLimit from '@fastify/rate-limit'
 import Fastify, { type FastifyInstance } from 'fastify'
+import { INSPECTION_MEDIA_MAX_BYTES } from '@salis/contract'
 import { ApiError } from './http/errors'
 import { loggerOptions } from './logger'
 import { registerApprovalRoutes } from './routes/approvals'
@@ -25,6 +27,7 @@ import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerHistoryRoutes } from './routes/history'
 import { registerInsuranceClaimRoutes } from './routes/insurance-claims'
+import { registerInspectionRoutes } from './routes/inspection'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
 import { registerLeaveRoutes } from './routes/leave'
@@ -35,11 +38,15 @@ import { registerPublicRoutes } from './routes/public'
 import { registerWorkshopRoutes } from './routes/workshop'
 import { registerWorkshopReportRoutes } from './routes/workshop-reports'
 import { registerDeclinedJobsReportRoutes } from './routes/declined-jobs-report'
+import { registerDeliveryRoutes } from './routes/delivery'
+import { registerCannedJobRoutes } from './routes/canned-jobs'
 import { bearerToken, createVerifier } from './security/principal'
 import { buildAuth, isPublicAuthPath, registerAuth, type AuthModule } from './auth'
 import type { OtpTransport } from './auth'
 import { loadIntegrationConfig } from './integrations/config'
 import { obdBridgeFor, type ObdBridge } from './integrations/obd'
+import { messagingTransportFor, type MessagingTransport } from './integrations/messaging'
+import { createLocalMediaStore } from './storage/media'
 import type { Database } from './db/client'
 import type { Env } from './env'
 
@@ -147,6 +154,10 @@ export interface AppDeps {
    *  bridge comes from `OBD_TRANSPORT`, whose default refuses rather than
    *  faking a device scan (§40). */
   obdBridge?: ObdBridge
+  /** Overrides the messaging transport. Only the test suite passes one;
+   *  otherwise it comes from `MESSAGING_TRANSPORT`, whose default refuses
+   *  rather than pretending a campaign was dispatched. */
+  messagingTransport?: MessagingTransport
 }
 
 declare module 'fastify' {
@@ -200,6 +211,17 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       'ratelimit-reset',
     ],
   })
+  /** DVHC evidence uploads. One file per request, capped at the larger of the
+   *  two per-kind ceilings (`INSPECTION_MEDIA_MAX_BYTES`) — the route itself
+   *  re-checks the size against the *kind-specific* ceiling once it knows
+   *  which one the upload is, so this bound is only the outer guard against an
+   *  oversized request body reaching a handler at all. */
+  await app.register(multipart, {
+    limits: {
+      fileSize: Math.max(...Object.values(INSPECTION_MEDIA_MAX_BYTES)),
+      files: 1,
+    },
+  })
   await app.register(rateLimit, {
     /** Emit `RateLimit-Limit` / `-Remaining` / `-Reset`: the names
      *  `docs/security-report.md` documents this API as returning, and the ones
@@ -226,11 +248,15 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
   const auth = buildAuth({ db: deps.db, env: deps.env, transport: deps.otpTransport })
   app.decorate('auth', auth)
 
-  /* The external-integration adapters. Both default to refusing (§40): the OBD
-   * bridge and the SMS transport are EXTERNAL_DEPENDENCY, and a test overrides
-   * them with a mock rather than the app pretending they are live. */
+  /* The external-integration adapters. All default to refusing (§40): the OBD
+   * bridge, the OTP/estimate-signature SMS transport (`auth.transport`, above)
+   * and the campaign-dispatch messaging transport are EXTERNAL_DEPENDENCY, and
+   * a test overrides them with a mock rather than the app pretending they are
+   * live. */
   const integrationConfig = loadIntegrationConfig()
   const obdBridge = deps.obdBridge ?? obdBridgeFor(integrationConfig)
+  const messagingTransport = deps.messagingTransport ?? messagingTransportFor(integrationConfig)
+  const mediaStore = createLocalMediaStore(deps.env.MEDIA_STORAGE_DIR)
 
   app.addHook('onRequest', async (request) => {
     const path = request.url.split('?')[0] ?? ''
@@ -357,15 +383,18 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerFinanceReportRoutes(api, { db: deps.db, env: deps.env })
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
+      registerInspectionRoutes(api, { db: deps.db, mediaStore })
+      registerDeliveryRoutes(api, { db: deps.db, mediaStore })
+      registerCannedJobRoutes(api, { db: deps.db })
       registerHistoryRoutes(api, { db: deps.db })
       registerAuditLogRoutes(api, { db: deps.db })
       registerApprovalRoutes(api, { db: deps.db })
       registerWorkshopReportRoutes(api, { db: deps.db, env: deps.env })
       registerDeclinedJobsReportRoutes(api, { db: deps.db, env: deps.env })
-      registerObdRoutes(api, { db: deps.db, bridge: obdBridge, config: integrationConfig })
+      registerObdRoutes(api, { db: deps.db, bridge: obdBridge, messaging: messagingTransport, config: integrationConfig })
       registerEstimateOtpRoutes(api, { db: deps.db })
       registerInventoryRoutes(api, { db: deps.db })
-      registerCrmRoutes(api, { db: deps.db })
+      registerCrmRoutes(api, { db: deps.db, messaging: messagingTransport })
       registerBankRoutes(api, { db: deps.db })
       registerFleetRoutes(api, { db: deps.db })
       registerInsuranceClaimRoutes(api, { db: deps.db })

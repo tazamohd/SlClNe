@@ -8,7 +8,7 @@
 
 # Business analysis
 
-**Status:** GENERATED · **Sources as of:** 2026-09-18
+**Status:** GENERATED · **Sources as of:** 2026-09-19
 
 Capability map, stakeholders, business requirements, business rules.
 
