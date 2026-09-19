@@ -21,20 +21,20 @@
 | Rendered | 436 | 436 |
 | Placeholder | 0 | 436 |
 | Data-backed (live API) | 145 | 436 |
-| Mock-only (design fixtures) | 170 | 436 |
+| Mock-only (design fixtures) | 41 | 436 |
 | End-to-end covered | 436 | 436 |
 | Content-asserted (not just routed) | 436 | 436 |
 | Has a loading state | 182 | 436 |
 | Has an error state | 145 | 436 |
-| Has an empty state | 227 | 436 |
-| Arabic verified | 74 | 436 |
+| Has an empty state | 266 | 436 |
+| Arabic verified | 121 | 436 |
 | RTL hazards | 0 | — |
 | Tablet verified | 4 | 436 |
 | Golden paths passing | 23 of 23 | — |
 
 ## The gap this table is really showing
 
-Every screen renders and every screen has an end-to-end assertion on its content. But **170 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
+Every screen renders and every screen has an end-to-end assertion on its content. But **41 of 436 still read design fixtures rather than the API**, and only 4 are tablet-verified. "Rendered and asserted" is a real achievement and it is not the same as "wired to production data" — conflating the two is how a project reports itself ready and then discovers the last third of the work.
 
 ## By surface
 
@@ -66,12 +66,12 @@ Every screen renders and every screen has an end-to-end assertion on its content
 | CAP-REPORTING | 11 | 11 | 11 | 9 | 7 | 0 |
 | CAP-GOVERNANCE | 2 | 1 | 2 | 1 | 2 | 0 |
 | CAP-PORTALS | 11 | 8 | 8 | 8 | 8 | 0 |
-| CAP-AI | 19 | 4 | 4 | 4 | 9 | 2 |
+| CAP-AI | 19 | 4 | 4 | 4 | 16 | 9 |
 | CAP-PLATFORM | 35 | 6 | 13 | 6 | 23 | 11 |
 | CAP-IDENTITY | 19 | 1 | 1 | 1 | 2 | 12 |
 | CAP-WEBSITE | 39 | 0 | 0 | 0 | 0 | 23 |
 | CAP-CUSTOMERAPP | 11 | 6 | 11 | 11 | 11 | 0 |
-| CAP-DESIGNSYSTEM | 204 | 32 | 54 | 30 | 90 | 19 |
+| CAP-DESIGNSYSTEM | 204 | 32 | 54 | 30 | 122 | 59 |
 
 ## Full registry
 

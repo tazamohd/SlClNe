@@ -744,7 +744,7 @@
           "route": "/ai-automation",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -753,7 +753,7 @@
           "route": "/ai-chatbot",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -762,7 +762,7 @@
           "route": "/ai-chatbot-assistant",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -771,7 +771,7 @@
           "route": "/ai-service-advisor",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -950,7 +950,7 @@
           "route": "/ml-fraud-detection",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -959,7 +959,7 @@
           "route": "/neural-network-prediction",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },
@@ -1022,7 +1022,7 @@
           "route": "/smart-damage-assessment",
           "status": "built",
           "mobile": "responsive",
-          "mobileDone": false,
+          "mobileDone": true,
           "source": "design",
           "category": "PRODUCT"
         },

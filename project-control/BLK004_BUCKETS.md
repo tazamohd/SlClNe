@@ -171,7 +171,66 @@ Implemented in `app/scripts/build-registry.mjs`: auth and public surfaces now ca
 |---|---|---|
 | Bank-Account-Management | `/bank-account-management` | None |
 
-## Bucket C: no entity, EmptyState or retire
+## Bucket C: DONE (2026-09-19)
+
+Two halves, both in `app/scripts/build-registry.mjs`:
+
+- **Rule.** A screen that renders the honest gap state (the new `GapCard` component, the hand-written wave 6-9 card, or the feature kit's zero-stat view from `definitions.ts`) reads no fixtures, so it is no longer MOCK_ONLY. It carries `NO_BACKEND` and is counted under a new blocker, BLK-013, so the gap stays visible instead of hidden.
+- **Conversion.** 55 fixture-only screens were replaced with a `GapCard` stub that keeps the page header, the mobile branch and the route's expected text. Each stub names the collection it should read once the API serves it.
+
+**BLK-004: 170 → 41.** BLK-013 (NO_BACKEND): 129.
+
+Skipped on purpose (25), because they are forms, tools, profiles, navigation hubs, multi-screen files, or already wired outside the seam: DashboardWidgets, DataBackup, DataImportExport, RolesPermissions, Tools, UsersTeams, VoiceCommandInterface, VoiceCommands, VATSettings, ZATCASettings, ZakatSettings, CustomerAppBooking, WelcomePage, PartsNetwork.tsx (4 screens), Procurement.tsx, BarcodeScanner, ClientPortalProfile, TechnicianAppProfile, TechnicianPortalProfile, FinancialSettings, RoleManagement, SecuritySettings, SystemSettings, UserProfile, UserSettings.
+
+### Remaining MOCK_ONLY after bucket C (41)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| HealthCheckReport | `/customer-portal/health-check-report` | admin |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| PartsNetwork.Quotations | `/parts-network/quotations` | parts |
+| PartsNetwork.SendRequest | `/parts-network/send-request` | parts |
+| PartsSupplyNetwork | `/parts-supply-network` | parts |
+| ProcurementPortal.Requisitions | `/procurement-portal/requisitions` | portals |
+| Profile | `/profile` | admin |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Role-Management | `/role-management` | featuremap |
+| RolesPermissions | `/roles-permissions` | admin |
+| Security-Settings | `/security-settings` | featuremap |
+| Spare-Parts | `/spare-parts` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| User-Profile | `/user-profile` | featuremap |
+| User-Settings | `/user-settings` | featuremap |
+| UsersTeams | `/users-teams` | admin |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Welcome-Page | `/welcome-page` | featuremap |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+These are bucket B (wire to an entity) or a product decision (settings and profile forms need a persistence endpoint, not an empty state).
+
+## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |
 |---|---|---|---|

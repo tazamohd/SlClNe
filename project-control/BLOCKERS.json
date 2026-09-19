@@ -1,14 +1,22 @@
 {
   "generatedAt": "2026-09-19",
-  "open": 1,
+  "open": 2,
   "blockers": [
     {
       "id": "BLK-004",
       "severity": "CRITICAL",
-      "title": "170 rendered capabilities are mock-only",
-      "detail": "They render, but read fixtures rather than an API. Auth and public pages read no collection by design and are not counted. Cleared per capability as G4+ lands.",
+      "title": "41 rendered capabilities are mock-only",
+      "detail": "They render, but read fixtures rather than an API. Auth and public pages read no collection by design, and honest gap states (NO_BACKEND) are counted under BLK-013, not here. Cleared per capability as G4+ lands.",
       "owner": "05",
       "wave": "W2"
+    },
+    {
+      "id": "BLK-013",
+      "severity": "HIGH",
+      "title": "129 rendered capabilities have no backend collection yet",
+      "detail": "They show an honest empty state naming the missing collection rather than fixture data. Cleared per capability as the API grows to serve it.",
+      "owner": "05",
+      "wave": "W3"
     }
   ]
 }
