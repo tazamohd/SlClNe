@@ -15,7 +15,7 @@ Properties of the system as it stands. Each is a deliberate position or a known 
 | # | Limitation | Consequence | Evidence |
 | --- | --- | --- | --- |
 | L-01 | 125 of 194 relationships have no foreign key | Orphaned references are possible; no cascade; integrity depends on application code | `server/src/db/schema.ts` |
-| L-02 | 170 of 436 screens read design fixtures, not the API | Behaviour under real data, latency and error conditions is unproven for those screens | `project-control/STATUS.json` |
+| L-02 | 43 of 436 screens read design fixtures, not the API | Behaviour under real data, latency and error conditions is unproven for those screens | `project-control/STATUS.json` |
 | L-03 | 20 of 21 lifecycles declare states but no legal transitions | An illegal status move is refused only where a handler happens to check | `packages/contract/src/entities/*.ts` |
 | L-04 | Only 4 of 436 screens are tablet-verified | Tablet is the primary device on a workshop floor; layout regressions would not be caught | `project-control/STATUS.json` |
 | L-05 | Requirements are reverse-engineered from the implementation | The set cannot answer whether the system does what the business asked for | `docs/09_SYSTEM_ANALYSIS/REQUIREMENTS_CATALOG.md` |

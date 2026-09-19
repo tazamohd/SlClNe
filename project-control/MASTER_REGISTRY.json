@@ -11,16 +11,17 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 170,
+    "mockOnly": 43,
+    "noBackend": 127,
     "dataBacked": 145,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
     "hasLoadingState": 182,
     "hasErrorState": 145,
-    "hasEmptyState": 227,
+    "hasEmptyState": 265,
     "tabletVerified": 4,
-    "arabicVerified": 74,
+    "arabicVerified": 119,
     "rtlHazards": 0,
     "goldenPaths": 23,
     "goldenPathsMeasured": true,
@@ -169,7 +170,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -342,12 +343,12 @@
       "purpose": "AI-driven workshop automation rules",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -381,8 +382,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -414,12 +414,12 @@
       "purpose": "Customer-facing AI chatbot",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -453,8 +453,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -486,12 +485,12 @@
       "purpose": "Staff-facing AI chatbot assistant",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -525,8 +524,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -558,12 +556,12 @@
       "purpose": "AI-assisted service advisor recommendations",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -597,8 +595,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -670,7 +667,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -1269,7 +1266,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -1338,7 +1335,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -1408,7 +1405,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -1760,7 +1757,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -1833,7 +1830,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -6698,12 +6695,12 @@
       "purpose": "Machine-learning fraud detection on claims/transactions",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -6737,8 +6734,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -6807,7 +6803,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -6971,12 +6967,12 @@
       "purpose": "Neural-network demand/failure prediction",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -7010,8 +7006,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -7090,7 +7085,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -7521,7 +7516,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -7722,7 +7717,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -7786,7 +7781,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7851,7 +7846,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -7916,7 +7911,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8047,7 +8042,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -8688,7 +8683,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -12061,7 +12056,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -12093,12 +12088,12 @@
       "purpose": "AI vehicle damage assessment from photos",
       "desktop": "DONE",
       "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "mobile": "DONE",
+      "responsive": "DONE",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -12132,8 +12127,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -12468,7 +12462,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -12537,7 +12531,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -13279,7 +13273,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -15619,7 +15613,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY"
+        "NO_BACKEND"
       ]
     },
     {
@@ -16569,7 +16563,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16635,7 +16629,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16701,7 +16695,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16729,10 +16723,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -16766,8 +16760,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16833,7 +16826,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -16899,7 +16892,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17110,7 +17103,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17176,7 +17169,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17242,7 +17235,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17339,7 +17332,7 @@
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -17373,7 +17366,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17439,7 +17432,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17570,7 +17563,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17702,7 +17695,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17768,7 +17761,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17899,7 +17892,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17964,7 +17957,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -17995,7 +17988,7 @@
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -18029,7 +18022,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18094,7 +18087,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18226,7 +18219,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18358,7 +18351,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18424,7 +18417,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18490,7 +18483,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18556,7 +18549,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18622,7 +18615,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18688,7 +18681,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18754,7 +18747,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18820,7 +18813,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -18952,7 +18945,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19150,7 +19143,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19178,7 +19171,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -19215,8 +19208,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19282,7 +19274,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19348,7 +19340,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19414,7 +19406,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19442,10 +19434,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19479,8 +19471,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19546,7 +19537,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19574,10 +19565,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19611,8 +19602,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19911,13 +19901,13 @@
       "mobileType": "B-responsive",
       "purpose": "B2B portal for buying/selling parts with other garages.",
       "desktop": "DONE",
-      "tablet": "PARTIAL",
+      "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -19950,8 +19940,8 @@
       "dependencies": [],
       "evidence": [],
       "flags": [
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "TABLET_MISSING",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -19979,10 +19969,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20016,8 +20006,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20045,10 +20034,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20082,8 +20071,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20245,10 +20233,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -20282,8 +20270,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20348,7 +20335,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20413,7 +20400,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20478,7 +20465,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20613,7 +20600,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20679,7 +20666,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -20820,7 +20807,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21092,7 +21079,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21158,7 +21145,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21224,7 +21211,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21446,7 +21433,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21512,7 +21499,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21578,7 +21565,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21643,7 +21630,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21709,7 +21696,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21775,7 +21762,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21841,7 +21828,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -21869,10 +21856,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -21906,8 +21893,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22004,7 +21990,7 @@
       "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -22038,7 +22024,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22327,7 +22313,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22459,7 +22445,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -22811,7 +22797,7 @@
       "evidence": [],
       "flags": [
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23011,7 +22997,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23077,7 +23063,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23340,7 +23326,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23606,7 +23592,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23634,10 +23620,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23671,8 +23657,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23700,10 +23685,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23737,8 +23722,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23766,10 +23750,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23803,8 +23787,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23832,10 +23815,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23869,8 +23852,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23898,10 +23880,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -23935,8 +23917,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -23964,10 +23945,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -24001,8 +23982,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24216,7 +24196,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -24282,7 +24262,7 @@
       "flags": [
         "TABLET_MISSING",
         "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25136,7 +25116,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25173,8 +25153,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25239,7 +25218,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25304,7 +25283,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25369,7 +25348,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25397,7 +25376,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25434,8 +25413,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25463,7 +25441,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25500,8 +25478,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25661,7 +25638,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25698,8 +25675,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25727,7 +25703,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25764,8 +25740,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -25793,7 +25768,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -25830,8 +25805,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26265,7 +26239,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -26302,8 +26276,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26471,10 +26444,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -26508,8 +26481,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26806,10 +26778,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -26843,8 +26815,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -26872,10 +26843,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -26909,8 +26880,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27004,10 +26974,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -27041,8 +27011,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27267,271 +27236,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-187",
-      "name": "Environmental-Compliance",
-      "title": "Environmental Compliance",
-      "route": "/environmental-compliance",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "PRODUCT",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/187-Environmental-Compliance.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-188",
-      "name": "ISO-Quality-Management",
-      "title": "ISO Quality Management",
-      "route": "/iso-quality-management",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "PRODUCT",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/188-ISO-Quality-Management.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-189",
-      "name": "Equipment-Calibration",
-      "title": "Equipment Calibration",
-      "route": "/equipment-calibration",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "PRODUCT",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/189-Equipment-Calibration.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
-      "rtl": "PARTIAL",
-      "loadingState": "MISSING",
-      "emptyState": "MISSING",
-      "errorState": "MISSING",
-      "successState": "MISSING",
-      "accessibility": "MISSING",
-      "dataBacked": false,
-      "dataSource": [],
-      "crud": {
-        "create": false,
-        "read": false,
-        "update": false,
-        "delete": false
-      },
-      "approval": false,
-      "export": false,
-      "print": false,
-      "notifications": false,
-      "audit": false,
-      "tests": {
-        "unit": false,
-        "integration": false,
-        "e2e": true
-      },
-      "e2eContent": true,
-      "visualTests": false,
-      "accessibilityTests": false,
-      "securityTests": false,
-      "performanceTest": false,
-      "inNav": false,
-      "status": "IMPLEMENTED",
-      "blockers": [],
-      "dependencies": [],
-      "evidence": [],
-      "flags": [
-        "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
-        "NO_RBAC_MODULE"
-      ]
-    },
-    {
-      "screenId": "F-190",
-      "name": "Franchise-Management",
-      "title": "Franchise Management",
-      "route": "/franchise-management",
-      "surface": "app",
-      "shell": "AppShell",
-      "module": null,
-      "permissions": [],
-      "category": "PRODUCT",
-      "domain": "featuremap",
-      "owner": "08–17",
-      "source": [
-        "feature-map"
-      ],
-      "designSource": null,
-      "designMobileSource": null,
-      "featureMapSource": "project/spec-shots/190-Franchise-Management.png",
-      "mobileType": "B-responsive",
-      "purpose": null,
-      "desktop": "DONE",
-      "tablet": "MISSING",
-      "mobile": "PARTIAL",
-      "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -27568,8 +27273,267 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
+        "NO_RBAC_MODULE"
+      ]
+    },
+    {
+      "screenId": "F-187",
+      "name": "Environmental-Compliance",
+      "title": "Environmental Compliance",
+      "route": "/environmental-compliance",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "featuremap",
+      "owner": "08–17",
+      "source": [
+        "feature-map"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": "project/spec-shots/187-Environmental-Compliance.png",
+      "mobileType": "B-responsive",
+      "purpose": null,
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "DONE",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "NO_BACKEND",
+        "NO_RBAC_MODULE"
+      ]
+    },
+    {
+      "screenId": "F-188",
+      "name": "ISO-Quality-Management",
+      "title": "ISO Quality Management",
+      "route": "/iso-quality-management",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "featuremap",
+      "owner": "08–17",
+      "source": [
+        "feature-map"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": "project/spec-shots/188-ISO-Quality-Management.png",
+      "mobileType": "B-responsive",
+      "purpose": null,
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "DONE",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "NO_BACKEND",
+        "NO_RBAC_MODULE"
+      ]
+    },
+    {
+      "screenId": "F-189",
+      "name": "Equipment-Calibration",
+      "title": "Equipment Calibration",
+      "route": "/equipment-calibration",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "featuremap",
+      "owner": "08–17",
+      "source": [
+        "feature-map"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": "project/spec-shots/189-Equipment-Calibration.png",
+      "mobileType": "B-responsive",
+      "purpose": null,
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "DONE",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "NO_BACKEND",
+        "NO_RBAC_MODULE"
+      ]
+    },
+    {
+      "screenId": "F-190",
+      "name": "Franchise-Management",
+      "title": "Franchise Management",
+      "route": "/franchise-management",
+      "surface": "app",
+      "shell": "AppShell",
+      "module": null,
+      "permissions": [],
+      "category": "PRODUCT",
+      "domain": "featuremap",
+      "owner": "08–17",
+      "source": [
+        "feature-map"
+      ],
+      "designSource": null,
+      "designMobileSource": null,
+      "featureMapSource": "project/spec-shots/190-Franchise-Management.png",
+      "mobileType": "B-responsive",
+      "purpose": null,
+      "desktop": "DONE",
+      "tablet": "MISSING",
+      "mobile": "PARTIAL",
+      "responsive": "PARTIAL",
+      "arabic": "VERIFIED",
+      "rtl": "PARTIAL",
+      "loadingState": "MISSING",
+      "emptyState": "DONE",
+      "errorState": "MISSING",
+      "successState": "MISSING",
+      "accessibility": "MISSING",
+      "dataBacked": false,
+      "dataSource": [],
+      "crud": {
+        "create": false,
+        "read": false,
+        "update": false,
+        "delete": false
+      },
+      "approval": false,
+      "export": false,
+      "print": false,
+      "notifications": false,
+      "audit": false,
+      "tests": {
+        "unit": false,
+        "integration": false,
+        "e2e": true
+      },
+      "e2eContent": true,
+      "visualTests": false,
+      "accessibilityTests": false,
+      "securityTests": false,
+      "performanceTest": false,
+      "inNav": false,
+      "status": "IMPLEMENTED",
+      "blockers": [],
+      "dependencies": [],
+      "evidence": [],
+      "flags": [
+        "TABLET_MISSING",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27597,10 +27561,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -27634,8 +27598,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27663,10 +27626,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -27700,8 +27663,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27729,10 +27691,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -27766,8 +27728,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -27795,10 +27756,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -27832,8 +27793,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -28785,7 +28745,7 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
       "emptyState": "DONE",
@@ -28822,8 +28782,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -29444,10 +29403,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -29481,8 +29440,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     },
@@ -29710,10 +29668,10 @@
       "tablet": "MISSING",
       "mobile": "PARTIAL",
       "responsive": "PARTIAL",
-      "arabic": "PARTIAL",
+      "arabic": "VERIFIED",
       "rtl": "PARTIAL",
       "loadingState": "MISSING",
-      "emptyState": "MISSING",
+      "emptyState": "DONE",
       "errorState": "MISSING",
       "successState": "MISSING",
       "accessibility": "MISSING",
@@ -29747,8 +29705,7 @@
       "evidence": [],
       "flags": [
         "TABLET_MISSING",
-        "ARABIC_MISSING",
-        "MOCK_ONLY",
+        "NO_BACKEND",
         "NO_RBAC_MODULE"
       ]
     }

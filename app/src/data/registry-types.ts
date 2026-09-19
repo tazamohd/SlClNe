@@ -48,6 +48,9 @@ export type RegistryFlag =
   /** An auth or public screen with no repository read. Not MOCK_ONLY: those
    *  surfaces read no collection by design, so there is nothing to wire. */
   | 'CONTENT_ONLY'
+  /** Shows the honest gap state (`GapCard` or the hand-written wave 6-9
+   *  card): no collection exists yet for it to read. Counted under BLK-013. */
+  | 'NO_BACKEND'
 
 /** The slice of the registry the app itself reads. The full record — coverage
  *  per dimension, CRUD, tests, evidence — lives in
