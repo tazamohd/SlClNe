@@ -31,6 +31,7 @@ import { registerInspectionRoutes } from './routes/inspection'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
 import { registerLeaveRoutes } from './routes/leave'
+import { registerOrganizationRoutes } from './routes/organization'
 import { registerPayrollRoutes } from './routes/payroll'
 import { registerProcurementRoutes } from './routes/procurement'
 import { registerProductReportRoutes } from './routes/product-reports'
@@ -403,6 +404,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerInsuranceClaimRoutes(api, { db: deps.db })
       registerPayrollRoutes(api, { db: deps.db })
       registerLeaveRoutes(api, { db: deps.db })
+      registerOrganizationRoutes(api, { db: deps.db })
       registerProcurementRoutes(api, { db: deps.db })
       registerPartsNetworkRoutes(api, { db: deps.db })
       registerProductReportRoutes(api, { db: deps.db })

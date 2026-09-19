@@ -50,8 +50,8 @@
     "capabilities": 18,
     "screensMapped": 436,
     "screensTotal": 436,
-    "endpointsMapped": 527,
-    "endpointsTotal": 527
+    "endpointsMapped": 528,
+    "endpointsTotal": 528
   },
   "capabilities": [
     {
@@ -1137,7 +1137,7 @@
       ],
       "objective": "OBJ-CONTROL",
       "objectiveName": "Keep financial control auditable",
-      "endpointCount": 72,
+      "endpointCount": 73,
       "endpoints": [
         "API-DEPARTMENTS-GET-LIST",
         "API-DEPARTMENTS-POST-LIST",
@@ -1171,6 +1171,7 @@
         "API-NOTIFICATIONS-POSTBULK-DELETE",
         "API-NOTIFICATIONS-POSTBULK-UPDATE",
         "API-NOTIFICATIONS-GETEXPORT",
+        "API-GET-ORGANIZATION",
         "API-PARTSNETWORKMEMBERS-GET-LIST",
         "API-PARTSNETWORKMEMBERS-POST-LIST",
         "API-PARTSNETWORKMEMBERS-DELETEID",
@@ -1657,7 +1658,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 40,
+      "dataBackedScreens": 41,
       "entities": [],
       "rules": [],
       "roles": [],

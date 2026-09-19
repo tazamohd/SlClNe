@@ -208,7 +208,7 @@ _No lifecycle in the contract belongs to this domain._
 | F-180 | `/support-chat-dashboard` | app | **mock** | — | — | yes | verified | yes |
 | F-181 | `/notifications` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-182 | `/compliance-management` | app | **mock** | — | — | yes | verified | yes |
-| F-183 | `/zatca-settings` | app | **mock** | — | — | — | PARTIAL | yes |
+| F-183 | `/zatca-settings` | app | yes | yes | yes | — | verified | yes |
 | F-184 | `/vat-settings` | app | **mock** | — | — | — | verified | yes |
 | F-185 | `/zakat-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-186 | `/safety-incidents` | app | **mock** | — | — | yes | verified | yes |
@@ -252,8 +252,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **161 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **141 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **160 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **140 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

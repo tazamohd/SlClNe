@@ -154,7 +154,7 @@ describe('the appointment the kiosk files', () => {
   it('carries the customer it resolved, not the number that was typed', async () => {
     const user = await identifyBy('Phone Number', '+966 55 210 4471')
     await user.click(await screen.findByRole('button', { name: /Toyota Camry 2023/i }))
-    await user.click(await screen.findByRole('button', { name: /Oil Change/i }))
+    await user.click(await screen.findByRole('button', { name: /Maintenance/i }))
     await user.click(screen.getByRole('button', { name: /Confirm Check-In/i }))
 
     expect(created).toHaveBeenCalledTimes(1)
@@ -164,12 +164,15 @@ describe('the appointment the kiosk files', () => {
     expect(input.customerName).toBe('Ahmed Al-Rashid')
     expect(input.customerId).toBe('cus-ahmed')
     expect(input.plate).toBe('ABC 1234')
+    /* The service picker reads the real `services` collection (server/src/
+     * registry.ts), not a screen-local fixture with its own invented labels. */
+    expect(input.serviceLabel).toBe('Maintenance')
   })
 
   it('files a walk-in with no customer rather than attaching a stranger', async () => {
     const user = await identifyBy('License Plate', 'ZZZ 9999')
     await user.click(await screen.findByRole('button', { name: /Continue with this plate/i }))
-    await user.click(await screen.findByRole('button', { name: /Oil Change/i }))
+    await user.click(await screen.findByRole('button', { name: /Maintenance/i }))
     await user.click(screen.getByRole('button', { name: /Confirm Check-In/i }))
 
     const input = created.mock.calls[0][0] as Record<string, unknown>
@@ -185,7 +188,7 @@ describe('between one walk-in and the next', () => {
      * screen is the same disclosure by another route. */
     const user = await identifyBy('Phone Number', '+966 55 210 4471')
     await user.click(await screen.findByRole('button', { name: /Toyota Camry 2023/i }))
-    await user.click(await screen.findByRole('button', { name: /Oil Change/i }))
+    await user.click(await screen.findByRole('button', { name: /Maintenance/i }))
     await user.click(screen.getByRole('button', { name: /Confirm Check-In/i }))
 
     await user.click(await screen.findByRole('button', { name: /Check In Another|New Check-In|Start Over|Done/i }))

@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 72 API endpoints and 4 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
+This domain serves the objective **OBJ-CONTROL** (Keep financial control auditable). It comprises 35 screens, 73 API endpoints and 4 entities, gated by the `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` permission modules.
 
 
 ## Actors
@@ -100,6 +100,7 @@ Relationships marked *convention only* have no database constraint: an orphaned 
 | POST | `/api/v1/notifications/bulk-delete` | dashboard:d | generated | — | **0** |
 | POST | `/api/v1/notifications/bulk-update` | dashboard:e | generated | — | **0** |
 | GET | `/api/v1/notifications/export` | dashboard:x | generated | — | **0** |
+| GET | `/api/v1/organization` | — | explicit | — | 1 |
 | GET | `/api/v1/parts-network/members` | network:v | generated | — | 1 |
 | POST | `/api/v1/parts-network/members` | network:c | generated | — | 1 |
 | DELETE | `/api/v1/parts-network/members/:id` | network:d | generated | — | **0** |
@@ -192,7 +193,7 @@ _No lifecycle in the contract belongs to this domain._
 ## Known gaps in this domain
 
 - **24 of 35 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **54 of 72 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
+- **54 of 73 endpoints have no test matched to them by path.** Matching is by path string, so this over-reports where a test reaches the endpoint through a helper.
 - **4 of 8 relationships have no foreign key.** Integrity depends on application code; nothing cascades.
 - **No rule guard in the shared contract is specific to this domain.** Any business constraint lives in route handlers, where it is not reusable by the form and not asserted by a contract test.
 - **20 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
@@ -202,7 +203,7 @@ _No lifecycle in the contract belongs to this domain._
 | Fact | Source |
 | --- | --- |
 | Entities and columns | `server/src/db/schema.ts` |
-| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/auth/routes.ts`, `server/src/routes/parts-network.ts` |
+| Endpoints and guards | `server/src/routes/collections.ts (generated from server/src/registry.ts)`, `server/src/routes/history.ts`, `server/src/auth/routes.ts`, `server/src/routes/organization.ts` |
 | Permissions | `packages/contract/src/rbac.ts` |
 | Rules | — |
 | Screens | `project-control/MASTER_REGISTRY.json` |

@@ -10,10 +10,11 @@
 
 # API — platform
 
-**Status:** GENERATED · **Sources as of:** 2026-09-19 · 3 endpoints
+**Status:** GENERATED · **Sources as of:** 2026-09-19 · 4 endpoints
 
 | Method | Path | Permission | Auth | Entity | Idempotent | Tests | Declared in |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| GET | `/api/v1/organization` | — | token | — | — | 1 | `server/src/routes/organization.ts` |
 | POST | `/api/v1/public/leads` | — | public | — | — | 2 | `server/src/routes/public.ts` |
 | GET | `/health` | — | public | — | — | 2 | `server/src/routes/health.ts` |
 | GET | `/ready` | — | public | — | — | 1 | `server/src/routes/health.ts` |

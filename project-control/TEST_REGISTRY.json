@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 225,
-    "cases": 2493,
+    "suites": 226,
+    "cases": 2498,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1383,
+      "UNIT_OR_API": 1388,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -6734,6 +6734,30 @@
       "touchesRoles": [
         "manager",
         "parts"
+      ]
+    },
+    {
+      "id": "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS",
+      "file": "server/tests/organization-read.test.ts",
+      "kind": "UNIT_OR_API",
+      "surface": "server",
+      "describes": [
+        "GET /organization"
+      ],
+      "cases": [
+        "returns the seeded organization\\'s real VAT number, not a fabricated one",
+        "reports an unset CR number as null rather than inventing one",
+        "answers for any authenticated role — the screen carries no RBAC module",
+        "401s with no token",
+        "never returns another organization's identity"
+      ],
+      "caseCount": 5,
+      "touchesPaths": [
+        "/organization"
+      ],
+      "touchesRoles": [
+        "owner",
+        "technician"
       ]
     },
     {
