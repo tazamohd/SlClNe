@@ -16,7 +16,7 @@
 
 ## Purpose and scope
 
-This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 201 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
+This domain serves the objective **OBJ-VISIBILITY** (Give owners operational visibility). It comprises 198 screens, 0 API endpoints and 0 entities, gated by the `ui`, `featuremap` screen domain.
 
 **This domain has no permission module of its own.** Its screens are grouped by their registry `domain` instead — the registry files them that way because they are pre-authorization, unauthenticated, or reference material rather than a gated business surface.
 
@@ -208,9 +208,6 @@ _No lifecycle in the contract belongs to this domain._
 | F-180 | `/support-chat-dashboard` | app | **mock** | — | — | yes | verified | yes |
 | F-181 | `/notifications` | app | yes | yes | yes | yes | PARTIAL | yes |
 | F-182 | `/compliance-management` | app | **mock** | — | — | yes | verified | yes |
-| F-183 | `/zatca-settings` | app | yes | yes | yes | — | verified | yes |
-| F-184 | `/vat-settings` | app | **mock** | — | — | — | verified | yes |
-| F-185 | `/zakat-settings` | app | **mock** | — | — | — | PARTIAL | yes |
 | F-186 | `/safety-incidents` | app | **mock** | — | — | yes | verified | yes |
 | F-187 | `/environmental-compliance` | app | **mock** | — | — | yes | verified | yes |
 | F-188 | `/iso-quality-management` | app | **mock** | — | — | yes | verified | yes |
@@ -252,8 +249,8 @@ _No lifecycle in the contract belongs to this domain._
 
 ## Known gaps in this domain
 
-- **159 of 201 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
-- **139 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
+- **157 of 198 screens read design fixtures rather than the API.** They render and are asserted; they have not exchanged data with the server.
+- **137 screens declare neither a loading nor an error state.** Acceptable for a static reference screen; a defect for one that fetches.
 
 ## Evidence
 

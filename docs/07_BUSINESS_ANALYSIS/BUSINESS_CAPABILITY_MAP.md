@@ -40,7 +40,7 @@ flowchart LR
   OBJ_MARGIN --> CAP_PROCUREMENT
   CAP_BILLING["Invoicing and payments<br/>6 screens · 25 endpoints"]
   OBJ_CASH --> CAP_BILLING
-  CAP_ACCOUNTING["Accounting and finance<br/>9 screens · 59 endpoints"]
+  CAP_ACCOUNTING["Accounting and finance<br/>12 screens · 59 endpoints"]
   OBJ_CASH --> CAP_ACCOUNTING
   CAP_HR["HR and payroll<br/>13 screens · 71 endpoints"]
   OBJ_CAPACITY --> CAP_HR
@@ -62,7 +62,7 @@ flowchart LR
   OBJ_RETENTION --> CAP_WEBSITE
   CAP_CUSTOMERAPP["Customer mobile application<br/>11 screens · 0 endpoints"]
   OBJ_RETENTION --> CAP_CUSTOMERAPP
-  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>201 screens · 0 endpoints"]
+  CAP_DESIGNSYSTEM["Design system and reference surfaces<br/>198 screens · 0 endpoints"]
   OBJ_VISIBILITY --> CAP_DESIGNSYSTEM
 ```
 
@@ -76,7 +76,7 @@ flowchart LR
 | CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 9 | 9 | 22 | 2 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
-| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 9 | 9 | 59 | 10 | 5 |
+| CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 12 | 12 | 59 | 10 | 5 |
 | CAP-HR | HR and payroll | OBJ-CAPACITY | `hr`, `technicians` | 13 | 13 | 71 | 8 | 10 |
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
@@ -87,7 +87,7 @@ flowchart LR
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 1 | 28 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 201 | 42 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 198 | 41 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-172 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+174 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -199,7 +199,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `accounting`, `insurance` |
 | Screen domains | — |
-| Screens | 9 (9 data-backed) |
+| Screens | 12 (12 data-backed) |
 | Endpoints | 59 |
 | Entities | `chartOfAccounts`, `expenses`, `journalEntries`, `bankStatements`, `equipmentWarranties`, `insuranceClaims`, `insurancePolicies`, `loanContracts`, `loanRepayments`, `savedReports` |
 | Roles with any grant | owner, superadmin, manager, accountant, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 201 (42 data-backed) |
+| Screens | 198 (41 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

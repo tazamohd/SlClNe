@@ -2277,7 +2277,8 @@
       "validates": false,
       "capability": "CAP-ACCOUNTING",
       "tests": [
-        "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS"
+        "TS-SERVER-TESTS-FINANCE-REPORTS-TEST-TS",
+        "TS-SERVER-TESTS-ORGANIZATION-READ-TEST-TS"
       ]
     },
     {

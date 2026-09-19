@@ -23,6 +23,7 @@ import { registerEstimateRoutes } from './routes/estimates'
 import { registerEstimateOtpRoutes } from './routes/estimate-otp'
 import { registerObdRoutes } from './routes/obd'
 import { registerFinanceReportRoutes } from './routes/finance-reports'
+import { registerOrganizationRoutes } from './routes/organization'
 import { registerFleetRoutes } from './routes/fleets'
 import { registerHealthRoutes } from './routes/health'
 import { registerHistoryRoutes } from './routes/history'
@@ -31,7 +32,6 @@ import { registerInspectionRoutes } from './routes/inspection'
 import { registerInventoryRoutes } from './routes/inventory'
 import { registerInvoiceRoutes } from './routes/invoices'
 import { registerLeaveRoutes } from './routes/leave'
-import { registerOrganizationRoutes } from './routes/organization'
 import { registerPayrollRoutes } from './routes/payroll'
 import { registerProcurementRoutes } from './routes/procurement'
 import { registerProductReportRoutes } from './routes/product-reports'
@@ -384,6 +384,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerCollectionRoutes(api, { db: deps.db })
       registerInvoiceRoutes(api, { db: deps.db })
       registerFinanceReportRoutes(api, { db: deps.db, env: deps.env })
+      registerOrganizationRoutes(api, { db: deps.db, env: deps.env })
       registerEstimateRoutes(api, { db: deps.db })
       registerWorkshopRoutes(api, { db: deps.db })
       registerInspectionRoutes(api, { db: deps.db, mediaStore })
@@ -404,7 +405,6 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       registerInsuranceClaimRoutes(api, { db: deps.db })
       registerPayrollRoutes(api, { db: deps.db })
       registerLeaveRoutes(api, { db: deps.db })
-      registerOrganizationRoutes(api, { db: deps.db })
       registerProcurementRoutes(api, { db: deps.db })
       registerPartsNetworkRoutes(api, { db: deps.db })
       registerProductReportRoutes(api, { db: deps.db })

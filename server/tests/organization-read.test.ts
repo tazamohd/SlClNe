@@ -1,9 +1,16 @@
 /** `GET /organization` — the caller's own tenant's VAT/CR registration
- *  identity (BLK-004: wires ZATCASettings/VATSettings off their hardcoded
- *  literals). Authenticated but ungated on purpose — see the route's own
- *  docstring — so this proves it answers for any signed-in role, stays
- *  scoped to the caller's own tenant, and reports a genuinely unset field
- *  as null rather than inventing a value.
+ *  identity, and the VAT rate its invoices are priced at (BLK-004: wires
+ *  ZATCASettings/VATSettings/ZakatSettings off their hardcoded literals).
+ *  Authenticated but ungated on purpose — see the route's own docstring — so
+ *  this proves it answers for any signed-in role, stays scoped to the caller's
+ *  own tenant, and reports a genuinely unset field as null rather than
+ *  inventing a value.
+ *
+ *  The rate assertions follow the *configuration* rather than restating 1500.
+ *  A test asserting "reports 15%" would have passed against the hardcoded
+ *  literal these screens used to print, which is the entire failure being
+ *  fixed: a deployment at another rate must move this number, and it must be
+ *  the same number the tax return charges at.
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { FastifyInstance } from 'fastify'
@@ -77,6 +84,26 @@ describe('GET /organization', () => {
   it('401s with no token', async () => {
     const res = await get('/organization')
     expect(res.statusCode).toBe(401)
+  })
+
+  it('reports the VAT rate this deployment enforces, not a literal', async () => {
+    const owner = await token('owner', '01JORGREADRATE0000000001')
+    const res = await get('/organization', owner)
+    const body = res.json() as { vatRateBps: number; vatRateSource: string }
+    expect(body.vatRateBps).toBe(env.VAT_RATE_BPS)
+    expect(body.vatRateSource).toBe('deployment-configuration')
+  })
+
+  it('is the same rate the tax-return endpoint charges at', async () => {
+    /* The two cannot diverge: a screen quoting a rate the ledger did not use
+     * is the hardcoded `15%` again, just sourced differently. */
+    const accountant = await token('accountant', '01JORGREADRATE0000000002')
+    const profile = await get('/organization', accountant)
+    const ret = await get('/accounting/tax/return', accountant)
+    expect(ret.statusCode, ret.body).toBe(200)
+    expect((ret.json() as { rateBps: number }).rateBps).toBe(
+      (profile.json() as { vatRateBps: number }).vatRateBps,
+    )
   })
 
   it("never returns another organization's identity", async () => {

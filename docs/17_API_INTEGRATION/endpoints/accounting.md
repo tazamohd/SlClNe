@@ -27,7 +27,7 @@
 | GET | `/api/v1/accounting/journal-entries/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |
 | GET | `/api/v1/accounting/journal-entries/export` | accounting:x | token | `journalEntries` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/accounting/reports/trial-balance` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
-| GET | `/api/v1/accounting/tax/return` | accounting:v | token | — | — | 1 | `server/src/routes/finance-reports.ts` |
+| GET | `/api/v1/accounting/tax/return` | accounting:v | token | — | — | 2 | `server/src/routes/finance-reports.ts` |
 | GET | `/api/v1/bank-statements` | accounting:v | token | `bankStatements` | — | 1 | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id` | accounting:v | token | `bankStatements` | — | — | `server/src/routes/collections.ts (generated from server/src/registry.ts)` |
 | GET | `/api/v1/bank-statements/:id/history` | accounting:v | token | — | — | — | `server/src/routes/history.ts` |

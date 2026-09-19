@@ -11,15 +11,15 @@
   "handEdit": "Never. Edit the source, then regenerate.",
   "note": "This catalogues what the suites contain, not whether they pass. Pass/fail is a dated, evidence-backed statement made only in docs/30_RELEASE_CERTIFICATION.",
   "totals": {
-    "suites": 227,
-    "cases": 2500,
+    "suites": 228,
+    "cases": 2521,
     "byKind": {
       "ACCESSIBILITY": 2,
       "E2E": 306,
       "INVENTORY_INTEGRITY": 197,
       "FINANCIAL_INTEGRITY": 195,
       "SECURITY": 213,
-      "UNIT_OR_API": 1390,
+      "UNIT_OR_API": 1411,
       "CONTRACT": 182,
       "DATA_FIDELITY": 15
     }
@@ -1713,6 +1713,57 @@
         "owner",
         "parts",
         "technician"
+      ]
+    },
+    {
+      "id": "TS-APP-TESTS-COMPLIANCE-TAX-SCREENS-TEST-TSX",
+      "file": "app/tests/compliance-tax-screens.test.tsx",
+      "kind": "UNIT_OR_API",
+      "surface": "app",
+      "describes": [
+        "VATSettings",
+        "who may open these screens",
+        "the mobile branch renders the same sourced values",
+        "ZATCASettings",
+        "ZakatSettings"
+      ],
+      "cases": [
+        "fixture: shows the contract rate from the shared constant, not a literal",
+        "live: shows the rate this deployment enforces — 5%, not 15%",
+        "live: shows the VAT number the organization record holds",
+        "live: an organization with no VAT number reads as not recorded, with the consequence",
+        "live: a failed read is an error state, never a substituted number",
+        "live: output VAT is the server’s figure, and no net VAT is shown",
+        "fixture: discloses the VAT-return gap instead of a period total",
+        "no fabricated registration number or invented tax total survives",
+        "follows the accounting module, the same gate the endpoints enforce",
+        "VATSettings: the enforced rate and the recorded number, on a phone",
+        "ZATCASettings: the seller identity and the integration gap, on a phone",
+        "ZakatSettings: the filing registration and the zakat gap, on a phone",
+        "live: the seller VAT number is the recorded one, and the rate follows the server",
+        "declares the integration gap and drops the fabricated status, phase and sync",
+        "drops the fabricated organization TIN entirely — nothing records one",
+        "fixture: shows no registration number at all rather than a stand-in",
+        "declares the zakat gap and shows no invented base or amount",
+        "states the statutory rate as law, not as a configured setting",
+        "fixture: reads no registration number rather than inventing one"
+      ],
+      "caseCount": 19,
+      "touchesPaths": [],
+      "touchesRoles": [
+        "accountant",
+        "owner",
+        "superadmin",
+        "manager",
+        "test",
+        "technician",
+        "frontdesk",
+        "parts",
+        "advisor",
+        "qc",
+        "hr",
+        "customer",
+        "supplier"
       ]
     },
     {
@@ -6767,15 +6818,19 @@
         "reports an unset CR number as null rather than inventing one",
         "answers for any authenticated role — the screen carries no RBAC module",
         "401s with no token",
+        "reports the VAT rate this deployment enforces, not a literal",
+        "is the same rate the tax-return endpoint charges at",
         "never returns another organization's identity"
       ],
-      "caseCount": 5,
+      "caseCount": 7,
       "touchesPaths": [
-        "/organization"
+        "/organization",
+        "/accounting/tax/return"
       ],
       "touchesRoles": [
         "owner",
-        "technician"
+        "technician",
+        "accountant"
       ]
     },
     {

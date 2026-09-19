@@ -655,7 +655,7 @@
         "API-SAVEDREPORTS-POSTBULK-UPDATE",
         "API-SAVEDREPORTS-GETEXPORT"
       ],
-      "screenCount": 9,
+      "screenCount": 12,
       "screens": [
         "D-BankReconciliation",
         "D-ChartOfAccounts",
@@ -665,9 +665,12 @@
         "D-JournalEntries",
         "D-TaxManagement",
         "F-169",
-        "F-171"
+        "F-171",
+        "F-183",
+        "F-184",
+        "F-185"
       ],
-      "dataBackedScreens": 9,
+      "dataBackedScreens": 12,
       "entities": [
         "chartOfAccounts",
         "expenses",
@@ -1454,7 +1457,7 @@
       "objectiveName": "Give owners operational visibility",
       "endpointCount": 0,
       "endpoints": [],
-      "screenCount": 201,
+      "screenCount": 198,
       "screens": [
         "D-UI.ActivityFeed",
         "D-UI.AdvancedFilters",
@@ -1616,9 +1619,6 @@
         "F-180",
         "F-181",
         "F-182",
-        "F-183",
-        "F-184",
-        "F-185",
         "F-186",
         "F-187",
         "F-188",
@@ -1658,7 +1658,7 @@
         "F-234",
         "F-235"
       ],
-      "dataBackedScreens": 42,
+      "dataBackedScreens": 41,
       "entities": [],
       "rules": [],
       "roles": [],

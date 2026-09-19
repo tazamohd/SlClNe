@@ -1742,35 +1742,6 @@ export function createAuditLogApi(baseUrl: string): AuditLogApi {
   }
 }
 
-/* --------------------------------------------------------- organization */
-
-/** The caller's own tenant's registration identity, as `GET /organization`
- *  presents it. Null fields are honest: not every organization has set a
- *  VAT or CR number yet (issuing an invoice without one is refused —
- *  `server/src/routes/invoices.ts` — so a null here is "not configured",
- *  not a loading state). */
-export interface OrganizationInfo {
-  name: string
-  vatNumber: string | null
-  crNumber: string | null
-}
-
-/** The organization's own registration identity (ZATCASettings,
- *  VATSettings). Live only: it is the tenant row itself, not a fixture
- *  collection, and there is no demo organization to invent one for. */
-export interface OrganizationInfoApi {
-  get(): Promise<OrganizationInfo>
-}
-
-export function createOrganizationInfo(baseUrl: string): OrganizationInfoApi {
-  const root = baseUrl.replace(/\/$/, '')
-  return {
-    async get() {
-      return request<OrganizationInfo>(`${root}/organization`)
-    },
-  }
-}
-
 /* ------------------------------------------------- financial aggregates */
 
 export interface ReportRange {
@@ -1888,6 +1859,49 @@ export function createFinanceReports(baseUrl: string): FinanceReportsApi {
     },
     async trialBalance() {
       return request<TrialBalance>(reportUrl(baseUrl, 'accounting/reports/trial-balance'))
+    },
+  }
+}
+
+/* ------------------------------------------- organization tax identity */
+
+/** `GET /organization` — what the organization has *recorded* about
+ *  its own tax identity, plus the VAT rate the deployment *enforces*.
+ *
+ *  The two are different kinds of fact and the field names keep them apart.
+ *  `vatNumber` and `crNumber` are recorded properties of the organization's own
+ *  row; `POST /invoices/:id/issue` reads the VAT number, stamps it onto the
+ *  invoice and its ZATCA QR, and refuses to issue when it is null — so `null`
+ *  here means "not recorded, and invoicing is blocked", which is a state a
+ *  screen must show rather than paper over with a plausible-looking number.
+ *  `vatRateBps` is read from the server's own configuration, the same value the
+ *  invoice pricing rule charges at, so a screen displaying it cannot quote a
+ *  rate the ledger did not apply. Nothing here is editable: the rate is a
+ *  deployment setting, and a form over it would be a control the enforcement
+ *  ignores. */
+export interface OrgTaxProfile {
+  name: string
+  nameAr: string | null
+  /** The ZATCA VAT registration number on the organization's row, or null when
+   *  it has recorded none. Never a stand-in. */
+  vatNumber: string | null
+  /** Commercial-registration number, same discipline. */
+  crNumber: string | null
+  /** The enforced rate, in basis points — 1500 is 15%. */
+  vatRateBps: number
+  /** Where `vatRateBps` came from, so a screen can label it honestly. */
+  vatRateSource: string
+}
+
+export interface OrganizationApi {
+  taxProfile(): Promise<OrgTaxProfile>
+}
+
+export function createOrganizationApi(baseUrl: string): OrganizationApi {
+  const root = baseUrl.replace(/\/$/, '')
+  return {
+    async taxProfile() {
+      return request<OrgTaxProfile>(`${root}/organization`)
     },
   }
 }
@@ -2381,13 +2395,6 @@ export const history: HistoryApi | null = API_URL ? createHistoryApi(API_URL) : 
  *  the honest gap otherwise. */
 export const auditLogApi: AuditLogApi | null = API_URL ? createAuditLogApi(API_URL) : null
 
-/** The organization's own registration identity (BLK-004), live only. Null
- *  on the fixtures: it is the tenant row itself, so a screen reads it when
- *  `isLive` and keeps its demo/placeholder values otherwise. */
-export const organizationInfo: OrganizationInfoApi | null = API_URL
-  ? createOrganizationInfo(API_URL)
-  : null
-
 /** The unified approval queue (F-029), live only against the API. Null on the
  *  fixtures: a per-caller approval standing is a server computation, and a mock
  *  that invented one would misinform the gate it drives. */
@@ -2415,6 +2422,16 @@ export const hrReports: HrReportsApi | null = API_URL ? createHrReports(API_URL)
  *  refuses with a 503 until a bridge is deployed (§40) — the mock never fakes a
  *  scan. */
 export const diagnostics: DiagnosticsApi | null = API_URL ? createDiagnosticsApi(API_URL) : null
+
+/** The organization's recorded tax identity and the enforced VAT rate
+ *  (BLK-004), live only. Null on the fixtures, and deliberately with no mock: a
+ *  VAT registration number is the seller identity on every tax document this
+ *  system issues, and a fixture that invented one is exactly what the compliance
+ *  screens used to do. Those screens read this where it exists and say plainly
+ *  that they cannot know it otherwise. */
+export const organizationApi: OrganizationApi | null = API_URL
+  ? createOrganizationApi(API_URL)
+  : null
 
 /** The customer-approval OTP e-signature (F-029), live only. SMS is an external
  *  dependency; the request refuses with a 503 until a provider is configured. */

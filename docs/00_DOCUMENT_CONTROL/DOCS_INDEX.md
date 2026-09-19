@@ -101,7 +101,7 @@ The Markdown is a view. These are the canonical form, and what `docs:check` and 
 | `project-control/PERMISSION_REGISTRY.json` | 495 permission cells, scopes, ceilings, SOD | `packages/contract/src/rbac.ts` |
 | `project-control/BUSINESS_RULES.json` | 30 rules, each naming its function | `packages/contract/src/rules/*.ts` |
 | `project-control/STATE_MACHINE_REGISTRY.json` | 28 lifecycles | `packages/contract/src/entities/*.ts` |
-| `project-control/TEST_REGISTRY.json` | 227 suites, 2500 cases | the spec files |
+| `project-control/TEST_REGISTRY.json` | 228 suites, 2521 cases | the spec files |
 | `project-control/CAPABILITY_REGISTRY.json` | 18 capabilities linked to everything below them | modules + screen domains |
 | `project-control/SECURITY_REGISTRY.json` | RLS policies, triggers, unauthenticated surface | `server/drizzle/*.sql` |
 | `project-control/MASTER_REGISTRY.json` | 436 screens — **owned by `app/scripts/build-registry.mjs`, not by this system** | the screen sources |
