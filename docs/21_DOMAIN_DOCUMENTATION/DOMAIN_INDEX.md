@@ -19,7 +19,7 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Domain | Document | Screens | Endpoints | Entities | Data-backed screens |
 | --- | --- | --- | --- | --- | --- |
 | Workshop operations | [CAP-WORKSHOP](WORKSHOP.md) | 19 | 128 | 18 | 18 of 19 |
-| Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 19 | 2 | 3 of 3 |
+| Customer management | [CAP-CUSTOMERS](CUSTOMERS.md) | 3 | 20 | 2 | 3 of 3 |
 | Vehicle management | [CAP-VEHICLES](VEHICLES.md) | 4 | 9 | 1 | 4 of 4 |
 | Parts and inventory | [CAP-INVENTORY](INVENTORY.md) | 7 | 13 | 1 | 1 of 7 |
 | Procurement | [CAP-PROCUREMENT](PROCUREMENT.md) | 1 | 28 | 3 | 1 of 1 |
@@ -31,8 +31,8 @@ One document per domain, all to the same standard: purpose, actors and their dat
 | Approvals and governance | [CAP-GOVERNANCE](GOVERNANCE.md) | 2 | 5 | 1 | 1 of 2 |
 | Portals and channels | [CAP-PORTALS](PORTALS.md) | 11 | 0 | 0 | 8 of 11 |
 | AI and automation | [CAP-AI](AI.md) | 10 | 8 | 2 | 4 of 10 |
-| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 19 | 4 | 6 of 35 |
-| Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 24 | 0 | 1 of 19 |
+| Administration and platform | [CAP-PLATFORM](PLATFORM.md) | 35 | 21 | 4 | 6 of 35 |
+| Identity and access | [CAP-IDENTITY](IDENTITY.md) | 19 | 26 | 0 | 1 of 19 |
 | Public website and acquisition | [CAP-WEBSITE](WEBSITE.md) | 34 | 0 | 0 | 0 of 34 |
 | Customer mobile application | [CAP-CUSTOMERAPP](CUSTOMERAPP.md) | 11 | 0 | 0 | 6 of 11 |
 | Design system and reference surfaces | [CAP-DESIGNSYSTEM](DESIGNSYSTEM.md) | 232 | 0 | 0 | 51 of 232 |
