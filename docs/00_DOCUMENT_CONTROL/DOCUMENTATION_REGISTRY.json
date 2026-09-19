@@ -1264,7 +1264,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/DESIGNSYSTEM.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 19251,
+      "bytes": 19250,
       "lines": 270,
       "type": "GENERATED",
       "archived": false,
@@ -1319,7 +1319,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/INVENTORY.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 6378,
+      "bytes": 6373,
       "lines": 114,
       "type": "GENERATED",
       "archived": false,
@@ -1341,7 +1341,7 @@
     {
       "path": "21_DOMAIN_DOCUMENTATION/PORTALS.md",
       "section": "21_DOMAIN_DOCUMENTATION",
-      "bytes": 4339,
+      "bytes": 4334,
       "lines": 91,
       "type": "GENERATED",
       "archived": false,
@@ -1979,7 +1979,7 @@
     {
       "path": "SALIS_AUTO_MASTER_MATRIX.md",
       "section": "(root)",
-      "bytes": 62864,
+      "bytes": 62855,
       "lines": 445,
       "type": "NORMATIVE_OR_AUTHORED",
       "archived": false,

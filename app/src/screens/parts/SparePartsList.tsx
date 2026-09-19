@@ -5,75 +5,81 @@ import { Icon } from '@/components/ui/Icon'
 import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import { Search } from '@/components/ui/Search'
-import { Money } from '@/components/ui/Money'
+import { Money, parseSar } from '@/components/ui/Money'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { ErrorState, Loading } from '@/components/ui/States'
 import { useIsMobile } from '@/lib/useMediaQuery'
 import { usePreferences } from '@/providers/PreferencesProvider'
 import { MobileCardHeader, MobileCardRow, MobilePageHeader } from '@/components/shell/MobileShell'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { useCollection, type RowOf } from '@/data/useCollection'
 
-const PARTS = [
-  { partNumber: 'SP-1001', name: 'Oil Filter', brand: 'Toyota Genuine', category: 'OEM', compatibility: 'Toyota', price: 18.50, stock: 120, status: 'Available' },
-  { partNumber: 'SP-1002', name: 'Brake Pad Set', brand: 'Brembo', category: 'Aftermarket', compatibility: 'All', price: 145.00, stock: 35, status: 'Available' },
-  { partNumber: 'SP-1003', name: 'Spark Plug', brand: 'NGK', category: 'Universal', compatibility: 'All', price: 12.75, stock: 200, status: 'Available' },
-  { partNumber: 'SP-1004', name: 'Alternator', brand: 'Hyundai Genuine', category: 'OEM', compatibility: 'Hyundai', price: 520.00, stock: 0, status: 'Backordered' },
-  { partNumber: 'SP-1005', name: 'Timing Belt Kit', brand: 'Gates', category: 'Aftermarket', compatibility: 'Toyota', price: 185.00, stock: 15, status: 'Available' },
-  { partNumber: 'SP-1006', name: 'Radiator Hose', brand: 'Continental', category: 'Universal', compatibility: 'All', price: 32.00, stock: 0, status: 'Backordered' },
-  { partNumber: 'SP-1007', name: 'Headlight Bulb', brand: 'Philips', category: 'Universal', compatibility: 'All', price: 28.50, stock: 80, status: 'Available' },
-  { partNumber: 'SP-1008', name: 'Cabin Air Filter', brand: 'Mann', category: 'Aftermarket', compatibility: 'Hyundai', price: 24.00, stock: 60, status: 'Available' },
-  { partNumber: 'SP-1009', name: 'Clutch Disc', brand: 'Exedy', category: 'Aftermarket', compatibility: 'Toyota', price: 310.00, stock: 0, status: 'Discontinued' },
-  { partNumber: 'SP-1010', name: 'Wheel Bearing', brand: 'SKF', category: 'Universal', compatibility: 'All', price: 95.00, stock: 45, status: 'Available' },
-] as const
+type Part = RowOf<'parts'>
+type Status = 'Out of Stock' | 'Low Stock' | 'Available'
 
-type Part = (typeof PARTS)[number]
+/** `parts` has no `category`/`brand`/`compatibility` field — this screen used
+ *  to invent all three, plus a "Backordered"/"Discontinued" status no
+ *  collection tracks. Dropped rather than filled with placeholders; `status`
+ *  is now derived from the same `stock` vs `reorder` comparison
+ *  `ProcurementPurchaseOrder.tsx` and `Inventory.tsx` already use to flag a
+ *  part for reordering. */
+function statusOf(part: Part): Status {
+  if (part.stock <= 0) return 'Out of Stock'
+  if (part.stock <= part.reorder) return 'Low Stock'
+  return 'Available'
+}
 
-function statusColor(status: string) {
-  if (status === 'Backordered') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
-  if (status === 'Discontinued') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+function statusColor(status: Status) {
+  if (status === 'Out of Stock') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
+  if (status === 'Low Stock') return { background: 'var(--tint-orange)', color: 'var(--salis-orange)' }
   return { background: 'var(--tint-blue)', color: 'var(--salis-blue)' }
+}
+
+function priceHalalasOf(part: Part): number {
+  return typeof part.priceHalalas === 'number' ? part.priceHalalas : Math.round(parseSar(part.price) * 100)
 }
 
 export function SparePartsList() {
   const { t } = usePreferences()
   const isMobile = useIsMobile()
   const [search, setSearch] = useState('')
+  const { data: parts = [], isLoading, isError, error, refetch } = useCollection('parts')
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return PARTS
+    if (!search.trim()) return parts
     const q = search.toLowerCase()
-    return PARTS.filter(
-      (p) => p.name.toLowerCase().includes(q) || p.partNumber.toLowerCase().includes(q),
-    )
-  }, [search])
+    return parts.filter((p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
+  }, [parts, search])
 
-  const available = PARTS.filter((p) => p.status === 'Available').length
-  const backordered = PARTS.filter((p) => p.status === 'Backordered').length
-  const categories = new Set(PARTS.map((p) => p.category)).size
+  const available = parts.filter((p) => statusOf(p) === 'Available').length
+  const lowStock = parts.filter((p) => statusOf(p) === 'Low Stock').length
+  const outOfStock = parts.filter((p) => statusOf(p) === 'Out of Stock').length
 
   const kpis = [
-    { label: t('Total Parts'), value: String(PARTS.length), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Total Parts'), value: String(parts.length), icon: 'Wrench', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
     { label: t('Available'), value: String(available), icon: 'CheckCircle', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
-    { label: t('Backordered'), value: String(backordered), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
-    { label: t('Categories'), value: String(categories), icon: 'Tag', bg: 'var(--tint-blue)', fg: 'var(--salis-blue)' },
+    { label: t('Low Stock'), value: String(lowStock), icon: 'Clock', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
+    { label: t('Out of Stock'), value: String(outOfStock), icon: 'AlertTriangle', bg: 'var(--tint-orange)', fg: 'var(--salis-orange)' },
   ]
 
+  if (isLoading) return <Loading label={t('Loading parts...')} />
+  if (isError) return <ErrorState description={error?.message} onRetry={() => void refetch()} />
+
   const columns: Column<Part>[] = [
-    { header: 'Part #', cell: (part) => part.partNumber, code: true },
+    { header: 'Part #', cell: (part) => part.sku, code: true },
     { header: 'Name', cell: (part) => <span className="font-medium text-heading">{part.name}</span> },
-    { header: 'Brand', cell: (part) => part.brand },
-    { header: 'Category', cell: (part) => t(part.category) },
-    { header: 'Compatibility', cell: (part) => t(part.compatibility) },
-    { header: 'Price', cell: (part) => <Money sar={part.price} /> },
+    { header: 'Price', cell: (part) => <Money sar={priceHalalasOf(part)} /> },
     { header: 'Stock', cell: (part) => <span className="font-mono text-heading" dir="ltr">{part.stock}</span> },
-    { header: 'Status', cell: (part) => <Badge {...statusColor(part.status)}>{t(part.status)}</Badge> },
+    { header: 'Reorder At', cell: (part) => <span className="font-mono text-heading" dir="ltr">{part.reorder}</span> },
+    { header: 'Status', cell: (part) => <Badge {...statusColor(statusOf(part))}>{t(statusOf(part))}</Badge> },
   ]
 
   const table = (
     <DataTable
       caption="Spare parts catalog"
       columns={columns}
-      rows={filtered as unknown as Part[]}
-      rowKey={(part) => part.partNumber}
+      rows={filtered}
+      rowKey={(part) => part.sku}
       empty={<p className="py-8 text-center text-sm text-muted">{t('No parts found')}</p>}
       mobileCard={(part) => (
         <>
@@ -83,17 +89,15 @@ export function SparePartsList() {
                 <span className="flex rounded-lg p-1.5 bg-tint-blue text-salis-blue" aria-hidden><Icon name="Wrench" size={14} /></span>
                 <div>
                   <p className="text-[13px] font-semibold text-heading">{part.name}</p>
-                  <p className="text-xs text-muted" dir="ltr">{part.partNumber}</p>
+                  <p className="text-xs text-muted" dir="ltr">{part.sku}</p>
                 </div>
               </div>
             }
-            trailing={<Badge {...statusColor(part.status)}>{t(part.status)}</Badge>}
+            trailing={<Badge {...statusColor(statusOf(part))}>{t(statusOf(part))}</Badge>}
           />
-          <MobileCardRow label={t('Brand')} value={part.brand} />
-          <MobileCardRow label={t('Category')} value={t(part.category)} />
-          <MobileCardRow label={t('Compatibility')} value={t(part.compatibility)} />
           <MobileCardRow label={t('Stock')} value={String(part.stock)} />
-          <MobileCardRow label={t('Price')}><Money sar={part.price} /></MobileCardRow>
+          <MobileCardRow label={t('Reorder At')} value={String(part.reorder)} />
+          <MobileCardRow label={t('Price')}><Money sar={priceHalalasOf(part)} /></MobileCardRow>
         </>
       )}
     />

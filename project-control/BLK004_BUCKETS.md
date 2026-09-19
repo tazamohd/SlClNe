@@ -234,6 +234,113 @@ Skipped on purpose (25), because they are forms, tools, profiles, navigation hub
 
 These are bucket B (wire to an entity) or a product decision (settings and profile forms need a persistence endpoint, not an empty state).
 
+## Bucket B, first pass: DONE (2026-09-19)
+
+Two kinds of fix, both real wiring, no new detector shortcuts:
+
+- **Registry detection gap.** `network/Procurement.tsx`'s procurement seam
+  (`ProcurementRequisitions`, and by extension `PartsNetwork.Quotations` /
+  `ProcurementPortal.Requisitions`) predates `useCollection` — it is a typed
+  `ProcurementApi` object, null on a fixture build and a real HTTP client
+  otherwise (`repository.ts`'s `procurement`, gated on `API_URL` the same way
+  every collection is). `build-registry.mjs` only recognised the
+  `useCollection` family, so a screen wired this way still counted as
+  MOCK_ONLY. Added `PROCUREMENT_API_CALL` alongside the existing
+  `REPORT_HOOK_CALL` special case: same shape, one more legitimate seam.
+- **Honest-gap detection was file-scoped, not export-scoped.** Bucket C's
+  `honestGapScreens` grepped a whole file for a gap marker, so a file mixing
+  one wired screen with several honest-gap ones (`network/Procurement.tsx`,
+  `network/PartsNetwork.tsx`) either credited the gap ones by accident
+  (inheriting a marker from a sibling export) or missed them entirely (a
+  file-level `SEAM_ANY` check throwing out three honest exports because a
+  fourth uses `useCollection`). Rewritten to scan per export via the same
+  `exportBodies` slicing `dataBackedScreens` already uses, and generalised to
+  resolve a local wrapper component — `PartsNetwork.tsx`'s `GapPanel`,
+  `hr/StaffGap.tsx`'s `GapShell` — the same way `dataBackedScreens` already
+  resolves a wrapper that mounts a sibling. Also recognises `hr/bits.tsx`'s
+  cross-file `ConnectApi`, already used honestly across HR.
+- **`PartsSupplyNetwork`** inlined its own `EmptyState` per tab (four tabs,
+  every stat zero) instead of the file's shared `NetworkGapPanel`; refactored
+  to use it, for the same honest state with a named missing collection.
+- **`SparePartsList.tsx`** genuinely rendered an invented 10-row parts catalog
+  with a `category`/`brand`/`compatibility`/`status` shape the `parts`
+  collection doesn't have. Rewired to `useCollection('parts')`; the three
+  fields with no real backing were dropped rather than filled with
+  placeholders, and `status` is now derived from `stock` vs `reorder`, the
+  same comparison `Inventory.tsx` and `ProcurementPurchaseOrder.tsx` already
+  use to flag a part for reordering.
+
+**BLK-004: 43 → 38.** BLK-013 (NO_BACKEND): 129.
+
+### Remaining MOCK_ONLY after bucket B first pass (38)
+
+| Screen | Route | Domain |
+|---|---|---|
+| AIAssistant | `/aiassistant` | ai |
+| Barcode-Scanner | `/barcode-scanner` | featuremap |
+| Cash-Flow-Statement | `/cash-flow-statement` | featuremap |
+| Customer-App-Booking | `/customer-app-booking` | featuremap |
+| CustomerApp.Marketplace | `/customer-app/marketplace` | customerapp |
+| CustomerApp.Notifications | `/customer-app/notifications` | customerapp |
+| CustomerApp.Orders | `/customer-app/orders` | customerapp |
+| CustomerApp.Profile | `/customer-app/profile` | customerapp |
+| CustomerApp.Wallet | `/customer-app/wallet` | customerapp |
+| Dashboard-Widgets | `/dashboard-widgets` | featuremap |
+| Data-Backup | `/data-backup` | featuremap |
+| Data-Import-Export | `/data-import-export` | featuremap |
+| Financial-Settings | `/financial-settings` | featuremap |
+| HealthCheckReport | `/customer-portal/health-check-report` | admin |
+| Internal-Warehouse | `/internal-warehouse` | featuremap |
+| Native.Android | `/native/android` | portals |
+| Native.iOS | `/native/i-os` | portals |
+| Notifications | `/notifications` | featuremap |
+| Profile | `/profile` | admin |
+| Retained-Earnings | `/retained-earnings` | featuremap |
+| Role-Management | `/role-management` | featuremap |
+| RolesPermissions | `/roles-permissions` | admin |
+| Security-Settings | `/security-settings` | featuremap |
+| System-Settings | `/system-settings` | featuremap |
+| Tasks | `/tasks` | featuremap |
+| Technician-Leaderboards | `/technician-leaderboards` | featuremap |
+| Tools | `/tools` | featuremap |
+| Training-LMS | `/training-lms` | featuremap |
+| User-Profile | `/user-profile` | featuremap |
+| User-Settings | `/user-settings` | featuremap |
+| UsersTeams | `/users-teams` | admin |
+| VAT-Settings | `/vat-settings` | featuremap |
+| Vehicle-History | `/vehicle-history` | featuremap |
+| Voice-Command-Interface | `/voice-command-interface` | admin |
+| Voice-Commands | `/voice-commands` | admin |
+| Welcome-Page | `/welcome-page` | featuremap |
+| ZATCA-Settings | `/zatca-settings` | featuremap |
+| Zakat-Settings | `/zakat-settings` | featuremap |
+
+Grouped by what they actually need:
+
+- **Wire to `crmTasks` or a similar existing collection, with care about
+  overlap with `CRMTasks.tsx`:** Tasks.
+- **Wire to `vehicles`/`jobs` (service history) or `inventory` movements:**
+  Vehicle-History, Internal-Warehouse.
+- **Need a genuinely new backend collection, not just frontend wiring** (no
+  matching entity in `packages/contract`, `API_REGISTRY.json`, or
+  `server/drizzle/`): AIAssistant, Barcode-Scanner, Cash-Flow-Statement,
+  Customer-App-Booking, CustomerApp.* (5), Notifications, Retained-Earnings,
+  Technician-Leaderboards, Training-LMS, HealthCheckReport,
+  Native.Android/iOS. These are bucket-C-shaped (an honest `GapCard`), not
+  bucket-B-shaped, and were left as-is rather than converted in the same
+  pass because each needs its own product decision about what the missing
+  collection should be named and whether it belongs in this session's
+  scope at all.
+- **Settings/profile/admin forms needing a persistence endpoint, not an
+  empty state:** Dashboard-Widgets, Data-Backup, Data-Import-Export,
+  Financial-Settings, Profile, Role-Management, RolesPermissions,
+  Security-Settings, System-Settings, Tools, User-Profile, User-Settings,
+  UsersTeams, VAT-Settings, Voice-Command-Interface, Voice-Commands,
+  Welcome-Page, ZATCA-Settings, Zakat-Settings. A `GapCard` on a form is the
+  wrong fix — these need the actual write endpoint (some, like `UsersTeams`
+  and `RolesPermissions`, already partly exist per PR #128's admin/staff
+  routes; the rest do not).
+
 ## Bucket C (original list): no entity, EmptyState or retire
 
 | Screen | Route | Domain | Module |

@@ -73,7 +73,7 @@ flowchart LR
 | CAP-WORKSHOP | Workshop operations | OBJ-THROUGHPUT | `jobcards`, `appointments`, `estimates` | 26 | 25 | 128 | 18 | 12 |
 | CAP-CUSTOMERS | Customer management | OBJ-RETENTION | `customers` | 4 | 4 | 20 | 2 | 9 |
 | CAP-VEHICLES | Vehicle management | OBJ-THROUGHPUT | `vehicles` | 5 | 5 | 9 | 1 | 11 |
-| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 8 | 2 | 13 | 1 | 9 |
+| CAP-INVENTORY | Parts and inventory | OBJ-MARGIN | `inventory` | 8 | 3 | 13 | 1 | 9 |
 | CAP-PROCUREMENT | Procurement | OBJ-MARGIN | `procurement` | 3 | 3 | 28 | 3 | 8 |
 | CAP-BILLING | Invoicing and payments | OBJ-CASH | `invoices`, `payments` | 6 | 6 | 25 | 4 | 9 |
 | CAP-ACCOUNTING | Accounting and finance | OBJ-CASH | `accounting`, `insurance` | 9 | 9 | 59 | 10 | 5 |
@@ -81,13 +81,13 @@ flowchart LR
 | CAP-CRM | CRM and sales | OBJ-RETENTION | `crm`, `callcenter` | 13 | 11 | 51 | 6 | 7 |
 | CAP-REPORTING | Reporting and analytics | OBJ-VISIBILITY | `reports`, `execreports` | 11 | 11 | 0 | 0 | 10 |
 | CAP-GOVERNANCE | Approvals and governance | OBJ-CONTROL | `approvals`, `audit` | 2 | 1 | 6 | 1 | 9 |
-| CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 8 | 0 | 0 | 14 |
+| CAP-PORTALS | Portals and channels | OBJ-RETENTION | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` | 11 | 9 | 0 | 0 | 14 |
 | CAP-AI | AI and automation | OBJ-THROUGHPUT | `ai`, `aiadmin` | 19 | 4 | 8 | 2 | 0 |
 | CAP-PLATFORM | Administration and platform | OBJ-CONTROL | `admin`, `departments`, `settings`, `superadmin`, `dashboard`, `network`, `ungated`, `platform` | 35 | 6 | 26 | 4 | 14 |
 | CAP-IDENTITY | Identity and access | OBJ-CONTROL | `auth` | 19 | 1 | 26 | 0 | 0 |
 | CAP-WEBSITE | Public website and acquisition | OBJ-RETENTION | _(screen domain: website)_ | 39 | 0 | 0 | 0 | 0 |
 | CAP-CUSTOMERAPP | Customer mobile application | OBJ-RETENTION | _(screen domain: customerapp)_ | 11 | 6 | 0 | 0 | 0 |
-| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 204 | 32 | 0 | 0 | 0 |
+| CAP-DESIGNSYSTEM | Design system and reference surfaces | OBJ-VISIBILITY | _(screen domain: ui, featuremap)_ | 204 | 33 | 0 | 0 | 0 |
 
 ## Objectives and the benefit each is for
 
@@ -103,7 +103,7 @@ flowchart LR
 
 ## Reading the "data-backed" column
 
-145 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
+148 of 436 screens are wired to the live API; the remainder render from the ported design fixtures. That is the single largest fact about the product's current state, and it is measured in `project-control/STATUS.json` rather than asserted here.
 
 ## Per-capability detail
 
@@ -157,7 +157,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `inventory` |
 | Screen domains | `parts` |
-| Screens | 8 (2 data-backed) |
+| Screens | 8 (3 data-backed) |
 | Endpoints | 13 |
 | Entities | `parts` |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, parts, accountant, procurement, test |
@@ -269,7 +269,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | `portaltech`, `portalcustomer`, `portalsupplier`, `portalprocure`, `kiosk` |
 | Screen domains | `portals` |
-| Screens | 11 (8 data-backed) |
+| Screens | 11 (9 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | owner, superadmin, manager, advisor, technician, qc, parts, accountant, frontdesk, callcenter, procurement, supplier, customer, test |
@@ -353,7 +353,7 @@ flowchart LR
 | --- | --- |
 | Permission modules | — |
 | Screen domains | `ui`, `featuremap` |
-| Screens | 204 (32 data-backed) |
+| Screens | 204 (33 data-backed) |
 | Endpoints | 0 |
 | Entities | — |
 | Roles with any grant | — |

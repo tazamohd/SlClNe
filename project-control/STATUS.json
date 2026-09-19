@@ -9,14 +9,14 @@
     "placeholder": 0,
     "designedMobileOwed": 0,
     "untested": 0,
-    "mockOnly": 43,
-    "noBackend": 127,
-    "dataBacked": 145,
+    "mockOnly": 38,
+    "noBackend": 129,
+    "dataBacked": 148,
     "e2eCovered": 436,
     "contentAsserted": 436,
     "renderedWithoutAssertion": 0,
-    "hasLoadingState": 182,
-    "hasErrorState": 145,
+    "hasLoadingState": 183,
+    "hasErrorState": 146,
     "hasEmptyState": 265,
     "tabletVerified": 4,
     "arabicVerified": 119,
@@ -27,7 +27,7 @@
     "goldenPathsFailing": 0,
     "goldenPathsUnwritten": 0,
     "crudCreate": 33,
-    "crudRead": 137,
+    "crudRead": 138,
     "crudUpdate": 29,
     "crudDelete": 25,
     "unregisteredDesigns": 0,
@@ -49,7 +49,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 316,
-      "dataBacked": 130
+      "dataBacked": 132
     },
     "call-center": {
       "total": 2,
@@ -73,7 +73,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 8,
-      "dataBacked": 7
+      "dataBacked": 8
     },
     "reference": {
       "total": 28,
@@ -155,7 +155,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 13,
-      "dataBacked": 8
+      "dataBacked": 9
     },
     "crm": {
       "total": 17,
@@ -195,7 +195,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 10,
-      "dataBacked": 2
+      "dataBacked": 3
     },
     "website": {
       "total": 39,
@@ -219,7 +219,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 202,
-      "dataBacked": 52
+      "dataBacked": 53
     }
   },
   "byModule": {
@@ -437,7 +437,7 @@
       "placeholder": 0,
       "mobileOwed": 0,
       "e2e": 2,
-      "dataBacked": 1
+      "dataBacked": 2
     },
     "procurement": {
       "total": 3,
