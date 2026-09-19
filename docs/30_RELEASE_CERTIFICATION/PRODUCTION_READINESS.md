@@ -9,7 +9,7 @@
 
 # Production readiness
 
-**Sources as of:** 2026-09-18 · **8 of 15 criteria met**
+**Sources as of:** 2026-09-19 · **8 of 15 criteria met**
 
 Each criterion names the evidence that decided it. No criterion is marked met on judgement alone.
 
